@@ -1,0 +1,11 @@
+{
+  "kind": "RESEARCH",
+  "slug": "replace-with-real-research-slug",
+  "title": "Replace with the research title",
+  "summary": "Replace with an accurate summary of your original research and its evidence.",
+  "body": "## Question\n\nDescribe the question you investigated.\n\n## Evidence\n\nAdd your observations and sources.\n\n## Analysis\n\nExplain what the evidence supports and where uncertainty remains.\n\n## Conclusion\n\nDocument the lesson and next steps.",
+  "status": "DRAFT",
+  "research": { "references": [] },
+  "tags": [],
+  "relatedSlugs": []
+}

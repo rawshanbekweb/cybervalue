@@ -1,0 +1,163 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ContentKind {
+  PROJECT
+  LAB
+  RESEARCH
+  CTF
+  RESOURCE
+}
+
+enum PublicationStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum Difficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+model User {
+  id        String    @id @default(cuid())
+  name      String
+  content   Content[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Content {
+  id             String            @id @default(cuid())
+  kind           ContentKind
+  slug           String            @unique
+  title          String
+  summary        String
+  body           String            @db.Text
+  seoTitle       String?
+  seoDescription String?
+  status         PublicationStatus @default(DRAFT)
+  featured       Boolean           @default(false)
+  publishedAt    DateTime?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  authorId       String
+  author         User              @relation(fields: [authorId], references: [id])
+  categoryId     String?
+  category       Category?         @relation(fields: [categoryId], references: [id])
+  tags           Tag[]
+  related        Content[]         @relation("RelatedContent")
+  relatedFrom    Content[]         @relation("RelatedContent")
+  project        Project?
+  lab            Lab?
+  research       ResearchArticle?
+  ctf            CTFEvent?
+  resource       Resource?
+  images         ContentImage[]
+
+  @@index([status, publishedAt])
+  @@index([kind, status, publishedAt])
+  @@index([categoryId])
+}
+
+model Project {
+  contentId              String   @id
+  content                Content  @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  problem                String   @db.Text
+  objective              String   @db.Text
+  architecture           String   @db.Text
+  securityConsiderations String   @db.Text
+  challenges             String   @db.Text
+  solution               String   @db.Text
+  result                 String   @db.Text
+  lessonsLearned         String   @db.Text
+  technologies           String[]
+  repositoryUrl          String?
+  liveUrl                String?
+  projectStatus          String
+}
+
+model Lab {
+  contentId      String     @id
+  content        Content    @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  environment    String
+  objective      String     @db.Text
+  tools          String[]
+  methodology    String     @db.Text
+  discovery      String     @db.Text
+  analysis       String     @db.Text
+  impact         String     @db.Text
+  remediation    String     @db.Text
+  lessonsLearned String     @db.Text
+  difficulty     Difficulty
+  authorized     Boolean    @default(false)
+}
+
+model ResearchArticle {
+  contentId  String   @id
+  content    Content  @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  references String[]
+}
+
+model CTFEvent {
+  contentId        String   @id
+  content          Content  @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  eventName        String
+  eventDate        DateTime
+  location         String?
+  placement        String?
+  challengesSolved String[]
+  categories       String[]
+  lessonsLearned   String   @db.Text
+}
+
+model Resource {
+  contentId String  @id
+  content   Content @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  type      String
+  filePath  String
+  topic     String
+  version   String
+}
+
+model Tag {
+  id      String    @id @default(cuid())
+  name    String
+  slug    String    @unique
+  content Content[]
+}
+
+model Category {
+  id      String    @id @default(cuid())
+  name    String
+  slug    String    @unique
+  content Content[]
+}
+
+model ContentImage {
+  id        String  @id @default(cuid())
+  contentId String
+  content   Content @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  path      String
+  alt       String
+  width     Int
+  height    Int
+  position  Int     @default(0)
+}
+
+model SocialLink {
+  id        String   @id @default(cuid())
+  platform  String   @unique
+  url       String
+  position  Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
