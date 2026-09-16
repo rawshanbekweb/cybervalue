@@ -76,7 +76,7 @@ test("filters canonicalize to archive and are noindex", async ({ page }) => {
   await page.getByRole("link", { name: "Clear", exact: true }).click();
   await expect(page.getByRole("searchbox")).toHaveValue("");
   await page.goto("/labs?page=-1");
-  await expect(page.getByRole("alert")).toContainText("invalid");
+  await expect(page.locator(".filter-error")).toContainText("invalid");
 });
 test("responsive layouts and keyboard navigation", async ({ page }) => {
   for (const width of [320, 375, 768, 1024, 1440]) {
