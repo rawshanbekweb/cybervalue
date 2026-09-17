@@ -4,19 +4,9 @@ import type { Prisma, ContentKind } from "@/generated/prisma/client";
 import { getDb } from "./db";
 import { configuredSocials } from "./site";
 import { safeLink, type Filters } from "./validation";
+import { include, type Entry } from "./content-shared";
 
-export const include = {
-  tags: true,
-  category: true,
-  author: true,
-  project: true,
-  lab: true,
-  research: true,
-  ctf: true,
-  resource: true,
-  images: { orderBy: { position: "asc" as const } },
-} satisfies Prisma.ContentInclude;
-export type Entry = Prisma.ContentGetPayload<{ include: typeof include }>;
+export { include, type Entry };
 export const publicWhere = (): Prisma.ContentWhereInput => ({
   status: "PUBLISHED",
   publishedAt: { not: null, lte: new Date() },

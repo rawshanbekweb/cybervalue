@@ -54,7 +54,7 @@ export default async function Home() {
           <div className="hero-kicker">
             <span className="status-dot" />A PERSONAL PURSUIT OF BETTER SECURITY
           </div>
-          <p className="hero-name">Rawshanbek Gayipbaev</p>
+          <p className="hero-name">Rawshanbek Kayipbaev</p>
           <h1>
             Understand the risk.
             <br />

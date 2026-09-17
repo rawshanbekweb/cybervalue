@@ -57,7 +57,6 @@ test("robots, sitemap, headers, OG, redirects, missing pages and downloads", asy
   for (const path of [
     "/missing-page",
     "/work/not-published",
-    "/admin",
     "/downloads/missing",
   ])
     expect((await request.get(path)).status(), path).toBe(404);

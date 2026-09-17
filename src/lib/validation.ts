@@ -169,6 +169,11 @@ export function parseFilters(
   return filterSchema.safeParse(input);
 }
 
+export const loginSchema = z.object({
+  email: z.string().trim().min(3).max(200),
+  password: z.string().min(1).max(200),
+});
+
 export function isPublished(
   entry: { status: string; publishedAt: Date | null },
   now = new Date(),

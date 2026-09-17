@@ -1,6 +1,6 @@
 # Publishing real content
 
-Content is authored locally as JSON and Markdown strings, never loaded from templates into the public site automatically. Start with `content/templates/research.json`. Keep working content outside `public/` and do not commit private evidence or credentials.
+Content can be authored two ways: through the private `/admin` CMS (log in after running `npm run admin:create-user`), or as JSON/Markdown strings via the CLI importer below. Both validate against the same `contentSchema` and write through the same transactional upsert (`src/lib/content-write.ts`), so records created one way can be edited the other way by slug. The admin UI is the easier path for text/status/relationship edits and publishes immediately (no rebuild); the CLI importer is still required for anything with a new screenshot or resource file, since admin forms have no upload UI (see `docs/security.md`). Keep working content outside `public/` and do not commit private evidence or credentials.
 
 ```sh
 npm run content:import -- path/to/entry.json --validate-only
