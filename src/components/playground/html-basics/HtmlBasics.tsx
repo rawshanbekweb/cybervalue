@@ -1,0 +1,142 @@
+"use client";
+
+import { useState } from "react";
+import { HTML_LESSONS, type HtmlLesson } from "./lessons.data";
+import { useLocalStorageState } from "../useLocalStorageState";
+import "./html-basics.css";
+
+const PROGRESS_KEY = "htmldars:progress:v1";
+const CODE_KEY = "htmldars:code:v1";
+const TOTAL = HTML_LESSONS.length;
+
+function lessonById(id: number): HtmlLesson {
+  return HTML_LESSONS.find((l) => l.id === id) ?? HTML_LESSONS[0];
+}
+
+export function HtmlBasics() {
+  const [lessonId, setLessonId] = useState(1);
+  const [completed, setCompletedStored] = useLocalStorageState<Record<number, boolean>>(PROGRESS_KEY, {});
+  const [codeByLesson, setCodeByLessonStored] = useLocalStorageState<Record<number, string>>(CODE_KEY, {});
+  const [checkResults, setCheckResults] = useState<{ label: string; pass: boolean }[] | null>(null);
+  const [celebrate, setCelebrate] = useState(false);
+
+  const lesson = lessonById(lessonId);
+  const code = codeByLesson[lesson.id] ?? lesson.starter;
+
+  const goTo = (id: number) => {
+    if (!HTML_LESSONS.some((l) => l.id === id)) id = 1;
+    setLessonId(id);
+    setCheckResults(null);
+    setCelebrate(false);
+  };
+
+  const setCode = (value: string) => {
+    setCodeByLessonStored({ ...codeByLesson, [lesson.id]: value });
+  };
+
+  const runChecks = () => {
+    const results = lesson.checks.map((c) => ({ label: c.label, pass: !!c.test(code) }));
+    setCheckResults(results);
+    const allPass = results.every((r) => r.pass);
+    setCelebrate(allPass);
+    if (allPass) {
+      setCompletedStored({ ...completed, [lesson.id]: true });
+    }
+  };
+
+  const doneCount = Object.keys(completed).length;
+
+  return (
+    <div className="htb-root">
+      <aside className="htb-side">
+        <h1>HTML darslari</h1>
+        <span className="htb-tag">12 QISQA AMALIYOT</span>
+        <div className="htb-progress-label">
+          <span>Natija</span>
+          <strong>
+            {doneCount} / {TOTAL}
+          </strong>
+        </div>
+        <div className="htb-progress-track">
+          <i style={{ width: `${Math.round((doneCount / TOTAL) * 100)}%` }} />
+        </div>
+        <ul className="htb-nav">
+          {HTML_LESSONS.map((l) => (
+            <li key={l.id}>
+              <button type="button" className={l.id === lessonId ? "active" : ""} onClick={() => goTo(l.id)}>
+                <span className="htb-n">{String(l.id).padStart(2, "0")}</span>
+                <span>{l.title}</span>
+                {completed[l.id] && <span className="htb-c">✓</span>}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </aside>
+      <main className="htb-main">
+        <span className="htb-eyebrow">
+          DARS {lesson.id} / {TOTAL}
+        </span>
+        <h2>{lesson.title}</h2>
+        <p className="htb-intro">{lesson.intro}</p>
+        <div className="htb-task">
+          <b>Vazifa:</b> {lesson.task}
+        </div>
+
+        <div className="htb-grid">
+          <div className="htb-panel">
+            <h3>Kod (tahrirlang)</h3>
+            <textarea spellCheck={false} value={code} onChange={(e) => setCode(e.target.value)} />
+          </div>
+          <div className="htb-panel">
+            <h3>Natija (jonli ko‘rinish)</h3>
+            <iframe sandbox="" srcDoc={code} title="Natija" />
+          </div>
+        </div>
+
+        <div className="htb-button-row">
+          <button className="htb-primary" type="button" onClick={runChecks}>
+            Tekshirish
+          </button>
+          <button className="htb-ghost" type="button" onClick={() => setCode(lesson.solution)}>
+            Namunaviy yechim
+          </button>
+          <button
+            className="htb-ghost"
+            type="button"
+            onClick={() => {
+              setCode(lesson.starter);
+              setCheckResults(null);
+              setCelebrate(false);
+            }}
+          >
+            Boshidan boshlash
+          </button>
+        </div>
+
+        <ul className="htb-checklist">
+          {(checkResults ?? lesson.checks.map((c) => ({ label: c.label, pass: undefined }))).map((r, i) => (
+            <li key={i} className={r.pass === undefined ? "" : r.pass ? "pass" : "fail"}>
+              <span className="htb-mark">{r.pass === undefined ? "•" : r.pass ? "✓" : "✕"}</span>
+              {r.label}
+            </li>
+          ))}
+        </ul>
+        {celebrate && (
+          <div className="htb-celebrate show">✓ Barcha shartlar bajarildi! Keyingi darsga o‘tishingiz mumkin.</div>
+        )}
+
+        <div className="htb-footer-nav">
+          <button className="htb-plain" type="button" disabled={lesson.id <= 1} onClick={() => goTo(lesson.id - 1)}>
+            ← Oldingi dars
+          </button>
+          <span>
+            {lesson.id} / {TOTAL}
+          </span>
+          <button className="htb-plain" type="button" disabled={lesson.id >= TOTAL} onClick={() => goTo(lesson.id + 1)}>
+            Keyingi dars →
+          </button>
+        </div>
+      </main>
+    </div>
+  );
+}

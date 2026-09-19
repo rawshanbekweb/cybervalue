@@ -90,6 +90,7 @@ export const navigation = [
     href: `/${key}`,
     label: value.title,
   })),
+  { href: "/playground", label: "Playground" },
   { href: "/about", label: "About" },
 ];
 export const configuredSocials = [
