@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
-import { ArrowUpRight, Fingerprint } from "lucide-react";
-import { Navigation } from "@/components/navigation";
+import { ArrowUpRight } from "lucide-react";
+import { SiteHeader } from "@/components/site-header";
+import { HideOnConcept } from "@/components/hide-on-concept";
 import { site, navigation } from "@/lib/site";
 import { getSocials } from "@/lib/content";
 import "./globals.css";
@@ -32,47 +33,38 @@ export default async function RootLayout({
         <a href="#main" className="skip-link">
           Skip to content
         </a>
-        <header className="site-header">
-          <div className="header-inner">
-            <Link className="wordmark" href="/" aria-label="CyberValue home">
-              <span className="brand-mark">
-                <Fingerprint size={23} />
-              </span>
-              cyber<span>value</span>
-              <span className="brand-period">.</span>
-            </Link>
-            <Navigation items={navigation} />
-          </div>
-        </header>
+        <SiteHeader items={navigation} />
         <main id="main">{children}</main>
-        <footer className="site-footer container">
-          <div className="footer-top">
-            <div>
-              <Link className="wordmark" href="/">
-                cyber<span>value</span>
-                <span className="brand-period">.</span>
-              </Link>
-              <p>Curiosity. Practice. Evidence.</p>
+        <HideOnConcept>
+          <footer className="site-footer container">
+            <div className="footer-top">
+              <div>
+                <Link className="wordmark" href="/">
+                  cyber<span>value</span>
+                  <span className="brand-period">.</span>
+                </Link>
+                <p>Curiosity. Practice. Evidence.</p>
+              </div>
+              <div className="footer-links">
+                <Link href="/activity">Activity</Link>
+                <Link href="/search">Search the archive</Link>
+                {socials.map((s) => (
+                  <a key={s.platform} href={s.url} rel="me noopener noreferrer">
+                    {s.platform}
+                    <ArrowUpRight size={13} />
+                  </a>
+                ))}
+              </div>
             </div>
-            <div className="footer-links">
-              <Link href="/activity">Activity</Link>
-              <Link href="/search">Search the archive</Link>
-              {socials.map((s) => (
-                <a key={s.platform} href={s.url} rel="me noopener noreferrer">
-                  {s.platform}
-                  <ArrowUpRight size={13} />
-                </a>
-              ))}
+            <div className="footer-bottom">
+              <span>
+                © {new Date().getFullYear()} {site.person}
+              </span>
+              <span>Think critically. Build securely.</span>
+              <a href="#main">Back to top ↑</a>
             </div>
-          </div>
-          <div className="footer-bottom">
-            <span>
-              © {new Date().getFullYear()} {site.person}
-            </span>
-            <span>Think critically. Build securely.</span>
-            <a href="#main">Back to top ↑</a>
-          </div>
-        </footer>
+          </footer>
+        </HideOnConcept>
       </body>
     </html>
   );

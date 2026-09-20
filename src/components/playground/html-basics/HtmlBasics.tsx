@@ -49,10 +49,10 @@ export function HtmlBasics() {
   return (
     <div className="htb-root">
       <aside className="htb-side">
-        <h1>HTML darslari</h1>
-        <span className="htb-tag">12 QISQA AMALIYOT</span>
+        <h1>HTML Lessons</h1>
+        <span className="htb-tag">12 SHORT EXERCISES</span>
         <div className="htb-progress-label">
-          <span>Natija</span>
+          <span>Progress</span>
           <strong>
             {doneCount} / {TOTAL}
           </strong>
@@ -74,31 +74,31 @@ export function HtmlBasics() {
       </aside>
       <main className="htb-main">
         <span className="htb-eyebrow">
-          DARS {lesson.id} / {TOTAL}
+          LESSON {lesson.id} / {TOTAL}
         </span>
         <h2>{lesson.title}</h2>
         <p className="htb-intro">{lesson.intro}</p>
         <div className="htb-task">
-          <b>Vazifa:</b> {lesson.task}
+          <b>Task:</b> {lesson.task}
         </div>
 
         <div className="htb-grid">
           <div className="htb-panel">
-            <h3>Kod (tahrirlang)</h3>
+            <h3>Code (edit it)</h3>
             <textarea spellCheck={false} value={code} onChange={(e) => setCode(e.target.value)} />
           </div>
           <div className="htb-panel">
-            <h3>Natija (jonli ko‘rinish)</h3>
-            <iframe sandbox="" srcDoc={code} title="Natija" />
+            <h3>Result (live preview)</h3>
+            <iframe sandbox="" srcDoc={code} title="Result" />
           </div>
         </div>
 
         <div className="htb-button-row">
           <button className="htb-primary" type="button" onClick={runChecks}>
-            Tekshirish
+            Check
           </button>
           <button className="htb-ghost" type="button" onClick={() => setCode(lesson.solution)}>
-            Namunaviy yechim
+            Sample solution
           </button>
           <button
             className="htb-ghost"
@@ -109,7 +109,7 @@ export function HtmlBasics() {
               setCelebrate(false);
             }}
           >
-            Boshidan boshlash
+            Start over
           </button>
         </div>
 
@@ -122,18 +122,18 @@ export function HtmlBasics() {
           ))}
         </ul>
         {celebrate && (
-          <div className="htb-celebrate show">✓ Barcha shartlar bajarildi! Keyingi darsga o‘tishingiz mumkin.</div>
+          <div className="htb-celebrate show">✓ All conditions passed! You can move on to the next lesson.</div>
         )}
 
         <div className="htb-footer-nav">
           <button className="htb-plain" type="button" disabled={lesson.id <= 1} onClick={() => goTo(lesson.id - 1)}>
-            ← Oldingi dars
+            ← Previous lesson
           </button>
           <span>
             {lesson.id} / {TOTAL}
           </span>
           <button className="htb-plain" type="button" disabled={lesson.id >= TOTAL} onClick={() => goTo(lesson.id + 1)}>
-            Keyingi dars →
+            Next lesson →
           </button>
         </div>
       </main>

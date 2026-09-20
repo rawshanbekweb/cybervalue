@@ -4,7 +4,7 @@ import { metadata as buildMetadata } from "@/lib/seo";
 export const generateMetadata = () =>
   buildMetadata(
     "Web Security Lab",
-    "36-bo‘limli interaktiv Web Application Security laboratoriyasi: real HTTP so‘rovlar, SQLi, XSS va IDOR namoyishi.",
+    "An interactive 36-lesson Web Application Security lab: real HTTP requests, and hands-on demos of SQLi, XSS, and IDOR.",
     "/playground/web-security-lab",
   );
 

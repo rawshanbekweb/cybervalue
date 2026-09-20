@@ -71,8 +71,8 @@ export function tokenFor(username: string): string {
         sub: username,
         iat: now,
         exp: now + 1800,
-        iss: "sabaq-local",
-        aud: "sabaq-lab",
+        iss: "lab-local",
+        aud: "web-security-lab",
       }),
     ),
   );
@@ -91,7 +91,7 @@ export function verifyToken(token: string): string | null {
     if (sigBuf.length !== expBuf.length || !timingSafeEqual(sigBuf, expBuf)) return null;
     const header = JSON.parse(Buffer.from(head, "base64url").toString("utf8"));
     const claims = JSON.parse(Buffer.from(payload, "base64url").toString("utf8"));
-    if (header?.alg !== "HS256" || claims?.iss !== "sabaq-local" || claims?.aud !== "sabaq-lab") {
+    if (header?.alg !== "HS256" || claims?.iss !== "lab-local" || claims?.aud !== "web-security-lab") {
       return null;
     }
     if (typeof claims.exp !== "number" || claims.exp <= Date.now() / 1000) return null;
@@ -124,7 +124,7 @@ export interface LabState {
 function createLabState(): LabState {
   return {
     sessions: new Map(),
-    posts: [{ id: 1, title: "Mening birinchi postim", owner_id: 15 }],
+    posts: [{ id: 1, title: "My first post", owner_id: 15 }],
     nextId: 2,
     comments: [],
     attempts: new Map(),

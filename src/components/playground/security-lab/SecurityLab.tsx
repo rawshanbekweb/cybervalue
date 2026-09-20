@@ -49,7 +49,7 @@ export function SecurityLab() {
     else next[lesson.id] = true;
     setCompletedStored(next);
     if (next[lesson.id] && lesson.id < TOTAL) {
-      setToast("Bo‘lim yakunlandi. Keyingisiga o‘tamiz.");
+      setToast("Lesson complete. Moving to the next one.");
       setTimeout(() => goTo(lesson.id + 1), 500);
     }
   };
@@ -78,14 +78,14 @@ export function SecurityLab() {
           }}
         >
           <span className="lab-brand-icon">
-            s<span>·</span>
+            W<span>·</span>
           </span>
           <span>
-            sabaq
-            <span className="lab-brand-sub">INTERAKTIV AKADEMIYA</span>
+            Web Security Lab
+            <span className="lab-brand-sub">INTERACTIVE COURSE</span>
           </span>
         </a>
-        <div className="lab-course-label">O‘QUV YO‘NALISHI</div>
+        <div className="lab-course-label">LEARNING TRACK</div>
         <div className="lab-course-name">
           Web Application
           <br />
@@ -95,14 +95,14 @@ export function SecurityLab() {
           <span>⌕</span>
           <input
             type="search"
-            placeholder="Bo‘limni qidirish…"
-            aria-label="Bo‘limni qidirish"
+            placeholder="Search lessons…"
+            aria-label="Search lessons"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <nav aria-label="Dars bo‘limlari" className="lab-lesson-nav">
-          {visibleLessons.length === 0 && <div className="lab-empty-search">Hech narsa topilmadi.</div>}
+        <nav aria-label="Lesson sections" className="lab-lesson-nav">
+          {visibleLessons.length === 0 && <div className="lab-empty-search">Nothing found.</div>}
           {visibleLessons.map((l, i) => {
             const g = groupFor(l.id);
             const showGroup = i === 0 || groupFor(visibleLessons[i - 1].id).title !== g.title;
@@ -124,7 +124,7 @@ export function SecurityLab() {
         </nav>
         <div className="lab-sidebar-bottom">
           <div className="lab-progress-caption">
-            <span>Sizning natijangiz</span>
+            <span>Your progress</span>
             <strong>
               {doneCount} / {TOTAL}
             </strong>
@@ -132,7 +132,7 @@ export function SecurityLab() {
           <div className="lab-progress-track">
             <i style={{ width: `${Math.round((doneCount / TOTAL) * 100)}%` }} />
           </div>
-          <span className="lab-save-hint">Natijalar shu browserda saqlanadi</span>
+          <span className="lab-save-hint">Progress is saved in this browser</span>
         </div>
       </aside>
       <div className="lab-workspace">
@@ -141,49 +141,49 @@ export function SecurityLab() {
             <button
               type="button"
               className="lab-icon-button lab-mobile-menu"
-              aria-label="Menyuni ochish"
+              aria-label="Open menu"
               onClick={() => setMenuOpen((v) => !v)}
             >
               ☰
             </button>
-            <span>O‘quv laboratoriyasi</span>
+            <span>Learning lab</span>
             <span className="lab-slash">/</span>
             <b>{lesson.title}</b>
           </div>
           <div className="lab-top-actions">
             <span className={`lab-connection${connection === "offline" ? " offline" : ""}`}>
               <i />
-              {connection === "connecting" ? "Ulanmoqda" : connection === "online" ? "Ulandi" : "Server topilmadi"}
+              {connection === "connecting" ? "Connecting" : connection === "online" ? "Connected" : "Server not found"}
             </span>
             <button type="button" className="lab-quiet-button" onClick={() => setPresent((v) => !v)}>
-              <span>▣</span> Taqdimot rejimi
+              <span>▣</span> Presentation mode
             </button>
           </div>
         </header>
         <main>
           <div className="lab-page-eyebrow">
-            <span className="lab-mini-dot" /> NAZARIYADAN AMALIYOTGA
-            <span className="lab-edition">36 BO‘LIM · O‘ZBEK TILIDA</span>
+            <span className="lab-mini-dot" /> FROM THEORY TO PRACTICE
+            <span className="lab-edition">36 LESSONS</span>
           </div>
           <section className="lab-hero">
             <div>
               <p className="lab-overline">WEB APPLICATION SECURITY</p>
               <h1>
-                Tizimni tushun.
+                Understand the system.
                 <br />
-                <span>Xavfsizlikni amalda ko‘r.</span>
+                <span>See security in practice.</span>
               </h1>
               <p className="lab-hero-description">
-                Browserdan databasegacha bo‘lgan yo‘lni o‘rganing.
+                Learn the path from browser to database.
                 <br />
-                So‘rov yuboring, natijani kuzating va himoyani sinab ko‘ring.
+                Send a request, watch the result, and put the defenses to the test.
               </p>
               <div className="lab-hero-tags">
                 <span>
-                  <i className="lab-live-dot" /> Haqiqiy lokal API
+                  <i className="lab-live-dot" /> A real local API
                 </span>
-                <span>↔ Interaktiv mashqlar</span>
-                <span>⌘ O‘qituvchi konspekti</span>
+                <span>↔ Interactive exercises</span>
+                <span>⌘ Teacher&apos;s notes</span>
               </div>
             </div>
           </section>
@@ -191,7 +191,7 @@ export function SecurityLab() {
             <div>
               <span className="lab-stat-icon">▦</span>
               <b>36</b>
-              <span>kichik amaliyot</span>
+              <span>short exercises</span>
             </div>
             <div>
               <span className="lab-stat-icon">⇄</span>
@@ -200,13 +200,13 @@ export function SecurityLab() {
             </div>
             <div>
               <span className="lab-stat-icon">◇</span>
-              <b>3 ta zaiflik</b>
+              <b>3 vulnerabilities</b>
               <span>SQLi · XSS · IDOR</span>
             </div>
             <div>
               <span className="lab-stat-icon">◎</span>
               <b>Localhost</b>
-              <span>o‘quv muhiti</span>
+              <span>learning sandbox</span>
             </div>
           </div>
           <section className="lab-lesson-section">
@@ -222,7 +222,7 @@ export function SecurityLab() {
                 <button
                   type="button"
                   className="lab-icon-button"
-                  aria-label="Oldingi bo‘lim"
+                  aria-label="Previous lesson"
                   disabled={lesson.id <= 1}
                   onClick={() => goTo(lesson.id - 1)}
                 >
@@ -231,7 +231,7 @@ export function SecurityLab() {
                 <button
                   type="button"
                   className="lab-icon-button"
-                  aria-label="Keyingi bo‘lim"
+                  aria-label="Next lesson"
                   disabled={lesson.id >= TOTAL}
                   onClick={() => goTo(lesson.id + 1)}
                 >
@@ -249,7 +249,7 @@ export function SecurityLab() {
                     aria-selected={tab === "practice"}
                     onClick={() => setTab("practice")}
                   >
-                    ⌘ Amaliyot
+                    ⌘ Practice
                   </button>
                   <button
                     type="button"
@@ -258,7 +258,7 @@ export function SecurityLab() {
                     aria-selected={tab === "theory"}
                     onClick={() => setTab("theory")}
                   >
-                    ▤ Qisqa nazariya
+                    ▤ Quick theory
                   </button>
                   <button
                     type="button"
@@ -267,14 +267,14 @@ export function SecurityLab() {
                     aria-selected={tab === "teacher"}
                     onClick={() => setTab("teacher")}
                   >
-                    ♧ O‘qituvchi uchun
+                    ♧ For teachers
                   </button>
                 </div>
                 <div className="lab-lesson-content">
                   {tab === "theory" && (
                     <>
                       <div className="lab-eyebrow">
-                        <span className="lab-badge">▤ NAZARIYA</span>
+                        <span className="lab-badge">▤ THEORY</span>
                       </div>
                       <div className="lab-theory-text">
                         {lesson.theory.map((p) => (
@@ -282,22 +282,22 @@ export function SecurityLab() {
                         ))}
                       </div>
                       <div className="lab-callout">
-                        <b>Muhokama savoli:</b> {lesson.question}
+                        <b>Discussion question:</b> {lesson.question}
                       </div>
                     </>
                   )}
                   {tab === "teacher" && (
                     <>
                       <div className="lab-eyebrow">
-                        <span className="lab-badge">♧ O‘QITUVCHI UCHUN</span>
+                        <span className="lab-badge">♧ FOR TEACHERS</span>
                       </div>
                       <div className="lab-teacher-step">{lesson.teacher}</div>
                       <div className="lab-teacher-timing">
-                        <span>⏱ {lesson.minutes} daqiqa</span>
+                        <span>⏱ {lesson.minutes} min</span>
                         <span>{group.title}</span>
                       </div>
                       <div className="lab-callout">
-                        <b>Yakuniy savol:</b> {lesson.question}
+                        <b>Closing question:</b> {lesson.question}
                       </div>
                     </>
                   )}
@@ -305,7 +305,7 @@ export function SecurityLab() {
                     <>
                       <div className="lab-eyebrow">
                         <span className={`lab-badge${lesson.real ? "" : " sim"}`}>
-                          {lesson.real ? "⌘ HAQIQIY API" : "◇ SIMULYATSIYA"}
+                          {lesson.real ? "⌘ REAL API" : "◇ SIMULATION"}
                         </span>
                       </div>
                       <h3>{lesson.heading}</h3>
@@ -317,32 +317,32 @@ export function SecurityLab() {
                   )}
                 </div>
                 <div className="lab-lesson-footer">
-                  <span>{completed[lesson.id] ? "Bu bo‘lim yakunlandi. Xohlasangiz qayta ko‘rib chiqing." : "Bajaring, kuzating, xulosa qiling."}</span>
+                  <span>{completed[lesson.id] ? "This lesson is complete. Feel free to revisit it." : "Do it, observe it, draw a conclusion."}</span>
                   <button type="button" className="lab-primary-button" onClick={toggleComplete}>
-                    {completed[lesson.id] ? "Yakunlangan" : "Bo‘limni yakunlash"} <span>✓</span>
+                    {completed[lesson.id] ? "Completed" : "Mark complete"} <span>✓</span>
                   </button>
                 </div>
               </article>
               <aside className="lab-right-column">
                 <section className="lab-mission-card">
-                  <span className="lab-overline">SIZNING VAZIFANGIZ</span>
+                  <span className="lab-overline">YOUR MISSION</span>
                   <h3>{lesson.task}</h3>
                   <p>{lesson.mission}</p>
                   <div className="lab-mission-divider" />
-                  <span className="lab-overline">KUTILADIGAN NATIJA</span>
+                  <span className="lab-overline">EXPECTED OUTCOME</span>
                   <p>{lesson.result}</p>
-                  <span className="lab-time-pill">⏱ {lesson.minutes} daqiqa</span>
+                  <span className="lab-time-pill">⏱ {lesson.minutes} min</span>
                 </section>
                 <section className="lab-principle-card">
                   <span>◇</span>
-                  <h3>Eslab qoling</h3>
+                  <h3>Remember this</h3>
                   <p>{lesson.principle}</p>
                 </section>
                 <details className="lab-notes-card">
-                  <summary>✎ Shaxsiy qaydlar</summary>
+                  <summary>✎ Personal notes</summary>
                   <textarea
-                    placeholder="Bu mashqdan nimani o‘rgandingiz?"
-                    aria-label="Shaxsiy qaydlar"
+                    placeholder="What did you learn from this exercise?"
+                    aria-label="Personal notes"
                     value={notes[lesson.id] ?? ""}
                     onChange={(e) => updateNote(e.target.value)}
                   />
@@ -351,12 +351,12 @@ export function SecurityLab() {
                     className="lab-quiet-button"
                     onClick={() =>
                       downloadText(
-                        `sabaq-dars-${lesson.id}-qaydlar.md`,
-                        `# ${lesson.title}\n\n${notes[lesson.id] || "(qayd yo‘q)"}\n`,
+                        `security-lab-lesson-${lesson.id}-notes.md`,
+                        `# ${lesson.title}\n\n${notes[lesson.id] || "(no notes)"}\n`,
                       )
                     }
                   >
-                    Qaydlarni yuklab olish ↓
+                    Download notes ↓
                   </button>
                 </details>
               </aside>
@@ -364,16 +364,16 @@ export function SecurityLab() {
           </section>
           <section className="lab-journey">
             <div>
-              <span className="lab-overline lab-teal">O‘QUV XARITASI</span>
-              <h2>Bitta so‘rov. Butun arxitektura.</h2>
+              <span className="lab-overline lab-teal">LEARNING MAP</span>
+              <h2>One request. The whole architecture.</h2>
             </div>
             <div className="lab-journey-steps">
               {[
-                [5, "01", "Frontend", "Ko‘rsatish"],
-                [8, "02", "HTTP / API", "Aloqa"],
-                [15, "03", "Backend", "Qaror"],
-                [20, "04", "Database", "Saqlash"],
-                [27, "05", "Security", "Ishonch"],
+                [5, "01", "Frontend", "Display"],
+                [8, "02", "HTTP / API", "Communication"],
+                [15, "03", "Backend", "Decision"],
+                [20, "04", "Database", "Storage"],
+                [27, "05", "Security", "Trust"],
               ].map(([jump, num, title, sub], i, arr) => (
                 <Fragment key={jump}>
                   <button type="button" onClick={() => goTo(Number(jump))}>
@@ -386,10 +386,10 @@ export function SecurityLab() {
           </section>
           <footer className="lab-page-footer">
             <span>
-              <b>sabaq.</b> Bilim — amaliyot bilan mustahkamlanadi.
+              <b>Web Security Lab.</b> Knowledge is reinforced through practice.
             </span>
             <span>
-              Faqat lokal, sun’iy ma’lumotli laboratoriya <i className="lab-live-dot" />
+              A local lab running on synthetic data only <i className="lab-live-dot" />
             </span>
           </footer>
         </main>

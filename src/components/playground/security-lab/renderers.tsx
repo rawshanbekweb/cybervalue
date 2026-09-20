@@ -25,25 +25,25 @@ interface RendererProps {
 }
 
 export function Fallback() {
-  return <p className="lab-help">Bu bo‘lim uchun amaliyot tayyorlanmoqda.</p>;
+  return <p className="lab-help">The practice exercise for this lesson is still being prepared.</p>;
 }
 
 const FLOW_STEPS_DB: [string, string, string][] = [
-  ["▤", "Browser", "So‘rov tayyorlanadi"],
-  ["⇄", "HTTP", "Request yuboriladi"],
-  ["⌘", "Backend", "Identity va logic"],
-  ["▱", "Database", "SQL bajariladi"],
-  ["⌘", "Backend", "Natija JSON qilinadi"],
-  ["⇄", "HTTP", "Response qaytadi"],
-  ["▤", "Browser", "Natija ko‘rsatiladi"],
+  ["▤", "Browser", "Request is prepared"],
+  ["⇄", "HTTP", "Request is sent"],
+  ["⌘", "Backend", "Identity & logic"],
+  ["▱", "Database", "SQL runs"],
+  ["⌘", "Backend", "Result becomes JSON"],
+  ["⇄", "HTTP", "Response comes back"],
+  ["▤", "Browser", "Result is displayed"],
 ];
 const FLOW_STEPS_DEFAULT: [string, string, string][] = [
-  ["▤", "Browser", "So‘rov tayyorlanadi"],
-  ["⇄", "HTTP", "Request yuboriladi"],
-  ["⌘", "Backend", "Identity va ruxsat tekshiriladi"],
-  ["⌘", "Backend", "Business logic bajariladi"],
-  ["⇄", "HTTP", "Response qaytadi"],
-  ["▤", "Browser", "Natija ko‘rsatiladi"],
+  ["▤", "Browser", "Request is prepared"],
+  ["⇄", "HTTP", "Request is sent"],
+  ["⌘", "Backend", "Identity & permission checked"],
+  ["⌘", "Backend", "Business logic runs"],
+  ["⇄", "HTTP", "Response comes back"],
+  ["▤", "Browser", "Result is displayed"],
 ];
 
 export function Flow({ lesson }: RendererProps) {
@@ -58,13 +58,13 @@ export function Flow({ lesson }: RendererProps) {
       : await apiCall("POST", "/api/lab/echo", { source: "flow-lesson" });
     setResult(res);
     setSending(false);
-    showToast("So‘rov yuborildi. Network panelidan tekshiring.");
+    showToast("Request sent. Check the Network panel.");
   };
   return (
     <div>
       <div className="lab-flow-board">
         <span className="lab-step-counter">
-          QADAM {idx + 1} / {steps.length}
+          STEP {idx + 1} / {steps.length}
         </span>
         <div className="lab-flow-nodes">
           {steps.map(([sym, name, note], i) => (
@@ -84,14 +84,14 @@ export function Flow({ lesson }: RendererProps) {
       </div>
       <ButtonRow>
         <SecondaryButton onClick={() => setIdx((v) => Math.max(0, v - 1))} disabled={idx === 0}>
-          ← Oldingi qadam
+          ← Previous step
         </SecondaryButton>
         <PrimaryButton onClick={() => setIdx((v) => Math.min(steps.length - 1, v + 1))} disabled={idx === steps.length - 1}>
-          Keyingi qadam →
+          Next step →
         </PrimaryButton>
         {lesson.real && (
           <SecondaryButton onClick={send} disabled={sending}>
-            Haqiqiy so‘rov yubor
+            Send a real request
           </SecondaryButton>
         )}
       </ButtonRow>
@@ -101,13 +101,13 @@ export function Flow({ lesson }: RendererProps) {
 }
 
 const ORDER_STEPS = [
-  "Foydalanuvchi “Profil” tugmasini bosadi",
-  "Browser HTTP request tayyorlaydi (method, URL, headers)",
-  "Request tarmoq orqali backendga yetib boradi",
-  "Backend identity va ruxsatni tekshiradi",
-  "Backend kerak bo‘lsa databasega murojaat qiladi",
-  "Backend HTTP response qaytaradi",
-  "Browser javobni ekranga chizadi",
+  "The user clicks the “Profile” button",
+  "The browser builds an HTTP request (method, URL, headers)",
+  "The request travels over the network to the backend",
+  "The backend checks identity and permission",
+  "The backend queries the database if needed",
+  "The backend returns an HTTP response",
+  "The browser renders the response on screen",
 ];
 
 export function Order() {
@@ -122,20 +122,20 @@ export function Order() {
   };
   const check = () => {
     if (picked.length !== ORDER_STEPS.length) {
-      setFeedback({ ok: false, text: "Avval barcha kartalarni tanlang." });
+      setFeedback({ ok: false, text: "Select all the cards first." });
       return;
     }
     const correct = picked.every((v, i) => v === i);
     setFeedback({
       ok: correct,
       text: correct
-        ? "✓ To‘g‘ri! Bu — bitta requestning butun sayohati."
-        : "✗ Tartib noto‘g‘ri. “Boshidan boshlash”ni bosib qayta urinib ko‘ring.",
+        ? "✓ Correct! This is the entire journey of a single request."
+        : "✗ Wrong order. Click “Start over” and try again.",
     });
   };
   return (
     <div>
-      <p className="lab-help">Kartalarni to‘g‘ri ketma-ketlikda bosing.</p>
+      <p className="lab-help">Click the cards in the correct order.</p>
       <ButtonRow>
         {shuffled.map(({ text, i }) => (
           <Chip
@@ -149,11 +149,11 @@ export function Order() {
         ))}
       </ButtonRow>
       <Callout>
-        Tanlangan ketma-ketlik: {picked.length ? picked.map((n) => n + 1).join(" → ") : "(hali yo‘q)"}
+        Selected order: {picked.length ? picked.map((n) => n + 1).join(" → ") : "(none yet)"}
       </Callout>
       <ButtonRow>
-        <SecondaryButton onClick={reset}>Boshidan boshlash</SecondaryButton>
-        <PrimaryButton onClick={check}>Tekshirish</PrimaryButton>
+        <SecondaryButton onClick={reset}>Start over</SecondaryButton>
+        <PrimaryButton onClick={check}>Check</PrimaryButton>
       </ButtonRow>
       <Feedback ok={feedback?.ok ?? null}>{feedback?.text ?? ""}</Feedback>
     </div>
@@ -161,9 +161,9 @@ export function Order() {
 }
 
 const CLASSIFY_ITEMS: { text: string; answer: "static" | "app" }[] = [
-  { text: "Foydalanuvchi maqolani o‘qiydi, forma yoki login yo‘q.", answer: "static" },
-  { text: "Foydalanuvchi tizimga kirib, shaxsiy buyurtmalar tarixini ko‘radi.", answer: "app" },
-  { text: "Foydalanuvchi savatga mahsulot qo‘shib, checkout qiladi.", answer: "app" },
+  { text: "The user reads an article — no form, no login.", answer: "static" },
+  { text: "The user logs in and views their personal order history.", answer: "app" },
+  { text: "The user adds a product to the cart and checks out.", answer: "app" },
 ];
 
 export function Classify() {
@@ -175,8 +175,8 @@ export function Classify() {
     setFeedback({
       ok: all,
       text: all
-        ? "✓ Barchasi to‘g‘ri: amal turi ko‘rinishdan emas, server bilan almashinuvdan aniqlanadi."
-        : `${correctCount} / ${CLASSIFY_ITEMS.length} to‘g‘ri. Qayta ko‘rib chiqing.`,
+        ? "✓ All correct: the type of action is determined by the exchange with the server, not by appearance."
+        : `${correctCount} / ${CLASSIFY_ITEMS.length} correct. Review and try again.`,
     });
   };
   return (
@@ -188,7 +188,7 @@ export function Classify() {
           </strong>
           <ButtonRow>
             <Chip selected={answers[i] === "static"} onClick={() => setAnswers((a) => ({ ...a, [i]: "static" }))}>
-              Statik sahifa
+              Static page
             </Chip>
             <Chip selected={answers[i] === "app"} onClick={() => setAnswers((a) => ({ ...a, [i]: "app" }))}>
               Web application
@@ -196,7 +196,7 @@ export function Classify() {
           </ButtonRow>
         </div>
       ))}
-      <PrimaryButton onClick={check}>Tekshirish</PrimaryButton>
+      <PrimaryButton onClick={check}>Check</PrimaryButton>
       <Feedback ok={feedback?.ok ?? null}>{feedback?.text ?? ""}</Feedback>
     </div>
   );
@@ -206,19 +206,19 @@ const MATCH_DATA: Record<number, { options: string[]; rows: [string, string][] }
   4: {
     options: ["Frontend", "Backend", "Database"],
     rows: [
-      ["Foydalanuvchi interfeysini chizish", "Frontend"],
-      ["Login ma’lumotlarini tekshirish", "Backend"],
-      ["Foydalanuvchilar jadvalini saqlash", "Database"],
-      ["Amal uchun ruxsatni (role) tekshirish", "Backend"],
+      ["Render the user interface", "Frontend"],
+      ["Validate login credentials", "Backend"],
+      ["Store the users table", "Database"],
+      ["Check permission (role) for an action", "Backend"],
     ],
   },
   32: {
     options: ["Frontend", "Backend", "Database", "HTTP / API"],
     rows: [
-      ["“Nimani ko‘rsataman?”", "Frontend"],
-      ["“Nima qilish mumkin?”", "Backend"],
-      ["“Qayerda saqlanadi?”", "Database"],
-      ["“Qanday bog‘lanaman?”", "HTTP / API"],
+      ["“What do I show?”", "Frontend"],
+      ["“What's allowed?”", "Backend"],
+      ["“Where is it stored?”", "Database"],
+      ["“How do I connect?”", "HTTP / API"],
     ],
   },
 };
@@ -230,7 +230,7 @@ export function Match({ lesson }: RendererProps) {
   const check = () => {
     const correct = values.filter((v, i) => v === data.rows[i][1]).length;
     const all = correct === data.rows.length;
-    setFeedback({ ok: all, text: all ? "✓ Modelni to‘g‘ri moslashtirdingiz." : `${correct} / ${data.rows.length} to‘g‘ri.` });
+    setFeedback({ ok: all, text: all ? "✓ You matched the model correctly." : `${correct} / ${data.rows.length} correct.` });
   };
   return (
     <div>
@@ -241,7 +241,7 @@ export function Match({ lesson }: RendererProps) {
             value={values[i]}
             onChange={(e) => setValues((v) => v.map((cur, j) => (j === i ? e.target.value : cur)))}
           >
-            <option value="">— tanlang —</option>
+            <option value="">— choose —</option>
             {data.options.map((o) => (
               <option key={o} value={o}>
                 {o}
@@ -250,41 +250,41 @@ export function Match({ lesson }: RendererProps) {
           </select>
         </div>
       ))}
-      <PrimaryButton onClick={check}>Tekshirish</PrimaryButton>
+      <PrimaryButton onClick={check}>Check</PrimaryButton>
       <Feedback ok={feedback?.ok ?? null}>{feedback?.text ?? ""}</Feedback>
     </div>
   );
 }
 
 export function FrontendDemo() {
-  const [title, setTitle] = useState("Tizimga kirish");
+  const [title, setTitle] = useState("Sign in");
   const [color, setColor] = useState("#087e78");
   const [note, setNote] = useState("");
   return (
     <div>
       <div className="lab-preview-pane">
-        <h4>Kichik login interfeysi (faqat namuna)</h4>
-        <Field label="Sarlavha">
+        <h4>A small login interface (demo only)</h4>
+        <Field label="Heading">
           <input value={title} onChange={(e) => setTitle(e.target.value)} />
         </Field>
-        <Field label="Tugma rangi">
+        <Field label="Button color">
           <input type="color" value={color} onChange={(e) => setColor(e.target.value)} />
         </Field>
         <h3 style={{ margin: "14px 0" }}>{title}</h3>
-        <input placeholder="Login" style={{ marginBottom: 8 }} />
-        <input placeholder="Parol" type="password" style={{ marginBottom: 8 }} />
+        <input placeholder="Username" style={{ marginBottom: 8 }} />
+        <input placeholder="Password" type="password" style={{ marginBottom: 8 }} />
         <button
           className="lab-primary-button"
           style={{ background: color, borderColor: color }}
           onClick={() => {
             setNote(
-              'Tugma matni "Admin sifatida kirish" bo‘lsa ham, hech qanday serverga so‘rov ketmadi — bu faqat brauzerdagi ko‘rinish.',
+              'Even though the button says "Log in as Admin," no request was sent to any server — this is just what\'s shown in the browser.',
             );
-            showToast("Faqat frontend o‘zgardi. Server hech narsa bilmaydi.");
+            showToast("Only the frontend changed. The server knows nothing about it.");
           }}
           type="button"
         >
-          Admin sifatida kirish
+          Log in as Admin
         </button>
       </div>
       <p className="lab-help">{note}</p>
@@ -302,18 +302,18 @@ export function AuthConsole({ lesson }: RendererProps) {
   const login = async (name: string, pass: string) => {
     const res = await apiCall("POST", "/api/lab/login", { username: name, password: pass });
     pushLog(`Login: ${name}`, res);
-    showToast(res.ok ? `${name} sifatida kirdingiz.` : "Login muvaffaqiyatsiz.");
+    showToast(res.ok ? `Logged in as ${name}.` : "Login failed.");
   };
   return (
     <div>
       {lesson.id === 6 && (
         <>
           <Callout>
-            Quyidagi “Admin panel (faqat UI)” tugmasi hech qanday so‘rov yubormaydi — u shunchaki ko‘rinadigan tugma.
+            The “Admin panel (UI only)” button below doesn&apos;t send any request — it&apos;s just a button that&apos;s visible.
           </Callout>
           <ButtonRow>
-            <SecondaryButton onClick={() => showToast("Bu faqat frontend tugmasi — hech qanday API chaqirilmadi.")}>
-              Admin panel (faqat UI)
+            <SecondaryButton onClick={() => showToast("This is just a frontend button — no API was called.")}>
+              Admin panel (UI only)
             </SecondaryButton>
           </ButtonRow>
         </>
@@ -322,25 +322,25 @@ export function AuthConsole({ lesson }: RendererProps) {
         <Field label="Username">
           <input value={username} onChange={(e) => setUsername(e.target.value)} />
         </Field>
-        <Field label="Parol">
+        <Field label="Password">
           <input value={password} onChange={(e) => setPassword(e.target.value)} />
         </Field>
       </FieldRow>
       <ButtonRow>
-        <SecondaryButton onClick={() => login("ali", AUTH_PASSWORDS.ali)}>Ali sifatida kirish</SecondaryButton>
-        <SecondaryButton onClick={() => login("vali", AUTH_PASSWORDS.vali)}>Vali sifatida kirish</SecondaryButton>
-        <SecondaryButton onClick={() => login("admin", AUTH_PASSWORDS.admin)}>Admin sifatida kirish</SecondaryButton>
-        <SecondaryButton onClick={() => login(username, password)}>Yuqoridagi login/parol bilan kirish</SecondaryButton>
+        <SecondaryButton onClick={() => login("ali", AUTH_PASSWORDS.ali)}>Log in as Ali</SecondaryButton>
+        <SecondaryButton onClick={() => login("vali", AUTH_PASSWORDS.vali)}>Log in as Vali</SecondaryButton>
+        <SecondaryButton onClick={() => login("admin", AUTH_PASSWORDS.admin)}>Log in as Admin</SecondaryButton>
+        <SecondaryButton onClick={() => login(username, password)}>Log in with the credentials above</SecondaryButton>
         <SecondaryButton onClick={async () => pushLog("Logout", await apiCall("POST", "/api/lab/logout"))}>
-          Chiqish (logout)
+          Log out
         </SecondaryButton>
       </ButtonRow>
       <ButtonRow>
         <PrimaryButton onClick={async () => pushLog("GET /api/profile", await apiCall("GET", "/api/lab/profile"))}>
-          /api/profile chaqirish
+          Call /api/profile
         </PrimaryButton>
         <PrimaryButton onClick={async () => pushLog("GET /api/admin", await apiCall("GET", "/api/lab/admin"))}>
-          /api/admin chaqirish
+          Call /api/admin
         </PrimaryButton>
       </ButtonRow>
       <div>
@@ -379,9 +379,9 @@ export function RequestConsole({ lesson }: RendererProps) {
         setResult({
           ok: false,
           status: 0,
-          statusText: "JSON xato",
+          statusText: "JSON error",
           headers: {},
-          data: { error: "Body to‘g‘ri JSON emas: " + (err instanceof Error ? err.message : String(err)) },
+          data: { error: "Body isn't valid JSON: " + (err instanceof Error ? err.message : String(err)) },
           ms: 0,
         });
         return;
@@ -404,10 +404,10 @@ export function RequestConsole({ lesson }: RendererProps) {
         </Field>
       </FieldRow>
       <FieldRow>
-        <Field label="Qo‘shimcha header nomi (ixtiyoriy)">
+        <Field label="Extra header name (optional)">
           <input placeholder="X-Lesson" value={headerKey} onChange={(e) => setHeaderKey(e.target.value)} />
         </Field>
-        <Field label="Header qiymati">
+        <Field label="Header value">
           <input placeholder={String(lesson.id)} value={headerVal} onChange={(e) => setHeaderVal(e.target.value)} />
         </Field>
       </FieldRow>
@@ -419,7 +419,7 @@ export function RequestConsole({ lesson }: RendererProps) {
         />
       </Field>
       <ButtonRow>
-        <PrimaryButton onClick={send}>So‘rov yubor</PrimaryButton>
+        <PrimaryButton onClick={send}>Send request</PrimaryButton>
       </ButtonRow>
       <ResponseConsole result={result} />
     </div>
@@ -455,17 +455,17 @@ export function Validate() {
   return (
     <div>
       <FieldRow>
-        <Field label="Yosh (age)">
+        <Field label="Age">
           <input value={age} onChange={(e) => setAge(e.target.value)} />
         </Field>
       </FieldRow>
       <ButtonRow>
         <Chip onClick={() => setAge("25")}>25</Chip>
         <Chip onClick={() => setAge("-5")}>-5</Chip>
-        <Chip onClick={() => setAge("yigirma")}>&quot;yigirma&quot;</Chip>
+        <Chip onClick={() => setAge("twenty")}>&quot;twenty&quot;</Chip>
       </ButtonRow>
       <ButtonRow>
-        <PrimaryButton onClick={send}>Yuborish</PrimaryButton>
+        <PrimaryButton onClick={send}>Submit</PrimaryButton>
       </ButtonRow>
       <ResponseConsole result={result} />
     </div>
@@ -485,7 +485,7 @@ export function Jwt() {
     const data = res.data as { token?: string } | null;
     if (res.ok && data?.token) {
       setToken(data.token);
-      showToast("Token olindi.");
+      showToast("Token received.");
     } else {
       setResult(res);
     }
@@ -495,13 +495,13 @@ export function Jwt() {
       const [head, payload] = token.split(".");
       setDecoded({ header: JSON.parse(b64urlDecode(head)), payload: JSON.parse(b64urlDecode(payload)) });
     } catch {
-      showToast("Decode xato.");
+      showToast("Decode failed.");
     }
   };
   return (
     <div>
       <ButtonRow>
-        <SecondaryButton onClick={login}>Ali sifatida kirish (token oling)</SecondaryButton>
+        <SecondaryButton onClick={login}>Log in as Ali (get a token)</SecondaryButton>
       </ButtonRow>
       {token && (
         <CodeBlock>
@@ -510,13 +510,13 @@ export function Jwt() {
       )}
       <ButtonRow>
         <SecondaryButton onClick={decode} disabled={!token}>
-          Payloadni decode qilish
+          Decode the payload
         </SecondaryButton>
         <PrimaryButton
           onClick={async () => setResult(await apiCall("GET", "/api/lab/profile", undefined, { Authorization: `Bearer ${token}` }))}
           disabled={!token}
         >
-          Asl token bilan /api/profile
+          /api/profile with the original token
         </PrimaryButton>
         <SecondaryButton
           onClick={async () => {
@@ -525,7 +525,7 @@ export function Jwt() {
           }}
           disabled={!token}
         >
-          Buzilgan token bilan /api/profile
+          /api/profile with the tampered token
         </SecondaryButton>
       </ButtonRow>
       {decoded && (
@@ -561,23 +561,24 @@ export function Cookies() {
             setOut({ kind: "flags", data: data?.cookie_flags });
           }}
         >
-          Ali sifatida kirish
+          Log in as Ali
         </SecondaryButton>
         <SecondaryButton onClick={() => setOut({ kind: "raw", text: `document.cookie = "${document.cookie}"` })}>
-          document.cookie’ni o‘qish
+          Read document.cookie
         </SecondaryButton>
         <PrimaryButton onClick={async () => setOut({ kind: "response", result: await apiCall("GET", "/api/lab/profile") })}>
-          Cookie bilan /api/profile
+          /api/profile with the cookie
         </PrimaryButton>
       </ButtonRow>
-      {out?.kind === "flags" && <Callout>Login javobidagi cookie_flags: {JSON.stringify(out.data, null, 2)}</Callout>}
+      {out?.kind === "flags" && <Callout>cookie_flags from the login response: {JSON.stringify(out.data, null, 2)}</Callout>}
       {out?.kind === "raw" && (
         <>
           <CodeBlock>
             <Pre data={out.text} />
           </CodeBlock>
           <p className="lab-help">
-            Session cookie HttpOnly bo‘lgani uchun bu yerda ko‘rinmaydi, lekin browser uni requestga avtomatik qo‘shadi.
+            The session cookie is HttpOnly, so it isn&apos;t visible here — but the browser still attaches it to the request
+            automatically.
           </p>
         </>
       )}
@@ -587,7 +588,7 @@ export function Cookies() {
 }
 
 function DataTable({ rows }: { rows: Record<string, unknown>[] | undefined }) {
-  if (!rows || !rows.length) return <p className="lab-help">(bo‘sh)</p>;
+  if (!rows || !rows.length) return <p className="lab-help">(empty)</p>;
   const cols = Object.keys(rows[0]);
   return (
     <div className="lab-table-scroll">
@@ -625,7 +626,7 @@ export function DatabaseView() {
   return (
     <div>
       <ButtonRow>
-        <PrimaryButton onClick={load}>Jadvalni olish</PrimaryButton>
+        <PrimaryButton onClick={load}>Fetch the table</PrimaryButton>
       </ButtonRow>
       {rows ? <DataTable rows={rows} /> : raw !== undefined ? <Pre data={raw} /> : null}
     </div>
@@ -661,11 +662,11 @@ export function SqlCrud() {
           </CodeBlock>
           <div className="lab-compare-grid" style={{ marginTop: 12 }}>
             <div>
-              <h4 style={{ fontSize: 10, color: "var(--muted)" }}>OLDIN</h4>
+              <h4 style={{ fontSize: 10, color: "var(--muted)" }}>BEFORE</h4>
               <DataTable rows={data.before} />
             </div>
             <div>
-              <h4 style={{ fontSize: 10, color: "var(--muted)" }}>KEYIN</h4>
+              <h4 style={{ fontSize: 10, color: "var(--muted)" }}>AFTER</h4>
               <DataTable rows={data.after} />
             </div>
           </div>
@@ -695,7 +696,7 @@ export function Sql({ lesson }: RendererProps) {
             setResult(await apiCall("POST", "/api/lab/sql", { username, mode: vulnerable ? "vulnerable" : "safe" }))
           }
         >
-          Yuborish ({vulnerable ? "zaif" : "himoyalangan"} rejim)
+          Send ({vulnerable ? "vulnerable" : "safe"} mode)
         </PrimaryButton>
       </ButtonRow>
       <ResponseConsole result={result} />
@@ -704,21 +705,21 @@ export function Sql({ lesson }: RendererProps) {
 }
 
 const XSS_PRESETS = [
-  { label: "Oddiy HTML belgi", value: "Salom <b>dunyo</b>" },
+  { label: "Plain HTML markup", value: "Hello <b>world</b>" },
   {
     label: "img onerror payload",
     value: `<img src=x onerror="document.body.style.background='crimson'; document.title='XSS!'">`,
   },
-  { label: "script tegi", value: "<script>document.title='XSS ishladi!'</script>" },
+  { label: "script tag", value: "<script>document.title='XSS worked!'</script>" },
 ];
 
 export function Xss() {
-  const [value, setValue] = useState("Salom <b>dunyo</b>");
+  const [value, setValue] = useState("Hello <b>world</b>");
   const safeDoc = `<!doctype html><meta charset="utf-8"><style>body{font:12px sans-serif;padding:8px;color:#234}</style><div id="out"></div><script>document.getElementById('out').textContent = ${JSON.stringify(value)};</script>`;
   const vulnDoc = `<!doctype html><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="script-src 'unsafe-inline'; default-src 'none'"><style>body{font:12px sans-serif;padding:8px;color:#234}</style><div id="out"></div><script>document.getElementById('out').innerHTML = ${JSON.stringify(value)};</script>`;
   return (
     <div>
-      <Field label="Matn (payload)">
+      <Field label="Text (payload)">
         <textarea value={value} onChange={(e) => setValue(e.target.value)} />
       </Field>
       <ButtonRow>
@@ -730,17 +731,17 @@ export function Xss() {
       </ButtonRow>
       <div className="lab-compare-grid" style={{ marginTop: 14 }}>
         <div className="lab-preview-pane">
-          <h4>Xavfsiz render (textContent)</h4>
-          <iframe className="lab-sandbox-frame" sandbox="allow-scripts" srcDoc={safeDoc} title="Xavfsiz render" />
+          <h4>Safe render (textContent)</h4>
+          <iframe className="lab-sandbox-frame" sandbox="allow-scripts" srcDoc={safeDoc} title="Safe render" />
         </div>
         <div className="lab-preview-pane">
-          <h4>Zaif render (innerHTML) — izolyatsiyalangan sandboxda</h4>
-          <iframe className="lab-sandbox-frame" sandbox="allow-scripts" srcDoc={vulnDoc} title="Zaif render" />
+          <h4>Unsafe render (innerHTML) — inside an isolated sandbox</h4>
+          <iframe className="lab-sandbox-frame" sandbox="allow-scripts" srcDoc={vulnDoc} title="Unsafe render" />
         </div>
       </div>
       <p className="lab-help">
-        Ikkala oyna ham asosiy sahifadan butunlay izolyatsiyalangan (sandbox iframe, cookie yoki DOMga kirish yo‘q). Faqat
-        render farqini ko‘rsatish uchun.
+        Both frames are fully isolated from the main page (a sandboxed iframe, no access to cookies or the DOM) — this is
+        only here to show the difference in rendering.
       </p>
     </div>
   );
@@ -756,20 +757,20 @@ export function Idor() {
         <SecondaryButton
           onClick={async () => {
             await apiCall("POST", "/api/lab/login", { username: "ali", password: "ali123" });
-            showToast("Ali sifatida kirdingiz.");
+            showToast("Logged in as Ali.");
           }}
         >
-          Ali sifatida kirish
+          Log in as Ali
         </SecondaryButton>
       </ButtonRow>
       <FieldRow>
-        <Field label="Foydalanuvchi ID">
+        <Field label="User ID">
           <input value={id} onChange={(e) => setId(e.target.value)} />
         </Field>
-        <Field label="Rejim">
+        <Field label="Mode">
           <select value={mode} onChange={(e) => setMode(e.target.value as "safe" | "vulnerable")}>
-            <option value="safe">Himoyalangan</option>
-            <option value="vulnerable">Zaif</option>
+            <option value="safe">Safe</option>
+            <option value="vulnerable">Vulnerable</option>
           </select>
         </Field>
       </FieldRow>
@@ -780,7 +781,7 @@ export function Idor() {
             setResult(await apiCall("GET", path));
           }}
         >
-          /api/users/:id chaqirish
+          Call /api/users/:id
         </PrimaryButton>
       </ButtonRow>
       <ResponseConsole result={result} />
@@ -792,20 +793,20 @@ const SURFACE_CARDS = [
   {
     title: "Comment",
     chain:
-      "Input → server xotirasida saqlanadi → browserda render qilinadi. Muammo: HTML sifatida chizilsa XSS. Himoya: textContent yoki kontekstga mos sanitization.",
+      "Input → stored in server memory → rendered in the browser. Problem: XSS if rendered as HTML. Defense: textContent, or context-appropriate sanitization.",
   },
   {
     title: "Resource ID (URL)",
     chain:
-      "Input → backend query parametri → database qatoriga mos keladi. Muammo: ownership tekshirilmasa IDOR. Himoya: har object uchun authorization tekshiruvi.",
+      "Input → backend query parameter → matches a database row. Problem: IDOR if ownership isn't checked. Defense: an authorization check on every object.",
   },
   {
     title: "Login",
-    chain: "Input → credential solishtirish → session/JWT yaratish. Muammo: query noto‘g‘ri qurilsa SQLi. Himoya: parameterized query, rate limiting.",
+    chain: "Input → credentials compared → session/JWT issued. Problem: SQLi if the query is built unsafely. Defense: parameterized queries, rate limiting.",
   },
   {
     title: "Search",
-    chain: "Input → filter/query → natija render qilinadi. Muammo: reflected XSS yoki SQLi. Himoya: parametrizatsiya + chiqishda kontekstga mos kodlash.",
+    chain: "Input → filter/query → the result gets rendered. Problem: reflected XSS or SQLi. Defense: parameterization plus context-appropriate output encoding.",
   },
 ];
 
@@ -822,7 +823,7 @@ export function Surface() {
           onClick={() => setRevealed((s) => new Set(s).add(i))}
         >
           <strong>{c.title}</strong>
-          <small>{revealed.has(i) ? c.chain : "Bosib zanjirni ko‘ring →"}</small>
+          <small>{revealed.has(i) ? c.chain : "Click to reveal the chain →"}</small>
         </button>
       ))}
     </div>
@@ -832,21 +833,21 @@ export function Surface() {
 const INVESTIGATE_ITEMS = [
   {
     title: "Login",
-    options: ["Parolni deshifrlash mumkinmi?", "Login muvaffaqiyatsiz bo‘lganda qancha ma’lumot chiqadi va necha marta urinish mumkin?"],
+    options: ["Can the password be decrypted?", "How much information leaks on a failed login, and how many attempts are allowed?"],
     correct: 1,
-    why: "Xato xabari va rate limiting real ishonch xatolarini ko‘rsatadi; parol hash qaytarilmaydi.",
+    why: "The error message and rate limiting reveal real trust mistakes; the password hash is never returned.",
   },
   {
     title: "Comment",
-    options: ["HTML teglar comment sifatida saqlanadimi?", "Comment browserga qaytganda qanday render qilinadi?"],
+    options: ["Are HTML tags stored as part of the comment?", "How does the comment get rendered when it comes back to the browser?"],
     correct: 1,
-    why: "Saqlash formati emas, render qilish usuli XSS xavfini belgilaydi.",
+    why: "It's the rendering method, not the storage format, that determines XSS risk.",
   },
   {
     title: "Checkout",
-    options: ["Narx to‘g‘ri formatdami?", "Narxni kim — client yoki server — belgilaydi?"],
+    options: ["Is the price in the right format?", "Who decides the price — the client or the server?"],
     correct: 1,
-    why: "Format to‘g‘ri bo‘lishi narxga ishonish mumkinligini anglatmaydi.",
+    why: "Being correctly formatted doesn't mean the price can be trusted.",
   },
 ];
 
@@ -882,10 +883,10 @@ export function Investigate() {
 }
 
 const TASK_ITEMS = [
-  "Network: bitta requestning 7 dalilini yozing.",
-  "API: ochiq va yopiq endpointlar ro‘yxatini tuzing.",
-  "Access control: bitta 401/403 farqiga misol toping.",
-  "Data flow: bitta inputning source→sink yo‘lini tasvirlang.",
+  "Network: write down 7 pieces of evidence from a single request.",
+  "API: build a list of open and closed endpoints.",
+  "Access control: find one example of the 401/403 difference.",
+  "Data flow: describe one input's source→sink path.",
 ];
 
 export function Tasks({ lesson }: RendererProps) {
@@ -924,7 +925,7 @@ export function Quiz() {
         <div className="lab-assessment-score">
           {score} / {QUIZ.length}
         </div>
-        <p className="lab-help">Natija shu browserda saqlandi.</p>
+        <p className="lab-help">Your score is saved in this browser.</p>
         <SecondaryButton
           onClick={() => {
             setIndex(0);
@@ -932,7 +933,7 @@ export function Quiz() {
             setChosen(null);
           }}
         >
-          Qayta boshlash
+          Restart
         </SecondaryButton>
       </div>
     );
@@ -941,7 +942,7 @@ export function Quiz() {
   return (
     <div>
       <span className="lab-step-counter">
-        SAVOL {index + 1} / {QUIZ.length}
+        QUESTION {index + 1} / {QUIZ.length}
       </span>
       <h3 style={{ fontSize: 14, margin: "10px 0" }}>{q.q}</h3>
       <div className="lab-quiz-options">
@@ -972,7 +973,7 @@ export function Quiz() {
             setChosen(null);
           }}
         >
-          Keyingi savol →
+          Next question →
         </PrimaryButton>
       )}
     </div>
@@ -986,10 +987,10 @@ export function Checkout() {
   return (
     <div>
       <FieldRow>
-        <Field label="Miqdor (quantity)">
+        <Field label="Quantity">
           <input value={qty} onChange={(e) => setQty(e.target.value)} />
         </Field>
-        <Field label="Client narxi (price) — server buni e’tiborsiz qoldiradi">
+        <Field label="Client-side price — the server ignores this">
           <input value={price} onChange={(e) => setPrice(e.target.value)} />
         </Field>
       </FieldRow>
@@ -1017,7 +1018,7 @@ export function Checkout() {
             setResult(await apiCall("POST", "/api/lab/checkout", { quantity: Number(qty), price: Number(price) }))
           }
         >
-          Checkout yuborish
+          Submit checkout
         </PrimaryButton>
       </ButtonRow>
       <ResponseConsole result={result} />
@@ -1027,8 +1028,8 @@ export function Checkout() {
 
 const FINAL_DEFENSES = [
   "Parameterized query / prepared statement",
-  "Kontekstga mos output encoding (masalan textContent)",
-  "Har so‘rovda object-level authorization tekshiruvi",
+  "Context-appropriate output encoding (e.g. textContent)",
+  "An object-level authorization check on every request",
 ];
 const FINAL_ROWS: [string, string][] = [
   ["SQL Injection", FINAL_DEFENSES[0]],
@@ -1044,7 +1045,7 @@ export function FinalQuiz() {
     const all = correct === FINAL_ROWS.length;
     setFeedback({
       ok: all,
-      text: all ? "✓ Har bir zaiflik uchun to‘g‘ri himoyani topdingiz." : `${correct} / ${FINAL_ROWS.length} to‘g‘ri.`,
+      text: all ? "✓ You matched the correct defense to every vulnerability." : `${correct} / ${FINAL_ROWS.length} correct.`,
     });
   };
   return (
@@ -1053,7 +1054,7 @@ export function FinalQuiz() {
         <div className="lab-match-row" key={row[0]}>
           <span>{row[0]}</span>
           <select value={values[i]} onChange={(e) => setValues((v) => v.map((cur, j) => (j === i ? e.target.value : cur)))}>
-            <option value="">— tanlang —</option>
+            <option value="">— choose —</option>
             {FINAL_DEFENSES.map((d) => (
               <option key={d} value={d}>
                 {d}
@@ -1062,7 +1063,7 @@ export function FinalQuiz() {
           </select>
         </div>
       ))}
-      <PrimaryButton onClick={check}>Tekshirish</PrimaryButton>
+      <PrimaryButton onClick={check}>Check</PrimaryButton>
       <Feedback ok={feedback?.ok ?? null}>{feedback?.text ?? ""}</Feedback>
     </div>
   );
@@ -1077,7 +1078,7 @@ export function Worksheet() {
       {WORKSHEET_FIELDS.map((f) => (
         <Field label={f} key={f}>
           <textarea
-            placeholder="Kuzatilgan fakt yoki 'noma’lum' deb belgilang"
+            placeholder="Note an observed fact, or mark it 'unknown'"
             value={data[f] ?? ""}
             onChange={(e) => {
               const next = { ...data, [f]: e.target.value };
@@ -1090,11 +1091,11 @@ export function Worksheet() {
       <ButtonRow>
         <PrimaryButton
           onClick={() => {
-            const md = "# Arxitektura hisoboti\n\n" + WORKSHEET_FIELDS.map((f) => `## ${f}\n\n${data[f] || "(yozilmagan)"}\n`).join("\n");
-            downloadText("sabaq-hisobot.md", md);
+            const md = "# Architecture report\n\n" + WORKSHEET_FIELDS.map((f) => `## ${f}\n\n${data[f] || "(not written)"}\n`).join("\n");
+            downloadText("security-lab-report.md", md);
           }}
         >
-          Markdown qilib yuklab olish ↓
+          Download as Markdown ↓
         </PrimaryButton>
       </ButtonRow>
     </div>
@@ -1102,9 +1103,9 @@ export function Worksheet() {
 }
 
 const TEACHBACK_ITEMS = [
-  "Browser → backend → database oqimini tushuntirdim.",
-  "Authentication va authorization farqini tushuntirdim.",
-  "Bitta zaiflikning sababini tushuntirdim.",
+  "I explained the browser → backend → database flow.",
+  "I explained the difference between authentication and authorization.",
+  "I explained the root cause of one vulnerability.",
 ];
 
 export function Teachback() {
@@ -1118,7 +1119,7 @@ export function Teachback() {
         if (r <= 1) {
           clearInterval(timer);
           setRunning(false);
-          showToast("Vaqt tugadi.");
+          showToast("Time's up.");
           return 0;
         }
         return r - 1;
@@ -1130,7 +1131,7 @@ export function Teachback() {
       <div className="lab-assessment-score">{remaining}s</div>
       <ButtonRow>
         <PrimaryButton onClick={start} disabled={running}>
-          Taymerni boshlash
+          Start the timer
         </PrimaryButton>
       </ButtonRow>
       {TEACHBACK_ITEMS.map((t) => (

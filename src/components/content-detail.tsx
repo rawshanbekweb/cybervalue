@@ -4,6 +4,7 @@ import type { Entry } from "@/lib/content";
 import { safeLink, imagePath, resourcePath } from "@/lib/validation";
 import { Markdown } from "./markdown";
 import { ArrowLink, formatDate } from "./ui";
+import { TechList } from "./tech-badge";
 
 function Section({ title, value }: { title: string; value: string }) {
   return (
@@ -117,7 +118,9 @@ export function ContentDetail({ entry }: { entry: Entry }) {
               </div>
               <div>
                 <dt>Technologies</dt>
-                <dd>{p.technologies.join(", ")}</dd>
+                <dd>
+                  <TechList items={p.technologies} />
+                </dd>
               </div>
             </>
           )}
@@ -133,7 +136,9 @@ export function ContentDetail({ entry }: { entry: Entry }) {
               </div>
               <div>
                 <dt>Tools</dt>
-                <dd>{l.tools.join(", ")}</dd>
+                <dd>
+                  <TechList items={l.tools} />
+                </dd>
               </div>
             </>
           )}

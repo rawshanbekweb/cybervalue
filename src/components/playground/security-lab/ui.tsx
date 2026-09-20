@@ -22,7 +22,7 @@ export function StatusPill({ status }: { status: number }) {
 
 export function ResponseConsole({ result }: { result: ApiResult | null }) {
   const [active, setActive] = useState<"Status" | "Headers" | "Body">("Body");
-  if (!result) return <p className="lab-help">Hali so‘rov yuborilmadi.</p>;
+  if (!result) return <p className="lab-help">No request sent yet.</p>;
   const body =
     active === "Status"
       ? { status: result.status, statusText: result.statusText, time_ms: result.ms, ...(result.error ? { error: result.error } : {}) }

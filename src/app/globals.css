@@ -119,6 +119,45 @@ svg {
   background: #101211f5;
   position: relative;
   z-index: 20;
+  transition:
+    background 0.3s,
+    border-color 0.3s;
+}
+.site-header-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-bottom-color: transparent;
+  background: linear-gradient(
+    to bottom,
+    rgba(4, 7, 10, 0.85),
+    rgba(4, 7, 10, 0)
+  );
+}
+.site-header-overlay .wordmark {
+  color: #eafff2;
+}
+.site-header-overlay .brand-mark,
+.site-header-overlay .brand-period {
+  color: #39ff8c;
+}
+.site-header-overlay .navigation > a {
+  color: #b9cfc2;
+}
+.site-header-overlay .navigation > a:hover,
+.site-header-overlay .navigation > a[aria-current] {
+  color: #eafff2;
+}
+.site-header-overlay .navigation > a[aria-current]::after {
+  background: #39ff8c;
+}
+.site-header-overlay .navigation .nav-contact {
+  border-color: #2a4636;
+  background: rgba(5, 16, 10, 0.6);
+}
+.site-header-overlay .menu-toggle {
+  color: #eafff2;
 }
 .header-inner {
   max-width: 1360px;
@@ -1014,6 +1053,11 @@ svg {
 .tags a:hover {
   color: var(--accent);
 }
+.tech-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
 .recent-research {
   margin-bottom: 24px;
 }
@@ -1163,6 +1207,9 @@ svg {
 .article-aside dd {
   margin: 3px 0 0;
   overflow-wrap: anywhere;
+}
+.article-aside dd .tags {
+  margin-top: 2px;
 }
 .article-aside .button {
   width: 100%;

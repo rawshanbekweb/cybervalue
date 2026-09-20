@@ -59,12 +59,12 @@ async function parseBody(
   if (!["POST", "PUT", "PATCH", "DELETE"].includes(method)) return { body: {} };
   const text = await request.text();
   if (Buffer.byteLength(text, "utf8") > 16384) {
-    return { error: result(413, { error: "Body 16 KB dan oshmasin." }) };
+    return { error: result(413, { error: "Body must not exceed 16 KB." }) };
   }
   if (!text) return { body: {} };
   const contentType = request.headers.get("content-type") ?? "";
   if (!contentType.toLowerCase().startsWith("application/json")) {
-    return { error: result(415, { error: "Content-Type: application/json kerak." }) };
+    return { error: result(415, { error: "Content-Type must be application/json." }) };
   }
   try {
     const parsed: unknown = JSON.parse(text);
@@ -73,7 +73,7 @@ async function parseBody(
     }
     return { body: parsed as Record<string, unknown> };
   } catch {
-    return { error: result(400, { error: "Body to‘g‘ri JSON object bo‘lishi kerak." }) };
+    return { error: result(400, { error: "Body must be a valid JSON object." }) };
   }
 }
 
@@ -104,7 +104,7 @@ async function dispatch(
   if (subpath === "/echo") {
     const safeHeaders: Record<string, string> = {};
     request.headers.forEach((value, key) => {
-      safeHeaders[key] = key.toLowerCase() === "cookie" ? "[Network → Headers’da ko‘ring]" : value;
+      safeHeaders[key] = key.toLowerCase() === "cookie" ? "[see it in Network → Headers]" : value;
     });
     return result(200, {
       method,
@@ -122,10 +122,10 @@ async function dispatch(
     if (!Number.isFinite(code) || !(code in STATUS_PHRASES)) code = 400;
     const headers: Record<string, string> = {};
     if (code === 301 || code === 302) headers.Location = "/api/lab/status/200";
-    if (code === 401) headers["WWW-Authenticate"] = 'Bearer realm="sabaq-lab"';
+    if (code === 401) headers["WWW-Authenticate"] = 'Bearer realm="web-security-lab"';
     return result(
       code,
-      { status: code, phrase: STATUS_PHRASES[code], note: "Status darsi uchun ataylab qaytarilgan javob." },
+      { status: code, phrase: STATUS_PHRASES[code], note: "A response returned deliberately for the status-code lesson." },
       headers,
     );
   }
@@ -134,18 +134,18 @@ async function dispatch(
     const name = body.username;
     const password = body.password;
     if (typeof name !== "string" || typeof password !== "string") {
-      return result(400, { error: "Username va password matn bo‘lishi kerak." });
+      return result(400, { error: "Username and password must be strings." });
     }
     const attemptCount = recordLoginAttempt(state, name);
     if (attemptCount >= 5) {
-      return result(429, { error: "5 xato urinish. 30 soniya kuting." }, { "Retry-After": "30" });
+      return result(429, { error: "5 failed attempts. Wait 30 seconds." }, { "Retry-After": "30" });
     }
     if (!verifyPassword(name, password)) {
       registerFailedAttempt(state, name);
       return result(
         401,
-        { error: "Login yoki parol noto‘g‘ri." },
-        { "WWW-Authenticate": 'Bearer realm="sabaq-lab"' },
+        { error: "Incorrect username or password." },
+        { "WWW-Authenticate": 'Bearer realm="web-security-lab"' },
       );
     }
     clearAttempts(state, name);
@@ -155,11 +155,11 @@ async function dispatch(
     return result(
       200,
       {
-        message: "Kirish muvaffaqiyatli",
+        message: "Login successful",
         user: { username: name, id: account.id, role: account.role },
         token: tokenFor(name),
         cookie_flags: { HttpOnly: true, SameSite: "Strict", Secure: false },
-        note: "Secure=False faqat ushbu HTTP localhost laboratoriyasi uchun. HTTPS production’da Secure kerak.",
+        note: "Secure=false only applies to this HTTP localhost lab. A production HTTPS deployment needs Secure set.",
       },
       undefined,
       [{ name: "session", value: session, maxAge: 1800 }],
@@ -173,7 +173,7 @@ async function dispatch(
       200,
       {
         message:
-          "Cookie sessiyasi tugatildi. JWT o‘z exp muddatigacha yaroqli; uni bekor qilish alohida mexanizm talab qiladi.",
+          "The cookie session has ended. The JWT stays valid until its own exp — revoking it requires a separate mechanism.",
       },
       undefined,
       [{ name: "session", value: "", maxAge: 0 }],
@@ -184,17 +184,17 @@ async function dispatch(
     if (!user) {
       return result(
         401,
-        { error: "Avval tizimga kiring." },
-        { "WWW-Authenticate": 'Bearer realm="sabaq-lab"' },
+        { error: "Log in first." },
+        { "WWW-Authenticate": 'Bearer realm="web-security-lab"' },
       );
     }
     if (subpath === "/admin" && user.role !== "admin") {
       return result(403, {
-        error: "Admin roli kerak. Frontenddagi tugma ruxsat bermaydi.",
+        error: "The admin role is required. A button on the frontend can't grant that.",
         your_role: user.role,
       });
     }
-    return result(200, { user, message: "Server ruxsatni tekshirdi." });
+    return result(200, { user, message: "The server checked the permission." });
   }
 
   const userMatch = /^\/users\/(.+)$/.exec(subpath);
@@ -202,18 +202,18 @@ async function dispatch(
     if (!user) {
       return result(
         401,
-        { error: "Avval ali / ali123 bilan kiring." },
-        { "WWW-Authenticate": 'Bearer realm="sabaq-lab"' },
+        { error: "Log in with ali / ali123 first." },
+        { "WWW-Authenticate": 'Bearer realm="web-security-lab"' },
       );
     }
     const target = Number.parseInt(userMatch[1], 10);
     if (!Number.isFinite(target) || String(target) !== userMatch[1]) {
-      return result(400, { error: "ID butun son bo‘lishi kerak." });
+      return result(400, { error: "ID must be an integer." });
     }
     const vulnerable = query.mode?.[0] === "vulnerable";
     if (!vulnerable && target !== user.id && user.role !== "admin") {
       return result(403, {
-        error: "Bu profilga ruxsatingiz yo‘q.",
+        error: "You don't have permission to view this profile.",
         check: "current_user.id == resource.id OR role == admin",
       });
     }
@@ -233,7 +233,7 @@ async function dispatch(
   if (subpath === "/sql" && method === "POST") {
     const name = typeof body.username === "string" ? body.username : "ali";
     if (name.length > 300) {
-      return result(400, { error: "Username 300 belgigacha matn bo‘lsin." });
+      return result(400, { error: "Username must be a string of up to 300 characters." });
     }
     const vulnerable = body.mode === "vulnerable";
     // Intentional: this branch mirrors the original SQLi teaching lab exactly. It only ever
@@ -256,7 +256,7 @@ async function dispatch(
       return result(400, {
         query: sql,
         error: error instanceof Error ? error.message : String(error),
-        note: "Bu query xatosi faqat o‘quv laboratoriyasida ko‘rsatiladi.",
+        note: "This query error is only ever shown inside this teaching lab.",
       });
     } finally {
       db.close();
@@ -270,7 +270,7 @@ async function dispatch(
       return result(200, {
         table: "users",
         rows: rows.map((r) => ({ ...(r as object) })),
-        note: "Faqat sun’iy o‘quv ma’lumotlari.",
+        note: "Synthetic teaching data only.",
       });
     } finally {
       db.close();
@@ -289,7 +289,7 @@ async function dispatch(
     };
     const op = typeof body.operation === "string" ? body.operation : "SELECT";
     if (!(op in statements)) {
-      return result(400, { error: "SELECT, INSERT, UPDATE yoki DELETE tanlang." });
+      return result(400, { error: "Choose SELECT, INSERT, UPDATE, or DELETE." });
     }
     const [sql, params] = statements[op];
     const db = openLabDb();
@@ -302,7 +302,7 @@ async function dispatch(
         parameters: params,
         before: before.map((r) => ({ ...(r as object) })),
         after: after.map((r) => ({ ...(r as object) })),
-        note: "Har so‘rov alohida vaqtinchalik SQLite nusxasida bajariladi.",
+        note: "Every request runs against its own fresh, ephemeral SQLite instance.",
       });
     } finally {
       db.close();
@@ -314,13 +314,13 @@ async function dispatch(
     if (method === "POST") {
       const content = body.content;
       if (typeof content !== "string" || content.length < 1 || content.length > 2000) {
-        return result(400, { error: "Comment 1–2000 belgi bo‘lsin." });
+        return result(400, { error: "Comment must be 1–2000 characters." });
       }
       const comment = { id: state.comments.length + 1, content };
       state.comments.push(comment);
       return result(201, {
         comment,
-        note: "Matn server xotirasida saqlandi. Browser uni qanday render qilishi muhim.",
+        note: "The text is stored in server memory. What matters is how the browser renders it.",
       });
     }
   }
@@ -329,28 +329,28 @@ async function dispatch(
     const age = body.age;
     if (typeof age !== "number" || !Number.isInteger(age) || age < 1 || age > 120) {
       return result(400, {
-        error: "Server: age 1–120 oralig‘idagi butun son bo‘lishi kerak.",
+        error: "Server: age must be an integer between 1 and 120.",
         received: age,
       });
     }
     return result(200, {
       accepted: true,
       age,
-      note: "Frontend cheklovlari bo‘lmasa ham server tekshiradi.",
+      note: "The server validates this even without any frontend constraints.",
     });
   }
 
   if (subpath === "/checkout" && method === "POST") {
     const quantity = body.quantity ?? 1;
     if (typeof quantity !== "number" || !Number.isInteger(quantity) || quantity < 1 || quantity > 10) {
-      return result(400, { error: "Miqdor 1–10 butun son bo‘lsin." });
+      return result(400, { error: "Quantity must be an integer between 1 and 10." });
     }
     return result(200, {
       quantity,
       client_price_ignored: body.price,
       server_unit_price: 50000,
       total: quantity * 50000,
-      note: "Narx server katalogidan olindi.",
+      note: "The price was pulled from the server's own catalog.",
     });
   }
 
@@ -361,14 +361,14 @@ async function dispatch(
     if (!user) {
       return result(
         401,
-        { error: "Postni o‘zgartirish uchun login kerak." },
-        { "WWW-Authenticate": 'Bearer realm="sabaq-lab"' },
+        { error: "You must log in to modify a post." },
+        { "WWW-Authenticate": 'Bearer realm="web-security-lab"' },
       );
     }
     if (method === "POST" && subpath === "/posts") {
       const title = typeof body.title === "string" ? body.title.trim() : null;
       if (!title || title.length < 1 || title.length > 120) {
-        return result(400, { error: "Title 1–120 belgi bo‘lsin." });
+        return result(400, { error: "Title must be 1–120 characters." });
       }
       const item = { id: state.nextId, title, owner_id: user.id };
       state.nextId += 1;
@@ -379,13 +379,13 @@ async function dispatch(
     const identRaw = postMatch?.[1] ?? "";
     const ident = Number.parseInt(identRaw, 10);
     if (!Number.isFinite(ident) || String(ident) !== identRaw) {
-      return result(405, { error: "Bu resursda metod mavjud emas." });
+      return result(405, { error: "This method isn't available on this resource." });
     }
     const item = state.posts.find((p) => p.id === ident);
-    if (!item) return result(404, { error: "Post topilmadi." });
+    if (!item) return result(404, { error: "Post not found." });
     if (method === "GET") return result(200, item);
     if (user.role !== "admin" && item.owner_id !== user.id) {
-      return result(403, { error: "Faqat o‘z postingizni o‘zgartira olasiz." });
+      return result(403, { error: "You can only modify your own posts." });
     }
     if (method === "DELETE") {
       state.posts.splice(state.posts.indexOf(item), 1);
@@ -394,14 +394,14 @@ async function dispatch(
     if (method === "PUT" || method === "PATCH") {
       const title = typeof body.title === "string" ? body.title.trim() : null;
       if (!title || title.length < 1 || title.length > 120) {
-        return result(400, { error: "Title 1–120 belgi bo‘lsin." });
+        return result(400, { error: "Title must be 1–120 characters." });
       }
       item.title = title;
       return result(200, item);
     }
   }
 
-  return result(404, { error: "Endpoint yoki metod topilmadi.", path: subpath, method });
+  return result(404, { error: "Endpoint or method not found.", path: subpath, method });
 }
 
 async function handle(request: NextRequest, path: string[] | undefined): Promise<NextResponse> {
@@ -411,10 +411,10 @@ async function handle(request: NextRequest, path: string[] | undefined): Promise
   const expectedOrigin = request.nextUrl.origin;
   const origin = request.headers.get("origin");
   if (origin && origin !== expectedOrigin) {
-    return NextResponse.json({ error: "Boshqa origin so‘rovi rad etildi." }, { status: 403 });
+    return NextResponse.json({ error: "Request from a different origin was rejected." }, { status: 403 });
   }
   if (request.headers.get("sec-fetch-site") === "cross-site") {
-    return NextResponse.json({ error: "Cross-site so‘rov rad etildi." }, { status: 403 });
+    return NextResponse.json({ error: "Cross-site request was rejected." }, { status: 403 });
   }
 
   const { id: labId, state, isNew } = getOrCreateLabState(request.cookies.get("lab")?.value);

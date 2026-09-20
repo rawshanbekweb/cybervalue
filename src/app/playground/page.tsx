@@ -6,27 +6,27 @@ import { metadata as buildMetadata } from "@/lib/seo";
 export const generateMetadata = () =>
   buildMetadata(
     "Playground",
-    "Interaktiv o‘quv laboratoriyalari: 36-bo‘limli Web Application Security lab va 12-bo‘limli HTML amaliyoti — to‘g‘ridan-to‘g‘ri brauzerda ishlaydi.",
+    "Interactive learning labs: a 36-lesson Web Application Security lab and a 12-lesson HTML practice tool — both running directly in the browser.",
     "/playground",
   );
 
 const TOOLS = [
   {
     href: "/playground/web-security-lab",
-    eyebrow: "36 bo‘lim · o‘zbek tilida",
+    eyebrow: "36 lessons",
     title: "Web Security Lab",
     description:
-      "Browserdan databasegacha bo‘lgan yo‘lni o‘rganing: haqiqiy HTTP so‘rovlar, authentication, JWT, va SQLi/XSS/IDOR’ning aynan qanday ishlashini xavfsiz sandboxda ko‘ring.",
-    link: "Laboratoriyani ochish",
+      "Learn the path from browser to database: real HTTP requests, authentication, JWTs, and a hands-on look at exactly how SQLi, XSS, and IDOR work, inside a safe sandbox.",
+    link: "Open the lab",
     icon: ShieldCheck,
   },
   {
     href: "/playground/html-basics",
-    eyebrow: "12 qisqa amaliyot",
+    eyebrow: "12 short exercises",
     title: "HTML Basics",
     description:
-      "Kod muharriri va jonli ko‘rinish yonma-yon: har bir dars uchun aniq vazifa, avtomatik tekshiruv va namunaviy yechim bilan HTML asoslarini mustahkamlang.",
-    link: "Darslarni boshlash",
+      "A code editor and live preview side by side: reinforce HTML fundamentals with a clear task, automatic checks, and a sample solution for every lesson.",
+    link: "Start the lessons",
     icon: Code2,
   },
 ];
@@ -37,9 +37,9 @@ export default function PlaygroundPage() {
       <section className="section">
         <SectionHeading number="◆" title="Playground" />
         <p style={{ color: "var(--muted)", maxWidth: "62ch", marginTop: -8, marginBottom: 28 }}>
-          Ikkita o‘z-o‘zidan ishlaydigan interaktiv o‘quv vositasi — to‘liq shu portfolio ichida, real
-          backend bilan. Ular xavfsizlik ta’limi uchun qurilgan kichik laboratoriyalar: har bir zaiflik
-          faqat ataylab tayyorlangan, ajratilgan sandbox ma’lumotlar ustida namoyish etiladi.
+          Two self-contained interactive learning tools — built entirely into this portfolio, with a real
+          backend behind them. Both are small labs built for security education: every vulnerability is
+          demonstrated only against deliberately prepared, isolated sandbox data.
         </p>
         <div className="playground-grid">
           {TOOLS.map((tool) => {
