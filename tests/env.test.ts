@@ -5,7 +5,7 @@ import { spawnSync } from "node:child_process";
 function loadEnvironment(
   siteUrl: string,
   indexable = "false",
-  overrides: NodeJS.ProcessEnv = {},
+  overrides: Partial<NodeJS.ProcessEnv> = {},
 ) {
   return spawnSync(
     process.execPath,
