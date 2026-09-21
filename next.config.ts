@@ -20,6 +20,10 @@ const config: NextConfig = {
   poweredByHeader: false,
   trailingSlash: false,
   serverExternalPackages: ["@prisma/client", "@prisma/adapter-pg", "pg"],
+  // Database-backed file paths cannot be discovered by static file tracing.
+  outputFileTracingIncludes: {
+    "/downloads/*": ["./content/private/downloads/**/*"],
+  },
   // Next.js only serves blocking (correct-status-code) HTML to a known-bot
   // allowlist by default; every other client gets a streamed 200 shell even
   // for notFound()/redirect(). Matching every user agent here makes 404s and

@@ -4,7 +4,7 @@ A personal cybersecurity and software development portfolio for Rawshanbek Gayip
 
 ## Run locally
 
-Requires Node.js 22.12+ (Node 24 recommended) and npm. On Windows PowerShell, use `npm.cmd` if execution policy blocks `npm.ps1`.
+Requires Node.js 24 and npm. On Windows PowerShell, use `npm.cmd` if execution policy blocks `npm.ps1`.
 
 ```sh
 npm install
@@ -108,6 +108,8 @@ There is no public write API or file upload. The one admin account logs in throu
 ## Deploy and remaining work
 
 Follow [deployment instructions](docs/deployment.md). Deploy as a Node.js Next.js application or on Vercel with PostgreSQL; this is not a static export.
+
+Vercel uchun bosqichma-bosqich o'zbekcha qo'llanma: [Vercel'ga joylash](docs/vercel-uz.md).
 
 Owner input still required: real domain, database credentials, verified social links, real projects/research/resources, and confirmation of personal copy. No hosting account or production database is created automatically.
 

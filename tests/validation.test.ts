@@ -89,12 +89,17 @@ test("slugs, resource paths and URLs reject traversal and executable schemes", (
   );
   assert.equal(imagePath.safeParse("/images/injection.svg").success, false);
   for (const url of [
+    "t.me/valuecyber",
+    "github.com/example",
+    "https://",
+    "",
     "javascript:alert(1)",
     "data:text/html,hi",
     "http://example.com",
     "https://user:secret@example.com",
   ])
     assert.equal(httpsUrl.safeParse(url).success, false);
+  assert.equal(httpsUrl.safeParse("https://t.me/valuecyber").success, true);
 });
 test("filters bound query length, paging, arrays, and invalid dates", () => {
   for (const input of [

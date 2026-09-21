@@ -4,7 +4,7 @@ No production domain or hosting credentials were supplied. Deployment is prepare
 
 ## Node hosting
 
-1. Provision Node 22.12+ and PostgreSQL. Create a dedicated database and application credential. Set TLS and least-privilege permissions. Do not expose the PostgreSQL port publicly without appropriate network controls.
+1. Provision Node 24 and PostgreSQL. Create a dedicated database and application credential. Set TLS and least-privilege permissions. Do not expose the PostgreSQL port publicly without appropriate network controls.
 2. Set environment variables using the host secret manager. Set the real `SITE_URL` HTTPS origin. Keep `SITE_INDEXABLE=false` on previews; set `true` only on the canonical production deployment. Add real social URLs.
 3. Install with `npm ci`, apply migrations with `npm run db:deploy`, then `npm run build`. The build needs database read access when `DATABASE_URL` is configured because it generates public pages.
 4. Run `npm start` under a managed process supervisor. Put the Node service behind HTTPS. Configure host-level timeouts, body limits and rate limiting; the source does not trust forwarded client-IP headers.
@@ -14,9 +14,13 @@ No production domain or hosting credentials were supplied. Deployment is prepare
 
 ## Vercel
 
-Import the repository as a Next.js project, configure the same environment variables, and provide a managed PostgreSQL connection string. Apply migrations through a controlled release step before deploying. Set indexing only on the production environment and the verified domain. Build command: `npm run build`. No static export.
+Import the repository as a Next.js project, configure the same environment variables, and provide a managed PostgreSQL connection string. The committed `vercel.json` runs `npm run vercel-build`: generate Prisma, apply committed migrations, then build Next.js. A reachable database is required before the first successful Vercel build. Node 24 is selected by `package.json`. No static export.
 
-The deployment filesystem is read-only at runtime. Bundle reviewed private resource files during a secure build, or implement private object storage before accepting runtime uploads. Files under `content/private` are intentionally ignored by Git. Database imports happen locally or in a trusted CI job, never through the public website. Avoid printing the connection string in CI logs.
+Set `DATABASE_URL` for Production. Preview deployments need their own separate database or database branch because the build applies migrations. Never attach the production database to Preview. Set indexing only on the production environment and the verified domain. See [the Uzbek setup guide](vercel-uz.md) for the first deployment and admin provisioning.
+
+The deployment filesystem is read-only at runtime. Bundle reviewed private resource files during a secure build, or implement private object storage before accepting runtime uploads. Files under `content/private` are intentionally ignored by Git. The download route includes `content/private/downloads/**/*` in its function trace, but the build must receive these files separately; importing from GitHub alone does not supply ignored files. Admin CMS edits persist in PostgreSQL. The command-line importer runs locally or in a trusted CI job. Avoid printing the connection string in CI logs.
+
+The interactive security lab currently keeps teaching sessions, token secrets and login attempt counters in process memory. On Vercel these can reset on cold starts or differ between instances; multi-request exercises are not guaranteed to retain state. Persistent shared lab state is a separate change. This does not affect the CMS, whose sessions and content use PostgreSQL.
 
 ## Launch verification
 

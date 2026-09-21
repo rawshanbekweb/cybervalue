@@ -11,3 +11,4 @@ src/generated/
 .local/
 content/private/
 .claude/
+.vercel/
