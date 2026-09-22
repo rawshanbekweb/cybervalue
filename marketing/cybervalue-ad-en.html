@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CyberValue — silent advertisement</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: #050907;
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+    canvas {
+      height: 100vh;
+      max-width: 100vw;
+      object-fit: contain;
+    }
+    button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #c1ff72;
+      border: 0;
+      border-radius: 30px;
+      padding: 14px 24px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+  <canvas id="film" width="1080" height="1920"></canvas>
+  <button id="replay">Replay ↻</button>
+  <script>
+    const canvas = document.querySelector("canvas"),
+      ctx = canvas.getContext("2d");
+    const W = 1080,
+      H = 1920,
+      G = "#c1ff72",
+      WHITE = "#f3f7f0",
+      MUTED = "#8a9e91";
+    const duration = 20;
+    const assets = {};
+    const clamp = (x) => Math.max(0, Math.min(1, x));
+    const ease = (x) => 1 - Math.pow(1 - clamp(x), 3);
+    function box(x, y, w, h, r = 24, fill = "#101a14", stroke = "#2b4231") {
+      ctx.beginPath();
+      ctx.roundRect(x, y, w, h, r);
+      ctx.fillStyle = fill;
+      ctx.fill();
+      if (stroke) {
+        ctx.strokeStyle = stroke;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+    }
+    function text(
+      s,
+      x,
+      y,
+      size = 36,
+      color = WHITE,
+      weight = 500,
+      align = "left",
+    ) {
+      ctx.font = `${weight} ${size}px Arial, sans-serif`;
+      ctx.fillStyle = color;
+      ctx.textAlign = align;
+      ctx.fillText(s, x, y);
+    }
+    function tag(s, x, y) {
+      box(x, y, ctx.measureText(s).width + 80, 60, 30, "#15251b", "#35533b");
+      text(s, x + 28, y + 39, 23, G, 600);
+    }
+    function line(x1, y1, x2, y2, color = G, width = 3) {
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = width;
+      ctx.stroke();
+    }
+    function backdrop(t) {
+      ctx.fillStyle = "#060c08";
+      ctx.fillRect(0, 0, W, H);
+      const glow = ctx.createRadialGradient(
+        780 + 100 * Math.sin(t / 3),
+        650,
+        20,
+        600,
+        850,
+        1000,
+      );
+      glow.addColorStop(0, "#173725");
+      glow.addColorStop(0.65, "#09170e");
+      glow.addColorStop(1, "#060c08");
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, 0, W, H);
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = "#aaff7710";
+      for (let x = 0; x < W; x += 90) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, H);
+        ctx.stroke();
+      }
+      for (let y = (t * 15) % 90; y < H; y += 90) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(W, y);
+        ctx.stroke();
+      }
+      for (let i = 0; i < 22; i++) {
+        const x = (i * 197 + 93) % W,
+          y = (i * 233 - t * (12 + (i % 5)) + H * 5) % H;
+        ctx.fillStyle = i % 3 === 0 ? "#c1ff7255" : "#c1ff7222";
+        ctx.fillRect(x, y, 3, 3);
+      }
+      text("cybervalue.", 76, 152, 38, WHITE, 700);
+      text("LEARN / BUILD / SECURE", 1004, 149, 18, G, 500, "right");
+      line(76, 180, 1004, 180, "#b9ff7230", 1);
+      text("CODING × WEB SECURITY", 76, 1752, 20, MUTED, 500);
+      for (let i = 0; i < 5; i++)
+        box(
+          76 + i * 188,
+          1790,
+          170,
+          4,
+          2,
+          t >= [0, 4, 9, 14, 17][i] ? G : "#293b2c",
+          null,
+        );
+    }
+    function screen(img, t, y = 695, crop = null) {
+      const z = 1 + 0.025 * Math.sin(t * 0.7);
+      ctx.save();
+      ctx.translate(540, y + 370);
+      ctx.rotate(-0.012 + 0.006 * Math.sin(t));
+      ctx.scale(z, z);
+      ctx.translate(-540, -(y + 370));
+      ctx.shadowColor = "#000a";
+      ctx.shadowBlur = 65;
+      ctx.shadowOffsetY = 30;
+      box(58, y, 964, 806, 24, "#111a14", "#587644");
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetY = 0;
+      for (let i = 0; i < 3; i++) {
+        ctx.beginPath();
+        ctx.arc(88 + i * 22, y + 28, 5, 0, 7);
+        ctx.fillStyle = ["#c1ff72", "#6b8760", "#344b39"][i];
+        ctx.fill();
+      }
+      text("CYBERVALUE / PLAYGROUND", 540, y + 34, 18, MUTED, 500, "center");
+      ctx.save();
+      ctx.beginPath();
+      ctx.roundRect(72, y + 55, 936, 736, 10);
+      ctx.clip();
+      if (crop) ctx.drawImage(img, ...crop, 72, y + 55, 936, 736);
+      else ctx.drawImage(img, 0, 0, 1280, 1000, 72, y + 55, 936, 736);
+      ctx.restore();
+      ctx.restore();
+    }
+    function enter(t, start, end, fn) {
+      let a = clamp((t - start) / 0.35) * clamp((end - t) / 0.3);
+      if (a <= 0) return;
+      ctx.save();
+      ctx.globalAlpha = a;
+      ctx.translate(0, 50 * (1 - ease((t - start) / 0.7)));
+      fn(t - start);
+      ctx.restore();
+    }
+    function render(t) {
+      backdrop(t);
+      enter(t, 0, 4.25, (u) => {
+        text("TURN KNOWLEDGE INTO ACTION", 76, 324, 24, G, 700);
+        text("Learn.", 76, 445, 112, WHITE, 800);
+        text("Build.", 76, 568, 112, WHITE, 800);
+        text("Secure.", 76, 691, 112, G, 800);
+        ctx.save();
+        ctx.beginPath();
+        ctx.roundRect(76, 786, 928, 690, 30);
+        ctx.clip();
+        const scale = 1.04 + u * 0.012;
+        ctx.translate(540, 1131);
+        ctx.scale(scale, scale);
+        ctx.drawImage(assets.hero, -580, -385, 1160, 770);
+        const shade = ctx.createLinearGradient(0, -385, 0, 385);
+        shade.addColorStop(0, "#0000");
+        shade.addColorStop(1, "#040c08dd");
+        ctx.fillStyle = shade;
+        ctx.fillRect(-600, -400, 1200, 800);
+        ctx.restore();
+        ctx.strokeStyle = "#c1ff7270";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.roundRect(76, 786, 928, 690, 30);
+        ctx.stroke();
+        text("CyberValue", 116, 1407, 69, WHITE, 700);
+        text("Hands-on learning. In your browser.", 76, 1570, 37, MUTED, 400);
+      });
+      enter(t, 4, 9.25, (u) => {
+        text("01 / HTML BASICS", 76, 326, 25, G, 700);
+        text("Write code.", 76, 452, 98, WHITE, 800);
+        text("See it live.", 76, 563, 92, G, 800);
+        screen(assets.html, u, 680);
+        const a = ease((u - 1.6) / 0.6);
+        ctx.save();
+        ctx.globalAlpha *= a;
+        box(133, 1450 + 30 * (1 - a), 814, 100, 22, G, null);
+        text(
+          "✓  Challenge complete",
+          540,
+          1514 + 30 * (1 - a),
+          38,
+          "#102010",
+          700,
+          "center",
+        );
+        ctx.restore();
+        text("12 exercises. Instant preview.", 76, 1630, 36, WHITE, 500);
+      });
+      enter(t, 9, 14.25, (u) => {
+        text("02 / WEB SECURITY LAB", 76, 326, 25, G, 700);
+        text("Know the system.", 76, 448, 87, WHITE, 800);
+        text("Learn security.", 76, 554, 91, G, 800);
+        text("Through practice.", 76, 655, 88, G, 800);
+        screen(assets.lab, u, 744, [270, 155, 1010, 795]);
+        text(
+          "36 lessons  /  HTTP · XSS · SQLi · IDOR",
+          76,
+          1640,
+          31,
+          WHITE,
+          500,
+        );
+      });
+      enter(t, 14, 17.25, (u) => {
+        text("EXPLORE → PRACTICE → UNDERSTAND", 76, 330, 24, G, 700);
+        text("Every step.", 76, 470, 82, WHITE, 800);
+        text("A new skill.", 76, 574, 88, G, 800);
+        for (const [i, n, label, sub] of [
+          [0, "12", "HTML exercises", "Code + live preview"],
+          [1, "36", "Security lessons", "Theory + practice"],
+        ]) {
+          const p = ease((u - i * 0.2) / 0.65);
+          ctx.save();
+          ctx.globalAlpha *= p;
+          ctx.translate(50 * (1 - p), 0);
+          box(76, 710 + i * 330, 928, 280, 28, "#102217", "#395b39");
+          text(n, 118, 886 + i * 330, 142, G, 800);
+          text(label, 360, 824 + i * 330, 44, WHITE, 700);
+          text(sub, 360, 890 + i * 330, 29, MUTED, 400);
+          ctx.restore();
+        }
+        text("All in your browser.", 76, 1540, 46, WHITE, 500);
+      });
+      enter(t, 17, 21, (u) => {
+        ctx.save();
+        ctx.translate(540, 686);
+        ctx.rotate(u * 0.09);
+        for (let i = 0; i < 3; i++) {
+          ctx.beginPath();
+          ctx.ellipse(0, 0, 225 + i * 42, 225 + i * 42, 0, 0.3 + i, 5.3 + i);
+          ctx.lineWidth = i === 0 ? 4 : 1;
+          ctx.strokeStyle = i === 0 ? G : "#c1ff7240";
+          ctx.stroke();
+        }
+        ctx.restore();
+        text("</>", 540, 728, 132, G, 700, "center");
+        text("CyberValue", 540, 1115, 121, WHITE, 800, "center");
+        text(
+          "Put your knowledge into practice.",
+          540,
+          1200,
+          42,
+          MUTED,
+          400,
+          "center",
+        );
+        box(137, 1330, 806, 122, 61, G, null);
+        text(
+          "Start your first challenge  →",
+          540,
+          1407,
+          38,
+          "#11200d",
+          700,
+          "center",
+        );
+        text(window.AD_DOMAIN || "PLAYGROUND", 540, 1537, 29, G, 600, "center");
+      });
+    }
+    let raf, start;
+    function play() {
+      cancelAnimationFrame(raf);
+      start = performance.now();
+      const tick = (now) => {
+        render(Math.min(19.99, (now - start) / 1000));
+        if (now - start < duration * 1000) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    }
+    window.ready = Promise.all(
+      Object.entries({
+        hero: "../public/concept/hacker-hero.jpg",
+        html: "assets/html-en.png",
+        lab: "assets/lab-en.png",
+      }).map(
+        ([key, src]) =>
+          new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => {
+              assets[key] = img;
+              resolve();
+            };
+            img.onerror = reject;
+            img.src = src;
+          }),
+      ),
+    ).then(() => {
+      render(0.8);
+      if (!location.search.includes("render")) play();
+    });
+    window.render = render;
+    window.pause = () => cancelAnimationFrame(raf);
+    document.querySelector("#replay").onclick = play;
+    window.record = async () => {
+      await window.ready;
+      cancelAnimationFrame(raf);
+      const stream = canvas.captureStream(30);
+      const recorder = new MediaRecorder(stream, {
+        mimeType: "video/mp4;codecs=avc1.42001E",
+        videoBitsPerSecond: 10000000,
+      });
+      const chunks = [];
+      recorder.ondataavailable = (e) => {
+        if (e.data.size) chunks.push(e.data);
+      };
+      const result = new Promise((resolve) => {
+        recorder.onstop = async () => {
+          const blob = new Blob(chunks, { type: "video/mp4" });
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result.split(",")[1]);
+          reader.readAsDataURL(blob);
+          stream.getTracks().forEach((t) => t.stop());
+        };
+      });
+      render(0);
+      recorder.start();
+      const began = performance.now();
+      await new Promise((resolve) => {
+        const tick = (now) => {
+          const t = (now - began) / 1000;
+          render(Math.min(t, 19.99));
+          if (t < duration) requestAnimationFrame(tick);
+          else resolve();
+        };
+        requestAnimationFrame(tick);
+      });
+      recorder.stop();
+      return result;
+    };
+  </script>
+</html>
