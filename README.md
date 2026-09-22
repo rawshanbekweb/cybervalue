@@ -81,6 +81,8 @@ You'll be prompted for a password (12–200 characters) on stdin. Alternatively,
 
 ## Verification and production build
 
+HTML Basics includes a timed, single-attempt assessment with teacher-issued codes, server-side grading and an admin results dashboard. See [the teacher guide](docs/html-assessment.md).
+
 ```sh
 npm run lint
 npm run typecheck

@@ -7,6 +7,44 @@ datasource db {
   provider = "postgresql"
 }
 
+model HtmlExam {
+  id         String          @id @default(cuid())
+  title      String
+  minutes    Int             @default(45)
+  version    Int             @default(1)
+  closed     Boolean         @default(false)
+  createdAt  DateTime        @default(now())
+  candidates HtmlCandidate[]
+}
+
+model HtmlCandidate {
+  id            String    @id @default(cuid())
+  examId        String
+  exam          HtmlExam  @relation(fields: [examId], references: [id], onDelete: Cascade)
+  studentId     String
+  name          String
+  codeHash      String    @unique
+  sessionHash   String?   @unique
+  variant       Int
+  startedAt     DateTime?
+  deadline      DateTime?
+  submittedAt   DateTime?
+  finishReason  String?
+  revision      Int       @default(0)
+  code          String    @default("") @db.Text
+  answers       Json      @default("{}")
+  explanations  Json      @default("[\"\",\"\"]")
+  signals       Json      @default("{\"hidden\":0,\"paste\":0,\"fullscreen\":0}")
+  autoScore     Int?
+  grading       Json?
+  reviewScore   Int?
+  reviewNote    String    @default("") @db.Text
+  createdAt     DateTime  @default(now())
+
+  @@unique([examId, studentId])
+  @@index([examId, submittedAt])
+}
+
 enum ContentKind {
   PROJECT
   LAB

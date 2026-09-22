@@ -6,6 +6,15 @@
   font-family: var(--font-sans);
   font-size: 14px;
 }
+.htb-assessment-link {
+  display: block;
+  padding: 12px;
+  margin: 12px 0 20px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  color: var(--accent);
+  line-height: 1.5;
+}
 .htb-root * {
   box-sizing: border-box;
 }

@@ -21,6 +21,7 @@ export default async function AdminCmsLayout({
             </Link>
           ))}
           <Link href="/admin/files">File library</Link>
+          <Link href="/admin/assessments">HTML baholash</Link>
           <Link href="/admin/account">Account settings</Link>
         </nav>
         <div className="admin-sidebar-footer">

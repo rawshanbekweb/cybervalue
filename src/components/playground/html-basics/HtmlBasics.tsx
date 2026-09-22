@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { HTML_LESSONS, type HtmlLesson } from "./lessons.data";
 import { useLocalStorageState } from "../useLocalStorageState";
 import "./html-basics.css";
@@ -15,9 +16,15 @@ function lessonById(id: number): HtmlLesson {
 
 export function HtmlBasics() {
   const [lessonId, setLessonId] = useState(1);
-  const [completed, setCompletedStored] = useLocalStorageState<Record<number, boolean>>(PROGRESS_KEY, {});
-  const [codeByLesson, setCodeByLessonStored] = useLocalStorageState<Record<number, string>>(CODE_KEY, {});
-  const [checkResults, setCheckResults] = useState<{ label: string; pass: boolean }[] | null>(null);
+  const [completed, setCompletedStored] = useLocalStorageState<
+    Record<number, boolean>
+  >(PROGRESS_KEY, {});
+  const [codeByLesson, setCodeByLessonStored] = useLocalStorageState<
+    Record<number, string>
+  >(CODE_KEY, {});
+  const [checkResults, setCheckResults] = useState<
+    { label: string; pass: boolean }[] | null
+  >(null);
   const [celebrate, setCelebrate] = useState(false);
 
   const lesson = lessonById(lessonId);
@@ -35,7 +42,10 @@ export function HtmlBasics() {
   };
 
   const runChecks = () => {
-    const results = lesson.checks.map((c) => ({ label: c.label, pass: !!c.test(code) }));
+    const results = lesson.checks.map((c) => ({
+      label: c.label,
+      pass: !!c.test(code),
+    }));
     setCheckResults(results);
     const allPass = results.every((r) => r.pass);
     setCelebrate(allPass);
@@ -51,6 +61,12 @@ export function HtmlBasics() {
       <aside className="htb-side">
         <h1>HTML Lessons</h1>
         <span className="htb-tag">12 SHORT EXERCISES</span>
+        <Link
+          className="htb-assessment-link"
+          href="/playground/html-basics/assessment"
+        >
+          HTML sinovi · bir martalik baholash →
+        </Link>
         <div className="htb-progress-label">
           <span>Progress</span>
           <strong>
@@ -63,7 +79,11 @@ export function HtmlBasics() {
         <ul className="htb-nav">
           {HTML_LESSONS.map((l) => (
             <li key={l.id}>
-              <button type="button" className={l.id === lessonId ? "active" : ""} onClick={() => goTo(l.id)}>
+              <button
+                type="button"
+                className={l.id === lessonId ? "active" : ""}
+                onClick={() => goTo(l.id)}
+              >
                 <span className="htb-n">{String(l.id).padStart(2, "0")}</span>
                 <span>{l.title}</span>
                 {completed[l.id] && <span className="htb-c">✓</span>}
@@ -85,7 +105,11 @@ export function HtmlBasics() {
         <div className="htb-grid">
           <div className="htb-panel">
             <h3>Code (edit it)</h3>
-            <textarea spellCheck={false} value={code} onChange={(e) => setCode(e.target.value)} />
+            <textarea
+              spellCheck={false}
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+            />
           </div>
           <div className="htb-panel">
             <h3>Result (live preview)</h3>
@@ -97,7 +121,11 @@ export function HtmlBasics() {
           <button className="htb-primary" type="button" onClick={runChecks}>
             Check
           </button>
-          <button className="htb-ghost" type="button" onClick={() => setCode(lesson.solution)}>
+          <button
+            className="htb-ghost"
+            type="button"
+            onClick={() => setCode(lesson.solution)}
+          >
             Sample solution
           </button>
           <button
@@ -114,25 +142,45 @@ export function HtmlBasics() {
         </div>
 
         <ul className="htb-checklist">
-          {(checkResults ?? lesson.checks.map((c) => ({ label: c.label, pass: undefined }))).map((r, i) => (
-            <li key={i} className={r.pass === undefined ? "" : r.pass ? "pass" : "fail"}>
-              <span className="htb-mark">{r.pass === undefined ? "•" : r.pass ? "✓" : "✕"}</span>
+          {(
+            checkResults ??
+            lesson.checks.map((c) => ({ label: c.label, pass: undefined }))
+          ).map((r, i) => (
+            <li
+              key={i}
+              className={r.pass === undefined ? "" : r.pass ? "pass" : "fail"}
+            >
+              <span className="htb-mark">
+                {r.pass === undefined ? "•" : r.pass ? "✓" : "✕"}
+              </span>
               {r.label}
             </li>
           ))}
         </ul>
         {celebrate && (
-          <div className="htb-celebrate show">✓ All conditions passed! You can move on to the next lesson.</div>
+          <div className="htb-celebrate show">
+            ✓ All conditions passed! You can move on to the next lesson.
+          </div>
         )}
 
         <div className="htb-footer-nav">
-          <button className="htb-plain" type="button" disabled={lesson.id <= 1} onClick={() => goTo(lesson.id - 1)}>
+          <button
+            className="htb-plain"
+            type="button"
+            disabled={lesson.id <= 1}
+            onClick={() => goTo(lesson.id - 1)}
+          >
             ← Previous lesson
           </button>
           <span>
             {lesson.id} / {TOTAL}
           </span>
-          <button className="htb-plain" type="button" disabled={lesson.id >= TOTAL} onClick={() => goTo(lesson.id + 1)}>
+          <button
+            className="htb-plain"
+            type="button"
+            disabled={lesson.id >= TOTAL}
+            onClick={() => goTo(lesson.id + 1)}
+          >
             Next lesson →
           </button>
         </div>
