@@ -1,7 +1,6 @@
 import type { ContentKind } from "@/generated/prisma/client";
 import { collections, type Collection } from "./site";
 import { subtypeFields, type FieldConfig } from "./admin-fields";
-import { imagePath } from "./validation";
 
 function str(formData: FormData, name: string) {
   const value = formData.get(name);
@@ -42,25 +41,15 @@ function subtypeValue(formData: FormData, field: FieldConfig): unknown {
   }
 }
 
-// Admin forms have no upload UI (see docs/security.md — audited upload
-// boundary is deferred). Existing images travel through as an opaque hidden
-// field so editing an entry never silently deletes its screenshots; new
-// entries simply have none until `content:import` attaches them.
+// Let the content schema reject malformed image data instead of silently
+// dropping existing images when a form is invalid.
 function existingImages(formData: FormData) {
   const raw = str(formData, "imagesJson");
   if (!raw) return [];
   try {
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed)
-      ? parsed.filter(
-          (item) =>
-            item &&
-            typeof item === "object" &&
-            imagePath.safeParse(item.path).success,
-        )
-      : [];
+    return JSON.parse(raw);
   } catch {
-    return [];
+    return null;
   }
 }
 

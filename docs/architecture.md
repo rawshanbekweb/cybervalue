@@ -9,7 +9,7 @@ The initial repository was empty: no packages, environment files, UI, database, 
 5. Security: constrained public surface, safe Markdown, validated import pipeline, publication predicates, security headers.
 6. Content: local operator-only JSON import, atomic writes, tags/categories, relationships and subtype details. No public CMS or write API.
 7. Verification: lint, types, unit tests, build, browser checks, accessibility and SEO checks.
-8. Admin: a private `/admin` (scrypt password hashing, database-backed sessions, Server Actions for every mutation) letting the owner create/edit/publish/archive/delete `Content` records without a rebuild. Reuses the same `contentSchema` and transactional upsert the CLI importer uses (`src/lib/content-write.ts`) instead of a second write path. New image/resource file uploads are still out of scope — see `docs/security.md`.
+8. Admin: private `/admin` with scrypt passwords, database sessions, Server Actions for content/account/file deletion and a bounded authenticated upload route. The owner can edit, publish, archive and delete content; upload files/images; manage the file library; and change passwords or revoke sessions. Shared validation and transactional writes live in `src/lib/content-write.ts`. Upload bytes and metadata live in StoredFile, with a quota and reference-aware deletion. Public image/download routes enforce publication.
 
 Static home/about/detail pages use incremental regeneration. Archives render server-side to support validated GET filters. Content is empty when DATABASE_URL is absent; configured database failures surface a generic error rather than masquerading as an empty archive. Search uses PostgreSQL through Prisma, without an external service. Database access stays on the server.
 

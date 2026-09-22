@@ -157,7 +157,7 @@ export const subtypeFields: Record<ContentKind, FieldConfig[]> = {
       label: "File path",
       type: "text",
       required: true,
-      help: "Must already exist under content/private/downloads, e.g. /downloads/reference-v1.pdf",
+      help: "PDF, TXT, MD, CSV or ZIP, up to 20 MiB. The file must be available before publishing.",
     },
     { name: "topic", label: "Topic", type: "text", required: true },
     { name: "version", label: "Version", type: "text", required: true },

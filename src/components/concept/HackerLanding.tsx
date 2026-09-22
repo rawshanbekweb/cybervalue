@@ -37,11 +37,11 @@ export function HackerLanding() {
               live intrusion monitor — sandboxed
             </span>
 
-            <h1 className="hk-hero-title">
+            <h2 className="hk-hero-title">
               <span className="hk-glitch" data-text="ACCESS THE MATRIX">
                 ACCESS THE MATRIX
               </span>
-            </h1>
+            </h2>
 
             <p className="hk-typed">
               {output}

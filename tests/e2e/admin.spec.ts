@@ -66,11 +66,29 @@ test.describe("authenticated CRUD flow", () => {
     await expect(draftRow).toContainText("DRAFT");
     expect((await page.request.get(`/work/${slug}`)).status()).toBe(404);
 
+    await page.getByLabel("Search work").fill(slug);
+    await page.getByLabel("Status", { exact: true }).selectOption("DRAFT");
+    await page.getByRole("button", { name: "Apply", exact: true }).click();
+    await expect(draftRow).toBeVisible();
+    await page.getByLabel("Status", { exact: true }).selectOption("ARCHIVED");
+    await page.getByRole("button", { name: "Apply", exact: true }).click();
+    await expect(draftRow).toHaveCount(0);
+    await expect(
+      page.getByText(/No entries match these filters/),
+    ).toBeVisible();
+    await page.getByRole("link", { name: "Reset", exact: true }).click();
+
     page.on("dialog", (dialog) => dialog.accept());
 
     await draftRow.getByRole("button", { name: "Publish" }).click();
     await expect(draftRow).toContainText("PUBLISHED");
     expect((await page.request.get(`/work/${slug}`)).status()).toBe(200);
+
+    await draftRow.getByRole("button", { name: "Move to draft" }).click();
+    await expect(draftRow).toContainText("DRAFT");
+    expect((await page.request.get(`/work/${slug}`)).status()).toBe(404);
+    await draftRow.getByRole("button", { name: "Publish" }).click();
+    await expect(draftRow).toContainText("PUBLISHED");
 
     await draftRow.getByRole("button", { name: "Archive" }).click();
     await expect(draftRow).toContainText("ARCHIVED");

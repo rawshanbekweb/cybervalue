@@ -1,12 +1,17 @@
 "use client";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
+import Link from "next/link";
 import type { ContentKind } from "@/generated/prisma/client";
 import { subtypeFields, type FieldConfig } from "@/lib/admin-fields";
 import type { Collection } from "@/lib/site";
 import { saveContentAction } from "@/app/admin/(cms)/[collection]/actions";
+import type { ResourceFile } from "@/lib/resource-files";
+import { FileUpload, type UploadedFile } from "./file-upload";
+import { ImageEditor, type EditorImage } from "./image-editor";
 
 type SubtypeData = Record<string, unknown> | null | undefined;
 type EntryLike = {
+  id: string;
   slug: string;
   title: string;
   summary: string;
@@ -118,23 +123,35 @@ export function ContentForm({
   collection,
   kind,
   entry,
+  resourceFiles: initialResourceFiles = [],
+  availableImages = [],
 }: {
   collection: Collection;
   kind: ContentKind;
   entry?: EntryLike | null;
+  resourceFiles?: ResourceFile[];
+  availableImages?: UploadedFile[];
 }) {
-  const action = saveContentAction.bind(null, collection);
+  const action = saveContentAction.bind(null, collection, entry?.id ?? null);
   const [state, formAction, pending] = useActionState(action, undefined);
   const fields = subtypeFields[kind];
   const subtypeData = (entry?.[kind.toLowerCase()] as SubtypeData) ?? null;
+  const [resourceFiles, setResourceFiles] = useState(initialResourceFiles);
+  const [filePath, setFilePath] = useState(String(subtypeData?.filePath ?? ""));
+  const [images, setImages] = useState<EditorImage[]>(
+    (entry?.images ?? []).map(({ path, alt, width, height }) => ({
+      path,
+      alt,
+      width,
+      height,
+    })),
+  );
+  const [uploadingFile, setUploadingFile] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const busy = pending || uploadingFile || uploadingImage;
 
   return (
     <form action={formAction} className="admin-form">
-      <input
-        type="hidden"
-        name="imagesJson"
-        value={JSON.stringify(entry?.images ?? [])}
-      />
       <div className="admin-field">
         <label htmlFor="slug">Slug</label>
         <input
@@ -287,27 +304,91 @@ export function ContentForm({
           <label htmlFor={`field-${field.name}`}>
             {field.type === "checkbox" ? null : field.label}
           </label>
-          <SubtypeField field={field} value={subtypeData?.[field.name]} />
+          {kind === "RESOURCE" && field.name === "filePath" ? (
+            <>
+              <select
+                id="field-filePath"
+                name="filePath"
+                required
+                className="admin-input"
+                value={filePath}
+                onChange={(event) => setFilePath(event.target.value)}
+              >
+                <option value="">Choose a resource file</option>
+                {!!subtypeData?.filePath &&
+                  !resourceFiles.some(
+                    (file) => file.path === subtypeData.filePath,
+                  ) && (
+                    <option value={String(subtypeData.filePath)}>
+                      {String(subtypeData.filePath)} — missing
+                    </option>
+                  )}
+                {resourceFiles.map((file) => (
+                  <option
+                    key={file.path}
+                    value={file.path}
+                    disabled={
+                      file.status !== "Available" &&
+                      file.path !== subtypeData?.filePath
+                    }
+                  >
+                    {file.name ?? file.path.slice("/downloads/".length)} —{" "}
+                    {file.status === "Available"
+                      ? `${((file.size ?? 0) / 1024).toFixed(1)} KB`
+                      : file.status}
+                  </option>
+                ))}
+              </select>
+              {resourceFiles.length === 0 && (
+                <span className="admin-help">
+                  No files available yet. Upload a file below.
+                </span>
+              )}
+              <FileUpload
+                kind="RESOURCE"
+                onBusy={setUploadingFile}
+                disabled={busy}
+                onUploaded={(file) => {
+                  setResourceFiles((current) => [
+                    {
+                      path: file.path,
+                      name: file.name,
+                      size: file.size,
+                      status: "Available",
+                    },
+                    ...current,
+                  ]);
+                  setFilePath(file.path);
+                }}
+              />
+            </>
+          ) : (
+            <SubtypeField field={field} value={subtypeData?.[field.name]} />
+          )}
           {field.type === "checkbox" && <span>{field.label}</span>}
           {field.help && <span className="admin-help">{field.help}</span>}
         </div>
       ))}
 
-      {(entry?.images?.length ?? 0) > 0 && (
-        <p className="admin-help">
-          {entry?.images.length} existing image(s) are preserved but not
-          editable here — use `npm run content:import` to change images.
+      <ImageEditor
+        images={images}
+        onChange={setImages}
+        busy={busy}
+        onBusy={setUploadingImage}
+        available={availableImages}
+      />
+
+      {state?.error && (
+        <p role="alert" className="admin-error">
+          {state.error}
         </p>
       )}
-
-      {state?.error && <p className="admin-error">{state.error}</p>}
-      <button
-        type="submit"
-        disabled={pending}
-        className="button button-primary"
-      >
+      <button type="submit" disabled={busy} className="button button-primary">
         {pending ? "Saving…" : "Save"}
       </button>
+      <Link href={`/admin/${collection}`} className="button button-secondary">
+        Back to list
+      </Link>
     </form>
   );
 }

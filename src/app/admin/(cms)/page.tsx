@@ -2,8 +2,10 @@ import Link from "next/link";
 import { getDb } from "@/lib/db";
 import { collections, collectionFor } from "@/lib/site";
 import { formatDate } from "@/components/ui";
+import { requireAdmin } from "@/lib/auth";
 
 export default async function AdminDashboardPage() {
+  await requireAdmin("/admin");
   const db = getDb();
   const [counts, recent] = db
     ? await Promise.all([
@@ -40,11 +42,20 @@ export default async function AdminDashboardPage() {
             counts.find(
               (c) => c.kind === value.kind && c.status === "PUBLISHED",
             )?._count ?? 0;
+          const drafts =
+            counts.find((c) => c.kind === value.kind && c.status === "DRAFT")
+              ?._count ?? 0;
+          const archived =
+            counts.find((c) => c.kind === value.kind && c.status === "ARCHIVED")
+              ?._count ?? 0;
           return (
             <Link key={key} href={`/admin/${key}`} className="admin-card">
               <span className="eyebrow">{value.title}</span>
               <strong>{total}</strong>
               <span className="muted">{published} published</span>
+              <span className="muted">
+                {drafts} drafts · {archived} archived
+              </span>
             </Link>
           );
         })}

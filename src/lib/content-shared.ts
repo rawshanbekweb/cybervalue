@@ -3,7 +3,7 @@ import type { Prisma } from "@/generated/prisma/client";
 export const include = {
   tags: true,
   category: true,
-  author: true,
+  author: { select: { id: true, name: true } },
   project: true,
   lab: true,
   research: true,

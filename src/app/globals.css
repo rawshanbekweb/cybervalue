@@ -1917,6 +1917,67 @@ svg {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.admin-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #151815;
+}
+.admin-search-field {
+  flex: 1 1 220px;
+}
+.admin-table-wrap {
+  overflow-x: auto;
+}
+.admin-cell-detail {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 5px;
+  overflow-wrap: anywhere;
+}
+.admin-file-path {
+  overflow-wrap: anywhere;
+}
+.admin-file-warning {
+  color: #ff9b8a;
+}
+.admin-status {
+  display: inline-flex;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  background: #252b25;
+  color: var(--muted);
+}
+.admin-status-published {
+  background: #203720;
+  color: #b3e59a;
+}
+.admin-status-draft {
+  background: #39301b;
+  color: #f3d08c;
+}
+.admin-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+}
+.admin-row-actions:disabled {
+  opacity: 0.6;
 }
 .admin-row-actions .button {
   padding: 6px 12px;
@@ -1993,6 +2054,58 @@ svg {
   border: none;
   border-top: 1px solid var(--border);
   margin: 4px 0;
+}
+.admin-upload {
+  display: flex;
+  flex: 1 1 260px;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+}
+.admin-upload input {
+  max-width: 100%;
+}
+.admin-image-editor {
+  display: grid;
+  gap: 16px;
+}
+.admin-image-item {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+.admin-image-item > .admin-field {
+  flex: 1;
+  min-width: 200px;
+}
+.admin-image-preview {
+  object-fit: contain;
+  background: #101310;
+  border-radius: 6px;
+  max-width: 100%;
+}
+.admin-file-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+.admin-file-card {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.admin-file-card .admin-image-preview {
+  align-self: center;
 }
 @media (max-width: 860px) {
   .admin-shell {

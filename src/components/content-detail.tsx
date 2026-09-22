@@ -74,6 +74,7 @@ export function ContentDetail({ entry }: { entry: Entry }) {
               className="article-image"
               key={img.id}
               src={img.path}
+              unoptimized={img.path.startsWith("/media/")}
               alt={img.alt}
               width={img.width}
               height={img.height}

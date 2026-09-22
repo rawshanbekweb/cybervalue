@@ -77,7 +77,7 @@ Create the one admin account (there is no self-registration):
 npm run admin:create-user -- --email you@example.com
 ```
 
-You'll be prompted for a password (12+ characters) on stdin, never as a command-line argument. Then log in at `/admin`. Sessions last 12 hours and are revoked immediately on logout; `/admin` is `noindex` and disallowed in `robots.txt` regardless of `SITE_INDEXABLE`. The admin UI covers every `Content` field except new image/resource file uploads — see [the publishing guide](docs/content.md) for that split and [security tradeoffs](docs/security.md) for how login, sessions, and CSRF are implemented.
+You'll be prompted for a password (12–200 characters) on stdin. Alternatively, add `--generate-password` to generate and display a random password once; with no email argument, the existing owner email is preserved. Provisioning revokes old sessions. Log in at `/admin/login`. Use Account settings to change the password or sign out other sessions. Sessions last 12 hours; `/admin` is `noindex` and disallowed in `robots.txt`. The CMS supports content editing, resource/image uploads, an uploaded file library and image ordering/descriptions. See [the publishing guide](docs/content.md) and [security tradeoffs](docs/security.md).
 
 ## Verification and production build
 
@@ -103,7 +103,7 @@ Every public page has route-specific Metadata API output, canonical URL, Open Gr
 
 Security headers include CSP, HSTS in production, anti-framing, MIME sniffing prevention, referrer and permissions policies. Markdown has no raw HTML/MDX execution, is sanitized, blocks unsafe URL schemes, and ignores inline images. Reviewed local screenshots use `next/image` with dimensions and alt text. JSON-LD escapes HTML delimiters. Zod validates imports, query filters, slugs, file paths, social links and environment configuration. Prisma uses typed parameterized queries. Download routes verify publication, constrain paths and size, disallow symlinks, force attachments, and apply a bounded process-wide rate limit.
 
-There is no public write API or file upload. The one admin account logs in through a scrypt-hashed password and a database-backed, httpOnly session cookie; every admin mutation is a Server Action, so Next.js's built-in Origin-check CSRF protection applies and login/writes are separately rate-limited. See [security tradeoffs](docs/security.md).
+There is no public write API or public upload. Admin access uses a scrypt-hashed password and a database-backed, httpOnly session cookie. Server Actions use Next.js Origin checks; the private upload route independently checks authentication, Origin, format and streamed body size. See [security tradeoffs](docs/security.md).
 
 ## Deploy and remaining work
 
@@ -113,6 +113,6 @@ Vercel uchun bosqichma-bosqich o'zbekcha qo'llanma: [Vercel'ga joylash](docs/ver
 
 Owner input still required: real domain, database credentials, verified social links, real projects/research/resources, and confirmation of personal copy. No hosting account or production database is created automatically.
 
-Known limits: the admin CMS has no upload UI for new images/resource files (still via `content:import`) and no multi-user/role model (one owner account); no public uploads, analytics, RSS or external search; substring search and facet enumeration suit a modest archive; activity shows the newest 50 entries with a link to search; download files use the deployment filesystem (use persistent storage/object storage when scaling). The CSP permits inline Next.js bootstrap scripts to retain static rendering. Rate limiting is per process, not distributed. Core Web Vitals require deployed measurements and real visitor data; automated accessibility is not a complete manual WCAG audit.
+Known limits: the CMS uses one owner account without a multi-user/role model. Browser uploads are capped at 4 MiB each and 250 MiB total, stored in PostgreSQL; use object storage when scaling. Legacy disk downloads support up to 20 MiB. No automatic malware scanning, public uploads, analytics, RSS or external search. Substring search suits a modest archive; activity shows the newest 50 entries. The CSP permits inline Next.js bootstrap scripts. Rate limiting is per process, not distributed. Core Web Vitals require deployed measurements; automated accessibility is not a complete manual WCAG audit.
 
 Implementation references: [Next.js CSP guidance](https://nextjs.org/docs/app/guides/content-security-policy), [Next.js documentation](https://nextjs.org/docs), [Prisma documentation](https://www.prisma.io/docs).

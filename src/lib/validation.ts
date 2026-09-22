@@ -25,7 +25,9 @@ export const resourcePath = z
   .refine((v) => !v.includes(".."));
 export const imagePath = z
   .string()
-  .regex(/^\/images\/[a-z0-9][a-z0-9_-]*\.(?:webp|png|jpg|jpeg|avif)$/);
+  .regex(
+    /^\/(?:images|media)\/[a-z0-9][a-z0-9_-]*\.(?:webp|png|jpg|jpeg|avif)$/,
+  );
 
 const base = z.object({
   slug: slugSchema,

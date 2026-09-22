@@ -6,6 +6,7 @@ import { getEntry } from "@/lib/content";
 import { slugSchema } from "@/lib/validation";
 import { downloadFilePath } from "@/lib/files";
 import { allowRequest } from "@/lib/rate-limit";
+import { getDb } from "@/lib/db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -42,6 +43,20 @@ export async function GET(
   try {
     const entry = await getEntry("RESOURCE", slug);
     if (!entry?.resource) return failure(404);
+    const stored = await getDb()?.storedFile.findUnique({
+      where: { path: entry.resource.filePath, kind: "RESOURCE" },
+    });
+    if (stored)
+      return new NextResponse(new Uint8Array(stored.data), {
+        headers: {
+          "Content-Type": stored.mimeType,
+          "Content-Disposition": `attachment; filename="${basename(stored.path)}"; filename*=UTF-8''${encodeURIComponent(stored.name).replace(/'/g, "%27")}`,
+          "Content-Length": String(stored.size),
+          "X-Content-Type-Options": "nosniff",
+          "X-Robots-Tag": "noindex",
+          "Cache-Control": "private, no-store",
+        },
+      });
     const path = downloadFilePath(entry.resource.filePath);
     if ((await realpath(path)) !== path) return failure(404);
     const handle = await open(path, "r");

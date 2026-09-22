@@ -20,6 +20,8 @@ export default async function AdminCmsLayout({
               {value.title}
             </Link>
           ))}
+          <Link href="/admin/files">File library</Link>
+          <Link href="/admin/account">Account settings</Link>
         </nav>
         <div className="admin-sidebar-footer">
           <span className="muted">{session.user.email}</span>

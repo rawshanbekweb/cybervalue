@@ -175,3 +175,18 @@ model SocialLink {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model StoredFile {
+  id        String   @id @default(cuid())
+  path      String   @unique
+  name      String
+  kind      String
+  mimeType  String
+  size      Int
+  width     Int?
+  height    Int?
+  data      Bytes
+  createdAt DateTime @default(now())
+
+  @@index([kind, createdAt])
+}

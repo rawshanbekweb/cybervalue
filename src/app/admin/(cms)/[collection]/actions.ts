@@ -9,9 +9,11 @@ import {
   writeContent,
   setContentStatus,
   deleteContent,
+  ContentWriteError,
 } from "@/lib/content-write";
 import { allowRequest } from "@/lib/rate-limit";
-import { isCollection, type Collection } from "@/lib/site";
+import { collections, isCollection, type Collection } from "@/lib/site";
+import { publicationStatusSchema } from "@/lib/admin-query";
 
 export type FormState = { error: string } | undefined;
 
@@ -20,18 +22,32 @@ function revalidateCollection(collection: Collection, slug?: string) {
   revalidatePath(`/${collection}`);
   if (slug) revalidatePath(`/${collection}/${slug}`);
   revalidatePath("/sitemap.xml");
+  revalidatePath("/search");
+  revalidatePath("/activity");
   revalidatePath("/admin");
   revalidatePath(`/admin/${collection}`);
 }
 
+function writeError(error: unknown) {
+  if (error instanceof ContentWriteError) return error.message;
+  if (error && typeof error === "object" && "code" in error) {
+    if (error.code === "P2002")
+      return "This slug is already in use. Choose another slug.";
+    if (error.code === "P2025")
+      return "This entry changed or was deleted. Reload the page and try again.";
+  }
+  return "The change could not be saved. Please try again.";
+}
+
 export async function saveContentAction(
   collection: string,
+  entryId: string | null,
   _state: FormState,
   formData: FormData,
 ): Promise<FormState> {
   const session = await requireAdmin(`/admin/${collection}`);
   if (!isCollection(collection)) return { error: "Unknown collection." };
-  if (!allowRequest("admin-write", Date.now(), 60, 60_000))
+  if (!allowRequest(`admin-write:${session.user.id}`, Date.now(), 60, 60_000))
     return { error: "Too many changes. Slow down and try again shortly." };
 
   const db = getDb();
@@ -47,34 +63,46 @@ export async function saveContentAction(
     };
 
   try {
-    const entry = await writeContent(db, parsed.data, session.user.id);
+    const entry = await writeContent(
+      db,
+      parsed.data,
+      session.user.id,
+      entryId ? { mode: "edit", id: entryId } : { mode: "create" },
+    );
     revalidateCollection(collection, entry.slug);
   } catch (error) {
     return {
-      error: error instanceof Error ? error.message : "Save failed.",
+      error: writeError(error),
     };
   }
   redirect(`/admin/${collection}`);
 }
 
-export async function setStatusAction(
+export async function changeContentAction(
   collection: string,
   id: string,
-  status: "DRAFT" | "PUBLISHED" | "ARCHIVED",
-) {
-  await requireAdmin(`/admin/${collection}`);
-  if (!isCollection(collection)) return;
+  _state: FormState,
+  formData: FormData,
+): Promise<FormState> {
+  const session = await requireAdmin(`/admin/${collection}`);
+  if (!isCollection(collection)) return { error: "Unknown collection." };
+  if (!allowRequest(`admin-write:${session.user.id}`, Date.now(), 60, 60_000))
+    return { error: "Too many changes. Try again shortly." };
   const db = getDb();
-  if (!db) return;
-  const entry = await setContentStatus(db, id, status);
-  revalidateCollection(collection, entry.slug);
-}
-
-export async function deleteContentAction(collection: string, id: string) {
-  await requireAdmin(`/admin/${collection}`);
-  if (!isCollection(collection)) return;
-  const db = getDb();
-  if (!db) return;
-  await deleteContent(db, id);
-  revalidateCollection(collection);
+  if (!db) return { error: "Database is not configured." };
+  const operation = formData.get("operation");
+  const status = publicationStatusSchema.safeParse(operation);
+  if (operation !== "delete" && !status.success)
+    return { error: "Unknown action." };
+  try {
+    const kind = collections[collection].kind;
+    const entry =
+      operation === "delete"
+        ? await deleteContent(db, id, kind)
+        : await setContentStatus(db, id, status.data!, kind);
+    revalidateCollection(collection, entry.slug);
+  } catch (error) {
+    return { error: writeError(error) };
+  }
+  return undefined;
 }

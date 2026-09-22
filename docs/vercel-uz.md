@@ -55,7 +55,7 @@ Hozirgi admin panel matn va ma'lumotlarni boshqaradi, lekin yangi fayl yuklash t
 - Rasmlar hozir `public/images/` orqali deploy bilan keladi.
 - Yuklab olinadigan fayllar `content/private/downloads/` orqali keladi. Bu papka Git'dan chiqarilgan, shuning uchun GitHub importi lokal fayllarni Vercel'ga yubormaydi.
 - Download funksiyasi build vaqtida mavjud fayllarni o'z paketiga qo'shishga sozlangan. Ularni ishonchli build bosqichida alohida yetkazish kerak.
-- Sayt ishlayotgan paytda admin paneldan fayllar yuklash uchun private object storage va upload funksiyasini alohida qo'shish kerak. Vercel server diskini doimiy fayl ombori sifatida ishlatib bo'lmaydi.
+- Admin paneldan fayl va rasm yuklash mumkin: har bir fayl 4 MiB gacha, umumiy kutubxona 250 MiB gacha. Fayllar PostgreSQL bazasida saqlanadi va yangi deploydan keyin qoladi. Migratsiyalarni qo'llang va baza zaxirasiga StoredFile jadvalini ham kiriting. Katta hajmlar uchun private object storage kerak bo'ladi.
 
 ## 6. Tekshirish
 
