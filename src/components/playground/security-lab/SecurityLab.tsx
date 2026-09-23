@@ -49,7 +49,7 @@ export function SecurityLab() {
     else next[lesson.id] = true;
     setCompletedStored(next);
     if (next[lesson.id] && lesson.id < TOTAL) {
-      setToast("Lesson complete. Moving to the next one.");
+      setToast("Lesson marked as reviewed. Moving to the next one.");
       setTimeout(() => goTo(lesson.id + 1), 500);
     }
   };
@@ -317,9 +317,9 @@ export function SecurityLab() {
                   )}
                 </div>
                 <div className="lab-lesson-footer">
-                  <span>{completed[lesson.id] ? "This lesson is complete. Feel free to revisit it." : "Do it, observe it, draw a conclusion."}</span>
+                  <span>{completed[lesson.id] ? "You marked this lesson as reviewed. Try a mission to verify your skills." : "Self-paced review. Missions verify your work with evidence and tests."}</span>
                   <button type="button" className="lab-primary-button" onClick={toggleComplete}>
-                    {completed[lesson.id] ? "Completed" : "Mark complete"} <span>✓</span>
+                    {completed[lesson.id] ? "Reviewed" : "Mark as reviewed"} <span>✓</span>
                   </button>
                 </div>
               </article>

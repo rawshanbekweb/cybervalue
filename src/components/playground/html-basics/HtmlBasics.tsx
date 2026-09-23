@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { HTML_LESSONS, type HtmlLesson } from "./lessons.data";
 import { useLocalStorageState } from "../useLocalStorageState";
+import { useHashLessonId } from "../useHashLessonId";
 import "./html-basics.css";
 
 const PROGRESS_KEY = "htmldars:progress:v1";
@@ -15,26 +16,31 @@ function lessonById(id: number): HtmlLesson {
 }
 
 export function HtmlBasics() {
-  const [lessonId, setLessonId] = useState(1);
+  const [lessonId, setLessonId] = useHashLessonId(TOTAL, 1);
   const [completed, setCompletedStored] = useLocalStorageState<
     Record<number, boolean>
   >(PROGRESS_KEY, {});
   const [codeByLesson, setCodeByLessonStored] = useLocalStorageState<
     Record<number, string>
   >(CODE_KEY, {});
-  const [checkResults, setCheckResults] = useState<
-    { label: string; pass: boolean }[] | null
-  >(null);
-  const [celebrate, setCelebrate] = useState(false);
+  const [checked, setChecked] = useState<{
+    lessonId: number;
+    code: string;
+    results: { label: string; pass: boolean }[];
+  } | null>(null);
 
   const lesson = lessonById(lessonId);
   const code = codeByLesson[lesson.id] ?? lesson.starter;
+  const checkResults =
+    checked?.lessonId === lesson.id && checked.code === code
+      ? checked.results
+      : null;
+  const celebrate = checkResults?.every((result) => result.pass) ?? false;
 
   const goTo = (id: number) => {
     if (!HTML_LESSONS.some((l) => l.id === id)) id = 1;
     setLessonId(id);
-    setCheckResults(null);
-    setCelebrate(false);
+    setChecked(null);
   };
 
   const setCode = (value: string) => {
@@ -46,9 +52,8 @@ export function HtmlBasics() {
       label: c.label,
       pass: !!c.test(code),
     }));
-    setCheckResults(results);
+    setChecked({ lessonId: lesson.id, code, results });
     const allPass = results.every((r) => r.pass);
-    setCelebrate(allPass);
     if (allPass) {
       setCompletedStored({ ...completed, [lesson.id]: true });
     }
@@ -133,8 +138,7 @@ export function HtmlBasics() {
             type="button"
             onClick={() => {
               setCode(lesson.starter);
-              setCheckResults(null);
-              setCelebrate(false);
+              setChecked(null);
             }}
           >
             Start over

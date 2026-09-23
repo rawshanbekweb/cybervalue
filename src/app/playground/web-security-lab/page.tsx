@@ -1,4 +1,5 @@
 import { SecurityLab } from "@/components/playground/security-lab/SecurityLab";
+import { MissionGateway } from "@/components/mission-gateway";
 import { metadata as buildMetadata } from "@/lib/seo";
 
 export const generateMetadata = () =>
@@ -9,5 +10,12 @@ export const generateMetadata = () =>
   );
 
 export default function WebSecurityLabPage() {
-  return <SecurityLab />;
+  return (
+    <>
+      <div className="container" style={{ paddingTop: 28 }}>
+        <MissionGateway />
+      </div>
+      <SecurityLab />
+    </>
+  );
 }

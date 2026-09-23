@@ -12,10 +12,9 @@ export function SiteHeader({
 }) {
   const pathname = usePathname();
   if (pathname?.startsWith("/concept")) return null;
-  const isHome = pathname === "/";
 
   return (
-    <header className={`site-header ${isHome ? "site-header-overlay" : ""}`}>
+    <header className="site-header">
       <div className="header-inner">
         <Link className="wordmark" href="/" aria-label="CyberValue home">
           <span className="brand-mark">

@@ -95,6 +95,18 @@ npm start
 
 Install the Playwright browser once if needed: `npx playwright install chromium`. Browser tests cover public routes, unique titles, canonical and OG metadata, JSON-LD parsing, links, redirects, 404s, security headers, filters, widths from 320–1440px, keyboard navigation, and automated accessibility. The unauthenticated-redirect and bad-credentials admin tests always run; the full login → publish → archive → delete flow additionally requires `DATABASE_URL`, `E2E_ADMIN_EMAIL`, and `E2E_ADMIN_PASSWORD` for a seeded account and is skipped otherwise.
 
+## Learning hub
+
+The [HTML & CSS project studio](docs/studio.md) at `/playground/studio` includes three fictional client briefs, separate HTML/CSS editors, isolated live previews, structural feedback, saved drafts, and HTML/review exports.
+
+The hub now includes [three investigation missions](docs/missions.md) at `/playground/missions`: invoice authorization, checkout integrity, and webhook replay. Learners edit requests, collect evidence, choose defense policies, and run behavioral regression checks. Completion requires demonstrated outcomes. These browser simulations complement the existing guided lessons and real local API exercises.
+
+Home and `/playground` share a searchable catalog of the existing HTML and web security lessons. Track counts and lesson titles come from the course data through `src/lib/learning.ts`; only catalog metadata is passed to the client. Both courses support direct links in the form `#lesson/2`.
+
+The catalog reads each course's existing browser progress, counts only valid completed lessons, and links to the first unfinished lesson. Completed tracks offer a review link. Progress stays on the current browser and does not sync to an account. Missing or malformed storage does not block the catalog. Home's Build / Investigate / Defend panel presents educational examples and opens the corresponding exercise.
+
+`tests/e2e/learning.spec.ts` covers filtering, lesson links, progress recovery, preview interactions, responsive layouts, and accessibility.
+
 ## SEO
 
 Every public page has route-specific Metadata API output, canonical URL, Open Graph, and Twitter card. Detail pages generate 1200×630 previews. Person, WebSite, TechArticle/CreativeWork and BreadcrumbList JSON-LD reflect visible content. Sitemap entries are publication-filtered with actual content `updatedAt`; static page dates are omitted rather than invented. Query/filter pages use the base archive canonical and `noindex,follow`. Search is `noindex`. Next.js redirects trailing slashes.

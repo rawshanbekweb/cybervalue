@@ -2,23 +2,31 @@ import Link from "next/link";
 import {
   ArrowRight,
   ArrowUpRight,
-  Crosshair,
+  BookOpen,
   Code2,
+  Fingerprint,
+  FlaskConical,
+  Layers3,
   ShieldCheck,
-  GitBranch,
+  Terminal,
 } from "lucide-react";
-import { SecurityDiagram } from "@/components/security-diagram";
-import { HackerLanding } from "@/components/concept/HackerLanding";
+import { LearningCatalog } from "@/components/learning-catalog";
+import { MissionGateway } from "@/components/mission-gateway";
+import { StudioGateway } from "@/components/studio-gateway";
+import { PracticePreview } from "@/components/practice-preview";
 import {
   SectionHeading,
   EntryCard,
-  ArchiveTile,
   JsonLd,
   ArrowLink,
+  formatDate,
 } from "@/components/ui";
 import { getFeatured, getRecent, getSocials } from "@/lib/content";
+import { getLearningTracks } from "@/lib/learning";
 import { metadata } from "@/lib/seo";
-import { site } from "@/lib/site";
+import { contentUrl, site } from "@/lib/site";
+import "@/components/learning.css";
+import "./home.css";
 
 export const revalidate = 60;
 export const generateMetadata = () =>
@@ -27,286 +35,281 @@ export const generateMetadata = () =>
     site.description,
     "/",
   );
+
 export default async function Home() {
-  const [featured, research, labs, ctf, resources, activity, socials] =
-    await Promise.all([
-      getFeatured(),
-      getRecent(3, "RESEARCH"),
-      getRecent(2, "LAB"),
-      getRecent(2, "CTF"),
-      getRecent(2, "RESOURCE"),
-      getRecent(4),
-      getSocials(),
-    ]);
+  const [featured, recent, socials] = await Promise.all([
+    getFeatured(),
+    getRecent(4),
+    getSocials(),
+  ]);
+  const tracks = getLearningTracks();
+  const lessonCount = tracks.reduce(
+    (total, track) => total + track.lessons.length,
+    0,
+  );
   return (
-    <>
-      <HackerLanding />
-      <div className="container">
-        <JsonLd
-          data={{
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            name: site.name,
-            url: site.url,
-            description: site.description,
-            author: { "@id": `${site.url}/about#person` },
-          }}
-        />
-        <section className="hero">
-          <div className="hero-copy">
-            <div className="hero-kicker">
-              <span className="status-dot" />A PERSONAL PURSUIT OF BETTER
-              SECURITY
-            </div>
-            <p className="hero-name">Rawshanbek Kayipbaev</p>
-            <h1>
-              Understand the risk.
-              <br />
-              Build something
-              <br />
-              <span>that stands up to it.</span>
-            </h1>
-            <p className="hero-description">
-              Cybersecurity × Software Development.
-              <br />
-              Exploring application security, building with intention, and
-              documenting the lessons along the way.
-            </p>
-            <div className="hero-actions">
-              <Link href="/work" className="button button-primary">
-                View my work
-                <ArrowUpRight size={18} />
-              </Link>
-              <Link href="/research" className="button button-secondary">
-                Explore research
-                <ArrowRight size={17} />
-              </Link>
-            </div>
-            <div className="hero-footnote">
-              <span className="short-line" />
-              Real practice. Thoughtful engineering. Work you can verify.
-            </div>
-          </div>
-          <SecurityDiagram />
-        </section>
-        <section className="focus-section" aria-labelledby="focus-heading">
-          <div className="focus-label">
-            <span className="eyebrow">
-              <span className="status-dot" />
-              The direction
+    <div className="cv-home">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: site.name,
+          url: site.url,
+          description: site.description,
+          author: { "@id": `${site.url}/about#person` },
+        }}
+      />
+      <div className="cv-hero-wrap">
+        <section className="cv-hero container" aria-labelledby="home-title">
+          <div className="cv-hero-copy">
+            <span className="cv-kicker">
+              <span className="status-dot" /> THE CURIOSITY TO BUILD. THE
+              MINDSET TO DEFEND.
             </span>
-            <h2 id="focus-heading">Current focus</h2>
-          </div>
-          <div className="focus-item">
-            <Crosshair size={20} />
-            <div>
-              <h3>Application security</h3>
-              <p>Understand where trust breaks.</p>
+            <h1 id="home-title">
+              Understand.
+              <br />
+              Build.
+              <br />
+              <span>Outsmart.</span>
+            </h1>
+            <p>
+              A hands-on space for cybersecurity and software development. Turn
+              curiosity into working code, better questions, and stronger
+              defenses.
+            </p>
+            <div className="cv-hero-actions">
+              <Link className="button button-primary" href="/playground">
+                Enter the playground <ArrowUpRight size={18} />
+              </Link>
+              <a className="cv-secondary-link" href="#explore">
+                Explore the platform <ArrowRight size={16} />
+              </a>
             </div>
-          </div>
-          <div className="focus-item">
-            <Code2 size={20} />
-            <div>
-              <h3>Secure development</h3>
-              <p>Make security part of the build.</p>
-            </div>
-          </div>
-          <div className="focus-item">
-            <ShieldCheck size={20} />
-            <div>
-              <h3>Learning through practice</h3>
-              <p>Test. Reflect. Document.</p>
-            </div>
-          </div>
-        </section>
-        <section className="section">
-          <SectionHeading
-            number="01"
-            title="Selected work"
-            href="/work"
-            link="All work"
-          />
-          {featured.length ? (
-            <div className="entry-grid">
-              {featured.map((e) => (
-                <EntryCard key={e.id} entry={e} />
-              ))}
-            </div>
-          ) : (
-            <div className="work-empty">
-              <div className="empty-art" aria-hidden="true">
-                <div className="code-window">
-                  <span />
-                  <span />
-                  <span />
-                  <GitBranch size={40} strokeWidth={1} />
-                  <i />
-                  <i />
-                  <i />
-                </div>
-                <span className="art-corner">[ work in progress ]</span>
-              </div>
+            <div className="cv-author">
+              <Fingerprint size={28} />
               <div>
-                <span className="eyebrow">An archive built on evidence</span>
-                <h3>
-                  The work comes first.
-                  <br />
-                  The case study follows.
-                </h3>
-                <p>
-                  This is where projects will be documented: the problem, the
-                  architecture, the security decisions, and what was learned.
-                </p>
-                <ArrowLink href="/work">Explore the work archive</ArrowLink>
+                <span>Built by {site.person}</span>
+                <span>Learn by doing. Share what you discover.</span>
               </div>
-              <span className="empty-status">
-                <span className="status-dot" />
-                No featured projects yet
+            </div>
+          </div>
+          <div className="cv-workspace">
+            <div className="cv-workspace-caption">
+              <span>
+                <span className="status-dot" /> YOUR NEXT SKILL STARTS HERE
               </span>
+              <span>WORKSPACE / 01</span>
             </div>
-          )}
-        </section>
-        <section className="section">
-          <SectionHeading
-            number="02"
-            title="From curiosity to understanding"
-            href="/research"
-            link="All research"
-          />
-          {research.length > 0 && (
-            <div className="entry-grid recent-research">
-              {research.map((e) => (
-                <EntryCard key={e.id} entry={e} />
-              ))}
+            <PracticePreview />
+            <div className="cv-workspace-note">
+              <ShieldCheck size={15} /> Security exercises run against prepared
+              sandbox data.
             </div>
-          )}
-          <div className="archive-grid">
-            <ArchiveTile collection="research" />
-            <ArchiveTile collection="labs" />
-            <ArchiveTile collection="ctf" />
           </div>
         </section>
-        {labs.length > 0 && (
-          <section className="section">
-            <SectionHeading number="03" title="Latest labs" href="/labs" />
-            <div className="entry-grid">
-              {labs.map((e) => (
-                <EntryCard entry={e} key={e.id} />
-              ))}
-            </div>
-          </section>
-        )}
-        {ctf.length > 0 && (
-          <section className="section">
-            <SectionHeading number="04" title="CTF field notes" href="/ctf" />
-            <div className="entry-grid">
-              {ctf.map((e) => (
-                <EntryCard entry={e} key={e.id} />
-              ))}
-            </div>
-          </section>
-        )}
-        <section className="section lower-grid">
+        <div className="cv-stats container">
           <div>
-            <SectionHeading
-              number="05"
-              title="The resource shelf"
-              href="/resources"
-              link="Browse"
-            />
-            {resources.length ? (
-              resources.map((e) => <EntryCard key={e.id} entry={e} />)
-            ) : (
-              <div className="resource-preview">
-                <span className="resource-symbol" aria-hidden="true">
-                  ↳
-                </span>
+            <strong>{lessonCount.toString().padStart(2, "0")}</strong>
+            <span>Hands-on lessons</span>
+          </div>
+          <div>
+            <strong>{tracks.length.toString().padStart(2, "0")}</strong>
+            <span>Learning tracks</span>
+          </div>
+          <div>
+            <Code2 size={26} />
+            <span>Code. Preview. Improve.</span>
+          </div>
+          <div>
+            <ShieldCheck size={26} />
+            <span>Practice with purpose</span>
+          </div>
+        </div>
+      </div>
+      <div className="container">
+        <section className="cv-section" id="explore">
+          <div className="cv-section-intro">
+            <div>
+              <span className="eyebrow">01 / THE PLAYGROUND</span>
+              <h2>
+                Less watching.
+                <br />
+                <span>More figuring it out.</span>
+              </h2>
+            </div>
+            <p>
+              Pick a path, work through a real exercise, and build understanding
+              one lesson at a time.
+            </p>
+          </div>
+          <MissionGateway />
+          <StudioGateway />
+          <LearningCatalog tracks={tracks} />
+        </section>
+        <section className="cv-feature-band" aria-labelledby="method-title">
+          <div>
+            <span className="eyebrow">THE CYBERVALUE METHOD</span>
+            <h2 id="method-title">
+              Don’t just know the answer.
+              <br />
+              Know why it works.
+            </h2>
+            <ArrowLink href="/about">The thinking behind CyberValue</ArrowLink>
+          </div>
+          <ol>
+            {[
+              {
+                icon: BookOpen,
+                title: "Understand the system",
+                text: "Start with the request, the data, and the trust boundary.",
+              },
+              {
+                icon: Terminal,
+                title: "Put it to the test",
+                text: "Write the code. Inspect the response. Challenge your assumptions.",
+              },
+              {
+                icon: ShieldCheck,
+                title: "Make it stronger",
+                text: "Connect each finding to the decision that prevents it.",
+              },
+            ].map(({ icon: Icon, title, text }, index) => (
+              <li key={title}>
+                <span className="cv-step">0{index + 1}</span>
+                <Icon size={19} />
                 <div>
-                  <h3>Notes worth keeping close.</h3>
-                  <p>
-                    A growing home for technical references and downloadable
-                    resources. The first resources will appear here when
-                    published.
-                  </p>
-                  <ArrowLink href="/resources">Visit the library</ArrowLink>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
                 </div>
-              </div>
-            )}
-          </div>
-          <div>
+              </li>
+            ))}
+          </ol>
+        </section>
+        {featured.length > 0 && (
+          <section className="cv-section">
             <SectionHeading
-              number="06"
-              title="In the logbook"
+              number="02"
+              title="Built with intention"
+              href="/work"
+              link="All work"
+            />
+            <div className="entry-grid">
+              {featured.map((entry) => (
+                <EntryCard key={entry.id} entry={entry} />
+              ))}
+            </div>
+          </section>
+        )}
+        <section className="cv-section" aria-labelledby="knowledge-title">
+          <div className="cv-section-intro">
+            <div>
+              <span className="eyebrow">THE KNOWLEDGE BASE</span>
+              <h2 id="knowledge-title">Follow your curiosity.</h2>
+            </div>
+            <ArrowLink href="/search">Search the archive</ArrowLink>
+          </div>
+          <div className="cv-explore-grid">
+            {[
+              {
+                href: "/work",
+                icon: Code2,
+                title: "Engineering",
+                text: "Projects, architecture, and the decisions behind the build.",
+                label: "Explore work",
+              },
+              {
+                href: "/research",
+                icon: Layers3,
+                title: "Research & ideas",
+                text: "Investigations into how systems behave and where trust breaks.",
+                label: "Read the research",
+              },
+              {
+                href: "/labs",
+                icon: FlaskConical,
+                title: "The field notebook",
+                text: "Controlled experiments, methods, findings, and remediation.",
+                label: "Browse lab writeups",
+              },
+              {
+                href: "/resources",
+                icon: BookOpen,
+                title: "Your reference shelf",
+                text: "Practical notes and resources to return to while you work.",
+                label: "Explore resources",
+              },
+            ].map(({ href, icon: Icon, title, text, label }) => (
+              <Link className="cv-explore-card" href={href} key={href}>
+                <Icon size={24} strokeWidth={1.5} />
+                <h3>{title}</h3>
+                <p>{text}</p>
+                <span>
+                  {label}
+                  <ArrowUpRight size={16} />
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+        {recent.length > 0 && (
+          <section className="cv-section">
+            <SectionHeading
+              number="↳"
+              title="Fresh from the logbook"
               href="/activity"
               link="All activity"
             />
-            {activity.length ? (
-              <ul className="activity-mini">
-                {activity.map((e) => (
-                  <li key={e.id}>
-                    <span className="status-dot" />
-                    <Link
-                      href={`/${e.kind === "PROJECT" ? "work" : e.kind === "RESOURCE" ? "resources" : e.kind === "LAB" ? "labs" : e.kind.toLowerCase()}/${e.slug}`}
-                    >
-                      {e.title}
-                      <ArrowUpRight size={14} />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <div className="activity-empty">
-                <span className="timeline-dot" />
-                <div>
-                  <span className="eyebrow">
-                    A record, not a highlight reel
+            <div className="cv-logbook">
+              {recent.map((entry) => (
+                <Link key={entry.id} href={contentUrl(entry)}>
+                  <span className="cv-log-kind">
+                    {entry.kind.toLowerCase()}
                   </span>
-                  <h3>Progress leaves a trail.</h3>
-                  <p>
-                    New projects, findings, and writeups will appear here as
-                    they are published.
-                  </p>
-                  <span className="mono muted">No published activity yet</span>
-                </div>
-              </div>
-            )}
+                  <h3>{entry.title}</h3>
+                  <span className="cv-log-date">
+                    {entry.publishedAt && formatDate(entry.publishedAt)}
+                  </span>
+                  <ArrowUpRight size={18} />
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+        <section className="cv-connect">
+          <div className="cv-connect-symbol" aria-hidden="true">
+            ↗
           </div>
-        </section>
-        <section className="philosophy">
-          <span className="eyebrow">The CyberValue mindset</span>
-          <p>
-            Think like an attacker.
-            <br />
-            Build like a developer.
-            <br />
-            <span>Defend like a security engineer.</span>
-          </p>
-          <div className="philosophy-footer">
-            <span>Always learning. Always questioning.</span>
-            <ArrowLink href="/about">More about me</ArrowLink>
-          </div>
-        </section>
-        <section className="connect-strip">
           <div>
-            <span className="eyebrow">Keep the conversation going</span>
-            <h2>Good work gets better when it’s shared.</h2>
+            <span className="eyebrow">GOOD QUESTIONS LEAD TO GOOD WORK</span>
+            <h2>
+              Let’s build something
+              <br />
+              worth understanding.
+            </h2>
+            <p>Ideas, technical conversations, and thoughtful collaboration.</p>
           </div>
-          <div className="social-links">
-            {socials.length ? (
-              socials.map((s) => (
-                <a key={s.platform} href={s.url} rel="me noopener noreferrer">
-                  {s.platform}
-                  <ArrowUpRight size={16} />
-                </a>
-              ))
-            ) : (
-              <ArrowLink href="/about#connect">
-                Connect with CyberValue
-              </ArrowLink>
+          <div className="cv-connect-actions">
+            <Link href="/about#connect" className="button button-primary">
+              Let’s connect <ArrowUpRight size={17} />
+            </Link>
+            {socials.length > 0 && (
+              <div className="cv-socials">
+                {socials.map((social) => (
+                  <a
+                    key={social.platform}
+                    href={social.url}
+                    rel="me noopener noreferrer"
+                  >
+                    {social.platform}
+                    <ArrowUpRight size={13} />
+                  </a>
+                ))}
+              </div>
             )}
           </div>
         </section>
       </div>
-    </>
+    </div>
   );
 }

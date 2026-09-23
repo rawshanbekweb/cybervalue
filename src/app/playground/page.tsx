@@ -1,68 +1,115 @@
 import Link from "next/link";
-import { ShieldCheck, Code2, ArrowUpRight, ArrowRight } from "lucide-react";
-import { SectionHeading } from "@/components/ui";
+import {
+  ArrowRight,
+  BookOpen,
+  ClipboardCheck,
+  Code2,
+  ShieldCheck,
+} from "lucide-react";
+import { LearningCatalog } from "@/components/learning-catalog";
+import { MissionGateway } from "@/components/mission-gateway";
+import { StudioGateway } from "@/components/studio-gateway";
+import { getLearningTracks } from "@/lib/learning";
 import { metadata as buildMetadata } from "@/lib/seo";
+import "@/components/learning.css";
 
 export const generateMetadata = () =>
   buildMetadata(
     "Playground",
-    "Interactive learning labs: a 36-lesson Web Application Security lab and a 12-lesson HTML practice tool — both running directly in the browser.",
+    "Practice HTML and web application security with 48 interactive lessons, searchable learning tracks, and progress saved in your browser.",
     "/playground",
   );
 
-const TOOLS = [
-  {
-    href: "/playground/web-security-lab",
-    eyebrow: "36 lessons",
-    title: "Web Security Lab",
-    description:
-      "Learn the path from browser to database: real HTTP requests, authentication, JWTs, and a hands-on look at exactly how SQLi, XSS, and IDOR work, inside a safe sandbox.",
-    link: "Open the lab",
-    icon: ShieldCheck,
-  },
-  {
-    href: "/playground/html-basics",
-    eyebrow: "12 short exercises",
-    title: "HTML Basics",
-    description:
-      "A code editor and live preview side by side: reinforce HTML fundamentals with a clear task, automatic checks, and a sample solution for every lesson.",
-    link: "Start the lessons",
-    icon: Code2,
-  },
-];
-
 export default function PlaygroundPage() {
+  const tracks = getLearningTracks();
   return (
-    <div className="container">
-      <section className="section">
-        <SectionHeading number="◆" title="Playground" />
-        <p style={{ color: "var(--muted)", maxWidth: "62ch", marginTop: -8, marginBottom: 28 }}>
-          Two self-contained interactive learning tools — built entirely into this portfolio, with a real
-          backend behind them. Both are small labs built for security education: every vulnerability is
-          demonstrated only against deliberately prepared, isolated sandbox data.
+    <div className="container page-content">
+      <header className="page-header learning-header">
+        <span className="eyebrow">
+          <span className="status-dot" /> THE INTERACTIVE WORKSPACE
+        </span>
+        <h1>
+          Learn it. Build it.
+          <br />
+          <span>Make it yours.</span>
+        </h1>
+        <p>
+          A place to experiment, make mistakes, and understand what happens
+          next. Start with HTML or follow a request all the way through a web
+          application.
         </p>
-        <div className="playground-grid">
-          {TOOLS.map((tool) => {
-            const Icon = tool.icon;
-            return (
-              <Link key={tool.href} className="archive-tile" href={tool.href}>
-                <div className="tile-top">
-                  <Icon size={24} strokeWidth={1.4} />
-                  <ArrowUpRight size={18} />
-                </div>
-                <div>
-                  <span className="eyebrow">{tool.eyebrow}</span>
-                  <h3>{tool.title}</h3>
-                  <p>{tool.description}</p>
-                </div>
-                <span className="tile-link">
-                  {tool.link}
-                  <ArrowRight size={15} />
-                </span>
-              </Link>
-            );
-          })}
+        <div className="learning-highlights">
+          <span>
+            <BookOpen size={16} />
+            {tracks.reduce(
+              (count, track) => count + track.lessons.length,
+              0,
+            )}{" "}
+            practical lessons
+          </span>
+          <span>
+            <Code2 size={16} /> Code & live exercises
+          </span>
+          <span>
+            <ShieldCheck size={16} /> Isolated security sandbox
+          </span>
         </div>
+      </header>
+      <MissionGateway />
+      <StudioGateway />
+      <section aria-labelledby="tracks-title">
+        <h2 id="tracks-title" className="learning-section-title">
+          Choose your learning track
+        </h2>
+        <LearningCatalog tracks={tracks} />
+      </section>
+      <section className="learning-assessment">
+        <span className="learn-icon">
+          <ClipboardCheck size={25} />
+        </span>
+        <div>
+          <span className="eyebrow">READY FOR THE NEXT STEP?</span>
+          <h2>Put your HTML skills to the test.</h2>
+          <p>
+            A timed assessment with automatic grading. You’ll need an access
+            code from your teacher.
+          </p>
+        </div>
+        <Link
+          className="button button-secondary"
+          href="/playground/html-basics/assessment"
+        >
+          Open assessment <ArrowRight size={16} />
+        </Link>
+      </section>
+      <section className="learning-faq" aria-labelledby="learning-faq-title">
+        <h2 id="learning-faq-title">Before you begin</h2>
+        <details>
+          <summary>Where should I start?</summary>
+          <p>
+            New to building websites? Start with HTML foundations. If you
+            already understand basic page structure, the security track begins
+            with architecture and works toward HTTP, identity, and
+            vulnerabilities.
+          </p>
+        </details>
+        <details>
+          <summary>Will my progress be saved?</summary>
+          <p>
+            Lesson progress and your practice work are saved in this browser.
+            Return on the same browser to continue. Clearing browser data
+            removes this progress, and it does not sync between devices.
+          </p>
+        </details>
+        <details>
+          <summary>Do I need an account or special software?</summary>
+          <p>
+            No account is needed for the practice tracks. The HTML editor works
+            in your browser. Security exercises use the site’s prepared lab
+            backend. The separate graded assessment requires a teacher-issued
+            code.
+          </p>
+        </details>
       </section>
     </div>
   );
