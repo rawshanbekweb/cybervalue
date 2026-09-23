@@ -97,6 +97,8 @@ Install the Playwright browser once if needed: `npx playwright install chromium`
 
 ## Learning hub
 
+The [00:17 CTF](docs/ctf.md) at `/playground/ctf` is a five-challenge Uzbek-language investigation with a signal map, evidence viewer, decoder, local archive, server-verified flags, and a final transmission unlocked by four recovered keys.
+
 The [HTML & CSS project studio](docs/studio.md) at `/playground/studio` includes three fictional client briefs, separate HTML/CSS editors, isolated live previews, structural feedback, saved drafts, and HTML/review exports.
 
 The hub now includes [three investigation missions](docs/missions.md) at `/playground/missions`: invoice authorization, checkout integrity, and webhook replay. Learners edit requests, collect evidence, choose defense policies, and run behavioral regression checks. Completion requires demonstrated outcomes. These browser simulations complement the existing guided lessons and real local API exercises.

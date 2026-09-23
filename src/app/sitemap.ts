@@ -11,6 +11,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       "/about",
       "/activity",
       "/playground",
+      "/playground/ctf",
       "/playground/missions",
       "/playground/studio",
       "/playground/html-basics",

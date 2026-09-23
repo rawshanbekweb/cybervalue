@@ -3,6 +3,7 @@ import { collections, isCollection } from "@/lib/site";
 import { metadata } from "@/lib/seo";
 import { Archive, type SearchParams } from "@/components/archive";
 import { Breadcrumbs } from "@/components/ui";
+import { CtfGateway } from "@/components/ctf-gateway";
 
 type Props = {
   params: Promise<{ collection: string }>;
@@ -38,6 +39,7 @@ export default async function CollectionPage({ params, searchParams }: Props) {
         </h1>
         <p>{config.description}</p>
       </header>
+      {collection === "ctf" && <CtfGateway />}
       <Archive collection={collection} params={await searchParams} />
     </div>
   );
