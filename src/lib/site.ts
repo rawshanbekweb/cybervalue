@@ -63,9 +63,9 @@ export const collections = {
     eyebrow: "Useful beyond the session",
     description:
       "Technical references and practical resources to keep close while building and investigating.",
-    empty: "Useful things take care to make.",
+    empty: "The reference archive is getting started.",
     detail:
-      "Downloadable references will appear here with a version, publication date, and related work.",
+      "Additional references will appear here with a version, publication date, and related work.",
     singular: "Resource",
     number: "05",
   },

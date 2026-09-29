@@ -4,6 +4,7 @@ import { metadata } from "@/lib/seo";
 import { Archive, type SearchParams } from "@/components/archive";
 import { Breadcrumbs } from "@/components/ui";
 import { CtfGateway } from "@/components/ctf-gateway";
+import { WebLessonResource } from "@/components/web-lesson-resource";
 
 type Props = {
   params: Promise<{ collection: string }>;
@@ -40,6 +41,7 @@ export default async function CollectionPage({ params, searchParams }: Props) {
         <p>{config.description}</p>
       </header>
       {collection === "ctf" && <CtfGateway />}
+      {collection === "resources" && <WebLessonResource />}
       <Archive collection={collection} params={await searchParams} />
     </div>
   );

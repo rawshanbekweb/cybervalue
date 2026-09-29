@@ -16,6 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       "/playground/studio",
       "/playground/html-basics",
       "/playground/web-security-lab",
+      "/lessons/web-asoslari/index.html",
       ...Object.keys(collections).map((k) => `/${k}`),
     ].map((path) => ({ url: `${site.url}${path}` })),
     ...content.map((e) => ({
