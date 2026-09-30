@@ -3,6 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu, X, ArrowUpRight } from "lucide-react";
+import { useTranslator } from "./locale-provider";
 
 export function Navigation({
   items,
@@ -10,12 +11,13 @@ export function Navigation({
   items: { href: string; label: string }[];
 }) {
   const path = usePathname();
+  const t = useTranslator();
   const [open, setOpen] = useState(false);
   return (
     <>
       <button
         className="menu-toggle"
-        aria-label={open ? "Close navigation" : "Open navigation"}
+        aria-label={t(open ? "Close navigation" : "Open navigation")}
         aria-expanded={open}
         aria-controls="site-navigation"
         onClick={() => setOpen(!open)}
@@ -24,7 +26,7 @@ export function Navigation({
       </button>
       <nav
         id="site-navigation"
-        aria-label="Main navigation"
+        aria-label={t("Main navigation")}
         className={`navigation ${open ? "is-open" : ""}`}
         onKeyDown={(event) => {
           if (event.key === "Escape") {
@@ -45,7 +47,7 @@ export function Navigation({
               aria-current={active ? "page" : undefined}
               onClick={() => setOpen(false)}
             >
-              {item.label}
+              {t(item.label)}
             </Link>
           );
         })}
@@ -54,7 +56,7 @@ export function Navigation({
           href="/about#connect"
           onClick={() => setOpen(false)}
         >
-          Let’s connect <ArrowUpRight size={14} />
+          {t("Let’s connect")} <ArrowUpRight size={14} />
         </Link>
       </nav>
     </>

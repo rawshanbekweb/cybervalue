@@ -1,4 +1,5 @@
 "use client";
+import { useTranslator } from "@/components/locale-provider";
 
 import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
@@ -31,6 +32,7 @@ function readProgress(key: string) {
 }
 
 function TrackCard({ track, query }: { track: LearningTrack; query: string }) {
+  const t = useTranslator();
   const raw = useSyncExternalStore(
     subscribe,
     () => readProgress(track.progressKey),
@@ -53,7 +55,9 @@ function TrackCard({ track, query }: { track: LearningTrack; query: string }) {
   const Icon = track.id === "html" ? Code2 : ShieldCheck;
   const matches = query
     ? track.lessons.filter((lesson) =>
-        lesson.title.toLowerCase().includes(query),
+        [lesson.title, t(lesson.title)].some((title) =>
+          title.toLowerCase().includes(query),
+        ),
       )
     : [];
   return (
@@ -62,31 +66,32 @@ function TrackCard({ track, query }: { track: LearningTrack; query: string }) {
         <span className="learn-icon">
           <Icon size={25} />
         </span>
-        <span className="learn-level">{track.level}</span>
+        <span className="learn-level">{t(track.level)}</span>
       </div>
       <div className="learn-meta">
-        {track.category} <span> / </span> {track.lessons.length} lessons
+        {t(track.category)} <span> / </span> {track.lessons.length}{" "}
+        {t("lessons")}
       </div>
-      <h3>{track.title}</h3>
-      <p>{track.description}</p>
+      <h3>{t(track.title)}</h3>
+      <p>{t(track.description)}</p>
       <div className="learn-modules">
         {track.modules.map((module) => (
           <span key={module}>
             <Check size={13} />
-            {module}
+            {t(module)}
           </span>
         ))}
       </div>
       {matches.length > 0 && (
         <ul
           className="learn-matches"
-          aria-label={`${track.title} matching lessons`}
+          aria-label={t("{track} matching lessons", { track: t(track.title) })}
         >
           {matches.map((lesson) => (
             <li key={lesson.id}>
               <Link href={`${track.href}#lesson/${lesson.id}`}>
                 <span>
-                  {String(lesson.id).padStart(2, "0")} · {lesson.title}
+                  {String(lesson.id).padStart(2, "0")} · {t(lesson.title)}
                 </span>
                 <ArrowUpRight size={14} />
               </Link>
@@ -98,10 +103,10 @@ function TrackCard({ track, query }: { track: LearningTrack; query: string }) {
         <div className="learn-progress-label">
           <span>
             {done === track.lessons.length
-              ? "Track completed"
+              ? t("Track completed")
               : done > 0
-                ? "Your progress"
-                : "Ready when you are"}
+                ? t("Your progress")
+                : t("Ready when you are")}
           </span>
           <span>
             {done} / {track.lessons.length}
@@ -111,15 +116,15 @@ function TrackCard({ track, query }: { track: LearningTrack; query: string }) {
           className="learn-progress"
           value={done}
           max={track.lessons.length}
-          aria-label={`${track.title} progress`}
+          aria-label={t("{track} progress", { track: t(track.title) })}
         />
         <Link className="learn-launch" href={`${track.href}#lesson/${next.id}`}>
           <span>
             {done === track.lessons.length
-              ? "Review the track"
+              ? t("Review the track")
               : done > 0
-                ? `Continue · ${next.title}`
-                : "Start learning"}
+                ? t("Continue · {lesson}", { lesson: t(next.title) })
+                : t("Start learning")}
           </span>
           <ArrowRight size={18} />
         </Link>
@@ -129,6 +134,7 @@ function TrackCard({ track, query }: { track: LearningTrack; query: string }) {
 }
 
 export function LearningCatalog({ tracks }: { tracks: LearningTrack[] }) {
+  const t = useTranslator();
   const [category, setCategory] = useState("All tracks");
   const [search, setSearch] = useState("");
   const query = search.trim().toLowerCase();
@@ -142,6 +148,7 @@ export function LearningCatalog({ tracks }: { tracks: LearningTrack[] }) {
           ...track.modules,
           ...track.lessons.map((lesson) => lesson.title),
         ]
+          .flatMap((text) => [text, t(text)])
           .join(" ")
           .toLowerCase()
           .includes(query)),
@@ -152,7 +159,7 @@ export function LearningCatalog({ tracks }: { tracks: LearningTrack[] }) {
         <div
           className="learn-filters"
           role="group"
-          aria-label="Filter learning tracks"
+          aria-label={t("Filter learning tracks")}
         >
           {["All tracks", "Development", "Security"].map((filter) => (
             <button
@@ -161,7 +168,7 @@ export function LearningCatalog({ tracks }: { tracks: LearningTrack[] }) {
               aria-pressed={category === filter}
               onClick={() => setCategory(filter)}
             >
-              {filter}
+              {t(filter)}
             </button>
           ))}
         </div>
@@ -169,8 +176,8 @@ export function LearningCatalog({ tracks }: { tracks: LearningTrack[] }) {
           <Search size={17} />
           <input
             type="search"
-            aria-label="Search tracks and lessons"
-            placeholder="Search a topic or lesson…"
+            aria-label={t("Search tracks and lessons")}
+            placeholder={t("Search a topic or lesson…")}
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             maxLength={120}
@@ -178,8 +185,13 @@ export function LearningCatalog({ tracks }: { tracks: LearningTrack[] }) {
         </label>
       </div>
       <p className="learn-results" role="status">
-        {visible.length} {visible.length === 1 ? "track" : "tracks"}
-        {query ? ` matching “${search.trim()}”` : " · Learn at your own pace"}
+        {t(visible.length === 1 ? "{count} track" : "{count} tracks", {
+          count: visible.length,
+        })}
+        {" · "}
+        {query
+          ? t("Matching “{query}”", { query: search.trim() })
+          : t("Learn at your own pace")}
       </p>
       {visible.length ? (
         <div className="learn-grid">
@@ -190,8 +202,8 @@ export function LearningCatalog({ tracks }: { tracks: LearningTrack[] }) {
       ) : (
         <div className="learn-empty">
           <BookOpen size={28} />
-          <h3>No matching tracks</h3>
-          <p>Try HTML, HTTP, authentication, or another topic.</p>
+          <h3>{t("No matching tracks")}</h3>
+          <p>{t("Try HTML, HTTP, authentication, or another topic.")}</p>
           <button
             className="button button-secondary"
             onClick={() => {
@@ -199,12 +211,14 @@ export function LearningCatalog({ tracks }: { tracks: LearningTrack[] }) {
               setCategory("All tracks");
             }}
           >
-            Clear filters
+            {t("Clear filters")}
           </button>
         </div>
       )}
       <p className="learn-storage-note">
-        Progress is saved in this browser. No account needed for practice.
+        {t(
+          "Progress is saved in this browser. No account needed for practice.",
+        )}
       </p>
     </div>
   );

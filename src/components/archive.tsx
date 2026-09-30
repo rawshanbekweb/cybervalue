@@ -1,3 +1,4 @@
+import { getTranslator } from "@/lib/i18n/server";
 import Link from "next/link";
 import { Search, ArrowLeft, ArrowRight } from "lucide-react";
 import { searchContent, getFacets } from "@/lib/content";
@@ -13,6 +14,7 @@ export async function Archive({
   collection?: Collection;
   params: SearchParams;
 }) {
+  const t = await getTranslator();
   const parsed = parseFilters(params);
   const filters = parsed.success ? parsed.data : filterSchema.parse({});
   const kind = collection ? collections[collection].kind : undefined;
@@ -40,19 +42,23 @@ export async function Archive({
         role="search"
         aria-label={
           collection
-            ? `Filter ${collections[collection].title}`
-            : "Search all content"
+            ? t("Filter {collection}", {
+                collection: t(collections[collection].title),
+              })
+            : t("Search all content")
         }
       >
         <label>
-          Search
+          {t("Search")}
           <input
             type="search"
             name="q"
             placeholder={
               collection
-                ? `Search ${collections[collection].title.toLowerCase()}…`
-                : "Search the whole archive…"
+                ? t("Search {collection}…", {
+                    collection: t(collections[collection].title).toLowerCase(),
+                  })
+                : t("Search the whole archive…")
             }
             defaultValue={filters.q}
             maxLength={120}
@@ -60,9 +66,9 @@ export async function Archive({
         </label>
         {facets.categories.length > 0 && (
           <label>
-            Category
+            {t("Category")}
             <select name="category" defaultValue={filters.category}>
-              <option value="">All categories</option>
+              <option value="">{t("All categories")}</option>
               {facets.categories.map((c) => (
                 <option key={c.slug} value={c.slug}>
                   {c.name}
@@ -73,9 +79,9 @@ export async function Archive({
         )}
         {facets.tags.length > 0 && (
           <label>
-            Topic
+            {t("Topic")}
             <select name="tag" defaultValue={filters.tag}>
-              <option value="">All topics</option>
+              <option value="">{t("All topics")}</option>
               {facets.tags.map((t) => (
                 <option key={t.slug} value={t.slug}>
                   {t.name}
@@ -86,9 +92,9 @@ export async function Archive({
         )}
         {facets.technologies.length > 0 && (
           <label>
-            Technology
+            {t("Technology")}
             <select name="technology" defaultValue={filters.technology}>
-              <option value="">All technologies</option>
+              <option value="">{t("All technologies")}</option>
               {facets.technologies.map((t) => (
                 <option key={t} value={t}>
                   {t}
@@ -99,9 +105,9 @@ export async function Archive({
         )}
         {facets.years.length > 0 && (
           <label>
-            Year
+            {t("Year")}
             <select name="year" defaultValue={filters.year}>
-              <option value="">All years</option>
+              <option value="">{t("All years")}</option>
               {facets.years.map((y) => (
                 <option key={y} value={y}>
                   {y}
@@ -112,36 +118,45 @@ export async function Archive({
         )}
         {collection === "labs" && (
           <label>
-            Difficulty
+            {t("Difficulty")}
             <select name="difficulty" defaultValue={filters.difficulty}>
-              <option value="">All levels</option>
-              <option value="BEGINNER">Beginner</option>
-              <option value="INTERMEDIATE">Intermediate</option>
-              <option value="ADVANCED">Advanced</option>
+              <option value="">{t("All levels")}</option>
+              <option value="BEGINNER">{t("Beginner")}</option>
+              <option value="INTERMEDIATE">{t("Intermediate")}</option>
+              <option value="ADVANCED">{t("Advanced")}</option>
             </select>
           </label>
         )}
         <button className="button button-primary" type="submit">
           <Search size={15} />
-          Search
+          {t("Search")}
         </button>
         {filtered && (
           <Link className="button button-secondary" href={path}>
-            Clear
+            {t("Clear")}
           </Link>
         )}
       </form>
       {!parsed.success && (
         <p role="alert" className="filter-error">
-          Some filters were invalid. Showing the archive with default filters.
+          {t(
+            "Some filters were invalid. Showing the archive with default filters.",
+          )}
         </p>
       )}
       <div className="results-label">
         <span>
-          {result.total} published {result.total === 1 ? "entry" : "entries"}
-          {filters.q ? ` matching “${filters.q}”` : ""}
+          {t(
+            result.total === 1
+              ? "{count} published entry"
+              : "{count} published entries",
+            { count: result.total },
+          )}
+          {filters.q
+            ? ` · ${t("Matching “{query}”", { query: filters.q })}`
+            : ""}
         </span>
-        <span>Latest first</span>
+        <span>{t("Latest first")}</span>
       </div>
       {result.items.length ? (
         <div className="entry-grid">
@@ -158,16 +173,18 @@ export async function Archive({
           </div>
           <h2>
             {filtered
-              ? "No matching entries."
-              : "The archive is just getting started."}
+              ? t("No matching entries.")
+              : t("The archive is just getting started.")}
           </h2>
           <p>
             {filtered
-              ? "Try different keywords or clear your filters."
-              : "Search will cover every published project, lab, research article, CTF record, and resource."}
+              ? t("Try different keywords or clear your filters.")
+              : t(
+                  "Search will cover every published project, lab, research article, CTF record, and resource.",
+                )}
           </p>
           <Link className="text-link" href={filtered ? "/search" : "/about"}>
-            {filtered ? "Clear search" : "About CyberValue"}
+            {filtered ? t("Clear search") : t("About CyberValue")}
             <ArrowRight size={15} />
           </Link>
         </div>
@@ -176,7 +193,7 @@ export async function Archive({
     </>
   );
 }
-function Pagination({
+async function Pagination({
   filters,
   total,
   href,
@@ -185,24 +202,23 @@ function Pagination({
   total: number;
   href: (page: number) => string;
 }) {
+  const t = await getTranslator();
   const pages = Math.max(1, Math.ceil(total / 12));
   return pages > 1 || filters.page > 1 ? (
-    <nav aria-label="Pagination" className="pagination">
+    <nav aria-label={t("Pagination")} className="pagination">
       {filters.page > 1 && (
         <Link
           className="text-link"
           href={href(Math.min(pages, filters.page - 1))}
         >
           <ArrowLeft size={14} />
-          Previous
+          {t("Previous")}
         </Link>
       )}
-      <span>
-        Page {filters.page} of {pages}
-      </span>
+      <span>{t("Page {page} of {pages}", { page: filters.page, pages })}</span>
       {filters.page < pages && (
         <Link className="text-link" href={href(filters.page + 1)}>
-          Next
+          {t("Next")}
           <ArrowRight size={14} />
         </Link>
       )}

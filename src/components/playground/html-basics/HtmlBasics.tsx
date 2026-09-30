@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslator } from "@/components/locale-provider";
+import { lessonRecord } from "@/lib/learning-progress";
 import Link from "next/link";
 import { HTML_LESSONS, type HtmlLesson } from "./lessons.data";
 import { useLocalStorageState } from "../useLocalStorageState";
@@ -16,13 +18,18 @@ function lessonById(id: number): HtmlLesson {
 }
 
 export function HtmlBasics() {
+  const t = useTranslator();
   const [lessonId, setLessonId] = useHashLessonId(TOTAL, 1);
-  const [completed, setCompletedStored] = useLocalStorageState<
-    Record<number, boolean>
-  >(PROGRESS_KEY, {});
-  const [codeByLesson, setCodeByLessonStored] = useLocalStorageState<
-    Record<number, string>
-  >(CODE_KEY, {});
+  const [storedProgress, setCompletedStored] = useLocalStorageState<unknown>(
+    PROGRESS_KEY,
+    {},
+  );
+  const [storedCode, setCodeByLessonStored] = useLocalStorageState<unknown>(
+    CODE_KEY,
+    {},
+  );
+  const completed = lessonRecord<boolean>(storedProgress, TOTAL, "boolean");
+  const codeByLesson = lessonRecord<string>(storedCode, TOTAL, "string");
   const [checked, setChecked] = useState<{
     lessonId: number;
     code: string;
@@ -59,21 +66,23 @@ export function HtmlBasics() {
     }
   };
 
-  const doneCount = Object.keys(completed).length;
+  const doneCount = Object.values(completed).filter(
+    (value) => value === true,
+  ).length;
 
   return (
     <div className="htb-root">
       <aside className="htb-side">
-        <h1>HTML Lessons</h1>
-        <span className="htb-tag">12 SHORT EXERCISES</span>
+        <h1>{t("HTML Lessons")}</h1>
+        <span className="htb-tag">{t("12 SHORT EXERCISES")}</span>
         <Link
           className="htb-assessment-link"
           href="/playground/html-basics/assessment"
         >
-          HTML sinovi · bir martalik baholash →
+          {t("HTML test · one-time assessment →")}
         </Link>
         <div className="htb-progress-label">
-          <span>Progress</span>
+          <span>{t("Progress")}</span>
           <strong>
             {doneCount} / {TOTAL}
           </strong>
@@ -90,7 +99,7 @@ export function HtmlBasics() {
                 onClick={() => goTo(l.id)}
               >
                 <span className="htb-n">{String(l.id).padStart(2, "0")}</span>
-                <span>{l.title}</span>
+                <span>{t(l.title)}</span>
                 {completed[l.id] && <span className="htb-c">✓</span>}
               </button>
             </li>
@@ -99,39 +108,40 @@ export function HtmlBasics() {
       </aside>
       <main className="htb-main">
         <span className="htb-eyebrow">
-          LESSON {lesson.id} / {TOTAL}
+          {t("Lesson {lesson} / {total}", { lesson: lesson.id, total: TOTAL })}
         </span>
-        <h2>{lesson.title}</h2>
-        <p className="htb-intro">{lesson.intro}</p>
+        <h2>{t(lesson.title)}</h2>
+        <p className="htb-intro">{t(lesson.intro)}</p>
         <div className="htb-task">
-          <b>Task:</b> {lesson.task}
+          <b>{t("Task:")}</b> {t(lesson.task)}
         </div>
 
         <div className="htb-grid">
           <div className="htb-panel">
-            <h3>Code (edit it)</h3>
+            <h3>{t("Code (edit it)")}</h3>
             <textarea
+              aria-label={t("Code (edit it)")}
               spellCheck={false}
               value={code}
               onChange={(e) => setCode(e.target.value)}
             />
           </div>
           <div className="htb-panel">
-            <h3>Result (live preview)</h3>
-            <iframe sandbox="" srcDoc={code} title="Result" />
+            <h3>{t("Result (live preview)")}</h3>
+            <iframe sandbox="" srcDoc={code} title={t("Result")} />
           </div>
         </div>
 
         <div className="htb-button-row">
           <button className="htb-primary" type="button" onClick={runChecks}>
-            Check
+            {t("Check")}
           </button>
           <button
             className="htb-ghost"
             type="button"
             onClick={() => setCode(lesson.solution)}
           >
-            Sample solution
+            {t("Sample solution")}
           </button>
           <button
             className="htb-ghost"
@@ -141,7 +151,7 @@ export function HtmlBasics() {
               setChecked(null);
             }}
           >
-            Start over
+            {t("Start over")}
           </button>
         </div>
 
@@ -157,13 +167,13 @@ export function HtmlBasics() {
               <span className="htb-mark">
                 {r.pass === undefined ? "•" : r.pass ? "✓" : "✕"}
               </span>
-              {r.label}
+              {t(r.label)}
             </li>
           ))}
         </ul>
         {celebrate && (
           <div className="htb-celebrate show">
-            ✓ All conditions passed! You can move on to the next lesson.
+            {t("✓ All conditions passed! You can move on to the next lesson.")}
           </div>
         )}
 
@@ -174,7 +184,7 @@ export function HtmlBasics() {
             disabled={lesson.id <= 1}
             onClick={() => goTo(lesson.id - 1)}
           >
-            ← Previous lesson
+            {t("← Previous lesson")}
           </button>
           <span>
             {lesson.id} / {TOTAL}
@@ -185,7 +195,7 @@ export function HtmlBasics() {
             disabled={lesson.id >= TOTAL}
             onClick={() => goTo(lesson.id + 1)}
           >
-            Next lesson →
+            {t("Next lesson →")}
           </button>
         </div>
       </main>

@@ -5,6 +5,7 @@ import { Archive, type SearchParams } from "@/components/archive";
 import { Breadcrumbs } from "@/components/ui";
 import { CtfGateway } from "@/components/ctf-gateway";
 import { WebLessonResource } from "@/components/web-lesson-resource";
+import { getTranslator } from "@/lib/i18n/server";
 
 type Props = {
   params: Promise<{ collection: string }>;
@@ -26,6 +27,7 @@ export async function generateMetadata({ params, searchParams }: Props) {
   );
 }
 export default async function CollectionPage({ params, searchParams }: Props) {
+  const t = await getTranslator();
   const { collection } = await params;
   if (!isCollection(collection)) notFound();
   const config = collections[collection];
@@ -33,12 +35,12 @@ export default async function CollectionPage({ params, searchParams }: Props) {
     <div className="container page-content">
       <Breadcrumbs items={[{ label: config.title, href: `/${collection}` }]} />
       <header className="page-header">
-        <span className="eyebrow">{config.eyebrow}</span>
+        <span className="eyebrow">{t(config.eyebrow)}</span>
         <h1>
-          {config.title}
+          {t(config.title)}
           <span style={{ color: "var(--accent)" }}>.</span>
         </h1>
-        <p>{config.description}</p>
+        <p>{t(config.description)}</p>
       </header>
       {collection === "ctf" && <CtfGateway />}
       {collection === "resources" && <WebLessonResource />}

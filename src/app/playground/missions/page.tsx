@@ -1,5 +1,6 @@
 import { MissionControl } from "@/components/playground/missions/MissionControl";
 import { metadata } from "@/lib/seo";
+import { ContentLanguage } from "@/components/content-language";
 
 export const generateMetadata = () =>
   metadata(
@@ -9,5 +10,9 @@ export const generateMetadata = () =>
   );
 
 export default function MissionsPage() {
-  return <MissionControl />;
+  return (
+    <ContentLanguage language="en">
+      <MissionControl />
+    </ContentLanguage>
+  );
 }

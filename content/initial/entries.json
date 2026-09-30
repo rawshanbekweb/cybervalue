@@ -1,0 +1,305 @@
+[
+  {
+    "kind": "PROJECT",
+    "slug": "cybervalue-platformasi",
+    "title": "CyberValue: A Portfolio and Learning Platform",
+    "summary": "A platform for publishing projects, lab guides, articles, and downloadable resources from a single content management dashboard.",
+    "body": "CyberValue documents software development and cybersecurity work and shares practical learning materials. This overview describes the capabilities implemented in the repository.\n\n## Explore the platform\n\nWork contains project case studies, Labs provides controlled exercises, and Research hosts technical articles. Resources offers downloadable materials through individual resource pages. The [Playground](/playground) provides practical exercises in the browser.",
+    "status": "DRAFT",
+    "category": {
+      "name": "Web Development and Security",
+      "slug": "web-development-security"
+    },
+    "tags": [
+      {
+        "name": "Full-stack",
+        "slug": "full-stack"
+      },
+      {
+        "name": "CMS",
+        "slug": "cms"
+      }
+    ],
+    "featured": true,
+    "project": {
+      "problem": "Project descriptions, learning experiments, and files become difficult to find and maintain when they are scattered across different tools.",
+      "objective": "Store, search, and manage content using fields appropriate to each content type, and display only published entries on public pages.",
+      "architecture": "Next.js App Router serves the pages. PostgreSQL and Prisma connect a shared Content record to Project, Lab, ResearchArticle, CTFEvent, and Resource details. Zod validates content input.",
+      "securityConsiderations": "Admin access uses passwords and database-backed sessions. Markdown is sanitized. File and image paths are validated, and public downloads check publication status. These controls do not constitute an independent security audit.",
+      "challenges": "Apply consistent rules to different content types, file references, and publication states, while keeping uploaded files available across deployments.",
+      "solution": "The admin dashboard and CLI share validation and transactional content writes. Files uploaded through the admin interface are stored in PostgreSQL.",
+      "result": "The implementation supports creating, editing, publishing, archiving, and searching content, along with file management. No user adoption or commercial performance metrics are claimed.",
+      "lessonsLearned": "Publication status needs to be checked on detail pages, search results, and downloads as well as archive pages. Cached pages also require a clear revalidation strategy.",
+      "technologies": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "PostgreSQL",
+        "Prisma",
+        "Zod"
+      ],
+      "projectStatus": "Functional application; under active development"
+    }
+  },
+  {
+    "kind": "PROJECT",
+    "slug": "html-basics-va-baholash",
+    "title": "HTML Basics: From Practice to Assessment",
+    "summary": "A learning module for writing and previewing HTML in the browser, followed by a timed practical assessment accessed with a teacher-issued code.",
+    "body": "[HTML Basics](/playground/html-basics) teaches document structure, headings, links, and other foundations through practical exercises. Students edit starter code and inspect the result in a preview.\n\n## Two learning workflows\n\nRegular lessons support open practice. The [assessment](/playground/html-basics/assessment) is a separate attempt accessed with a teacher-issued code and governed by a server-side deadline.",
+    "status": "DRAFT",
+    "category": {
+      "name": "Web Development and Security",
+      "slug": "web-development-security"
+    },
+    "tags": [
+      {
+        "name": "HTML",
+        "slug": "html"
+      },
+      {
+        "name": "Education",
+        "slug": "education"
+      }
+    ],
+    "featured": true,
+    "project": {
+      "problem": "Reading a finished HTML example does not demonstrate whether a student can build a page independently.",
+      "objective": "Bring practice, preview, and feedback together, then assess both the submitted code and the reasoning behind it.",
+      "architecture": "Interactive exercises run in React components. The assessment API stores attempts and deadlines in PostgreSQL. The server uses parse5 to analyze submitted HTML structure.",
+      "securityConsiderations": "Access codes are stored as hashes. An HttpOnly cookie identifies an active attempt. Executable scripts and disallowed resources violate assessment rules. Browser activity signals cannot reliably identify outside assistance.",
+      "challenges": "Avoid relying on the browser clock, prevent concurrent attempt creation, and handle conflicting edits from multiple tabs.",
+      "solution": "The server sets the deadline, consumes access codes atomically, and checks save revisions. Questions account for 30 points, practical criteria for 60 points, and teacher-reviewed explanations for 10 points.",
+      "result": "The implementation includes individual access codes, autosave, HTML checks, teacher review, and CSV export. No statistical study of educational outcomes is claimed.",
+      "lessonsLearned": "Automated checks can assess structure, but evaluating meaning and the reasons behind a decision still requires teacher judgment.",
+      "technologies": [
+        "React",
+        "TypeScript",
+        "Next.js",
+        "PostgreSQL",
+        "parse5"
+      ],
+      "projectStatus": "Functional application; under active development"
+    }
+  },
+  {
+    "kind": "PROJECT",
+    "slug": "web-security-lab",
+    "title": "Web Security Lab: From Requests to Defenses",
+    "summary": "An interactive learning lab that explores HTTP, authentication, databases, and security vulnerabilities through 36 lessons.",
+    "body": "[Web Security Lab](/playground/web-security-lab) follows the browser → server → database journey. Lessons combine theory, tasks, and explanations.\n\n## Learning environment\n\nSQL examples run against a SQLite database containing three synthetic users, recreated for each call. This data is separate from the PostgreSQL database used by the portfolio and admin dashboard. Vulnerable and safe modes illustrate behavior within this teaching environment.",
+    "status": "DRAFT",
+    "category": {
+      "name": "Web Development and Security",
+      "slug": "web-development-security"
+    },
+    "tags": [
+      {
+        "name": "Web security",
+        "slug": "web-security"
+      },
+      {
+        "name": "Lab",
+        "slug": "lab"
+      }
+    ],
+    "featured": true,
+    "project": {
+      "problem": "Definitions alone can obscure the exact point at which a server makes an HTTP or security decision.",
+      "objective": "Observe requests and responses, distinguish authentication from authorization, and compare vulnerable and protected request handling.",
+      "architecture": "A React interface presents the lessons. Next.js routes under /api/lab handle requests. SQL lessons use node:sqlite to open a temporary in-memory database.",
+      "securityConsiderations": "Synthetic accounts and deliberately vulnerable modes exist for teaching. They must not be reused in a service that handles real user data.",
+      "challenges": "Show real HTTP responses while keeping experiments separate from the actual content database.",
+      "solution": "Each SQL request opens and closes a fresh in-memory database. The API adds a no-store header to teaching responses. Safe and vulnerable modes let learners compare authorization behavior.",
+      "result": "The implementation contains 36 lessons, request exercises, SQL, IDOR and XSS topics, and review questions. This project does not claim a vulnerability discovery in an external system.",
+      "lessonsLearned": "A useful exercise asks learners to explain which server-side check changed the outcome, rather than simply observing the result.",
+      "technologies": ["Next.js", "React", "TypeScript", "SQLite", "HTTP"],
+      "projectStatus": "Functional application; under active development"
+    }
+  },
+  {
+    "kind": "LAB",
+    "slug": "sql-parametrli-sorov-laboratoriyasi",
+    "title": "SQL Lab: String Concatenation and Parameterized Queries",
+    "summary": "A practical guide to comparing values inserted into SQL text with bound parameters inside the built-in teaching lab.",
+    "body": "This guide accompanies the SQL lesson inside CyberValue. Its findings describe the behavior expected from the endpoint implementation.\n\nOpen the SQL lesson in [Web Security Lab](/playground/web-security-lab). For each attempt, record the mode, input value, and number of returned rows side by side.",
+    "status": "DRAFT",
+    "category": {
+      "name": "Web Development and Security",
+      "slug": "web-development-security"
+    },
+    "tags": [
+      {
+        "name": "Web security",
+        "slug": "web-security"
+      }
+    ],
+    "relatedSlugs": ["web-security-lab"],
+    "lab": {
+      "environment": "CyberValue Web Security Lab; synthetic data",
+      "tools": ["Browser", "DevTools Network", "CyberValue Playground"],
+      "authorized": true,
+      "difficulty": "BEGINNER",
+      "objective": "Explain when a user-supplied value is kept separate from the SQL command text.",
+      "methodology": "1. Submit the ordinary value ali in both modes.\n2. Try the lesson interface’s test input in vulnerable mode, then in safe mode.\n3. Compare the query, parameters, and count fields.\n4. Explain the difference in terms of query structure.",
+      "discovery": "The vulnerable endpoint branch inserts the username into a SQL string. The safe branch prepares WHERE username = ? and binds the value separately.",
+      "analysis": "In the first approach, input characters can affect query syntax. In the second, the same input is treated as a single parameter value. The in-memory database is recreated for every call.",
+      "impact": "Within the exercise, incorrect filtering can return more rows from the synthetic table than intended. This exercise does not measure impact on a real system.",
+      "remediation": "Pass values through query parameters. Do not insert user text directly into dynamic SQL identifiers such as table or column names; select from predefined allowed options when needed.",
+      "lessonsLearned": "Record the protected mode’s response to the same input alongside the vulnerable result."
+    }
+  },
+  {
+    "kind": "LAB",
+    "slug": "idor-ruxsat-tekshiruvi",
+    "title": "IDOR Lab: User IDs and Object-Level Authorization",
+    "summary": "Compare access to your own profile and another synthetic user’s profile to understand object-level authorization in the teaching lab.",
+    "body": "This exercise uses only the synthetic accounts inside [Web Security Lab](/playground/web-security-lab). It demonstrates why knowing a resource ID does not grant permission to read it.\n\nThe implementation’s rule is simple: in safe mode, a user must own the requested record or have the admin role.",
+    "status": "DRAFT",
+    "category": {
+      "name": "Web Development and Security",
+      "slug": "web-development-security"
+    },
+    "tags": [
+      {
+        "name": "Web security",
+        "slug": "web-security"
+      }
+    ],
+    "relatedSlugs": ["web-security-lab"],
+    "lab": {
+      "environment": "CyberValue Web Security Lab; synthetic data",
+      "tools": ["Browser", "DevTools Network", "CyberValue Playground"],
+      "authorized": true,
+      "difficulty": "BEGINNER",
+      "objective": "Distinguish signing in from having permission to read a particular profile.",
+      "methodology": "1. Sign in with the ordinary user account shown in the lab.\n2. Request your own profile in safe mode.\n3. Request the second synthetic user’s ID in safe mode.\n4. Compare the same ID in vulnerable mode.\n5. Record the HTTP status and authorization_checked field.",
+      "discovery": "The safe branch compares the target ID with the session user’s ID and checks the admin role. Vulnerable mode skips that specific check.",
+      "analysis": "When an ordinary user requests another user’s ID in safe mode, the code returns 403. Vulnerable mode can return the existing synthetic profile. Both branches still require the user to be signed in.",
+      "impact": "The exercise illustrates missing authorization through access to another synthetic user’s profile. It does not test external services or real accounts.",
+      "remediation": "Check ownership or the relevant permission on the server before each resource operation. Hiding a frontend button does not replace this check.",
+      "lessonsLearned": "Authorization tests should cover at least three cases: the user’s own resource, another user’s resource, and an unauthenticated request."
+    }
+  },
+  {
+    "kind": "RESEARCH",
+    "slug": "semantik-html-tuzilmasi",
+    "title": "Semantic HTML: Structure That Communicates Meaning",
+    "summary": "A short guide to choosing header, nav, main, and footer by purpose and reviewing document structure in HTML Basics.",
+    "body": "## Core idea\n\nChoose HTML elements for their purpose in the content. Use main for primary content, nav for major navigation, and article for a self-contained article. Headings communicate relationships between sections.\n\n## Practice\n\nBuild a short lesson page in HTML Basics with a page title, navigation, main lesson content, and an author note at the bottom. Then set visual styling aside and check whether the element order still communicates the content clearly.\n\n## Review questions\n\n- Is the main content easy to locate?\n- Does each link’s text explain its destination?\n- Do section headings describe their content?\n\nThis is an introductory learning note, not a complete accessibility audit.\n\n## Source\n\n[MDN: Structuring documents](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Structuring_documents).",
+    "status": "DRAFT",
+    "category": {
+      "name": "Web Development and Security",
+      "slug": "web-development-security"
+    },
+    "tags": [],
+    "research": {
+      "references": [
+        "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Structuring_documents"
+      ]
+    },
+    "relatedSlugs": ["html-basics-va-baholash"]
+  },
+  {
+    "kind": "RESEARCH",
+    "slug": "autentifikatsiya-va-avtorizatsiya",
+    "title": "Authentication and Authorization: Two Separate Questions",
+    "summary": "Use a profile request to understand the difference between identifying a user and checking access to a specific resource.",
+    "body": "## Identify the user\n\nAuthentication establishes who is making a request. Authorization determines whether that user may perform the requested operation. Signing in successfully does not grant access to every resource.\n\n## The CyberValue example\n\nIn the built-in lab, an ordinary user can open their own profile. When requesting another synthetic user’s ID, safe mode checks ownership or the admin role. Follow the IDOR guide to compare these cases.\n\n## Review questions\n\n- Who owns the requested identifier?\n- Is the operation a read, update, or deletion?\n- Does the server check permission for every request?\n- Is access denied when no explicit permission applies?\n\n## Source\n\n[OWASP: Authorization Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html).",
+    "status": "DRAFT",
+    "category": {
+      "name": "Web Development and Security",
+      "slug": "web-development-security"
+    },
+    "tags": [],
+    "research": {
+      "references": [
+        "https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html"
+      ]
+    },
+    "relatedSlugs": ["idor-ruxsat-tekshiruvi"]
+  },
+  {
+    "kind": "RESEARCH",
+    "slug": "sql-kod-va-malumot",
+    "title": "SQL Security: Keeping Commands Separate from Data",
+    "summary": "An introduction to parameterized queries using the two code paths in CyberValue’s SQL teaching lab.",
+    "body": "## Where the problem begins\n\nInserting user text into a SQL command can blur the boundary between data and instructions. Parameterized queries keep values separate from query structure.\n\n## An example from the implementation\n\nIn CyberValue’s lab, safe mode prepares WHERE username = ? and supplies the username separately. Vulnerable mode inserts the value into the SQL string. Each call operates only on a temporary synthetic table.\n\n## Scope and limits\n\nParameters generally represent values. Dynamic table or column names may need to come from predefined allowed options. Parameterized queries do not replace checks on the user’s permission to access an object.\n\n## Practice\n\nComplete the SQL guide’s observation table: mode, input, parameters, and returned row count. Explain the reason for the difference in two sentences.\n\n## Source\n\n[OWASP: SQL Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html).",
+    "status": "DRAFT",
+    "category": {
+      "name": "Web Development and Security",
+      "slug": "web-development-security"
+    },
+    "tags": [],
+    "research": {
+      "references": [
+        "https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html"
+      ]
+    },
+    "relatedSlugs": ["sql-parametrli-sorov-laboratoriyasi"]
+  },
+  {
+    "kind": "RESOURCE",
+    "slug": "html-tekshiruv-royxati",
+    "title": "HTML Page Review Checklist",
+    "summary": "A downloadable Markdown checklist for reviewing document structure, text, and navigation before submitting an HTML exercise.",
+    "body": "## About this resource\n\nA downloadable Markdown checklist for reviewing document structure, text, and navigation before submitting an HTML exercise.\n\nThe file is a UTF-8 Markdown document. Open it in a text editor to annotate or print it.\n\n## How to use it\n\n1. Download the resource.\n2. Open the corresponding Playground exercise.\n\n3. Follow the checklist or instructions.\n4. Save your results with your own notes.\n\nLanguage: English. Version: 1.0.",
+    "status": "DRAFT",
+    "category": {
+      "name": "Web Development and Security",
+      "slug": "web-development-security"
+    },
+    "tags": [],
+    "relatedSlugs": ["html-basics-va-baholash", "semantik-html-tuzilmasi"],
+    "resource": {
+      "type": "Markdown guide",
+      "filePath": "/downloads/html-tekshiruv-royxati.md",
+      "topic": "HTML",
+      "version": "1.0"
+    }
+  },
+  {
+    "kind": "RESOURCE",
+    "slug": "xavfsizlik-lab-qaydnomasi",
+    "title": "Security Lab Worksheet",
+    "summary": "A Markdown template for recording requests, expected responses, observed results, and conclusions during SQL and IDOR exercises.",
+    "body": "## About this resource\n\nA Markdown template for recording requests, expected responses, observed results, and conclusions during SQL and IDOR exercises.\n\nThe file is a UTF-8 Markdown document. Open it in a text editor to annotate or print it.\n\n## How to use it\n\n1. Download the resource.\n2. Open the corresponding Playground exercise.\n\n3. Follow the checklist or instructions.\n4. Save your results with your own notes.\n\nLanguage: English. Version: 1.0.",
+    "status": "DRAFT",
+    "category": {
+      "name": "Web Development and Security",
+      "slug": "web-development-security"
+    },
+    "tags": [],
+    "relatedSlugs": [
+      "web-security-lab",
+      "sql-parametrli-sorov-laboratoriyasi",
+      "idor-ruxsat-tekshiruvi"
+    ],
+    "resource": {
+      "type": "Markdown guide",
+      "filePath": "/downloads/xavfsizlik-lab-qaydnomasi.md",
+      "topic": "Web security",
+      "version": "1.0"
+    }
+  },
+  {
+    "kind": "RESOURCE",
+    "slug": "html-sinov-oqituvchi-qollanmasi",
+    "title": "HTML Assessment: A Quick Guide for Teachers",
+    "summary": "A downloadable guide to distributing access codes, managing timed attempts, and reviewing final assessment results.",
+    "body": "## About this resource\n\nA downloadable guide to distributing access codes, managing timed attempts, and reviewing final assessment results.\n\nThe file is a UTF-8 Markdown document. Open it in a text editor to annotate or print it.\n\n## How to use it\n\n1. Download the resource.\n2. Open the corresponding Playground exercise.\n\n3. Follow the checklist or instructions.\n4. Save your results with your own notes.\n\nLanguage: English. Version: 1.0.",
+    "status": "DRAFT",
+    "category": {
+      "name": "Web Development and Security",
+      "slug": "web-development-security"
+    },
+    "tags": [],
+    "relatedSlugs": ["html-basics-va-baholash"],
+    "resource": {
+      "type": "Markdown guide",
+      "filePath": "/downloads/html-sinov-oqituvchi-qollanmasi.md",
+      "topic": "Assessment",
+      "version": "1.0"
+    }
+  }
+]

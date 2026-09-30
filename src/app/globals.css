@@ -167,7 +167,7 @@ svg {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 28px;
+  gap: 16px;
 }
 .wordmark {
   display: inline-flex;
@@ -191,7 +191,7 @@ svg {
 .navigation {
   display: flex;
   align-items: center;
-  gap: 26px;
+  gap: 18px;
 }
 .navigation > a {
   color: #a5aba4;
@@ -229,6 +229,55 @@ svg {
   background: transparent;
   border: 0;
   padding: 10px;
+}
+.language-control {
+  flex-shrink: 0;
+  position: relative;
+}
+.content-language-note {
+  padding-block: 14px;
+  margin-block: 16px;
+  color: var(--muted);
+  border-bottom: 1px solid #424940;
+  font-size: 13px;
+}
+.language-switcher {
+  display: flex;
+  border: 1px solid #424940;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.language-switcher button {
+  min-height: 40px;
+  min-width: 38px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.language-switcher button[aria-pressed="true"] {
+  background: var(--accent);
+  color: #18220e;
+  font-weight: 700;
+}
+.language-switcher button:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: -3px;
+}
+.language-switcher button:disabled {
+  cursor: wait;
+}
+.language-control > [role="alert"] {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 230px;
+  padding: 12px;
+  background: var(--bg);
+  border: 1px solid var(--accent);
+  font-size: 12px;
 }
 .hero {
   display: grid;
@@ -1403,6 +1452,41 @@ svg {
   }
   .lower-grid {
     gap: 25px;
+  }
+}
+@media (max-width: 1200px) {
+  .header-inner {
+    height: 74px;
+    padding-inline: 16px;
+    gap: 8px;
+  }
+  .header-inner > .wordmark {
+    margin-right: auto;
+    font-size: 21px;
+  }
+  .header-inner > .menu-toggle {
+    display: flex;
+    order: 3;
+  }
+  .header-inner > .navigation {
+    display: none;
+    position: absolute;
+    top: 74px;
+    left: 0;
+    right: 0;
+    background: #151a13;
+    border-bottom: 1px solid #4b593e;
+    padding: 18px 16px;
+  }
+  .header-inner > .navigation.is-open {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .header-inner > .navigation > a {
+    padding: 12px;
+    min-height: 44px;
+    overflow-wrap: anywhere;
   }
 }
 @media (max-width: 850px) {

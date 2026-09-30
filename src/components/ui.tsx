@@ -1,3 +1,5 @@
+import { getLocale, getTranslator } from "@/lib/i18n/server";
+import type { Locale } from "@/lib/i18n";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -48,7 +50,7 @@ export function ArrowLink({
     </Link>
   );
 }
-export function SectionHeading({
+export async function SectionHeading({
   number,
   title,
   href,
@@ -59,23 +61,25 @@ export function SectionHeading({
   href?: string;
   link?: string;
 }) {
+  const t = await getTranslator();
   return (
     <div className="section-heading">
       <div className="section-title">
         <span className="index-label">{number}</span>
-        <h2>{title}</h2>
+        <h2>{t(title)}</h2>
       </div>
-      {href && <ArrowLink href={href}>{link ?? "View all"}</ArrowLink>}
+      {href && <ArrowLink href={href}>{t(link ?? "View all")}</ArrowLink>}
     </div>
   );
 }
-export function EmptyState({
+export async function EmptyState({
   collection,
   filtered = false,
 }: {
   collection: Collection;
   filtered?: boolean;
 }) {
+  const t = await getTranslator();
   const item = collections[collection];
   const Icon = icons[collection];
   return (
@@ -84,23 +88,27 @@ export function EmptyState({
         <Icon size={27} strokeWidth={1.4} />
       </div>
       <span className="eyebrow">
-        {filtered ? "No matching entries" : "An archive in the making"}
+        {filtered ? t("No matching entries") : t("An archive in the making")}
       </span>
-      <h2>{filtered ? "No results for these filters." : item.empty}</h2>
+      <h2>{filtered ? t("No results for these filters.") : t(item.empty)}</h2>
       <p>
         {filtered
-          ? "Try a broader search or clear the filters to see all published entries."
-          : item.detail}
+          ? t(
+              "Try a broader search or clear the filters to see all published entries.",
+            )
+          : t(item.detail)}
       </p>
       {filtered ? (
-        <ArrowLink href={`/${collection}`}>Clear filters</ArrowLink>
+        <ArrowLink href={`/${collection}`}>{t("Clear filters")}</ArrowLink>
       ) : (
-        <ArrowLink href="/about">Get to know Rawshanbek</ArrowLink>
+        <ArrowLink href="/about">{t("Get to know Rawshanbek")}</ArrowLink>
       )}
     </div>
   );
 }
-export function EntryCard({ entry }: { entry: Entry }) {
+export async function EntryCard({ entry }: { entry: Entry }) {
+  const t = await getTranslator();
+  const locale = await getLocale();
   const collection = collectionFor(entry.kind);
   const Icon = icons[collection];
   return (
@@ -108,10 +116,10 @@ export function EntryCard({ entry }: { entry: Entry }) {
       <div className="card-top">
         <span className={`kind-label kind-${collection}`}>
           <Icon size={15} />
-          {collections[collection].singular}
+          {t(collections[collection].singular)}
         </span>
         <span className="mono muted">
-          {entry.publishedAt && formatDate(entry.publishedAt)}
+          {entry.publishedAt && formatDate(entry.publishedAt, locale)}
         </span>
       </div>
       <h3>
@@ -131,23 +139,27 @@ export function EntryCard({ entry }: { entry: Entry }) {
     </article>
   );
 }
-export function formatDate(date: Date) {
-  return new Intl.DateTimeFormat("en", {
+export function formatDate(date: Date, locale: Locale = "en") {
+  return new Intl.DateTimeFormat(locale, {
     month: "short",
     day: "numeric",
     year: "numeric",
     timeZone: "UTC",
   }).format(date);
 }
-export function Breadcrumbs({
+export async function Breadcrumbs({
   items,
 }: {
   items: { label: string; href: string }[];
 }) {
-  const all = [{ label: "Home", href: "/" }, ...items];
+  const t = await getTranslator();
+  const all = [{ label: "Home", href: "/" }, ...items].map((item) => ({
+    ...item,
+    label: t(item.label),
+  }));
   return (
     <>
-      <nav aria-label="Breadcrumb" className="breadcrumbs">
+      <nav aria-label={t("Breadcrumb")} className="breadcrumbs">
         <ol>
           {all.map((item, i) => (
             <li key={item.href}>
@@ -176,7 +188,8 @@ export function Breadcrumbs({
     </>
   );
 }
-export function ArchiveTile({ collection }: { collection: Collection }) {
+export async function ArchiveTile({ collection }: { collection: Collection }) {
+  const t = await getTranslator();
   const item = collections[collection];
   const Icon = icons[collection];
   return (
@@ -186,12 +199,12 @@ export function ArchiveTile({ collection }: { collection: Collection }) {
         <ArrowUpRight size={18} />
       </div>
       <div>
-        <span className="eyebrow">{item.eyebrow}</span>
-        <h3>{item.title}</h3>
-        <p>{item.description}</p>
+        <span className="eyebrow">{t(item.eyebrow)}</span>
+        <h3>{t(item.title)}</h3>
+        <p>{t(item.description)}</p>
       </div>
       <span className="tile-link">
-        Explore {item.title.toLowerCase()}
+        {t("Explore {collection}", { collection: t(item.title) })}
         <ArrowRight size={15} />
       </span>
     </Link>

@@ -1,3 +1,4 @@
+import { getLocale, getTranslator } from "@/lib/i18n/server";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -38,6 +39,8 @@ export const generateMetadata = () =>
   );
 
 export default async function Home() {
+  const t = await getTranslator();
+  const locale = await getLocale();
   const [featured, recent, socials] = await Promise.all([
     getFeatured(),
     getRecent(4),
@@ -56,7 +59,7 @@ export default async function Home() {
           "@type": "WebSite",
           name: site.name,
           url: site.url,
-          description: site.description,
+          description: t(site.description),
           author: { "@id": `${site.url}/about#person` },
         }}
       />
@@ -64,67 +67,72 @@ export default async function Home() {
         <section className="cv-hero container" aria-labelledby="home-title">
           <div className="cv-hero-copy">
             <span className="cv-kicker">
-              <span className="status-dot" /> THE CURIOSITY TO BUILD. THE
-              MINDSET TO DEFEND.
+              <span className="status-dot" />{" "}
+              {t("THE CURIOSITY TO BUILD. THE MINDSET TO DEFEND.")}
             </span>
             <h1 id="home-title">
-              Understand.
+              {t("Understand.")}
               <br />
-              Build.
+              {t("Build.")}
               <br />
-              <span>Outsmart.</span>
+              <span>{t("Outsmart.")}</span>
             </h1>
             <p>
-              A hands-on space for cybersecurity and software development. Turn
-              curiosity into working code, better questions, and stronger
-              defenses.
+              {t(
+                "A hands-on space for cybersecurity and software development. Turn curiosity into working code, better questions, and stronger defenses.",
+              )}
             </p>
             <div className="cv-hero-actions">
               <Link className="button button-primary" href="/playground">
-                Enter the playground <ArrowUpRight size={18} />
+                {t("Enter the playground")}
+                <ArrowUpRight size={18} />
               </Link>
               <a className="cv-secondary-link" href="#explore">
-                Explore the platform <ArrowRight size={16} />
+                {t("Explore the platform")}
+                <ArrowRight size={16} />
               </a>
             </div>
             <div className="cv-author">
               <Fingerprint size={28} />
               <div>
-                <span>Built by {site.person}</span>
-                <span>Learn by doing. Share what you discover.</span>
+                <span>
+                  {t("Built by")} {site.person}
+                </span>
+                <span>{t("Learn by doing. Share what you discover.")}</span>
               </div>
             </div>
           </div>
           <div className="cv-workspace">
             <div className="cv-workspace-caption">
               <span>
-                <span className="status-dot" /> YOUR NEXT SKILL STARTS HERE
+                <span className="status-dot" />{" "}
+                {t("YOUR NEXT SKILL STARTS HERE")}
               </span>
-              <span>WORKSPACE / 01</span>
+              <span>{t("WORKSPACE / 01")}</span>
             </div>
             <PracticePreview />
             <div className="cv-workspace-note">
-              <ShieldCheck size={15} /> Security exercises run against prepared
-              sandbox data.
+              <ShieldCheck size={15} />{" "}
+              {t("Security exercises run against prepared sandbox data.")}
             </div>
           </div>
         </section>
         <div className="cv-stats container">
           <div>
             <strong>{lessonCount.toString().padStart(2, "0")}</strong>
-            <span>Hands-on lessons</span>
+            <span>{t("Hands-on lessons")}</span>
           </div>
           <div>
             <strong>{tracks.length.toString().padStart(2, "0")}</strong>
-            <span>Learning tracks</span>
+            <span>{t("Learning tracks")}</span>
           </div>
           <div>
             <Code2 size={26} />
-            <span>Code. Preview. Improve.</span>
+            <span>{t("Code. Preview. Improve.")}</span>
           </div>
           <div>
             <ShieldCheck size={26} />
-            <span>Practice with purpose</span>
+            <span>{t("Practice with purpose")}</span>
           </div>
         </div>
       </div>
@@ -132,16 +140,17 @@ export default async function Home() {
         <section className="cv-section" id="explore">
           <div className="cv-section-intro">
             <div>
-              <span className="eyebrow">01 / THE PLAYGROUND</span>
+              <span className="eyebrow">{t("01 / THE PLAYGROUND")}</span>
               <h2>
-                Less watching.
+                {t("Less watching.")}
                 <br />
-                <span>More figuring it out.</span>
+                <span>{t("More figuring it out.")}</span>
               </h2>
             </div>
             <p>
-              Pick a path, work through a real exercise, and build understanding
-              one lesson at a time.
+              {t(
+                "Pick a path, work through a real exercise, and build understanding one lesson at a time.",
+              )}
             </p>
           </div>
           <CtfGateway />
@@ -151,13 +160,15 @@ export default async function Home() {
         </section>
         <section className="cv-feature-band" aria-labelledby="method-title">
           <div>
-            <span className="eyebrow">THE CYBERVALUE METHOD</span>
+            <span className="eyebrow">{t("THE CYBERVALUE METHOD")}</span>
             <h2 id="method-title">
-              Don’t just know the answer.
+              {t("Don’t just know the answer.")}
               <br />
-              Know why it works.
+              {t("Know why it works.")}
             </h2>
-            <ArrowLink href="/about">The thinking behind CyberValue</ArrowLink>
+            <ArrowLink href="/about">
+              {t("The thinking behind CyberValue")}
+            </ArrowLink>
           </div>
           <ol>
             {[
@@ -181,8 +192,8 @@ export default async function Home() {
                 <span className="cv-step">0{index + 1}</span>
                 <Icon size={19} />
                 <div>
-                  <h3>{title}</h3>
-                  <p>{text}</p>
+                  <h3>{t(title)}</h3>
+                  <p>{t(text)}</p>
                 </div>
               </li>
             ))}
@@ -192,9 +203,9 @@ export default async function Home() {
           <section className="cv-section">
             <SectionHeading
               number="02"
-              title="Built with intention"
+              title={t("Built with intention")}
               href="/work"
-              link="All work"
+              link={t("All work")}
             />
             <div className="entry-grid">
               {featured.map((entry) => (
@@ -206,10 +217,10 @@ export default async function Home() {
         <section className="cv-section" aria-labelledby="knowledge-title">
           <div className="cv-section-intro">
             <div>
-              <span className="eyebrow">THE KNOWLEDGE BASE</span>
-              <h2 id="knowledge-title">Follow your curiosity.</h2>
+              <span className="eyebrow">{t("THE KNOWLEDGE BASE")}</span>
+              <h2 id="knowledge-title">{t("Follow your curiosity.")}</h2>
             </div>
-            <ArrowLink href="/search">Search the archive</ArrowLink>
+            <ArrowLink href="/search">{t("Search the archive")}</ArrowLink>
           </div>
           <div className="cv-explore-grid">
             {[
@@ -244,10 +255,10 @@ export default async function Home() {
             ].map(({ href, icon: Icon, title, text, label }) => (
               <Link className="cv-explore-card" href={href} key={href}>
                 <Icon size={24} strokeWidth={1.5} />
-                <h3>{title}</h3>
-                <p>{text}</p>
+                <h3>{t(title)}</h3>
+                <p>{t(text)}</p>
                 <span>
-                  {label}
+                  {t(label)}
                   <ArrowUpRight size={16} />
                 </span>
               </Link>
@@ -258,19 +269,29 @@ export default async function Home() {
           <section className="cv-section">
             <SectionHeading
               number="↳"
-              title="Fresh from the logbook"
+              title={t("Fresh from the logbook")}
               href="/activity"
-              link="All activity"
+              link={t("All activity")}
             />
             <div className="cv-logbook">
               {recent.map((entry) => (
                 <Link key={entry.id} href={contentUrl(entry)}>
                   <span className="cv-log-kind">
-                    {entry.kind.toLowerCase()}
+                    {t(
+                      entry.kind === "PROJECT"
+                        ? "Project"
+                        : entry.kind === "LAB"
+                          ? "Lab"
+                          : entry.kind === "RESOURCE"
+                            ? "Resource"
+                            : entry.kind === "RESEARCH"
+                              ? "Research"
+                              : "CTF",
+                    )}
                   </span>
                   <h3>{entry.title}</h3>
                   <span className="cv-log-date">
-                    {entry.publishedAt && formatDate(entry.publishedAt)}
+                    {entry.publishedAt && formatDate(entry.publishedAt, locale)}
                   </span>
                   <ArrowUpRight size={18} />
                 </Link>
@@ -283,17 +304,24 @@ export default async function Home() {
             ↗
           </div>
           <div>
-            <span className="eyebrow">GOOD QUESTIONS LEAD TO GOOD WORK</span>
+            <span className="eyebrow">
+              {t("GOOD QUESTIONS LEAD TO GOOD WORK")}
+            </span>
             <h2>
-              Let’s build something
+              {t("Let’s build something")}
               <br />
-              worth understanding.
+              {t("worth understanding.")}
             </h2>
-            <p>Ideas, technical conversations, and thoughtful collaboration.</p>
+            <p>
+              {t(
+                "Ideas, technical conversations, and thoughtful collaboration.",
+              )}
+            </p>
           </div>
           <div className="cv-connect-actions">
             <Link href="/about#connect" className="button button-primary">
-              Let’s connect <ArrowUpRight size={17} />
+              {t("Let’s connect")}
+              <ArrowUpRight size={17} />
             </Link>
             {socials.length > 0 && (
               <div className="cv-socials">

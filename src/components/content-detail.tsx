@@ -1,3 +1,4 @@
+import { getLocale, getTranslator } from "@/lib/i18n/server";
 import Image from "next/image";
 import { Download } from "lucide-react";
 import type { Entry } from "@/lib/content";
@@ -6,15 +7,18 @@ import { Markdown } from "./markdown";
 import { ArrowLink, formatDate } from "./ui";
 import { TechList } from "./tech-badge";
 
-function Section({ title, value }: { title: string; value: string }) {
+async function Section({ title, value }: { title: string; value: string }) {
+  const t = await getTranslator();
   return (
     <section className="article-section">
-      <h2>{title}</h2>
+      <h2>{t(title)}</h2>
       <Markdown>{value}</Markdown>
     </section>
   );
 }
-export function ContentDetail({ entry }: { entry: Entry }) {
+export async function ContentDetail({ entry }: { entry: Entry }) {
+  const t = await getTranslator();
+  const locale = await getLocale();
   const p = entry.project;
   const l = entry.lab;
   const c = entry.ctf;
@@ -57,14 +61,14 @@ export function ContentDetail({ entry }: { entry: Entry }) {
         {c && (
           <>
             <section className="article-section">
-              <h2>Challenges solved</h2>
+              <h2>{t("Challenges solved")}</h2>
               <ul className="prose">
                 {c.challengesSolved.map((challenge) => (
                   <li key={challenge}>{challenge}</li>
                 ))}
               </ul>
             </section>
-            <Section title="Lessons learned" value={c.lessonsLearned} />
+            <Section title={t("Lessons learned")} value={c.lessonsLearned} />
           </>
         )}
         {entry.images
@@ -83,7 +87,7 @@ export function ContentDetail({ entry }: { entry: Entry }) {
           ))}
         {!!entry.research?.references.length && (
           <section className="article-section references">
-            <h2>References</h2>
+            <h2>{t("References")}</h2>
             <ul className="prose">
               {entry.research.references
                 .filter((url) => safeLink(url))
@@ -99,26 +103,26 @@ export function ContentDetail({ entry }: { entry: Entry }) {
         )}
       </div>
       <aside className="article-aside">
-        <h2>At a glance</h2>
+        <h2>{t("At a glance")}</h2>
         <dl>
           <div>
-            <dt>Author</dt>
+            <dt>{t("Author")}</dt>
             <dd>{entry.author.name}</dd>
           </div>
           {entry.category && (
             <div>
-              <dt>Category</dt>
+              <dt>{t("Category")}</dt>
               <dd>{entry.category.name}</dd>
             </div>
           )}
           {p && (
             <>
               <div>
-                <dt>Status</dt>
+                <dt>{t("Status")}</dt>
                 <dd>{p.projectStatus}</dd>
               </div>
               <div>
-                <dt>Technologies</dt>
+                <dt>{t("Technologies")}</dt>
                 <dd>
                   <TechList items={p.technologies} />
                 </dd>
@@ -128,15 +132,15 @@ export function ContentDetail({ entry }: { entry: Entry }) {
           {l && (
             <>
               <div>
-                <dt>Environment</dt>
+                <dt>{t("Environment")}</dt>
                 <dd>{l.environment}</dd>
               </div>
               <div>
-                <dt>Difficulty</dt>
+                <dt>{t("Difficulty")}</dt>
                 <dd>{l.difficulty.toLowerCase()}</dd>
               </div>
               <div>
-                <dt>Tools</dt>
+                <dt>{t("Tools")}</dt>
                 <dd>
                   <TechList items={l.tools} />
                 </dd>
@@ -146,27 +150,27 @@ export function ContentDetail({ entry }: { entry: Entry }) {
           {c && (
             <>
               <div>
-                <dt>Event</dt>
+                <dt>{t("Event")}</dt>
                 <dd>{c.eventName}</dd>
               </div>
               <div>
-                <dt>Event date</dt>
-                <dd>{formatDate(c.eventDate)}</dd>
+                <dt>{t("Event date")}</dt>
+                <dd>{formatDate(c.eventDate, locale)}</dd>
               </div>
               {c.location && (
                 <div>
-                  <dt>Location</dt>
+                  <dt>{t("Location")}</dt>
                   <dd>{c.location}</dd>
                 </div>
               )}
               {c.placement && (
                 <div>
-                  <dt>Placement</dt>
+                  <dt>{t("Placement")}</dt>
                   <dd>{c.placement}</dd>
                 </div>
               )}
               <div>
-                <dt>Categories</dt>
+                <dt>{t("Categories")}</dt>
                 <dd>{c.categories.join(", ")}</dd>
               </div>
             </>
@@ -174,25 +178,25 @@ export function ContentDetail({ entry }: { entry: Entry }) {
           {r && (
             <>
               <div>
-                <dt>Format</dt>
+                <dt>{t("Format")}</dt>
                 <dd>{r.type}</dd>
               </div>
               <div>
-                <dt>Version</dt>
+                <dt>{t("Version")}</dt>
                 <dd>{r.version}</dd>
               </div>
               <div>
-                <dt>Topic</dt>
+                <dt>{t("Topic")}</dt>
                 <dd>{r.topic}</dd>
               </div>
             </>
           )}
         </dl>
         {p && safeLink(p.repositoryUrl) && (
-          <ArrowLink href={p.repositoryUrl!}>View source code</ArrowLink>
+          <ArrowLink href={p.repositoryUrl!}>{t("View source code")}</ArrowLink>
         )}
         {p && safeLink(p.liveUrl) && (
-          <ArrowLink href={p.liveUrl!}>Visit the project</ArrowLink>
+          <ArrowLink href={p.liveUrl!}>{t("Visit the project")}</ArrowLink>
         )}
         {r && resourcePath.safeParse(r.filePath).success && (
           <a
@@ -201,7 +205,7 @@ export function ContentDetail({ entry }: { entry: Entry }) {
             download
           >
             <Download size={16} />
-            Download resource
+            {t("Download resource")}
           </a>
         )}
       </aside>

@@ -1,5 +1,6 @@
 import { ProjectStudio } from "@/components/playground/studio/ProjectStudio";
 import { metadata } from "@/lib/seo";
+import { ContentLanguage } from "@/components/content-language";
 
 export const generateMetadata = () =>
   metadata(
@@ -9,5 +10,9 @@ export const generateMetadata = () =>
   );
 
 export default function StudioPage() {
-  return <ProjectStudio />;
+  return (
+    <ContentLanguage language="en">
+      <ProjectStudio />
+    </ContentLanguage>
+  );
 }

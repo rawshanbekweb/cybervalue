@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Fingerprint } from "lucide-react";
 import { Navigation } from "@/components/navigation";
+import { LanguageSwitcher } from "./language-switcher";
+import { useTranslator } from "./locale-provider";
 
 export function SiteHeader({
   items,
@@ -11,12 +13,13 @@ export function SiteHeader({
   items: { href: string; label: string }[];
 }) {
   const pathname = usePathname();
+  const t = useTranslator();
   if (pathname?.startsWith("/concept")) return null;
 
   return (
     <header className="site-header">
       <div className="header-inner">
-        <Link className="wordmark" href="/" aria-label="CyberValue home">
+        <Link className="wordmark" href="/" aria-label={t("CyberValue home")}>
           <span className="brand-mark">
             <Fingerprint size={23} />
           </span>
@@ -24,6 +27,7 @@ export function SiteHeader({
           <span className="brand-period">.</span>
         </Link>
         <Navigation items={items} />
+        <LanguageSwitcher />
       </div>
     </header>
   );

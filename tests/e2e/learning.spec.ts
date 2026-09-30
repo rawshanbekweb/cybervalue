@@ -1,5 +1,22 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+test.use({
+  storageState: {
+    cookies: [
+      {
+        name: "cybervalue-locale",
+        value: "en",
+        domain: "localhost",
+        path: "/",
+        expires: -1,
+        httpOnly: true,
+        secure: false,
+        sameSite: "Lax",
+      },
+    ],
+    origins: [],
+  },
+});
 
 test("learning catalog filters lessons and opens the selected HTML exercise", async ({
   page,

@@ -1,4 +1,5 @@
 "use client";
+import { useTranslator } from "@/components/locale-provider";
 
 import { useMemo, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
@@ -52,6 +53,7 @@ function selectedChallenge(): ChallengeId {
 }
 
 export function SignalCTF() {
+  const t = useTranslator();
   const selected = useSyncExternalStore(
     subscribe,
     selectedChallenge,
@@ -141,64 +143,67 @@ export function SignalCTF() {
   }
 
   return (
-    <div className="ctf-root" lang="uz">
+    <div className="ctf-root">
       <div className="ctf-shell container">
         <div className="ctf-topline">
           <Link href="/playground">
-            <ArrowLeft size={14} /> Playground
+            <ArrowLeft size={14} /> {t("Playground")}
           </Link>
           <span>
-            <span className="ctf-led" /> INTERAKTIV CTF / VOL. 01
+            <span className="ctf-led" /> {t("INTERAKTIV CTF / VOL. 01")}
           </span>
           <span className="ctf-session-label">
-            NOVA STATION · TRAINING SIMULATION
+            {t("NOVA STATION · TRAINING SIMULATION")}
           </span>
         </div>
 
         <header className="ctf-hero">
           <div className="ctf-hero-copy">
-            <span className="ctf-eyebrow">OPERATION: SO‘NGGI SIGNAL</span>
+            <span className="ctf-eyebrow">
+              {t("OPERATION: SO‘NGGI SIGNAL")}
+            </span>
             <h1>
-              SUKUTNI
+              {t("SUKUTNI")}
               <br />
-              <span>BUZING.</span>
+              <span>{t("BUZING.")}</span>
               <span className="ctf-title-dot" aria-hidden="true">
                 _
               </span>
             </h1>
             <p>
-              00:17. Stansiya jim bo‘lib qoldi. Besh tugun, yashirilgan izlar va
-              yuborilmagan bitta xabar. Uni topa olasizmi?
+              {t(
+                "00:17. Stansiya jim bo‘lib qoldi. Besh tugun, yashirilgan izlar va yuborilmagan bitta xabar. Uni topa olasizmi?",
+              )}
             </p>
             <a className="ctf-button ctf-button-bright" href="#operation-board">
               {complete
-                ? "Operatsiyani ko‘rish"
+                ? t("Operatsiyani ko‘rish")
                 : solved
-                  ? "Tergovni davom ettirish"
-                  : "Operatsiyani boshlash"}
+                  ? t("Tergovni davom ettirish")
+                  : t("Operatsiyani boshlash")}
               <ArrowDown size={17} />
             </a>
             <div className="ctf-hero-meta">
-              <span>01—05 TOPSHIRIQ</span>
+              <span>{t("01—05 TOPSHIRIQ")}</span>
               <i />
-              <span>25–40 DAQIQA</span>
+              <span>{t("25–40 DAQIQA")}</span>
               <i />
-              <span>HISOB KERAK EMAS</span>
+              <span>{t("HISOB KERAK EMAS")}</span>
             </div>
           </div>
           <div
             className={`ctf-radar-card ${complete ? "is-restored" : ""}`}
             aria-label={
               complete
-                ? "NOVA bilan aloqa tiklandi"
-                : "NOVA: oxirgi aloqa 00:17"
+                ? t("NOVA bilan aloqa tiklandi")
+                : t("NOVA: oxirgi aloqa 00:17")
             }
           >
             <div className="ctf-radar-top">
               <span>
                 <Radio size={14} /> NOVA / RX—17
               </span>
-              <span>{complete ? "ONLINE" : "SIGNAL LOST"}</span>
+              <span>{complete ? "ONLINE" : t("SIGNAL LOST")}</span>
             </div>
             <div className="ctf-radar" aria-hidden="true">
               <div className="ctf-radar-grid" />
@@ -215,14 +220,16 @@ export function SignalCTF() {
                 <Fingerprint size={39} strokeWidth={1} />
                 <strong>{complete ? "00:18" : "00:17"}</strong>
                 <span>
-                  {complete ? "ALOQA TIKLANDI" : "OXIRGI ALOQA / UTC"}
+                  {complete ? t("ALOQA TIKLANDI") : t("OXIRGI ALOQA / UTC")}
                 </span>
               </div>
               <span className="ctf-radar-coordinate">41° N / SECTOR 07</span>
             </div>
             <div className="ctf-radar-bottom">
               <span>
-                {complete ? "TRANSMISSION RECEIVED" : "WAITING FOR AN OPERATOR"}
+                {complete
+                  ? t("TRANSMISSION RECEIVED")
+                  : t("WAITING FOR AN OPERATOR")}
               </span>
               <span className="ctf-wave" aria-hidden="true">
                 ▁▂▅▂▁▃▆▂▁
@@ -231,16 +238,16 @@ export function SignalCTF() {
           </div>
         </header>
 
-        <section className="ctf-metrics" aria-label="Operatsiya holati">
+        <section className="ctf-metrics" aria-label={t("Operatsiya holati")}>
           <div>
-            <span className="ctf-eyebrow">SIZNING BALLINGIZ</span>
+            <span className="ctf-eyebrow">{t("SIZNING BALLINGIZ")}</span>
             <strong>
               {String(score).padStart(3, "0")}
               <small> / 900</small>
             </strong>
           </div>
           <div>
-            <span className="ctf-eyebrow">TIKLANGAN TUGUNLAR</span>
+            <span className="ctf-eyebrow">{t("TIKLANGAN TUGUNLAR")}</span>
             <strong>
               {String(solved).padStart(2, "0")}
               <small> / 05</small>
@@ -248,7 +255,8 @@ export function SignalCTF() {
           </div>
           <div className="ctf-progress-block">
             <label htmlFor="ctf-progress">
-              SIGNALNI TIKLASH <span>{solved * 20}%</span>
+              {t("SIGNALNI TIKLASH")}
+              <span>{solved * 20}%</span>
             </label>
             <progress id="ctf-progress" max={5} value={solved} />
           </div>
@@ -257,7 +265,7 @@ export function SignalCTF() {
             <span>
               OPERATOR
               <strong>
-                {complete ? "Aloqa tiklandi" : "Siz navbatchisiz"}
+                {complete ? t("Aloqa tiklandi") : t("Siz navbatchisiz")}
               </strong>
             </span>
           </div>
@@ -270,16 +278,18 @@ export function SignalCTF() {
         >
           <div className="ctf-section-heading">
             <div>
-              <span className="ctf-eyebrow">01 / OPERATSIYA XARITASI</span>
-              <h2 id="ctf-board-title">Izdan signalgacha.</h2>
+              <span className="ctf-eyebrow">
+                {t("01 / OPERATSIYA XARITASI")}
+              </span>
+              <h2 id="ctf-board-title">{t("Izdan signalgacha.")}</h2>
             </div>
             <p>
-              Istalgan ochiq tugundan boshlang.
+              {t("Istalgan ochiq tugundan boshlang.")}
               <br />
-              To‘rtta kalit yakuniy seyfni ochadi.
+              {t("To‘rtta kalit yakuniy seyfni ochadi.")}
             </p>
           </div>
-          <nav className="ctf-nodes" aria-label="CTF topshiriqlari">
+          <nav className="ctf-nodes" aria-label={t("CTF topshiriqlari")}>
             {CHALLENGES.map((item) => {
               const locked = item.id === "vault" && !unlocked;
               const done = !!progress[item.id].proof;
@@ -296,19 +306,23 @@ export function SignalCTF() {
                   <div className="ctf-node-top">
                     <span>{item.number}</span>
                     {done ? (
-                      <Check size={17} aria-label="Topildi" />
+                      <Check size={17} aria-label={t("Topildi")} />
                     ) : locked ? (
-                      <LockKeyhole size={16} aria-label="Qulflangan" />
+                      <LockKeyhole size={16} aria-label={t("Qulflangan")} />
                     ) : (
                       <ArrowRight size={16} />
                     )}
                   </div>
                   <span className="ctf-node-category">{item.category}</span>
-                  <h3>{item.title}</h3>
+                  <h3>{t(item.title)}</h3>
                   <div className="ctf-node-bottom">
                     <span>{item.points} PTS</span>
                     <span>
-                      {done ? "TIKLANDI" : locked ? "QULFLANGAN" : "OCHIQ"}
+                      {done
+                        ? t("TIKLANDI")
+                        : locked
+                          ? t("QULFLANGAN")
+                          : t("OCHIQ")}
                     </span>
                   </div>
                 </a>
@@ -317,43 +331,49 @@ export function SignalCTF() {
           </nav>
         </section>
 
-        <section className="ctf-workspace" aria-label="Tanlangan topshiriq">
+        <section
+          className="ctf-workspace"
+          aria-label={t("Tanlangan topshiriq")}
+        >
           <aside className="ctf-brief">
             <div className="ctf-case-number">
-              CASE / {challenge.number}
-              <span>{challenge.difficulty}</span>
+              {t("CASE /")}{" "}
+              {challenge.number}
+              <span>{t(challenge.difficulty)}</span>
             </div>
-            <h2>{challenge.title}</h2>
-            <p className="ctf-teaser">{challenge.teaser}</p>
-            <p>{challenge.brief}</p>
+            <h2>{t(challenge.title)}</h2>
+            <p className="ctf-teaser">{t(challenge.teaser)}</p>
+            <p>{t(challenge.brief)}</p>
             <div className="ctf-objective">
               <Flag size={17} />
               <div>
-                <h3>Vazifangiz</h3>
-                <p>{challenge.objective}</p>
+                <h3>{t("Vazifangiz")}</h3>
+                <p>{t(challenge.objective)}</p>
               </div>
             </div>
             <div className="ctf-case-meta">
-              <span>{challenge.duration}</span>
+              <span>{t(challenge.duration)}</span>
               <span>
-                {challenge.points - progress[selected].hints * 10} ball mavjud
+                {challenge.points - progress[selected].hints * 10}{" "}
+                {t("ball mavjud")}
               </span>
             </div>
             <div className="ctf-hints">
               <div>
                 <Lightbulb size={16} />
-                <h3>Bir oz yordam?</h3>
+                <h3>{t("Bir oz yordam?")}</h3>
                 <span>{progress[selected].hints}/3</span>
               </div>
               <p>
-                Har bir ishora shu topshiriqdan 10 ball ayiradi. Xato urinishlar
-                bepul.
+                {t(
+                  "Har bir ishora shu topshiriqdan 10 ball ayiradi. Xato urinishlar bepul.",
+                )}
               </p>
               <ol>
                 {challenge.hints
                   .slice(0, progress[selected].hints)
                   .map((hint) => (
-                    <li key={hint}>{hint}</li>
+                    <li key={t(hint)}>{t(hint)}</li>
                   ))}
               </ol>
               <button
@@ -369,15 +389,17 @@ export function SignalCTF() {
                 }
               >
                 {progress[selected].hints >= 3
-                  ? "Barcha ishoralar ochilgan"
+                  ? t("Barcha ishoralar ochilgan")
                   : progress[selected].proof
-                    ? "Topshiriq yechilgan"
-                    : "Ishorani ochish · −10 ball"}
+                    ? t("Topshiriq yechilgan")
+                    : t("Ishorani ochish · −10 ball")}
                 <ChevronRight size={15} />
               </button>
             </div>
             <div className="ctf-keyring">
-              <span className="ctf-eyebrow">YIG‘ILGAN KALITLAR / 01 → 04</span>
+              <span className="ctf-eyebrow">
+                {t("YIG‘ILGAN KALITLAR / 01 → 04")}
+              </span>
               <div>
                 {CHALLENGE_IDS.slice(0, 4).map((id, index) => (
                   <span key={id}>
@@ -395,25 +417,27 @@ export function SignalCTF() {
                   <LockKeyhole size={36} strokeWidth={1.2} />
                 </div>
                 <span className="ctf-eyebrow">
-                  FINAL TRANSMISSION / ENCRYPTED
+                  {t("FINAL TRANSMISSION / ENCRYPTED")}
                 </span>
-                <h2>Seyf hali jim.</h2>
+                <h2>{t("Seyf hali jim.")}</h2>
                 <p>
-                  Avval 01–04 tugunlardan to‘rtta flagni toping. Har bir
-                  tasdiqlangan flag kalitning bir harfini beradi.
+                  {t(
+                    "Avval 01–04 tugunlardan to‘rtta flagni toping. Har bir tasdiqlangan flag kalitning bir harfini beradi.",
+                  )}
                 </p>
                 <span>
                   {
                     CHALLENGE_IDS.slice(0, 4).filter((id) => progress[id].proof)
                       .length
                   }{" "}
-                  / 4 kalit topildi
+                  {t("/ 4 kalit topildi")}
                 </span>
                 <a
                   href={`#challenge/${CHALLENGE_IDS.slice(0, 4).find((id) => !progress[id].proof) ?? "source"}`}
                   className="ctf-button ctf-button-bright"
                 >
-                  Ochiq tugunga qaytish <ArrowRight size={16} />
+                  {t("Ochiq tugunga qaytish")}
+                  <ArrowRight size={16} />
                 </a>
               </div>
             ) : (
@@ -437,21 +461,27 @@ export function SignalCTF() {
             </span>
             <div>
               <span className="ctf-eyebrow">
-                TRANSMISSION RECEIVED / 00:18 UTC
+                {t("TRANSMISSION RECEIVED / 00:18 UTC")}
               </span>
-              <h2 id="ctf-finale-title">Kimdir hali ham tinglayapti.</h2>
-              <p>{progress.vault.message}</p>
-              <strong>Operatsiya yakunlandi. {score} / 900 ball.</strong>
+              <h2 id="ctf-finale-title">{t("Kimdir hali ham tinglayapti.")}</h2>
+              <p>{t(progress.vault.message)}</p>
+              <strong>
+                {t("Operatsiya yakunlandi.")}{" "}
+                {score} {t("/ 900 ball.")}
+              </strong>
             </div>
           </section>
         )}
 
         <footer className="ctf-footer">
           <div>
-            <span className="ctf-eyebrow">SIZNING SHAXSIY TERGOVINGIZ</span>
+            <span className="ctf-eyebrow">
+              {t("SIZNING SHAXSIY TERGOVINGIZ")}
+            </span>
             <p>
-              Progress shu brauzerda saqlanadi. Bu mashq reyting yoki sertifikat
-              bermaydi. Flagni tekshirish uchun internet kerak.
+              {t(
+                "Progress shu brauzerda saqlanadi. Bu mashq reyting yoki sertifikat bermaydi. Flagni tekshirish uchun internet kerak.",
+              )}
             </p>
           </div>
           <div>
@@ -460,11 +490,11 @@ export function SignalCTF() {
               onClick={() =>
                 downloadText(
                   "nova-0017-report.md",
-                  `# NOVA / 00:17 — So‘nggi signal\n\nBall: ${score}/900. Tugunlar: ${solved}/5.\n\n${CHALLENGES.map((item) => `## ${item.number}. ${item.title}\n\nHolat: ${progress[item.id].proof ? "Tiklandi" : "Ochiq"}. Ishoralar: ${progress[item.id].hints}/3.\n\n${progress[item.id].message}\n\nQaydlar: ${progress[item.id].notes || "Yozilmagan"}`).join("\n\n")}\n\nBu shaxsiy o‘quv qaydnomasi; musobaqa natijasi yoki sertifikat emas.\n`,
+                  `# NOVA / 00:17 — ${t("Final signal")}\n\n${t("Score: {score}/900. Nodes: {solved}/5.", { score, solved })}\n\n${CHALLENGES.map((item) => `## ${item.number}. ${t(item.title)}\n\n${t("Status: {status}. Hints: {hints}/3.", { status: t(progress[item.id].proof ? "Restored" : "Open"), hints: progress[item.id].hints })}\n\n${t(progress[item.id].message)}\n\n${t("Notes")}: ${progress[item.id].notes || t("Not written")}`).join("\n\n")}\n\n${t("This is a personal learning record, not a competition result or certificate.")}\n`,
                 )
               }
             >
-              <Download size={15} /> Hisobot
+              <Download size={15} /> {t("Hisobot")}
             </button>
             <button
               className="ctf-button ctf-button-quiet"
@@ -472,7 +502,9 @@ export function SignalCTF() {
               onClick={() => {
                 if (
                   window.confirm(
-                    "Barcha CTF flaglari, ishoralar va qaydlar o‘chirilsinmi?",
+                    t(
+                      "Barcha CTF flaglari, ishoralar va qaydlar o‘chirilsinmi?",
+                    ),
                   )
                 ) {
                   setStored(null);
@@ -482,7 +514,7 @@ export function SignalCTF() {
                 }
               }}
             >
-              <RotateCcw size={15} /> Qayta boshlash
+              <RotateCcw size={15} /> {t("Qayta boshlash")}
             </button>
           </div>
         </footer>
@@ -506,6 +538,7 @@ function ChallengeWorkbench({
   submit: (flag: string) => Promise<void>;
   update: (patch: Partial<Entry>) => void;
 }) {
+  const t = useTranslator();
   const [flag, setFlag] = useState("");
   const [path, setPath] = useState("/robots.txt");
   const [response, setResponse] = useState<ReturnType<
@@ -526,7 +559,7 @@ function ChallengeWorkbench({
             {file.name}
           </h3>
           <button
-            aria-label="Dalil faylini yuklab olish"
+            aria-label={t("Dalil faylini yuklab olish")}
             onClick={() =>
               downloadText(
                 file.name.replace(/\.html$/, ".html.txt"),
@@ -539,10 +572,10 @@ function ChallengeWorkbench({
           </button>
         </div>
         <div className="ctf-evidence-label">
-          <span>RECOVERED EVIDENCE</span>
-          <span>READ ONLY / UTF-8</span>
+          <span>{t("RECOVERED EVIDENCE")}</span>
+          <span>{t("READ ONLY / UTF-8")}</span>
         </div>
-        <pre className="ctf-code" tabIndex={0} aria-label="Dalil matni">
+        <pre className="ctf-code" tabIndex={0} aria-label={t("Dalil matni")}>
           <code>
             {file.content.split("\n").map((line, index) => (
               <span
@@ -559,18 +592,20 @@ function ChallengeWorkbench({
         </pre>
         <div className="ctf-evidence-foot">
           <span>
-            <span className="ctf-led" /> DALIL YUKLANDI
+            <span className="ctf-led" /> {t("DALIL YUKLANDI")}
           </span>
-          <span>{file.content.split("\n").length} LINES</span>
+          <span>
+            {file.content.split("\n").length} {t("LINES")}
+          </span>
         </div>
       </section>
 
       {challenge.id === "archive" && (
         <section className="ctf-tool" aria-labelledby="ctf-path-title">
           <h3 id="ctf-path-title">
-            <Terminal size={16} /> Mahalliy yo‘l tekshiruvchisi
+            <Terminal size={16} /> {t("Mahalliy yo‘l tekshiruvchisi")}
           </h3>
-          <p>Bu o‘yin arxivi. Tashqi saytlarga so‘rov yuborilmaydi.</p>
+          <p>{t("Bu o‘yin arxivi. Tashqi saytlarga so‘rov yuborilmaydi.")}</p>
           <form
             onSubmit={(event) => {
               event.preventDefault();
@@ -578,7 +613,7 @@ function ChallengeWorkbench({
             }}
           >
             <label className="sr-only" htmlFor="ctf-path">
-              Arxiv yo‘li
+              {t("Arxiv yo‘li")}
             </label>
             <span className="ctf-get" aria-hidden="true">
               GET
@@ -591,13 +626,14 @@ function ChallengeWorkbench({
               spellCheck={false}
             />
             <button className="ctf-button ctf-button-quiet" type="submit">
-              Ochish <ArrowRight size={15} />
+              {t("Ochish")}
+              <ArrowRight size={15} />
             </button>
           </form>
           {response && (
             <div role="status" className="ctf-path-response">
               <span>HTTP {response.status}</span>
-              <pre>{response.body}</pre>
+              <pre>{t(response.body)}</pre>
             </div>
           )}
         </section>
@@ -606,10 +642,12 @@ function ChallengeWorkbench({
       <section className="ctf-submit-panel" aria-labelledby="ctf-submit-title">
         <div>
           <span className="ctf-eyebrow">
-            {entry.proof ? "RELAY RESTORED" : "FLAG TOPDINGIZMI?"}
+            {entry.proof ? t("RELAY RESTORED") : t("FLAG TOPDINGIZMI?")}
           </span>
           <h3 id="ctf-submit-title">
-            {entry.proof ? "Yana bir tugun ulandi." : "Topilmani tasdiqlang."}
+            {entry.proof
+              ? t("Yana bir tugun ulandi.")
+              : t("Topilmani tasdiqlang.")}
           </h3>
         </div>
         <form
@@ -625,7 +663,7 @@ function ChallengeWorkbench({
             <Flag size={17} />
             <input
               id="ctf-flag"
-              placeholder="CV{siz_topgan_flag}"
+              placeholder="CV{...}"
               value={flag}
               maxLength={160}
               required
@@ -642,48 +680,55 @@ function ChallengeWorkbench({
             type="submit"
           >
             {busy
-              ? "Tekshirilmoqda…"
+              ? t("Tekshirilmoqda…")
               : entry.proof
-                ? "Qayta tekshirish"
-                : "Flagni yuborish"}
+                ? t("Qayta tekshirish")
+                : t("Flagni yuborish")}
             <Send size={16} />
           </button>
         </form>
         <p className="ctf-submit-note">
-          Format: CV{`{...}`} · Harflar registri muhim · Urinishlar ballni
-          kamaytirmaydi
+          Format: CV{`{...}`}{" "}
+          {t("· Harflar registri muhim · Urinishlar ballni kamaytirmaydi")}
         </p>
         <p
           role="status"
           className={`ctf-feedback ${feedback?.ok ? "is-success" : ""}`}
         >
-          {feedback?.message}
+          {feedback?.message && t(feedback.message)}
         </p>
       </section>
       {entry.proof && (
-        <section className="ctf-debrief" aria-label="Topshiriq xulosasi">
+        <section className="ctf-debrief" aria-label={t("Topshiriq xulosasi")}>
           <div>
             <UnlockKeyhole size={19} />
-            <h3>Signal ortidagi saboq</h3>
-            {entry.fragment && <span>KALIT: {entry.fragment}</span>}
+            <h3>{t("Signal ortidagi saboq")}</h3>
+            {entry.fragment && (
+              <span>
+                {t("KALIT:")}{" "}
+                {entry.fragment}
+              </span>
+            )}
           </div>
-          <p>{entry.message}</p>
+          <p>{t(entry.message)}</p>
           {challenge.id !== "vault" && (
             <a
               className="ctf-next"
               href={`#challenge/${CHALLENGE_IDS[CHALLENGE_IDS.indexOf(challenge.id) + 1]}`}
             >
-              Keyingi tugun <ArrowRight size={15} />
+              {t("Keyingi tugun")}
+              <ArrowRight size={15} />
             </a>
           )}
         </section>
       )}
       <details className="ctf-notes">
         <summary>
-          Tergov daftari <span>SHU BRAUZERDA SAQLANADI</span>
+          {t("Tergov daftari")}
+          <span>{t("SHU BRAUZERDA SAQLANADI")}</span>
         </summary>
         <label htmlFor="ctf-notes-input">
-          Qanday iz topdingiz? Qanday xulosa chiqardingiz?
+          {t("Qanday iz topdingiz? Qanday xulosa chiqardingiz?")}
         </label>
         <textarea
           id="ctf-notes-input"
@@ -692,7 +737,7 @@ function ChallengeWorkbench({
           value={entry.notes}
           disabled={busy}
           onChange={(event) => update({ notes: event.target.value })}
-          placeholder="Dalil → taxmin → tekshiruv → xulosa…"
+          placeholder={t("Dalil → taxmin → tekshiruv → xulosa…")}
         />
       </details>
     </>
@@ -700,6 +745,7 @@ function ChallengeWorkbench({
 }
 
 function Decoder() {
+  const t = useTranslator();
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
@@ -710,7 +756,7 @@ function Decoder() {
     } catch (error) {
       setOutput("");
       setError(
-        error instanceof Error ? error.message : "Matnni ochib bo‘lmadi.",
+        error instanceof Error ? error.message : t("Matnni ochib bo‘lmadi."),
       );
     }
   }
@@ -718,14 +764,14 @@ function Decoder() {
     <details className="ctf-decoder">
       <summary>
         <span>
-          <Terminal size={16} /> Operator asboblari
+          <Terminal size={16} /> {t("Operator asboblari")}
         </span>
         <span>
           BASE64 / ROT13 / HEX <ChevronRight size={14} />
         </span>
       </summary>
       <div className="ctf-decoder-body">
-        <label htmlFor="ctf-decode-input">Kodlangan matn</label>
+        <label htmlFor="ctf-decode-input">{t("Kodlangan matn")}</label>
         <textarea
           id="ctf-decode-input"
           rows={3}
@@ -745,12 +791,12 @@ function Decoder() {
               className="ctf-button ctf-button-quiet"
               onClick={() => run(mode)}
             >
-              {mode.toUpperCase()} ochish
+              {mode.toUpperCase()} {t("ochish")}
             </button>
           ))}
         </div>
         <div role="status">
-          {error && <p className="ctf-feedback">{error}</p>}
+          {error && <p className="ctf-feedback">{t(error)}</p>}
           {output && (
             <>
               <pre className="ctf-decoded">{output}</pre>
@@ -761,7 +807,8 @@ function Decoder() {
                   setOutput("");
                 }}
               >
-                Natijani kirishga o‘tkazish <ArrowRight size={13} />
+                {t("Natijani kirishga o‘tkazish")}
+                <ArrowRight size={13} />
               </button>
             </>
           )}

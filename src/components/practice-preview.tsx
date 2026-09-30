@@ -1,4 +1,5 @@
 "use client";
+import { useTranslator } from "@/components/locale-provider";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -59,6 +60,7 @@ const examples = [
 ];
 
 export function PracticePreview() {
+  const t = useTranslator();
   const [selected, setSelected] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const example = examples[selected];
@@ -70,10 +72,14 @@ export function PracticePreview() {
           <i />
           <i />
         </span>
-        <span>cybervalue / workspace</span>
+        <span>{t("cybervalue / workspace")}</span>
         <Terminal size={14} />
       </div>
-      <div className="preview-tabs" role="group" aria-label="Practice preview">
+      <div
+        className="preview-tabs"
+        role="group"
+        aria-label={t("Practice preview")}
+      >
         {examples.map((item, index) => (
           <button
             key={item.label}
@@ -84,13 +90,13 @@ export function PracticePreview() {
             }}
           >
             <span>0{index + 1}</span>
-            {item.label}
+            {t(item.label)}
           </button>
         ))}
       </div>
       <div className="preview-file">
         <span>{example.file}</span>
-        <span>{example.language}</span>
+        <span>{t(example.language)}</span>
       </div>
       <pre className="preview-code">
         <code>
@@ -105,22 +111,22 @@ export function PracticePreview() {
         </code>
       </pre>
       <div className="preview-action">
-        <span>Interactive learning preview</span>
+        <span>{t("Interactive learning preview")}</span>
         <button
           onClick={() => setShowResult(!showResult)}
           aria-expanded={showResult}
           aria-controls="preview-result"
         >
           <Play size={12} />
-          {showResult ? "Hide insight" : "Show insight"}
+          {showResult ? t("Hide insight") : t("Show insight")}
         </button>
       </div>
       <div id="preview-result" className="preview-result" hidden={!showResult}>
         <CheckCircle2 size={17} />
-        <p>{example.result}</p>
+        <p>{t(example.result)}</p>
       </div>
       <Link className="preview-link" href={example.href}>
-        {example.link}
+        {t(example.link)}
         <ArrowUpRight size={15} />
       </Link>
     </div>

@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+const file='src/components/playground/ctf/SignalCTF.tsx';
+let s=fs.readFileSync(file,'utf8');
+s=s.replace(' lang="uz"','');
+for(const field of ['item.title','challenge.difficulty','challenge.title','challenge.teaser','challenge.brief','challenge.objective','challenge.duration','hint','progress.vault.message','entry.message','error']) s=s.replaceAll('{'+field+'}','{t('+field+')}');
+s=s.replace('{feedback?.message}','{feedback?.message && t(feedback.message)}');
+s=s.replace('{response.body}','{t(response.body)}');
+s=s.replace('"Barcha CTF flaglari, ishoralar va qaydlar o‘chirilsinmi?",','t("Barcha CTF flaglari, ishoralar va qaydlar o‘chirilsinmi?"),');
+s=s.replace('placeholder="CV{siz_topgan_flag}"','placeholder="CV{...}"');
+fs.writeFileSync(file,s);

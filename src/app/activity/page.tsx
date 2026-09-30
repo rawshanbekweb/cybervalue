@@ -1,3 +1,4 @@
+import { getLocale, getTranslator } from "@/lib/i18n/server";
 import { metadata } from "@/lib/seo";
 import { getRecent } from "@/lib/content";
 import { EntryCard, formatDate, ArrowLink } from "@/components/ui";
@@ -10,15 +11,18 @@ export const generateMetadata = () =>
     "/activity",
   );
 export default async function Activity() {
+  const t = await getTranslator();
+  const locale = await getLocale();
   const entries = await getRecent(50);
   return (
     <div className="container page-content">
       <header className="page-header">
-        <span className="eyebrow">The logbook</span>
-        <h1>Progress leaves a trail.</h1>
+        <span className="eyebrow">{t("The logbook")}</span>
+        <h1>{t("Progress leaves a trail.")}</h1>
         <p>
-          A record of the work as it is published. Small steps, useful
-          discoveries, and lessons carried forward.
+          {t(
+            "A record of the work as it is published. Small steps, useful discoveries, and lessons carried forward.",
+          )}
         </p>
       </header>
       {entries.length ? (
@@ -27,14 +31,14 @@ export default async function Activity() {
             {entries.map((e) => (
               <li key={e.id}>
                 <time dateTime={e.publishedAt!.toISOString()}>
-                  {formatDate(e.publishedAt!)}
+                  {formatDate(e.publishedAt!, locale)}
                 </time>
                 <EntryCard entry={e} />
               </li>
             ))}
           </ol>
           {entries.length === 50 && (
-            <ArrowLink href="/search">Browse the full archive</ArrowLink>
+            <ArrowLink href="/search">{t("Browse the full archive")}</ArrowLink>
           )}
         </>
       ) : (
@@ -42,13 +46,14 @@ export default async function Activity() {
           <div className="empty-icon">
             <GitCommitHorizontal size={28} />
           </div>
-          <span className="eyebrow">Ready for the first entry</span>
-          <h2>The record starts with real work.</h2>
+          <span className="eyebrow">{t("Ready for the first entry")}</span>
+          <h2>{t("The record starts with real work.")}</h2>
           <p>
-            New publications will appear here automatically. There are no
-            published entries yet.
+            {t(
+              "New publications will appear here automatically. There are no published entries yet.",
+            )}
           </p>
-          <ArrowLink href="/work">Explore the work archive</ArrowLink>
+          <ArrowLink href="/work">{t("Explore the work archive")}</ArrowLink>
         </div>
       )}
     </div>

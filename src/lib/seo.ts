@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
 import { site } from "./site";
+import { getLocale, getTranslator } from "./i18n/server";
 
-export function metadata(
+export async function metadata(
   title: string,
   description: string,
   path: string,
   noindex = false,
-): Metadata {
+): Promise<Metadata> {
+  const t = await getTranslator();
+  const locale = await getLocale();
+  title = t(title);
+  description = t(description);
   const fullTitle = path === "/" ? title : `${title} | ${site.name}`;
   return {
     title: { absolute: fullTitle },
@@ -19,7 +24,7 @@ export function metadata(
       description,
       url: `${site.url}${path}`,
       siteName: site.name,
-      locale: "en_US",
+      locale: locale === "uz" ? "uz_UZ" : "en_US",
       images: [
         {
           url: "/opengraph-image",

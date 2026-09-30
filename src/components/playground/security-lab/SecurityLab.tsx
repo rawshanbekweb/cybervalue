@@ -8,6 +8,7 @@ import { downloadText, PROGRESS_KEY, NOTES_KEY } from "./storage";
 import { onToast } from "./toast";
 import { useLocalStorageState } from "../useLocalStorageState";
 import { useHashLessonId } from "../useHashLessonId";
+import { lessonRecord } from "@/lib/learning-progress";
 import "./security-lab.css";
 
 const TOTAL = LESSONS.length;
@@ -15,8 +16,10 @@ const TOTAL = LESSONS.length;
 export function SecurityLab() {
   const [lessonId, goToHash] = useHashLessonId(TOTAL, 1);
   const [tab, setTab] = useState<"practice" | "theory" | "teacher">("practice");
-  const [completed, setCompletedStored] = useLocalStorageState<Record<number, boolean>>(PROGRESS_KEY, {});
-  const [notes, setNotesStored] = useLocalStorageState<Record<number, string>>(NOTES_KEY, {});
+  const [storedProgress, setCompletedStored] = useLocalStorageState<unknown>(PROGRESS_KEY, {});
+  const [storedNotes, setNotesStored] = useLocalStorageState<unknown>(NOTES_KEY, {});
+  const completed = lessonRecord<boolean>(storedProgress, TOTAL, "boolean");
+  const notes = lessonRecord<string>(storedNotes, TOTAL, "string");
   const [search, setSearch] = useState("");
   const [present, setPresent] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -64,7 +67,7 @@ export function SecurityLab() {
   );
 
   const Renderer = PRACTICE_RENDERERS[lesson.type] ?? Fallback;
-  const doneCount = Object.keys(completed).length;
+  const doneCount = Object.values(completed).filter((value) => value === true).length;
 
   return (
     <div className={`lab-root${present ? " lab-present" : ""}`}>

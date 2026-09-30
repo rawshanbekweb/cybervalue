@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { collections, isCollection, contentUrl, site } from "@/lib/site";
-import { getEntry, getRelated, getSitemapEntries } from "@/lib/content";
+import { getEntry, getRelated } from "@/lib/content";
 import { slugSchema } from "@/lib/validation";
 import { metadata } from "@/lib/seo";
 import {
@@ -11,15 +11,11 @@ import {
   formatDate,
 } from "@/components/ui";
 import { ContentDetail } from "@/components/content-detail";
+import { getLocale, getTranslator } from "@/lib/i18n/server";
 
 type Props = { params: Promise<{ collection: string; slug: string }> };
-export const revalidate = 60;
-export async function generateStaticParams() {
-  return (await getSitemapEntries()).map((e) => {
-    const [, collection, slug] = contentUrl(e).split("/");
-    return { collection, slug };
-  });
-}
+// Detail pages and their not-found responses depend on the locale cookie.
+export const dynamic = "force-dynamic";
 async function resolve(params: Props["params"]) {
   const { collection, slug } = await params;
   if (!isCollection(collection) || !slugSchema.safeParse(slug).success)
@@ -30,7 +26,7 @@ async function resolve(params: Props["params"]) {
 }
 export async function generateMetadata({ params }: Props) {
   const { entry } = await resolve(params);
-  const data = metadata(
+  const data = await metadata(
     entry.seoTitle ?? entry.title,
     entry.seoDescription ?? entry.summary,
     contentUrl(entry),
@@ -50,6 +46,8 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 export default async function EntryPage({ params }: Props) {
+  const t = await getTranslator();
+  const locale = await getLocale();
   const { entry, collection } = await resolve(params);
   const related = await getRelated(entry.id);
   return (
@@ -83,17 +81,19 @@ export default async function EntryPage({ params }: Props) {
       />
       <header className="page-header article-header">
         <span className="eyebrow">
-          {collections[collection].singular}
+          {t(collections[collection].singular)}
           {entry.category ? ` / ${entry.category.name}` : ""}
         </span>
         <h1>{entry.title}</h1>
         <p>{entry.summary}</p>
         <div className="article-meta">
-          <span>By {entry.author.name}</span>
+          <span>{t("By {author}", { author: entry.author.name })}</span>
           <time dateTime={entry.publishedAt!.toISOString()}>
-            {formatDate(entry.publishedAt!)}
+            {formatDate(entry.publishedAt!, locale)}
           </time>
-          <span>Updated {formatDate(entry.updatedAt)}</span>
+          <span>
+            {t("Updated {date}", { date: formatDate(entry.updatedAt, locale) })}
+          </span>
         </div>
         <div className="tags">
           {entry.tags.map((tag) => (
