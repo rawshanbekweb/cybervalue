@@ -232,6 +232,55 @@ function detailedLessons() {
     'Agar bitta xaker uyidagi kompyuterdan DDoS hujum qilsa, server tushib qoladimi?', 'Bitta kompyuter qilgan hujum DoS (Denial of Service) deyiladi, uni IP orqali oson bloklash mumkin. DDoS dagi birinchi D - "Distributed", ya\'ni butun dunyodagi minglab zararlangan kompyuterlardan (Botnet) bir vaqtda qilinadigan hujum.',
     'Xavfsizlik bitta dastur o\'rnatish emas, ko\'p qatlamli yondashuv ekanligini xulosa qiling.');
 
+  // QO'SHIMCHA 6 TA SLAYD (Jami 60+ ga yetkazish uchun)
+  // 05: Terminal (history)
+  add('05', 'Terminal xotirasi (history va !)',
+    'Buyruqlarni qayta-qayta yozib o\'tirmaslik uchun tarix va tezkor chaqiruvlardan foydalaning.',
+    [['history', 'Siz yozgan oxirgi minglab buyruqlar ro\'yxatini raqamlangan holda chiqaradi.'], ['!raqam', '!154 yozsangiz, tarixning 154-qatoridagi buyruqni aynan takrorlaydi.'], ['!! (ikkita undov)', 'Eng oxirgi yozgan buyrug\'ingizni qaytaradi. Ko\'pincha "sudo !!" sifatida unutilgan sudo ni qo\'shish uchun ishlatiladi.']],
+    code('$ apt update\nE: Could not open lock file - Permission denied\n$ sudo !!\n# Tizim buni "sudo apt update" deb tushunadi va bajaradi.'),
+    'Ctrl+R klaviatura yorlig\'i nima uchun ishlatiladi?', 'Terminalda eski buyruqlarni matn bo\'yicha qidirish (Reverse Search) uchun. Eng ko\'p vaqt tejaydigan usullardan biri.',
+    'Terminalda sichqoncha bilan nusxa ko\'chirishdan ko\'ra tarix va yorliqlardan foydalanish ancha professional ekanligini ta\'kidlang.');
+
+  // 09: Paketlar (PPA)
+  add('09', 'PPA xavflari (Personal Package Archives)',
+    'Nima uchun har qanday saytdan ko\'rgan PPA ni terminalga kiritish xavfli?',
+    [['Rasmiy emas', 'PPA dagi dasturlar Ubuntu yadro jamoasi tomonidan tekshirilmaydi. Uni istalgan shaxs, jumladan haker ham yaratgan bo\'lishi mumkin.'], ['Root ruxsati', 'Paket o\'rnatilayotganda pre-install skriptlar root huquqida ishlaydi, u tizimga virus yozib ketishi mumkin.']],
+    flow('Siz apt install bajarmoqchisiz', 'Qaysidir notanish PPA ni (add-apt-repository) qo\'shasiz', 'Unga to\'liq ishonch bildirasiz', 'Xaker serveringizga kirish yo\'lini yaratadi'),
+    'Agar kerakli dastur rasmiy omborda (repo) bo\'lmasa nima qilish kerak?', 'Ishonchli va ommabop dasturchilarning (masalan Docker, Nginx) o\'z rasmiy repolaridan foydalanish yoki iloj qadar Flatpak/Snap (izolyatsiyalangan) paketlardan foydalanish ma\'qul.',
+    'Paketlarni ko\'r-ko\'rona internetdan topib o\'rnatish Windows dagi har qanday .exe ni yuklab olishdan ham xavfli ekanligini ayting.');
+
+  // 11: Jarayonlar (Orqa fon)
+  add('11', 'Jarayonlarni orqa fonga yashirish (&, bg, fg)',
+    'Bitta terminal oynasida bir nechta dasturni bir vaqtda ishlatish sirlari.',
+    [['& (Ampersand)', 'Buyruq oxiriga & qo\'ysangiz, u orqa fonda (background) ishga tushadi va terminalingizni band qilmaydi.'], ['Ctrl+Z va bg', 'Ishlayotgan jarayonni (masalan nano) Ctrl+Z bilan to\'xtatib turib, bg orqali orqa fonga o\'tkazish mumkin.'], ['fg (Foreground)', 'Orqa fondagi dasturni yana oldinga, sizning ekraningizga olib chiqadi.']],
+    code('$ ping 8.8.8.8 > natija.txt &\n[1] 1425\n# Terminal ochiq qoldi. Ping esa fonda ketyapti.\n\n$ fg 1\n# Ping yana ekranga chiqdi.'),
+    'Orqa fonda ishlayotgan jarayonni to\'xtatish (o\'ldirish) qanday bajariladi?', 'Avval fg orqali oldinga chaqirib Ctrl+C bosiladi yoki ps orqali PID topilib kill qilinadi.',
+    'Serverlarda uzun ishlaydigan (masalan arxivlash) vazifalarni qanday qilib yopilib ketmasdan orqa fonda qoldirishni (tmux/screen) ko\'rsatib o\'ting.');
+
+  // 15: IPv4 / IPv6
+  add('15', 'ip addr dagi inet va inet6',
+    'Nima uchun har bir qurilmada IP manzillar formati ikki xil ko\'rinadi?',
+    [['IPv4 (inet)', 'Eski, hamma biladigan format (192.168.x.x). Manzillar jami 4.3 milliardta bo\'lib, tugab qolgan.'], ['IPv6 (inet6)', 'Yangi format, g\'ayritabiiy harf va sonlar (fe80::...). Manzillar shu qadar ko\'pki, har bir qum zarrasiga alohida IP berish mumkin.']],
+    rows(['XUSUSIYAT', 'IPv4', 'IPv6'], ['Format', '192.168.1.1', '2001:0db8:85a3::8a2e:0370:7334'], ['Hajmi', '32 bit', '128 bit'], ['Ehtiyoj', 'NAT kerak bo\'ladi', 'NAT umuman kerak emas']),
+    'Mening IPv4 manzilim (192.168.1.10) qanday qilib butun dunyoga ko\'rinadi?', 'U butun dunyoga umuman ko\'rinmaydi. U faqat uyingiz (yoki ofisingiz) ichida ishlaydi (Local/Private IP). Routeringiz uning ustidan bitta Public (umumiy) IP orqali niqoblaydi (NAT).',
+    'Private (Lokal) va Public (Global) IP orasidagi farqni sodda misolda (ichki hovli va tashqi ko\'cha) tushuntiring.');
+
+  // 17: NAT
+  add('17', 'NAT (Network Address Translation) — Router siri',
+    'Qanday qilib uydagi 10 ta qurilma internetga bitta IP orqali chiqadi?',
+    [['Tarjimon', 'Uyingizdagi qurilmalar (192.168.x.x) to\'g\'ridan-to\'g\'ri internetga ulana olmaydi. Router ularning barcha xatlarini o\'z nomi (Public IP) bilan internetga yuboradi.'], ['Qaytgan javob', 'Javob kelganda, router xotirasiga (NAT table) qarab, bu xat qaysi telefon yoki kompyuterga tegishliligini topib olib kiritib yuboradi.']],
+    flow('Sizning telefoningiz (192.168.1.5)', 'Routeringiz (Public IP: 94.20.x.x) "Bu mendan" deb o\'zgartiradi', 'Google Server (Javob qaytaradi)', 'Router qaysi qurilmaga tegishli ekanligini bilib, sizga uzatadi'),
+    'Serverlarda nima uchun NAT ko\'pincha ishlatilmaydi?', 'Veb-serverlar butun dunyodan tashrif buyuruvchilarni to\'g\'ridan-to\'g\'ri qabul qilishi uchun uchinchi shaxslarsiz (real Public IP bilan) ishlashi kerak.',
+    'Port Forwarding (kirish eshigini ochish) aynan shu NAT ning ichidan tashqariga tuynuk ochish ekanligini ayting.');
+
+  // 21: Fail2ban
+  add('21', 'Fail2ban qanday qilib xakerlarni bloklaydi?',
+    'Bu dastur siz uxlab yotganingizda ham serveringizni himoya qiladigan eng oddiy va kuchli robot.',
+    [['1. Log o\'qish', 'U sekundma-sekund /var/log/auth.log kabi jurnallarni tekshirib turadi.'], ['2. Qoidabuzarni topish', 'Agar bitta IP manzil ketma-ket 5 marta xato parol tersa, uni tutib oladi.'], ['3. Devor o\'rnatish', 'U IP manzilni darhol iptables/ufw ga yuborib, 10 daqiqaga (yoki butunlay) bloklab qo\'yadi.']],
+    rows(['QADAM', 'FAIL2BAN AMALI', 'HAKER HOLATI'], ['1-xato parol', 'Logga yozildi. Fail2ban: 1', 'Yana urinib ko\'radi'], ['5-xato parol', 'Fail2ban limitga yetdi.', 'Bloklandi (Banned)'], ['Keyingi so\'rov', 'Iptables orqali rad etiladi', 'Timeout (Ulanib bo\'lmayapti)']),
+    'Nima uchun fail2ban bo\'lsa ham SSH da parol o\'rniga kalit ishlatish tavsiya qilinadi?', 'Fail2ban 5 marta urinishga ruxsat beradi. Agar xakerning lug\'atidagi 3-parol to\'g\'ri chiqib qolsachi? Kalit tizimida esa parolni topib kirish degan narsa mutlaqo imkonsiz.',
+    'Xavfsizlik qatlamlari — kalit asosiy eshikni himoya qiladi, fail2ban esa tinmay taqillatayotganlarni haydab yuboradi.');
+
   return units;
 }
 
