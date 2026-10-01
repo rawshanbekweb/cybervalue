@@ -301,5 +301,25 @@
       "topic": "Assessment",
       "version": "1.0"
     }
+  },
+  {
+    "kind": "RESOURCE",
+    "slug": "linux-va-tarmoq-qollanma",
+    "title": "Linux va Tarmoq Asoslari: To'liq Boshlang'ich Darslik",
+    "summary": "A downloadable Markdown guide covering Linux filesystem, commands, OSI/TCP-IP models, ports, and networking basics like Wireshark and Nmap.",
+    "body": "## About this resource\n\nA downloadable Markdown guide covering Linux filesystem, commands, OSI/TCP-IP models, ports, and networking basics like Wireshark and Nmap.\n\nThe file is a UTF-8 Markdown document. Open it in a text editor to annotate or print it.\n\n## How to use it\n\n1. Download the resource.\n2. Open the corresponding presentation.\n\n3. Follow the checklist or instructions.\n4. Save your results with your own notes.\n\nLanguage: Uzbek. Version: 1.0.",
+    "status": "DRAFT",
+    "category": {
+      "name": "Web Development and Security",
+      "slug": "web-development-security"
+    },
+    "tags": [],
+    "relatedSlugs": ["cybervalue-platformasi"],
+    "resource": {
+      "type": "Markdown guide",
+      "filePath": "/downloads/linux-va-tarmoq-qollanma.md",
+      "topic": "Linux",
+      "version": "1.0"
+    }
   }
 ]

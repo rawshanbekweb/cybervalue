@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f0f4fb">
+  <meta name="description" content="Linux va Tarmoq Asoslari — 25 mavzu va 60 slaydli o'zbekcha interaktiv dars: terminal, fayllar tizimi, jarayonlar, paketlar va tarmoq buyruqlari.">
+  <title>Linux va Tarmoq Asoslari — Interaktiv dars</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="details.js" defer></script>
+  <script src="foundations.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="resource-return" href="/resources" hidden>← Resurslar</a>
+    <a class="brand" href="#1" aria-label="Birinchi slayd"><span class="brand-mark">L<span>↗</span></span><span>linux<span class="brand-light">/asoslar</span></span></a>
+    <div class="course-label"><span class="live-dot"></span> TERMINALDAN TARMОQQА</div>
+    <div class="top-actions"><button id="contentsButton" class="quiet-button" title="Mundarija (M)">☷ <span>Mundarija</span></button><button id="fullscreenButton" class="icon-button" aria-label="To'liq ekran" title="To'liq ekran (F)">⛶</button></div>
+  </header>
+  <div class="workspace">
+    <aside class="rail" aria-label="Slaydlar bo'yicha navigatsiya"><div class="rail-title">DARS / 01–25</div><nav id="railNav"></nav><div class="rail-bottom">UZ <span>↗</span></div></aside>
+    <main id="slide" tabindex="-1" aria-label="Joriy slayd"></main>
+  </div>
+  <footer class="bottom-bar">
+    <div class="lesson-progress"><span id="counter">01 <span>/ 60</span></span><div class="progress-track"><div id="progress"></div></div></div>
+    <div class="playback"><button id="playButton" class="quiet-button" aria-pressed="true">Ⅱ <span>Animatsiya</span></button><button id="notesButton" class="quiet-button" aria-expanded="false">▤ <span>Izoh</span></button></div>
+    <div class="navigation"><span class="keyboard-hint">← → slaydni almashtirish</span><button id="prevButton" class="nav-button" aria-label="Oldingi slayd">←</button><button id="nextButton" class="nav-button primary" aria-label="Keyingi slayd">→</button></div>
+  </footer>
+  <dialog id="contentsDialog"><div class="dialog-heading"><div><span class="eyebrow">DARS XARITASI</span><h2>Mundarija</h2></div><button id="closeContents" class="icon-button" aria-label="Yopish">×</button></div><label class="sr-only" for="contentsSearch">Mavzu yoki tushunchani qidirish</label><input id="contentsSearch" class="search-box" type="search" placeholder="Mavzu yoki tushuncha… masalan, chmod, ssh, grep" autocomplete="off"><p id="contentsCount" class="tiny-note" aria-live="polite"></p><div id="contentsGrid"></div></dialog>
+  <aside id="notesPanel" hidden><div class="notes-heading"><strong>O'qituvchi uchun izoh</strong><button id="closeNotes" class="icon-button" aria-label="Izohni yopish">×</button></div><p id="notesText"></p></aside>
+  <div id="announcement" class="sr-only" aria-live="polite"></div>
+  <noscript>Interaktiv taqdimotni ko'rish uchun browseringizda JavaScriptni yoqing.</noscript>
+</body>
+</html>
