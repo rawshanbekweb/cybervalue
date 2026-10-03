@@ -95,6 +95,14 @@ npm start
 
 Install the Playwright browser once if needed: `npx playwright install chromium`. Browser tests cover public routes, unique titles, canonical and OG metadata, JSON-LD parsing, links, redirects, 404s, security headers, filters, widths from 320–1440px, keyboard navigation, and automated accessibility. The unauthenticated-redirect and bad-credentials admin tests always run; the full login → publish → archive → delete flow additionally requires `DATABASE_URL`, `E2E_ADMIN_EMAIL`, and `E2E_ADMIN_PASSWORD` for a seeded account and is skipped otherwise.
 
+To run the skipped admin and assessment tests, use a **disposable local** PostgreSQL on `127.0.0.1` (never a production database: these tests publish, archive and delete content, and the assessment suite refuses non-local hosts). Apply migrations with `npx prisma migrate deploy`, create an account with `npm run admin:create-user -- --email e2e-admin@example.com`, then run with a single worker on a free port:
+
+```bash
+DATABASE_URL=postgresql://USER:PASS@127.0.0.1:55432/DB E2E_ADMIN_EMAIL=e2e-admin@example.com E2E_ADMIN_PASSWORD=... E2E_ISOLATED_ACCOUNT=true E2E_HTML_ASSESSMENT=true PORT=3100 npx playwright test tests/e2e/admin.spec.ts tests/e2e/admin-files.spec.ts tests/e2e/html-assessment.spec.ts --workers=1
+```
+
+Playwright starts its own server on `PORT` and only reuses a running one when `PW_REUSE_SERVER=1`.
+
 ## Learning hub
 
 The [00:17 CTF](docs/ctf.md) at `/playground/ctf` is a five-challenge Uzbek-language investigation with a signal map, evidence viewer, decoder, local archive, server-verified flags, and a final transmission unlocked by four recovered keys.
