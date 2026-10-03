@@ -142,7 +142,8 @@ SQL misollari uchta sintetik foydalanuvchidan iborat SQLite bazasida bajariladi 
   },
   "sql-parametrli-sorov-laboratoriyasi": {
     uz: {
-      title: "SQL laboratoriyasi: qatorlarni birlashtirish va parametrli so‘rovlar",
+      title:
+        "SQL laboratoriyasi: qatorlarni birlashtirish va parametrli so‘rovlar",
       summary:
         "O‘quv laboratoriyasi ichida SQL matniga qo‘shilgan qiymatlarni bog‘langan parametrlar bilan solishtirish bo‘yicha amaliy qo‘llanma.",
       body: `Ushbu qo‘llanma CyberValue ichidagi SQL darsiga hamroh bo‘ladi. Undagi xulosalar endpoint amalga oshirilishidan kutiladigan xatti-harakatni tavsiflaydi.
@@ -165,14 +166,16 @@ SQL darsini [Veb-xavfsizlik laboratoriyasi](/playground/web-security-lab)da ochi
           "Qiymatlarni so‘rov parametrlari orqali uzating. Foydalanuvchi matnini jadval yoki ustun nomlari kabi dinamik SQL identifikatorlariga to‘g‘ridan-to‘g‘ri qo‘shmang; kerak bo‘lsa, oldindan belgilangan ruxsat etilgan variantlardan tanlang.",
         lessonsLearned:
           "Himoyalangan rejimning xuddi shu kiritmaga javobini zaif natija yonida yozib qo‘ying.",
-        environment: "CyberValue veb-xavfsizlik laboratoriyasi; sintetik ma’lumotlar",
+        environment:
+          "CyberValue veb-xavfsizlik laboratoriyasi; sintetik ma’lumotlar",
       },
     },
     en: {},
   },
   "idor-ruxsat-tekshiruvi": {
     uz: {
-      title: "IDOR laboratoriyasi: foydalanuvchi ID’lari va obyekt darajasidagi avtorizatsiya",
+      title:
+        "IDOR laboratoriyasi: foydalanuvchi ID’lari va obyekt darajasidagi avtorizatsiya",
       summary:
         "O‘quv laboratoriyasida o‘z profilingizga va boshqa sintetik foydalanuvchi profiliga kirishni solishtirib, obyekt darajasidagi avtorizatsiyani tushuning.",
       body: `Ushbu mashq faqat [Veb-xavfsizlik laboratoriyasi](/playground/web-security-lab) ichidagi sintetik hisoblardan foydalanadi. U resurs ID’sini bilish uni o‘qishga ruxsat bermasligini ko‘rsatadi.
@@ -196,7 +199,8 @@ Amalga oshirilgan qoida oddiy: xavfsiz rejimda foydalanuvchi so‘ralgan yozuvga
           "Har bir resurs amalidan oldin serverda egalikni yoki tegishli ruxsatni tekshiring. Frontend tugmasini yashirish bu tekshiruv o‘rnini bosmaydi.",
         lessonsLearned:
           "Avtorizatsiya testlari kamida uchta holatni qamrab olishi kerak: foydalanuvchining o‘z resursi, boshqa foydalanuvchining resursi va autentifikatsiyasiz so‘rov.",
-        environment: "CyberValue veb-xavfsizlik laboratoriyasi; sintetik ma’lumotlar",
+        environment:
+          "CyberValue veb-xavfsizlik laboratoriyasi; sintetik ma’lumotlar",
       },
     },
     en: {},
@@ -367,7 +371,8 @@ Fayl UTF-8 formatidagi Markdown hujjati. Izoh qoldirish yoki chop etish uchun un
 Til: o‘zbek tili. Versiya: 1.0.`,
     },
     en: {
-      title: "Linux and Networking Fundamentals: A Complete Beginner’s Textbook",
+      title:
+        "Linux and Networking Fundamentals: A Complete Beginner’s Textbook",
       body: `## About this resource
 
 A downloadable Markdown guide covering Linux filesystem, commands, OSI/TCP-IP models, ports, and networking basics like Wireshark and Nmap.

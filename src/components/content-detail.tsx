@@ -139,7 +139,8 @@ export async function ContentDetail({ entry }: { entry: Entry }) {
                 <dt>{t("Difficulty")}</dt>
                 <dd>
                   {t(
-                    l.difficulty.charAt(0) + l.difficulty.slice(1).toLowerCase(),
+                    l.difficulty.charAt(0) +
+                      l.difficulty.slice(1).toLowerCase(),
                   )}
                 </dd>
               </div>

@@ -58,9 +58,11 @@ export default async function PlaygroundPage() {
           </span>
         </div>
       </header>
-      <CtfGateway />
-      <MissionGateway />
-      <StudioGateway />
+      <div className="gateway-grid">
+        <CtfGateway />
+        <MissionGateway />
+        <StudioGateway />
+      </div>
       <section aria-labelledby="tracks-title">
         <h2 id="tracks-title" className="learning-section-title">
           {t("Choose your learning track")}

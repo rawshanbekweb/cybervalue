@@ -153,9 +153,11 @@ export default async function Home() {
               )}
             </p>
           </div>
-          <CtfGateway />
-          <MissionGateway />
-          <StudioGateway />
+          <div className="gateway-grid">
+            <CtfGateway />
+            <MissionGateway />
+            <StudioGateway />
+          </div>
           <LearningCatalog tracks={tracks} />
         </section>
         <section className="cv-feature-band" aria-labelledby="method-title">
