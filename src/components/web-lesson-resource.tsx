@@ -5,7 +5,13 @@ import styles from "./web-lesson-resource.module.css";
 export async function WebLessonResource() {
   const t = await getTranslator();
   return (
-    <div style={{ display: "grid", gap: "2rem", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))" }}>
+    <div
+      style={{
+        display: "grid",
+        gap: "2rem",
+        gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+      }}
+    >
       <section className={styles.card} aria-labelledby="web-lesson-title">
         <div className={styles.preview} aria-hidden="true">
           <Presentation size={36} strokeWidth={1.3} />

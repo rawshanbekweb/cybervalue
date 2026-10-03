@@ -11,7 +11,10 @@ function subscribe(onStoreChange: () => void) {
 // default id (there is no hash on the server), and the client re-renders once the real hash
 // is read after hydration, exactly like the localStorage bridge above. Lesson ids are assumed
 // to be a contiguous 1..total range, which holds for both ported courses.
-export function useHashLessonId(total: number, defaultId = 1): [number, (id: number) => void] {
+export function useHashLessonId(
+  total: number,
+  defaultId = 1,
+): [number, (id: number) => void] {
   const getSnapshot = () => {
     const match = /#lesson\/(\d+)/.exec(window.location.hash);
     const id = match ? Number(match[1]) : defaultId;
@@ -19,7 +22,11 @@ export function useHashLessonId(total: number, defaultId = 1): [number, (id: num
   };
   const getServerSnapshot = () => defaultId;
 
-  const lessonId = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const lessonId = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
+  );
 
   const setLessonId = useCallback((id: number) => {
     window.location.hash = `#lesson/${id}`;

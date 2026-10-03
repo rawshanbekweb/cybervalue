@@ -337,8 +337,7 @@ export function SignalCTF() {
         >
           <aside className="ctf-brief">
             <div className="ctf-case-number">
-              {t("CASE /")}{" "}
-              {challenge.number}
+              {t("CASE /")} {challenge.number}
               <span>{t(challenge.difficulty)}</span>
             </div>
             <h2>{t(challenge.title)}</h2>
@@ -466,8 +465,7 @@ export function SignalCTF() {
               <h2 id="ctf-finale-title">{t("Kimdir hali ham tinglayapti.")}</h2>
               <p>{t(progress.vault.message)}</p>
               <strong>
-                {t("Operatsiya yakunlandi.")}{" "}
-                {score} {t("/ 900 ball.")}
+                {t("Operatsiya yakunlandi.")} {score} {t("/ 900 ball.")}
               </strong>
             </div>
           </section>
@@ -705,8 +703,7 @@ function ChallengeWorkbench({
             <h3>{t("Signal ortidagi saboq")}</h3>
             {entry.fragment && (
               <span>
-                {t("KALIT:")}{" "}
-                {entry.fragment}
+                {t("KALIT:")} {entry.fragment}
               </span>
             )}
           </div>

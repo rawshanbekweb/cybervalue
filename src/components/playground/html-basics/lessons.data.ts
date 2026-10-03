@@ -18,13 +18,19 @@ export const HTML_LESSONS: HtmlLesson[] = [
     id: 1,
     title: "The HTML skeleton",
     intro:
-      "Every HTML page starts from the same \"skeleton\": <!DOCTYPE html>, <html>, <head>, and <body>. The <head> holds meta-information about the page, while the <body> holds the content the user actually sees.",
+      'Every HTML page starts from the same "skeleton": <!DOCTYPE html>, <html>, <head>, and <body>. The <head> holds meta-information about the page, while the <body> holds the content the user actually sees.',
     task: 'Add a <title>My Page</title> line inside the <head>, and add the text "Hello, HTML!" inside the <body>.',
     starter: `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n\n</head>\n<body>\n\n</body>\n</html>`,
     solution: `<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <title>My Page</title>\n</head>\n<body>\n  Hello, HTML!\n</body>\n</html>`,
     checks: [
-      { label: "<!DOCTYPE html> is present", test: (c) => /<!doctype html>/i.test(c) },
-      { label: "<title> tag is inside <head>", test: (c) => /<title>[^<]*<\/title>/i.test(c) },
+      {
+        label: "<!DOCTYPE html> is present",
+        test: (c) => /<!doctype html>/i.test(c),
+      },
+      {
+        label: "<title> tag is inside <head>",
+        test: (c) => /<title>[^<]*<\/title>/i.test(c),
+      },
       {
         label: "There's text inside <body>",
         test: (c) => {
@@ -43,7 +49,10 @@ export const HTML_LESSONS: HtmlLesson[] = [
     starter: `<!DOCTYPE html>\n<html lang="en">\n<head><meta charset="UTF-8"></head>\n<body>\n\n</body>\n</html>`,
     solution: `<!DOCTYPE html>\n<html lang="en">\n<head><meta charset="UTF-8"></head>\n<body>\n  <h1>My Blog</h1>\n  <p>This is my first HTML page.</p>\n</body>\n</html>`,
     checks: [
-      { label: "<h1> is present", test: (c) => /<h1[^>]*>[^<]+<\/h1>/i.test(c) },
+      {
+        label: "<h1> is present",
+        test: (c) => /<h1[^>]*>[^<]+<\/h1>/i.test(c),
+      },
       { label: "<p> is present", test: (c) => /<p[^>]*>[^<]+<\/p>/i.test(c) },
     ],
   },
@@ -56,7 +65,10 @@ export const HTML_LESSONS: HtmlLesson[] = [
     starter: `<!DOCTYPE html>\n<html lang="en">\n<head><meta charset="UTF-8"></head>\n<body>\n  <p>This is plain text.</p>\n</body>\n</html>`,
     solution: `<!DOCTYPE html>\n<html lang="en">\n<head><meta charset="UTF-8"></head>\n<body>\n  <p>This is <strong>important</strong> and <em>emphasized</em> text.<br>A new line starts here.</p>\n</body>\n</html>`,
     checks: [
-      { label: "<strong> is used", test: (c) => /<strong>[^<]+<\/strong>/i.test(c) },
+      {
+        label: "<strong> is used",
+        test: (c) => /<strong>[^<]+<\/strong>/i.test(c),
+      },
       { label: "<em> is used", test: (c) => /<em>[^<]+<\/em>/i.test(c) },
       { label: "<br> is used", test: (c) => /<br\s*\/?>/i.test(c) },
     ],
@@ -71,7 +83,10 @@ export const HTML_LESSONS: HtmlLesson[] = [
     solution: `<!DOCTYPE html>\n<html lang="en">\n<head><meta charset="UTF-8"></head>\n<body>\n  <ul>\n    <li>Bread</li>\n    <li>Milk</li>\n    <li>Eggs</li>\n  </ul>\n</body>\n</html>`,
     checks: [
       { label: "<ul> is present", test: (c) => /<ul>/i.test(c) },
-      { label: "At least 3 <li>", test: (c) => (c.match(/<li>/gi) || []).length >= 3 },
+      {
+        label: "At least 3 <li>",
+        test: (c) => (c.match(/<li>/gi) || []).length >= 3,
+      },
     ],
   },
   {
@@ -84,7 +99,10 @@ export const HTML_LESSONS: HtmlLesson[] = [
     solution: `<!DOCTYPE html>\n<html lang="en">\n<head><meta charset="UTF-8"></head>\n<body>\n  <a href="https://example.test" target="_blank">Go to the site</a>\n</body>\n</html>`,
     checks: [
       { label: "<a> tag is present", test: (c) => /<a\s/i.test(c) },
-      { label: "href attribute is present", test: (c) => /<a\s[^>]*href\s*=\s*["'][^"']+["']/i.test(c) },
+      {
+        label: "href attribute is present",
+        test: (c) => /<a\s[^>]*href\s*=\s*["'][^"']+["']/i.test(c),
+      },
     ],
   },
   {
@@ -97,21 +115,31 @@ export const HTML_LESSONS: HtmlLesson[] = [
     solution: `<!DOCTYPE html>\n<html lang="en">\n<head><meta charset="UTF-8"></head>\n<body>\n  <img src="https://picsum.photos/200" alt="Random image" width="200">\n</body>\n</html>`,
     checks: [
       { label: "<img> tag is present", test: (c) => /<img\s/i.test(c) },
-      { label: "src attribute is present", test: (c) => /<img\s[^>]*src\s*=\s*["'][^"']+["']/i.test(c) },
-      { label: "alt attribute is present", test: (c) => /<img\s[^>]*alt\s*=\s*["'][^"']*["']/i.test(c) },
+      {
+        label: "src attribute is present",
+        test: (c) => /<img\s[^>]*src\s*=\s*["'][^"']+["']/i.test(c),
+      },
+      {
+        label: "alt attribute is present",
+        test: (c) => /<img\s[^>]*alt\s*=\s*["'][^"']*["']/i.test(c),
+      },
     ],
   },
   {
     id: 7,
     title: "Tables",
-    intro: "<table> creates a table. <tr> is a row, <th> is a header cell, <td> is a regular cell.",
+    intro:
+      "<table> creates a table. <tr> is a row, <th> is a header cell, <td> is a regular cell.",
     task: "Create one table with a header row and at least 2 rows.",
     starter: `<!DOCTYPE html>\n<html lang="en">\n<head><meta charset="UTF-8"></head>\n<body>\n\n</body>\n</html>`,
     solution: `<!DOCTYPE html>\n<html lang="en">\n<head><meta charset="UTF-8"></head>\n<body>\n  <table border="1">\n    <tr><th>Name</th><th>Age</th></tr>\n    <tr><td>Ali</td><td>21</td></tr>\n  </table>\n</body>\n</html>`,
     checks: [
       { label: "<table> is present", test: (c) => /<table/i.test(c) },
       { label: "<th> is present", test: (c) => /<th>/i.test(c) },
-      { label: "At least 2 <tr>", test: (c) => (c.match(/<tr>/gi) || []).length >= 2 },
+      {
+        label: "At least 2 <tr>",
+        test: (c) => (c.match(/<tr>/gi) || []).length >= 2,
+      },
     ],
   },
   {
@@ -119,7 +147,7 @@ export const HTML_LESSONS: HtmlLesson[] = [
     title: "Forms and inputs",
     intro:
       "<form> collects information from the user. <input> can have different types (text, email, password...). <label> describes an input, <button> submits it.",
-    task: 'Add a form with a text-type input bound to a <label>, plus a <button>.',
+    task: "Add a form with a text-type input bound to a <label>, plus a <button>.",
     starter: `<!DOCTYPE html>\n<html lang="en">\n<head><meta charset="UTF-8"></head>\n<body>\n\n</body>\n</html>`,
     solution: `<!DOCTYPE html>\n<html lang="en">\n<head><meta charset="UTF-8"></head>\n<body>\n  <form>\n    <label for="name">Your name:</label>\n    <input type="text" id="name" name="name">\n    <button type="submit">Submit</button>\n  </form>\n</body>\n</html>`,
     checks: [
@@ -165,9 +193,18 @@ export const HTML_LESSONS: HtmlLesson[] = [
     starter: `<!DOCTYPE html>\n<html lang="en">\n<head><meta charset="UTF-8"></head>\n<body>\n\n</body>\n</html>`,
     solution: `<!DOCTYPE html>\n<html lang="en">\n<head><meta charset="UTF-8"></head>\n<body>\n  <!-- A custom id for the heading -->\n  <h2 id="main-heading">Hello</h2>\n  <p class="note">This paragraph is marked with a class.</p>\n</body>\n</html>`,
     checks: [
-      { label: "id attribute is used", test: (c) => /\sid\s*=\s*["'][^"']+["']/i.test(c) },
-      { label: "class attribute is used", test: (c) => /\sclass\s*=\s*["'][^"']+["']/i.test(c) },
-      { label: "HTML comment is present", test: (c) => /<!--[\s\S]*?-->/.test(c) },
+      {
+        label: "id attribute is used",
+        test: (c) => /\sid\s*=\s*["'][^"']+["']/i.test(c),
+      },
+      {
+        label: "class attribute is used",
+        test: (c) => /\sclass\s*=\s*["'][^"']+["']/i.test(c),
+      },
+      {
+        label: "HTML comment is present",
+        test: (c) => /<!--[\s\S]*?-->/.test(c),
+      },
     ],
   },
   {
@@ -178,6 +215,11 @@ export const HTML_LESSONS: HtmlLesson[] = [
     task: 'Use at least one of &lt;, &gt;, or &amp; as visible text (for example: "5 &lt; 10").',
     starter: `<!DOCTYPE html>\n<html lang="en">\n<head><meta charset="UTF-8"></head>\n<body>\n\n</body>\n</html>`,
     solution: `<!DOCTYPE html>\n<html lang="en">\n<head><meta charset="UTF-8"></head>\n<body>\n  <p>In math: 5 &lt; 10, and 2 &amp; 2 isn't 4, because &amp; is a logical operator.</p>\n</body>\n</html>`,
-    checks: [{ label: "At least one entity (&lt; &gt; &amp; &copy; &nbsp;) is used", test: (c) => /&(lt|gt|amp|copy|nbsp);/i.test(c) }],
+    checks: [
+      {
+        label: "At least one entity (&lt; &gt; &amp; &copy; &nbsp;) is used",
+        test: (c) => /&(lt|gt|amp|copy|nbsp);/i.test(c),
+      },
+    ],
   },
 ];

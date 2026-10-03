@@ -24,7 +24,10 @@ function writeJSON(key: string, value: unknown) {
 // and useSyncExternalStore handles re-rendering once the real client value is available.
 // `setValue` notifies the local listener set directly (no cross-tab "storage" event support
 // needed — this component is the only writer for its own key).
-export function useLocalStorageState<T>(key: string, fallback: T): [T, (value: T) => void] {
+export function useLocalStorageState<T>(
+  key: string,
+  fallback: T,
+): [T, (value: T) => void] {
   const valueRef = useRef<T | undefined>(undefined);
   const initializedRef = useRef(false);
   const listenersRef = useRef(new Set<() => void>());
