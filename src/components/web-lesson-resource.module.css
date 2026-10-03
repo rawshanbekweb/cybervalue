@@ -2,9 +2,17 @@
   display: grid;
   grid-template-columns: minmax(200px, 0.8fr) 2fr;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 14px;
   overflow: hidden;
   margin-bottom: 36px;
+  background: var(--surface);
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.card:hover {
+  border-color: #4d5c3d;
+  box-shadow: 0 18px 40px -26px rgba(0, 0, 0, 0.8);
 }
 
 .preview {
@@ -14,7 +22,7 @@
   align-items: center;
   gap: 20px;
   padding: 32px 20px;
-  background: #d3f785;
+  background: linear-gradient(145deg, #e0fb9f, #c2f970);
   color: #26331d;
   font: 11px var(--font-mono);
 }

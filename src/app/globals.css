@@ -778,8 +778,16 @@ svg {
   gap: 23px;
   padding: 25px;
   border: 1px solid var(--border);
-  border-radius: 7px;
+  border-radius: 10px;
   min-height: 183px;
+  background: var(--surface);
+  transition:
+    border-color 0.2s,
+    transform 0.2s;
+}
+.resource-preview:hover {
+  border-color: #4d5c3d;
+  transform: translateY(-2px);
 }
 .resource-symbol {
   font-family: var(--font-mono);
