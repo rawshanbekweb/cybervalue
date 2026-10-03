@@ -135,7 +135,13 @@ function lookup(name: string) {
   return TECH_ICONS[name.trim().toLowerCase()];
 }
 
-export function TechList({ items }: { items: string[] }) {
+export function TechList({
+  items,
+  label = (item) => item,
+}: {
+  items: string[];
+  label?: (item: string) => string;
+}) {
   return (
     <div className="tags">
       {items.map((item) => {
@@ -145,7 +151,7 @@ export function TechList({ items }: { items: string[] }) {
             {match && (
               <match.Icon size={13} color={match.color} aria-hidden="true" />
             )}
-            {item}
+            {label(item)}
           </span>
         );
       })}

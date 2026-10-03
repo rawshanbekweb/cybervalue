@@ -137,12 +137,16 @@ export async function ContentDetail({ entry }: { entry: Entry }) {
               </div>
               <div>
                 <dt>{t("Difficulty")}</dt>
-                <dd>{l.difficulty.toLowerCase()}</dd>
+                <dd>
+                  {t(
+                    l.difficulty.charAt(0) + l.difficulty.slice(1).toLowerCase(),
+                  )}
+                </dd>
               </div>
               <div>
                 <dt>{t("Tools")}</dt>
                 <dd>
-                  <TechList items={l.tools} />
+                  <TechList items={l.tools} label={t} />
                 </dd>
               </div>
             </>

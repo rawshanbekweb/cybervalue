@@ -351,5 +351,10 @@
   "HTML & CSS Project Studio": "HTML va CSS loyiha ustaxonasi",
   "Build an incident form, service status page, or product launch page. Edit HTML and CSS, preview your design, and check its structure against a real project brief.": "Hodisa formasi, xizmatlar holati yoki mahsulot taqdimoti sahifasini yarating. HTML va CSS yozing, dizaynni ko‘ring va tuzilmani loyiha talablariga ko‘ra tekshiring.",
   "HTML assessment": "HTML sinovi",
-  "A timed practical assessment based on HTML Basics.": "HTML Basics asosidagi vaqtli amaliy baholash."
+  "A timed practical assessment based on HTML Basics.": "HTML Basics asosidagi vaqtli amaliy baholash.",
+  "Browser": "Brauzer",
+  "CyberValue Playground": "CyberValue amaliyot maydoni",
+  "Linux and Networking Fundamentals": "Linux va Tarmoq Asoslari",
+  "Terminal, filesystem, processes, packages, networking commands and secure connection basics — 25 topics, practical tasks and diagrams.": "Terminal, fayllar tizimi, jarayonlar, paketlar, tarmoq buyruqlari va xavfsiz ulanish asoslari — 25 mavzu, amaliy topshiriqlar va diagrammalar.",
+  "BASH / PERMISSIONS / NETWORKING / SSH": "BASH / RUXSAT / TARMOQ / SSH"
 }

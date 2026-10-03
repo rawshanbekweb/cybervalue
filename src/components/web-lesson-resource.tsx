@@ -65,7 +65,7 @@ export async function WebLessonResource() {
         <div className={styles.preview} aria-hidden="true">
           <Terminal size={36} strokeWidth={1.3} />
           <span>{t("LINUX / ASOSLAR")}</span>
-          <div>BASH / RUXSAT / TARMOQ / SSH</div>
+          <div>{t("BASH / PERMISSIONS / NETWORKING / SSH")}</div>
           <strong>{t("60 slayd")}</strong>
         </div>
         <div className={styles.content}>
