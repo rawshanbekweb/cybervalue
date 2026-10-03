@@ -18,7 +18,7 @@ import { questionsFor } from "../../src/lib/html-assessment/challenge";
 import { completedHtml } from "../fixtures/html-assessment";
 
 const api = `${ASSESSMENT_PATH}/api`;
-const origin = "http://localhost:3000";
+const origin = `http://localhost:${process.env.PORT ?? "3000"}`;
 const isolated = process.env.E2E_HTML_ASSESSMENT === "true";
 const prefix = process.env.E2E_HTML_PREFIX ?? `html-${randomUUID()}`;
 

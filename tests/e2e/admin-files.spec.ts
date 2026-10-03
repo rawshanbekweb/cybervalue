@@ -10,7 +10,7 @@ test("upload endpoint requires sign-in and rejects foreign origins", async ({
 }) => {
   const signedOut = await request.post("/admin/uploads", {
     headers: {
-      origin: "http://localhost:3000",
+      origin: `http://localhost:${process.env.PORT ?? "3000"}`,
       "x-file-name": "test.txt",
       "x-file-kind": "RESOURCE",
     },

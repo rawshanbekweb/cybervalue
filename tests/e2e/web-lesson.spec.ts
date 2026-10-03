@@ -33,7 +33,11 @@ test("all slides render under the site CSP on desktop and mobile without remote 
     if (message.type() === "error") errors.push(message.text());
   });
   page.on("request", (request) => {
-    if (!request.url().startsWith("http://localhost:3000/"))
+    if (
+      !request
+        .url()
+        .startsWith(`http://localhost:${process.env.PORT ?? "3000"}/`)
+    )
       remoteRequests.push(request.url());
   });
   await page.emulateMedia({ reducedMotion: "reduce" });

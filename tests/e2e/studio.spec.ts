@@ -1,5 +1,21 @@
 import { test, expect } from "@playwright/test";
-test.use({ storageState: { cookies: [{ name: "cybervalue-locale", value: "en", domain: "localhost", path: "/", expires: -1, httpOnly: true, secure: false, sameSite: "Lax" }], origins: [] } });
+test.use({
+  storageState: {
+    cookies: [
+      {
+        name: "cybervalue-locale",
+        value: "en",
+        domain: "localhost",
+        path: "/",
+        expires: -1,
+        httpOnly: true,
+        secure: false,
+        sameSite: "Lax",
+      },
+    ],
+    origins: [],
+  },
+});
 import AxeBuilder from "@axe-core/playwright";
 import { studioSolutions } from "../fixtures/studio";
 

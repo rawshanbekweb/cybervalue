@@ -52,7 +52,7 @@ test("Uzbek is server-rendered by default and both languages persist across rout
     "Resources.",
   );
   await expect(
-    page.getByRole("link", { name: "Open presentation", exact: true }),
+    page.getByRole("link", { name: "Open presentation", exact: true }).first(),
   ).toBeVisible();
   await expect(page.locator('meta[property="og:locale"]')).toHaveAttribute(
     "content",

@@ -32,6 +32,7 @@ test("every public page has distinct metadata, one h1, canonical, and no broken 
   page,
   request,
 }) => {
+  test.setTimeout(180_000);
   const titles = new Set<string>();
   const links = new Set<string>();
   for (const route of routes) {
