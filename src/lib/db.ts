@@ -11,7 +11,7 @@ export function getDb() {
       adapter: new PrismaPg({
         connectionString: env.DATABASE_URL,
         max: 5,
-        connectionTimeoutMillis: 5000,
+        connectionTimeoutMillis: 15000,
         statement_timeout: 10000,
       }),
       log: [],
