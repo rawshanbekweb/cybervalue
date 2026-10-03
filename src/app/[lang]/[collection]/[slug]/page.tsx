@@ -14,8 +14,12 @@ import { ContentDetail } from "@/components/content-detail";
 import { getLocale, getTranslator } from "@/lib/i18n/server";
 
 type Props = { params: Promise<{ collection: string; slug: string }> };
-// Detail pages and their not-found responses depend on the locale cookie.
-export const dynamic = "force-dynamic";
+// The language comes from the [lang] segment, so detail pages can be cached.
+export const revalidate = 60;
+// Entries are rendered on first request, then cached and revalidated.
+export function generateStaticParams() {
+  return [];
+}
 async function resolve(params: Props["params"]) {
   const { collection, slug } = await params;
   if (!isCollection(collection) || !slugSchema.safeParse(slug).success)
