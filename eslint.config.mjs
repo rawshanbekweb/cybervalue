@@ -6,14 +6,15 @@ export default defineConfig([
   ...nextTypescript,
   {
     // These standalone browser scripts intentionally share top-level bindings.
-    files: ["public/lessons/web-asoslari/*.js"],
+    files: ["public/lessons/*/*.js"],
     languageOptions: { sourceType: "script" },
     rules: {
       "@typescript-eslint/no-unused-vars": [
         "warn",
         {
           varsIgnorePattern:
-            "^(esc|expandLessons|updateFoundationStep|foundationSlides)$",
+            "^(esc|callout|table|panel|point|stack|expandLessons|updateFoundationStep|foundationSlides)$",
+          argsIgnorePattern: "^_$",
           caughtErrors: "none",
         },
       ],

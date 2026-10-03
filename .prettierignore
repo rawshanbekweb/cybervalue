@@ -6,3 +6,6 @@ test-results
 playwright-report
 .local
 next-env.d.ts
+.i18n-work
+public/lessons
+marketing
