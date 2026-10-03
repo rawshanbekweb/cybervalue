@@ -1,5 +1,6 @@
 "use server";
 import { randomBytes } from "node:crypto";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getDb } from "@/lib/db";
 import { hashPassword, verifyPassword } from "@/lib/password";
@@ -18,7 +19,14 @@ export async function loginAction(
   _state: LoginState,
   formData: FormData,
 ): Promise<LoginState> {
-  if (!allowRequest("admin-login", Date.now(), 10, 5 * 60_000))
+  // Per-client budget so one attacker cannot lock the admin out; the global
+  // ceiling still bounds distributed guessing.
+  const forwarded = (await headers()).get("x-forwarded-for");
+  const client = forwarded?.split(",")[0]?.trim() || "unknown";
+  if (
+    !allowRequest(`admin-login:${client}`, Date.now(), 10, 5 * 60_000) ||
+    !allowRequest("admin-login:global", Date.now(), 100, 5 * 60_000)
+  )
     return { error: "Too many attempts. Try again in a few minutes." };
 
   const parsed = loginSchema.safeParse({

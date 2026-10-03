@@ -2,7 +2,10 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import type { Entry } from "../src/lib/content-shared";
-import { localizeEntry, translatedSlugsMatching } from "../src/lib/i18n/entries";
+import {
+  localizeEntry,
+  translatedSlugsMatching,
+} from "../src/lib/i18n/entries";
 import { TRANSLATED_AT } from "../src/lib/i18n/entry-translations";
 
 type Seed = {
@@ -67,7 +70,10 @@ test("markdown links and code-like tokens survive translation", () => {
 
 test("the English view of the Uzbek-titled guide gets an English title", () => {
   const seed = seeds.find((s) => s.slug === "linux-va-tarmoq-qollanma")!;
-  assert.match(localizeEntry(entryFrom(seed), "en").title, /^Linux and Networking/);
+  assert.match(
+    localizeEntry(entryFrom(seed), "en").title,
+    /^Linux and Networking/,
+  );
 });
 
 test("an entry edited after translation keeps its authored text", () => {
@@ -92,7 +98,10 @@ test("tag and category names are replaced only while they match the source", () 
     tags: [{ name: "Web Security 2", slug: "web-security" }],
   });
   assert.equal(localizeEntry(renamed, "uz").tags[0].name, "Web Security 2");
-  assert.equal(localizeEntry(entryFrom(seed), "en").tags[0].name, "Web security");
+  assert.equal(
+    localizeEntry(entryFrom(seed), "en").tags[0].name,
+    "Web security",
+  );
 });
 
 test("searching in Uzbek finds entries whose stored text is English", () => {
