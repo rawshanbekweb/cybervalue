@@ -47,5 +47,12 @@ export async function apiCall(
   } catch {
     data = text;
   }
-  return { ok: response.ok, status: response.status, statusText: response.statusText, headers: respHeaders, data, ms };
+  return {
+    ok: response.ok,
+    status: response.status,
+    statusText: response.statusText,
+    headers: respHeaders,
+    data,
+    ms,
+  };
 }

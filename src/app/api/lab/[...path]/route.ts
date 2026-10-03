@@ -64,16 +64,24 @@ async function parseBody(
   if (!text) return { body: {} };
   const contentType = request.headers.get("content-type") ?? "";
   if (!contentType.toLowerCase().startsWith("application/json")) {
-    return { error: result(415, { error: "Content-Type must be application/json." }) };
+    return {
+      error: result(415, { error: "Content-Type must be application/json." }),
+    };
   }
   try {
     const parsed: unknown = JSON.parse(text);
-    if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    if (
+      typeof parsed !== "object" ||
+      parsed === null ||
+      Array.isArray(parsed)
+    ) {
       throw new Error("not an object");
     }
     return { body: parsed as Record<string, unknown> };
   } catch {
-    return { error: result(400, { error: "Body must be a valid JSON object." }) };
+    return {
+      error: result(400, { error: "Body must be a valid JSON object." }),
+    };
   }
 }
 
@@ -98,13 +106,21 @@ async function dispatch(
   const body = parsedBody.body;
 
   if (subpath === "/health" && method === "GET") {
-    return result(200, { status: "online", database: "SQLite", mode: "local lab", user });
+    return result(200, {
+      status: "online",
+      database: "SQLite",
+      mode: "local lab",
+      user,
+    });
   }
 
   if (subpath === "/echo") {
     const safeHeaders: Record<string, string> = {};
     request.headers.forEach((value, key) => {
-      safeHeaders[key] = key.toLowerCase() === "cookie" ? "[see it in Network → Headers]" : value;
+      safeHeaders[key] =
+        key.toLowerCase() === "cookie"
+          ? "[see it in Network → Headers]"
+          : value;
     });
     return result(200, {
       method,
@@ -122,10 +138,15 @@ async function dispatch(
     if (!Number.isFinite(code) || !(code in STATUS_PHRASES)) code = 400;
     const headers: Record<string, string> = {};
     if (code === 301 || code === 302) headers.Location = "/api/lab/status/200";
-    if (code === 401) headers["WWW-Authenticate"] = 'Bearer realm="web-security-lab"';
+    if (code === 401)
+      headers["WWW-Authenticate"] = 'Bearer realm="web-security-lab"';
     return result(
       code,
-      { status: code, phrase: STATUS_PHRASES[code], note: "A response returned deliberately for the status-code lesson." },
+      {
+        status: code,
+        phrase: STATUS_PHRASES[code],
+        note: "A response returned deliberately for the status-code lesson.",
+      },
       headers,
     );
   }
@@ -138,7 +159,11 @@ async function dispatch(
     }
     const attemptCount = recordLoginAttempt(state, name);
     if (attemptCount >= 5) {
-      return result(429, { error: "5 failed attempts. Wait 30 seconds." }, { "Retry-After": "30" });
+      return result(
+        429,
+        { error: "5 failed attempts. Wait 30 seconds." },
+        { "Retry-After": "30" },
+      );
     }
     if (!verifyPassword(name, password)) {
       registerFailedAttempt(state, name);
@@ -151,7 +176,10 @@ async function dispatch(
     clearAttempts(state, name);
     const account = ACCOUNTS[name];
     const session = randomBytes(24).toString("base64url");
-    state.sessions.set(session, { username: name, expiresAt: Date.now() / 1000 + 1800 });
+    state.sessions.set(session, {
+      username: name,
+      expiresAt: Date.now() / 1000 + 1800,
+    });
     return result(
       200,
       {
@@ -190,7 +218,8 @@ async function dispatch(
     }
     if (subpath === "/admin" && user.role !== "admin") {
       return result(403, {
-        error: "The admin role is required. A button on the frontend can't grant that.",
+        error:
+          "The admin role is required. A button on the frontend can't grant that.",
         your_role: user.role,
       });
     }
@@ -219,7 +248,8 @@ async function dispatch(
     }
     const db = openLabDb();
     try {
-      const row = db.prepare("SELECT * FROM users WHERE id = ?").get(target) as UserRow | undefined;
+      const row = db.prepare("SELECT * FROM users WHERE id = ?").get(target) as
+        UserRow | undefined;
       return result(row ? 200 : 404, {
         user: row ? { ...row } : null,
         mode: vulnerable ? "vulnerable" : "safe",
@@ -233,7 +263,9 @@ async function dispatch(
   if (subpath === "/sql" && method === "POST") {
     const name = typeof body.username === "string" ? body.username : "ali";
     if (name.length > 300) {
-      return result(400, { error: "Username must be a string of up to 300 characters." });
+      return result(400, {
+        error: "Username must be a string of up to 300 characters.",
+      });
     }
     const vulnerable = body.mode === "vulnerable";
     // Intentional: this branch mirrors the original SQLi teaching lab exactly. It only ever
@@ -284,12 +316,17 @@ async function dispatch(
         "INSERT INTO users (id, username, name, role, email) VALUES (?, ?, ?, ?, ?)",
         [20, "lola", "Lola", "user", "lola@example.test"],
       ],
-      UPDATE: ["UPDATE users SET username = ? WHERE id = ?", ["ali_updated", 15]],
+      UPDATE: [
+        "UPDATE users SET username = ? WHERE id = ?",
+        ["ali_updated", 15],
+      ],
       DELETE: ["DELETE FROM users WHERE id = ?", [16]],
     };
     const op = typeof body.operation === "string" ? body.operation : "SELECT";
     if (!(op in statements)) {
-      return result(400, { error: "Choose SELECT, INSERT, UPDATE, or DELETE." });
+      return result(400, {
+        error: "Choose SELECT, INSERT, UPDATE, or DELETE.",
+      });
     }
     const [sql, params] = statements[op];
     const db = openLabDb();
@@ -313,7 +350,11 @@ async function dispatch(
     if (method === "GET") return result(200, { comments: state.comments });
     if (method === "POST") {
       const content = body.content;
-      if (typeof content !== "string" || content.length < 1 || content.length > 2000) {
+      if (
+        typeof content !== "string" ||
+        content.length < 1 ||
+        content.length > 2000
+      ) {
         return result(400, { error: "Comment must be 1–2000 characters." });
       }
       const comment = { id: state.comments.length + 1, content };
@@ -327,7 +368,12 @@ async function dispatch(
 
   if (subpath === "/validate" && method === "POST") {
     const age = body.age;
-    if (typeof age !== "number" || !Number.isInteger(age) || age < 1 || age > 120) {
+    if (
+      typeof age !== "number" ||
+      !Number.isInteger(age) ||
+      age < 1 ||
+      age > 120
+    ) {
       return result(400, {
         error: "Server: age must be an integer between 1 and 120.",
         received: age,
@@ -342,8 +388,15 @@ async function dispatch(
 
   if (subpath === "/checkout" && method === "POST") {
     const quantity = body.quantity ?? 1;
-    if (typeof quantity !== "number" || !Number.isInteger(quantity) || quantity < 1 || quantity > 10) {
-      return result(400, { error: "Quantity must be an integer between 1 and 10." });
+    if (
+      typeof quantity !== "number" ||
+      !Number.isInteger(quantity) ||
+      quantity < 1 ||
+      quantity > 10
+    ) {
+      return result(400, {
+        error: "Quantity must be an integer between 1 and 10.",
+      });
     }
     return result(200, {
       quantity,
@@ -379,7 +432,9 @@ async function dispatch(
     const identRaw = postMatch?.[1] ?? "";
     const ident = Number.parseInt(identRaw, 10);
     if (!Number.isFinite(ident) || String(ident) !== identRaw) {
-      return result(405, { error: "This method isn't available on this resource." });
+      return result(405, {
+        error: "This method isn't available on this resource.",
+      });
     }
     const item = state.posts.find((p) => p.id === ident);
     if (!item) return result(404, { error: "Post not found." });
@@ -401,23 +456,40 @@ async function dispatch(
     }
   }
 
-  return result(404, { error: "Endpoint or method not found.", path: subpath, method });
+  return result(404, {
+    error: "Endpoint or method not found.",
+    path: subpath,
+    method,
+  });
 }
 
-async function handle(request: NextRequest, path: string[] | undefined): Promise<NextResponse> {
+async function handle(
+  request: NextRequest,
+  path: string[] | undefined,
+): Promise<NextResponse> {
   const subpath = "/" + (path ?? []).join("/");
   const method = request.method;
 
   const expectedOrigin = request.nextUrl.origin;
   const origin = request.headers.get("origin");
   if (origin && origin !== expectedOrigin) {
-    return NextResponse.json({ error: "Request from a different origin was rejected." }, { status: 403 });
+    return NextResponse.json(
+      { error: "Request from a different origin was rejected." },
+      { status: 403 },
+    );
   }
   if (request.headers.get("sec-fetch-site") === "cross-site") {
-    return NextResponse.json({ error: "Cross-site request was rejected." }, { status: 403 });
+    return NextResponse.json(
+      { error: "Cross-site request was rejected." },
+      { status: 403 },
+    );
   }
 
-  const { id: labId, state, isNew } = getOrCreateLabState(request.cookies.get("lab")?.value);
+  const {
+    id: labId,
+    state,
+    isNew,
+  } = getOrCreateLabState(request.cookies.get("lab")?.value);
   const user = identityFromRequest(
     state,
     request.headers.get("authorization"),
@@ -433,7 +505,11 @@ async function handle(request: NextRequest, path: string[] | undefined): Promise
     response.headers.set(key, value);
   }
   if (isNew) {
-    response.cookies.set("lab", labId, { httpOnly: true, sameSite: "strict", path: "/" });
+    response.cookies.set("lab", labId, {
+      httpOnly: true,
+      sameSite: "strict",
+      path: "/",
+    });
   }
   for (const cookie of outcome.cookies ?? []) {
     response.cookies.set(cookie.name, cookie.value, {

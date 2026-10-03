@@ -22,7 +22,11 @@ export function saveJSON(key: string, value: unknown) {
   }
 }
 
-export function downloadText(filename: string, text: string, type = "text/markdown") {
+export function downloadText(
+  filename: string,
+  text: string,
+  type = "text/markdown",
+) {
   const blob = new Blob([text], { type });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");

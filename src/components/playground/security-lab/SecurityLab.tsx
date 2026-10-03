@@ -16,18 +16,28 @@ const TOTAL = LESSONS.length;
 export function SecurityLab() {
   const [lessonId, goToHash] = useHashLessonId(TOTAL, 1);
   const [tab, setTab] = useState<"practice" | "theory" | "teacher">("practice");
-  const [storedProgress, setCompletedStored] = useLocalStorageState<unknown>(PROGRESS_KEY, {});
-  const [storedNotes, setNotesStored] = useLocalStorageState<unknown>(NOTES_KEY, {});
+  const [storedProgress, setCompletedStored] = useLocalStorageState<unknown>(
+    PROGRESS_KEY,
+    {},
+  );
+  const [storedNotes, setNotesStored] = useLocalStorageState<unknown>(
+    NOTES_KEY,
+    {},
+  );
   const completed = lessonRecord<boolean>(storedProgress, TOTAL, "boolean");
   const notes = lessonRecord<string>(storedNotes, TOTAL, "string");
   const [search, setSearch] = useState("");
   const [present, setPresent] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [connection, setConnection] = useState<"connecting" | "online" | "offline">("connecting");
+  const [connection, setConnection] = useState<
+    "connecting" | "online" | "offline"
+  >("connecting");
   const [toast, setToast] = useState("");
 
   useEffect(() => {
-    apiCall("GET", "/api/lab/health").then((res) => setConnection(res.ok ? "online" : "offline"));
+    apiCall("GET", "/api/lab/health").then((res) =>
+      setConnection(res.ok ? "online" : "offline"),
+    );
   }, []);
 
   useEffect(() => onToast((message) => setToast(message)), []);
@@ -37,7 +47,10 @@ export function SecurityLab() {
     return () => clearTimeout(timer);
   }, [toast]);
 
-  const lesson = useMemo<Lesson>(() => LESSONS.find((l) => l.id === lessonId) ?? LESSONS[0], [lessonId]);
+  const lesson = useMemo<Lesson>(
+    () => LESSONS.find((l) => l.id === lessonId) ?? LESSONS[0],
+    [lessonId],
+  );
   const group = groupFor(lesson.id);
 
   const goTo = (id: number) => {
@@ -63,11 +76,16 @@ export function SecurityLab() {
 
   const term = search.trim().toLowerCase();
   const visibleLessons = LESSONS.filter(
-    (l) => !term || l.title.toLowerCase().includes(term) || l.heading.toLowerCase().includes(term),
+    (l) =>
+      !term ||
+      l.title.toLowerCase().includes(term) ||
+      l.heading.toLowerCase().includes(term),
   );
 
   const Renderer = PRACTICE_RENDERERS[lesson.type] ?? Fallback;
-  const doneCount = Object.values(completed).filter((value) => value === true).length;
+  const doneCount = Object.values(completed).filter(
+    (value) => value === true,
+  ).length;
 
   return (
     <div className={`lab-root${present ? " lab-present" : ""}`}>
@@ -105,10 +123,13 @@ export function SecurityLab() {
           />
         </div>
         <nav aria-label="Lesson sections" className="lab-lesson-nav">
-          {visibleLessons.length === 0 && <div className="lab-empty-search">Nothing found.</div>}
+          {visibleLessons.length === 0 && (
+            <div className="lab-empty-search">Nothing found.</div>
+          )}
           {visibleLessons.map((l, i) => {
             const g = groupFor(l.id);
-            const showGroup = i === 0 || groupFor(visibleLessons[i - 1].id).title !== g.title;
+            const showGroup =
+              i === 0 || groupFor(visibleLessons[i - 1].id).title !== g.title;
             return (
               <div key={l.id}>
                 {showGroup && <div className="lab-nav-group">{g.title}</div>}
@@ -117,7 +138,9 @@ export function SecurityLab() {
                   className={`lab-nav-item${l.id === lessonId ? " active" : ""}`}
                   onClick={() => goTo(l.id)}
                 >
-                  <span className="lab-nav-number">{String(l.id).padStart(2, "0")}</span>
+                  <span className="lab-nav-number">
+                    {String(l.id).padStart(2, "0")}
+                  </span>
                   <span>{l.title}</span>
                   {completed[l.id] && <span className="lab-nav-check">✓</span>}
                 </button>
@@ -135,7 +158,9 @@ export function SecurityLab() {
           <div className="lab-progress-track">
             <i style={{ width: `${Math.round((doneCount / TOTAL) * 100)}%` }} />
           </div>
-          <span className="lab-save-hint">Progress is saved in this browser</span>
+          <span className="lab-save-hint">
+            Progress is saved in this browser
+          </span>
         </div>
       </aside>
       <div className="lab-workspace">
@@ -154,11 +179,21 @@ export function SecurityLab() {
             <b>{lesson.title}</b>
           </div>
           <div className="lab-top-actions">
-            <span className={`lab-connection${connection === "offline" ? " offline" : ""}`}>
+            <span
+              className={`lab-connection${connection === "offline" ? " offline" : ""}`}
+            >
               <i />
-              {connection === "connecting" ? "Connecting" : connection === "online" ? "Connected" : "Server not found"}
+              {connection === "connecting"
+                ? "Connecting"
+                : connection === "online"
+                  ? "Connected"
+                  : "Server not found"}
             </span>
-            <button type="button" className="lab-quiet-button" onClick={() => setPresent((v) => !v)}>
+            <button
+              type="button"
+              className="lab-quiet-button"
+              onClick={() => setPresent((v) => !v)}
+            >
               <span>▣</span> Presentation mode
             </button>
           </div>
@@ -179,7 +214,8 @@ export function SecurityLab() {
               <p className="lab-hero-description">
                 Learn the path from browser to database.
                 <br />
-                Send a request, watch the result, and put the defenses to the test.
+                Send a request, watch the result, and put the defenses to the
+                test.
               </p>
               <div className="lab-hero-tags">
                 <span>
@@ -307,7 +343,9 @@ export function SecurityLab() {
                   {tab === "practice" && (
                     <>
                       <div className="lab-eyebrow">
-                        <span className={`lab-badge${lesson.real ? "" : " sim"}`}>
+                        <span
+                          className={`lab-badge${lesson.real ? "" : " sim"}`}
+                        >
                           {lesson.real ? "⌘ REAL API" : "◇ SIMULATION"}
                         </span>
                       </div>
@@ -320,9 +358,18 @@ export function SecurityLab() {
                   )}
                 </div>
                 <div className="lab-lesson-footer">
-                  <span>{completed[lesson.id] ? "You marked this lesson as reviewed. Try a mission to verify your skills." : "Self-paced review. Missions verify your work with evidence and tests."}</span>
-                  <button type="button" className="lab-primary-button" onClick={toggleComplete}>
-                    {completed[lesson.id] ? "Reviewed" : "Mark as reviewed"} <span>✓</span>
+                  <span>
+                    {completed[lesson.id]
+                      ? "You marked this lesson as reviewed. Try a mission to verify your skills."
+                      : "Self-paced review. Missions verify your work with evidence and tests."}
+                  </span>
+                  <button
+                    type="button"
+                    className="lab-primary-button"
+                    onClick={toggleComplete}
+                  >
+                    {completed[lesson.id] ? "Reviewed" : "Mark as reviewed"}{" "}
+                    <span>✓</span>
                   </button>
                 </div>
               </article>
@@ -392,12 +439,17 @@ export function SecurityLab() {
               <b>Web Security Lab.</b> Knowledge is reinforced through practice.
             </span>
             <span>
-              A local lab running on synthetic data only <i className="lab-live-dot" />
+              A local lab running on synthetic data only{" "}
+              <i className="lab-live-dot" />
             </span>
           </footer>
         </main>
       </div>
-      <div className={`lab-toast${toast ? " visible" : ""}`} role="status" aria-live="polite">
+      <div
+        className={`lab-toast${toast ? " visible" : ""}`}
+        role="status"
+        aria-live="polite"
+      >
         {toast}
       </div>
     </div>

@@ -1,4 +1,9 @@
-import { randomBytes, pbkdf2Sync, timingSafeEqual, createHmac } from "node:crypto";
+import {
+  randomBytes,
+  pbkdf2Sync,
+  timingSafeEqual,
+  createHmac,
+} from "node:crypto";
 
 const PASSWORD_SALT = "local-teaching-fixture";
 const PBKDF2_ITERATIONS = 120_000;
@@ -29,15 +34,30 @@ export const ACCOUNTS: Record<string, Account> = {
     id: 1,
     role: "admin",
     name: "Administrator",
-    hash: pbkdf2Sync("admin123", PASSWORD_SALT, PBKDF2_ITERATIONS, 32, "sha256"),
+    hash: pbkdf2Sync(
+      "admin123",
+      PASSWORD_SALT,
+      PBKDF2_ITERATIONS,
+      32,
+      "sha256",
+    ),
   },
 };
 
 export function verifyPassword(username: string, password: string): boolean {
   const account = ACCOUNTS[username];
   if (!account) return false;
-  const candidate = pbkdf2Sync(password, PASSWORD_SALT, PBKDF2_ITERATIONS, 32, "sha256");
-  return candidate.length === account.hash.length && timingSafeEqual(candidate, account.hash);
+  const candidate = pbkdf2Sync(
+    password,
+    PASSWORD_SALT,
+    PBKDF2_ITERATIONS,
+    32,
+    "sha256",
+  );
+  return (
+    candidate.length === account.hash.length &&
+    timingSafeEqual(candidate, account.hash)
+  );
 }
 
 export interface Identity {
@@ -64,7 +84,9 @@ function b64url(data: Buffer): string {
 
 export function tokenFor(username: string): string {
   const now = Math.floor(Date.now() / 1000);
-  const head = b64url(Buffer.from(JSON.stringify({ alg: "HS256", typ: "JWT" })));
+  const head = b64url(
+    Buffer.from(JSON.stringify({ alg: "HS256", typ: "JWT" })),
+  );
   const body = b64url(
     Buffer.from(
       JSON.stringify({
@@ -77,7 +99,9 @@ export function tokenFor(username: string): string {
     ),
   );
   const message = `${head}.${body}`;
-  const signature = b64url(createHmac("sha256", SECRET).update(message).digest());
+  const signature = b64url(
+    createHmac("sha256", SECRET).update(message).digest(),
+  );
   return `${message}.${signature}`;
 }
 
@@ -85,16 +109,26 @@ export function verifyToken(token: string): string | null {
   try {
     const [head, payload, signature] = token.split(".");
     if (!head || !payload || !signature) return null;
-    const expected = b64url(createHmac("sha256", SECRET).update(`${head}.${payload}`).digest());
+    const expected = b64url(
+      createHmac("sha256", SECRET).update(`${head}.${payload}`).digest(),
+    );
     const sigBuf = Buffer.from(signature);
     const expBuf = Buffer.from(expected);
-    if (sigBuf.length !== expBuf.length || !timingSafeEqual(sigBuf, expBuf)) return null;
+    if (sigBuf.length !== expBuf.length || !timingSafeEqual(sigBuf, expBuf))
+      return null;
     const header = JSON.parse(Buffer.from(head, "base64url").toString("utf8"));
-    const claims = JSON.parse(Buffer.from(payload, "base64url").toString("utf8"));
-    if (header?.alg !== "HS256" || claims?.iss !== "lab-local" || claims?.aud !== "web-security-lab") {
+    const claims = JSON.parse(
+      Buffer.from(payload, "base64url").toString("utf8"),
+    );
+    if (
+      header?.alg !== "HS256" ||
+      claims?.iss !== "lab-local" ||
+      claims?.aud !== "web-security-lab"
+    ) {
       return null;
     }
-    if (typeof claims.exp !== "number" || claims.exp <= Date.now() / 1000) return null;
+    if (typeof claims.exp !== "number" || claims.exp <= Date.now() / 1000)
+      return null;
     const sub = claims.sub;
     return typeof sub === "string" && sub in ACCOUNTS ? sub : null;
   } catch {
@@ -137,7 +171,11 @@ function createLabState(): LabState {
 // needs durable storage — a restart just resets everyone's sandbox, which is harmless by design.
 const STATES = new Map<string, LabState>();
 
-export function getOrCreateLabState(labId: string | undefined): { id: string; state: LabState; isNew: boolean } {
+export function getOrCreateLabState(labId: string | undefined): {
+  id: string;
+  state: LabState;
+  isNew: boolean;
+} {
   if (labId && STATES.has(labId)) {
     return { id: labId, state: STATES.get(labId)!, isNew: false };
   }
@@ -149,7 +187,9 @@ export function getOrCreateLabState(labId: string | undefined): { id: string; st
 
 export function recordLoginAttempt(state: LabState, username: string): number {
   const now = Date.now() / 1000;
-  const attempts = (state.attempts.get(username) ?? []).filter((t) => now - t < 30);
+  const attempts = (state.attempts.get(username) ?? []).filter(
+    (t) => now - t < 30,
+  );
   state.attempts.set(username, attempts);
   return attempts.length;
 }
@@ -174,7 +214,8 @@ export function identityFromRequest(
     username = verifyToken(authorizationHeader.slice(7));
   } else if (sessionCookie) {
     const entry = state.sessions.get(sessionCookie);
-    username = entry && entry.expiresAt > Date.now() / 1000 ? entry.username : null;
+    username =
+      entry && entry.expiresAt > Date.now() / 1000 ? entry.username : null;
   }
   return identityFor(username);
 }

@@ -4,7 +4,14 @@ import { Fragment, useEffect, useState, type ComponentType } from "react";
 import type { Lesson } from "./lessons.data";
 import { QUIZ } from "./lessons.data";
 import { apiCall, type ApiResult } from "./api";
-import { loadJSON, saveJSON, downloadText, NOTES_KEY, QUIZ_KEY, WORKSHEET_KEY } from "./storage";
+import {
+  loadJSON,
+  saveJSON,
+  downloadText,
+  NOTES_KEY,
+  QUIZ_KEY,
+  WORKSHEET_KEY,
+} from "./storage";
 import { showToast } from "./toast";
 import {
   ResponseConsole,
@@ -25,7 +32,11 @@ interface RendererProps {
 }
 
 export function Fallback() {
-  return <p className="lab-help">The practice exercise for this lesson is still being prepared.</p>;
+  return (
+    <p className="lab-help">
+      The practice exercise for this lesson is still being prepared.
+    </p>
+  );
 }
 
 const FLOW_STEPS_DB: [string, string, string][] = [
@@ -74,7 +85,9 @@ export function Flow({ lesson }: RendererProps) {
                 <strong>{name}</strong>
                 <small>{note}</small>
               </div>
-              {i < steps.length - 1 && <span className="lab-flow-arrow">→</span>}
+              {i < steps.length - 1 && (
+                <span className="lab-flow-arrow">→</span>
+              )}
             </Fragment>
           ))}
         </div>
@@ -83,10 +96,16 @@ export function Flow({ lesson }: RendererProps) {
         </p>
       </div>
       <ButtonRow>
-        <SecondaryButton onClick={() => setIdx((v) => Math.max(0, v - 1))} disabled={idx === 0}>
+        <SecondaryButton
+          onClick={() => setIdx((v) => Math.max(0, v - 1))}
+          disabled={idx === 0}
+        >
           ← Previous step
         </SecondaryButton>
-        <PrimaryButton onClick={() => setIdx((v) => Math.min(steps.length - 1, v + 1))} disabled={idx === steps.length - 1}>
+        <PrimaryButton
+          onClick={() => setIdx((v) => Math.min(steps.length - 1, v + 1))}
+          disabled={idx === steps.length - 1}
+        >
           Next step →
         </PrimaryButton>
         {lesson.real && (
@@ -115,7 +134,10 @@ export function Order() {
     ORDER_STEPS.map((text, i) => ({ text, i })).sort(() => Math.random() - 0.5),
   );
   const [picked, setPicked] = useState<number[]>([]);
-  const [feedback, setFeedback] = useState<{ ok: boolean; text: string } | null>(null);
+  const [feedback, setFeedback] = useState<{
+    ok: boolean;
+    text: string;
+  } | null>(null);
   const reset = () => {
     setPicked([]);
     setFeedback(null);
@@ -149,7 +171,8 @@ export function Order() {
         ))}
       </ButtonRow>
       <Callout>
-        Selected order: {picked.length ? picked.map((n) => n + 1).join(" → ") : "(none yet)"}
+        Selected order:{" "}
+        {picked.length ? picked.map((n) => n + 1).join(" → ") : "(none yet)"}
       </Callout>
       <ButtonRow>
         <SecondaryButton onClick={reset}>Start over</SecondaryButton>
@@ -162,15 +185,26 @@ export function Order() {
 
 const CLASSIFY_ITEMS: { text: string; answer: "static" | "app" }[] = [
   { text: "The user reads an article — no form, no login.", answer: "static" },
-  { text: "The user logs in and views their personal order history.", answer: "app" },
-  { text: "The user adds a product to the cart and checks out.", answer: "app" },
+  {
+    text: "The user logs in and views their personal order history.",
+    answer: "app",
+  },
+  {
+    text: "The user adds a product to the cart and checks out.",
+    answer: "app",
+  },
 ];
 
 export function Classify() {
   const [answers, setAnswers] = useState<Record<number, string>>({});
-  const [feedback, setFeedback] = useState<{ ok: boolean; text: string } | null>(null);
+  const [feedback, setFeedback] = useState<{
+    ok: boolean;
+    text: string;
+  } | null>(null);
   const check = () => {
-    const correctCount = CLASSIFY_ITEMS.filter((item, i) => answers[i] === item.answer).length;
+    const correctCount = CLASSIFY_ITEMS.filter(
+      (item, i) => answers[i] === item.answer,
+    ).length;
     const all = correctCount === CLASSIFY_ITEMS.length;
     setFeedback({
       ok: all,
@@ -182,15 +216,25 @@ export function Classify() {
   return (
     <div>
       {CLASSIFY_ITEMS.map((item, i) => (
-        <div className="lab-choice-card" key={item.text} style={{ marginBottom: 10 }}>
+        <div
+          className="lab-choice-card"
+          key={item.text}
+          style={{ marginBottom: 10 }}
+        >
           <strong>
             {i + 1}. {item.text}
           </strong>
           <ButtonRow>
-            <Chip selected={answers[i] === "static"} onClick={() => setAnswers((a) => ({ ...a, [i]: "static" }))}>
+            <Chip
+              selected={answers[i] === "static"}
+              onClick={() => setAnswers((a) => ({ ...a, [i]: "static" }))}
+            >
               Static page
             </Chip>
-            <Chip selected={answers[i] === "app"} onClick={() => setAnswers((a) => ({ ...a, [i]: "app" }))}>
+            <Chip
+              selected={answers[i] === "app"}
+              onClick={() => setAnswers((a) => ({ ...a, [i]: "app" }))}
+            >
               Web application
             </Chip>
           </ButtonRow>
@@ -202,7 +246,10 @@ export function Classify() {
   );
 }
 
-const MATCH_DATA: Record<number, { options: string[]; rows: [string, string][] }> = {
+const MATCH_DATA: Record<
+  number,
+  { options: string[]; rows: [string, string][] }
+> = {
   4: {
     options: ["Frontend", "Backend", "Database"],
     rows: [
@@ -226,11 +273,19 @@ const MATCH_DATA: Record<number, { options: string[]; rows: [string, string][] }
 export function Match({ lesson }: RendererProps) {
   const data = MATCH_DATA[lesson.id] ?? MATCH_DATA[4];
   const [values, setValues] = useState<string[]>(() => data.rows.map(() => ""));
-  const [feedback, setFeedback] = useState<{ ok: boolean; text: string } | null>(null);
+  const [feedback, setFeedback] = useState<{
+    ok: boolean;
+    text: string;
+  } | null>(null);
   const check = () => {
     const correct = values.filter((v, i) => v === data.rows[i][1]).length;
     const all = correct === data.rows.length;
-    setFeedback({ ok: all, text: all ? "✓ You matched the model correctly." : `${correct} / ${data.rows.length} correct.` });
+    setFeedback({
+      ok: all,
+      text: all
+        ? "✓ You matched the model correctly."
+        : `${correct} / ${data.rows.length} correct.`,
+    });
   };
   return (
     <div>
@@ -239,7 +294,11 @@ export function Match({ lesson }: RendererProps) {
           <span>{row[0]}</span>
           <select
             value={values[i]}
-            onChange={(e) => setValues((v) => v.map((cur, j) => (j === i ? e.target.value : cur)))}
+            onChange={(e) =>
+              setValues((v) =>
+                v.map((cur, j) => (j === i ? e.target.value : cur)),
+              )
+            }
           >
             <option value="">— choose —</option>
             {data.options.map((o) => (
@@ -268,11 +327,19 @@ export function FrontendDemo() {
           <input value={title} onChange={(e) => setTitle(e.target.value)} />
         </Field>
         <Field label="Button color">
-          <input type="color" value={color} onChange={(e) => setColor(e.target.value)} />
+          <input
+            type="color"
+            value={color}
+            onChange={(e) => setColor(e.target.value)}
+          />
         </Field>
         <h3 style={{ margin: "14px 0" }}>{title}</h3>
         <input placeholder="Username" style={{ marginBottom: 8 }} />
-        <input placeholder="Password" type="password" style={{ marginBottom: 8 }} />
+        <input
+          placeholder="Password"
+          type="password"
+          style={{ marginBottom: 8 }}
+        />
         <button
           className="lab-primary-button"
           style={{ background: color, borderColor: color }}
@@ -280,7 +347,9 @@ export function FrontendDemo() {
             setNote(
               'Even though the button says "Log in as Admin," no request was sent to any server — this is just what\'s shown in the browser.',
             );
-            showToast("Only the frontend changed. The server knows nothing about it.");
+            showToast(
+              "Only the frontend changed. The server knows nothing about it.",
+            );
           }}
           type="button"
         >
@@ -292,15 +361,23 @@ export function FrontendDemo() {
   );
 }
 
-const AUTH_PASSWORDS: Record<string, string> = { ali: "ali123", vali: "vali123", admin: "admin123" };
+const AUTH_PASSWORDS: Record<string, string> = {
+  ali: "ali123",
+  vali: "vali123",
+  admin: "admin123",
+};
 
 export function AuthConsole({ lesson }: RendererProps) {
   const [username, setUsername] = useState("ali");
   const [password, setPassword] = useState("ali123");
   const [log, setLog] = useState<{ label: string; result: ApiResult }[]>([]);
-  const pushLog = (label: string, result: ApiResult) => setLog((l) => [{ label, result }, ...l].slice(0, 6));
+  const pushLog = (label: string, result: ApiResult) =>
+    setLog((l) => [{ label, result }, ...l].slice(0, 6));
   const login = async (name: string, pass: string) => {
-    const res = await apiCall("POST", "/api/lab/login", { username: name, password: pass });
+    const res = await apiCall("POST", "/api/lab/login", {
+      username: name,
+      password: pass,
+    });
     pushLog(`Login: ${name}`, res);
     showToast(res.ok ? `Logged in as ${name}.` : "Login failed.");
   };
@@ -309,10 +386,15 @@ export function AuthConsole({ lesson }: RendererProps) {
       {lesson.id === 6 && (
         <>
           <Callout>
-            The “Admin panel (UI only)” button below doesn&apos;t send any request — it&apos;s just a button that&apos;s visible.
+            The “Admin panel (UI only)” button below doesn&apos;t send any
+            request — it&apos;s just a button that&apos;s visible.
           </Callout>
           <ButtonRow>
-            <SecondaryButton onClick={() => showToast("This is just a frontend button — no API was called.")}>
+            <SecondaryButton
+              onClick={() =>
+                showToast("This is just a frontend button — no API was called.")
+              }
+            >
               Admin panel (UI only)
             </SecondaryButton>
           </ButtonRow>
@@ -320,26 +402,55 @@ export function AuthConsole({ lesson }: RendererProps) {
       )}
       <FieldRow>
         <Field label="Username">
-          <input value={username} onChange={(e) => setUsername(e.target.value)} />
+          <input
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
         </Field>
         <Field label="Password">
-          <input value={password} onChange={(e) => setPassword(e.target.value)} />
+          <input
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </Field>
       </FieldRow>
       <ButtonRow>
-        <SecondaryButton onClick={() => login("ali", AUTH_PASSWORDS.ali)}>Log in as Ali</SecondaryButton>
-        <SecondaryButton onClick={() => login("vali", AUTH_PASSWORDS.vali)}>Log in as Vali</SecondaryButton>
-        <SecondaryButton onClick={() => login("admin", AUTH_PASSWORDS.admin)}>Log in as Admin</SecondaryButton>
-        <SecondaryButton onClick={() => login(username, password)}>Log in with the credentials above</SecondaryButton>
-        <SecondaryButton onClick={async () => pushLog("Logout", await apiCall("POST", "/api/lab/logout"))}>
+        <SecondaryButton onClick={() => login("ali", AUTH_PASSWORDS.ali)}>
+          Log in as Ali
+        </SecondaryButton>
+        <SecondaryButton onClick={() => login("vali", AUTH_PASSWORDS.vali)}>
+          Log in as Vali
+        </SecondaryButton>
+        <SecondaryButton onClick={() => login("admin", AUTH_PASSWORDS.admin)}>
+          Log in as Admin
+        </SecondaryButton>
+        <SecondaryButton onClick={() => login(username, password)}>
+          Log in with the credentials above
+        </SecondaryButton>
+        <SecondaryButton
+          onClick={async () =>
+            pushLog("Logout", await apiCall("POST", "/api/lab/logout"))
+          }
+        >
           Log out
         </SecondaryButton>
       </ButtonRow>
       <ButtonRow>
-        <PrimaryButton onClick={async () => pushLog("GET /api/profile", await apiCall("GET", "/api/lab/profile"))}>
+        <PrimaryButton
+          onClick={async () =>
+            pushLog(
+              "GET /api/profile",
+              await apiCall("GET", "/api/lab/profile"),
+            )
+          }
+        >
           Call /api/profile
         </PrimaryButton>
-        <PrimaryButton onClick={async () => pushLog("GET /api/admin", await apiCall("GET", "/api/lab/admin"))}>
+        <PrimaryButton
+          onClick={async () =>
+            pushLog("GET /api/admin", await apiCall("GET", "/api/lab/admin"))
+          }
+        >
           Call /api/admin
         </PrimaryButton>
       </ButtonRow>
@@ -348,7 +459,11 @@ export function AuthConsole({ lesson }: RendererProps) {
           <div key={i}>
             <div className="lab-result-header">
               <span>{entry.label}</span>
-              <span className={`lab-status-pill${entry.result.status >= 400 ? " error" : ""}`}>{entry.result.status}</span>
+              <span
+                className={`lab-status-pill${entry.result.status >= 400 ? " error" : ""}`}
+              >
+                {entry.result.status}
+              </span>
             </div>
             <CodeBlock>
               <Pre data={entry.result.data} />
@@ -367,10 +482,14 @@ export function RequestConsole({ lesson }: RendererProps) {
   const [endpoint, setEndpoint] = useState(lesson.endpoint ?? "/api/lab/echo");
   const [headerKey, setHeaderKey] = useState("");
   const [headerVal, setHeaderVal] = useState("");
-  const [bodyText, setBodyText] = useState(JSON.stringify(lesson.body ?? {}, null, 2));
+  const [bodyText, setBodyText] = useState(
+    JSON.stringify(lesson.body ?? {}, null, 2),
+  );
   const [result, setResult] = useState<ApiResult | null>(null);
   const send = async () => {
-    const extraHeaders = headerKey.trim() ? { [headerKey.trim()]: headerVal } : undefined;
+    const extraHeaders = headerKey.trim()
+      ? { [headerKey.trim()]: headerVal }
+      : undefined;
     let body: unknown;
     if (METHODS_WITH_BODY.includes(method)) {
       try {
@@ -381,7 +500,11 @@ export function RequestConsole({ lesson }: RendererProps) {
           status: 0,
           statusText: "JSON error",
           headers: {},
-          data: { error: "Body isn't valid JSON: " + (err instanceof Error ? err.message : String(err)) },
+          data: {
+            error:
+              "Body isn't valid JSON: " +
+              (err instanceof Error ? err.message : String(err)),
+          },
           ms: 0,
         });
         return;
@@ -400,15 +523,26 @@ export function RequestConsole({ lesson }: RendererProps) {
           </select>
         </Field>
         <Field label="Endpoint">
-          <input value={endpoint} onChange={(e) => setEndpoint(e.target.value)} />
+          <input
+            value={endpoint}
+            onChange={(e) => setEndpoint(e.target.value)}
+          />
         </Field>
       </FieldRow>
       <FieldRow>
         <Field label="Extra header name (optional)">
-          <input placeholder="X-Lesson" value={headerKey} onChange={(e) => setHeaderKey(e.target.value)} />
+          <input
+            placeholder="X-Lesson"
+            value={headerKey}
+            onChange={(e) => setHeaderKey(e.target.value)}
+          />
         </Field>
         <Field label="Header value">
-          <input placeholder={String(lesson.id)} value={headerVal} onChange={(e) => setHeaderVal(e.target.value)} />
+          <input
+            placeholder={String(lesson.id)}
+            value={headerVal}
+            onChange={(e) => setHeaderVal(e.target.value)}
+          />
         </Field>
       </FieldRow>
       <Field label="JSON body">
@@ -434,7 +568,12 @@ export function StatusConsole() {
     <div>
       <ButtonRow>
         {STATUS_CODES.map((c) => (
-          <Chip key={c} onClick={async () => setResult(await apiCall("GET", `/api/lab/status/${c}`))}>
+          <Chip
+            key={c}
+            onClick={async () =>
+              setResult(await apiCall("GET", `/api/lab/status/${c}`))
+            }
+          >
             {c}
           </Chip>
         ))}
@@ -473,15 +612,24 @@ export function Validate() {
 }
 
 function b64urlDecode(seg: string): string {
-  return atob(seg.replace(/-/g, "+").replace(/_/g, "/") + "=".repeat((4 - (seg.length % 4)) % 4));
+  return atob(
+    seg.replace(/-/g, "+").replace(/_/g, "/") +
+      "=".repeat((4 - (seg.length % 4)) % 4),
+  );
 }
 
 export function Jwt() {
   const [token, setToken] = useState("");
-  const [decoded, setDecoded] = useState<{ header: unknown; payload: unknown } | null>(null);
+  const [decoded, setDecoded] = useState<{
+    header: unknown;
+    payload: unknown;
+  } | null>(null);
   const [result, setResult] = useState<ApiResult | null>(null);
   const login = async () => {
-    const res = await apiCall("POST", "/api/lab/login", { username: "ali", password: "ali123" });
+    const res = await apiCall("POST", "/api/lab/login", {
+      username: "ali",
+      password: "ali123",
+    });
     const data = res.data as { token?: string } | null;
     if (res.ok && data?.token) {
       setToken(data.token);
@@ -493,7 +641,10 @@ export function Jwt() {
   const decode = () => {
     try {
       const [head, payload] = token.split(".");
-      setDecoded({ header: JSON.parse(b64urlDecode(head)), payload: JSON.parse(b64urlDecode(payload)) });
+      setDecoded({
+        header: JSON.parse(b64urlDecode(head)),
+        payload: JSON.parse(b64urlDecode(payload)),
+      });
     } catch {
       showToast("Decode failed.");
     }
@@ -501,7 +652,9 @@ export function Jwt() {
   return (
     <div>
       <ButtonRow>
-        <SecondaryButton onClick={login}>Log in as Ali (get a token)</SecondaryButton>
+        <SecondaryButton onClick={login}>
+          Log in as Ali (get a token)
+        </SecondaryButton>
       </ButtonRow>
       {token && (
         <CodeBlock>
@@ -513,15 +666,26 @@ export function Jwt() {
           Decode the payload
         </SecondaryButton>
         <PrimaryButton
-          onClick={async () => setResult(await apiCall("GET", "/api/lab/profile", undefined, { Authorization: `Bearer ${token}` }))}
+          onClick={async () =>
+            setResult(
+              await apiCall("GET", "/api/lab/profile", undefined, {
+                Authorization: `Bearer ${token}`,
+              }),
+            )
+          }
           disabled={!token}
         >
           /api/profile with the original token
         </PrimaryButton>
         <SecondaryButton
           onClick={async () => {
-            const tampered = token.slice(0, -1) + (token.slice(-1) === "a" ? "b" : "a");
-            setResult(await apiCall("GET", "/api/lab/profile", undefined, { Authorization: `Bearer ${tampered}` }));
+            const tampered =
+              token.slice(0, -1) + (token.slice(-1) === "a" ? "b" : "a");
+            setResult(
+              await apiCall("GET", "/api/lab/profile", undefined, {
+                Authorization: `Bearer ${tampered}`,
+              }),
+            );
           }}
           disabled={!token}
         >
@@ -556,29 +720,51 @@ export function Cookies() {
       <ButtonRow>
         <SecondaryButton
           onClick={async () => {
-            const res = await apiCall("POST", "/api/lab/login", { username: "ali", password: "ali123" });
+            const res = await apiCall("POST", "/api/lab/login", {
+              username: "ali",
+              password: "ali123",
+            });
             const data = res.data as { cookie_flags?: unknown } | null;
             setOut({ kind: "flags", data: data?.cookie_flags });
           }}
         >
           Log in as Ali
         </SecondaryButton>
-        <SecondaryButton onClick={() => setOut({ kind: "raw", text: `document.cookie = "${document.cookie}"` })}>
+        <SecondaryButton
+          onClick={() =>
+            setOut({
+              kind: "raw",
+              text: `document.cookie = "${document.cookie}"`,
+            })
+          }
+        >
           Read document.cookie
         </SecondaryButton>
-        <PrimaryButton onClick={async () => setOut({ kind: "response", result: await apiCall("GET", "/api/lab/profile") })}>
+        <PrimaryButton
+          onClick={async () =>
+            setOut({
+              kind: "response",
+              result: await apiCall("GET", "/api/lab/profile"),
+            })
+          }
+        >
           /api/profile with the cookie
         </PrimaryButton>
       </ButtonRow>
-      {out?.kind === "flags" && <Callout>cookie_flags from the login response: {JSON.stringify(out.data, null, 2)}</Callout>}
+      {out?.kind === "flags" && (
+        <Callout>
+          cookie_flags from the login response:{" "}
+          {JSON.stringify(out.data, null, 2)}
+        </Callout>
+      )}
       {out?.kind === "raw" && (
         <>
           <CodeBlock>
             <Pre data={out.text} />
           </CodeBlock>
           <p className="lab-help">
-            The session cookie is HttpOnly, so it isn&apos;t visible here — but the browser still attaches it to the request
-            automatically.
+            The session cookie is HttpOnly, so it isn&apos;t visible here — but
+            the browser still attaches it to the request automatically.
           </p>
         </>
       )}
@@ -615,7 +801,9 @@ function DataTable({ rows }: { rows: Record<string, unknown>[] | undefined }) {
 }
 
 export function DatabaseView() {
-  const [rows, setRows] = useState<Record<string, unknown>[] | undefined>(undefined);
+  const [rows, setRows] = useState<Record<string, unknown>[] | undefined>(
+    undefined,
+  );
   const [raw, setRaw] = useState<unknown>(undefined);
   const load = async () => {
     const res = await apiCall("GET", "/api/lab/database");
@@ -628,7 +816,11 @@ export function DatabaseView() {
       <ButtonRow>
         <PrimaryButton onClick={load}>Fetch the table</PrimaryButton>
       </ButtonRow>
-      {rows ? <DataTable rows={rows} /> : raw !== undefined ? <Pre data={raw} /> : null}
+      {rows ? (
+        <DataTable rows={rows} />
+      ) : raw !== undefined ? (
+        <Pre data={raw} />
+      ) : null}
     </div>
   );
 }
@@ -636,9 +828,11 @@ export function DatabaseView() {
 const CRUD_OPS = ["SELECT", "INSERT", "UPDATE", "DELETE"] as const;
 
 export function SqlCrud() {
-  const [data, setData] = useState<{ query?: string; before?: Record<string, unknown>[]; after?: Record<string, unknown>[] } | null>(
-    null,
-  );
+  const [data, setData] = useState<{
+    query?: string;
+    before?: Record<string, unknown>[];
+    after?: Record<string, unknown>[];
+  } | null>(null);
   return (
     <div>
       <ButtonRow>
@@ -646,7 +840,9 @@ export function SqlCrud() {
           <Chip
             key={op}
             onClick={async () => {
-              const res = await apiCall("POST", "/api/lab/sql/crud", { operation: op });
+              const res = await apiCall("POST", "/api/lab/sql/crud", {
+                operation: op,
+              });
               setData((res.data as typeof data) ?? {});
             }}
           >
@@ -687,13 +883,20 @@ export function Sql({ lesson }: RendererProps) {
       </Field>
       <ButtonRow>
         <Chip onClick={() => setUsername("ali")}>ali</Chip>
-        <Chip onClick={() => setUsername("' OR '1'='1")}>&apos; OR &apos;1&apos;=&apos;1</Chip>
+        <Chip onClick={() => setUsername("' OR '1'='1")}>
+          &apos; OR &apos;1&apos;=&apos;1
+        </Chip>
         <Chip onClick={() => setUsername("nobody' --")}>nobody&apos; --</Chip>
       </ButtonRow>
       <ButtonRow>
         <PrimaryButton
           onClick={async () =>
-            setResult(await apiCall("POST", "/api/lab/sql", { username, mode: vulnerable ? "vulnerable" : "safe" }))
+            setResult(
+              await apiCall("POST", "/api/lab/sql", {
+                username,
+                mode: vulnerable ? "vulnerable" : "safe",
+              }),
+            )
           }
         >
           Send ({vulnerable ? "vulnerable" : "safe"} mode)
@@ -710,7 +913,10 @@ const XSS_PRESETS = [
     label: "img onerror payload",
     value: `<img src=x onerror="document.body.style.background='crimson'; document.title='XSS!'">`,
   },
-  { label: "script tag", value: "<script>document.title='XSS worked!'</script>" },
+  {
+    label: "script tag",
+    value: "<script>document.title='XSS worked!'</script>",
+  },
 ];
 
 export function Xss() {
@@ -732,16 +938,27 @@ export function Xss() {
       <div className="lab-compare-grid" style={{ marginTop: 14 }}>
         <div className="lab-preview-pane">
           <h4>Safe render (textContent)</h4>
-          <iframe className="lab-sandbox-frame" sandbox="allow-scripts" srcDoc={safeDoc} title="Safe render" />
+          <iframe
+            className="lab-sandbox-frame"
+            sandbox="allow-scripts"
+            srcDoc={safeDoc}
+            title="Safe render"
+          />
         </div>
         <div className="lab-preview-pane">
           <h4>Unsafe render (innerHTML) — inside an isolated sandbox</h4>
-          <iframe className="lab-sandbox-frame" sandbox="allow-scripts" srcDoc={vulnDoc} title="Unsafe render" />
+          <iframe
+            className="lab-sandbox-frame"
+            sandbox="allow-scripts"
+            srcDoc={vulnDoc}
+            title="Unsafe render"
+          />
         </div>
       </div>
       <p className="lab-help">
-        Both frames are fully isolated from the main page (a sandboxed iframe, no access to cookies or the DOM) — this is
-        only here to show the difference in rendering.
+        Both frames are fully isolated from the main page (a sandboxed iframe,
+        no access to cookies or the DOM) — this is only here to show the
+        difference in rendering.
       </p>
     </div>
   );
@@ -756,7 +973,10 @@ export function Idor() {
       <ButtonRow>
         <SecondaryButton
           onClick={async () => {
-            await apiCall("POST", "/api/lab/login", { username: "ali", password: "ali123" });
+            await apiCall("POST", "/api/lab/login", {
+              username: "ali",
+              password: "ali123",
+            });
             showToast("Logged in as Ali.");
           }}
         >
@@ -768,7 +988,10 @@ export function Idor() {
           <input value={id} onChange={(e) => setId(e.target.value)} />
         </Field>
         <Field label="Mode">
-          <select value={mode} onChange={(e) => setMode(e.target.value as "safe" | "vulnerable")}>
+          <select
+            value={mode}
+            onChange={(e) => setMode(e.target.value as "safe" | "vulnerable")}
+          >
             <option value="safe">Safe</option>
             <option value="vulnerable">Vulnerable</option>
           </select>
@@ -802,11 +1025,13 @@ const SURFACE_CARDS = [
   },
   {
     title: "Login",
-    chain: "Input → credentials compared → session/JWT issued. Problem: SQLi if the query is built unsafely. Defense: parameterized queries, rate limiting.",
+    chain:
+      "Input → credentials compared → session/JWT issued. Problem: SQLi if the query is built unsafely. Defense: parameterized queries, rate limiting.",
   },
   {
     title: "Search",
-    chain: "Input → filter/query → the result gets rendered. Problem: reflected XSS or SQLi. Defense: parameterization plus context-appropriate output encoding.",
+    chain:
+      "Input → filter/query → the result gets rendered. Problem: reflected XSS or SQLi. Defense: parameterization plus context-appropriate output encoding.",
   },
 ];
 
@@ -823,7 +1048,9 @@ export function Surface() {
           onClick={() => setRevealed((s) => new Set(s).add(i))}
         >
           <strong>{c.title}</strong>
-          <small>{revealed.has(i) ? c.chain : "Click to reveal the chain →"}</small>
+          <small>
+            {revealed.has(i) ? c.chain : "Click to reveal the chain →"}
+          </small>
         </button>
       ))}
     </div>
@@ -833,19 +1060,28 @@ export function Surface() {
 const INVESTIGATE_ITEMS = [
   {
     title: "Login",
-    options: ["Can the password be decrypted?", "How much information leaks on a failed login, and how many attempts are allowed?"],
+    options: [
+      "Can the password be decrypted?",
+      "How much information leaks on a failed login, and how many attempts are allowed?",
+    ],
     correct: 1,
     why: "The error message and rate limiting reveal real trust mistakes; the password hash is never returned.",
   },
   {
     title: "Comment",
-    options: ["Are HTML tags stored as part of the comment?", "How does the comment get rendered when it comes back to the browser?"],
+    options: [
+      "Are HTML tags stored as part of the comment?",
+      "How does the comment get rendered when it comes back to the browser?",
+    ],
     correct: 1,
     why: "It's the rendering method, not the storage format, that determines XSS risk.",
   },
   {
     title: "Checkout",
-    options: ["Is the price in the right format?", "Who decides the price — the client or the server?"],
+    options: [
+      "Is the price in the right format?",
+      "Who decides the price — the client or the server?",
+    ],
     correct: 1,
     why: "Being correctly formatted doesn't mean the price can be trusted.",
   },
@@ -861,7 +1097,14 @@ export function Investigate() {
           <div className="lab-quiz-options">
             {item.options.map((opt, j) => {
               const chosen = picked[i];
-              const cls = chosen === undefined ? "" : j === item.correct ? " correct" : chosen === j ? " wrong" : "";
+              const cls =
+                chosen === undefined
+                  ? ""
+                  : j === item.correct
+                    ? " correct"
+                    : chosen === j
+                      ? " wrong"
+                      : "";
               return (
                 <button
                   key={opt}
@@ -875,7 +1118,9 @@ export function Investigate() {
               );
             })}
           </div>
-          <Feedback ok={null}>{picked[i] !== undefined ? item.why : ""}</Feedback>
+          <Feedback ok={null}>
+            {picked[i] !== undefined ? item.why : ""}
+          </Feedback>
         </div>
       ))}
     </div>
@@ -891,7 +1136,11 @@ const TASK_ITEMS = [
 
 export function Tasks({ lesson }: RendererProps) {
   const key = `task:${lesson.id}`;
-  const [checked, setChecked] = useState<Record<number, boolean>>(() => loadJSON(NOTES_KEY, {} as Record<string, Record<number, boolean>>)[key] ?? {});
+  const [checked, setChecked] = useState<Record<number, boolean>>(
+    () =>
+      loadJSON(NOTES_KEY, {} as Record<string, Record<number, boolean>>)[key] ??
+      {},
+  );
   const toggle = (i: number) => {
     const next = { ...checked, [i]: !checked[i] };
     setChecked(next);
@@ -903,7 +1152,12 @@ export function Tasks({ lesson }: RendererProps) {
     <div>
       {TASK_ITEMS.map((text, i) => (
         <label className="lab-check-row" key={text}>
-          <input type="checkbox" checked={!!checked[i]} onChange={() => toggle(i)} /> {text}
+          <input
+            type="checkbox"
+            checked={!!checked[i]}
+            onChange={() => toggle(i)}
+          />{" "}
+          {text}
         </label>
       ))}
     </div>
@@ -916,7 +1170,8 @@ export function Quiz() {
   const [chosen, setChosen] = useState<number | null>(null);
   const finished = index >= QUIZ.length;
   useEffect(() => {
-    if (finished) saveJSON(QUIZ_KEY, { score, total: QUIZ.length, at: Date.now() });
+    if (finished)
+      saveJSON(QUIZ_KEY, { score, total: QUIZ.length, at: Date.now() });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [finished]);
   if (finished) {
@@ -947,7 +1202,14 @@ export function Quiz() {
       <h3 style={{ fontSize: 14, margin: "10px 0" }}>{q.q}</h3>
       <div className="lab-quiz-options">
         {q.a.map((opt, j) => {
-          const cls = chosen === null ? "" : j === q.correct ? " correct" : chosen === j ? " wrong" : "";
+          const cls =
+            chosen === null
+              ? ""
+              : j === q.correct
+                ? " correct"
+                : chosen === j
+                  ? " wrong"
+                  : "";
           return (
             <button
               key={opt}
@@ -1015,7 +1277,12 @@ export function Checkout() {
       <ButtonRow>
         <PrimaryButton
           onClick={async () =>
-            setResult(await apiCall("POST", "/api/lab/checkout", { quantity: Number(qty), price: Number(price) }))
+            setResult(
+              await apiCall("POST", "/api/lab/checkout", {
+                quantity: Number(qty),
+                price: Number(price),
+              }),
+            )
           }
         >
           Submit checkout
@@ -1038,14 +1305,21 @@ const FINAL_ROWS: [string, string][] = [
 ];
 
 export function FinalQuiz() {
-  const [values, setValues] = useState<string[]>(() => FINAL_ROWS.map(() => ""));
-  const [feedback, setFeedback] = useState<{ ok: boolean; text: string } | null>(null);
+  const [values, setValues] = useState<string[]>(() =>
+    FINAL_ROWS.map(() => ""),
+  );
+  const [feedback, setFeedback] = useState<{
+    ok: boolean;
+    text: string;
+  } | null>(null);
   const check = () => {
     const correct = values.filter((v, i) => v === FINAL_ROWS[i][1]).length;
     const all = correct === FINAL_ROWS.length;
     setFeedback({
       ok: all,
-      text: all ? "✓ You matched the correct defense to every vulnerability." : `${correct} / ${FINAL_ROWS.length} correct.`,
+      text: all
+        ? "✓ You matched the correct defense to every vulnerability."
+        : `${correct} / ${FINAL_ROWS.length} correct.`,
     });
   };
   return (
@@ -1053,7 +1327,14 @@ export function FinalQuiz() {
       {FINAL_ROWS.map((row, i) => (
         <div className="lab-match-row" key={row[0]}>
           <span>{row[0]}</span>
-          <select value={values[i]} onChange={(e) => setValues((v) => v.map((cur, j) => (j === i ? e.target.value : cur)))}>
+          <select
+            value={values[i]}
+            onChange={(e) =>
+              setValues((v) =>
+                v.map((cur, j) => (j === i ? e.target.value : cur)),
+              )
+            }
+          >
             <option value="">— choose —</option>
             {FINAL_DEFENSES.map((d) => (
               <option key={d} value={d}>
@@ -1069,10 +1350,21 @@ export function FinalQuiz() {
   );
 }
 
-const WORKSHEET_FIELDS = ["Frontend", "Backend", "API", "Database", "Auth", "Request", "Response", "Attack surface"];
+const WORKSHEET_FIELDS = [
+  "Frontend",
+  "Backend",
+  "API",
+  "Database",
+  "Auth",
+  "Request",
+  "Response",
+  "Attack surface",
+];
 
 export function Worksheet() {
-  const [data, setData] = useState<Record<string, string>>(() => loadJSON(WORKSHEET_KEY, {}));
+  const [data, setData] = useState<Record<string, string>>(() =>
+    loadJSON(WORKSHEET_KEY, {}),
+  );
   return (
     <div>
       {WORKSHEET_FIELDS.map((f) => (
@@ -1091,7 +1383,11 @@ export function Worksheet() {
       <ButtonRow>
         <PrimaryButton
           onClick={() => {
-            const md = "# Architecture report\n\n" + WORKSHEET_FIELDS.map((f) => `## ${f}\n\n${data[f] || "(not written)"}\n`).join("\n");
+            const md =
+              "# Architecture report\n\n" +
+              WORKSHEET_FIELDS.map(
+                (f) => `## ${f}\n\n${data[f] || "(not written)"}\n`,
+              ).join("\n");
             downloadText("security-lab-report.md", md);
           }}
         >
@@ -1143,7 +1439,10 @@ export function Teachback() {
   );
 }
 
-export const PRACTICE_RENDERERS: Record<string, ComponentType<RendererProps>> = {
+export const PRACTICE_RENDERERS: Record<
+  string,
+  ComponentType<RendererProps>
+> = {
   flow: Flow,
   order: Order,
   classify: Classify,
