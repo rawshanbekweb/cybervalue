@@ -1,8 +1,9 @@
 import common from "./messages.json";
 import html from "./html.json";
 import ctf from "./ctf.json";
+import exam from "./exam.json";
 
-const messages = { ...common, ...html, ...ctf };
+const messages = { ...common, ...html, ...ctf, ...exam };
 
 export const locales = ["uz", "en"] as const;
 export type Locale = (typeof locales)[number];

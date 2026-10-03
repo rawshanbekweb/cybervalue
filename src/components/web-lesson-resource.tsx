@@ -1,5 +1,13 @@
 import { getTranslator } from "@/lib/i18n/server";
-import { ArrowUpRight, Download, Presentation, Terminal } from "lucide-react";
+import Link from "next/link";
+import {
+  ArrowUpRight,
+  ClipboardCheck,
+  Download,
+  Presentation,
+  Terminal,
+} from "lucide-react";
+import { EXAM_MINUTES, MAX_TOTAL } from "@/lib/resource-exam/content";
 import styles from "./web-lesson-resource.module.css";
 
 export async function WebLessonResource() {
@@ -89,6 +97,34 @@ export async function WebLessonResource() {
             {t(
               "Oflayn foydalanish: ZIPni oching va index.html faylini brauzerda ishga tushiring.",
             )}
+          </p>
+        </div>
+      </section>
+      <section className={styles.card} aria-labelledby="resource-exam-title">
+        <div className={styles.preview} aria-hidden="true">
+          <ClipboardCheck size={36} strokeWidth={1.3} />
+          <span>{t("IMTIHON / 1")}</span>
+          <div>{t("TEST + AMALIY ISHLAR")}</div>
+          <strong>{t("{points} ball", { points: MAX_TOTAL })}</strong>
+        </div>
+        <div className={styles.content}>
+          <span className="eyebrow">{t("Imtihon · O‘zbekcha")}</span>
+          <h2 id="resource-exam-title">{t("Resurslar imtihoni")}</h2>
+          <p>
+            {t(
+              "Web qanday ishlaydi? (75 slayd) va Linux asoslari (1–20 slayd) asosida: test savollari, URL, subnet, routing, DNS, HTTP va terminal buyruqlari bo‘yicha amaliy ishlar.",
+            )}
+          </p>
+          <div className={styles.actions}>
+            <Link className="button button-primary" href="/resources/exam">
+              {t("Imtihonni boshlash")}
+              <ArrowUpRight size={16} aria-hidden="true" />
+            </Link>
+          </div>
+          <p className={styles.hint}>
+            {t("Vaqt: {minutes} daqiqa. Natija darhol ko‘rsatiladi.", {
+              minutes: EXAM_MINUTES,
+            })}
           </p>
         </div>
       </section>
