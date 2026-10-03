@@ -198,7 +198,7 @@ export function SecurityLab() {
             </button>
           </div>
         </header>
-        <main>
+        <div className="lab-content">
           <div className="lab-page-eyebrow">
             <span className="lab-mini-dot" /> FROM THEORY TO PRACTICE
             <span className="lab-edition">36 LESSONS</span>
@@ -443,7 +443,7 @@ export function SecurityLab() {
               <i className="lab-live-dot" />
             </span>
           </footer>
-        </main>
+        </div>
       </div>
       <div
         className={`lab-toast${toast ? " visible" : ""}`}

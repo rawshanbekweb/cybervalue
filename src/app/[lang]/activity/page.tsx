@@ -27,6 +27,7 @@ export default async function Activity() {
       </header>
       {entries.length ? (
         <>
+          <h2 className="visually-hidden">{t("Recent entries")}</h2>
           <ol className="timeline">
             {entries.map((e) => (
               <li key={e.id}>

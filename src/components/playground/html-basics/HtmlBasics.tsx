@@ -107,7 +107,7 @@ export function HtmlBasics() {
           ))}
         </ul>
       </aside>
-      <main className="htb-main">
+      <div className="htb-main">
         <span className="htb-eyebrow">
           {t("Lesson {lesson} / {total}", { lesson: lesson.id, total: TOTAL })}
         </span>
@@ -199,7 +199,7 @@ export function HtmlBasics() {
             {t("Next lesson →")}
           </button>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

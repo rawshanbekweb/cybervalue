@@ -666,8 +666,8 @@ export function HtmlAssessment() {
               />
               <div className="exam-editor-footer">
                 <span>
-                  {draft.code.length.toLocaleString()}/
-                  {MAX_CODE_LENGTH.toLocaleString()} belgi · Shift+Tab:
+                  {draft.code.length.toLocaleString("en-US")}/
+                  {MAX_CODE_LENGTH.toLocaleString("en-US")} belgi · Shift+Tab:
                   muharrirdan chiqish
                 </span>
                 <button

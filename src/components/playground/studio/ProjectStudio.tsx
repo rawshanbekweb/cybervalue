@@ -163,8 +163,10 @@ function Workspace({ project }: { project: StudioProject }) {
               </button>
             </div>
             <span className="studio-caption">
-              {draft[editor].length.toLocaleString()} /{" "}
-              {(editor === "html" ? HTML_LIMIT : CSS_LIMIT).toLocaleString()}{" "}
+              {draft[editor].length.toLocaleString("en-US")} /{" "}
+              {(editor === "html" ? HTML_LIMIT : CSS_LIMIT).toLocaleString(
+                "en-US",
+              )}{" "}
               characters
             </span>
           </div>

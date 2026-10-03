@@ -160,6 +160,7 @@ export async function Archive({
       </div>
       {result.items.length ? (
         <div className="entry-grid">
+          <h2 className="visually-hidden">{t("Results")}</h2>
           {result.items.map((entry) => (
             <EntryCard key={entry.id} entry={entry} />
           ))}
