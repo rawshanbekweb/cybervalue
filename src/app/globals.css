@@ -2203,6 +2203,114 @@ svg {
     overflow-x: auto;
   }
 }
+/* Design polish: depth, interaction and readability */
+:root {
+  --border-strong: #424940;
+  --surface-raised: #1c201d;
+  --accent-soft: #c2f97014;
+  --radius: 10px;
+  --shadow-lg: 0 18px 40px -22px rgba(0, 0, 0, 0.75);
+}
+body {
+  background:
+    radial-gradient(
+      900px 420px at 85% -120px,
+      rgba(194, 249, 112, 0.06),
+      transparent 70%
+    ),
+    var(--bg);
+  text-rendering: optimizeLegibility;
+}
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+p {
+  text-wrap: pretty;
+}
+:focus-visible {
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.eyebrow,
+.hero-kicker,
+.kind-label,
+.tags a,
+.tags span {
+  font-size: 11px;
+}
+.button {
+  border-radius: 8px;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    transform 0.15s,
+    box-shadow 0.15s;
+}
+.button-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px -10px rgba(194, 249, 112, 0.55);
+}
+.button-secondary:hover {
+  background: var(--surface-raised);
+}
+.button:active {
+  transform: translateY(0);
+}
+.navigation .nav-contact {
+  border-radius: 8px;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+.navigation .nav-contact:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.entry-card,
+.about-card,
+.admin-card {
+  border-radius: var(--radius);
+  transition:
+    transform 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s,
+    background 0.2s;
+}
+.entry-card:hover,
+.entry-card:focus-within {
+  transform: translateY(-3px);
+  border-color: #4d5c3d;
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-lg);
+}
+.entry-card p {
+  font-size: 13px;
+  line-height: 1.7;
+}
+.tags a,
+.tags span {
+  border-radius: 999px;
+  padding: 3px 10px;
+  transition:
+    border-color 0.15s,
+    color 0.15s;
+}
+.tags a:hover {
+  border-color: var(--accent);
+}
+.language-switcher {
+  border-radius: 8px;
+}
+.footer-links a {
+  transition: color 0.15s;
+}
+@media (max-width: 620px) {
+  .entry-card:hover {
+    transform: none;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
