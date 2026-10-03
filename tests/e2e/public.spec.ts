@@ -79,6 +79,23 @@ test("robots, sitemap, headers, OG, redirects, missing pages and downloads", asy
   ])
     expect((await request.get(path)).status(), path).toBe(404);
 });
+test("published entries render their own Open Graph image in both languages", async ({
+  request,
+}) => {
+  const html = await (await request.get("/resources")).text();
+  const slug = html.match(/href="(\/resources\/(?!exam)[a-z0-9-]+)"/)?.[1];
+  test.skip(!slug, "Requires at least one published resource");
+  for (const locale of ["uz", "en"]) {
+    const og = await request.get(`${slug}/opengraph-image`, {
+      headers: { cookie: `cybervalue-locale=${locale}` },
+    });
+    expect(og.status(), `${slug} ${locale}`).toBe(200);
+    expect(og.headers()["content-type"]).toContain("image/png");
+  }
+  expect(
+    (await request.get("/resources/missing/opengraph-image")).status(),
+  ).toBe(404);
+});
 test("filters canonicalize to archive and are noindex", async ({ page }) => {
   await page.goto("/labs?q=authorization&difficulty=BEGINNER");
   await expect(page.getByRole("searchbox")).toHaveValue("authorization");

@@ -6,6 +6,7 @@ import { configuredSocials } from "./site";
 import { safeLink, type Filters } from "./validation";
 import { include, type Entry } from "./content-shared";
 import { getLocale } from "./i18n/server";
+import type { Locale } from "./i18n";
 import {
   localizeCategory,
   localizeEntry,
@@ -70,7 +71,12 @@ export const getFeatured = cache(async (): Promise<Entry[]> => {
   );
 });
 export const getEntry = cache(
-  async (kind: ContentKind, slug: string): Promise<Entry | null> => {
+  // Route handlers cannot read the `[lang]` root param, so they pass the locale.
+  async (
+    kind: ContentKind,
+    slug: string,
+    locale?: Locale,
+  ): Promise<Entry | null> => {
     const db = getDb();
     const entry = db
       ? await db.content.findFirst({
@@ -78,7 +84,7 @@ export const getEntry = cache(
           include,
         })
       : null;
-    return entry ? localizeEntry(entry, await getLocale()) : null;
+    return entry ? localizeEntry(entry, locale ?? (await getLocale())) : null;
   },
 );
 export async function getRelated(id: string): Promise<Entry[]> {
