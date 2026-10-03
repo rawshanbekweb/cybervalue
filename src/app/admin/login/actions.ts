@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { getDb } from "@/lib/db";
 import { hashPassword, verifyPassword } from "@/lib/password";
 import { createSession } from "@/lib/auth";
-import { allowRequest } from "@/lib/rate-limit";
+import { allowRequest, clientKey } from "@/lib/rate-limit";
 import { loginSchema } from "@/lib/validation";
 
 export type LoginState = { error: string } | undefined;
@@ -21,8 +21,7 @@ export async function loginAction(
 ): Promise<LoginState> {
   // Per-client budget so one attacker cannot lock the admin out; the global
   // ceiling still bounds distributed guessing.
-  const forwarded = (await headers()).get("x-forwarded-for");
-  const client = forwarded?.split(",")[0]?.trim() || "unknown";
+  const client = clientKey((await headers()).get("x-forwarded-for"));
   if (
     !allowRequest(`admin-login:${client}`, Date.now(), 10, 5 * 60_000) ||
     !allowRequest("admin-login:global", Date.now(), 100, 5 * 60_000)
