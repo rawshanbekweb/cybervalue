@@ -5,10 +5,19 @@ explicit choice in the `cybervalue-locale` cookie for one year. Unsupported cook
 values fall back to Uzbek. The server renders the correct language on the first
 request, including `html.lang`, page metadata and Open Graph locale.
 
-Routes, query parameters, lesson hashes and browser progress keys stay stable.
-Changing language uses a Server Action, so editors and other client state remain
-mounted. Cookie-based locale selection makes page rendering request-dependent;
-these pages are no longer a single statically rendered language variant.
+Routes, query parameters, lesson hashes and browser progress keys stay stable:
+visitors never see a language prefix. Public pages live under `src/app/[lang]`
+and are prerendered once per language. `src/proxy.ts` reads the cookie and
+rewrites each request to its language copy (`/about` to `/uz/about`), so pages
+are statically generated or ISR-cached instead of rendered per request. A direct
+`/uz/...` or `/en/...` request redirects to the unprefixed URL.
+
+Server code reads the language with `getLocale()` (the `[lang]` root param).
+Route handlers, Server Actions and the admin area sit outside `[lang]`; the admin
+root layout reads the cookie itself. Changing language runs a Server Action and
+then `router.refresh()`. The `[lang]` tree is swapped, so client components
+remount: persisted state (storage keys, URL hashes) survives, transient in-memory
+state does not.
 
 ## Coverage
 

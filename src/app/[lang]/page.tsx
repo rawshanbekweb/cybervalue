@@ -28,7 +28,7 @@ import { getLearningTracks } from "@/lib/learning";
 import { metadata } from "@/lib/seo";
 import { contentUrl, site } from "@/lib/site";
 import "@/components/learning.css";
-import "./home.css";
+import "../home.css";
 
 export const revalidate = 60;
 export const generateMetadata = () =>

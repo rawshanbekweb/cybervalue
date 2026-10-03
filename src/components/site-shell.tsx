@@ -1,39 +1,21 @@
-import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { HideOnConcept } from "@/components/hide-on-concept";
+import { LocaleProvider } from "@/components/locale-provider";
 import { site, navigation } from "@/lib/site";
 import { getSocials } from "@/lib/content";
-import { LocaleProvider } from "@/components/locale-provider";
-import { getLocale, getTranslator } from "@/lib/i18n/server";
-import "./globals.css";
+import { createTranslator, type Locale } from "@/lib/i18n";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslator();
-  return {
-    metadataBase: new URL(site.url),
-    applicationName: site.name,
-    title: {
-      default: t("CyberValue — Cybersecurity & Software Development"),
-      template: "%s | CyberValue",
-    },
-    description: t(site.description),
-    robots: { index: site.indexable, follow: true },
-  };
-}
-export const viewport: Viewport = {
-  themeColor: "#101211",
-  colorScheme: "dark",
-  width: "device-width",
-  initialScale: 1,
-};
-export default async function RootLayout({
+// Document chrome shared by the public root layout and the admin root layout.
+// The locale is a prop so this component never reads cookies itself, which
+// keeps statically generated public pages static.
+export async function SiteShell({
+  locale,
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: Readonly<{ locale: Locale; children: React.ReactNode }>) {
   const socials = await getSocials();
-  const locale = await getLocale();
-  const t = await getTranslator();
+  const t = createTranslator(locale);
   return (
     <html lang={locale} data-scroll-behavior="smooth">
       <body>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { setLocale } from "@/app/locale-actions";
 import { useLocale, useTranslator } from "./locale-provider";
 import { locales } from "@/lib/i18n";
@@ -8,6 +9,7 @@ import { locales } from "@/lib/i18n";
 export function LanguageSwitcher() {
   const locale = useLocale();
   const t = useTranslator();
+  const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [failed, setFailed] = useState(false);
   return (
@@ -32,6 +34,9 @@ export function LanguageSwitcher() {
               startTransition(async () => {
                 try {
                   await setLocale(value);
+                  // The action re-rendered with the old cookie; proxy.ts picks the
+                  // prerendered language copy, so fetch the page again.
+                  router.refresh();
                 } catch {
                   setFailed(true);
                 }
