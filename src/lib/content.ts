@@ -7,6 +7,21 @@ import { safeLink, type Filters } from "./validation";
 import { include, type Entry } from "./content-shared";
 
 export { include, type Entry };
+
+// Supplementary data (footer links, related items, facets) must not turn a
+// transient database failure into a 500 for the whole page.
+async function withFallback<T>(
+  label: string,
+  fallback: T,
+  run: () => Promise<T>,
+): Promise<T> {
+  try {
+    return await run();
+  } catch (error) {
+    console.error(`[content] ${label} failed:`, error);
+    return fallback;
+  }
+}
 export const publicWhere = (): Prisma.ContentWhereInput => ({
   status: "PUBLISHED",
   publishedAt: { not: null, lte: new Date() },
@@ -27,14 +42,15 @@ export const getRecent = cache(
 );
 export const getFeatured = cache(async (): Promise<Entry[]> => {
   const db = getDb();
-  return db
-    ? db.content.findMany({
-        where: { ...publicWhere(), kind: "PROJECT", featured: true },
-        include,
-        orderBy: { publishedAt: "desc" },
-        take: 3,
-      })
-    : [];
+  if (!db) return [];
+  return withFallback("getFeatured", [], () =>
+    db.content.findMany({
+      where: { ...publicWhere(), kind: "PROJECT", featured: true },
+      include,
+      orderBy: { publishedAt: "desc" },
+      take: 3,
+    }),
+  );
 });
 export const getEntry = cache(
   async (kind: ContentKind, slug: string): Promise<Entry | null> => {
@@ -49,24 +65,25 @@ export const getEntry = cache(
 );
 export async function getRelated(id: string): Promise<Entry[]> {
   const db = getDb();
-  return db
-    ? db.content.findMany({
-        where: {
-          AND: [
-            publicWhere(),
-            {
-              OR: [
-                { relatedFrom: { some: { id } } },
-                { related: { some: { id } } },
-              ],
-            },
-          ],
-        },
-        include,
-        take: 6,
-        orderBy: { publishedAt: "desc" },
-      })
-    : [];
+  if (!db) return [];
+  return withFallback("getRelated", [], () =>
+    db.content.findMany({
+      where: {
+        AND: [
+          publicWhere(),
+          {
+            OR: [
+              { relatedFrom: { some: { id } } },
+              { related: { some: { id } } },
+            ],
+          },
+        ],
+      },
+      include,
+      take: 6,
+      orderBy: { publishedAt: "desc" },
+    }),
+  );
 }
 export async function searchContent(filters: Filters, kind?: ContentKind) {
   const db = getDb();
@@ -117,8 +134,15 @@ export async function searchContent(filters: Filters, kind?: ContentKind) {
   return { items, total };
 }
 export async function getFacets(kind?: ContentKind) {
+  const empty = { categories: [], tags: [], years: [], technologies: [] };
   const db = getDb();
-  if (!db) return { categories: [], tags: [], years: [], technologies: [] };
+  if (!db) return empty;
+  return withFallback("getFacets", empty, () => loadFacets(db, kind));
+}
+async function loadFacets(
+  db: NonNullable<ReturnType<typeof getDb>>,
+  kind?: ContentKind,
+) {
   const where = { ...publicWhere(), ...(kind ? { kind } : {}) };
   const [categories, tags, entries] = await Promise.all([
     db.category.findMany({
@@ -165,7 +189,9 @@ export async function getSitemapEntries() {
 export const getSocials = cache(async () => {
   const db = getDb();
   const saved = db
-    ? await db.socialLink.findMany({ orderBy: { position: "asc" } })
+    ? await withFallback("getSocials", [], () =>
+        db.socialLink.findMany({ orderBy: { position: "asc" } }),
+      )
     : [];
   const merged = new Map(configuredSocials.map((s) => [s.platform, s]));
   for (const link of saved)

@@ -12,16 +12,16 @@ these pages are no longer a single statically rendered language variant.
 
 ## Coverage
 
-| Area | Uzbek | English |
-| --- | --- | --- |
-| Header, footer, home, about, activity, archives, search, 404 and route errors | Yes | Yes |
-| Public content labels, dates, learning catalog and gateways | Yes | Yes |
-| All 12 HTML exercises, instructions, checks and controls | Yes | Yes |
-| CTF narrative, five challenges, hints, controls, feedback and report | Yes | Yes |
-| Web Security Lab, Missions, Project Studio | Source language notice | Original English |
-| Graded HTML assessment | Original Uzbek | Source language notice |
-| Standalone 75-slide presentation and offline ZIP | Original Uzbek | Labeled as Uzbek |
-| Admin CMS and concept demos | Existing source languages | Existing source languages |
+| Area                                                                          | Uzbek                     | English                   |
+| ----------------------------------------------------------------------------- | ------------------------- | ------------------------- |
+| Header, footer, home, about, activity, archives, search, 404 and route errors | Yes                       | Yes                       |
+| Public content labels, dates, learning catalog and gateways                   | Yes                       | Yes                       |
+| All 12 HTML exercises, instructions, checks and controls                      | Yes                       | Yes                       |
+| CTF narrative, five challenges, hints, controls, feedback and report          | Yes                       | Yes                       |
+| Web Security Lab, Missions, Project Studio                                    | Source language notice    | Original English          |
+| Graded HTML assessment                                                        | Original Uzbek            | Source language notice    |
+| Standalone 75-slide presentation and offline ZIP                              | Original Uzbek            | Labeled as Uzbek          |
+| Admin CMS and concept demos                                                   | Existing source languages | Existing source languages |
 
 CMS-authored articles, learner code, notes, protocol examples, flags, and evidence
 files are preserved verbatim. This is interface localization, not automatic
