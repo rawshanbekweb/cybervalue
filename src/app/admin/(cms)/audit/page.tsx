@@ -1,3 +1,4 @@
+import { getAdminTranslator } from "@/lib/i18n/server";
 import { requireAdmin } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 
@@ -5,6 +6,7 @@ const PAGE_SIZE = 200;
 const warning = new Set(["login.failure", "login.mfa_failure", "mfa.disable"]);
 
 export default async function AuditPage() {
+  const t = await getAdminTranslator();
   await requireAdmin("/admin/audit");
   const events =
     (await getDb()?.adminEvent.findMany({
@@ -13,21 +15,23 @@ export default async function AuditPage() {
     })) ?? [];
   return (
     <div className="admin-page">
-      <h1>Audit log</h1>
+      <h1>{t("Audit log")}</h1>
       <p className="muted">
-        Latest {PAGE_SIZE} security events. Entries are kept for 180 days.
+        {t("Latest {count} security events. Entries are kept for 180 days.", {
+          count: PAGE_SIZE,
+        })}
       </p>
       {!events.length ? (
-        <p>No events recorded yet.</p>
+        <p>{t("No events recorded yet.")}</p>
       ) : (
         <div className="admin-table-wrap">
           <table className="admin-table">
             <thead>
               <tr>
-                <th scope="col">Time (UTC)</th>
-                <th scope="col">Event</th>
-                <th scope="col">Target</th>
-                <th scope="col">Client</th>
+                <th scope="col">{t("Time (UTC)")}</th>
+                <th scope="col">{t("Action")}</th>
+                <th scope="col">{t("Target")}</th>
+                <th scope="col">{t("Client")}</th>
               </tr>
             </thead>
             <tbody>

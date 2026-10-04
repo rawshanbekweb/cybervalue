@@ -1,4 +1,5 @@
 "use client";
+import { useTranslator } from "@/components/locale-provider";
 import { useActionState, useState } from "react";
 import Link from "next/link";
 import type { ContentKind } from "@/generated/prisma/client";
@@ -132,6 +133,7 @@ export function ContentForm({
   resourceFiles?: ResourceFile[];
   availableImages?: UploadedFile[];
 }) {
+  const t = useTranslator();
   const action = saveContentAction.bind(null, collection, entry?.id ?? null);
   const [state, formAction, pending] = useActionState(action, undefined);
   const fields = subtypeFields[kind];
@@ -165,12 +167,14 @@ export function ContentForm({
         />
         {entry && (
           <span className="admin-help">
-            Slugs are permanent. Archive and create a new entry to rename.
+            {t(
+              "Slugs are permanent. Archive and create a new entry to rename.",
+            )}
           </span>
         )}
       </div>
       <div className="admin-field">
-        <label htmlFor="title">Title</label>
+        <label htmlFor="title">{t("Title")}</label>
         <input
           id="title"
           name="title"
@@ -180,7 +184,7 @@ export function ContentForm({
         />
       </div>
       <div className="admin-field">
-        <label htmlFor="summary">Summary</label>
+        <label htmlFor="summary">{t("Summary")}</label>
         <textarea
           id="summary"
           name="summary"
@@ -191,7 +195,7 @@ export function ContentForm({
         />
       </div>
       <div className="admin-field">
-        <label htmlFor="body">Body (Markdown)</label>
+        <label htmlFor="body">{t("Body (Markdown)")}</label>
         <textarea
           id="body"
           name="body"
@@ -203,20 +207,20 @@ export function ContentForm({
       </div>
       <div className="admin-field-row">
         <div className="admin-field">
-          <label htmlFor="status">Status</label>
+          <label htmlFor="status">{t("Status")}</label>
           <select
             id="status"
             name="status"
             defaultValue={entry?.status ?? "DRAFT"}
             className="admin-input"
           >
-            <option value="DRAFT">Draft</option>
-            <option value="PUBLISHED">Published</option>
-            <option value="ARCHIVED">Archived</option>
+            <option value="DRAFT">{t("Draft")}</option>
+            <option value="PUBLISHED">{t("Published")}</option>
+            <option value="ARCHIVED">{t("Archived")}</option>
           </select>
         </div>
         <div className="admin-field">
-          <label htmlFor="publishedAt">Published at</label>
+          <label htmlFor="publishedAt">{t("Published at")}</label>
           <input
             id="publishedAt"
             name="publishedAt"
@@ -234,13 +238,13 @@ export function ContentForm({
               defaultChecked={entry?.featured ?? false}
               className="admin-checkbox"
             />
-            Featured
+            {t("Featured")}
           </label>
         </div>
       </div>
       <div className="admin-field-row">
         <div className="admin-field">
-          <label htmlFor="category">Category</label>
+          <label htmlFor="category">{t("Category")}</label>
           <input
             id="category"
             name="category"
@@ -249,7 +253,7 @@ export function ContentForm({
           />
         </div>
         <div className="admin-field">
-          <label htmlFor="tags">Tags</label>
+          <label htmlFor="tags">{t("Tags")}</label>
           <input
             id="tags"
             name="tags"
@@ -260,18 +264,18 @@ export function ContentForm({
         </div>
       </div>
       <div className="admin-field">
-        <label htmlFor="relatedSlugs">Related slugs</label>
+        <label htmlFor="relatedSlugs">{t("Related slugs")}</label>
         <input
           id="relatedSlugs"
           name="relatedSlugs"
           defaultValue={entry?.related?.map((r) => r.slug).join(", ") ?? ""}
           className="admin-input"
-          placeholder="Comma-separated, must already exist"
+          placeholder={t("Comma-separated, must already exist")}
         />
       </div>
       <div className="admin-field-row">
         <div className="admin-field">
-          <label htmlFor="seoTitle">SEO title</label>
+          <label htmlFor="seoTitle">{t("SEO title")}</label>
           <input
             id="seoTitle"
             name="seoTitle"
@@ -280,7 +284,7 @@ export function ContentForm({
           />
         </div>
         <div className="admin-field">
-          <label htmlFor="seoDescription">SEO description</label>
+          <label htmlFor="seoDescription">{t("SEO description")}</label>
           <input
             id="seoDescription"
             name="seoDescription"
@@ -302,7 +306,7 @@ export function ContentForm({
           }
         >
           <label htmlFor={`field-${field.name}`}>
-            {field.type === "checkbox" ? null : field.label}
+            {field.type === "checkbox" ? null : t(field.label)}
           </label>
           {kind === "RESOURCE" && field.name === "filePath" ? (
             <>
@@ -314,13 +318,13 @@ export function ContentForm({
                 value={filePath}
                 onChange={(event) => setFilePath(event.target.value)}
               >
-                <option value="">Choose a resource file</option>
+                <option value="">{t("Choose a resource file")}</option>
                 {!!subtypeData?.filePath &&
                   !resourceFiles.some(
                     (file) => file.path === subtypeData.filePath,
                   ) && (
                     <option value={String(subtypeData.filePath)}>
-                      {String(subtypeData.filePath)} — missing
+                      {String(subtypeData.filePath)} {t("— missing")}
                     </option>
                   )}
                 {resourceFiles.map((file) => (
@@ -335,13 +339,13 @@ export function ContentForm({
                     {file.name ?? file.path.slice("/downloads/".length)} —{" "}
                     {file.status === "Available"
                       ? `${((file.size ?? 0) / 1024).toFixed(1)} KB`
-                      : file.status}
+                      : t(file.status)}
                   </option>
                 ))}
               </select>
               {resourceFiles.length === 0 && (
                 <span className="admin-help">
-                  No files available yet. Upload a file below.
+                  {t("No files available yet. Upload a file below.")}
                 </span>
               )}
               <FileUpload
@@ -365,8 +369,8 @@ export function ContentForm({
           ) : (
             <SubtypeField field={field} value={subtypeData?.[field.name]} />
           )}
-          {field.type === "checkbox" && <span>{field.label}</span>}
-          {field.help && <span className="admin-help">{field.help}</span>}
+          {field.type === "checkbox" && <span>{t(field.label)}</span>}
+          {field.help && <span className="admin-help">{t(field.help)}</span>}
         </div>
       ))}
 
@@ -380,14 +384,14 @@ export function ContentForm({
 
       {state?.error && (
         <p role="alert" className="admin-error">
-          {state.error}
+          {t(state.error)}
         </p>
       )}
       <button type="submit" disabled={busy} className="button button-primary">
-        {pending ? "Saving…" : "Save"}
+        {pending ? t("Saving…") : t("Save")}
       </button>
       <Link href={`/admin/${collection}`} className="button button-secondary">
-        Back to list
+        {t("Back to list")}
       </Link>
     </form>
   );

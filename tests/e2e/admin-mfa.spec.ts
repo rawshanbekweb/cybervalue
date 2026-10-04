@@ -1,6 +1,25 @@
 import { test, expect, type Page } from "@playwright/test";
 import { timeStep, totpAt } from "../../src/lib/totp";
 
+// Assertions use the English interface copy.
+test.use({
+  storageState: {
+    cookies: [
+      {
+        name: "cybervalue-locale",
+        value: "en",
+        domain: "localhost",
+        path: "/",
+        expires: -1,
+        httpOnly: true,
+        secure: false,
+        sameSite: "Lax",
+      },
+    ],
+    origins: [],
+  },
+});
+
 const email = process.env.E2E_ADMIN_EMAIL;
 const password = process.env.E2E_ADMIN_PASSWORD;
 

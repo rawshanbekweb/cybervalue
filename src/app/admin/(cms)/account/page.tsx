@@ -1,3 +1,4 @@
+import { getAdminTranslator } from "@/lib/i18n/server";
 import QRCode from "qrcode";
 import { requireAdmin } from "@/lib/auth";
 import { getDb } from "@/lib/db";
@@ -31,6 +32,7 @@ async function mfaView(user: {
 }
 
 export default async function AccountPage() {
+  const t = await getAdminTranslator();
   const session = await requireAdmin("/admin/account");
   const count =
     (await getDb()?.session.count({
@@ -38,11 +40,11 @@ export default async function AccountPage() {
     })) ?? 0;
   return (
     <div className="admin-page">
-      <h1>Account settings</h1>
+      <h1>{t("Account settings")}</h1>
       <p>
         {session.user.name} · {session.user.email}
       </p>
-      <p className="muted">{count} active sessions</p>
+      <p className="muted">{t("{count} active sessions", { count })}</p>
       <MfaForms view={await mfaView(session.user)} />
       <AccountForms />
     </div>

@@ -1,3 +1,4 @@
+import { getAdminTranslator } from "@/lib/i18n/server";
 import { notFound } from "next/navigation";
 import { getDb } from "@/lib/db";
 import { collections, isCollection } from "@/lib/site";
@@ -11,6 +12,7 @@ export default async function EditContentPage({
 }: {
   params: Promise<{ collection: string; slug: string }>;
 }) {
+  const t = await getAdminTranslator();
   const { collection, slug } = await params;
   if (!isCollection(collection)) notFound();
   await requireAdmin(`/admin/${collection}/${slug}`);
@@ -30,7 +32,9 @@ export default async function EditContentPage({
 
   return (
     <div className="admin-page">
-      <h1>Edit {config.singular.toLowerCase()}</h1>
+      <h1>
+        {t("Edit")} {config.singular.toLowerCase()}
+      </h1>
       <ContentForm
         collection={collection}
         kind={config.kind}

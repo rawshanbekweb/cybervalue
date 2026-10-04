@@ -1,7 +1,6 @@
 import { SecurityLab } from "@/components/playground/security-lab/SecurityLab";
 import { MissionGateway } from "@/components/mission-gateway";
 import { metadata as buildMetadata } from "@/lib/seo";
-import { ContentLanguage } from "@/components/content-language";
 
 export const generateMetadata = () =>
   buildMetadata(
@@ -16,9 +15,7 @@ export default function WebSecurityLabPage() {
       <div className="container" style={{ paddingTop: 28 }}>
         <MissionGateway />
       </div>
-      <ContentLanguage language="en">
-        <SecurityLab />
-      </ContentLanguage>
+      <SecurityLab />
     </>
   );
 }

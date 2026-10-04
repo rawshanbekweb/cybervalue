@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslator } from "@/components/locale-provider";
 import { Fragment, useEffect, useState, type ComponentType } from "react";
 import type { Lesson } from "./lessons.data";
 import { QUIZ } from "./lessons.data";
@@ -32,9 +33,10 @@ interface RendererProps {
 }
 
 export function Fallback() {
+  const t = useTranslator();
   return (
     <p className="lab-help">
-      The practice exercise for this lesson is still being prepared.
+      {t("The practice exercise for this lesson is still being prepared.")}
     </p>
   );
 }
@@ -58,6 +60,7 @@ const FLOW_STEPS_DEFAULT: [string, string, string][] = [
 ];
 
 export function Flow({ lesson }: RendererProps) {
+  const t = useTranslator();
   const steps = lesson.db ? FLOW_STEPS_DB : FLOW_STEPS_DEFAULT;
   const [idx, setIdx] = useState(0);
   const [sending, setSending] = useState(false);
@@ -69,21 +72,21 @@ export function Flow({ lesson }: RendererProps) {
       : await apiCall("POST", "/api/lab/echo", { source: "flow-lesson" });
     setResult(res);
     setSending(false);
-    showToast("Request sent. Check the Network panel.");
+    showToast(t("Request sent. Check the Network panel."));
   };
   return (
     <div>
       <div className="lab-flow-board">
         <span className="lab-step-counter">
-          STEP {idx + 1} / {steps.length}
+          {t("STEP")} {idx + 1} / {steps.length}
         </span>
         <div className="lab-flow-nodes">
           {steps.map(([sym, name, note], i) => (
             <Fragment key={i}>
               <div className={`lab-flow-node${i === idx ? " current" : ""}`}>
                 <span className="lab-flow-symbol">{sym}</span>
-                <strong>{name}</strong>
-                <small>{note}</small>
+                <strong>{t(name)}</strong>
+                <small>{t(note)}</small>
               </div>
               {i < steps.length - 1 && (
                 <span className="lab-flow-arrow">→</span>
@@ -92,7 +95,7 @@ export function Flow({ lesson }: RendererProps) {
           ))}
         </div>
         <p className="lab-flow-caption">
-          {steps[idx][1]}: {steps[idx][2]}
+          {t(steps[idx][1])}: {t(steps[idx][2])}
         </p>
       </div>
       <ButtonRow>
@@ -100,17 +103,17 @@ export function Flow({ lesson }: RendererProps) {
           onClick={() => setIdx((v) => Math.max(0, v - 1))}
           disabled={idx === 0}
         >
-          ← Previous step
+          {t("← Previous step")}
         </SecondaryButton>
         <PrimaryButton
           onClick={() => setIdx((v) => Math.min(steps.length - 1, v + 1))}
           disabled={idx === steps.length - 1}
         >
-          Next step →
+          {t("Next step →")}
         </PrimaryButton>
         {lesson.real && (
           <SecondaryButton onClick={send} disabled={sending}>
-            Send a real request
+            {t("Send a real request")}
           </SecondaryButton>
         )}
       </ButtonRow>
@@ -130,6 +133,7 @@ const ORDER_STEPS = [
 ];
 
 export function Order() {
+  const t = useTranslator();
   const [shuffled] = useState(() =>
     ORDER_STEPS.map((text, i) => ({ text, i })).sort(() => Math.random() - 0.5),
   );
@@ -144,20 +148,20 @@ export function Order() {
   };
   const check = () => {
     if (picked.length !== ORDER_STEPS.length) {
-      setFeedback({ ok: false, text: "Select all the cards first." });
+      setFeedback({ ok: false, text: t("Select all the cards first.") });
       return;
     }
     const correct = picked.every((v, i) => v === i);
     setFeedback({
       ok: correct,
       text: correct
-        ? "✓ Correct! This is the entire journey of a single request."
-        : "✗ Wrong order. Click “Start over” and try again.",
+        ? t("✓ Correct! This is the entire journey of a single request.")
+        : t("✗ Wrong order. Click “Start over” and try again."),
     });
   };
   return (
     <div>
-      <p className="lab-help">Click the cards in the correct order.</p>
+      <p className="lab-help">{t("Click the cards in the correct order.")}</p>
       <ButtonRow>
         {shuffled.map(({ text, i }) => (
           <Chip
@@ -166,17 +170,17 @@ export function Order() {
             disabled={picked.includes(i)}
             onClick={() => setPicked((p) => (p.includes(i) ? p : [...p, i]))}
           >
-            {text}
+            {t(text)}
           </Chip>
         ))}
       </ButtonRow>
       <Callout>
-        Selected order:{" "}
-        {picked.length ? picked.map((n) => n + 1).join(" → ") : "(none yet)"}
+        {t("Selected order:")}{" "}
+        {picked.length ? picked.map((n) => n + 1).join(" → ") : t("(none yet)")}
       </Callout>
       <ButtonRow>
-        <SecondaryButton onClick={reset}>Start over</SecondaryButton>
-        <PrimaryButton onClick={check}>Check</PrimaryButton>
+        <SecondaryButton onClick={reset}>{t("Start over")}</SecondaryButton>
+        <PrimaryButton onClick={check}>{t("Check")}</PrimaryButton>
       </ButtonRow>
       <Feedback ok={feedback?.ok ?? null}>{feedback?.text ?? ""}</Feedback>
     </div>
@@ -196,6 +200,7 @@ const CLASSIFY_ITEMS: { text: string; answer: "static" | "app" }[] = [
 ];
 
 export function Classify() {
+  const t = useTranslator();
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [feedback, setFeedback] = useState<{
     ok: boolean;
@@ -209,8 +214,13 @@ export function Classify() {
     setFeedback({
       ok: all,
       text: all
-        ? "✓ All correct: the type of action is determined by the exchange with the server, not by appearance."
-        : `${correctCount} / ${CLASSIFY_ITEMS.length} correct. Review and try again.`,
+        ? t(
+            "✓ All correct: the type of action is determined by the exchange with the server, not by appearance.",
+          )
+        : t("{correct} / {total} correct. Review and try again.", {
+            correct: correctCount,
+            total: CLASSIFY_ITEMS.length,
+          }),
     });
   };
   return (
@@ -222,25 +232,25 @@ export function Classify() {
           style={{ marginBottom: 10 }}
         >
           <strong>
-            {i + 1}. {item.text}
+            {i + 1}. {t(item.text)}
           </strong>
           <ButtonRow>
             <Chip
               selected={answers[i] === "static"}
               onClick={() => setAnswers((a) => ({ ...a, [i]: "static" }))}
             >
-              Static page
+              {t("Static page")}
             </Chip>
             <Chip
               selected={answers[i] === "app"}
               onClick={() => setAnswers((a) => ({ ...a, [i]: "app" }))}
             >
-              Web application
+              {t("Web application")}
             </Chip>
           </ButtonRow>
         </div>
       ))}
-      <PrimaryButton onClick={check}>Check</PrimaryButton>
+      <PrimaryButton onClick={check}>{t("Check")}</PrimaryButton>
       <Feedback ok={feedback?.ok ?? null}>{feedback?.text ?? ""}</Feedback>
     </div>
   );
@@ -271,6 +281,7 @@ const MATCH_DATA: Record<
 };
 
 export function Match({ lesson }: RendererProps) {
+  const t = useTranslator();
   const data = MATCH_DATA[lesson.id] ?? MATCH_DATA[4];
   const [values, setValues] = useState<string[]>(() => data.rows.map(() => ""));
   const [feedback, setFeedback] = useState<{
@@ -283,15 +294,18 @@ export function Match({ lesson }: RendererProps) {
     setFeedback({
       ok: all,
       text: all
-        ? "✓ You matched the model correctly."
-        : `${correct} / ${data.rows.length} correct.`,
+        ? t("✓ You matched the model correctly.")
+        : t("{correct} / {total} correct.", {
+            correct,
+            total: data.rows.length,
+          }),
     });
   };
   return (
     <div>
       {data.rows.map((row, i) => (
         <div className="lab-match-row" key={row[0]}>
-          <span>{row[0]}</span>
+          <span>{t(row[0])}</span>
           <select
             value={values[i]}
             onChange={(e) =>
@@ -300,33 +314,34 @@ export function Match({ lesson }: RendererProps) {
               )
             }
           >
-            <option value="">— choose —</option>
+            <option value="">{t("— choose —")}</option>
             {data.options.map((o) => (
               <option key={o} value={o}>
-                {o}
+                {t(o)}
               </option>
             ))}
           </select>
         </div>
       ))}
-      <PrimaryButton onClick={check}>Check</PrimaryButton>
+      <PrimaryButton onClick={check}>{t("Check")}</PrimaryButton>
       <Feedback ok={feedback?.ok ?? null}>{feedback?.text ?? ""}</Feedback>
     </div>
   );
 }
 
 export function FrontendDemo() {
-  const [title, setTitle] = useState("Sign in");
+  const t = useTranslator();
+  const [title, setTitle] = useState(t("Sign in"));
   const [color, setColor] = useState("#087e78");
   const [note, setNote] = useState("");
   return (
     <div>
       <div className="lab-preview-pane">
-        <h4>A small login interface (demo only)</h4>
-        <Field label="Heading">
+        <h4>{t("A small login interface (demo only)")}</h4>
+        <Field label={t("Heading")}>
           <input value={title} onChange={(e) => setTitle(e.target.value)} />
         </Field>
-        <Field label="Button color">
+        <Field label={t("Button color")}>
           <input
             type="color"
             value={color}
@@ -334,9 +349,9 @@ export function FrontendDemo() {
           />
         </Field>
         <h3 style={{ margin: "14px 0" }}>{title}</h3>
-        <input placeholder="Username" style={{ marginBottom: 8 }} />
+        <input placeholder={t("Username")} style={{ marginBottom: 8 }} />
         <input
-          placeholder="Password"
+          placeholder={t("Password")}
           type="password"
           style={{ marginBottom: 8 }}
         />
@@ -345,15 +360,19 @@ export function FrontendDemo() {
           style={{ background: color, borderColor: color }}
           onClick={() => {
             setNote(
-              'Even though the button says "Log in as Admin," no request was sent to any server — this is just what\'s shown in the browser.',
+              t(
+                'Even though the button says "Log in as Admin," no request was sent to any server — this is just what\'s shown in the browser.',
+              ),
             );
             showToast(
-              "Only the frontend changed. The server knows nothing about it.",
+              t(
+                "Only the frontend changed. The server knows nothing about it.",
+              ),
             );
           }}
           type="button"
         >
-          Log in as Admin
+          {t("Log in as Admin")}
         </button>
       </div>
       <p className="lab-help">{note}</p>
@@ -368,6 +387,7 @@ const AUTH_PASSWORDS: Record<string, string> = {
 };
 
 export function AuthConsole({ lesson }: RendererProps) {
+  const t = useTranslator();
   const [username, setUsername] = useState("ali");
   const [password, setPassword] = useState("ali123");
   const [log, setLog] = useState<{ label: string; result: ApiResult }[]>([]);
@@ -379,35 +399,40 @@ export function AuthConsole({ lesson }: RendererProps) {
       password: pass,
     });
     pushLog(`Login: ${name}`, res);
-    showToast(res.ok ? `Logged in as ${name}.` : "Login failed.");
+    showToast(
+      res.ok ? t("Logged in as {name}.", { name }) : t("Login failed."),
+    );
   };
   return (
     <div>
       {lesson.id === 6 && (
         <>
           <Callout>
-            The “Admin panel (UI only)” button below doesn&apos;t send any
-            request — it&apos;s just a button that&apos;s visible.
+            {t(
+              "The “Admin panel (UI only)” button below doesn't send any request — it's just a button that's visible.",
+            )}
           </Callout>
           <ButtonRow>
             <SecondaryButton
               onClick={() =>
-                showToast("This is just a frontend button — no API was called.")
+                showToast(
+                  t("This is just a frontend button — no API was called."),
+                )
               }
             >
-              Admin panel (UI only)
+              {t("Admin panel (UI only)")}
             </SecondaryButton>
           </ButtonRow>
         </>
       )}
       <FieldRow>
-        <Field label="Username">
+        <Field label={t("Username")}>
           <input
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
         </Field>
-        <Field label="Password">
+        <Field label={t("Password")}>
           <input
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -416,23 +441,23 @@ export function AuthConsole({ lesson }: RendererProps) {
       </FieldRow>
       <ButtonRow>
         <SecondaryButton onClick={() => login("ali", AUTH_PASSWORDS.ali)}>
-          Log in as Ali
+          {t("Log in as Ali")}
         </SecondaryButton>
         <SecondaryButton onClick={() => login("vali", AUTH_PASSWORDS.vali)}>
-          Log in as Vali
+          {t("Log in as Vali")}
         </SecondaryButton>
         <SecondaryButton onClick={() => login("admin", AUTH_PASSWORDS.admin)}>
-          Log in as Admin
+          {t("Log in as Admin")}
         </SecondaryButton>
         <SecondaryButton onClick={() => login(username, password)}>
-          Log in with the credentials above
+          {t("Log in with the credentials above")}
         </SecondaryButton>
         <SecondaryButton
           onClick={async () =>
-            pushLog("Logout", await apiCall("POST", "/api/lab/logout"))
+            pushLog(t("Logout"), await apiCall("POST", "/api/lab/logout"))
           }
         >
-          Log out
+          {t("Log out")}
         </SecondaryButton>
       </ButtonRow>
       <ButtonRow>
@@ -444,14 +469,14 @@ export function AuthConsole({ lesson }: RendererProps) {
             )
           }
         >
-          Call /api/profile
+          {t("Call /api/profile")}
         </PrimaryButton>
         <PrimaryButton
           onClick={async () =>
             pushLog("GET /api/admin", await apiCall("GET", "/api/lab/admin"))
           }
         >
-          Call /api/admin
+          {t("Call /api/admin")}
         </PrimaryButton>
       </ButtonRow>
       <div>
@@ -478,6 +503,7 @@ export function AuthConsole({ lesson }: RendererProps) {
 const METHODS_WITH_BODY = ["POST", "PUT", "PATCH"];
 
 export function RequestConsole({ lesson }: RendererProps) {
+  const t = useTranslator();
   const [method, setMethod] = useState<string>(lesson.method ?? "GET");
   const [endpoint, setEndpoint] = useState(lesson.endpoint ?? "/api/lab/echo");
   const [headerKey, setHeaderKey] = useState("");
@@ -498,11 +524,11 @@ export function RequestConsole({ lesson }: RendererProps) {
         setResult({
           ok: false,
           status: 0,
-          statusText: "JSON error",
+          statusText: t("JSON error"),
           headers: {},
           data: {
             error:
-              "Body isn't valid JSON: " +
+              t("Body isn't valid JSON: ") +
               (err instanceof Error ? err.message : String(err)),
           },
           ms: 0,
@@ -515,7 +541,7 @@ export function RequestConsole({ lesson }: RendererProps) {
   return (
     <div>
       <FieldRow>
-        <Field label="Method">
+        <Field label={t("Method")}>
           <select value={method} onChange={(e) => setMethod(e.target.value)}>
             {["GET", "POST", "PUT", "PATCH", "DELETE"].map((m) => (
               <option key={m}>{m}</option>
@@ -530,14 +556,14 @@ export function RequestConsole({ lesson }: RendererProps) {
         </Field>
       </FieldRow>
       <FieldRow>
-        <Field label="Extra header name (optional)">
+        <Field label={t("Extra header name (optional)")}>
           <input
             placeholder="X-Lesson"
             value={headerKey}
             onChange={(e) => setHeaderKey(e.target.value)}
           />
         </Field>
-        <Field label="Header value">
+        <Field label={t("Header value")}>
           <input
             placeholder={String(lesson.id)}
             value={headerVal}
@@ -545,7 +571,7 @@ export function RequestConsole({ lesson }: RendererProps) {
           />
         </Field>
       </FieldRow>
-      <Field label="JSON body">
+      <Field label={t("JSON body")}>
         <textarea
           disabled={!METHODS_WITH_BODY.includes(method)}
           value={bodyText}
@@ -553,7 +579,7 @@ export function RequestConsole({ lesson }: RendererProps) {
         />
       </Field>
       <ButtonRow>
-        <PrimaryButton onClick={send}>Send request</PrimaryButton>
+        <PrimaryButton onClick={send}>{t("Send request")}</PrimaryButton>
       </ButtonRow>
       <ResponseConsole result={result} />
     </div>
@@ -584,6 +610,7 @@ export function StatusConsole() {
 }
 
 export function Validate() {
+  const t = useTranslator();
   const [age, setAge] = useState("25");
   const [result, setResult] = useState<ApiResult | null>(null);
   const send = async () => {
@@ -594,17 +621,17 @@ export function Validate() {
   return (
     <div>
       <FieldRow>
-        <Field label="Age">
+        <Field label={t("Age")}>
           <input value={age} onChange={(e) => setAge(e.target.value)} />
         </Field>
       </FieldRow>
       <ButtonRow>
         <Chip onClick={() => setAge("25")}>25</Chip>
         <Chip onClick={() => setAge("-5")}>-5</Chip>
-        <Chip onClick={() => setAge("twenty")}>&quot;twenty&quot;</Chip>
+        <Chip onClick={() => setAge("twenty")}>{t('"twenty"')}</Chip>
       </ButtonRow>
       <ButtonRow>
-        <PrimaryButton onClick={send}>Submit</PrimaryButton>
+        <PrimaryButton onClick={send}>{t("Submit")}</PrimaryButton>
       </ButtonRow>
       <ResponseConsole result={result} />
     </div>
@@ -619,6 +646,7 @@ function b64urlDecode(seg: string): string {
 }
 
 export function Jwt() {
+  const t = useTranslator();
   const [token, setToken] = useState("");
   const [decoded, setDecoded] = useState<{
     header: unknown;
@@ -633,7 +661,7 @@ export function Jwt() {
     const data = res.data as { token?: string } | null;
     if (res.ok && data?.token) {
       setToken(data.token);
-      showToast("Token received.");
+      showToast(t("Token received."));
     } else {
       setResult(res);
     }
@@ -646,14 +674,14 @@ export function Jwt() {
         payload: JSON.parse(b64urlDecode(payload)),
       });
     } catch {
-      showToast("Decode failed.");
+      showToast(t("Decode failed."));
     }
   };
   return (
     <div>
       <ButtonRow>
         <SecondaryButton onClick={login}>
-          Log in as Ali (get a token)
+          {t("Log in as Ali (get a token)")}
         </SecondaryButton>
       </ButtonRow>
       {token && (
@@ -663,7 +691,7 @@ export function Jwt() {
       )}
       <ButtonRow>
         <SecondaryButton onClick={decode} disabled={!token}>
-          Decode the payload
+          {t("Decode the payload")}
         </SecondaryButton>
         <PrimaryButton
           onClick={async () =>
@@ -675,7 +703,7 @@ export function Jwt() {
           }
           disabled={!token}
         >
-          /api/profile with the original token
+          {t("/api/profile with the original token")}
         </PrimaryButton>
         <SecondaryButton
           onClick={async () => {
@@ -689,7 +717,7 @@ export function Jwt() {
           }}
           disabled={!token}
         >
-          /api/profile with the tampered token
+          {t("/api/profile with the tampered token")}
         </SecondaryButton>
       </ButtonRow>
       {decoded && (
@@ -714,6 +742,7 @@ type CookiesOutput =
   | null;
 
 export function Cookies() {
+  const t = useTranslator();
   const [out, setOut] = useState<CookiesOutput>(null);
   return (
     <div>
@@ -728,7 +757,7 @@ export function Cookies() {
             setOut({ kind: "flags", data: data?.cookie_flags });
           }}
         >
-          Log in as Ali
+          {t("Log in as Ali")}
         </SecondaryButton>
         <SecondaryButton
           onClick={() =>
@@ -738,7 +767,7 @@ export function Cookies() {
             })
           }
         >
-          Read document.cookie
+          {t("Read document.cookie")}
         </SecondaryButton>
         <PrimaryButton
           onClick={async () =>
@@ -748,12 +777,12 @@ export function Cookies() {
             })
           }
         >
-          /api/profile with the cookie
+          {t("/api/profile with the cookie")}
         </PrimaryButton>
       </ButtonRow>
       {out?.kind === "flags" && (
         <Callout>
-          cookie_flags from the login response:{" "}
+          {t("cookie_flags from the login response:")}{" "}
           {JSON.stringify(out.data, null, 2)}
         </Callout>
       )}
@@ -763,8 +792,9 @@ export function Cookies() {
             <Pre data={out.text} />
           </CodeBlock>
           <p className="lab-help">
-            The session cookie is HttpOnly, so it isn&apos;t visible here — but
-            the browser still attaches it to the request automatically.
+            {t(
+              "The session cookie is HttpOnly, so it isn't visible here — but the browser still attaches it to the request automatically.",
+            )}
           </p>
         </>
       )}
@@ -774,7 +804,8 @@ export function Cookies() {
 }
 
 function DataTable({ rows }: { rows: Record<string, unknown>[] | undefined }) {
-  if (!rows || !rows.length) return <p className="lab-help">(empty)</p>;
+  const t = useTranslator();
+  if (!rows || !rows.length) return <p className="lab-help">{t("(empty)")}</p>;
   const cols = Object.keys(rows[0]);
   return (
     <div className="lab-table-scroll">
@@ -801,6 +832,7 @@ function DataTable({ rows }: { rows: Record<string, unknown>[] | undefined }) {
 }
 
 export function DatabaseView() {
+  const t = useTranslator();
   const [rows, setRows] = useState<Record<string, unknown>[] | undefined>(
     undefined,
   );
@@ -814,7 +846,7 @@ export function DatabaseView() {
   return (
     <div>
       <ButtonRow>
-        <PrimaryButton onClick={load}>Fetch the table</PrimaryButton>
+        <PrimaryButton onClick={load}>{t("Fetch the table")}</PrimaryButton>
       </ButtonRow>
       {rows ? (
         <DataTable rows={rows} />
@@ -828,6 +860,7 @@ export function DatabaseView() {
 const CRUD_OPS = ["SELECT", "INSERT", "UPDATE", "DELETE"] as const;
 
 export function SqlCrud() {
+  const t = useTranslator();
   const [data, setData] = useState<{
     query?: string;
     before?: Record<string, unknown>[];
@@ -858,11 +891,15 @@ export function SqlCrud() {
           </CodeBlock>
           <div className="lab-compare-grid" style={{ marginTop: 12 }}>
             <div>
-              <h4 style={{ fontSize: 10, color: "var(--muted)" }}>BEFORE</h4>
+              <h4 style={{ fontSize: 10, color: "var(--muted)" }}>
+                {t("BEFORE")}
+              </h4>
               <DataTable rows={data.before} />
             </div>
             <div>
-              <h4 style={{ fontSize: 10, color: "var(--muted)" }}>AFTER</h4>
+              <h4 style={{ fontSize: 10, color: "var(--muted)" }}>
+                {t("AFTER")}
+              </h4>
               <DataTable rows={data.after} />
             </div>
           </div>
@@ -873,12 +910,13 @@ export function SqlCrud() {
 }
 
 export function Sql({ lesson }: RendererProps) {
+  const t = useTranslator();
   const vulnerable = lesson.mode === "vulnerable";
   const [username, setUsername] = useState("ali");
   const [result, setResult] = useState<ApiResult | null>(null);
   return (
     <div>
-      <Field label="Username">
+      <Field label={t("Username")}>
         <input value={username} onChange={(e) => setUsername(e.target.value)} />
       </Field>
       <ButtonRow>
@@ -899,7 +937,9 @@ export function Sql({ lesson }: RendererProps) {
             )
           }
         >
-          Send ({vulnerable ? "vulnerable" : "safe"} mode)
+          {t("Send ({mode} mode)", {
+            mode: t(vulnerable ? "vulnerable" : "safe"),
+          })}
         </PrimaryButton>
       </ButtonRow>
       <ResponseConsole result={result} />
@@ -920,51 +960,53 @@ const XSS_PRESETS = [
 ];
 
 export function Xss() {
-  const [value, setValue] = useState("Hello <b>world</b>");
+  const t = useTranslator();
+  const [value, setValue] = useState(t("Hello <b>world</b>"));
   const safeDoc = `<!doctype html><meta charset="utf-8"><style>body{font:12px sans-serif;padding:8px;color:#234}</style><div id="out"></div><script>document.getElementById('out').textContent = ${JSON.stringify(value)};</script>`;
   const vulnDoc = `<!doctype html><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="script-src 'unsafe-inline'; default-src 'none'"><style>body{font:12px sans-serif;padding:8px;color:#234}</style><div id="out"></div><script>document.getElementById('out').innerHTML = ${JSON.stringify(value)};</script>`;
   return (
     <div>
-      <Field label="Text (payload)">
+      <Field label={t("Text (payload)")}>
         <textarea value={value} onChange={(e) => setValue(e.target.value)} />
       </Field>
       <ButtonRow>
         {XSS_PRESETS.map((p) => (
-          <Chip key={p.label} onClick={() => setValue(p.value)}>
-            {p.label}
+          <Chip key={p.label} onClick={() => setValue(t(p.value))}>
+            {t(p.label)}
           </Chip>
         ))}
       </ButtonRow>
       <div className="lab-compare-grid" style={{ marginTop: 14 }}>
         <div className="lab-preview-pane">
-          <h4>Safe render (textContent)</h4>
+          <h4>{t("Safe render (textContent)")}</h4>
           <iframe
             className="lab-sandbox-frame"
             sandbox="allow-scripts"
             srcDoc={safeDoc}
-            title="Safe render"
+            title={t("Safe render")}
           />
         </div>
         <div className="lab-preview-pane">
-          <h4>Unsafe render (innerHTML) — inside an isolated sandbox</h4>
+          <h4>{t("Unsafe render (innerHTML) — inside an isolated sandbox")}</h4>
           <iframe
             className="lab-sandbox-frame"
             sandbox="allow-scripts"
             srcDoc={vulnDoc}
-            title="Unsafe render"
+            title={t("Unsafe render")}
           />
         </div>
       </div>
       <p className="lab-help">
-        Both frames are fully isolated from the main page (a sandboxed iframe,
-        no access to cookies or the DOM) — this is only here to show the
-        difference in rendering.
+        {t(
+          "Both frames are fully isolated from the main page (a sandboxed iframe, no access to cookies or the DOM) — this is only here to show the difference in rendering.",
+        )}
       </p>
     </div>
   );
 }
 
 export function Idor() {
+  const t = useTranslator();
   const [id, setId] = useState("15");
   const [mode, setMode] = useState<"safe" | "vulnerable">("safe");
   const [result, setResult] = useState<ApiResult | null>(null);
@@ -977,23 +1019,23 @@ export function Idor() {
               username: "ali",
               password: "ali123",
             });
-            showToast("Logged in as Ali.");
+            showToast(t("Logged in as Ali."));
           }}
         >
-          Log in as Ali
+          {t("Log in as Ali")}
         </SecondaryButton>
       </ButtonRow>
       <FieldRow>
-        <Field label="User ID">
+        <Field label={t("User ID")}>
           <input value={id} onChange={(e) => setId(e.target.value)} />
         </Field>
-        <Field label="Mode">
+        <Field label={t("Mode")}>
           <select
             value={mode}
             onChange={(e) => setMode(e.target.value as "safe" | "vulnerable")}
           >
-            <option value="safe">Safe</option>
-            <option value="vulnerable">Vulnerable</option>
+            <option value="safe">{t("Safe")}</option>
+            <option value="vulnerable">{t("Vulnerable")}</option>
           </select>
         </Field>
       </FieldRow>
@@ -1004,7 +1046,7 @@ export function Idor() {
             setResult(await apiCall("GET", path));
           }}
         >
-          Call /api/users/:id
+          {t("Call /api/users/:id")}
         </PrimaryButton>
       </ButtonRow>
       <ResponseConsole result={result} />
@@ -1036,6 +1078,7 @@ const SURFACE_CARDS = [
 ];
 
 export function Surface() {
+  const t = useTranslator();
   const [revealed, setRevealed] = useState<Set<number>>(new Set());
   return (
     <div className="lab-choice-grid">
@@ -1047,9 +1090,9 @@ export function Surface() {
           style={{ cursor: "pointer", width: "100%" }}
           onClick={() => setRevealed((s) => new Set(s).add(i))}
         >
-          <strong>{c.title}</strong>
+          <strong>{t(c.title)}</strong>
           <small>
-            {revealed.has(i) ? c.chain : "Click to reveal the chain →"}
+            {t(revealed.has(i) ? c.chain : "Click to reveal the chain →")}
           </small>
         </button>
       ))}
@@ -1088,12 +1131,13 @@ const INVESTIGATE_ITEMS = [
 ];
 
 export function Investigate() {
+  const t = useTranslator();
   const [picked, setPicked] = useState<Record<number, number>>({});
   return (
     <div>
       {INVESTIGATE_ITEMS.map((item, i) => (
         <div style={{ marginBottom: 18 }} key={item.title}>
-          <strong>{item.title}</strong>
+          <strong>{t(item.title)}</strong>
           <div className="lab-quiz-options">
             {item.options.map((opt, j) => {
               const chosen = picked[i];
@@ -1113,13 +1157,13 @@ export function Investigate() {
                   onClick={() => setPicked((p) => ({ ...p, [i]: j }))}
                 >
                   <span>{j + 1}</span>
-                  {opt}
+                  {t(opt)}
                 </button>
               );
             })}
           </div>
           <Feedback ok={null}>
-            {picked[i] !== undefined ? item.why : ""}
+            {picked[i] !== undefined ? t(item.why) : ""}
           </Feedback>
         </div>
       ))}
@@ -1135,6 +1179,7 @@ const TASK_ITEMS = [
 ];
 
 export function Tasks({ lesson }: RendererProps) {
+  const t = useTranslator();
   const key = `task:${lesson.id}`;
   const [checked, setChecked] = useState<Record<number, boolean>>(
     () =>
@@ -1157,7 +1202,7 @@ export function Tasks({ lesson }: RendererProps) {
             checked={!!checked[i]}
             onChange={() => toggle(i)}
           />{" "}
-          {text}
+          {t(text)}
         </label>
       ))}
     </div>
@@ -1165,6 +1210,7 @@ export function Tasks({ lesson }: RendererProps) {
 }
 
 export function Quiz() {
+  const t = useTranslator();
   const [index, setIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [chosen, setChosen] = useState<number | null>(null);
@@ -1180,7 +1226,7 @@ export function Quiz() {
         <div className="lab-assessment-score">
           {score} / {QUIZ.length}
         </div>
-        <p className="lab-help">Your score is saved in this browser.</p>
+        <p className="lab-help">{t("Your score is saved in this browser.")}</p>
         <SecondaryButton
           onClick={() => {
             setIndex(0);
@@ -1188,7 +1234,7 @@ export function Quiz() {
             setChosen(null);
           }}
         >
-          Restart
+          {t("Restart")}
         </SecondaryButton>
       </div>
     );
@@ -1197,9 +1243,9 @@ export function Quiz() {
   return (
     <div>
       <span className="lab-step-counter">
-        QUESTION {index + 1} / {QUIZ.length}
+        {t("QUESTION")} {index + 1} / {QUIZ.length}
       </span>
-      <h3 style={{ fontSize: 14, margin: "10px 0" }}>{q.q}</h3>
+      <h3 style={{ fontSize: 14, margin: "10px 0" }}>{t(q.q)}</h3>
       <div className="lab-quiz-options">
         {q.a.map((opt, j) => {
           const cls =
@@ -1222,12 +1268,12 @@ export function Quiz() {
               }}
             >
               <span>{j + 1}</span>
-              {opt}
+              {t(opt)}
             </button>
           );
         })}
       </div>
-      <Feedback ok={null}>{chosen !== null ? q.why : ""}</Feedback>
+      <Feedback ok={null}>{chosen !== null ? t(q.why) : ""}</Feedback>
       {chosen !== null && (
         <PrimaryButton
           onClick={() => {
@@ -1235,7 +1281,7 @@ export function Quiz() {
             setChosen(null);
           }}
         >
-          Next question →
+          {t("Next question →")}
         </PrimaryButton>
       )}
     </div>
@@ -1243,16 +1289,17 @@ export function Quiz() {
 }
 
 export function Checkout() {
+  const t = useTranslator();
   const [qty, setQty] = useState("2");
   const [price, setPrice] = useState("1");
   const [result, setResult] = useState<ApiResult | null>(null);
   return (
     <div>
       <FieldRow>
-        <Field label="Quantity">
+        <Field label={t("Quantity")}>
           <input value={qty} onChange={(e) => setQty(e.target.value)} />
         </Field>
-        <Field label="Client-side price — the server ignores this">
+        <Field label={t("Client-side price — the server ignores this")}>
           <input value={price} onChange={(e) => setPrice(e.target.value)} />
         </Field>
       </FieldRow>
@@ -1285,7 +1332,7 @@ export function Checkout() {
             )
           }
         >
-          Submit checkout
+          {t("Submit checkout")}
         </PrimaryButton>
       </ButtonRow>
       <ResponseConsole result={result} />
@@ -1305,6 +1352,7 @@ const FINAL_ROWS: [string, string][] = [
 ];
 
 export function FinalQuiz() {
+  const t = useTranslator();
   const [values, setValues] = useState<string[]>(() =>
     FINAL_ROWS.map(() => ""),
   );
@@ -1318,8 +1366,11 @@ export function FinalQuiz() {
     setFeedback({
       ok: all,
       text: all
-        ? "✓ You matched the correct defense to every vulnerability."
-        : `${correct} / ${FINAL_ROWS.length} correct.`,
+        ? t("✓ You matched the correct defense to every vulnerability.")
+        : t("{correct} / {total} correct.", {
+            correct,
+            total: FINAL_ROWS.length,
+          }),
     });
   };
   return (
@@ -1335,16 +1386,16 @@ export function FinalQuiz() {
               )
             }
           >
-            <option value="">— choose —</option>
+            <option value="">{t("— choose —")}</option>
             {FINAL_DEFENSES.map((d) => (
               <option key={d} value={d}>
-                {d}
+                {t(d)}
               </option>
             ))}
           </select>
         </div>
       ))}
-      <PrimaryButton onClick={check}>Check</PrimaryButton>
+      <PrimaryButton onClick={check}>{t("Check")}</PrimaryButton>
       <Feedback ok={feedback?.ok ?? null}>{feedback?.text ?? ""}</Feedback>
     </div>
   );
@@ -1362,15 +1413,16 @@ const WORKSHEET_FIELDS = [
 ];
 
 export function Worksheet() {
+  const t = useTranslator();
   const [data, setData] = useState<Record<string, string>>(() =>
     loadJSON(WORKSHEET_KEY, {}),
   );
   return (
     <div>
       {WORKSHEET_FIELDS.map((f) => (
-        <Field label={f} key={f}>
+        <Field label={t(f)} key={f}>
           <textarea
-            placeholder="Note an observed fact, or mark it 'unknown'"
+            placeholder={t("Note an observed fact, or mark it 'unknown'")}
             value={data[f] ?? ""}
             onChange={(e) => {
               const next = { ...data, [f]: e.target.value };
@@ -1384,14 +1436,14 @@ export function Worksheet() {
         <PrimaryButton
           onClick={() => {
             const md =
-              "# Architecture report\n\n" +
+              t("# Architecture report\n\n") +
               WORKSHEET_FIELDS.map(
-                (f) => `## ${f}\n\n${data[f] || "(not written)"}\n`,
+                (f) => `## ${t(f)}\n\n${data[f] || t("(not written)")}\n`,
               ).join("\n");
             downloadText("security-lab-report.md", md);
           }}
         >
-          Download as Markdown ↓
+          {t("Download as Markdown ↓")}
         </PrimaryButton>
       </ButtonRow>
     </div>
@@ -1405,6 +1457,7 @@ const TEACHBACK_ITEMS = [
 ];
 
 export function Teachback() {
+  const t = useTranslator();
   const [remaining, setRemaining] = useState(60);
   const [running, setRunning] = useState(false);
   const start = () => {
@@ -1415,7 +1468,7 @@ export function Teachback() {
         if (r <= 1) {
           clearInterval(timer);
           setRunning(false);
-          showToast("Time's up.");
+          showToast(t("Time's up."));
           return 0;
         }
         return r - 1;
@@ -1427,12 +1480,12 @@ export function Teachback() {
       <div className="lab-assessment-score">{remaining}s</div>
       <ButtonRow>
         <PrimaryButton onClick={start} disabled={running}>
-          Start the timer
+          {t("Start the timer")}
         </PrimaryButton>
       </ButtonRow>
-      {TEACHBACK_ITEMS.map((t) => (
-        <label className="lab-check-row" key={t}>
-          <input type="checkbox" /> {t}
+      {TEACHBACK_ITEMS.map((item) => (
+        <label className="lab-check-row" key={item}>
+          <input type="checkbox" /> {t(item)}
         </label>
       ))}
     </div>

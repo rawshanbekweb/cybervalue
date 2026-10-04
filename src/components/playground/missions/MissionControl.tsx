@@ -36,6 +36,8 @@ import {
   restoreSession,
   type Session,
 } from "@/lib/missions/session";
+import { translateStep } from "@/lib/missions/i18n";
+import { useTranslator } from "@/components/locale-provider";
 import { useLocalStorageState } from "../useLocalStorageState";
 import { downloadText } from "../security-lab/storage";
 import "./missions.css";
@@ -59,34 +61,37 @@ export function MissionControl() {
     () => "invoice",
   );
   const mission = MISSIONS.find((item) => item.id === selected) ?? MISSIONS[0];
+  const t = useTranslator();
   return (
     <div className="missions-root container">
       <header className="missions-header">
         <Link href="/playground" className="missions-back">
-          <ArrowLeft size={15} /> Playground
+          <ArrowLeft size={15} /> {t("Playground")}
         </Link>
         <div className="missions-heading">
           <div>
             <span className="eyebrow">
-              <span className="status-dot" /> THE INVESTIGATION WORKSPACE
+              <span className="status-dot" /> {t("THE INVESTIGATION WORKSPACE")}
             </span>
             <h1>
-              Don’t follow the script.
+              {t("Don’t follow the script.")}
               <br />
-              <span>Find the flaw.</span>
+              <span>{t("Find the flaw.")}</span>
             </h1>
-            <p>Investigate a case. Challenge the system. Prove your fix.</p>
+            <p>
+              {t("Investigate a case. Challenge the system. Prove your fix.")}
+            </p>
           </div>
           <div className="missions-mode">
             <FlaskConical size={20} />
             <div>
-              <strong>Browser sandbox</strong>
-              <span>Synthetic data · no setup needed</span>
+              <strong>{t("Browser sandbox")}</strong>
+              <span>{t("Synthetic data · no setup needed")}</span>
             </div>
           </div>
         </div>
       </header>
-      <nav className="mission-selector" aria-label="Choose a mission">
+      <nav className="mission-selector" aria-label={t("Choose a mission")}>
         {MISSIONS.map((item) => (
           <a
             key={item.id}
@@ -95,10 +100,10 @@ export function MissionControl() {
           >
             <span className="mission-number">{item.number}</span>
             <div>
-              <span>{item.category}</span>
-              <strong>{item.title}</strong>
+              <span>{t(item.category)}</span>
+              <strong>{t(item.title)}</strong>
               <small>
-                {item.difficulty} · {item.minutes}
+                {t(item.difficulty)} · {t(item.minutes)}
               </small>
             </div>
             <ChevronRight size={18} />
@@ -122,8 +127,9 @@ function Workspace({ mission }: { mission: Mission }) {
   );
   const [notice, setNotice] = useState("");
   const [resetPending, setResetPending] = useState(false);
+  const t = useTranslator();
   const result = evaluateSession(mission, session);
-  const files = missionFiles(mission.id, session.variant);
+  const files = missionFiles(mission.id, session.variant, t);
   const latest = session.history.at(-1);
   const previous = session.history.at(-2);
   const update = (patch: Partial<Session>) => save({ ...session, ...patch });
@@ -139,7 +145,7 @@ function Workspace({ mission }: { mission: Mission }) {
     );
     save(recordRun(session, session.request, outcome));
     setNotice(
-      `Response ${outcome.status}. ${outcome.evidence === "exploit" ? "Unexpected access or behavior recorded as evidence." : outcome.evidence === "defense" ? "Defense evidence recorded. Run the full test suite before concluding." : "Inspect the response and execution trace."}`,
+      `${t("Response {status}.", { status: outcome.status })} ${t(outcome.evidence === "exploit" ? "Unexpected access or behavior recorded as evidence." : outcome.evidence === "defense" ? "Defense evidence recorded. Run the full test suite before concluding." : "Inspect the response and execution trace.")}`,
     );
   };
   const changePolicy = (key: string, value: string) => {
@@ -150,7 +156,9 @@ function Workspace({ mission }: { mission: Mission }) {
       testedPolicy: null,
     });
     setNotice(
-      "Policy updated. Sandbox state reset; earlier requests remain in the evidence log. Retest this configuration.",
+      t(
+        "Policy updated. Sandbox state reset; earlier requests remain in the evidence log. Retest this configuration.",
+      ),
     );
   };
   const checklist = [
@@ -186,14 +194,19 @@ function Workspace({ mission }: { mission: Mission }) {
         <div>
           <span className="status-dot" />
           <strong>
-            {result.complete ? "CASE VERIFIED" : "INVESTIGATION OPEN"}
+            {t(result.complete ? "CASE VERIFIED" : "INVESTIGATION OPEN")}
           </strong>
           <span>
-            CASE {mission.number} / VARIANT {session.variant}
+            {t("CASE {number} / VARIANT {variant}", {
+              number: mission.number,
+              variant: session.variant,
+            })}
           </span>
         </div>
         <span>
-          {checklist.filter((item) => item.done).length} / 5 objectives{" "}
+          {t("{done} / 5 objectives", {
+            done: checklist.filter((item) => item.done).length,
+          })}{" "}
           <b>
             {result.score}
             <small>/100</small>
@@ -203,20 +216,22 @@ function Workspace({ mission }: { mission: Mission }) {
       <div className="mission-layout">
         <aside className="mission-brief">
           <section className="mission-panel">
-            <span className="eyebrow">INCOMING / {mission.client}</span>
-            <h2>{mission.title}</h2>
-            <p>{mission.brief}</p>
+            <span className="eyebrow">
+              {t("INCOMING / {client}", { client: t(mission.client) })}
+            </span>
+            <h2>{t(mission.title)}</h2>
+            <p>{t(mission.brief)}</p>
             <div className="mission-objective">
-              <span>YOUR ASSIGNMENT</span>
-              <p>{mission.objective}</p>
+              <span>{t("YOUR ASSIGNMENT")}</span>
+              <p>{t(mission.objective)}</p>
             </div>
             <ol className="mission-checklist">
               {checklist.map((item, index) => (
                 <li key={item.label} className={item.done ? "is-done" : ""}>
                   <span>{item.done ? <Check size={13} /> : index + 1}</span>
                   <div>
-                    <strong>{item.label}</strong>
-                    <p>{item.detail}</p>
+                    <strong>{t(item.label)}</strong>
+                    <p>{t(item.detail)}</p>
                   </div>
                 </li>
               ))}
@@ -224,16 +239,17 @@ function Workspace({ mission }: { mission: Mission }) {
           </section>
           <section className="mission-panel mission-hints">
             <h3>
-              <Lightbulb size={17} /> Need a lead?
+              <Lightbulb size={17} /> {t("Need a lead?")}
             </h3>
             <p>
-              Reveal hints one at a time. Each costs 5 learning points; all
-              objectives remain achievable.
+              {t(
+                "Reveal hints one at a time. Each costs 5 learning points; all objectives remain achievable.",
+              )}
             </p>
             {mission.hints.slice(0, session.hints).map((hint, index) => (
               <div key={hint}>
-                <span>LEAD 0{index + 1}</span>
-                <p>{hint}</p>
+                <span>{t("LEAD 0{number}", { number: index + 1 })}</span>
+                <p>{t(hint)}</p>
               </div>
             ))}
             <button
@@ -241,29 +257,32 @@ function Workspace({ mission }: { mission: Mission }) {
               disabled={session.hints >= mission.hints.length}
               onClick={() => update({ hints: session.hints + 1 })}
             >
-              {session.hints === mission.hints.length
-                ? "All leads revealed"
-                : "Reveal the next lead"}
+              {t(
+                session.hints === mission.hints.length
+                  ? "All leads revealed"
+                  : "Reveal the next lead",
+              )}
               <ArrowRight size={14} />
             </button>
           </section>
           <div className="mission-save-note">
-            Work is saved in this browser when storage is available. These are
-            learning scores, not assessment grades.
+            {t(
+              "Work is saved in this browser when storage is available. These are learning scores, not assessment grades.",
+            )}
           </div>
         </aside>
         <div className="mission-desk">
           <section className="mission-panel mission-files">
             <div className="mission-panel-heading">
               <h3>
-                <FileCode2 size={17} /> Case files
+                <FileCode2 size={17} /> {t("Case files")}
               </h3>
-              <span>READ BEFORE TESTING</span>
+              <span>{t("READ BEFORE TESTING")}</span>
             </div>
             <div
               className="mission-file-tabs"
               role="group"
-              aria-label="Case files"
+              aria-label={t("Case files")}
             >
               {files.map((item, index) => (
                 <button
@@ -280,19 +299,20 @@ function Workspace({ mission }: { mission: Mission }) {
           <section className="mission-panel mission-request">
             <div className="mission-panel-heading">
               <h3>
-                <Terminal size={17} /> Request workbench
+                <Terminal size={17} /> {t("Request workbench")}
               </h3>
-              <span>EDIT · SEND · OBSERVE</span>
+              <span>{t("EDIT · SEND · OBSERVE")}</span>
             </div>
             <p className="mission-help">
-              Edit paths, identity, and JSON freely within this case. Requests
-              run in the browser simulation.
+              {t(
+                "Edit paths, identity, and JSON freely within this case. Requests run in the browser simulation.",
+              )}
             </p>
             <div className="mission-request-line">
               <label>
-                Method
+                {t("Method")}
                 <select
-                  aria-label="Request method"
+                  aria-label={t("Request method")}
                   value={session.request.method}
                   onChange={(event) =>
                     editRequest({
@@ -305,9 +325,9 @@ function Workspace({ mission }: { mission: Mission }) {
                 </select>
               </label>
               <label className="mission-path">
-                Sandbox path
+                {t("Sandbox path")}
                 <input
-                  aria-label="Sandbox path"
+                  aria-label={t("Sandbox path")}
                   value={session.request.path}
                   maxLength={160}
                   onChange={(event) =>
@@ -317,9 +337,9 @@ function Workspace({ mission }: { mission: Mission }) {
                 />
               </label>
               <label>
-                Identity
+                {t("Identity")}
                 <select
-                  aria-label="Request identity"
+                  aria-label={t("Request identity")}
                   value={session.request.actor}
                   onChange={(event) =>
                     editRequest({ actor: event.target.value as Actor })
@@ -327,15 +347,15 @@ function Workspace({ mission }: { mission: Mission }) {
                 >
                   <option value="alex">Alex</option>
                   <option value="sam">Sam</option>
-                  <option value="anonymous">Anonymous</option>
+                  <option value="anonymous">{t("Anonymous")}</option>
                 </select>
               </label>
             </div>
             {session.request.method === "POST" && (
               <label className="mission-body-label">
-                JSON request body
+                {t("JSON request body")}
                 <textarea
-                  aria-label="JSON request body"
+                  aria-label={t("JSON request body")}
                   value={session.request.body}
                   onChange={(event) =>
                     editRequest({ body: event.target.value })
@@ -348,43 +368,49 @@ function Workspace({ mission }: { mission: Mission }) {
             )}
             <div className="mission-request-actions">
               <button className="mission-button" onClick={run}>
-                <Play size={15} /> Send request
+                <Play size={15} /> {t("Send request")}
               </button>
               <button
                 className="mission-button quiet"
                 onClick={() => {
                   update({ sandbox: freshSandbox() });
                   setNotice(
-                    "Sandbox counters reset. Policies and evidence kept.",
+                    t("Sandbox counters reset. Policies and evidence kept."),
                   );
                 }}
               >
-                <RotateCcw size={14} /> Reset sandbox
+                <RotateCcw size={14} /> {t("Reset sandbox")}
               </button>
               {mission.id === "webhook" && (
                 <span className="mission-deliveries">
-                  {session.sandbox.deliveries} deliveries
+                  {t("{count} deliveries", {
+                    count: session.sandbox.deliveries,
+                  })}
                 </span>
               )}
             </div>
             <div className="mission-notice" role="status">
               {notice ||
-                "Start with the normal request. Then change one variable and compare."}
+                t(
+                  "Start with the normal request. Then change one variable and compare.",
+                )}
             </div>
             <div className="mission-response">
               <div className="mission-response-bar">
-                <div role="group" aria-label="Response view">
+                <div role="group" aria-label={t("Response view")}>
                   {(["response", "trace", "compare"] as const).map((item) => (
                     <button
                       key={item}
                       aria-pressed={view === item}
                       onClick={() => setView(item)}
                     >
-                      {item === "compare"
-                        ? "Compare last two"
-                        : item === "trace"
-                          ? "Execution trace"
-                          : "Response"}
+                      {t(
+                        item === "compare"
+                          ? "Compare last two"
+                          : item === "trace"
+                            ? "Execution trace"
+                            : "Response",
+                      )}
                     </button>
                   ))}
                 </div>
@@ -403,7 +429,7 @@ function Workspace({ mission }: { mission: Mission }) {
               {!latest ? (
                 <div className="mission-console-empty">
                   <Terminal size={23} />
-                  <p>Your first request starts the investigation.</p>
+                  <p>{t("Your first request starts the investigation.")}</p>
                 </div>
               ) : view === "response" ? (
                 <pre>{JSON.stringify(latest.outcome.data, null, 2)}</pre>
@@ -412,7 +438,7 @@ function Workspace({ mission }: { mission: Mission }) {
                   {latest.outcome.trace.map((step, index) => (
                     <li key={index}>
                       <span>{index + 1}</span>
-                      {step}
+                      {translateStep(t, step)}
                     </li>
                   ))}
                 </ol>
@@ -421,12 +447,14 @@ function Workspace({ mission }: { mission: Mission }) {
                   {[previous, latest].map((entry, index) => (
                     <div key={index}>
                       <span>
-                        {index === 0 ? "PREVIOUS" : "LATEST"} ·{" "}
+                        {t(index === 0 ? "PREVIOUS" : "LATEST")} ·{" "}
                         {entry.outcome.status}
                       </span>
                       <p>
                         {entry.request.method} {entry.request.path} ·{" "}
-                        {entry.request.actor}
+                        {entry.request.actor === "anonymous"
+                          ? t("Anonymous")
+                          : entry.request.actor}
                       </p>
                       <pre>{JSON.stringify(entry.outcome.data, null, 2)}</pre>
                     </div>
@@ -434,7 +462,7 @@ function Workspace({ mission }: { mission: Mission }) {
                 </div>
               ) : (
                 <p className="mission-help">
-                  Send at least two requests to compare responses.
+                  {t("Send at least two requests to compare responses.")}
                 </p>
               )}
             </div>
@@ -442,19 +470,19 @@ function Workspace({ mission }: { mission: Mission }) {
           <section className="mission-panel">
             <div className="mission-panel-heading">
               <h3>
-                <ShieldCheck size={17} /> Defense engineering
+                <ShieldCheck size={17} /> {t("Defense engineering")}
               </h3>
-              <span>FIX WITHOUT BREAKING</span>
+              <span>{t("FIX WITHOUT BREAKING")}</span>
             </div>
             <p className="mission-help">
-              Change the service’s policies, then retry your request. Policy
-              changes start a fresh sandbox and invalidate previous
-              verification.
+              {t(
+                "Change the service’s policies, then retry your request. Policy changes start a fresh sandbox and invalidate previous verification.",
+              )}
             </p>
             <div className="mission-controls">
               {mission.controls.map((control) => (
                 <label key={control.key}>
-                  {control.label}
+                  {t(control.label)}
                   <select
                     value={session.policy[control.key]}
                     onChange={(event) =>
@@ -463,7 +491,7 @@ function Workspace({ mission }: { mission: Mission }) {
                   >
                     {control.options.map((option) => (
                       <option value={option.value} key={option.value}>
-                        {option.label}
+                        {t(option.label)}
                       </option>
                     ))}
                   </select>
@@ -479,8 +507,10 @@ function Workspace({ mission }: { mission: Mission }) {
                 }
               />
               <span>
-                Emergency block all traffic{" "}
-                <small>Test the impact of taking the service offline.</small>
+                {t("Emergency block all traffic")}{" "}
+                <small>
+                  {t("Test the impact of taking the service offline.")}
+                </small>
               </span>
             </label>
             <button
@@ -488,16 +518,21 @@ function Workspace({ mission }: { mission: Mission }) {
               onClick={() => {
                 update({ testedPolicy: policyKey(session.policy) });
                 setNotice(
-                  "Regression suite finished in a separate clean sandbox. Review every failing expectation below.",
+                  t(
+                    "Regression suite finished in a separate clean sandbox. Review every failing expectation below.",
+                  ),
                 );
               }}
             >
-              <ShieldCheck size={15} /> Run regression suite
+              <ShieldCheck size={15} /> {t("Run regression suite")}
             </button>
             {result.tested && (
               <div className="mission-tests" aria-live="polite">
                 <h4>
-                  {result.passing} / {result.tests.length} checks passed
+                  {t("{passing} / {total} checks passed", {
+                    passing: result.passing,
+                    total: result.tests.length,
+                  })}
                 </h4>
                 {result.tests.map((test) => (
                   <details
@@ -510,11 +545,15 @@ function Workspace({ mission }: { mission: Mission }) {
                       ) : (
                         <X size={15} />
                       )}
-                      <span>{test.name}</span>
-                      <small>{test.passed ? "PASS" : "FAIL"}</small>
+                      <span>{t(test.name)}</span>
+                      <small>{t(test.passed ? "PASS" : "FAIL")}</small>
                     </summary>
-                    <p>Expected: {test.expected}</p>
-                    <pre>Observed: {test.actual}</pre>
+                    <p>
+                      {t("Expected: {value}", {
+                        value: translateStep(t, test.expected),
+                      })}
+                    </p>
+                    <pre>{t("Observed: {value}", { value: test.actual })}</pre>
                   </details>
                 ))}
               </div>
@@ -522,11 +561,11 @@ function Workspace({ mission }: { mission: Mission }) {
           </section>
           <section className="mission-panel">
             <div className="mission-panel-heading">
-              <h3>Investigator’s conclusion</h3>
-              <span>CONNECT THE EVIDENCE</span>
+              <h3>{t("Investigator’s conclusion")}</h3>
+              <span>{t("CONNECT THE EVIDENCE")}</span>
             </div>
             <fieldset className="mission-hypotheses">
-              <legend>Which explanation fits the failure?</legend>
+              <legend>{t("Which explanation fits the failure?")}</legend>
               {mission.hypotheses.map((hypothesis, index) => (
                 <label key={hypothesis}>
                   <input
@@ -536,7 +575,7 @@ function Workspace({ mission }: { mission: Mission }) {
                     checked={session.hypothesis === index}
                     onChange={() => update({ hypothesis: index })}
                   />
-                  <span>{hypothesis}</span>
+                  <span>{t(hypothesis)}</span>
                 </label>
               ))}
             </fieldset>
@@ -546,18 +585,22 @@ function Workspace({ mission }: { mission: Mission }) {
                   result.diagnosed ? "mission-correct" : "mission-wrong"
                 }
               >
-                {result.diagnosed
-                  ? "This explains the trust boundary. Support it with request evidence."
-                  : "This does not explain all the observed failure paths. Revisit the case files and test another assumption."}
+                {t(
+                  result.diagnosed
+                    ? "This explains the trust boundary. Support it with request evidence."
+                    : "This does not explain all the observed failure paths. Revisit the case files and test another assumption.",
+                )}
               </p>
             )}
             <label className="mission-body-label">
-              Your findings and reasoning
+              {t("Your findings and reasoning")}
               <textarea
-                aria-label="Investigator notes"
+                aria-label={t("Investigator notes")}
                 rows={4}
                 maxLength={5000}
-                placeholder="What changed? Which request proves the impact? Why does the fix preserve valid behavior?"
+                placeholder={t(
+                  "What changed? Which request proves the impact? Why does the fix preserve valid behavior?",
+                )}
                 value={session.notes}
                 onChange={(event) => update({ notes: event.target.value })}
               />
@@ -567,23 +610,29 @@ function Workspace({ mission }: { mission: Mission }) {
               onClick={() =>
                 downloadText(
                   `cybervalue-${mission.id}-case-${session.variant}.md`,
-                  missionReport(mission, session),
+                  missionReport(mission, session, t),
                 )
               }
             >
-              <Download size={15} /> Export investigation
+              <Download size={15} /> {t("Export investigation")}
             </button>
           </section>
           {result.complete && (
-            <section className="mission-debrief" aria-label="Mission debrief">
+            <section
+              className="mission-debrief"
+              aria-label={t("Mission debrief")}
+            >
               <CheckCircle2 size={28} />
               <span className="eyebrow">
-                EVIDENCE COLLECTED. DEFENSE VERIFIED.
+                {t("EVIDENCE COLLECTED. DEFENSE VERIFIED.")}
               </span>
-              <h2>Case closed. Lesson earned.</h2>
-              <p>{mission.debrief}</p>
+              <h2>{t("Case closed. Lesson earned.")}</h2>
+              <p>{t(mission.debrief)}</p>
               <span>
-                Learning score: {result.score}/100 · {session.hints} hints used
+                {t("Learning score: {score}/100 · {hints} hints used", {
+                  score: result.score,
+                  hints: session.hints,
+                })}
               </span>
               {MISSIONS.findIndex((item) => item.id === mission.id) <
                 MISSIONS.length - 1 && (
@@ -591,18 +640,22 @@ function Workspace({ mission }: { mission: Mission }) {
                   className="mission-button"
                   href={`#mission/${MISSIONS[MISSIONS.findIndex((item) => item.id === mission.id) + 1].id}`}
                 >
-                  Take the next case <ArrowRight size={15} />
+                  {t("Take the next case")} <ArrowRight size={15} />
                 </Link>
               )}
             </section>
           )}
           <details className="mission-panel mission-history">
             <summary>
-              <History size={17} /> Evidence log{" "}
-              <span>{session.history.length} / 16 recent requests</span>
+              <History size={17} /> {t("Evidence log")}{" "}
+              <span>
+                {t("{count} / 16 recent requests", {
+                  count: session.history.length,
+                })}
+              </span>
             </summary>
             {session.history.length === 0 ? (
-              <p>No requests recorded yet.</p>
+              <p>{t("No requests recorded yet.")}</p>
             ) : (
               <ol>
                 {session.history.map((entry, index) => (
@@ -621,8 +674,10 @@ function Workspace({ mission }: { mission: Mission }) {
                         {entry.request.method} {entry.request.path}
                       </strong>
                       <small>
-                        {entry.request.actor} ·{" "}
-                        {entry.outcome.evidence ?? "observation"}
+                        {entry.request.actor === "anonymous"
+                          ? t("Anonymous")
+                          : entry.request.actor}{" "}
+                        · {t(entry.outcome.evidence ?? "observation")}
                       </small>
                     </div>
                     <button
@@ -630,11 +685,13 @@ function Workspace({ mission }: { mission: Mission }) {
                       onClick={() => {
                         update({ request: entry.request });
                         setNotice(
-                          "Request loaded into the workbench. Send it to run against the current policy.",
+                          t(
+                            "Request loaded into the workbench. Send it to run against the current policy.",
+                          ),
                         );
                       }}
                     >
-                      Load request {index + 1}
+                      {t("Load request {number}", { number: index + 1 })}
                       <ArrowRight size={13} />
                     </button>
                   </li>
@@ -644,8 +701,9 @@ function Workspace({ mission }: { mission: Mission }) {
           </details>
           <div className="mission-reset">
             <p>
-              Want a fresh challenge? A new case changes fixture IDs and values
-              and clears this mission’s current work.
+              {t(
+                "Want a fresh challenge? A new case changes fixture IDs and values and clears this mission’s current work.",
+              )}
             </p>
             {resetPending ? (
               <div>
@@ -655,17 +713,19 @@ function Workspace({ mission }: { mission: Mission }) {
                     save(newSession(mission, (session.variant % 3) + 1));
                     setResetPending(false);
                     setNotice(
-                      "New case loaded. Re-read the case files: the fixture values have changed.",
+                      t(
+                        "New case loaded. Re-read the case files: the fixture values have changed.",
+                      ),
                     );
                   }}
                 >
-                  Start fresh case
+                  {t("Start fresh case")}
                 </button>
                 <button
                   className="mission-button quiet"
                   onClick={() => setResetPending(false)}
                 >
-                  Keep current work
+                  {t("Keep current work")}
                 </button>
               </div>
             ) : (
@@ -673,7 +733,7 @@ function Workspace({ mission }: { mission: Mission }) {
                 className="mission-button secondary"
                 onClick={() => setResetPending(true)}
               >
-                <RotateCcw size={14} /> New case variant
+                <RotateCcw size={14} /> {t("New case variant")}
               </button>
             )}
           </div>

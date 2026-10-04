@@ -8,6 +8,8 @@ export type StudioCheck = {
   label: string;
   passed: boolean;
   detail: string;
+  // Placeholder values for the translated detail text.
+  values?: Record<string, string>;
 };
 export const elements = (root: Node): Element[] => {
   const result: Element[] = [];
@@ -64,8 +66,13 @@ export function checkProject(project: ProjectId, html: string): StudioCheck[] {
     all.filter((node) => attribute(node, "id") === id);
   const main = find("main")[0];
   const checks: StudioCheck[] = [];
-  const check = (id: string, label: string, passed: boolean, detail: string) =>
-    checks.push({ id, label, passed, detail });
+  const check = (
+    id: string,
+    label: string,
+    passed: boolean,
+    detail: string,
+    values?: Record<string, string>,
+  ) => checks.push({ id, label, passed, detail, values });
   check(
     "document",
     "Explicit document structure and language",
@@ -112,8 +119,9 @@ export function checkProject(project: ProjectId, html: string): StudioCheck[] {
     "Markup parses without structural errors",
     parseErrors.length === 0,
     parseErrors.length
-      ? `Parser findings: ${[...new Set(parseErrors)].slice(0, 5).join(", ")}.`
+      ? "Parser findings: {codes}."
       : "The HTML parser found no structural errors.",
+    { codes: [...new Set(parseErrors)].slice(0, 5).join(", ") },
   );
   check(
     "static",
@@ -152,7 +160,8 @@ export function checkProject(project: ProjectId, html: string): StudioCheck[] {
       "form",
       "The form is inside the main content",
       !!form,
-      `Create form id=${formId} inside main; controls must be inside that form.`,
+      "Create form id={id} inside main; controls must be inside that form.",
+      { id: formId },
     );
     check(
       "email",

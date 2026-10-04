@@ -344,8 +344,6 @@
   "By {author}": "Muallif: {author}",
   "Updated {date}": "Yangilangan: {date}",
   "Published": "E’lon qilingan",
-  "This module’s lessons and controls are currently available in English.": "Ushbu bo‘limning darslari va boshqaruvlari hozircha ingliz tilida mavjud.",
-  "This module’s lessons and controls are currently available in Uzbek.": "Ushbu bo‘limning darslari va boshqaruvlari hozircha o‘zbek tilida mavjud.",
   "Web Security Lab": "Web xavfsizligi laboratoriyasi",
   "An interactive 36-lesson Web Application Security lab: real HTTP requests, and hands-on demos of SQLi, XSS, and IDOR.": "36 ta interaktiv web xavfsizligi darsi: haqiqiy HTTP so‘rovlari, SQLi, XSS va IDOR bo‘yicha amaliy mashqlar.",
   "Security Missions": "Xavfsizlik topshiriqlari",

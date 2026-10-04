@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslator } from "@/components/locale-provider";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
@@ -47,6 +48,7 @@ const emptyDraft: Draft = {
 };
 
 export function HtmlAssessment() {
+  const t = useTranslator();
   const [attempt, setAttempt] = useState<AttemptView | null>(null);
   const [draft, setDraft] = useState<Draft>(emptyDraft);
   const [loading, setLoading] = useState(true);
@@ -58,7 +60,7 @@ export function HtmlAssessment() {
   const [conflict, setConflict] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
-  const [saveStatus, setSaveStatus] = useState("Saqlangan");
+  const [saveStatus, setSaveStatus] = useState(t("Saqlangan"));
   const [remaining, setRemaining] = useState(0);
   const [tab, setTab] = useState<"practical" | "quiz" | "reasoning">(
     "practical",
@@ -106,7 +108,7 @@ export function HtmlAssessment() {
       .catch((failure) => {
         if (!cancelled)
           setError(
-            failure instanceof Error ? failure.message : "Ulanish xatosi.",
+            failure instanceof Error ? failure.message : t("Ulanish xatosi."),
           );
       })
       .finally(() => {
@@ -115,7 +117,7 @@ export function HtmlAssessment() {
     return () => {
       cancelled = true;
     };
-  }, [apply]);
+  }, [apply, t]);
 
   const persist = useCallback(
     (submit = false) => {
@@ -137,16 +139,18 @@ export function HtmlAssessment() {
           if (result.attempt) apply(result.attempt);
           setSaveStatus(
             live.current.draft === snapshot || result.attempt?.submittedAt
-              ? "Serverga saqlangan"
-              : "Yangi o‘zgarishlar saqlanmoqda…",
+              ? t("Serverga saqlangan")
+              : t("Yangi o‘zgarishlar saqlanmoqda…"),
           );
           setError("");
         } catch (failure) {
-          setSaveStatus("Saqlanmadi");
+          setSaveStatus(t("Saqlanmadi"));
           setError(
             failure instanceof RequestError
               ? failure.message
-              : "Aloqa uzildi. Sahifani yopmang; saqlashni qayta sinang. Taymer davom etadi.",
+              : t(
+                  "Aloqa uzildi. Sahifani yopmang; saqlashni qayta sinang. Taymer davom etadi.",
+                ),
           );
           if (
             failure instanceof RequestError &&
@@ -162,14 +166,14 @@ export function HtmlAssessment() {
       queue.current = queue.current.then(run, run);
       return queue.current;
     },
-    [apply],
+    [apply, t],
   );
 
   function edit(change: Partial<Draft>) {
     const next = { ...live.current.draft, ...change };
     live.current.draft = next;
     setDraft(next);
-    setSaveStatus("Saqlanmagan o‘zgarishlar");
+    setSaveStatus(t("Saqlanmagan o‘zgarishlar"));
   }
 
   const active = Boolean(attempt && !attempt.submittedAt);
@@ -260,7 +264,7 @@ export function HtmlAssessment() {
       if (result.entry) setEntry(result.entry);
     } catch (failure) {
       setError(
-        failure instanceof Error ? failure.message : "Kod tekshirilmadi.",
+        failure instanceof Error ? failure.message : t("Kod tekshirilmadi."),
       );
     } finally {
       setBusy(false);
@@ -288,7 +292,7 @@ export function HtmlAssessment() {
       }
     } catch (failure) {
       setError(
-        failure instanceof Error ? failure.message : "Sinov boshlanmadi.",
+        failure instanceof Error ? failure.message : t("Sinov boshlanmadi."),
       );
     } finally {
       setBusy(false);
@@ -305,7 +309,9 @@ export function HtmlAssessment() {
       },
     });
     setNotice(
-      "Tayyor matn yoki fayl joylash o‘chirilgan. Kod va izohni o‘zingiz yozing; bu urinish qayd etildi.",
+      t(
+        "Tayyor matn yoki fayl joylash o‘chirilgan. Kod va izohni o‘zingiz yozing; bu urinish qayd etildi.",
+      ),
     );
   }
 
@@ -320,82 +326,89 @@ export function HtmlAssessment() {
   if (loading)
     return (
       <div className="exam-shell" lang="uz">
-        <p role="status">Sinov holati yuklanmoqda…</p>
+        <p role="status">{t("Sinov holati yuklanmoqda…")}</p>
       </div>
     );
   if (!attempt)
     return (
       <div className="exam-shell" lang="uz">
-        <Link href="/playground/html-basics">← HTML Basics darslari</Link>
+        <Link href="/playground/html-basics">
+          {t("← HTML Basics darslari")}
+        </Link>
         <section className="exam-intro">
-          <span className="exam-eyebrow">HTML BASICS / BAHOLASH</span>
+          <span className="exam-eyebrow">{t("HTML BASICS / BAHOLASH")}</span>
           <h1>
-            Bilimingizni ishlating.
+            {t("Bilimingizni ishlating.")}
             <br />
-            <span>Sahifani qayta tiklang.</span>
+            <span>{t("Sahifani qayta tiklang.")}</span>
           </h1>
           <p>
-            Oddiy teg yodlash yetmaydi. Buzilgan sahifadagi muammolarni toping,
-            buyurtma talablarini bajaring va qaroringizni tushuntiring.
+            {t(
+              "Oddiy teg yodlash yetmaydi. Buzilgan sahifadagi muammolarni toping, buyurtma talablarini bajaring va qaroringizni tushuntiring.",
+            )}
           </p>
           <div className="exam-stats">
             <div>
               <strong>01</strong>
-              <span>shaxsiy urinish</span>
+              <span>{t("shaxsiy urinish")}</span>
             </div>
             <div>
               <strong>100</strong>
-              <span>jami ball</span>
+              <span>{t("jami ball")}</span>
             </div>
             <div>
               <strong>12</strong>
-              <span>dars mavzusi</span>
+              <span>{t("dars mavzusi")}</span>
             </div>
           </div>
         </section>
         <div className="exam-entry-grid">
           <section className="exam-card">
-            <h2>Sinov qoidalari</h2>
+            <h2>{t("Sinov qoidalari")}</h2>
             <ol>
               <li>
-                Vaqt “Boshlash” tugmasi bosilganda boshlanadi. Sahifani yopish
-                yoki yangilash vaqtni to‘xtatmaydi.
+                {t(
+                  "Vaqt “Boshlash” tugmasi bosilganda boshlanadi. Sahifani yopish yoki yangilash vaqtni to‘xtatmaydi.",
+                )}
               </li>
               <li>
-                Shaxsiy kod faqat bitta urinish ochadi. Shu brauzerda davom
-                eting; cookie’larni o‘chirmang.
+                {t(
+                  "Shaxsiy kod faqat bitta urinish ochadi. Shu brauzerda davom eting; cookie’larni o‘chirmang.",
+                )}
               </li>
               <li>
-                6 ta vaziyatli savol — 30 ball; 12 ta amaliy talab — 60 ball;
-                ikkita izoh — o‘qituvchidan 10 ball.
+                {t(
+                  "6 ta vaziyatli savol — 30 ball; 12 ta amaliy talab — 60 ball; ikkita izoh — o‘qituvchidan 10 ball.",
+                )}
               </li>
               <li>
-                Faqat HTML: JavaScript, CSS, tashqi resurslar va yashirin mazmun
-                taqiqlangan. Ishlatilsa amaliy qism 0 ball. Faqat #ichki
-                havolalar, /icon.svg va topshiriqdagi email manzili ruxsat.
+                {t(
+                  "Faqat HTML: JavaScript, CSS, tashqi resurslar va yashirin mazmun taqiqlangan. Ishlatilsa amaliy qism 0 ball. Faqat #ichki havolalar, /icon.svg va topshiriqdagi email manzili ruxsat.",
+                )}
               </li>
               <li>
-                Tayyor yechim, AI, boshqa odam yordami va nusxa joylashdan
-                foydalanmang. Paste/drop bloklanadi; tabdan va to‘liq ekrandan
-                chiqishlar o‘qituvchiga ko‘rinadi.
+                {t(
+                  "Tayyor yechim, AI, boshqa odam yordami va nusxa joylashdan foydalanmang. Paste/drop bloklanadi; tabdan va to‘liq ekrandan chiqishlar o‘qituvchiga ko‘rinadi.",
+                )}
               </li>
               <li>
-                Namuna yechim va sinov davomida avtomatik tekshirish yo‘q. O‘z
-                sahifangiz ko‘rinishini ko‘rishingiz mumkin.
+                {t(
+                  "Namuna yechim va sinov davomida avtomatik tekshirish yo‘q. O‘z sahifangiz ko‘rinishini ko‘rishingiz mumkin.",
+                )}
               </li>
               <li>
-                Kod avtomatik saqlanadi. Aloqa uzilsa vaqt davom etadi;
-                muddatgacha server qabul qilgan oxirgi nusxa baholanadi. Kod
-                chegarasi 24 000, har bir izoh 1 600 belgi.
+                {t(
+                  "Kod avtomatik saqlanadi. Aloqa uzilsa vaqt davom etadi; muddatgacha server qabul qilgan oxirgi nusxa baholanadi. Kod chegarasi 24 000, har bir izoh 1 600 belgi.",
+                )}
               </li>
             </ol>
           </section>
           <section className="exam-card">
-            <h2>Shaxsiy kod bilan kirish</h2>
+            <h2>{t("Shaxsiy kod bilan kirish")}</h2>
             {!entry ? (
               <form onSubmit={checkCode} className="exam-form">
                 <label>
-                  O‘qituvchi bergan kod
+                  {t("O‘qituvchi bergan kod")}
                   <input
                     autoComplete="off"
                     value={code}
@@ -406,9 +419,9 @@ export function HtmlAssessment() {
                   />
                 </label>
                 <button className="button button-primary" disabled={busy}>
-                  {busy ? "Tekshirilmoqda…" : "Kodni tekshirish"}
+                  {busy ? "Tekshirilmoqda…" : t("Kodni tekshirish")}
                 </button>
-                <p>Kodni tekshirish urinishni boshlamaydi.</p>
+                <p>{t("Kodni tekshirish urinishni boshlamaydi.")}</p>
               </form>
             ) : (
               <div className="exam-form">
@@ -417,21 +430,25 @@ export function HtmlAssessment() {
                   <br />
                   {entry.title}
                 </p>
-                <p className="exam-duration">{entry.minutes} daqiqa</p>
+                <p className="exam-duration">
+                  {entry.minutes} {t("daqiqa")}
+                </p>
                 <label className="exam-check">
                   <input
                     type="checkbox"
                     checked={agreed}
                     onChange={(e) => setAgreed(e.target.checked)}
                   />
-                  Ism menga tegishli. Qoidalarni o‘qidim va mustaqil ishlayman.
+                  {t(
+                    "Ism menga tegishli. Qoidalarni o‘qidim va mustaqil ishlayman.",
+                  )}
                 </label>
                 <button
                   className="button button-primary"
                   disabled={busy || !agreed}
                   onClick={() => void start()}
                 >
-                  {busy ? "Boshlanmoqda…" : "Sinovni boshlash"}
+                  {busy ? "Boshlanmoqda…" : t("Sinovni boshlash")}
                 </button>
                 <button
                   className="button button-secondary"
@@ -441,13 +458,13 @@ export function HtmlAssessment() {
                     setAgreed(false);
                   }}
                 >
-                  Boshqa kod kiritish
+                  {t("Boshqa kod kiritish")}
                 </button>
               </div>
             )}
             {error && (
               <p role="alert" className="exam-error">
-                {error}
+                {t(error)}
               </p>
             )}
           </section>
@@ -459,11 +476,11 @@ export function HtmlAssessment() {
     return (
       <div className="exam-shell" lang="uz">
         <section className="exam-card exam-result">
-          <span className="exam-eyebrow">URINISH YAKUNLANDI</span>
+          <span className="exam-eyebrow">{t("URINISH YAKUNLANDI")}</span>
           <h1>
             {attempt.finishReason === "timeout"
-              ? "Vaqt tugadi."
-              : "Ish topshirildi."}
+              ? t("Vaqt tugadi.")
+              : t("Ish topshirildi.")}
           </h1>
           <p>
             {attempt.name} · {attempt.title}
@@ -476,29 +493,34 @@ export function HtmlAssessment() {
           </div>
           <p>
             {attempt.reviewScore === null
-              ? "Bu avtomatik qismning dastlabki bali. Izohlar uchun o‘qituvchi yana 0–10 ball qo‘yadi; yakuniy baho hali tayyor emas."
-              : `Avtomatik: ${attempt.autoScore}/90. Izohlar: ${attempt.reviewScore}/10.`}
+              ? t(
+                  "Bu avtomatik qismning dastlabki bali. Izohlar uchun o‘qituvchi yana 0–10 ball qo‘yadi; yakuniy baho hali tayyor emas.",
+                )
+              : t("Avtomatik: {auto}/90. Izohlar: {review}/10.", {
+                  auto: attempt.autoScore ?? 0,
+                  review: attempt.reviewScore,
+                })}
           </p>
           {attempt.reviewNote && (
             <p className="exam-answer">{attempt.reviewNote}</p>
           )}
           <p>
-            Urinish qayta ochilmaydi.{" "}
+            {t("Urinish qayta ochilmaydi.")}{" "}
             {attempt.finishReason === "timeout" &&
-              "Muddatdan oldin serverga saqlangan oxirgi nusxa baholandi."}
+              t("Muddatdan oldin serverga saqlangan oxirgi nusxa baholandi.")}
           </p>
           <div className="exam-actions">
             <button
               className="button button-secondary"
               onClick={() => location.reload()}
             >
-              Bahoni yangilash
+              {t("Bahoni yangilash")}
             </button>
             <Link
               className="button button-secondary"
               href="/playground/html-basics"
             >
-              Darslarga qaytish
+              {t("Darslarga qaytish")}
             </Link>
             <button
               className="button button-secondary"
@@ -511,7 +533,7 @@ export function HtmlAssessment() {
                 setError("");
               }}
             >
-              Keyingi o‘quvchi
+              {t("Keyingi o‘quvchi")}
             </button>
           </div>
         </section>
@@ -535,7 +557,7 @@ export function HtmlAssessment() {
         <div
           className={`exam-timer ${remaining <= 300 ? "exam-timer-low" : ""}`}
           role="timer"
-          aria-label="Qolgan vaqt"
+          aria-label={t("Qolgan vaqt")}
         >
           {String(Math.floor(remaining / 60)).padStart(2, "0")}:
           {String(remaining % 60).padStart(2, "0")}
@@ -548,19 +570,19 @@ export function HtmlAssessment() {
             disabled={locked}
             onClick={() => void persist()}
           >
-            Hozir saqlash
+            {t("Hozir saqlash")}
           </button>
         </div>
       </header>
       {error && (
         <p role="alert" className="exam-error">
-          {error}
+          {t(error)}
           {conflict && (
             <button
               className="button button-secondary"
               onClick={() => location.reload()}
             >
-              Serverdagi nusxani yuklash
+              {t("Serverdagi nusxani yuklash")}
             </button>
           )}
         </p>
@@ -570,7 +592,7 @@ export function HtmlAssessment() {
           {notice}
           <button
             type="button"
-            aria-label="Bildirishnomani yopish"
+            aria-label={t("Bildirishnomani yopish")}
             onClick={() => setNotice("")}
           >
             ×
@@ -579,63 +601,67 @@ export function HtmlAssessment() {
       )}
       {remaining <= 0 && (
         <p role="status" className="exam-notice">
-          Vaqt tugadi. Serverga saqlangan ish yakunlanmoqda. Aloqa uzilgan
-          bo‘lsa, sahifani ochiq qoldiring.
+          {t(
+            "Vaqt tugadi. Serverga saqlangan ish yakunlanmoqda. Aloqa uzilgan bo‘lsa, sahifani ochiq qoldiring.",
+          )}
         </p>
       )}
-      <nav className="exam-tabs" aria-label="Sinov qismlari">
+      <nav className="exam-tabs" aria-label={t("Sinov qismlari")}>
         <button
           type="button"
           aria-pressed={tab === "practical"}
           onClick={() => setTab("practical")}
         >
-          01 · Amaliy ish <span>60 ball</span>
+          {t("01 · Amaliy ish")} <span>{t("60 ball")}</span>
         </button>
         <button
           type="button"
           aria-pressed={tab === "quiz"}
           onClick={() => setTab("quiz")}
         >
-          02 · Fikrlash testi{" "}
-          <span>{Object.keys(draft.answers).length}/6 · 30 ball</span>
+          {t("02 · Fikrlash testi")}{" "}
+          <span>
+            {Object.keys(draft.answers).length}
+            {t("/6 · 30 ball")}
+          </span>
         </button>
         <button
           type="button"
           aria-pressed={tab === "reasoning"}
           onClick={() => setTab("reasoning")}
         >
-          03 · Yechim izohi <span>10 ball</span>
+          {t("03 · Yechim izohi")} <span>{t("10 ball")}</span>
         </button>
       </nav>
       {tab === "practical" && (
         <>
           <div className="exam-task-heading">
             <span className="exam-eyebrow">
-              VARIANT {attempt.challenge.variant + 1} / BUYURTMACHI TOPSHIRIG‘I
+              VARIANT {attempt.challenge.variant + 1}{" "}
+              {t("/ BUYURTMACHI TOPSHIRIG‘I")}
             </span>
             <h2>{attempt.challenge.name}</h2>
             <p>
-              Tadbir sahifasi shoshilib yozilgan: ayrim tugmalar ishlamaydi,
-              ma’lumotlar chala va tuzilma noto‘g‘ri. Uni quyidagi buyurtma
-              bo‘yicha tiklang. Har bir talab 5 ball. Ko‘rinishning bezagi emas,
-              HTML tuzilishi va mazmun baholanadi.
+              {t(
+                "Tadbir sahifasi shoshilib yozilgan: ayrim tugmalar ishlamaydi, ma’lumotlar chala va tuzilma noto‘g‘ri. Uni quyidagi buyurtma bo‘yicha tiklang. Har bir talab 5 ball. Ko‘rinishning bezagi emas, HTML tuzilishi va mazmun baholanadi.",
+              )}
             </p>
           </div>
           <div className="exam-work-grid">
             <aside
               className="exam-requirements"
-              aria-label="Amaliy talablar"
+              aria-label={t("Amaliy talablar")}
               tabIndex={0}
             >
-              <h3>Qabul qilish talablari</h3>
+              <h3>{t("Qabul qilish talablari")}</h3>
               <ul>
                 {attempt.challenge.requirements.map((r) => (
-                  <li key={r}>{r}</li>
+                  <li key={r}>{t(r, attempt.challenge.values)}</li>
                 ))}
               </ul>
             </aside>
             <section className="exam-editor">
-              <label htmlFor="exam-code">HTML muharriri</label>
+              <label htmlFor="exam-code">{t("HTML muharriri")}</label>
               <textarea
                 id="exam-code"
                 spellCheck={false}
@@ -667,8 +693,8 @@ export function HtmlAssessment() {
               <div className="exam-editor-footer">
                 <span>
                   {draft.code.length.toLocaleString("en-US")}/
-                  {MAX_CODE_LENGTH.toLocaleString("en-US")} belgi · Shift+Tab:
-                  muharrirdan chiqish
+                  {MAX_CODE_LENGTH.toLocaleString("en-US")}{" "}
+                  {t("belgi · Shift+Tab: muharrirdan chiqish")}
                 </span>
                 <button
                   className="button button-secondary"
@@ -676,24 +702,25 @@ export function HtmlAssessment() {
                   disabled={locked}
                   onClick={showPreview}
                 >
-                  Ko‘rinishni yangilash
+                  {t("Ko‘rinishni yangilash")}
                 </button>
               </div>
               <p className="muted">
-                Ko‘rinish ball bermaydi. Havola va forma bu oynada bosilmaydi;
-                ularning to‘g‘riligini kodingizdan tekshiring.
+                {t(
+                  "Ko‘rinish ball bermaydi. Havola va forma bu oynada bosilmaydi; ularning to‘g‘riligini kodingizdan tekshiring.",
+                )}
               </p>
               {preview ? (
                 <iframe
                   className="exam-preview"
                   sandbox=""
-                  title="HTML sahifa ko‘rinishi"
+                  title={t("HTML sahifa ko‘rinishi")}
                   srcDoc={preview}
                   tabIndex={-1}
                 />
               ) : (
                 <div className="exam-preview-empty">
-                  Kodni yozing, so‘ng ko‘rinishni yangilang.
+                  {t("Kodni yozing, so‘ng ko‘rinishni yangilang.")}
                 </div>
               )}
             </section>
@@ -702,15 +729,16 @@ export function HtmlAssessment() {
       )}
       {tab === "quiz" && (
         <section className="exam-quiz">
-          <h2>Vaziyatni tahlil qiling</h2>
+          <h2>{t("Vaziyatni tahlil qiling")}</h2>
           <p>
-            Har savolda bitta to‘g‘ri javob. Javobni topshirishgacha
-            o‘zgartirish mumkin; to‘g‘ri javoblar sinov davomida ko‘rsatilmaydi.
+            {t(
+              "Har savolda bitta to‘g‘ri javob. Javobni topshirishgacha o‘zgartirish mumkin; to‘g‘ri javoblar sinov davomida ko‘rsatilmaydi.",
+            )}
           </p>
           {attempt.challenge.questions.map((q, index) => (
             <fieldset key={q.id} className="exam-card" disabled={locked}>
               <legend>
-                {index + 1}. {q.prompt}
+                {index + 1}. {t(q.prompt)}
               </legend>
               {q.options.map((option, i) => (
                 <label className="exam-option" key={i}>
@@ -723,7 +751,7 @@ export function HtmlAssessment() {
                       edit({ answers: { ...draft.answers, [q.id]: i } })
                     }
                   />
-                  <span>{option}</span>
+                  <span>{t(option)}</span>
                 </label>
               ))}
             </fieldset>
@@ -732,14 +760,15 @@ export function HtmlAssessment() {
       )}
       {tab === "reasoning" && (
         <section className="exam-form exam-reasoning">
-          <h2>Qaroringizni himoya qiling</h2>
+          <h2>{t("Qaroringizni himoya qiling")}</h2>
           <p>
-            O‘z kodingizdan misol keltiring. Ushbu qismni o‘qituvchi o‘qib
-            baholaydi; faqat uzun matn yozish ballni kafolatlamaydi.
+            {t(
+              "O‘z kodingizdan misol keltiring. Ushbu qismni o‘qituvchi o‘qib baholaydi; faqat uzun matn yozish ballni kafolatlamaydi.",
+            )}
           </p>
           {attempt.challenge.reasoning.map((question, index) => (
             <label key={question}>
-              {question}
+              {t(question)}
               <textarea
                 rows={7}
                 maxLength={1600}
@@ -753,13 +782,18 @@ export function HtmlAssessment() {
                   edit({ explanations });
                 }}
               />
-              <span>{draft.explanations[index].length}/1600 belgi</span>
+              <span>
+                {draft.explanations[index].length}
+                {t("/1600 belgi")}
+              </span>
             </label>
           ))}
         </section>
       )}
       <footer className="exam-finish">
-        <p>Topshirgandan keyin o‘zgartirish yoki qayta urinish bo‘lmaydi.</p>
+        <p>
+          {t("Topshirgandan keyin o‘zgartirish yoki qayta urinish bo‘lmaydi.")}
+        </p>
         <button
           type="button"
           className="button button-primary"
@@ -767,7 +801,10 @@ export function HtmlAssessment() {
           onClick={() => {
             if (
               confirm(
-                `Ishni yakunlaysizmi? ${Object.keys(draft.answers).length}/6 test javobi va amaliy kod topshiriladi. Qayta urinish yo‘q.`,
+                t(
+                  "Ishni yakunlaysizmi? {answered}/6 test javobi va amaliy kod topshiriladi. Qayta urinish yo‘q.",
+                  { answered: Object.keys(draft.answers).length },
+                ),
               )
             ) {
               setFinishing(true);
@@ -775,7 +812,7 @@ export function HtmlAssessment() {
             }
           }}
         >
-          {finishing ? "Topshirilmoqda…" : "Ishni yakunlash va topshirish"}
+          {finishing ? "Topshirilmoqda…" : t("Ishni yakunlash va topshirish")}
         </button>
       </footer>
     </div>

@@ -1,4 +1,5 @@
 "use client";
+import { useTranslator } from "@/components/locale-provider";
 import { useActionState } from "react";
 import {
   cancelChallengeAction,
@@ -14,6 +15,7 @@ export function LoginForm({
   next?: string;
   pendingCode?: boolean;
 }) {
+  const t = useTranslator();
   const [state, action, pending] = useActionState(loginAction, undefined);
   if (state?.step === "code" || pendingCode)
     return <CodeForm next={next} initial={state} />;
@@ -32,7 +34,7 @@ export function LoginForm({
         />
       </div>
       <div className="admin-field">
-        <label htmlFor="password">Password</label>
+        <label htmlFor="password">{t("Password")}</label>
         <input
           id="password"
           name="password"
@@ -44,7 +46,7 @@ export function LoginForm({
       </div>
       {state?.error && (
         <p className="admin-error" role="alert">
-          {state.error}
+          {t(state.error)}
         </p>
       )}
       <button
@@ -52,20 +54,21 @@ export function LoginForm({
         disabled={pending}
         className="button button-primary"
       >
-        {pending ? "Signing in…" : "Sign in"}
+        {pending ? t("Signing in…") : t("Sign in")}
       </button>
     </form>
   );
 }
 
 function CodeForm({ next, initial }: { next?: string; initial: LoginState }) {
+  const t = useTranslator();
   const [state, action, pending] = useActionState(verifyCodeAction, initial);
   return (
     <div className="admin-form admin-login-form">
       <form action={action} className="admin-form">
         {next && <input type="hidden" name="next" value={next} />}
         <div className="admin-field">
-          <label htmlFor="code">Authentication code</label>
+          <label htmlFor="code">{t("Authentication code")}</label>
           <input
             id="code"
             name="code"
@@ -79,13 +82,14 @@ function CodeForm({ next, initial }: { next?: string; initial: LoginState }) {
             className="admin-input"
           />
           <p id="code-help" className="muted">
-            Enter the 6-digit code from your authenticator app, or one of your
-            recovery codes.
+            {t(
+              "Enter the 6-digit code from your authenticator app, or one of your recovery codes.",
+            )}
           </p>
         </div>
         {state?.error && (
           <p className="admin-error" role="alert">
-            {state.error}
+            {t(state.error)}
           </p>
         )}
         <button
@@ -93,12 +97,12 @@ function CodeForm({ next, initial }: { next?: string; initial: LoginState }) {
           disabled={pending}
           className="button button-primary"
         >
-          {pending ? "Verifying…" : "Verify"}
+          {pending ? t("Verifying…") : t("Verify")}
         </button>
       </form>
       <form action={cancelChallengeAction}>
         <button type="submit" className="button button-secondary">
-          Start over
+          {t("Start over")}
         </button>
       </form>
     </div>

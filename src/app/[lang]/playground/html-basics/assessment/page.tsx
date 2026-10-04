@@ -1,6 +1,5 @@
 import { HtmlAssessment } from "@/components/playground/html-assessment/HtmlAssessment";
 import { metadata as buildMetadata } from "@/lib/seo";
-import { ContentLanguage } from "@/components/content-language";
 
 export const generateMetadata = () =>
   buildMetadata(
@@ -10,9 +9,5 @@ export const generateMetadata = () =>
     true,
   );
 export default function AssessmentPage() {
-  return (
-    <ContentLanguage language="uz">
-      <HtmlAssessment />
-    </ContentLanguage>
-  );
+  return <HtmlAssessment />;
 }

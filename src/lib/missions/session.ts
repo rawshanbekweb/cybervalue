@@ -8,6 +8,8 @@ import {
   type Outcome,
   type Policy,
 } from "./engine";
+import { createTranslator, type Translator } from "../i18n";
+import { translateStep } from "./i18n";
 
 const requestSchema = z.object({
   method: z.enum(["GET", "POST"]),
@@ -142,49 +144,65 @@ export function evaluateSession(mission: Mission, session: Session) {
   return { tested, tests, defended, diagnosed, passing, complete, score };
 }
 
-export function missionReport(mission: Mission, session: Session): string {
+export function missionReport(
+  mission: Mission,
+  session: Session,
+  t: Translator = createTranslator("en"),
+): string {
   const result = evaluateSession(mission, session);
+  const hypothesis = mission.hypotheses[session.hypothesis];
   return [
-    `# ${mission.title}`,
-    `Case variant: ${session.variant}`,
-    `Status: ${result.complete ? "Verified in simulation" : "Investigation in progress"}`,
-    `Learning score: ${result.score}/100 (hints used: ${session.hints})`,
+    `# ${t(mission.title)}`,
+    t("Case variant: {variant}", { variant: session.variant }),
+    t("Status: {status}", {
+      status: t(
+        result.complete
+          ? "Verified in simulation"
+          : "Investigation in progress",
+      ),
+    }),
+    t("Learning score: {score}/100 (hints used: {hints})", {
+      score: result.score,
+      hints: session.hints,
+    }),
     "",
-    "## Findings",
-    session.notes || "No investigator notes yet.",
+    `## ${t("Findings")}`,
+    session.notes || t("No investigator notes yet."),
     "",
-    "## Root-cause hypothesis",
-    mission.hypotheses[session.hypothesis] ?? "Not selected",
+    `## ${t("Root-cause hypothesis")}`,
+    hypothesis ? t(hypothesis) : t("Not selected"),
     "",
-    "## Current policy",
+    `## ${t("Current policy")}`,
     "```json",
     JSON.stringify(session.policy, null, 2),
     "```",
     "",
-    "## Regression checks",
+    `## ${t("Regression checks")}`,
     ...result.tests.map(
       (test) =>
-        `- [${test.passed ? "x" : " "}] ${test.name}\n  Expected: ${test.expected}\n  Observed: ${test.actual}`,
+        `- [${test.passed ? "x" : " "}] ${t(test.name)}\n  ${t("Expected: {value}", { value: translateStep(t, test.expected) })}\n  ${t("Observed: {value}", { value: test.actual })}`,
     ),
     "",
-    "## Recorded requests (most recent 16)",
+    `## ${t("Recorded requests (most recent 16)")}`,
     ...session.history.map((run, index) =>
       [
-        `### Request ${index + 1}: ${run.request.method} ${run.request.path}`,
-        `Actor: ${run.request.actor}`,
-        `Policy: ${JSON.stringify(run.policy)}`,
+        `### ${t("Request {number}: {request}", { number: index + 1, request: `${run.request.method} ${run.request.path}` })}`,
+        t("Actor: {actor}", { actor: run.request.actor }),
+        t("Policy: {policy}", { policy: JSON.stringify(run.policy) }),
         "```json",
         run.request.body,
         "```",
-        `Status: ${run.outcome.status}`,
+        t("Status: {status}", { status: run.outcome.status }),
         "```json",
         JSON.stringify(run.outcome.data, null, 2),
         "```",
-        ...run.outcome.trace.map((step) => `- ${step}`),
+        ...run.outcome.trace.map((step) => `- ${translateStep(t, step)}`),
         "",
       ].join("\n"),
     ),
     "",
-    "This report describes synthetic browser simulations. It is a learning record, not a certification or an assessment of a live system.",
+    t(
+      "This report describes synthetic browser simulations. It is a learning record, not a certification or an assessment of a live system.",
+    ),
   ].join("\n");
 }

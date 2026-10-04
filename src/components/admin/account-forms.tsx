@@ -1,4 +1,5 @@
 "use client";
+import { useTranslator } from "@/components/locale-provider";
 import { useActionState } from "react";
 import {
   changePasswordAction,
@@ -6,6 +7,7 @@ import {
 } from "@/app/admin/(cms)/account/actions";
 
 export function AccountForms() {
+  const t = useTranslator();
   const [state, action, pending] = useActionState(
     changePasswordAction,
     undefined,
@@ -17,13 +19,14 @@ export function AccountForms() {
   return (
     <>
       <form className="admin-form" action={action}>
-        <h2>Change password</h2>
+        <h2>{t("Change password")}</h2>
         <p className="admin-help">
-          Changing your password signs out all sessions. Sign in again with the
-          new password.
+          {t(
+            "Changing your password signs out all sessions. Sign in again with the new password.",
+          )}
         </p>
         <div className="admin-field">
-          <label htmlFor="current-password">Current password</label>
+          <label htmlFor="current-password">{t("Current password")}</label>
           <input
             id="current-password"
             name="current"
@@ -35,7 +38,7 @@ export function AccountForms() {
           />
         </div>
         <div className="admin-field">
-          <label htmlFor="new-password">New password</label>
+          <label htmlFor="new-password">{t("New password")}</label>
           <input
             id="new-password"
             name="password"
@@ -48,7 +51,7 @@ export function AccountForms() {
           />
         </div>
         <div className="admin-field">
-          <label htmlFor="confirm-password">Confirm new password</label>
+          <label htmlFor="confirm-password">{t("Confirm new password")}</label>
           <input
             id="confirm-password"
             name="confirm"
@@ -62,24 +65,24 @@ export function AccountForms() {
         </div>
         {state?.error && (
           <p role="alert" className="admin-error">
-            {state.error}
+            {t(state.error)}
           </p>
         )}
         <button className="button button-primary" disabled={pending}>
-          {pending ? "Changing…" : "Change password"}
+          {pending ? t("Changing…") : t("Change password")}
         </button>
       </form>
       <form action={revoke} className="admin-form">
-        <h2>Sessions</h2>
+        <h2>{t("Sessions")}</h2>
         <button disabled={revoking} className="button button-secondary">
-          Sign out other sessions
+          {t("Sign out other sessions")}
         </button>
         {sessions?.error && (
           <p role="alert" className="admin-error">
-            {sessions.error}
+            {t(sessions.error)}
           </p>
         )}
-        {sessions?.success && <p role="status">{sessions.success}</p>}
+        {sessions?.success && <p role="status">{t(sessions.success)}</p>}
       </form>
     </>
   );

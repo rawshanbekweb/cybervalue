@@ -1,4 +1,5 @@
 "use client";
+import { useTranslator } from "@/components/locale-provider";
 import { useId, useRef, useState } from "react";
 
 export type UploadedFile = {
@@ -22,6 +23,7 @@ export function FileUpload({
   onBusy?: (busy: boolean) => void;
   disabled?: boolean;
 }) {
+  const t = useTranslator();
   const id = useId();
   const input = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
@@ -31,7 +33,7 @@ export function FileUpload({
     setError("");
     setMessage("");
     if (!file.size || file.size > 4 * 1024 * 1024) {
-      setError("Choose a non-empty file up to 4 MiB.");
+      setError(t("Choose a non-empty file up to 4 MiB."));
       return;
     }
     setBusy(true);
@@ -48,14 +50,18 @@ export function FileUpload({
       });
       if (!response.headers.get("content-type")?.includes("application/json"))
         throw new Error(
-          "Upload failed. Check the server upload limit and try a smaller file.",
+          t(
+            "Upload failed. Check the server upload limit and try a smaller file.",
+          ),
         );
       const result = await response.json();
-      if (!response.ok) throw new Error(result.error ?? "Upload failed.");
+      if (!response.ok) throw new Error(result.error ?? t("Upload failed."));
       onUploaded(result.file);
       setMessage(`${file.name} uploaded.`);
     } catch (failure) {
-      setError(failure instanceof Error ? failure.message : "Upload failed.");
+      setError(
+        failure instanceof Error ? failure.message : t("Upload failed."),
+      );
     } finally {
       setBusy(false);
       onBusy?.(false);
@@ -65,7 +71,7 @@ export function FileUpload({
   return (
     <div className="admin-upload">
       <label htmlFor={id}>
-        {kind === "IMAGE" ? "Upload image" : "Upload resource file"}
+        {kind === "IMAGE" ? t("Upload image") : t("Upload resource file")}
       </label>
       <input
         ref={input}
@@ -83,20 +89,20 @@ export function FileUpload({
         }}
       />
       <span className="admin-help">
-        Up to 4 MiB.{" "}
+        {t("Up to 4 MiB.")}{" "}
         {kind === "IMAGE"
-          ? "PNG, JPG, WebP or AVIF. Images are optimized automatically."
-          : "PDF, TXT, MD, CSV or ZIP."}
+          ? t("PNG, JPG, WebP or AVIF. Images are optimized automatically.")
+          : t("PDF, TXT, MD, CSV or ZIP.")}
       </span>
-      {busy && <span role="status">Uploading…</span>}
+      {busy && <span role="status">{t("Uploading…")}</span>}
       {message && (
         <span role="status" className="admin-help">
-          {message}
+          {t(message)}
         </span>
       )}
       {error && (
         <p role="alert" className="admin-error">
-          {error}
+          {t(error)}
         </p>
       )}
     </div>

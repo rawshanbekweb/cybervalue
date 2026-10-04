@@ -1,4 +1,5 @@
 "use client";
+import { useTranslator } from "@/components/locale-provider";
 import { useActionState, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -8,6 +9,7 @@ import { ConfirmButton } from "./confirm-button";
 import { deleteStoredFileAction } from "@/app/admin/(cms)/files/actions";
 
 function DeleteFile({ file }: { file: StoredFileInfo }) {
+  const t = useTranslator();
   const [state, action, pending] = useActionState(
     deleteStoredFileAction.bind(null, file.id),
     undefined,
@@ -20,11 +22,11 @@ function DeleteFile({ file }: { file: StoredFileInfo }) {
         message={`Delete unused file "${file.name}" permanently?`}
         className="button button-secondary"
       >
-        {pending ? "Deleting…" : "Delete file"}
+        {pending ? "Deleting…" : t("Delete file")}
       </ConfirmButton>
       {state?.error && (
         <p role="alert" className="admin-error">
-          {state.error}
+          {t(state.error)}
         </p>
       )}
     </form>
@@ -32,6 +34,7 @@ function DeleteFile({ file }: { file: StoredFileInfo }) {
 }
 
 export function FileLibrary({ files }: { files: StoredFileInfo[] }) {
+  const t = useTranslator();
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   return (
@@ -65,14 +68,14 @@ export function FileLibrary({ files }: { files: StoredFileInfo[] }) {
             )}
             <strong>{file.name}</strong>
             <span className="muted">
-              {file.kind === "IMAGE" ? "Image" : "Resource"} ·{" "}
+              {file.kind === "IMAGE" ? t("Image") : "Resource"} ·{" "}
               {(file.size / 1024).toFixed(1)} KB
             </span>
             <a
               className="button button-secondary"
               href={`/admin/file?path=${encodeURIComponent(file.path)}`}
             >
-              View file
+              {t("View file")}
             </a>
             <DeleteFile file={file} />
           </article>
@@ -80,7 +83,9 @@ export function FileLibrary({ files }: { files: StoredFileInfo[] }) {
       </div>
       {files.length === 0 && (
         <p className="muted">
-          No uploaded files match this view. Upload a file to get started.
+          {t(
+            "No uploaded files match this view. Upload a file to get started.",
+          )}
         </p>
       )}
     </>

@@ -1,4 +1,5 @@
 import { fixture, type MissionId, type Policy } from "./engine";
+import { createTranslator, type Translator } from "../i18n";
 
 export type Control = {
   key: string;
@@ -179,13 +180,21 @@ export const MISSIONS: Mission[] = [
   },
 ];
 
-export function missionFiles(id: MissionId, variant: number) {
+// Briefing documents are translated; code, data and logs stay verbatim.
+export function missionFiles(
+  id: MissionId,
+  variant: number,
+  t: Translator = createTranslator("en"),
+) {
   const f = fixture(variant);
   if (id === "invoice")
     return [
       {
         name: "support-ticket.txt",
-        text: `Alex owns invoice ${f.own}. Sam owns invoice ${f.other}.\nBoth accounts have the customer role. Anonymous users must not access invoices.\nApproved routes: GET /invoices and GET /invoices/:id.`,
+        text: t(
+          "Alex owns invoice {own}. Sam owns invoice {other}.\nBoth accounts have the customer role. Anonymous users must not access invoices.\nApproved routes: GET /invoices and GET /invoices/:id.",
+          { own: f.own, other: f.other },
+        ),
       },
       {
         name: "handler.pseudocode",
@@ -193,7 +202,9 @@ export function missionFiles(id: MissionId, variant: number) {
       },
       {
         name: "acceptance-criteria.md",
-        text: "Owners can read their own invoices.\nOther customers cannot read them.\nLists contain only the caller’s records.\nMissing records return 404; guests receive 401.",
+        text: t(
+          "Owners can read their own invoices.\nOther customers cannot read them.\nLists contain only the caller’s records.\nMissing records return 404; guests receive 401.",
+        ),
       },
     ];
   if (id === "checkout")
@@ -218,7 +229,9 @@ export function missionFiles(id: MissionId, variant: number) {
       },
       {
         name: "acceptance-criteria.md",
-        text: "GET /catalog returns trusted product data.\nPOST /checkout requires a signed-in customer.\nThe catalog owns the price. Quantity must be an integer from 1 to 5.\nWELCOME10 discounts a purchase once. Valid bulk orders still work.",
+        text: t(
+          "GET /catalog returns trusted product data.\nPOST /checkout requires a signed-in customer.\nThe catalog owns the price. Quantity must be an integer from 1 to 5.\nWELCOME10 discounts a purchase once. Valid bulk orders still work.",
+        ),
       },
     ];
   return [
@@ -228,11 +241,16 @@ export function missionFiles(id: MissionId, variant: number) {
     },
     {
       name: "provider-contract.md",
-      text: `POST /webhooks/payment\nKnown order: ${f.order}\nStable event ID: ${f.event}\nProvider retries may change attempt metadata.\nFor this simulation only, signature="provider-valid" means the verifier accepts the event. Any other value is invalid. No cryptography is performed.`,
+      text: t(
+        'POST /webhooks/payment\nKnown order: {order}\nStable event ID: {event}\nProvider retries may change attempt metadata.\nFor this simulation only, signature="provider-valid" means the verifier accepts the event. Any other value is invalid. No cryptography is performed.',
+        { order: f.order, event: f.event },
+      ),
     },
     {
       name: "acceptance-criteria.md",
-      text: "Valid payment: one delivery. Repeated event: 200 acknowledgement, no new delivery.\nInvalid signatures: 401, even for a previously seen ID.\nUnrelated events: 202, no delivery. Unknown order: 404.\nDeduplication persists within the current sandbox until reset.",
+      text: t(
+        "Valid payment: one delivery. Repeated event: 200 acknowledgement, no new delivery.\nInvalid signatures: 401, even for a previously seen ID.\nUnrelated events: 202, no delivery. Unknown order: 404.\nDeduplication persists within the current sandbox until reset.",
+      ),
     },
   ];
 }

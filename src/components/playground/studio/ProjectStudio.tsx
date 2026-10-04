@@ -27,6 +27,7 @@ import {
   type StudioDraft,
 } from "@/lib/studio/draft";
 import { useLocalStorageState } from "../useLocalStorageState";
+import { useLocale, useTranslator } from "@/components/locale-provider";
 import { downloadText } from "../security-lab/storage";
 import "./studio.css";
 
@@ -50,26 +51,28 @@ export function ProjectStudio() {
   );
   const project =
     STUDIO_PROJECTS.find((item) => item.id === selected) ?? STUDIO_PROJECTS[0];
+  const t = useTranslator();
   return (
     <div className="studio-root container">
       <header className="studio-header">
         <Link href="/playground" className="studio-back">
-          <ArrowLeft size={15} /> Playground
+          <ArrowLeft size={15} /> {t("Playground")}
         </Link>
         <span className="eyebrow">
-          <span className="status-dot" /> THE PROJECT STUDIO
+          <span className="status-dot" /> {t("THE PROJECT STUDIO")}
         </span>
         <h1>
-          A brief. A blank canvas.
+          {t("A brief. A blank canvas.")}
           <br />
-          <span>Your next build.</span>
+          <span>{t("Your next build.")}</span>
         </h1>
         <p>
-          Make something useful with HTML and CSS. Test the structure. Refine
-          the experience.
+          {t(
+            "Make something useful with HTML and CSS. Test the structure. Refine the experience.",
+          )}
         </p>
       </header>
-      <nav className="studio-projects" aria-label="Choose a project">
+      <nav className="studio-projects" aria-label={t("Choose a project")}>
         {STUDIO_PROJECTS.map((item, index) => (
           <a
             key={item.id}
@@ -77,11 +80,11 @@ export function ProjectStudio() {
             aria-current={item.id === selected ? "page" : undefined}
           >
             <span className="eyebrow">
-              0{index + 1} / {item.level}
+              0{index + 1} / {t(item.level)}
             </span>
-            <strong>{item.title}</strong>
+            <strong>{t(item.title)}</strong>
             <span>
-              {item.client} <ArrowUpRight size={15} />
+              {t(item.client)} <ArrowUpRight size={15} />
             </span>
           </a>
         ))}
@@ -105,6 +108,8 @@ function Workspace({ project }: { project: StudioProject }) {
     results: StudioCheck[];
   } | null>(null);
   const [notice, setNotice] = useState("");
+  const t = useTranslator();
+  const numberLocale = useLocale() === "uz" ? "uz-UZ" : "en-US";
   const deferredHtml = useDeferredValue(draft.html);
   const deferredCss = useDeferredValue(draft.css);
   const preview = useMemo(
@@ -124,31 +129,33 @@ function Workspace({ project }: { project: StudioProject }) {
   return (
     <div className="studio-workspace">
       <aside className="studio-brief" aria-labelledby="studio-brief-title">
-        <span className="eyebrow">YOUR CLIENT BRIEF / FICTIONAL PROJECT</span>
-        <h2 id="studio-brief-title">{project.title}</h2>
-        <p>{project.brief}</p>
-        <h3>What to deliver</h3>
+        <span className="eyebrow">
+          {t("YOUR CLIENT BRIEF / FICTIONAL PROJECT")}
+        </span>
+        <h2 id="studio-brief-title">{t(project.title)}</h2>
+        <p>{t(project.brief)}</p>
+        <h3>{t("What to deliver")}</h3>
         <ol>
           {project.requirements.map((item) => (
-            <li key={item}>{item}</li>
+            <li key={item}>{t(item)}</li>
           ))}
         </ol>
         <details className="studio-hints">
-          <summary>Need a starting point?</summary>
+          <summary>{t("Need a starting point?")}</summary>
           <ul>
             {project.hints.map((hint) => (
-              <li key={hint}>{hint}</li>
+              <li key={hint}>{t(hint)}</li>
             ))}
           </ul>
         </details>
         <Link href="/playground/html-basics" className="studio-back">
-          Review HTML foundations <ArrowUpRight size={15} />
+          {t("Review HTML foundations")} <ArrowUpRight size={15} />
         </Link>
       </aside>
       <div className="studio-bench">
-        <section className="studio-panel" aria-label="Code editor">
+        <section className="studio-panel" aria-label={t("Code editor")}>
           <div className="studio-toolbar">
-            <div role="group" aria-label="Choose editor">
+            <div role="group" aria-label={t("Choose editor")}>
               <button
                 aria-pressed={editor === "html"}
                 onClick={() => setEditor("html")}
@@ -163,15 +170,17 @@ function Workspace({ project }: { project: StudioProject }) {
               </button>
             </div>
             <span className="studio-caption">
-              {draft[editor].length.toLocaleString("en-US")} /{" "}
-              {(editor === "html" ? HTML_LIMIT : CSS_LIMIT).toLocaleString(
-                "en-US",
-              )}{" "}
-              characters
+              {t("{count} / {limit} characters", {
+                count: draft[editor].length.toLocaleString(numberLocale),
+                limit: (editor === "html"
+                  ? HTML_LIMIT
+                  : CSS_LIMIT
+                ).toLocaleString(numberLocale),
+              })}
             </span>
           </div>
           <label className="sr-only" htmlFor="studio-code">
-            {editor === "html" ? "HTML source" : "CSS source"}
+            {t(editor === "html" ? "HTML source" : "CSS source")}
           </label>
           <textarea
             id="studio-code"
@@ -194,7 +203,7 @@ function Workspace({ project }: { project: StudioProject }) {
                 });
               }}
             >
-              <Play size={15} /> Check structure
+              <Play size={15} /> {t("Check structure")}
             </button>
             <button
               onClick={() => {
@@ -204,31 +213,34 @@ function Workspace({ project }: { project: StudioProject }) {
                   "text/html",
                 );
                 setNotice(
-                  "Exported your preview as an HTML file with embedded CSS.",
+                  t("Exported your preview as an HTML file with embedded CSS."),
                 );
               }}
             >
-              <Download size={15} /> Export HTML
+              <Download size={15} /> {t("Export HTML")}
             </button>
             <button
               onClick={() => {
                 if (
                   !window.confirm(
-                    "Reset this project's HTML, CSS, and notes to the starter? Your current draft will be removed.",
+                    t(
+                      "Reset this project's HTML, CSS, and notes to the starter? Your current draft will be removed.",
+                    ),
                   )
                 )
                   return;
                 setStored(null);
                 setChecked(null);
-                setNotice("Starter restored for this project.");
+                setNotice(t("Starter restored for this project."));
               }}
             >
-              <RotateCcw size={15} /> Reset project
+              <RotateCcw size={15} /> {t("Reset project")}
             </button>
           </div>
           <p className="studio-storage">
-            Drafts are kept in this browser when storage is available. Export a
-            copy to keep your work.
+            {t(
+              "Drafts are kept in this browser when storage is available. Export a copy to keep your work.",
+            )}
           </p>
           <p role="status" className="studio-notice">
             {notice}
@@ -240,8 +252,8 @@ function Workspace({ project }: { project: StudioProject }) {
           aria-labelledby="studio-preview-title"
         >
           <div className="studio-toolbar">
-            <h2 id="studio-preview-title">Live preview</h2>
-            <div role="group" aria-label="Preview width">
+            <h2 id="studio-preview-title">{t("Live preview")}</h2>
+            <div role="group" aria-label={t("Preview width")}>
               {[
                 { label: "Phone", value: "320px" },
                 { label: "Tablet", value: "768px" },
@@ -252,23 +264,23 @@ function Workspace({ project }: { project: StudioProject }) {
                   aria-pressed={width === size.value}
                   onClick={() => setWidth(size.value)}
                 >
-                  {size.label}
+                  {t(size.label)}
                 </button>
               ))}
             </div>
           </div>
           <div className="studio-preview-viewport">
             <iframe
-              title="Project preview"
+              title={t("Project preview")}
               sandbox=""
               srcDoc={preview}
               style={{ width }}
             />
           </div>
           <p className="studio-storage">
-            Phone: 320px. Tablet: 768px; scroll the preview area if needed.
-            Scripts, external resources, and form submissions are disabled in
-            preview and export.
+            {t(
+              "Phone: 320px. Tablet: 768px; scroll the preview area if needed. Scripts, external resources, and form submissions are disabled in preview and export.",
+            )}
           </p>
         </section>
 
@@ -276,18 +288,21 @@ function Workspace({ project }: { project: StudioProject }) {
           className="studio-panel studio-review"
           aria-labelledby="studio-review-title"
         >
-          <span className="eyebrow">REVIEW YOUR BUILD</span>
-          <h2 id="studio-review-title">Structure is the first check.</h2>
+          <span className="eyebrow">{t("REVIEW YOUR BUILD")}</span>
+          <h2 id="studio-review-title">{t("Structure is the first check.")}</h2>
           <p>
-            These checks inspect HTML structure. Review appearance, keyboard
-            use, and readability yourself before calling the project finished.
+            {t(
+              "These checks inspect HTML structure. Review appearance, keyboard use, and readability yourself before calling the project finished.",
+            )}
           </p>
           <p role="status" className="studio-check-summary">
             {results
-              ? `${passed} of ${results.length} structural checks passed.${passed === results.length ? " Ready for your manual review." : " Use the feedback below to revise your page."}`
-              : checked
-                ? "Your code changed. Run the checks again."
-                : "Run Check structure to get feedback on your page."}
+              ? `${t("{passed} of {total} structural checks passed.", { passed, total: results.length })} ${t(passed === results.length ? "Ready for your manual review." : "Use the feedback below to revise your page.")}`
+              : t(
+                  checked
+                    ? "Your code changed. Run the checks again."
+                    : "Run Check structure to get feedback on your page.",
+                )}
           </p>
           {results && (
             <ul className="studio-checks">
@@ -295,30 +310,32 @@ function Workspace({ project }: { project: StudioProject }) {
                 <li key={result.id} data-passed={result.passed}>
                   <strong>
                     {result.passed ? (
-                      <Check size={16} aria-label="Passed" />
+                      <Check size={16} aria-label={t("Passed")} />
                     ) : (
-                      <span className="studio-check-marker">To do</span>
+                      <span className="studio-check-marker">{t("To do")}</span>
                     )}{" "}
-                    {result.label}
+                    {t(result.label)}
                   </strong>
-                  {!result.passed && <p>{result.detail}</p>}
+                  {!result.passed && <p>{t(result.detail, result.values)}</p>}
                 </li>
               ))}
             </ul>
           )}
-          <h3>Try it as a visitor</h3>
+          <h3>{t("Try it as a visitor")}</h3>
           <ul>
             {project.review.map((item) => (
-              <li key={item}>{item}</li>
+              <li key={item}>{t(item)}</li>
             ))}
           </ul>
-          <label htmlFor="studio-notes">Design notes & review findings</label>
+          <label htmlFor="studio-notes">
+            {t("Design notes & review findings")}
+          </label>
           <textarea
             id="studio-notes"
             value={draft.notes}
             maxLength={NOTES_LIMIT}
             rows={4}
-            placeholder="What did you change, test, and learn?"
+            placeholder={t("What did you change, test, and learn?")}
             onChange={(event) => update({ notes: event.target.value })}
           />
           <button
@@ -327,14 +344,14 @@ function Workspace({ project }: { project: StudioProject }) {
               const current = checkProject(project.id, draft.html);
               downloadText(
                 `${project.id}-review.md`,
-                `# ${project.title}\n\n## Structural checks\n\n${current.map((result) => `- [${result.passed ? "x" : " "}] ${result.label}${result.passed ? "" : `: ${result.detail}`}`).join("\n")}\n\n## Manual review prompts\n\n${project.review.map((item) => `- ${item}`).join("\n")}\n\n## Notes\n\n${draft.notes || "No notes yet."}\n\nStructural checks are learning feedback, not a complete accessibility or visual audit.\n`,
+                `# ${t(project.title)}\n\n## ${t("Structural checks")}\n\n${current.map((result) => `- [${result.passed ? "x" : " "}] ${t(result.label)}${result.passed ? "" : `: ${t(result.detail, result.values)}`}`).join("\n")}\n\n## ${t("Manual review prompts")}\n\n${project.review.map((item) => `- ${t(item)}`).join("\n")}\n\n## ${t("Notes")}\n\n${draft.notes || t("No notes yet.")}\n\n${t("Structural checks are learning feedback, not a complete accessibility or visual audit.")}\n`,
               );
               setNotice(
-                "Exported your current structural checks and review notes.",
+                t("Exported your current structural checks and review notes."),
               );
             }}
           >
-            <Download size={15} /> Export review notes
+            <Download size={15} /> {t("Export review notes")}
           </button>
         </section>
       </div>

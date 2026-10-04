@@ -1,4 +1,5 @@
 "use client";
+import { useTranslator } from "@/components/locale-provider";
 import Image from "next/image";
 import { FileUpload, type UploadedFile } from "./file-upload";
 export type EditorImage = {
@@ -21,6 +22,7 @@ export function ImageEditor({
   onBusy: (busy: boolean) => void;
   available: UploadedFile[];
 }) {
+  const t = useTranslator();
   function attach(file: UploadedFile) {
     if (
       !file.width ||
@@ -48,11 +50,12 @@ export function ImageEditor({
     onChange(next);
   }
   return (
-    <section className="admin-image-editor" aria-label="Content images">
+    <section className="admin-image-editor" aria-label={t("Content images")}>
       <h2>Images</h2>
       <p className="admin-help">
-        Up to 12 images. Add a description for each image; changes take effect
-        when you save the entry.
+        {t(
+          "Up to 12 images. Add a description for each image; changes take effect when you save the entry.",
+        )}
       </p>
       <input type="hidden" name="imagesJson" value={JSON.stringify(images)} />
       {images.map((image, index) => (
@@ -71,7 +74,7 @@ export function ImageEditor({
           />
           <div className="admin-field">
             <label htmlFor={`image-alt-${index}`}>
-              Image {index + 1} description
+              {t("Image")} {index + 1} {t("description")}
             </label>
             <input
               id={`image-alt-${index}`}
@@ -97,7 +100,7 @@ export function ImageEditor({
                 disabled={busy || index === 0}
                 onClick={() => move(index, -1)}
               >
-                Move up
+                {t("Move up")}
               </button>
               <button
                 type="button"
@@ -105,7 +108,7 @@ export function ImageEditor({
                 disabled={busy || index === images.length - 1}
                 onClick={() => move(index, 1)}
               >
-                Move down
+                {t("Move down")}
               </button>
               <button
                 type="button"
@@ -115,7 +118,7 @@ export function ImageEditor({
                   onChange(images.filter((_, position) => position !== index))
                 }
               >
-                Remove image {index + 1}
+                {t("Remove image")} {index + 1}
               </button>
             </div>
           </div>
@@ -131,7 +134,9 @@ export function ImageEditor({
           />
           {available.length > 0 && (
             <div className="admin-field">
-              <label htmlFor="existing-image">Add from image library</label>
+              <label htmlFor="existing-image">
+                {t("Add from image library")}
+              </label>
               <select
                 id="existing-image"
                 className="admin-input"
@@ -144,7 +149,7 @@ export function ImageEditor({
                   if (file) attach(file);
                 }}
               >
-                <option value="">Choose an uploaded image</option>
+                <option value="">{t("Choose an uploaded image")}</option>
                 {available
                   .filter(
                     (file) => !images.some((item) => item.path === file.path),

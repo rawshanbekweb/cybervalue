@@ -1,4 +1,6 @@
 "use client";
+// Rendered outside the locale layout when the root fails, so it shows both
+// languages instead of guessing one.
 export default function GlobalError({
   reset,
 }: {
@@ -6,7 +8,7 @@ export default function GlobalError({
   reset: () => void;
 }) {
   return (
-    <html lang="en">
+    <html lang="uz">
       <body
         style={{
           margin: 0,
@@ -18,13 +20,16 @@ export default function GlobalError({
         }}
       >
         <main>
-          <h1>CyberValue is temporarily unavailable.</h1>
-          <p>Please try again in a moment.</p>
+          <h1>CyberValue vaqtincha ishlamayapti.</h1>
+          <p>Birozdan so‘ng qayta urinib ko‘ring.</p>
+          <p lang="en">
+            CyberValue is temporarily unavailable. Please try again in a moment.
+          </p>
           <button
             onClick={reset}
             style={{ padding: "12px 20px", cursor: "pointer" }}
           >
-            Try again
+            Qayta urinish / <span lang="en">Try again</span>
           </button>
         </main>
       </body>

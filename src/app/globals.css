@@ -244,13 +244,6 @@ svg {
   flex-shrink: 0;
   position: relative;
 }
-.content-language-note {
-  padding-block: 14px;
-  margin-block: 16px;
-  color: var(--muted);
-  border-bottom: 1px solid #424940;
-  font-size: 13px;
-}
 .language-switcher {
   display: flex;
   border: 1px solid #424940;
