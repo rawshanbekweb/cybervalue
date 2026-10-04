@@ -1,11 +1,12 @@
 "use server";
 import { revalidatePath } from "next/cache";
+import { audit } from "@/lib/audit";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { destroySession, requireAdmin } from "@/lib/auth";
 import { hashPassword, verifyPassword } from "@/lib/password";
 import { getDb } from "@/lib/db";
-import { allowRequest } from "@/lib/rate-limit";
+import { limit } from "@/lib/rate-limit-db";
 
 export type AccountState = { error?: string; success?: string } | undefined;
 const passwordSchema = z
@@ -24,9 +25,7 @@ export async function changePasswordAction(
   formData: FormData,
 ): Promise<AccountState> {
   const session = await requireAdmin("/admin/account");
-  if (
-    !allowRequest(`password-change:${session.user.id}`, Date.now(), 5, 300_000)
-  )
+  if (!(await limit(`password-change:${session.user.id}`, 5, 300_000)))
     return { error: "Too many attempts. Try again in a few minutes." };
   const parsed = passwordSchema.safeParse({
     current: formData.get("current"),
@@ -55,6 +54,7 @@ export async function changePasswordAction(
       error: "Password could not be changed. Reload the page and try again.",
     };
   }
+  await audit("password.change", session.user.id);
   await destroySession();
   redirect("/admin/login?changed=1");
 }
@@ -70,6 +70,7 @@ export async function revokeOtherSessionsAction(
     await db.session.deleteMany({
       where: { userId: session.user.id, id: { not: session.id } },
     });
+    await audit("sessions.revoke", session.user.id);
     revalidatePath("/admin/account");
     return { success: "Other sessions have been signed out." };
   } catch {

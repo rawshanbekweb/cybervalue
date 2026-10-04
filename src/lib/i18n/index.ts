@@ -2,8 +2,25 @@ import common from "./messages.json";
 import html from "./html.json";
 import ctf from "./ctf.json";
 import exam from "./exam.json";
+import studio from "./studio.json";
+import missions from "./missions.json";
+import lab from "./lab.json";
+import assessment from "./assessment.json";
+import resourceExam from "./resource-exam.json";
+import admin from "./admin.json";
 
-const messages = { ...common, ...html, ...ctf, ...exam };
+const messages = {
+  ...common,
+  ...html,
+  ...ctf,
+  ...exam,
+  ...studio,
+  ...missions,
+  ...lab,
+  ...assessment,
+  ...resourceExam,
+  ...admin,
+};
 
 export const locales = ["uz", "en"] as const;
 export type Locale = (typeof locales)[number];

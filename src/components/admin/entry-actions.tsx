@@ -1,4 +1,5 @@
 "use client";
+import { useTranslator } from "@/components/locale-provider";
 
 import { useActionState } from "react";
 import { changeContentAction } from "@/app/admin/(cms)/[collection]/actions";
@@ -11,6 +12,7 @@ export function EntryActions({
   collection: string;
   entry: { id: string; title: string; status: string };
 }) {
+  const t = useTranslator();
   const [state, action, pending] = useActionState(
     changeContentAction.bind(null, collection, entry.id),
     undefined,
@@ -24,7 +26,7 @@ export function EntryActions({
             value="PUBLISHED"
             className="button button-secondary"
           >
-            Publish
+            {t("Publish")}
           </button>
         )}
         {entry.status !== "DRAFT" && (
@@ -33,7 +35,7 @@ export function EntryActions({
             value="DRAFT"
             className="button button-secondary"
           >
-            Move to draft
+            {t("Move to draft")}
           </button>
         )}
         {entry.status !== "ARCHIVED" && (
@@ -42,7 +44,7 @@ export function EntryActions({
             value="ARCHIVED"
             className="button button-secondary"
           >
-            Archive
+            {t("Archive")}
           </button>
         )}
         <ConfirmButton
@@ -52,17 +54,17 @@ export function EntryActions({
           className="button button-secondary"
           message={`Permanently delete "${entry.title}"? This cannot be undone.`}
         >
-          Delete
+          {t("Delete")}
         </ConfirmButton>
       </fieldset>
       {pending && (
         <span role="status" className="admin-help">
-          Saving…
+          {t("Saving…")}
         </span>
       )}
       {state?.error && (
         <p role="alert" className="admin-error">
-          {state.error}
+          {t(state.error)}
         </p>
       )}
     </form>

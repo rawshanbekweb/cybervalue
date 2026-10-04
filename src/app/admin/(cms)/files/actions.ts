@@ -1,9 +1,10 @@
 "use server";
 import { revalidatePath } from "next/cache";
+import { audit } from "@/lib/audit";
 import { requireAdmin } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { lockFileChanges } from "@/lib/stored-files";
-import { allowRequest } from "@/lib/rate-limit";
+import { limit } from "@/lib/rate-limit-db";
 
 export async function deleteStoredFileAction(
   id: string,
@@ -11,7 +12,7 @@ export async function deleteStoredFileAction(
 ): Promise<{ error: string } | undefined> {
   void _state;
   const session = await requireAdmin("/admin/files");
-  if (!allowRequest(`admin-write:${session.user.id}`, Date.now(), 60, 60_000))
+  if (!(await limit(`admin-write:${session.user.id}`, 60, 60_000)))
     return { error: "Too many changes. Try again shortly." };
   const db = getDb();
   if (!db) return { error: "Storage is unavailable." };
@@ -20,9 +21,9 @@ export async function deleteStoredFileAction(
       await lockFileChanges(tx);
       const file = await tx.storedFile.findUnique({
         where: { id },
-        select: { path: true },
+        select: { path: true, name: true },
       });
-      if (!file) return true;
+      if (!file) return null;
       const resources = await tx.resource.count({
         where: { filePath: file.path },
       });
@@ -31,13 +32,14 @@ export async function deleteStoredFileAction(
       });
       if (resources || images) return false;
       await tx.storedFile.delete({ where: { id } });
-      return true;
+      return file;
     });
-    if (!deleted)
+    if (deleted === false)
       return {
         error:
           "This file is attached to content. Remove its references and save those entries before deleting it.",
       };
+    if (deleted) await audit("file.delete", session.user.id, deleted.name);
     revalidatePath("/admin/files");
   } catch {
     return { error: "File could not be deleted. Try again." };

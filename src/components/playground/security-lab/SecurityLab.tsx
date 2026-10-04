@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslator } from "@/components/locale-provider";
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { LESSONS, groupFor, type Lesson } from "./lessons.data";
 import { PRACTICE_RENDERERS, Fallback } from "./renderers";
@@ -14,6 +15,7 @@ import "./security-lab.css";
 const TOTAL = LESSONS.length;
 
 export function SecurityLab() {
+  const t = useTranslator();
   const [lessonId, goToHash] = useHashLessonId(TOTAL, 1);
   const [tab, setTab] = useState<"practice" | "theory" | "teacher">("practice");
   const [storedProgress, setCompletedStored] = useLocalStorageState<unknown>(
@@ -65,7 +67,7 @@ export function SecurityLab() {
     else next[lesson.id] = true;
     setCompletedStored(next);
     if (next[lesson.id] && lesson.id < TOTAL) {
-      setToast("Lesson marked as reviewed. Moving to the next one.");
+      setToast(t("Lesson marked as reviewed. Moving to the next one."));
       setTimeout(() => goTo(lesson.id + 1), 500);
     }
   };
@@ -78,8 +80,10 @@ export function SecurityLab() {
   const visibleLessons = LESSONS.filter(
     (l) =>
       !term ||
-      l.title.toLowerCase().includes(term) ||
-      l.heading.toLowerCase().includes(term),
+      // Match both the source and the translated text.
+      [l.title, l.heading, t(l.title), t(l.heading)].some((text) =>
+        text.toLowerCase().includes(term),
+      ),
   );
 
   const Renderer = PRACTICE_RENDERERS[lesson.type] ?? Fallback;
@@ -102,29 +106,29 @@ export function SecurityLab() {
             W<span>·</span>
           </span>
           <span>
-            Web Security Lab
-            <span className="lab-brand-sub">INTERACTIVE COURSE</span>
+            {t("Web Security Lab")}
+            <span className="lab-brand-sub">{t("INTERACTIVE COURSE")}</span>
           </span>
         </a>
-        <div className="lab-course-label">LEARNING TRACK</div>
+        <div className="lab-course-label">{t("LEARNING TRACK")}</div>
         <div className="lab-course-name">
-          Web Application
+          {t("Web Application")}
           <br />
-          Security <span className="lab-version">01</span>
+          {t("Security")} <span className="lab-version">01</span>
         </div>
         <div className="lab-search-wrap">
           <span>⌕</span>
           <input
             type="search"
-            placeholder="Search lessons…"
-            aria-label="Search lessons"
+            placeholder={t("Search lessons…")}
+            aria-label={t("Search lessons")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <nav aria-label="Lesson sections" className="lab-lesson-nav">
+        <nav aria-label={t("Lesson sections")} className="lab-lesson-nav">
           {visibleLessons.length === 0 && (
-            <div className="lab-empty-search">Nothing found.</div>
+            <div className="lab-empty-search">{t("Nothing found.")}</div>
           )}
           {visibleLessons.map((l, i) => {
             const g = groupFor(l.id);
@@ -132,7 +136,7 @@ export function SecurityLab() {
               i === 0 || groupFor(visibleLessons[i - 1].id).title !== g.title;
             return (
               <div key={l.id}>
-                {showGroup && <div className="lab-nav-group">{g.title}</div>}
+                {showGroup && <div className="lab-nav-group">{t(g.title)}</div>}
                 <button
                   type="button"
                   className={`lab-nav-item${l.id === lessonId ? " active" : ""}`}
@@ -141,7 +145,7 @@ export function SecurityLab() {
                   <span className="lab-nav-number">
                     {String(l.id).padStart(2, "0")}
                   </span>
-                  <span>{l.title}</span>
+                  <span>{t(l.title)}</span>
                   {completed[l.id] && <span className="lab-nav-check">✓</span>}
                 </button>
               </div>
@@ -150,7 +154,7 @@ export function SecurityLab() {
         </nav>
         <div className="lab-sidebar-bottom">
           <div className="lab-progress-caption">
-            <span>Your progress</span>
+            <span>{t("Your progress")}</span>
             <strong>
               {doneCount} / {TOTAL}
             </strong>
@@ -159,7 +163,7 @@ export function SecurityLab() {
             <i style={{ width: `${Math.round((doneCount / TOTAL) * 100)}%` }} />
           </div>
           <span className="lab-save-hint">
-            Progress is saved in this browser
+            {t("Progress is saved in this browser")}
           </span>
         </div>
       </aside>
@@ -169,14 +173,14 @@ export function SecurityLab() {
             <button
               type="button"
               className="lab-icon-button lab-mobile-menu"
-              aria-label="Open menu"
+              aria-label={t("Open menu")}
               onClick={() => setMenuOpen((v) => !v)}
             >
               ☰
             </button>
-            <span>Learning lab</span>
+            <span>{t("Learning lab")}</span>
             <span className="lab-slash">/</span>
-            <b>{lesson.title}</b>
+            <b>{t(lesson.title)}</b>
           </div>
           <div className="lab-top-actions">
             <span
@@ -184,45 +188,46 @@ export function SecurityLab() {
             >
               <i />
               {connection === "connecting"
-                ? "Connecting"
+                ? t("Connecting")
                 : connection === "online"
-                  ? "Connected"
-                  : "Server not found"}
+                  ? t("Connected")
+                  : t("Server not found")}
             </span>
             <button
               type="button"
               className="lab-quiet-button"
               onClick={() => setPresent((v) => !v)}
             >
-              <span>▣</span> Presentation mode
+              <span>▣</span> {t("Presentation mode")}
             </button>
           </div>
         </header>
-        <main>
+        <div className="lab-content">
           <div className="lab-page-eyebrow">
-            <span className="lab-mini-dot" /> FROM THEORY TO PRACTICE
-            <span className="lab-edition">36 LESSONS</span>
+            <span className="lab-mini-dot" /> {t("FROM THEORY TO PRACTICE")}
+            <span className="lab-edition">{t("36 LESSONS")}</span>
           </div>
           <section className="lab-hero">
             <div>
-              <p className="lab-overline">WEB APPLICATION SECURITY</p>
+              <p className="lab-overline">{t("WEB APPLICATION SECURITY")}</p>
               <h1>
-                Understand the system.
+                {t("Understand the system.")}
                 <br />
-                <span>See security in practice.</span>
+                <span>{t("See security in practice.")}</span>
               </h1>
               <p className="lab-hero-description">
-                Learn the path from browser to database.
+                {t("Learn the path from browser to database.")}
                 <br />
-                Send a request, watch the result, and put the defenses to the
-                test.
+                {t(
+                  "Send a request, watch the result, and put the defenses to the test.",
+                )}
               </p>
               <div className="lab-hero-tags">
                 <span>
-                  <i className="lab-live-dot" /> A real local API
+                  <i className="lab-live-dot" /> {t("A real local API")}
                 </span>
-                <span>↔ Interactive exercises</span>
-                <span>⌘ Teacher&apos;s notes</span>
+                <span>{t("↔ Interactive exercises")}</span>
+                <span>{t("⌘ Teacher's notes")}</span>
               </div>
             </div>
           </section>
@@ -230,29 +235,29 @@ export function SecurityLab() {
             <div>
               <span className="lab-stat-icon">▦</span>
               <b>36</b>
-              <span>short exercises</span>
+              <span>{t("short exercises")}</span>
             </div>
             <div>
               <span className="lab-stat-icon">⇄</span>
-              <b>Real HTTP</b>
-              <span>request &amp; response</span>
+              <b>{t("Real HTTP")}</b>
+              <span>{t("request & response")}</span>
             </div>
             <div>
               <span className="lab-stat-icon">◇</span>
-              <b>3 vulnerabilities</b>
+              <b>{t("3 vulnerabilities")}</b>
               <span>SQLi · XSS · IDOR</span>
             </div>
             <div>
               <span className="lab-stat-icon">◎</span>
               <b>Localhost</b>
-              <span>learning sandbox</span>
+              <span>{t("learning sandbox")}</span>
             </div>
           </div>
           <section className="lab-lesson-section">
             <div className="lab-section-heading">
               <div>
-                <span className="lab-overline lab-teal">{group.title}</span>
-                <h2>{lesson.heading}</h2>
+                <span className="lab-overline lab-teal">{t(group.title)}</span>
+                <h2>{t(lesson.heading)}</h2>
               </div>
               <div className="lab-lesson-controls">
                 <span>
@@ -261,7 +266,7 @@ export function SecurityLab() {
                 <button
                   type="button"
                   className="lab-icon-button"
-                  aria-label="Previous lesson"
+                  aria-label={t("Previous lesson")}
                   disabled={lesson.id <= 1}
                   onClick={() => goTo(lesson.id - 1)}
                 >
@@ -270,7 +275,7 @@ export function SecurityLab() {
                 <button
                   type="button"
                   className="lab-icon-button"
-                  aria-label="Next lesson"
+                  aria-label={t("Next lesson")}
                   disabled={lesson.id >= TOTAL}
                   onClick={() => goTo(lesson.id + 1)}
                 >
@@ -288,7 +293,7 @@ export function SecurityLab() {
                     aria-selected={tab === "practice"}
                     onClick={() => setTab("practice")}
                   >
-                    ⌘ Practice
+                    {t("⌘ Practice")}
                   </button>
                   <button
                     type="button"
@@ -297,7 +302,7 @@ export function SecurityLab() {
                     aria-selected={tab === "theory"}
                     onClick={() => setTab("theory")}
                   >
-                    ▤ Quick theory
+                    {t("▤ Quick theory")}
                   </button>
                   <button
                     type="button"
@@ -306,37 +311,41 @@ export function SecurityLab() {
                     aria-selected={tab === "teacher"}
                     onClick={() => setTab("teacher")}
                   >
-                    ♧ For teachers
+                    {t("♧ For teachers")}
                   </button>
                 </div>
                 <div className="lab-lesson-content">
                   {tab === "theory" && (
                     <>
                       <div className="lab-eyebrow">
-                        <span className="lab-badge">▤ THEORY</span>
+                        <span className="lab-badge">{t("▤ THEORY")}</span>
                       </div>
                       <div className="lab-theory-text">
                         {lesson.theory.map((p) => (
-                          <p key={p}>{p}</p>
+                          <p key={p}>{t(p)}</p>
                         ))}
                       </div>
                       <div className="lab-callout">
-                        <b>Discussion question:</b> {lesson.question}
+                        <b>{t("Discussion question:")}</b> {t(lesson.question)}
                       </div>
                     </>
                   )}
                   {tab === "teacher" && (
                     <>
                       <div className="lab-eyebrow">
-                        <span className="lab-badge">♧ FOR TEACHERS</span>
+                        <span className="lab-badge">{t("♧ FOR TEACHERS")}</span>
                       </div>
-                      <div className="lab-teacher-step">{lesson.teacher}</div>
+                      <div className="lab-teacher-step">
+                        {t(lesson.teacher)}
+                      </div>
                       <div className="lab-teacher-timing">
-                        <span>⏱ {lesson.minutes} min</span>
-                        <span>{group.title}</span>
+                        <span>
+                          ⏱ {lesson.minutes} {t("min")}
+                        </span>
+                        <span>{t(group.title)}</span>
                       </div>
                       <div className="lab-callout">
-                        <b>Closing question:</b> {lesson.question}
+                        <b>{t("Closing question:")}</b> {t(lesson.question)}
                       </div>
                     </>
                   )}
@@ -346,11 +355,11 @@ export function SecurityLab() {
                         <span
                           className={`lab-badge${lesson.real ? "" : " sim"}`}
                         >
-                          {lesson.real ? "⌘ REAL API" : "◇ SIMULATION"}
+                          {lesson.real ? t("⌘ REAL API") : t("◇ SIMULATION")}
                         </span>
                       </div>
-                      <h3>{lesson.heading}</h3>
-                      <p className="lab-intro">{lesson.intro}</p>
+                      <h3>{t(lesson.heading)}</h3>
+                      <p className="lab-intro">{t(lesson.intro)}</p>
                       <div key={lesson.id}>
                         <Renderer lesson={lesson} />
                       </div>
@@ -360,39 +369,47 @@ export function SecurityLab() {
                 <div className="lab-lesson-footer">
                   <span>
                     {completed[lesson.id]
-                      ? "You marked this lesson as reviewed. Try a mission to verify your skills."
-                      : "Self-paced review. Missions verify your work with evidence and tests."}
+                      ? t(
+                          "You marked this lesson as reviewed. Try a mission to verify your skills.",
+                        )
+                      : t(
+                          "Self-paced review. Missions verify your work with evidence and tests.",
+                        )}
                   </span>
                   <button
                     type="button"
                     className="lab-primary-button"
                     onClick={toggleComplete}
                   >
-                    {completed[lesson.id] ? "Reviewed" : "Mark as reviewed"}{" "}
+                    {completed[lesson.id]
+                      ? t("Reviewed")
+                      : t("Mark as reviewed")}{" "}
                     <span>✓</span>
                   </button>
                 </div>
               </article>
               <aside className="lab-right-column">
                 <section className="lab-mission-card">
-                  <span className="lab-overline">YOUR MISSION</span>
-                  <h3>{lesson.task}</h3>
-                  <p>{lesson.mission}</p>
+                  <span className="lab-overline">{t("YOUR MISSION")}</span>
+                  <h3>{t(lesson.task)}</h3>
+                  <p>{t(lesson.mission)}</p>
                   <div className="lab-mission-divider" />
-                  <span className="lab-overline">EXPECTED OUTCOME</span>
-                  <p>{lesson.result}</p>
-                  <span className="lab-time-pill">⏱ {lesson.minutes} min</span>
+                  <span className="lab-overline">{t("EXPECTED OUTCOME")}</span>
+                  <p>{t(lesson.result)}</p>
+                  <span className="lab-time-pill">
+                    ⏱ {lesson.minutes} {t("min")}
+                  </span>
                 </section>
                 <section className="lab-principle-card">
                   <span>◇</span>
-                  <h3>Remember this</h3>
-                  <p>{lesson.principle}</p>
+                  <h3>{t("Remember this")}</h3>
+                  <p>{t(lesson.principle)}</p>
                 </section>
                 <details className="lab-notes-card">
-                  <summary>✎ Personal notes</summary>
+                  <summary>{t("✎ Personal notes")}</summary>
                   <textarea
-                    placeholder="What did you learn from this exercise?"
-                    aria-label="Personal notes"
+                    placeholder={t("What did you learn from this exercise?")}
+                    aria-label={t("Personal notes")}
                     value={notes[lesson.id] ?? ""}
                     onChange={(e) => updateNote(e.target.value)}
                   />
@@ -402,11 +419,11 @@ export function SecurityLab() {
                     onClick={() =>
                       downloadText(
                         `security-lab-lesson-${lesson.id}-notes.md`,
-                        `# ${lesson.title}\n\n${notes[lesson.id] || "(no notes)"}\n`,
+                        `# ${t(lesson.title)}\n\n${notes[lesson.id] || t("(no notes)")}\n`,
                       )
                     }
                   >
-                    Download notes ↓
+                    {t("Download notes ↓")}
                   </button>
                 </details>
               </aside>
@@ -414,16 +431,16 @@ export function SecurityLab() {
           </section>
           <section className="lab-journey">
             <div>
-              <span className="lab-overline lab-teal">LEARNING MAP</span>
-              <h2>One request. The whole architecture.</h2>
+              <span className="lab-overline lab-teal">{t("LEARNING MAP")}</span>
+              <h2>{t("One request. The whole architecture.")}</h2>
             </div>
             <div className="lab-journey-steps">
               {[
-                [5, "01", "Frontend", "Display"],
-                [8, "02", "HTTP / API", "Communication"],
-                [15, "03", "Backend", "Decision"],
-                [20, "04", "Database", "Storage"],
-                [27, "05", "Security", "Trust"],
+                [5, "01", t("Frontend"), t("Display")],
+                [8, "02", "HTTP / API", t("Communication")],
+                [15, "03", "Backend", t("Decision")],
+                [20, "04", t("Database"), t("Storage")],
+                [27, "05", t("Security"), t("Trust")],
               ].map(([jump, num, title, sub], i, arr) => (
                 <Fragment key={jump}>
                   <button type="button" onClick={() => goTo(Number(jump))}>
@@ -436,14 +453,15 @@ export function SecurityLab() {
           </section>
           <footer className="lab-page-footer">
             <span>
-              <b>Web Security Lab.</b> Knowledge is reinforced through practice.
+              <b>{t("Web Security Lab.")}</b>{" "}
+              {t("Knowledge is reinforced through practice.")}
             </span>
             <span>
-              A local lab running on synthetic data only{" "}
+              {t("A local lab running on synthetic data only")}{" "}
               <i className="lab-live-dot" />
             </span>
           </footer>
-        </main>
+        </div>
       </div>
       <div
         className={`lab-toast${toast ? " visible" : ""}`}

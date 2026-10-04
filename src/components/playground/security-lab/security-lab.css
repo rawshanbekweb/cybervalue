@@ -224,6 +224,9 @@
   display: flex;
   align-items: center;
   gap: 18px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  min-width: 0;
 }
 .lab-connection {
   font-size: 10px;
@@ -271,7 +274,7 @@
 .lab-mobile-menu {
   display: none;
 }
-.lab-workspace main {
+.lab-workspace .lab-content {
   max-width: 1200px;
   margin: auto;
   padding: 28px 32px 20px;
@@ -565,7 +568,8 @@
   font-size: 10px;
   color: var(--lab-muted);
 }
-.lab-primary-button {
+/* .lab-root button resets color; match its specificity so the label stays dark. */
+.lab-root .lab-primary-button {
   background: var(--lab-accent);
   border: 1px solid var(--lab-accent);
   color: var(--lab-bg);

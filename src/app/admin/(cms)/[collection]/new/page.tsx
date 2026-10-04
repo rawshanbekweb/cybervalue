@@ -1,3 +1,4 @@
+import { getAdminTranslator } from "@/lib/i18n/server";
 import { notFound } from "next/navigation";
 import { collections, isCollection } from "@/lib/site";
 import { ContentForm } from "@/components/admin/content-form";
@@ -10,6 +11,7 @@ export default async function NewContentPage({
 }: {
   params: Promise<{ collection: string }>;
 }) {
+  const t = await getAdminTranslator();
   const { collection } = await params;
   if (!isCollection(collection)) notFound();
   await requireAdmin(`/admin/${collection}/new`);
@@ -25,7 +27,9 @@ export default async function NewContentPage({
     })) ?? [];
   return (
     <div className="admin-page">
-      <h1>New {config.singular.toLowerCase()}</h1>
+      <h1>
+        {t("New")} {config.singular.toLowerCase()}
+      </h1>
       <ContentForm
         collection={collection}
         kind={config.kind}

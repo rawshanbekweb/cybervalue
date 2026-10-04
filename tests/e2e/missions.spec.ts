@@ -1,6 +1,25 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
+// Assertions use the English interface copy.
+test.use({
+  storageState: {
+    cookies: [
+      {
+        name: "cybervalue-locale",
+        value: "en",
+        domain: "localhost",
+        path: "/",
+        expires: -1,
+        httpOnly: true,
+        secure: false,
+        sameSite: "Lax",
+      },
+    ],
+    origins: [],
+  },
+});
+
 test("invoice case requires evidence and preserves verified progress across reloads", async ({
   page,
 }) => {

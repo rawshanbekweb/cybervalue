@@ -31,10 +31,20 @@ export type Challenge = {
   name: string;
   variant: number;
   starter: string;
+  // Uzbek source templates; fill or translate them with `values`.
   requirements: string[];
+  values: Record<string, string>;
   questions: Question[];
   reasoning: string[];
 };
+export const fillTemplate = (
+  template: string,
+  values: Record<string, string>,
+) =>
+  template.replace(/\{(\w+)\}/g, (match, key: string) =>
+    Object.hasOwn(values, key) ? values[key] : match,
+  );
+
 export type AttemptView = {
   id: string;
   name: string;

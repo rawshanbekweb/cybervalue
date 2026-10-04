@@ -1,6 +1,7 @@
 import "server-only";
 import { gradeFlag } from "@/lib/ctf/grading";
-import { allowRequest } from "@/lib/rate-limit";
+import { clientKey } from "@/lib/rate-limit";
+import { limit } from "@/lib/rate-limit-db";
 
 export const runtime = "nodejs";
 
@@ -13,7 +14,13 @@ export async function POST(request: Request) {
         ...(status === 429 ? { "Retry-After": "60" } : {}),
       },
     });
-  if (!allowRequest("ctf:verify:global", Date.now(), 600, 60000))
+  // Per-client budget slows flag guessing without letting one client
+  // exhaust the global budget for everyone else.
+  const client = clientKey(request.headers.get("x-forwarded-for"));
+  if (
+    !(await limit(`ctf:verify:${client}`, 30, 60000)) ||
+    !(await limit("ctf:verify:global", 600, 60000))
+  )
     return reply(
       {
         ok: false,

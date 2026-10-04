@@ -1,4 +1,5 @@
 "use client";
+import { useTranslator } from "@/components/locale-provider";
 import Link from "next/link";
 import { useActionState, useState } from "react";
 import {
@@ -7,6 +8,7 @@ import {
 } from "@/app/admin/(cms)/assessments/actions";
 
 export function CreateExamForm() {
+  const t = useTranslator();
   const [state, action, pending] = useActionState(createExamAction, undefined);
   const [title, setTitle] = useState("");
   const [minutes, setMinutes] = useState("45");
@@ -36,25 +38,26 @@ export function CreateExamForm() {
   if (state?.codes)
     return (
       <section className="exam-card">
-        <h2>Sinov yaratildi</h2>
+        <h2>{t("Sinov yaratildi")}</h2>
         <p>
-          Kodlar faqat hozir ko‘rsatiladi. Ro‘yxatni yuklab oling va har bir
-          kodni tegishli o‘quvchiga alohida bering.
+          {t(
+            "Kodlar faqat hozir ko‘rsatiladi. Ro‘yxatni yuklab oling va har bir kodni tegishli o‘quvchiga alohida bering.",
+          )}
         </p>
         <button
           type="button"
           className="button button-primary"
           onClick={download}
         >
-          Kodlarni yuklab olish
+          {t("Kodlarni yuklab olish")}
         </button>
         <p>
           <Link href={`/admin/assessments/${state.examId}`}>
-            Natijalar sahifasiga o‘tish →
+            {t("Natijalar sahifasiga o‘tish →")}
           </Link>
         </p>
         <details>
-          <summary>Kodlarni ko‘rish</summary>
+          <summary>{t("Kodlarni ko‘rish")}</summary>
           <pre>
             {state.codes
               .map((row) => `${row.studentId} | ${row.name} | ${row.code}`)
@@ -65,9 +68,9 @@ export function CreateExamForm() {
     );
   return (
     <form action={action} className="exam-card exam-form">
-      <h2>Yangi sinov</h2>
+      <h2>{t("Yangi sinov")}</h2>
       <label>
-        Sinov nomi
+        {t("Sinov nomi")}
         <input
           name="title"
           value={title}
@@ -75,11 +78,11 @@ export function CreateExamForm() {
           required
           minLength={3}
           maxLength={100}
-          placeholder="9-A · HTML amaliy sinov"
+          placeholder={t("9-A · HTML amaliy sinov")}
         />
       </label>
       <label>
-        Vaqt (daqiqa)
+        {t("Vaqt (daqiqa)")}
         <input
           name="minutes"
           type="number"
@@ -91,7 +94,7 @@ export function CreateExamForm() {
         />
       </label>
       <label>
-        O‘quvchilar: har qatorda ID | Ism Familiya
+        {t("O‘quvchilar: har qatorda ID | Ism Familiya")}
         <textarea
           name="roster"
           value={roster}
@@ -103,12 +106,13 @@ export function CreateExamForm() {
         />
       </label>
       <p className="muted">
-        Bir ID — bir urinish. Bir xil o‘quvchini boshqa ID bilan qayta
-        kiritmang. Ro‘yxatni sinov boshlanishidan oldin tekshiring.
+        {t(
+          "Bir ID — bir urinish. Bir xil o‘quvchini boshqa ID bilan qayta kiritmang. Ro‘yxatni sinov boshlanishidan oldin tekshiring.",
+        )}
       </p>
-      {state?.error && <p role="alert">{state.error}</p>}
+      {state?.error && <p role="alert">{t(state.error)}</p>}
       <button className="button button-primary" disabled={pending}>
-        {pending ? "Yaratilmoqda…" : "Sinov va shaxsiy kodlarni yaratish"}
+        {pending ? "Yaratilmoqda…" : t("Sinov va shaxsiy kodlarni yaratish")}
       </button>
     </form>
   );
@@ -123,19 +127,21 @@ export function ReviewForm({
   score: number | null;
   note: string;
 }) {
+  const t = useTranslator();
   const [state, action, pending] = useActionState(
     reviewAttemptAction.bind(null, candidateId),
     undefined,
   );
   return (
     <form action={action} className="exam-form">
-      <h3>O‘qituvchi bahosi · 10 ball</h3>
+      <h3>{t("O‘qituvchi bahosi · 10 ball")}</h3>
       <p>
-        Har bir izoh uchun: aniqlik 0–2, sabab va foydalanuvchiga ta’sir 0–2,
-        o‘z kodidan misol 0–1. Jami ikki izoh uchun 0–10.
+        {t(
+          "Har bir izoh uchun: aniqlik 0–2, sabab va foydalanuvchiga ta’sir 0–2, o‘z kodidan misol 0–1. Jami ikki izoh uchun 0–10.",
+        )}
       </p>
       <label>
-        Izohlar bali
+        {t("Izohlar bali")}
         <input
           name="score"
           type="number"
@@ -146,14 +152,14 @@ export function ReviewForm({
         />
       </label>
       <label>
-        O‘quvchiga fikr-mulohaza
+        {t("O‘quvchiga fikr-mulohaza")}
         <textarea name="note" rows={3} maxLength={3000} defaultValue={note} />
       </label>
       <button className="button button-primary" disabled={pending}>
-        Bahoni saqlash
+        {t("Bahoni saqlash")}
       </button>
-      {state?.error && <p role="alert">{state.error}</p>}
-      {state?.success && <p role="status">{state.success}</p>}
+      {state?.error && <p role="alert">{t(state.error)}</p>}
+      {state?.success && <p role="status">{t(state.success)}</p>}
     </form>
   );
 }

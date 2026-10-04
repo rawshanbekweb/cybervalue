@@ -1,3 +1,4 @@
+import { getAdminTranslator } from "@/lib/i18n/server";
 import Link from "next/link";
 import { requireAdmin } from "@/lib/auth";
 import { collections } from "@/lib/site";
@@ -6,23 +7,25 @@ import { logoutAction } from "../actions";
 export default async function AdminCmsLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const t = await getAdminTranslator();
   const session = await requireAdmin();
   return (
     <div className="admin-shell container">
       <aside className="admin-sidebar">
         <Link href="/admin" className="admin-brand">
-          cybervalue admin
+          {t("cybervalue admin")}
         </Link>
         <nav className="admin-nav">
-          <Link href="/admin">Dashboard</Link>
+          <Link href="/admin">{t("Dashboard")}</Link>
           {Object.entries(collections).map(([key, value]) => (
             <Link key={key} href={`/admin/${key}`}>
               {value.title}
             </Link>
           ))}
-          <Link href="/admin/files">File library</Link>
-          <Link href="/admin/assessments">HTML baholash</Link>
-          <Link href="/admin/account">Account settings</Link>
+          <Link href="/admin/files">{t("File library")}</Link>
+          <Link href="/admin/assessments">{t("HTML baholash")}</Link>
+          <Link href="/admin/audit">{t("Audit log")}</Link>
+          <Link href="/admin/account">{t("Account settings")}</Link>
         </nav>
         <div className="admin-sidebar-footer">
           <span className="muted">{session.user.email}</span>

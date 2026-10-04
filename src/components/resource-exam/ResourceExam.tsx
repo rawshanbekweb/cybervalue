@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslator } from "@/components/locale-provider";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -56,6 +57,7 @@ const clock = (seconds: number) => {
 };
 
 export function ResourceExam() {
+  const t = useTranslator();
   const [phase, setPhase] = useState<Phase>("intro");
   const [answers, setAnswers] = useState<ExamAnswers>({});
   const [startedAt, setStartedAt] = useState(0);
@@ -89,35 +91,41 @@ export function ResourceExam() {
     [answers],
   );
 
-  const submit = useCallback(async (current: ExamAnswers) => {
-    if (submitted.current) return;
-    submitted.current = true;
-    setSubmitting(true);
-    setError("");
-    try {
-      const response = await fetch("/resources/exam/api", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ answers: current }),
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error ?? "Xatolik yuz berdi.");
-      setResult(data as ExamResult);
-      setPhase("result");
-      writeSaved(null);
-      window.scrollTo({ top: 0 });
-    } catch (caught) {
-      submitted.current = false;
-      setError(
-        caught instanceof Error
-          ? caught.message
-          : "Yuborib bo‘lmadi. Javoblaringiz saqlangan, qayta urinib ko‘ring.",
-      );
-    } finally {
-      setSubmitting(false);
-      setConfirming(false);
-    }
-  }, []);
+  const submit = useCallback(
+    async (current: ExamAnswers) => {
+      if (submitted.current) return;
+      submitted.current = true;
+      setSubmitting(true);
+      setError("");
+      try {
+        const response = await fetch("/resources/exam/api", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ answers: current }),
+        });
+        const data = await response.json();
+        if (!response.ok)
+          throw new Error(data.error ?? t("Xatolik yuz berdi."));
+        setResult(data as ExamResult);
+        setPhase("result");
+        writeSaved(null);
+        window.scrollTo({ top: 0 });
+      } catch (caught) {
+        submitted.current = false;
+        setError(
+          caught instanceof Error
+            ? caught.message
+            : t(
+                "Yuborib bo‘lmadi. Javoblaringiz saqlangan, qayta urinib ko‘ring.",
+              ),
+        );
+      } finally {
+        setSubmitting(false);
+        setConfirming(false);
+      }
+    },
+    [t],
+  );
 
   useEffect(() => {
     if (phase !== "working") return;
@@ -159,58 +167,68 @@ export function ResourceExam() {
 
   if (phase === "intro")
     return (
-      <div className="rx-shell" lang="uz">
+      <div className="rx-shell">
         <section className="rx-intro">
-          <span className="rx-eyebrow">RESURSLAR / IMTIHON 1</span>
+          <span className="rx-eyebrow">{t("RESURSLAR / IMTIHON 1")}</span>
           <h1>
-            Web va Linux asoslari imtihoni<span>.</span>
+            {t("Web va Linux asoslari imtihoni")}
+            <span>.</span>
           </h1>
           <p>
-            Imtihon ikki resurs slaydiga asoslangan: «Web qanday ishlaydi?»
-            (barcha 75 slayd) va «Linux va Tarmoq Asoslari» (faqat 1–20
-            slaydlar). Faqat test emas: URL, subnet, routing, DNS, HTTP va
-            terminal buyruqlari bilan amaliy ishlar ham bor.
+            {t(
+              "Imtihon ikki resurs slaydiga asoslangan: «Web qanday ishlaydi?» (barcha 75 slayd) va «Linux va Tarmoq Asoslari» (faqat 1–20 slaydlar). Faqat test emas: URL, subnet, routing, DNS, HTTP va terminal buyruqlari bilan amaliy ishlar ham bor.",
+            )}
           </p>
           <div className="rx-stats">
             <div>
               <strong>{MAX_TOTAL}</strong>
-              <span>umumiy ball</span>
+              <span>{t("umumiy ball")}</span>
             </div>
             <div>
               <strong>{MAX_TEST}</strong>
-              <span>test ({CHOICES.length} savol)</span>
+              <span>
+                {t("test ({count} savol)", { count: CHOICES.length })}
+              </span>
             </div>
             <div>
               <strong>{MAX_PRACTICE}</strong>
-              <span>amaliy ish ({TASKS.length} topshiriq)</span>
+              <span>
+                {t("amaliy ish ({count} topshiriq)", { count: TASKS.length })}
+              </span>
             </div>
             <div>
               <strong>{EXAM_MINUTES}</strong>
-              <span>daqiqa</span>
+              <span>{t("daqiqa")}</span>
             </div>
           </div>
         </section>
         <section className="rx-card">
-          <h2>Qoidalar</h2>
+          <h2>{t("Qoidalar")}</h2>
           <ul>
             <li>
-              Vaqt «Imtihonni boshlash» bosilganda ketadi va tugagach javoblar
-              avtomatik yuboriladi.
+              {t(
+                "Vaqt «Imtihonni boshlash» bosilganda ketadi va tugagach javoblar avtomatik yuboriladi.",
+              )}
             </li>
             <li>
-              Javoblar shu brauzerda saqlanadi: sahifani yangilasangiz, vaqt
-              tugamaguncha davom ettirish mumkin.
+              {t(
+                "Javoblar shu brauzerda saqlanadi: sahifani yangilasangiz, vaqt tugamaguncha davom ettirish mumkin.",
+              )}
             </li>
             <li>
-              Terminal topshiriqlarida buyruqni o‘zingiz yozasiz. Buyruqning
-              to‘g‘riligi serverda tekshiriladi.
+              {t(
+                "Terminal topshiriqlarida buyruqni o‘zingiz yozasiz. Buyruqning to‘g‘riligi serverda tekshiriladi.",
+              )}
             </li>
             <li>
-              Natija darhol ko‘rsatiladi: qayerda xato qilganingiz va tegishli
-              slayd raqami bilan.
+              {t(
+                "Natija darhol ko‘rsatiladi: qayerda xato qilganingiz va tegishli slayd raqami bilan.",
+              )}
             </li>
             <li>
-              Qayta topshirish mumkin; har safar javoblar noldan boshlanadi.
+              {t(
+                "Qayta topshirish mumkin; har safar javoblar noldan boshlanadi.",
+              )}
             </li>
           </ul>
           <div className="rx-actions">
@@ -219,17 +237,17 @@ export function ResourceExam() {
                 className="button button-primary"
                 onClick={() => begin(true)}
               >
-                Davom ettirish
+                {t("Davom ettirish")}
               </button>
             )}
             <button
               className={`button ${resumable ? "button-secondary" : "button-primary"}`}
               onClick={() => begin(false)}
             >
-              {resumable ? "Yangidan boshlash" : "Imtihonni boshlash"}
+              {resumable ? t("Yangidan boshlash") : t("Imtihonni boshlash")}
             </button>
             <Link className="button button-secondary" href="/resources">
-              Resurslarga qaytish
+              {t("Resurslarga qaytish")}
             </Link>
           </div>
         </section>
@@ -241,18 +259,18 @@ export function ResourceExam() {
 
   const empty = TOTAL_INPUTS - answered;
   return (
-    <div className="rx-shell" lang="uz">
+    <div className="rx-shell">
       <header className="rx-toolbar">
         <div>
-          <span className="rx-eyebrow">RESURSLAR IMTIHONI</span>
+          <span className="rx-eyebrow">{t("RESURSLAR IMTIHONI")}</span>
           <div className="rx-progress">
-            {answered} / {TOTAL_INPUTS} javob berildi
+            {answered} / {TOTAL_INPUTS} {t("javob berildi")}
           </div>
         </div>
         <div
           className={`rx-timer ${remaining <= 300 ? "rx-timer-low" : ""}`}
           role="timer"
-          aria-label="Qolgan vaqt"
+          aria-label={t("Qolgan vaqt")}
         >
           {clock(remaining)}
         </div>
@@ -260,20 +278,23 @@ export function ResourceExam() {
           {confirming ? (
             <>
               <span>
-                {empty > 0 ? `${empty} ta javob bo‘sh. ` : ""}Topshiraymi?
+                {empty > 0
+                  ? `${t("{count} ta javob bo‘sh.", { count: empty })} `
+                  : ""}
+                {t("Topshiraymi?")}
               </span>
               <button
                 className="button button-primary"
                 disabled={submitting}
                 onClick={() => void submit(answers)}
               >
-                {submitting ? "Tekshirilmoqda…" : "Ha, topshirish"}
+                {submitting ? t("Tekshirilmoqda…") : t("Ha, topshirish")}
               </button>
               <button
                 className="button button-secondary"
                 onClick={() => setConfirming(false)}
               >
-                Bekor
+                {t("Bekor")}
               </button>
             </>
           ) : (
@@ -281,32 +302,34 @@ export function ResourceExam() {
               className="button button-primary"
               onClick={() => setConfirming(true)}
             >
-              Topshirish
+              {t("Topshirish")}
             </button>
           )}
         </div>
       </header>
       {error && (
         <p role="alert" className="rx-error">
-          {error}
+          {t(error)}
         </p>
       )}
 
-      <h2 className="rx-part">A qism · Test ({MAX_TEST} ball)</h2>
+      <h2 className="rx-part">
+        {t("A qism · Test ({points} ball)", { points: MAX_TEST })}
+      </h2>
       {GROUPS.map((group) => (
         <section
           key={group}
           className="rx-card"
           aria-labelledby={`rx-test-${group}`}
         >
-          <h3 id={`rx-test-${group}`}>{GROUP_LABELS[group]}</h3>
+          <h3 id={`rx-test-${group}`}>{t(GROUP_LABELS[group])}</h3>
           {CHOICES.filter((c) => c.group === group).map((choice, index) => (
             <fieldset key={choice.id} className="rx-question">
               <legend>
                 <span className="rx-num">{index + 1}</span>
-                {choice.prompt}
+                {t(choice.prompt)}
                 <small>
-                  {choice.slide} slayd · {CHOICE_POINTS} ball
+                  {choice.slide} {t("slayd")} · {CHOICE_POINTS} {t("ball")}
                 </small>
               </legend>
               {choice.options.map((option, optionIndex) => (
@@ -317,7 +340,7 @@ export function ResourceExam() {
                     checked={answers[choice.id] === String(optionIndex)}
                     onChange={() => setAnswer(choice.id, String(optionIndex))}
                   />
-                  <span>{option}</span>
+                  <span>{t(option)}</span>
                 </label>
               ))}
             </fieldset>
@@ -325,10 +348,12 @@ export function ResourceExam() {
         </section>
       ))}
 
-      <h2 className="rx-part">B qism · Amaliy ishlar ({MAX_PRACTICE} ball)</h2>
+      <h2 className="rx-part">
+        {t("B qism · Amaliy ishlar ({points} ball)", { points: MAX_PRACTICE })}
+      </h2>
       {GROUPS.map((group) => (
         <div key={group}>
-          <h3 className="rx-group">{GROUP_LABELS[group]}</h3>
+          <h3 className="rx-group">{t(GROUP_LABELS[group])}</h3>
           {TASKS.filter((t) => t.group === group).map((task) => (
             <section
               key={task.id}
@@ -336,16 +361,16 @@ export function ResourceExam() {
               aria-labelledby={`rx-task-${task.id}`}
             >
               <h4 id={`rx-task-${task.id}`}>
-                {task.title}
+                {t(task.title)}
                 <small>
-                  {task.slide} slayd ·{" "}
+                  {task.slide} {t("slayd")} ·{" "}
                   {task.inputs.reduce((sum, input) => sum + input.points, 0)}{" "}
-                  ball
+                  {t("ball")}
                 </small>
               </h4>
-              <p>{task.brief}</p>
+              <p>{t(task.brief)}</p>
               {task.scene && (
-                <pre className="rx-scene" aria-label="Berilgan ma’lumot">
+                <pre className="rx-scene" aria-label={t("Berilgan ma’lumot")}>
                   {task.scene}
                 </pre>
               )}
@@ -376,11 +401,14 @@ function TaskInput({
   value: string;
   onChange: (value: string) => void;
 }) {
+  const t = useTranslator();
   const id = `rx-in-${input.id}`;
   const label = (
     <span>
-      {input.label}
-      <small>{input.points} ball</small>
+      {t(input.label)}
+      <small>
+        {input.points} {t("ball")}
+      </small>
     </span>
   );
   if (input.kind === "select")
@@ -392,10 +420,10 @@ function TaskInput({
           value={value}
           onChange={(e) => onChange(e.target.value)}
         >
-          <option value="">— tanlang —</option>
+          <option value="">{t("— tanlang —")}</option>
           {input.options?.map((option) => (
             <option key={option} value={option}>
-              {option}
+              {t(option)}
             </option>
           ))}
         </select>
@@ -411,7 +439,7 @@ function TaskInput({
           maxLength={200}
           autoComplete="off"
           spellCheck={false}
-          placeholder={input.placeholder}
+          placeholder={input.placeholder && t(input.placeholder)}
           onChange={(e) => onChange(e.target.value)}
         />
       </label>
@@ -430,7 +458,7 @@ function TaskInput({
           autoComplete="off"
           autoCapitalize="off"
           spellCheck={false}
-          placeholder={input.placeholder}
+          placeholder={input.placeholder && t(input.placeholder)}
           onChange={(e) => onChange(e.target.value)}
         />
       </span>
@@ -445,20 +473,21 @@ function ResultView({
   result: ExamResult;
   onRetry: () => void;
 }) {
+  const t = useTranslator();
   const byId = new Map(result.items.map((item) => [item.id, item]));
   const percent = Math.round((result.total / result.max) * 100);
   const grade =
     percent >= 85
-      ? "A’lo"
+      ? t("A’lo")
       : percent >= 70
-        ? "Yaxshi"
+        ? t("Yaxshi")
         : percent >= 55
-          ? "Qoniqarli"
-          : "Qayta tayyorlaning";
+          ? t("Qoniqarli")
+          : t("Qayta tayyorlaning");
   return (
-    <div className="rx-shell" lang="uz">
+    <div className="rx-shell">
       <section className="rx-card rx-result">
-        <span className="rx-eyebrow">NATIJA</span>
+        <span className="rx-eyebrow">{t("NATIJA")}</span>
         <p className="rx-score">
           <strong>{result.total}</strong> / {result.max}
           <span>
@@ -470,26 +499,26 @@ function ResultView({
             <strong>
               {result.test.score}/{result.test.max}
             </strong>
-            <span>A qism · test</span>
+            <span>{t("A qism · test")}</span>
           </div>
           <div>
             <strong>
               {result.practice.score}/{result.practice.max}
             </strong>
-            <span>B qism · amaliy</span>
+            <span>{t("B qism · amaliy")}</span>
           </div>
         </div>
         <div className="rx-actions">
           <button className="button button-primary" onClick={onRetry}>
-            Qayta topshirish
+            {t("Qayta topshirish")}
           </button>
           <Link className="button button-secondary" href="/resources">
-            Resurslarga qaytish
+            {t("Resurslarga qaytish")}
           </Link>
         </div>
       </section>
 
-      <h2 className="rx-part">A qism · Test</h2>
+      <h2 className="rx-part">{t("A qism · Test")}</h2>
       <section className="rx-card">
         {CHOICES.map((choice) => {
           const item = byId.get(choice.id);
@@ -501,28 +530,30 @@ function ResultView({
             >
               <h4>
                 <span aria-hidden="true">{item.score ? "✓" : "✗"}</span>
-                {choice.prompt}
+                {t(choice.prompt)}
                 <small>
-                  {item.score}/{item.max} · {choice.slide} slayd
+                  {item.score}/{item.max} · {choice.slide} {t("slayd")}
                 </small>
               </h4>
               {!item.score && item.expected && (
                 <p>
-                  <b>To‘g‘ri javob:</b> {item.expected}
+                  <b>{t("To‘g‘ri javob:")}</b> {t(item.expected)}
                 </p>
               )}
-              {item.explain && <p className="rx-explain">{item.explain}</p>}
+              {item.explain && <p className="rx-explain">{t(item.explain)}</p>}
             </article>
           );
         })}
       </section>
 
-      <h2 className="rx-part">B qism · Amaliy ishlar</h2>
+      <h2 className="rx-part">{t("B qism · Amaliy ishlar")}</h2>
       {TASKS.map((task) => (
         <section key={task.id} className="rx-card">
           <h4>
-            {task.title}
-            <small>{task.slide} slayd</small>
+            {t(task.title)}
+            <small>
+              {task.slide} {t("slayd")}
+            </small>
           </h4>
           {task.inputs.map((input) => {
             const item = byId.get(input.id);
@@ -537,7 +568,7 @@ function ResultView({
                   <span aria-hidden="true">
                     {full ? "✓" : item.score ? "◐" : "✗"}
                   </span>
-                  {input.label}
+                  {t(input.label)}
                   <small>
                     {item.score}/{item.max}
                   </small>
@@ -545,7 +576,7 @@ function ResultView({
                 {item.expected && (
                   <>
                     <p>
-                      <b>Namuna javob:</b>
+                      <b>{t("Namuna javob:")}</b>
                     </p>
                     <pre className="rx-scene">{item.expected}</pre>
                   </>

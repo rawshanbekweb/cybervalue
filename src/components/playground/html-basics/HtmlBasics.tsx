@@ -6,6 +6,7 @@ import { lessonRecord } from "@/lib/learning-progress";
 import Link from "next/link";
 import { HTML_LESSONS, type HtmlLesson } from "./lessons.data";
 import { useLocalStorageState } from "../useLocalStorageState";
+import { getLastCheck, setLastCheck, type Checked } from "./last-check";
 import { useHashLessonId } from "../useHashLessonId";
 import "./html-basics.css";
 
@@ -30,11 +31,11 @@ export function HtmlBasics() {
   );
   const completed = lessonRecord<boolean>(storedProgress, TOTAL, "boolean");
   const codeByLesson = lessonRecord<string>(storedCode, TOTAL, "string");
-  const [checked, setChecked] = useState<{
-    lessonId: number;
-    code: string;
-    results: { label: string; pass: boolean }[];
-  } | null>(null);
+  const [checked, setCheckedState] = useState<Checked | null>(getLastCheck);
+  const setChecked = (value: Checked | null) => {
+    setLastCheck(value);
+    setCheckedState(value);
+  };
 
   const lesson = lessonById(lessonId);
   const code = codeByLesson[lesson.id] ?? lesson.starter;
@@ -106,7 +107,7 @@ export function HtmlBasics() {
           ))}
         </ul>
       </aside>
-      <main className="htb-main">
+      <div className="htb-main">
         <span className="htb-eyebrow">
           {t("Lesson {lesson} / {total}", { lesson: lesson.id, total: TOTAL })}
         </span>
@@ -198,7 +199,7 @@ export function HtmlBasics() {
             {t("Next lesson →")}
           </button>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { getAdminTranslator } from "@/lib/i18n/server";
 import Link from "next/link";
 import { requireAdmin } from "@/lib/auth";
 import { getDb } from "@/lib/db";
@@ -11,9 +12,10 @@ export default async function FilesPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
+  const t = await getAdminTranslator();
   await requireAdmin("/admin/files");
   const db = getDb();
-  if (!db) return <p className="admin-error">Storage is unavailable.</p>;
+  if (!db) return <p className="admin-error">{t("Storage is unavailable.")}</p>;
   const params = await searchParams;
   const query = parseAdminQuery(params);
   const kind =
@@ -44,19 +46,21 @@ export default async function FilesPage({
   }
   return (
     <div className="admin-page">
-      <h1>File library</h1>
+      <h1>{t("File library")}</h1>
       <p className="muted">
-        {usage._count} uploaded files ·{" "}
-        {((usage._sum.size ?? 0) / 1024 / 1024).toFixed(1)} /{" "}
-        {MAX_STORAGE_BYTES / 1024 / 1024} MiB used
+        {t("{count} uploaded files · {used} MiB used", {
+          count: usage._count,
+          used: `${((usage._sum.size ?? 0) / 1024 / 1024).toFixed(1)} / ${MAX_STORAGE_BYTES / 1024 / 1024}`,
+        })}
       </p>
       <p className="admin-help">
-        Uploads remain private until attached to published content. Files used
-        by any entry cannot be deleted.
+        {t(
+          "Uploads remain private until attached to published content. Files used by any entry cannot be deleted.",
+        )}
       </p>
       <form method="get" className="admin-filters" key={`${query.q}:${kind}`}>
         <div className="admin-field admin-search-field">
-          <label htmlFor="file-query">Search files</label>
+          <label htmlFor="file-query">{t("Search files")}</label>
           <input
             id="file-query"
             name="q"
@@ -67,26 +71,24 @@ export default async function FilesPage({
           />
         </div>
         <div className="admin-field">
-          <label htmlFor="file-kind">File type</label>
+          <label htmlFor="file-kind">{t("File type")}</label>
           <select
             id="file-kind"
             name="kind"
             defaultValue={kind ?? ""}
             className="admin-input"
           >
-            <option value="">All files</option>
+            <option value="">{t("All files")}</option>
             <option value="RESOURCE">Resources</option>
             <option value="IMAGE">Images</option>
           </select>
         </div>
-        <button className="button button-secondary">Apply</button>
+        <button className="button button-secondary">{t("Apply")}</button>
       </form>
       <FileLibrary files={files} />
       {pages > 1 && (
-        <nav className="admin-pagination" aria-label="File pagination">
-          <span>
-            Page {page} of {pages}
-          </span>
+        <nav className="admin-pagination" aria-label={t("File pagination")}>
+          <span>{t("Page {page} of {pages}", { page, pages })}</span>
           {page > 1 && <Link href={href(page - 1)}>Previous</Link>}
           {page < pages && <Link href={href(page + 1)}>Next</Link>}
         </nav>

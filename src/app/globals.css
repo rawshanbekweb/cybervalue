@@ -102,6 +102,16 @@ svg {
   background: var(--accent);
   flex-shrink: 0;
 }
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 .skip-link {
   position: fixed;
   left: 16px;
@@ -233,13 +243,6 @@ svg {
 .language-control {
   flex-shrink: 0;
   position: relative;
-}
-.content-language-note {
-  padding-block: 14px;
-  margin-block: 16px;
-  color: var(--muted);
-  border-bottom: 1px solid #424940;
-  font-size: 13px;
 }
 .language-switcher {
   display: flex;
@@ -2141,6 +2144,26 @@ svg {
   border: 1px solid #5a2e28;
   border-radius: 4px;
   background: #1f1512;
+}
+.admin-warn {
+  color: #ff9b8a;
+}
+.admin-qr {
+  background: #fff;
+  border-radius: 4px;
+  padding: 8px;
+}
+.admin-secret {
+  word-break: break-all;
+  user-select: all;
+}
+.admin-codes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 6px;
+  padding: 0;
+  list-style: none;
+  font-size: 15px;
 }
 .admin-divider {
   border: none;

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslator } from "@/components/locale-provider";
 import { useState, type ReactNode } from "react";
 import type { ApiResult } from "./api";
 
@@ -25,8 +26,9 @@ export function StatusPill({ status }: { status: number }) {
 }
 
 export function ResponseConsole({ result }: { result: ApiResult | null }) {
+  const t = useTranslator();
   const [active, setActive] = useState<"Status" | "Headers" | "Body">("Body");
-  if (!result) return <p className="lab-help">No request sent yet.</p>;
+  if (!result) return <p className="lab-help">{t("No request sent yet.")}</p>;
   const body =
     active === "Status"
       ? {
@@ -49,7 +51,7 @@ export function ResponseConsole({ result }: { result: ApiResult | null }) {
               onClick={() => setActive(tab)}
               type="button"
             >
-              {tab}
+              {t(tab)}
             </button>
           ))}
         </div>

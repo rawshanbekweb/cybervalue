@@ -98,9 +98,10 @@ test.describe("isolated assessment", () => {
     await page.goto("/admin/login");
     await page.getByLabel("Email").fill(process.env.E2E_ADMIN_EMAIL!);
     await page
-      .getByLabel("Password", { exact: true })
+      .getByLabel("Parol", { exact: true })
       .fill(process.env.E2E_ADMIN_PASSWORD!);
-    await page.getByRole("button", { name: "Sign in" }).click();
+    // The teacher works in the default Uzbek interface, like the pupils.
+    await page.getByRole("button", { name: "Tizimga kirish" }).click();
     await expect(page).toHaveURL(/\/admin$/);
     await page.goto("/admin/assessments");
     await page.getByLabel("Sinov nomi").fill(`${prefix}-class`);

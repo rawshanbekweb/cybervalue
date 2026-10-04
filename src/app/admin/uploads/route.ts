@@ -1,6 +1,6 @@
 import { getSession } from "@/lib/auth";
 import { getDb } from "@/lib/db";
-import { allowRequest } from "@/lib/rate-limit";
+import { limit } from "@/lib/rate-limit-db";
 import {
   MAX_STORAGE_BYTES,
   prepareUpload,
@@ -8,6 +8,7 @@ import {
   UploadError,
 } from "@/lib/upload-validation";
 import { lockFileChanges, storedFileSelect } from "@/lib/stored-files";
+import { audit } from "@/lib/audit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -19,7 +20,7 @@ export async function POST(request: Request) {
     return json({ error: "Request origin is not allowed." }, 403);
   const session = await getSession();
   if (!session) return json({ error: "Sign in before uploading." }, 401);
-  if (!allowRequest(`upload:${session.user.id}`, Date.now(), 15, 60_000))
+  if (!(await limit(`upload:${session.user.id}`, 15, 60_000)))
     return json({ error: "Too many uploads. Try again shortly." }, 429);
   const db = getDb();
   if (!db) return json({ error: "Storage is unavailable." }, 503);
@@ -42,6 +43,7 @@ export async function POST(request: Request) {
         );
       return tx.storedFile.create({ data, select: storedFileSelect });
     });
+    await audit("file.upload", session.user.id, data.name);
     return json({ file }, 201);
   } catch (error) {
     return json(

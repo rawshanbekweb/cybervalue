@@ -1,3 +1,4 @@
+import { getAdminTranslator } from "@/lib/i18n/server";
 import Link from "next/link";
 import { getDb } from "@/lib/db";
 import { collections, collectionFor } from "@/lib/site";
@@ -5,6 +6,7 @@ import { formatDate } from "@/components/ui";
 import { requireAdmin } from "@/lib/auth";
 
 export default async function AdminDashboardPage() {
+  const t = await getAdminTranslator();
   await requireAdmin("/admin");
   const db = getDb();
   const [counts, recent] = db
@@ -27,10 +29,12 @@ export default async function AdminDashboardPage() {
 
   return (
     <div className="admin-page">
-      <h1>Dashboard</h1>
+      <h1>{t("Dashboard")}</h1>
       {!db && (
         <p className="admin-error">
-          DATABASE_URL is not configured — nothing can be read or written.
+          {t(
+            "DATABASE_URL is not configured — nothing can be read or written.",
+          )}
         </p>
       )}
       <div className="admin-cards">
@@ -52,22 +56,28 @@ export default async function AdminDashboardPage() {
             <Link key={key} href={`/admin/${key}`} className="admin-card">
               <span className="eyebrow">{value.title}</span>
               <strong>{total}</strong>
-              <span className="muted">{published} published</span>
               <span className="muted">
-                {drafts} drafts · {archived} archived
+                {t(
+                  "{published} published · {drafts} drafts · {archived} archived",
+                  {
+                    published,
+                    drafts,
+                    archived,
+                  },
+                )}
               </span>
             </Link>
           );
         })}
       </div>
-      <h2>Recently updated</h2>
+      <h2>{t("Recently updated")}</h2>
       <table className="admin-table">
         <thead>
           <tr>
-            <th>Title</th>
-            <th>Kind</th>
+            <th>{t("Title")}</th>
+            <th>{t("Kind")}</th>
             <th>Status</th>
-            <th>Updated</th>
+            <th>{t("Updated")}</th>
           </tr>
         </thead>
         <tbody>
@@ -88,7 +98,7 @@ export default async function AdminDashboardPage() {
           {recent.length === 0 && (
             <tr>
               <td colSpan={4} className="muted">
-                Nothing yet.
+                {t("Nothing yet.")}
               </td>
             </tr>
           )}

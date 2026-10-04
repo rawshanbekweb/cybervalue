@@ -1,3 +1,4 @@
+import { getAdminTranslator } from "@/lib/i18n/server";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getDb } from "@/lib/db";
@@ -20,6 +21,7 @@ export default async function AdminCollectionPage({
   params: Promise<{ collection: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
+  const t = await getAdminTranslator();
   const { collection } = await params;
   if (!isCollection(collection)) notFound();
   await requireAdmin(`/admin/${collection}`);
@@ -51,12 +53,12 @@ export default async function AdminCollectionPage({
           href={`/admin/${collection}/new`}
           className="button button-primary"
         >
-          New {config.singular.toLowerCase()}
+          {t("New")} {config.singular.toLowerCase()}
         </Link>
       </div>
       {!db && (
         <p role="alert" className="admin-error">
-          Database is not configured.
+          {t("Database is not configured.")}
         </p>
       )}
       <form
@@ -77,8 +79,8 @@ export default async function AdminCollectionPage({
             defaultValue={query.q}
             placeholder={
               config.kind === "RESOURCE"
-                ? "Title, slug, topic or type"
-                : "Title, slug or summary"
+                ? t("Title, slug, topic or type")
+                : t("Title, slug or summary")
             }
             className="admin-input"
           />
@@ -91,34 +93,34 @@ export default async function AdminCollectionPage({
             defaultValue={query.status}
             className="admin-input"
           >
-            <option value="">All statuses</option>
-            <option value="DRAFT">Draft</option>
-            <option value="PUBLISHED">Published</option>
-            <option value="ARCHIVED">Archived</option>
+            <option value="">{t("All statuses")}</option>
+            <option value="DRAFT">{t("Draft")}</option>
+            <option value="PUBLISHED">{t("Published")}</option>
+            <option value="ARCHIVED">{t("Archived")}</option>
           </select>
         </div>
         <div className="admin-field">
-          <label htmlFor="admin-sort">Sort by</label>
+          <label htmlFor="admin-sort">{t("Sort by")}</label>
           <select
             id="admin-sort"
             name="sort"
             defaultValue={query.sort}
             className="admin-input"
           >
-            <option value="updated">Recently updated</option>
-            <option value="oldest">Oldest updated</option>
-            <option value="title">Title A–Z</option>
+            <option value="updated">{t("Recently updated")}</option>
+            <option value="oldest">{t("Oldest updated")}</option>
+            <option value="title">{t("Title A–Z")}</option>
           </select>
         </div>
         <button className="button button-secondary" type="submit">
-          Apply
+          {t("Apply")}
         </button>
         {(filtered || query.sort !== "updated") && (
           <Link
             href={`/admin/${collection}`}
             className="button button-secondary"
           >
-            Reset
+            {t("Reset")}
           </Link>
         )}
       </form>
@@ -127,11 +129,13 @@ export default async function AdminCollectionPage({
           <caption className="sr-only">{config.title} management</caption>
           <thead>
             <tr>
-              <th scope="col">Title</th>
-              {config.kind === "RESOURCE" && <th scope="col">Resource file</th>}
+              <th scope="col">{t("Title")}</th>
+              {config.kind === "RESOURCE" && (
+                <th scope="col">{t("Resource file")}</th>
+              )}
               <th scope="col">Status</th>
-              <th scope="col">Updated</th>
-              <th scope="col">Actions</th>
+              <th scope="col">{t("Updated")}</th>
+              <th scope="col">{t("Actions")}</th>
             </tr>
           </thead>
           <tbody>
@@ -154,12 +158,12 @@ export default async function AdminCollectionPage({
                   {config.kind === "RESOURCE" && (
                     <td>
                       <span className="admin-file-path">
-                        {entry.resource?.filePath ?? "No file attached"}
+                        {entry.resource?.filePath ?? t("No file attached")}
                       </span>
                       <span
                         className={`admin-cell-detail ${file?.status !== "Available" ? "admin-file-warning" : ""}`}
                       >
-                        {file?.status ?? "Missing"}
+                        {file?.status ?? t("Missing")}
                         {file?.size != null &&
                           ` · ${(file.size / 1024).toFixed(1)} KB`}
                       </span>
@@ -175,7 +179,7 @@ export default async function AdminCollectionPage({
                       entry.publishedAt &&
                       entry.publishedAt > new Date() && (
                         <span className="admin-cell-detail">
-                          Scheduled: {formatDate(entry.publishedAt)}
+                          {t("Scheduled:")} {formatDate(entry.publishedAt)}
                         </span>
                       )}
                   </td>
@@ -193,8 +197,12 @@ export default async function AdminCollectionPage({
                   className="muted"
                 >
                   {filtered
-                    ? "No entries match these filters. Try another search or reset the filters."
-                    : "Nothing here yet. Create your first entry to get started."}
+                    ? t(
+                        "No entries match these filters. Try another search or reset the filters.",
+                      )
+                    : t(
+                        "Nothing here yet. Create your first entry to get started.",
+                      )}
                 </td>
               </tr>
             )}
@@ -202,11 +210,15 @@ export default async function AdminCollectionPage({
         </table>
       </div>
       {result.total > 0 && (
-        <nav aria-label="Content pagination" className="admin-pagination">
+        <nav aria-label={t("Content pagination")} className="admin-pagination">
           <span className="muted">
             {(result.page - 1) * ADMIN_PAGE_SIZE + 1}–
-            {Math.min(result.page * ADMIN_PAGE_SIZE, result.total)} of{" "}
-            {result.total} · Page {result.page} of {result.pages}
+            {Math.min(result.page * ADMIN_PAGE_SIZE, result.total)} /{" "}
+            {result.total} ·{" "}
+            {t("Page {page} of {pages}", {
+              page: result.page,
+              pages: result.pages,
+            })}
           </span>
           <div className="admin-row-actions">
             {result.page > 1 && (
