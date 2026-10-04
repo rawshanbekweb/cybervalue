@@ -2,7 +2,12 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { NextRequest } from "next/server";
 import { proxy, config } from "../src/proxy";
-import { allowRequest, clientKey } from "../src/lib/rate-limit";
+import {
+  allowRequest,
+  allowShared,
+  clientKey,
+  type HitStore,
+} from "../src/lib/rate-limit";
 
 const request = (path: string, cookie?: string) =>
   new NextRequest(`http://localhost:3000${path}`, {
@@ -80,4 +85,32 @@ test("client keys come from the first forwarded hop and one client cannot exhaus
     assert.ok(allowRequest(`${id}:attacker`, now, 10, 60_000));
   assert.equal(allowRequest(`${id}:attacker`, now, 10, 60_000), false);
   assert.ok(allowRequest(`${id}:admin`, now, 10, 60_000));
+});
+
+test("the shared store enforces limits that span instances and fails open when unavailable", async () => {
+  const hits = new Map<string, number>();
+  // Another instance already spent most of this client's budget.
+  hits.set("shared:client", 9);
+  const store: HitStore = async (key) => {
+    const count = (hits.get(key) ?? 0) + 1;
+    hits.set(key, count);
+    return count;
+  };
+  const now = Date.now();
+  assert.equal(
+    await allowShared("shared:client", 10, 60_000, store, now),
+    true,
+  );
+  assert.equal(
+    await allowShared("shared:client", 10, 60_000, store, now),
+    false,
+  );
+
+  const down: HitStore = async () => {
+    throw new Error("database unavailable");
+  };
+  assert.equal(await allowShared(`down-${now}`, 10, 60_000, down, now), true);
+  assert.equal(await allowShared(`local-${now}`, 1, 60_000, null, now), true);
+  // The local check still rejects bursts without consulting the store.
+  assert.equal(await allowShared(`local-${now}`, 1, 60_000, down, now), false);
 });

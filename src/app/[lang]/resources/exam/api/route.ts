@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { allowRequest, clientKey } from "@/lib/rate-limit";
+import { clientKey } from "@/lib/rate-limit";
+import { limit } from "@/lib/rate-limit-db";
 import { gradeExam } from "@/lib/resource-exam/grading";
 
 export const runtime = "nodejs";
@@ -24,8 +25,8 @@ export async function POST(request: Request) {
     return json({ error: "So‘rov manbasi rad etildi." }, 403);
   const client = clientKey(request.headers.get("x-forwarded-for"));
   if (
-    !allowRequest(`resource-exam:${client}`, Date.now(), 20, 60000) ||
-    !allowRequest("resource-exam-global", Date.now(), 600, 60000)
+    !(await limit(`resource-exam:${client}`, 20, 60000)) ||
+    !(await limit("resource-exam-global", 600, 60000))
   )
     return json({ error: "Juda ko‘p urinish. Biroz kuting." }, 429);
   const text = await request.text();

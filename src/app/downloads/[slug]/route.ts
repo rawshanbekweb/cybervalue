@@ -3,9 +3,11 @@ import { basename, extname } from "node:path";
 import { createHash } from "node:crypto";
 import { NextResponse } from "next/server";
 import { getEntry } from "@/lib/content";
+import { defaultLocale } from "@/lib/i18n";
 import { slugSchema } from "@/lib/validation";
 import { downloadFilePath } from "@/lib/files";
-import { allowRequest } from "@/lib/rate-limit";
+import { clientKey } from "@/lib/rate-limit";
+import { limit } from "@/lib/rate-limit-db";
 import { getDb } from "@/lib/db";
 
 export const runtime = "nodejs";
@@ -33,15 +35,25 @@ function failure(status: number) {
   );
 }
 export async function GET(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ slug: string }> },
 ) {
-  // Global process budget deliberately avoids trusting spoofable forwarded IP headers.
-  if (!allowRequest("downloads")) return failure(429);
+  // The per-client budget relies on the host overwriting X-Forwarded-For;
+  // the global budget still bounds clients that spoof it.
+  if (
+    !(await limit(
+      `downloads:${clientKey(request.headers.get("x-forwarded-for"))}`,
+      10,
+    )) ||
+    !(await limit("downloads", 120))
+  )
+    return failure(429);
   const { slug } = await params;
   if (!slugSchema.safeParse(slug).success) return failure(404);
   try {
-    const entry = await getEntry("RESOURCE", slug);
+    // Route handlers cannot read the [lang] root param; the file is the same
+    // in every language.
+    const entry = await getEntry("RESOURCE", slug, defaultLocale);
     if (!entry?.resource) return failure(404);
     const stored = await getDb()?.storedFile.findUnique({
       where: { path: entry.resource.filePath, kind: "RESOURCE" },

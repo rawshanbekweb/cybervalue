@@ -2,7 +2,8 @@ import { randomBytes } from "node:crypto";
 import { cookies } from "next/headers";
 import { z } from "zod";
 import { getDb } from "@/lib/db";
-import { allowRequest } from "@/lib/rate-limit";
+import { clientKey } from "@/lib/rate-limit";
+import { limit } from "@/lib/rate-limit-db";
 import { ASSESSMENT_PATH, draftSchema } from "@/lib/html-assessment/contract";
 import {
   accessAttempt,
@@ -78,13 +79,19 @@ async function handle(request: Request) {
         .strict()
         .parse(input);
       if (
-        !allowRequest(
+        !(await limit(
           `html-entry:${hashCredential(normalizeCode(parsed.code))}`,
-          Date.now(),
           12,
           60000,
-        ) ||
-        !allowRequest("html-entry-global", Date.now(), 600, 60000)
+        )) ||
+        // Different codes from one client still share this budget, which
+        // stops access-code enumeration.
+        !(await limit(
+          `html-entry-client:${clientKey(request.headers.get("x-forwarded-for"))}`,
+          30,
+          60000,
+        )) ||
+        !(await limit("html-entry-global", 600, 60000))
       )
         return json({ error: "Juda ko‘p urinish. Biroz kuting." }, 429);
       // Do not replace an existing active browser session with another pupil's code.
@@ -142,14 +149,7 @@ async function handle(request: Request) {
       })
       .strict()
       .parse(input);
-    if (
-      !allowRequest(
-        `html-save:${hashCredential(token)}`,
-        Date.now(),
-        180,
-        60000,
-      )
-    )
+    if (!(await limit(`html-save:${hashCredential(token)}`, 180, 60000)))
       return json({ error: "Saqlash so‘rovlari ko‘paydi. Biroz kuting." }, 429);
     return json({
       attempt: attemptView(

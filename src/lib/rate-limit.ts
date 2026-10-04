@@ -24,3 +24,29 @@ export function allowRequest(
   buckets.set(key, { count: 1, expires: now + windowMs });
   return true;
 }
+
+export function forgetRequests(key: string) {
+  buckets.delete(key);
+}
+
+// Returns the hit count for `key` in its current window, across all instances.
+export type HitStore = (key: string, windowMs: number) => Promise<number>;
+
+// The process-local check runs first so a burst never reaches the shared
+// store. Store failures fall back to the local verdict rather than locking
+// every visitor out while the database is unavailable.
+export async function allowShared(
+  key: string,
+  max: number,
+  windowMs: number,
+  store: HitStore | null,
+  now = Date.now(),
+) {
+  if (!allowRequest(key, now, max, windowMs)) return false;
+  if (!store) return true;
+  try {
+    return (await store(key, windowMs)) <= max;
+  } catch {
+    return true;
+  }
+}

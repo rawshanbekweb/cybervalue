@@ -1,5 +1,6 @@
 "use server";
 import { revalidatePath } from "next/cache";
+import { audit } from "@/lib/audit";
 import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/auth";
 import { getDb } from "@/lib/db";
@@ -11,19 +12,27 @@ import {
   deleteContent,
   ContentWriteError,
 } from "@/lib/content-write";
-import { allowRequest } from "@/lib/rate-limit";
+import { limit } from "@/lib/rate-limit-db";
 import { collections, isCollection, type Collection } from "@/lib/site";
 import { publicationStatusSchema } from "@/lib/admin-query";
+import { locales } from "@/lib/i18n";
 
 export type FormState = { error: string } | undefined;
 
 function revalidateCollection(collection: Collection, slug?: string) {
-  revalidatePath("/");
-  revalidatePath(`/${collection}`);
-  if (slug) revalidatePath(`/${collection}/${slug}`);
+  // Public pages are prerendered per language under /[lang]; the proxy only
+  // hides that prefix from visitors, so each language copy is revalidated.
+  for (const lang of locales) {
+    revalidatePath(`/${lang}`);
+    revalidatePath(`/${lang}/${collection}`);
+    if (slug) {
+      revalidatePath(`/${lang}/${collection}/${slug}`);
+      revalidatePath(`/${lang}/${collection}/${slug}/opengraph-image`);
+    }
+    revalidatePath(`/${lang}/search`);
+    revalidatePath(`/${lang}/activity`);
+  }
   revalidatePath("/sitemap.xml");
-  revalidatePath("/search");
-  revalidatePath("/activity");
   revalidatePath("/admin");
   revalidatePath(`/admin/${collection}`);
 }
@@ -47,7 +56,7 @@ export async function saveContentAction(
 ): Promise<FormState> {
   const session = await requireAdmin(`/admin/${collection}`);
   if (!isCollection(collection)) return { error: "Unknown collection." };
-  if (!allowRequest(`admin-write:${session.user.id}`, Date.now(), 60, 60_000))
+  if (!(await limit(`admin-write:${session.user.id}`, 60, 60_000)))
     return { error: "Too many changes. Slow down and try again shortly." };
 
   const db = getDb();
@@ -70,6 +79,11 @@ export async function saveContentAction(
       entryId ? { mode: "edit", id: entryId } : { mode: "create" },
     );
     revalidateCollection(collection, entry.slug);
+    await audit(
+      entryId ? "content.update" : "content.create",
+      session.user.id,
+      `${collection}/${entry.slug}`,
+    );
   } catch (error) {
     return {
       error: writeError(error),
@@ -86,7 +100,7 @@ export async function changeContentAction(
 ): Promise<FormState> {
   const session = await requireAdmin(`/admin/${collection}`);
   if (!isCollection(collection)) return { error: "Unknown collection." };
-  if (!allowRequest(`admin-write:${session.user.id}`, Date.now(), 60, 60_000))
+  if (!(await limit(`admin-write:${session.user.id}`, 60, 60_000)))
     return { error: "Too many changes. Try again shortly." };
   const db = getDb();
   if (!db) return { error: "Database is not configured." };
@@ -101,6 +115,11 @@ export async function changeContentAction(
         ? await deleteContent(db, id, kind)
         : await setContentStatus(db, id, status.data!, kind);
     revalidateCollection(collection, entry.slug);
+    await audit(
+      operation === "delete" ? "content.delete" : "content.status",
+      session.user.id,
+      `${collection}/${entry.slug}${operation === "delete" ? "" : ` → ${status.data}`}`,
+    );
   } catch (error) {
     return { error: writeError(error) };
   }

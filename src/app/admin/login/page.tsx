@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
+import { hasPendingChallenge } from "@/lib/mfa";
 import { LoginForm } from "./login-form";
 
 export default async function AdminLoginPage({
@@ -18,7 +19,7 @@ export default async function AdminLoginPage({
       {changed === "1" && (
         <p role="status">Password changed. Sign in with your new password.</p>
       )}
-      <LoginForm next={next} />
+      <LoginForm next={next} pendingCode={await hasPendingChallenge()} />
     </div>
   );
 }

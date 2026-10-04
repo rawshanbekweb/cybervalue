@@ -39,15 +39,17 @@ Shared `Content` records contain unique stable slugs, publication state, dates, 
 
 ## Environment
 
-| Variable         | Purpose                                                              |
-| ---------------- | -------------------------------------------------------------------- |
-| `DATABASE_URL`   | PostgreSQL connection string; leave blank for empty preview          |
-| `SITE_URL`       | Canonical origin, defaults to `http://localhost:3000`                |
-| `SITE_INDEXABLE` | `false` for previews; set `true` explicitly on the real HTTPS domain |
-| `GITHUB_URL`     | Optional real HTTPS profile URL                                      |
-| `LINKEDIN_URL`   | Optional real HTTPS profile URL                                      |
-| `TELEGRAM_URL`   | Optional real HTTPS channel/profile URL                              |
-| `INSTAGRAM_URL`  | Optional real HTTPS profile URL                                      |
+| Variable           | Purpose                                                              |
+| ------------------ | -------------------------------------------------------------------- |
+| `DATABASE_URL`     | PostgreSQL connection string; leave blank for empty preview          |
+| `SITE_URL`         | Canonical origin, defaults to `http://localhost:3000`                |
+| `SITE_INDEXABLE`   | `false` for previews; set `true` explicitly on the real HTTPS domain |
+| `GITHUB_URL`       | Optional real HTTPS profile URL                                      |
+| `LINKEDIN_URL`     | Optional real HTTPS profile URL                                      |
+| `TELEGRAM_URL`     | Optional real HTTPS channel/profile URL                              |
+| `INSTAGRAM_URL`    | Optional real HTTPS profile URL                                      |
+| `AUTH_SECRET`      | 32+ random characters; required to enable admin 2FA                  |
+| `SECURITY_CONTACT` | Optional `mailto:` or HTTPS contact for `/.well-known/security.txt`  |
 
 No secrets use a `NEXT_PUBLIC_` prefix. Environment errors identify invalid variable names without printing values. Social links are centrally managed through environment variables or the `SocialLink` table; database values override matching platforms.
 
@@ -77,7 +79,7 @@ Create the one admin account (there is no self-registration):
 npm run admin:create-user -- --email you@example.com
 ```
 
-You'll be prompted for a password (12–200 characters) on stdin. Alternatively, add `--generate-password` to generate and display a random password once; with no email argument, the existing owner email is preserved. Provisioning revokes old sessions. Log in at `/admin/login`. Use Account settings to change the password or sign out other sessions. Sessions last 12 hours; `/admin` is `noindex` and disallowed in `robots.txt`. The CMS supports content editing, resource/image uploads, an uploaded file library and image ordering/descriptions. See [the publishing guide](docs/content.md) and [security tradeoffs](docs/security.md).
+You'll be prompted for a password (12–200 characters) on stdin. Alternatively, add `--generate-password` to generate and display a random password once; with no email argument, the existing owner email is preserved. Provisioning revokes old sessions. Log in at `/admin/login`. Use Account settings to change the password, sign out other sessions, or turn on two-factor authentication (requires `AUTH_SECRET`). Security events are listed at `/admin/audit`. If the authenticator is lost, rerun the command with `--reset-2fa`. Sessions last 12 hours; `/admin` is `noindex` and disallowed in `robots.txt`. The CMS supports content editing, resource/image uploads, an uploaded file library and image ordering/descriptions. See [the publishing guide](docs/content.md) and [security tradeoffs](docs/security.md).
 
 ## Verification and production build
 

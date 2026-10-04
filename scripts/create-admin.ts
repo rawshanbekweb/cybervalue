@@ -16,12 +16,14 @@ async function main() {
       ? args[emailFlagIndex + 1]?.trim().toLowerCase()
       : undefined;
   const generate = args.includes("--generate-password");
+  // Lockout recovery when the authenticator and recovery codes are lost.
+  const resetMfa = args.includes("--reset-2fa");
   if (
     (!suppliedEmail && !generate) ||
     (suppliedEmail && !z.email().safeParse(suppliedEmail).success)
   )
     throw new Error(
-      "Usage: npm run admin:create-user -- --email you@example.com [--generate-password]",
+      "Usage: npm run admin:create-user -- --email you@example.com [--generate-password] [--reset-2fa]",
     );
   if (!env.DATABASE_URL)
     throw new Error("Set DATABASE_URL before creating an admin account");
@@ -59,7 +61,16 @@ async function main() {
           email,
           passwordHash,
         },
-        update: { email, passwordHash },
+        update: {
+          email,
+          passwordHash,
+          ...(resetMfa && {
+            totpSecret: null,
+            totpPendingSecret: null,
+            totpLastStep: null,
+            recoveryCodes: [],
+          }),
+        },
       });
       await tx.session.deleteMany({ where: { userId: account.id } });
       return account;
@@ -68,6 +79,7 @@ async function main() {
       `Admin account ready for ${user.email}. Log in at /admin/login.`,
     );
     if (generate) console.log(`Generated password: ${password}`);
+    if (resetMfa) console.log("Two-factor authentication was turned off.");
   } finally {
     await db.$disconnect();
   }

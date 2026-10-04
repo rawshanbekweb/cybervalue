@@ -21,6 +21,8 @@ function loadEnvironment(
         LINKEDIN_URL: "",
         TELEGRAM_URL: "",
         INSTAGRAM_URL: "",
+        AUTH_SECRET: "",
+        SECURITY_CONTACT: "",
         ...overrides,
       },
     },
@@ -86,4 +88,29 @@ test("valid Telegram URL permits environment initialization", () => {
     TELEGRAM_URL: "https://t.me/valuecyber",
   });
   assert.equal(result.status, 0, result.stderr);
+});
+
+test("security contact and auth secret are validated without echoing values", () => {
+  for (const contact of [
+    "mailto:sec@example.com",
+    "https://example.com/report",
+  ])
+    assert.equal(
+      loadEnvironment("http://localhost:3000", "false", {
+        SECURITY_CONTACT: contact,
+      }).status,
+      0,
+    );
+  const contact = loadEnvironment("http://localhost:3000", "false", {
+    SECURITY_CONTACT: "javascript:alert(1)",
+  });
+  assert.equal(contact.status, 1);
+  assert.match(contact.stderr, /SECURITY_CONTACT must be mailto/);
+
+  const secret = loadEnvironment("http://localhost:3000", "false", {
+    AUTH_SECRET: "short-secret-marker",
+  });
+  assert.equal(secret.status, 1);
+  assert.match(secret.stderr, /AUTH_SECRET must have at least 32 characters/);
+  assert.doesNotMatch(secret.stderr, /short-secret-marker/);
 });

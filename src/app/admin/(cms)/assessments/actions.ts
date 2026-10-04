@@ -2,10 +2,11 @@
 
 import { randomInt } from "node:crypto";
 import { revalidatePath } from "next/cache";
+import { audit } from "@/lib/audit";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/auth";
 import { getDb } from "@/lib/db";
-import { allowRequest } from "@/lib/rate-limit";
+import { limit } from "@/lib/rate-limit-db";
 import { hashCredential, newCode } from "@/lib/html-assessment/service";
 
 export type CreateExamState =
@@ -20,7 +21,7 @@ export async function createExamAction(
   form: FormData,
 ): Promise<CreateExamState> {
   const session = await requireAdmin("/admin/assessments");
-  if (!allowRequest(`exam-create:${session.user.id}`, Date.now(), 10, 60000))
+  if (!(await limit(`exam-create:${session.user.id}`, 10, 60000)))
     return { error: "Biroz kutib qayta urinib ko‘ring." };
   const parsed = z
     .object({
@@ -87,6 +88,7 @@ export async function createExamAction(
       },
     });
     revalidatePath("/admin/assessments");
+    await audit("assessment.create", session.user.id, exam.title);
     return { examId: exam.id, codes };
   } catch {
     return { error: "Sinov yaratilmadi. Qayta urinib ko‘ring." };

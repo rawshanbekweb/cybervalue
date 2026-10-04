@@ -61,6 +61,7 @@ test("robots, sitemap, headers, OG, redirects, missing pages and downloads", asy
 }) => {
   const home = await request.get("/");
   expect(home.headers()["x-content-type-options"]).toBe("nosniff");
+  expect(home.headers()["cross-origin-opener-policy"]).toBe("same-origin");
   expect(home.headers()["content-security-policy"]).toContain(
     "frame-ancestors 'none'",
   );

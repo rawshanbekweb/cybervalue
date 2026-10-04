@@ -18,28 +18,28 @@ model HtmlExam {
 }
 
 model HtmlCandidate {
-  id            String    @id @default(cuid())
-  examId        String
-  exam          HtmlExam  @relation(fields: [examId], references: [id], onDelete: Cascade)
-  studentId     String
-  name          String
-  codeHash      String    @unique
-  sessionHash   String?   @unique
-  variant       Int
-  startedAt     DateTime?
-  deadline      DateTime?
-  submittedAt   DateTime?
-  finishReason  String?
-  revision      Int       @default(0)
-  code          String    @default("") @db.Text
-  answers       Json      @default("{}")
-  explanations  Json      @default("[\"\",\"\"]")
-  signals       Json      @default("{\"hidden\":0,\"paste\":0,\"fullscreen\":0}")
-  autoScore     Int?
-  grading       Json?
-  reviewScore   Int?
-  reviewNote    String    @default("") @db.Text
-  createdAt     DateTime  @default(now())
+  id           String    @id @default(cuid())
+  examId       String
+  exam         HtmlExam  @relation(fields: [examId], references: [id], onDelete: Cascade)
+  studentId    String
+  name         String
+  codeHash     String    @unique
+  sessionHash  String?   @unique
+  variant      Int
+  startedAt    DateTime?
+  deadline     DateTime?
+  submittedAt  DateTime?
+  finishReason String?
+  revision     Int       @default(0)
+  code         String    @default("") @db.Text
+  answers      Json      @default("{}")
+  explanations Json      @default("[\"\",\"\"]")
+  signals      Json      @default("{\"hidden\":0,\"paste\":0,\"fullscreen\":0}")
+  autoScore    Int?
+  grading      Json?
+  reviewScore  Int?
+  reviewNote   String    @default("") @db.Text
+  createdAt    DateTime  @default(now())
 
   @@unique([examId, studentId])
   @@index([examId, submittedAt])
@@ -66,14 +66,22 @@ enum Difficulty {
 }
 
 model User {
-  id           String    @id @default(cuid())
-  name         String
-  email        String?   @unique
-  passwordHash String?
-  content      Content[]
-  sessions     Session[]
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  id                String           @id @default(cuid())
+  name              String
+  email             String?          @unique
+  passwordHash      String?
+  // Two-factor authentication. Secrets are AES-GCM sealed with AUTH_SECRET;
+  // recovery codes are SHA-256 hashes, removed when used.
+  totpSecret        String?
+  totpPendingSecret String?
+  totpLastStep      Int?
+  recoveryCodes     String[]         @default([])
+  content           Content[]
+  sessions          Session[]
+  loginChallenges   LoginChallenge[]
+  adminEvents       AdminEvent[]
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
 }
 
 model Session {
@@ -85,6 +93,33 @@ model Session {
   createdAt DateTime @default(now())
 
   @@index([userId])
+}
+
+// A correct password with 2FA enabled opens a short-lived challenge; the
+// session is created only after the second factor succeeds.
+model LoginChallenge {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String   @unique
+  attempts  Int      @default(0)
+  expiresAt DateTime @db.Timestamptz(3)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+// Append-only record of security-relevant admin activity.
+model AdminEvent {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String
+  target    String?
+  client    String?
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+  @@index([createdAt])
 }
 
 model Content {
@@ -227,4 +262,13 @@ model StoredFile {
   createdAt DateTime @default(now())
 
   @@index([kind, createdAt])
+}
+
+// Fixed-window counters shared by every instance. `key` is a SHA-256 digest.
+model RateLimitBucket {
+  key       String   @id
+  count     Int
+  expiresAt DateTime @db.Timestamptz(3)
+
+  @@index([expiresAt])
 }

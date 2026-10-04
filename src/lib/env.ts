@@ -34,6 +34,19 @@ const schema = z
     LINKEDIN_URL: optional(httpsUrl),
     TELEGRAM_URL: optional(httpsUrl),
     INSTAGRAM_URL: optional(httpsUrl),
+    // Published in /.well-known/security.txt (RFC 9116); omitted when unset.
+    SECURITY_CONTACT: optional(
+      z
+        .string()
+        .max(300)
+        .refine(
+          (v) =>
+            /^mailto:[^\s@]+@[^\s@]+$/.test(v) || httpsUrl.safeParse(v).success,
+          "Use mailto:address or an HTTPS URL",
+        ),
+    ),
+    // Seals admin two-factor secrets. Changing it disables existing enrolments.
+    AUTH_SECRET: optional(z.string().min(32)),
   })
   .superRefine((env, ctx) => {
     const url = URL.canParse(env.SITE_URL) ? new URL(env.SITE_URL) : null;
@@ -55,6 +68,11 @@ if (!result.success) {
   let hint = names.includes("SITE_URL")
     ? " Set SITE_URL to a complete HTTP(S) origin (for production, e.g. https://datalife.uz), without a path, query, or credentials."
     : "";
+  if (names.includes("SECURITY_CONTACT"))
+    hint += " SECURITY_CONTACT must be mailto:you@example.com or an HTTPS URL.";
+  if (names.includes("AUTH_SECRET"))
+    hint +=
+      " AUTH_SECRET must have at least 32 characters, e.g. from `openssl rand -base64 32`.";
   if (
     names.some((name) =>
       ["GITHUB_URL", "LINKEDIN_URL", "TELEGRAM_URL", "INSTAGRAM_URL"].includes(
