@@ -46,13 +46,13 @@ for (const locale of ["uz", "en"] as const)
     page,
   }) => {
     await useLocale(page, locale);
-    for (const module of modules) {
-      await page.goto(module.path);
+    for (const entry of modules) {
+      await page.goto(entry.path);
       await expect(
-        page.getByText(module[locale], { exact: true }).first(),
+        page.getByText(entry[locale], { exact: true }).first(),
       ).toBeVisible();
       await expect(
-        page.getByText(module[locale === "uz" ? "en" : "uz"], { exact: true }),
+        page.getByText(entry[locale === "uz" ? "en" : "uz"], { exact: true }),
       ).toHaveCount(0);
       await expect(page.locator(".content-language-note")).toHaveCount(0);
     }
