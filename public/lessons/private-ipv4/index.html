@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Private IPv4 diapazonlari (RFC 1918): 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 — animatsion o‘zbekcha dars, IP tekshirgich, NAT sxemasi va test.">
+<title>Private IPv4 diapazonlari — Interaktiv dars</title>
+<style>
+/* Layout: one teaching column; each idea is a "sahna" (scene) panel with its own animation and controls. */
+:root{
+  --paper:#f4f5f0; --panel:#ffffff; --ink:#20281f; --muted:#666e63; --line:#dce0d6;
+  --lime:#d3f785; --lime-ink:#4a6a10; --lock:#222d26; --lock-ink:#d3f785;
+  --r1:#1f8a7a; --r1-soft:#d6efe9; --r2:#b7740f; --r2-soft:#f6e6c8; --r3:#6a55c8; --r3-soft:#e5e0f8;
+  --bad:#b4342a; --bad-soft:#f7dcd8; --good:#2c7a2c;
+  --f-display:'Segoe UI Variable Display','Segoe UI',Arial,sans-serif;
+  --f-body:'Segoe UI',Arial,sans-serif;
+  --f-mono:Consolas,'Courier New',monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#141a16; --panel:#1c2420; --ink:#e7ebe2; --muted:#9aa395; --line:#2f3a33;
+  --lime:#d3f785; --lime-ink:#c4ec6e; --lock:#d3f785; --lock-ink:#1a2118;
+  --r1:#4fc9b5; --r1-soft:#173a34; --r2:#e7a646; --r2-soft:#3d2e14; --r3:#a595f2; --r3-soft:#2c2650;
+  --bad:#ef7d72; --bad-soft:#43201c; --good:#86d27c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#141a16; --panel:#1c2420; --ink:#e7ebe2; --muted:#9aa395; --line:#2f3a33;
+  --lime:#d3f785; --lime-ink:#c4ec6e; --lock:#d3f785; --lock-ink:#1a2118;
+  --r1:#4fc9b5; --r1-soft:#173a34; --r2:#e7a646; --r2-soft:#3d2e14; --r3:#a595f2; --r3-soft:#2c2650;
+  --bad:#ef7d72; --bad-soft:#43201c; --good:#86d27c; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;margin:0}
+.back{font-size:14px;color:var(--muted);text-decoration:none}.back:hover{color:var(--ink)}
+.wrap{max-width:1000px;margin:0 auto;padding-inline:20px;padding-block:40px 80px;display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.02em}
+h1{font-size:clamp(34px,6vw,64px);line-height:1.02;font-weight:800}
+h2{font-size:clamp(24px,3.4vw,34px);line-height:1.15;font-weight:800}
+h3{font-size:18px;font-weight:600}
+p{margin:0;max-width:65ch}
+.mono,code{font-family:var(--f-mono)}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.accent{background:var(--lime);color:#20281f;padding:0 .18em;border-radius:6px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--r1);outline-offset:3px}
+
+/* hero */
+.hero{display:grid;gap:22px}
+.hero p.lead{font-size:18px;color:var(--muted)}
+.ranges{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.range{border:1px solid var(--line);background:var(--panel);border-radius:14px;padding:16px;display:grid;gap:6px;position:relative;overflow:hidden}
+.range::before{content:"";position:absolute;inset:0 auto 0 0;width:5px;background:var(--c)}
+.range .cidr{font-family:var(--f-mono);font-weight:700;font-size:22px;color:var(--c)}
+.range .span{font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.range .count{font-size:14px}
+.range .count b{font-variant-numeric:tabular-nums}
+.range.hit{box-shadow:0 0 0 2px var(--c);transform:translateY(-2px)}
+.range{transition:transform .25s,box-shadow .25s}
+.c1{--c:var(--r1);--cs:var(--r1-soft)} .c2{--c:var(--r2);--cs:var(--r2-soft)} .c3{--c:var(--r3);--cs:var(--r3-soft)}
+
+/* scenes */
+.scene{display:grid;gap:18px}
+.scene-head{display:grid;gap:8px}
+.scene-head p{color:var(--muted)}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px;display:grid;gap:18px;min-width:0}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{border:1px solid var(--line);background:transparent;border-radius:999px;padding:7px 14px;font-size:14px}
+.btn:hover{border-color:var(--ink)}
+.btn[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn.primary{background:var(--lime);color:#20281f;border-color:var(--lime);font-weight:600}
+.caption{font-size:15px;min-height:3.2em}
+.caption b{font-family:var(--f-mono)}
+
+/* bits */
+.bits-scroll{overflow-x:auto;padding-bottom:4px}
+.bits{display:grid;grid-template-columns:repeat(4,auto);gap:10px;justify-content:start;min-width:max-content}
+.octet{display:grid;gap:6px;justify-items:center}
+.octet .dec{font-family:var(--f-mono);font-weight:700;font-size:26px;font-variant-numeric:tabular-nums;line-height:1}
+.octet .dec.free{color:var(--muted)}
+.octet .row{display:flex;gap:3px}
+.bit{width:22px;height:30px;border-radius:5px;display:grid;place-items:center;font-family:var(--f-mono);font-size:14px;font-weight:600;border:1px solid var(--line);background:var(--paper);transition:background .2s,color .2s}
+.bit.fixed{background:var(--c);border-color:var(--c);color:var(--panel)}
+.bit.flip{animation:flip .35s ease}
+@keyframes flip{0%{transform:rotateX(90deg)}100%{transform:rotateX(0)}}
+.addr{font-family:var(--f-mono);font-size:clamp(22px,4vw,34px);font-weight:700;font-variant-numeric:tabular-nums}
+.addr .net{color:var(--c)}
+.addr .host{color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:14px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.sw{width:14px;height:14px;border-radius:4px;display:inline-block;border:1px solid var(--line)}
+.sw.fixed{background:var(--c);border-color:var(--c)}
+.sw.free{background:var(--paper)}
+.minmax{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.minmax div{border:1px dashed var(--line);border-radius:12px;padding:10px 14px;display:grid;gap:2px}
+.minmax small{color:var(--muted);font-size:13px}
+.minmax code{font-weight:600;font-size:16px}
+
+/* /12 scan */
+.scan{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:6px}
+.chip{border:1px solid var(--line);border-radius:8px;padding:6px 2px;text-align:center;font-family:var(--f-mono);font-size:13px;font-variant-numeric:tabular-nums;transition:transform .2s,background .2s,box-shadow .2s}
+.chip.in{background:var(--r2-soft);border-color:var(--r2)}
+.chip.out{color:var(--muted);text-decoration:line-through}
+.chip.now{transform:scale(1.12);box-shadow:0 0 0 2px var(--ink)}
+.readout{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;align-items:center}
+.readout .big{font-family:var(--f-mono);font-weight:700;font-size:clamp(22px,4vw,30px)}
+.readout .bin{font-family:var(--f-mono);font-size:clamp(20px,3.6vw,28px);letter-spacing:.06em}
+.readout .bin .lockbits{background:var(--r2);color:var(--panel);border-radius:6px;padding:0 4px}
+.readout .bin .lockbits.wrong{background:var(--bad)}
+.verdict{font-weight:600}
+.verdict.ok{color:var(--good)} .verdict.no{color:var(--bad)}
+
+/* scale grids */
+.grids{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-end}
+.gbox{display:grid;gap:10px;justify-items:start}
+.grid{display:grid;gap:2px}
+.cell{width:var(--cell);height:var(--cell);border-radius:2px;background:var(--line);transition:background .3s}
+.cell.on{background:var(--c)}
+.gbox .lbl{font-family:var(--f-mono);font-weight:700;color:var(--c)}
+.gbox .num{font-variant-numeric:tabular-nums;font-size:14px;color:var(--muted)}
+.scale-note{font-size:14px;color:var(--muted)}
+.grids{--cell:12px}
+@media (max-width:520px){.grids{--cell:8px}}
+
+/* checker */
+.check-form{display:flex;flex-wrap:wrap;gap:10px}
+.check-form label{flex-basis:100%;font-size:14px;color:var(--muted)}
+.check-form input{flex:1 1 220px;min-width:0;font-family:var(--f-mono);font-size:20px;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+.examples{display:flex;flex-wrap:wrap;gap:6px}
+.examples button{font-family:var(--f-mono);font-size:13px;border:1px dashed var(--line);background:transparent;border-radius:8px;padding:4px 9px}
+.examples button:hover{border-style:solid;border-color:var(--ink)}
+.result{border-radius:14px;padding:14px 16px;display:grid;gap:4px;border:1px solid var(--line)}
+.result.priv{background:var(--cs);border-color:var(--c)}
+.result.pub{background:var(--paper)}
+.result.err{background:var(--bad-soft);border-color:var(--bad)}
+.result strong{font-family:var(--f-display);font-size:20px}
+.cmp{overflow-x:auto}
+.cmp table{border-collapse:collapse;font-size:14px;min-width:520px;width:100%}
+.cmp th,.cmp td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+.cmp th{font-weight:500;color:var(--muted);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.cmp td.mono{font-family:var(--f-mono);letter-spacing:.04em}
+.cmp .x{color:var(--bad);font-weight:700;text-decoration:underline}
+.cmp .ok{color:var(--good);font-weight:700}
+.cmp .no{color:var(--bad);font-weight:700}
+
+/* NAT */
+.track{position:relative;height:210px}
+.nodes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));position:absolute;inset:auto 0 0 0;gap:6px}
+.node{display:grid;justify-items:center;gap:4px;text-align:center}
+.node .ico{width:56px;height:56px;border-radius:14px;border:1px solid var(--line);background:var(--paper);display:grid;place-items:center}
+.node .ico svg{width:30px;height:30px;stroke:var(--ink);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.node.router .ico{background:var(--lime);border-color:var(--lime)}
+.node.router .ico svg{stroke:#20281f}
+.node b{font-size:13px}
+.node small{font-family:var(--f-mono);font-size:11px;color:var(--muted);overflow-wrap:anywhere}
+.wire{position:absolute;left:12.5%;right:12.5%;bottom:88px;height:2px;background:repeating-linear-gradient(90deg,var(--line) 0 8px,transparent 8px 14px)}
+.zone{position:absolute;bottom:0;top:0;border-radius:12px}
+.zone.lan{left:0;width:37.5%;background:var(--r3-soft);opacity:.55}
+.zone-l{position:absolute;top:6px;font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;color:var(--muted)}
+.packet{position:absolute;top:8px;left:0;transform:translateX(0);transition:left .9s cubic-bezier(.6,.05,.3,1);background:var(--ink);color:var(--paper);border-radius:10px;padding:6px 10px;font-family:var(--f-mono);font-size:11px;line-height:1.5;white-space:nowrap;box-shadow:0 6px 16px rgba(0,0,0,.18)}
+.packet .k{opacity:.6}
+.packet .chg{background:var(--lime);color:#20281f;border-radius:4px;padding:0 3px;animation:pop .5s ease}
+@keyframes pop{0%{transform:scale(1.4)}100%{transform:scale(1)}}
+.nat-table{overflow-x:auto}
+.nat-table table{border-collapse:collapse;font-family:var(--f-mono);font-size:13px;min-width:440px}
+.nat-table td,.nat-table th{padding:6px 12px;border:1px solid var(--line);text-align:left}
+.nat-table th{font-family:var(--f-body);font-weight:500;font-size:12px;color:var(--muted)}
+.nat-table tr.new td{animation:rowin .6s ease}
+@keyframes rowin{0%{background:var(--lime)}100%{background:transparent}}
+.dots{display:flex;gap:6px}
+.dots i{width:8px;height:8px;border-radius:50%;background:var(--line);display:block}
+.dots i.on{background:var(--ink)}
+
+.homes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.home{border:1px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:6px;background:var(--paper)}
+.home code{font-size:14px;font-weight:600;color:var(--r3)}
+.home small{font-size:12px;color:var(--muted)}
+
+/* notes + quiz */
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.fact{border-top:2px solid var(--ink);padding-top:10px;display:grid;gap:4px}
+.fact p{font-size:15px;color:var(--muted)}
+.quiz{display:grid;gap:14px}
+.q{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:10px}
+.q .opts{display:flex;flex-wrap:wrap;gap:8px}
+.q .opts button{border:1px solid var(--line);background:var(--paper);border-radius:10px;padding:7px 12px;font-size:14px}
+.q .opts button.right{background:var(--r1-soft);border-color:var(--good);color:var(--ink)}
+.q .opts button.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.q .why{font-size:14px;color:var(--muted)}
+.score{font-family:var(--f-mono);font-size:14px;color:var(--muted)}
+footer{font-size:13px;color:var(--muted)}
+
+@media (max-width:720px){
+  .ranges,.facts{grid-template-columns:1fr}
+  .scan{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .homes{grid-template-columns:1fr}
+  .minmax{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <a class="back" href="/resources">← Resurslar</a>
+
+  <header class="hero">
+    <span class="eyebrow">Manzillash · RFC 1918</span>
+    <h1>Private IPv4<br><span class="accent">diapazonlari</span></h1>
+    <p class="lead">Uchta manzil bloki faqat ichki tarmoqlar uchun ajratilgan. Ular global Internetda yo‘naltirilmaydi, shuning uchun har bir uy, ofis yoki maktab ulardan bemalol qayta foydalanadi.</p>
+    <div class="ranges" id="rangeCards">
+      <div class="range c1" data-r="0"><span class="cidr">10.0.0.0/8</span><span class="span">10.0.0.0 – 10.255.255.255</span><span class="count"><b data-count="16777216">16 777 216</b> ta manzil</span></div>
+      <div class="range c2" data-r="1"><span class="cidr">172.16.0.0/12</span><span class="span">172.16.0.0 – 172.31.255.255</span><span class="count"><b data-count="1048576">1 048 576</b> ta manzil</span></div>
+      <div class="range c3" data-r="2"><span class="cidr">192.168.0.0/16</span><span class="span">192.168.0.0 – 192.168.255.255</span><span class="count"><b data-count="65536">65 536</b> ta manzil</span></div>
+    </div>
+  </header>
+
+  <!-- 1. bits -->
+  <section class="scene" aria-labelledby="s1">
+    <div class="scene-head">
+      <span class="eyebrow">1-sahna · /8, /12, /16 nimani anglatadi</span>
+      <h2 id="s1">Prefix bitlari qulflangan, qolganlari erkin</h2>
+      <p>IPv4 manzil 32 bitdan iborat. Slashdan keyingi son nechta bit o‘zgarmasligini aytadi. Qolgan bitlar istalgan qiymat olishi mumkin va diapazon ichidagi barcha manzillarni hosil qiladi.</p>
+    </div>
+    <div class="stage" id="bitStage">
+      <div class="controls" role="group" aria-label="Diapazonni tanlang">
+        <button class="btn" data-pick="0" aria-pressed="true">10.0.0.0/8</button>
+        <button class="btn" data-pick="1" aria-pressed="false">172.16.0.0/12</button>
+        <button class="btn" data-pick="2" aria-pressed="false">192.168.0.0/16</button>
+      </div>
+      <div class="bits-scroll"><div class="bits" id="bits"></div></div>
+      <div class="addr" id="addr" aria-live="polite"></div>
+      <div class="legend">
+        <span><i class="sw fixed"></i><span id="lgFixed"></span></span>
+        <span><i class="sw free"></i><span id="lgFree"></span></span>
+      </div>
+      <div class="minmax">
+        <div><small>Barcha host bitlari 0 → eng kichik</small><code id="mmMin"></code></div>
+        <div><small>Barcha host bitlari 1 → eng katta</small><code id="mmMax"></code></div>
+      </div>
+      <div class="controls">
+        <button class="btn primary" id="bitPlay" aria-pressed="true">⏸ To‘xtatish</button>
+        <button class="btn" id="bitMin">Hammasi 0</button>
+        <button class="btn" id="bitMax">Hammasi 1</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. /12 -->
+  <section class="scene" aria-labelledby="s2">
+    <div class="scene-head">
+      <span class="eyebrow">2-sahna · eng ko‘p chalg‘itadigan qism</span>
+      <h2 id="s2">Nega /12 aynan 172.16 dan 172.31 gacha?</h2>
+      <p>/12 da 8 bit birinchi oktetga, yana 4 bit ikkinchi oktetga tushadi. Ikkinchi oktetning boshidagi 4 bit doim <code>0001</code> bo‘lishi kerak. Bunday sonlar faqat 16 dan 31 gacha.</p>
+    </div>
+    <div class="stage">
+      <div class="scan" id="scan"></div>
+      <div class="readout">
+        <span class="big" id="scanIp"></span>
+        <span class="bin" id="scanBin"></span>
+        <span></span>
+        <span class="verdict" id="scanVerdict" aria-live="polite"></span>
+      </div>
+      <div class="controls">
+        <button class="btn primary" id="scanPlay" aria-pressed="true">⏸ To‘xtatish</button>
+        <span class="scale-note">Istalgan katakchani bosib, uni alohida ko‘ring.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. scale -->
+  <section class="scene" aria-labelledby="s3">
+    <div class="scene-head">
+      <span class="eyebrow">3-sahna · hajmlarni solishtiramiz</span>
+      <h2 id="s3">Har bir qulflangan bit hajmni ikki baravar kamaytiradi</h2>
+      <p>Har bir katak 65 536 ta manzil, ya’ni bitta /16 blok. /8 dan /12 ga o‘tganda 4 bit qulflanadi: 2⁴ = 16 marta kichik. /12 dan /16 ga o‘tganda yana 16 marta.</p>
+    </div>
+    <div class="stage">
+      <div class="grids" id="grids"></div>
+      <p class="scale-note">Masshtab bir xil: katakchalar o‘lchami uchala blokda teng.</p>
+      <div class="controls"><button class="btn primary" id="gridReplay">↺ Qayta ko‘rsatish</button></div>
+    </div>
+  </section>
+
+  <!-- 4. checker -->
+  <section class="scene" aria-labelledby="s4">
+    <div class="scene-head">
+      <span class="eyebrow">4-sahna · o‘zingiz tekshiring</span>
+      <h2 id="s4">Bu manzil private mi?</h2>
+      <p>Tekshirish usuli: manzilning dastlabki prefix bitlari diapazon prefixi bilan to‘liq mos kelishi kerak. Bitta bit farq qilsa ham manzil o‘sha diapazonga kirmaydi.</p>
+    </div>
+    <div class="stage">
+      <form class="check-form" id="checkForm" autocomplete="off">
+        <label for="ipInput">IPv4 manzil kiriting</label>
+        <input id="ipInput" name="ip" value="172.20.5.1" inputmode="decimal" spellcheck="false" aria-describedby="checkResult">
+        <button class="btn primary" type="submit">Tekshirish</button>
+      </form>
+      <div class="examples" id="examples" aria-label="Misollar">
+        <button type="button">10.20.30.40</button><button type="button">172.15.0.1</button><button type="button">172.31.255.254</button><button type="button">172.32.0.1</button><button type="button">192.168.1.25</button><button type="button">192.169.0.1</button><button type="button">8.8.8.8</button><button type="button">127.0.0.1</button><button type="button">169.254.10.5</button><button type="button">100.64.0.1</button>
+      </div>
+      <div class="result" id="checkResult" aria-live="polite"></div>
+      <div class="cmp" id="cmp"></div>
+    </div>
+  </section>
+
+  <!-- 5. NAT -->
+  <section class="scene" aria-labelledby="s5">
+    <div class="scene-head">
+      <span class="eyebrow">5-sahna · private manzil Internetga qanday chiqadi</span>
+      <h2 id="s5">NAT manzilni chegarada almashtiradi</h2>
+      <p>Private manzil Internetda yo‘naltirilmaydi. Router paketdagi source manzil va portni o‘zining public manziliga almashtiradi, mosligini jadvalda saqlaydi va javobni ortga qaytaradi.</p>
+    </div>
+    <div class="stage">
+      <div class="track" id="track">
+        <div class="zone lan"><span class="zone-l" style="left:10px">ICHKI TARMOQ · 192.168.1.0/24</span></div>
+        <div class="wire"></div>
+        <div class="packet" id="packet"></div>
+        <div class="nodes">
+          <div class="node"><span class="ico"><svg viewBox="0 0 32 32"><rect x="6" y="7" width="20" height="13" rx="2"/><path d="M3 25h26"/></svg></span><b>Noutbuk</b><small>192.168.1.10</small></div>
+          <div class="node router"><span class="ico"><svg viewBox="0 0 32 32"><rect x="4" y="16" width="24" height="9" rx="2"/><path d="M10 16 8 8M22 16l2-8M9 21h2M14 21h2"/></svg></span><b>Router · NAT</b><small>ichki 192.168.1.1<br>tashqi 203.0.113.10</small></div>
+          <div class="node"><span class="ico"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="11"/><path d="M5 16h22M16 5c4 4 4 18 0 22M16 5c-4 4-4 18 0 22"/></svg></span><b>Internet</b><small>faqat public manzillar</small></div>
+          <div class="node"><span class="ico"><svg viewBox="0 0 32 32"><rect x="8" y="5" width="16" height="22" rx="2"/><path d="M12 10h8M12 14h8M16 22h0"/></svg></span><b>Server</b><small>198.51.100.20</small></div>
+        </div>
+      </div>
+      <p class="caption" id="natCaption" aria-live="polite"></p>
+      <div class="nat-table">
+        <table><thead><tr><th>Ichki manzil : port</th><th>Tashqi manzil : port</th></tr></thead><tbody id="natBody"><tr><td colspan="2" style="color:var(--muted);font-family:var(--f-body)">Jadval hozircha bo‘sh</td></tr></tbody></table>
+      </div>
+      <div class="controls">
+        <button class="btn" id="natBack" aria-label="Oldingi bosqich">←</button>
+        <button class="btn primary" id="natNext">Keyingi bosqich →</button>
+        <button class="btn" id="natAuto" aria-pressed="false">▶ Avtomatik</button>
+        <span class="dots" id="natDots" aria-hidden="true"></span>
+      </div>
+      <p class="scale-note">203.0.113.10 va 198.51.100.20 hujjatlar uchun ajratilgan misol manzillar.</p>
+    </div>
+
+    <div class="stage">
+      <h3>Bir xil manzil, turli uylar</h3>
+      <p class="scale-note">Private manzillar har bir tarmoqda qayta ishlatiladi. Agar ular Internetda yo‘naltirilsa, router <code>192.168.1.10</code> qaysi uydagi qurilma ekanini bila olmasdi.</p>
+      <div class="homes">
+        <div class="home"><b>Aliyevlar uyi</b><code>192.168.1.10</code><small>tashqi: 203.0.113.10</small></div>
+        <div class="home"><b>Maktab kompyuter xonasi</b><code>192.168.1.10</code><small>tashqi: 203.0.113.55</small></div>
+        <div class="home"><b>Kichik ofis</b><code>192.168.1.10</code><small>tashqi: 198.51.100.7</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" aria-labelledby="s6">
+    <div class="scene-head">
+      <span class="eyebrow">Esda tuting</span>
+      <h2 id="s6">To‘rtta muhim xulosa</h2>
+    </div>
+    <div class="facts">
+      <div class="fact"><h3>Private ≠ xavfsiz</h3><p>Private manzil qurilmani himoya qilmaydi. Ichki tarmoqdagi hujumchi ham shu manzillarga bemalol ulanadi.</p></div>
+      <div class="fact"><h3>NAT ≠ firewall</h3><p>NAT manzilni almashtiradi. Trafikka ruxsat berish yoki uni bloklash firewall qoidalariga bog‘liq.</p></div>
+      <div class="fact"><h3>172.16/12 chegarasi</h3><p>172.15.x.x va 172.32.x.x private emas. Faqat 172.16 – 172.31 oralig‘i kiradi.</p></div>
+      <div class="fact"><h3>Boshqa maxsus manzillar</h3><p>127.0.0.0/8 (loopback), 169.254.0.0/16 (link-local) va 100.64.0.0/10 (provayder NATi) ham maxsus, lekin RFC 1918 ga kirmaydi.</p></div>
+    </div>
+  </section>
+
+  <section class="scene" aria-labelledby="s7">
+    <div class="scene-head">
+      <span class="eyebrow">Tekshiruv</span>
+      <h2 id="s7">Beshta savol</h2>
+      <span class="score" id="score">0 / 5 to‘g‘ri</span>
+    </div>
+    <div class="quiz" id="quiz"></div>
+  </section>
+
+  <footer>Manba: <a href="https://www.rfc-editor.org/rfc/rfc1918" style="color:inherit">RFC 1918 — Address Allocation for Private Internets</a>.</footer>
+</main>
+
+<script>
+(() => {
+'use strict';
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = s => document.querySelector(s);
+const fmt = n => n.toLocaleString('ru-RU').replace(/ /g,' ');
+const toInt = o => ((o[0]<<24)>>>0) + (o[1]<<16) + (o[2]<<8) + o[3];
+const toOct = n => [n>>>24, (n>>>16)&255, (n>>>8)&255, n&255];
+const maskOf = p => p === 0 ? 0 : (0xffffffff << (32-p))>>>0;
+const RANGES = [
+  {net:[10,0,0,0], p:8, cls:'c1', name:'10.0.0.0/8'},
+  {net:[172,16,0,0], p:12, cls:'c2', name:'172.16.0.0/12'},
+  {net:[192,168,0,0], p:16, cls:'c3', name:'192.168.0.0/16'}
+];
+
+/* ---------- 1. bits ---------- */
+const bitsEl = $('#bits'), stage = $('#bitStage');
+let cur = 0, host = 0, bitTimer = null, prevBits = '';
+function buildBits(){
+  const r = RANGES[cur];
+  stage.className = 'stage ' + r.cls;
+  bitsEl.innerHTML = [0,1,2,3].map(o => `<div class="octet"><span class="dec" id="d${o}"></span><div class="row">${
+    Array.from({length:8},(_,i)=>{const k=o*8+i;return `<span class="bit${k<r.p?' fixed':''}" id="b${k}"></span>`}).join('')}</div></div>`).join('');
+  const free = 32 - r.p;
+  $('#lgFixed').textContent = `Qulflangan prefix: ${r.p} bit`;
+  $('#lgFree').textContent = `Erkin host qismi: ${free} bit → 2^${free} = ${fmt(2**free)} manzil`;
+  const base = toInt(r.net);
+  $('#mmMin').textContent = toOct(base).join('.');
+  $('#mmMax').textContent = toOct((base | (~maskOf(r.p)>>>0))>>>0).join('.');
+  prevBits = '';
+  document.querySelectorAll('[data-pick]').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.pick === cur)));
+  document.querySelectorAll('#rangeCards .range').forEach(c => c.classList.toggle('hit', +c.dataset.r === cur));
+}
+function drawBits(){
+  const r = RANGES[cur];
+  const ip = (toInt(r.net) | host)>>>0;
+  const s = ip.toString(2).padStart(32,'0');
+  for(let k=0;k<32;k++){
+    const el = document.getElementById('b'+k);
+    if(prevBits[k] !== s[k]){el.textContent = s[k]; if(prevBits){el.classList.remove('flip'); void el.offsetWidth; el.classList.add('flip');}}
+  }
+  prevBits = s;
+  const oc = toOct(ip);
+  oc.forEach((v,o) => {const d = document.getElementById('d'+o); d.textContent = v; d.classList.toggle('free', o*8 >= r.p);});
+  // colour the fully-locked octets in the address readout
+  const lockedOct = Math.floor(r.p/8), partial = r.p % 8 ? 1 : 0;
+  $('#addr').innerHTML = oc.map((v,o) => `<span class="${o < lockedOct + partial ? 'net' : 'host'}">${v}</span>`).join('.') + `<span class="net">/${r.p}</span>`;
+}
+function randomHost(){ const free = 32 - RANGES[cur].p; host = Math.floor(Math.random()*2**free)>>>0; drawBits(); }
+function setPlay(on){
+  clearInterval(bitTimer); bitTimer = null;
+  $('#bitPlay').setAttribute('aria-pressed', String(on));
+  $('#bitPlay').textContent = on ? '⏸ To‘xtatish' : '▶ Aylantirish';
+  if(on) bitTimer = setInterval(randomHost, 1100);
+}
+document.querySelectorAll('[data-pick]').forEach(b => b.addEventListener('click', () => {cur = +b.dataset.pick; buildBits(); randomHost();}));
+$('#bitPlay').addEventListener('click', () => setPlay(!bitTimer));
+$('#bitMin').addEventListener('click', () => {setPlay(false); host = 0; drawBits();});
+$('#bitMax').addEventListener('click', () => {setPlay(false); host = (~maskOf(RANGES[cur].p))>>>0; drawBits();});
+document.querySelectorAll('#rangeCards .range').forEach(c => c.addEventListener('click', () => {cur = +c.dataset.r; buildBits(); randomHost();}));
+buildBits(); host = 0x0a1419 & ((~maskOf(8))>>>0); drawBits(); setPlay(!reduce);
+
+/* ---------- 2. /12 scan ---------- */
+const scanVals = Array.from({length:20},(_,i)=>i+14); // 14..33
+const scanEl = $('#scan');
+scanEl.innerHTML = scanVals.map(v => `<button type="button" class="chip ${v>=16&&v<=31?'in':'out'}" data-v="${v}">172.${v}</button>`).join('');
+let scanIdx = 0, scanTimer = null;
+function showScan(v){
+  scanEl.querySelectorAll('.chip').forEach(c => c.classList.toggle('now', +c.dataset.v === v));
+  const b = v.toString(2).padStart(8,'0'), ok = b.slice(0,4) === '0001';
+  $('#scanIp').textContent = `172.${v}.x.x`;
+  $('#scanBin').innerHTML = `10101100.<span class="lockbits${ok?'':' wrong'}">${b.slice(0,4)}</span>${b.slice(4)}`;
+  const v2 = $('#scanVerdict');
+  v2.className = 'verdict ' + (ok ? 'ok' : 'no');
+  v2.textContent = ok ? `Boshidagi 4 bit 0001 → 172.16.0.0/12 ichida` : `Boshidagi 4 bit ${b.slice(0,4)}, 0001 emas → private emas`;
+}
+function scanPlay(on){
+  clearInterval(scanTimer); scanTimer = null;
+  $('#scanPlay').setAttribute('aria-pressed', String(on));
+  $('#scanPlay').textContent = on ? '⏸ To‘xtatish' : '▶ Davom ettirish';
+  if(on) scanTimer = setInterval(() => {scanIdx = (scanIdx+1) % scanVals.length; showScan(scanVals[scanIdx]);}, 900);
+}
+scanEl.addEventListener('click', e => {const c = e.target.closest('.chip'); if(!c) return; scanPlay(false); scanIdx = scanVals.indexOf(+c.dataset.v); showScan(+c.dataset.v);});
+$('#scanPlay').addEventListener('click', () => scanPlay(!scanTimer));
+showScan(16); scanIdx = 2; scanPlay(!reduce);
+
+/* ---------- 3. scale grids ---------- */
+const gridSpec = [{side:16, ...RANGES[0], n:16777216},{side:4, ...RANGES[1], n:1048576},{side:1, ...RANGES[2], n:65536}];
+$('#grids').innerHTML = gridSpec.map((g,i) => `<div class="gbox ${g.cls}"><div class="grid" style="grid-template-columns:repeat(${g.side},var(--cell))">${'<span class="cell"></span>'.repeat(g.side*g.side)}</div><span class="lbl">/${g.p}</span><span class="num">${g.side*g.side} katak · ${fmt(g.n)} manzil</span></div>`).join('');
+function playGrids(){
+  const boxes = [...document.querySelectorAll('#grids .gbox')];
+  boxes.forEach(b => b.querySelectorAll('.cell').forEach(c => c.classList.remove('on')));
+  if(reduce){boxes.forEach(b => b.querySelectorAll('.cell').forEach(c => c.classList.add('on'))); return;}
+  boxes.forEach((b,bi) => {
+    const cells = [...b.querySelectorAll('.cell')];
+    cells.forEach((c,i) => setTimeout(() => c.classList.add('on'), bi*250 + i*(1400/cells.length)));
+  });
+}
+$('#gridReplay').addEventListener('click', playGrids);
+const gridObs = 'IntersectionObserver' in window ? new IntersectionObserver(es => {if(es.some(e=>e.isIntersecting)){playGrids(); gridObs.disconnect();}},{threshold:.4}) : null;
+if(gridObs) gridObs.observe($('#grids')); else playGrids();
+// grids show filled before the observer fires, so the still frame is complete
+document.querySelectorAll('#grids .cell').forEach(c => c.classList.add('on'));
+
+/* ---------- 4. checker ---------- */
+const SPECIAL = [
+  {net:[127,0,0,0],p:8,t:'Loopback (127.0.0.0/8): qurilmaning o‘ziga murojaat.'},
+  {net:[169,254,0,0],p:16,t:'Link-local (169.254.0.0/16): DHCP javob bermaganda avtomatik beriladi.'},
+  {net:[100,64,0,0],p:10,t:'Shared address space (100.64.0.0/10): provayderlarning CGNAT tarmog‘i, RFC 6598.'},
+  {net:[0,0,0,0],p:8,t:'0.0.0.0/8: “bu tarmoq” uchun ajratilgan maxsus blok.'},
+  {net:[192,0,2,0],p:24,t:'Hujjatlar uchun misol blok (TEST-NET-1).'},
+  {net:[198,51,100,0],p:24,t:'Hujjatlar uchun misol blok (TEST-NET-2).'},
+  {net:[203,0,113,0],p:24,t:'Hujjatlar uchun misol blok (TEST-NET-3).'},
+  {net:[224,0,0,0],p:4,t:'Multicast (224.0.0.0/4).'},
+  {net:[240,0,0,0],p:4,t:'Zaxiralangan blok (240.0.0.0/4), 255.255.255.255 broadcast ham shu yerda.'}
+];
+const inNet = (ip,r) => ((ip & maskOf(r.p))>>>0) === toInt(r.net);
+function parse(s){
+  s = s.trim();
+  if(!/^\d{1,3}(\.\d{1,3}){3}$/.test(s)) return null;
+  const o = s.split('.').map(Number);
+  return o.every(x => x <= 255) ? o : null;
+}
+function check(){
+  const raw = $('#ipInput').value, o = parse(raw), res = $('#checkResult');
+  document.querySelectorAll('#rangeCards .range').forEach(c => c.classList.remove('hit'));
+  if(!o){
+    res.className = 'result err';
+    res.innerHTML = `<strong>Manzil formati noto‘g‘ri</strong><span>To‘rtta sonni nuqta bilan yozing, har biri 0–255 oralig‘ida. Masalan: 192.168.1.25</span>`;
+    $('#cmp').innerHTML = ''; return;
+  }
+  const ip = toInt(o), hit = RANGES.findIndex(r => inNet(ip,r));
+  if(hit >= 0){
+    const r = RANGES[hit];
+    res.className = 'result priv ' + r.cls;
+    res.innerHTML = `<strong>Private manzil · ${r.name}</strong><span>${o.join('.')} ichki tarmoq uchun ajratilgan diapazonga kiradi. Internetga NAT orqali chiqadi.</span>`;
+    document.querySelector(`#rangeCards [data-r="${hit}"]`).classList.add('hit');
+  } else {
+    const sp = SPECIAL.find(r => inNet(ip,r));
+    res.className = 'result pub';
+    res.innerHTML = sp
+      ? `<strong>Private emas, lekin maxsus manzil</strong><span>${sp.t} RFC 1918 diapazonlariga kirmaydi.</span>`
+      : `<strong>Private emas</strong><span>${o.join('.')} uchala private diapazonning hech biriga kirmaydi. Bu global Internetda yo‘naltiriladigan public manzil.</span>`;
+  }
+  const bits = ip.toString(2).padStart(32,'0');
+  const row = r => {
+    const need = toInt(r.net).toString(2).padStart(32,'0').slice(0,r.p), got = bits.slice(0,r.p);
+    const mark = [...got].map((b,i) => (i && i%8===0 ? '.' : '') + (b === need[i] ? b : `<span class="x">${b}</span>`)).join('');
+    const needDot = [...need].map((b,i) => (i && i%8===0 ? '.' : '') + b).join('');
+    const ok = got === need;
+    return `<tr><td class="mono">${r.name}</td><td class="mono">${needDot}</td><td class="mono">${mark}</td><td class="${ok?'ok':'no'}">${ok?'✓ mos':'✗ farq bor'}</td></tr>`;
+  };
+  $('#cmp').innerHTML = `<table><thead><tr><th>Diapazon</th><th>Kerakli prefix bitlari</th><th>Sizning manzilingiz</th><th>Natija</th></tr></thead><tbody>${RANGES.map(row).join('')}</tbody></table>`;
+}
+$('#checkForm').addEventListener('submit', e => {e.preventDefault(); check();});
+$('#examples').addEventListener('click', e => {const b = e.target.closest('button'); if(!b) return; $('#ipInput').value = b.textContent; check();});
+check();
+
+/* ---------- 5. NAT ---------- */
+const S = (k,v,chg) => `<span class="k">${k}</span> ${chg?`<span class="chg">${v}</span>`:v}`;
+const NAT = [
+  {at:0, src:['192.168.1.10:51514'], dst:['198.51.100.20:443'], cap:'Noutbuk serverga paket tayyorlaydi. Source — private manzil <b>192.168.1.10</b>, port <b>51514</b>.', table:false},
+  {at:1, src:['192.168.1.10:51514'], dst:['198.51.100.20:443'], cap:'Paket default gateway, ya’ni routerga keladi. Bu manzil bilan Internetga chiqib bo‘lmaydi.', table:false},
+  {at:1, src:['203.0.113.10:40001',1], dst:['198.51.100.20:443'], cap:'Router source manzil va portni o‘zining tashqi <b>203.0.113.10:40001</b> manziliga almashtiradi va mosligini NAT jadvaliga yozadi.', table:true, fresh:true},
+  {at:3, src:['203.0.113.10:40001'], dst:['198.51.100.20:443'], cap:'Server faqat routerning public manzilini ko‘radi. Ichki 192.168.1.10 manzili Internetga chiqmaydi.', table:true},
+  {at:1, src:['198.51.100.20:443'], dst:['203.0.113.10:40001'], cap:'Javob <b>203.0.113.10:40001</b> ga qaytadi. Router jadvaldan bu port qaysi ichki qurilmaga tegishli ekanini topadi.', table:true},
+  {at:0, src:['198.51.100.20:443'], dst:['192.168.1.10:51514',1], cap:'Router destination manzilni <b>192.168.1.10:51514</b> ga almashtiradi va javob noutbukka yetib boradi.', table:true}
+];
+let natI = 0, natTimer = null;
+const packet = $('#packet'), track = $('#track');
+$('#natDots').innerHTML = NAT.map(() => '<i></i>').join('');
+function placePacket(at){
+  const w = track.clientWidth, pw = packet.offsetWidth;
+  const centre = w * (0.125 + at*0.25);
+  packet.style.left = Math.max(0, Math.min(w - pw, centre - pw/2)) + 'px';
+}
+function drawNat(){
+  const s = NAT[natI];
+  packet.innerHTML = `${S('src',s.src[0],s.src[1])}<br>${S('dst',s.dst[0],s.dst[1])}`;
+  placePacket(s.at);
+  $('#natCaption').innerHTML = `<b>${natI+1}/${NAT.length}.</b> ` + s.cap;
+  $('#natBody').innerHTML = s.table
+    ? `<tr class="${s.fresh?'new':''}"><td>192.168.1.10:51514</td><td>203.0.113.10:40001</td></tr>`
+    : `<tr><td colspan="2" style="color:var(--muted);font-family:var(--f-body)">Jadval hozircha bo‘sh</td></tr>`;
+  document.querySelectorAll('#natDots i').forEach((d,i) => d.classList.toggle('on', i === natI));
+  $('#natBack').disabled = natI === 0;
+  $('#natNext').textContent = natI === NAT.length-1 ? '↺ Boshidan' : 'Keyingi bosqich →';
+}
+function natAuto(on){
+  clearInterval(natTimer); natTimer = null;
+  $('#natAuto').setAttribute('aria-pressed', String(on));
+  $('#natAuto').textContent = on ? '⏸ Pauza' : '▶ Avtomatik';
+  if(on) natTimer = setInterval(() => {natI = (natI+1) % NAT.length; drawNat();}, 3200);
+}
+$('#natNext').addEventListener('click', () => {natAuto(false); natI = (natI+1) % NAT.length; drawNat();});
+$('#natBack').addEventListener('click', () => {natAuto(false); if(natI>0){natI--; drawNat();}});
+$('#natAuto').addEventListener('click', () => natAuto(!natTimer));
+addEventListener('resize', () => placePacket(NAT[natI].at));
+drawNat();
+
+/* ---------- quiz ---------- */
+const QUIZ = [
+  {q:'172.31.255.254 private manzilmi?', o:['Ha','Yo‘q'], a:0, why:'172.16.0.0/12 diapazoni 172.31.255.255 gacha davom etadi.'},
+  {q:'172.32.0.1 private manzilmi?', o:['Ha','Yo‘q'], a:1, why:'Ikkinchi oktet 32 = 00100000. Boshidagi 4 bit 0010, kerakligi esa 0001.'},
+  {q:'172.16.0.0/12 diapazonida nechta manzil bor?', o:['65 536','1 048 576','16 777 216'], a:1, why:'Erkin qism 32 − 12 = 20 bit. 2²⁰ = 1 048 576.'},
+  {q:'192.168.0.0/16 da qaysi qism o‘zgarmaydi?', o:['Faqat birinchi oktet','Birinchi ikki oktet','Birinchi uch oktet'], a:1, why:'16 bit = 2 oktet: 192 va 168 qulflangan.'},
+  {q:'Qurilma private IP orqasida turibdi. Demak firewall kerak emasmi?', o:['To‘g‘ri, NAT yetarli','Noto‘g‘ri, firewall baribir kerak'], a:1, why:'NAT manzilni almashtiradi, trafikni nazorat qilish esa firewall vazifasi. Ichki tarmoqdagi tahdidlar ham bor.'}
+];
+let score = 0;
+$('#quiz').innerHTML = QUIZ.map((x,i) => `<div class="q" data-q="${i}"><b>${i+1}. ${x.q}</b><div class="opts">${x.o.map((t,j)=>`<button type="button" data-o="${j}">${t}</button>`).join('')}</div><p class="why" hidden></p></div>`).join('');
+$('#quiz').addEventListener('click', e => {
+  const b = e.target.closest('button[data-o]'); if(!b) return;
+  const box = b.closest('.q'); if(box.dataset.done) return;
+  const x = QUIZ[+box.dataset.q], pick = +b.dataset.o;
+  box.dataset.done = '1';
+  box.querySelectorAll('button').forEach((btn,j) => {btn.disabled = true; if(j === x.a) btn.classList.add('right');});
+  if(pick !== x.a) b.classList.add('wrong'); else score++;
+  const w = box.querySelector('.why'); w.hidden = false; w.textContent = (pick === x.a ? 'To‘g‘ri. ' : 'Noto‘g‘ri. ') + x.why;
+  $('#score').textContent = `${score} / ${QUIZ.length} to‘g‘ri`;
+});
+})();
+</script>
+</body>
+</html>
