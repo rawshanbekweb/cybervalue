@@ -1,0 +1,888 @@
+.linux-lab {
+  width: min(1540px, calc(100% - 64px));
+  margin: 32px auto 80px;
+}
+.lx-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 30px;
+}
+.lx-back:hover {
+  color: var(--accent);
+}
+.lx-hero {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 40px;
+  align-items: center;
+  padding-bottom: 30px;
+}
+.lx-hero h1 {
+  font-size: clamp(30px, 3.2vw, 48px);
+  line-height: 1.15;
+  letter-spacing: -1.8px;
+  margin: 14px 0;
+}
+.lx-hero h1 span {
+  color: var(--accent);
+}
+.lx-hero > div > p {
+  color: var(--muted);
+  max-width: 680px;
+}
+.lx-course-card {
+  border: 1px solid #3c4936;
+  background: linear-gradient(130deg, #20291c, #151b16);
+  padding: 22px;
+  border-radius: 12px;
+}
+.lx-course-card > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+.lx-live {
+  margin-left: auto;
+  font-size: 10px;
+  color: #c1cbb9;
+}
+.lx-course-card > p {
+  margin: 18px 0;
+  font-size: 13px;
+}
+.lx-course-card > p span {
+  padding-inline: 8px;
+}
+.lx-course-card label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+.lx-course-card progress {
+  width: 100%;
+  height: 6px;
+  accent-color: var(--accent);
+  display: block;
+  margin: 10px 0 12px;
+}
+.lx-course-card small {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+.lx-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 13px 18px;
+  background: #1a211b;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: #b1bdaa;
+  font-size: 12px;
+  margin-bottom: 28px;
+}
+.lx-notice svg {
+  margin-top: 2px;
+  color: var(--accent);
+}
+.lx-layout {
+  display: grid;
+  grid-template-columns: 235px minmax(0, 1fr);
+  gap: 26px;
+  align-items: start;
+}
+.lx-sidebar {
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 17px 10px;
+}
+.lx-sidebar-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 9px 12px;
+}
+.lx-sidebar-title h2 {
+  font-size: 14px;
+}
+.lx-sidebar nav h3 {
+  padding: 18px 10px 8px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #a6b398;
+}
+.lx-sidebar nav a {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px;
+  border-radius: 6px;
+  color: #b6bcb2;
+  font-size: 12px;
+  line-height: 1.4;
+  border: 1px solid transparent;
+}
+.lx-sidebar nav a:hover {
+  color: var(--text);
+  background: #242a23;
+}
+.lx-sidebar nav a.active {
+  background: #283522;
+  border-color: #435937;
+  color: var(--accent);
+}
+.lx-number,
+.lx-done {
+  width: 22px;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+.lx-done {
+  color: var(--accent);
+}
+.lx-sandbox {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 10px;
+  border: 1px solid #495e3b;
+  border-radius: 6px;
+  background: #212a1d;
+  color: var(--accent);
+  font-size: 12px;
+}
+.lx-sandbox.active {
+  background: #364b28;
+}
+.lx-sidebar-note {
+  margin: 14px 10px 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+.lx-workspace {
+  min-width: 0;
+}
+.lx-lesson-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+.lx-lesson-header h2 {
+  font-size: clamp(22px, 2vw, 30px);
+  letter-spacing: -0.7px;
+  margin-top: 6px;
+  line-height: 1.2;
+}
+.lx-complete-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--accent);
+  font-size: 11px;
+  white-space: nowrap;
+}
+.lx-practice-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.83fr) minmax(0, 1.17fr);
+  gap: 24px;
+  align-items: start;
+}
+.lx-instructions {
+  min-width: 0;
+  font-size: 13px;
+}
+.lx-intro {
+  color: #c4ccbe;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+.lx-instructions h3 {
+  font-size: 14px;
+  margin: 20px 0 10px;
+}
+.lx-theory {
+  border-block: 1px solid var(--border);
+  margin-bottom: 22px;
+}
+.lx-theory summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 13px 0;
+}
+.lx-theory summary svg {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 6px;
+  color: var(--accent);
+}
+.lx-theory p {
+  color: #b3bcae;
+  margin: 0 0 14px;
+  line-height: 1.8;
+}
+.lx-examples {
+  display: grid;
+  gap: 9px;
+}
+.lx-examples button {
+  text-align: left;
+  display: block;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: #192018;
+  padding: 12px;
+  color: #c7ddaf;
+}
+.lx-examples button:hover {
+  border-color: #70865b;
+}
+.lx-examples button div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+.lx-examples code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.lx-examples span {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.lx-task {
+  background: #1b2219;
+  border: 1px solid #3e5033;
+  border-radius: 9px;
+  padding: 17px;
+  margin-top: 24px;
+}
+.lx-task h3 {
+  margin: 6px 0 9px;
+}
+.lx-task > p {
+  color: #c5cfbd;
+}
+.lx-task ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 9px;
+  margin: 18px 0 0;
+}
+.lx-task li {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 12px;
+  color: #b4bdae;
+}
+.lx-task li svg {
+  margin-top: 3px;
+}
+.linux-lab .passed {
+  color: var(--accent);
+}
+.lx-hint {
+  margin-top: 17px;
+  border-top: 1px solid #34412d;
+  padding-top: 12px;
+}
+.lx-hint summary {
+  cursor: pointer;
+  color: #c8d4bb;
+  font-size: 12px;
+}
+.lx-hint p {
+  margin: 10px 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+.lx-hint button {
+  width: 100%;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  padding: 8px;
+  margin-top: 5px;
+  background: #101810;
+  border: 1px solid #35442d;
+  color: var(--accent);
+  border-radius: 4px;
+  font-size: 11px;
+}
+.lx-hint code {
+  overflow-wrap: anywhere;
+}
+.lx-quiz {
+  border: 0;
+  padding: 0;
+  margin: 24px 0 18px;
+  min-width: 0;
+}
+.lx-quiz legend {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.lx-quiz > p {
+  margin-bottom: 12px;
+}
+.lx-quiz label {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-top: 7px;
+  cursor: pointer;
+}
+.lx-quiz label:has(input:checked) {
+  border-color: #6e8557;
+  background: #232d1e;
+}
+.lx-quiz input {
+  accent-color: var(--accent);
+}
+.lx-quiz .lx-quiz-correct,
+.lx-quiz .lx-quiz-wrong {
+  margin: 12px 0 0;
+  font-size: 12px;
+}
+.lx-quiz-correct {
+  color: var(--accent);
+}
+.lx-quiz-wrong {
+  color: #f3c293;
+}
+.lx-primary {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  color: #17220c;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 12px 18px;
+}
+.lx-check {
+  width: 100%;
+}
+.lx-feedback {
+  margin-top: 12px;
+  color: #f3c293;
+  font-size: 12px;
+}
+.lx-next {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: #24351b;
+  color: var(--accent);
+  border: 1px solid #526c3c;
+  padding: 12px;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+.lx-finish {
+  margin-top: 15px;
+  color: var(--accent);
+}
+.lx-tools {
+  min-width: 0;
+}
+.lx-terminal {
+  border: 1px solid #3d493b;
+  background: #090e0c;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 18px 45px #0002;
+}
+.lx-terminal-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: #202720;
+  padding: 13px 15px;
+  color: #b5c0ad;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  border-bottom: 1px solid #313d2d;
+}
+.lx-window-dots {
+  display: flex;
+  gap: 5px;
+}
+.lx-window-dots i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #677360;
+}
+.lx-window-dots i:first-child {
+  background: #b38173;
+}
+.lx-window-dots i:nth-child(2) {
+  background: #baad6f;
+}
+.lx-window-dots i:last-child {
+  background: #a2c884;
+}
+.lx-terminal-tag {
+  font-size: 9px;
+  letter-spacing: 0.9px;
+  color: #a3b793;
+}
+.lx-output {
+  height: 370px;
+  overflow: auto;
+  padding: 18px;
+  font: 12px/1.8 var(--font-mono);
+  scrollbar-color: #405638 #101710;
+}
+.lx-welcome {
+  color: #839a79;
+  margin-bottom: 22px;
+  font-size: 11px;
+}
+.lx-welcome strong {
+  color: #b9d5a4;
+}
+.lx-welcome p {
+  margin-top: 3px;
+}
+.lx-entry {
+  margin-bottom: 12px;
+  overflow-wrap: anywhere;
+}
+.lx-echo {
+  color: #e3eddd;
+  white-space: pre-wrap;
+}
+.lx-echo span {
+  color: var(--accent);
+}
+.lx-entry pre {
+  margin: 3px 0 0;
+  font: inherit;
+  color: #c2cdbb;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.lx-entry .lx-command-error {
+  color: #f0b196;
+}
+.lx-exit {
+  display: block;
+  font-size: 9px;
+  color: #8d9f83;
+}
+.lx-command-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-top: 1px solid #263424;
+  padding: 12px;
+}
+.lx-prompt {
+  color: var(--accent);
+  font: 12px var(--font-mono);
+  max-width: 36%;
+  overflow-wrap: anywhere;
+}
+.lx-command-form input {
+  width: 0;
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline-offset: 3px;
+  background: transparent;
+  color: #ecf7e3;
+  font: 13px var(--font-mono);
+  padding: 7px 3px;
+}
+.lx-command-form input::placeholder {
+  color: #8a9e80;
+}
+.lx-command-form button {
+  border: 1px solid #455f33;
+  border-radius: 5px;
+  background: #283d1b;
+  color: var(--accent);
+  padding: 8px;
+}
+.lx-terminal-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  color: #9dab93;
+  background: #121b12;
+  padding: 9px 14px;
+  font-size: 10px;
+}
+.lx-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 14px;
+}
+.lx-suggestions button {
+  color: var(--accent);
+  background: #203119;
+  border: 1px solid #405c30;
+  border-radius: 3px;
+  font: 11px var(--font-mono);
+}
+.lx-tools-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 12px 0 22px;
+}
+.lx-tools-actions button {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding: 5px 0;
+  color: #b6c0ad;
+  background: none;
+  border: 0;
+  font-size: 11px;
+}
+.lx-tools-actions button:hover {
+  color: var(--accent);
+}
+.lx-inspector {
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.lx-tabs {
+  display: flex;
+  background: #1e241d;
+  border-bottom: 1px solid var(--border);
+}
+.lx-tabs button {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 15px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: #a6b39c;
+  background: transparent;
+  font-size: 12px;
+}
+.lx-tabs button[aria-selected="true"] {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.lx-inspector-help {
+  font-size: 11px;
+  color: var(--muted);
+  padding: 12px 15px;
+}
+.lx-file-list {
+  max-height: 270px;
+  overflow: auto;
+  padding: 0 8px 10px;
+}
+.lx-file-list button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border: 0;
+  background: transparent;
+  color: #c5cebd;
+  font: 11px var(--font-mono);
+  padding: 10px 8px;
+  width: 100%;
+  text-align: left;
+  border-radius: 4px;
+}
+.lx-file-list button:hover,
+.lx-file-list button.selected {
+  background: #2b3725;
+}
+.lx-file-list button > span {
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.lx-file-list button > code {
+  margin-left: auto;
+  color: #a9bb9b;
+}
+.lx-file-list svg {
+  color: #a8c58a;
+}
+.lx-file-preview {
+  border-top: 1px solid var(--border);
+  padding: 13px;
+  font-size: 12px;
+}
+.lx-file-preview > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.lx-file-preview > div code {
+  overflow-wrap: anywhere;
+}
+.lx-file-preview button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 0;
+  color: var(--accent);
+  font-size: 11px;
+  padding: 6px;
+}
+.lx-file-preview button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.lx-file-preview pre {
+  background: #0d140d;
+  padding: 12px;
+  max-height: 220px;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 11px;
+  color: #c3d2b7;
+}
+.lx-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px;
+  border: 1px solid #3a4834;
+  padding: 8px 10px;
+  border-radius: 5px;
+  color: #a0b68d;
+}
+.lx-search input {
+  width: 100%;
+  min-width: 0;
+  background: transparent;
+  border: 0;
+  color: var(--text);
+  font-size: 11px;
+  padding: 4px;
+}
+.lx-command-list {
+  max-height: 340px;
+  overflow: auto;
+  padding: 0 14px;
+}
+.lx-command-list article {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.lx-command-list article > div {
+  display: flex;
+  justify-content: space-between;
+}
+.lx-command-list strong {
+  color: var(--accent);
+  font: 13px var(--font-mono);
+}
+.lx-command-list button {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  border: 0;
+  background: none;
+  color: #c1cdb7;
+  font-size: 10px;
+}
+.lx-command-list code {
+  display: block;
+  font-size: 10px;
+  color: #b1bcaa;
+  margin-top: 7px;
+  overflow-wrap: anywhere;
+}
+.lx-command-list p {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 4px;
+}
+.lx-limits {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.lx-limits summary {
+  cursor: pointer;
+  color: #c1cbb9;
+}
+.lx-limits p {
+  margin-top: 12px;
+}
+.lx-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 14px;
+  color: var(--accent);
+}
+.lx-storage-warning {
+  padding: 12px;
+  border: 1px solid #775a31;
+  color: #f1cca0;
+  margin-bottom: 16px;
+  font-size: 12px;
+}
+.lx-filesystem {
+  margin-top: 24px;
+}
+.lx-filesystem pre {
+  background: #171f15;
+  border: 1px solid var(--border);
+  padding: 16px;
+  overflow: auto;
+  color: #b4cd9f;
+  font: 12px/1.8 var(--font-mono);
+}
+.lx-filesystem p {
+  color: var(--muted);
+  font-size: 12px;
+}
+@media (min-width: 1300px) {
+  .lx-tools {
+    position: sticky;
+    top: 95px;
+  }
+}
+@media (max-width: 1150px) {
+  .lx-layout {
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: 20px;
+  }
+  .lx-practice-grid {
+    grid-template-columns: 1fr;
+  }
+  .lx-tools {
+    grid-row: 1;
+  }
+  .lx-output {
+    height: 280px;
+  }
+  .lx-hero {
+    grid-template-columns: 1fr 300px;
+    gap: 20px;
+  }
+}
+@media (max-width: 760px) {
+  .linux-lab {
+    width: calc(100% - 32px);
+    margin-top: 24px;
+  }
+  .lx-hero {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .lx-hero h1 {
+    font-size: 34px;
+    letter-spacing: -1.2px;
+  }
+  .lx-course-card {
+    padding: 18px;
+  }
+  .lx-layout {
+    grid-template-columns: 1fr;
+  }
+  .lx-sidebar {
+    padding: 12px 10px;
+  }
+  .lx-sidebar nav {
+    display: flex;
+    overflow-x: auto;
+    gap: 7px;
+    padding-bottom: 8px;
+  }
+  .lx-sidebar nav > div {
+    flex: 0 0 180px;
+  }
+  .lx-sidebar nav h3 {
+    display: none;
+  }
+  .lx-sidebar nav a {
+    height: 60px;
+    border-color: var(--border);
+  }
+  .lx-sidebar-title {
+    padding-bottom: 10px;
+  }
+  .lx-sandbox {
+    margin-top: 6px;
+  }
+  .lx-sidebar-note {
+    margin-top: 10px;
+  }
+  .lx-lesson-header {
+    margin: 8px 0 20px;
+  }
+  .lx-lesson-header h2 {
+    font-size: 24px;
+  }
+  .lx-complete-badge {
+    font-size: 10px;
+  }
+  .lx-output {
+    padding: 13px;
+    height: 290px;
+  }
+  .lx-terminal-bar {
+    padding: 12px;
+    font-size: 10px;
+  }
+  .lx-terminal-tag {
+    font-size: 8px;
+  }
+  .lx-command-form input {
+    font-size: 16px;
+  }
+  .lx-notice {
+    margin-bottom: 20px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .linux-lab {
+    scroll-behavior: auto;
+  }
+}

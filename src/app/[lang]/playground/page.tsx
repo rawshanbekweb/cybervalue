@@ -18,7 +18,7 @@ import "@/components/learning.css";
 export const generateMetadata = () =>
   buildMetadata(
     "Playground",
-    "Practice HTML and web application security with 48 interactive lessons, searchable learning tracks, and progress saved in your browser.",
+    "Practice Linux, HTML and web application security through interactive lessons, searchable learning tracks and browser-saved progress.",
     "/playground",
   );
 
@@ -38,7 +38,7 @@ export default async function PlaygroundPage() {
         </h1>
         <p>
           {t(
-            "A place to experiment, make mistakes, and understand what happens next. Start with HTML or follow a request all the way through a web application.",
+            "A place to experiment, make mistakes and understand the result. Learn Linux in a virtual terminal, build with HTML or explore web application security.",
           )}
         </p>
         <div className="learning-highlights">

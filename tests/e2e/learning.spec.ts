@@ -22,7 +22,14 @@ test("learning catalog filters lessons and opens the selected HTML exercise", as
   page,
 }) => {
   await page.goto("/playground");
-  await expect(page.locator(".learn-card")).toHaveCount(2);
+  await expect(page.locator(".learn-card")).toHaveCount(3);
+  await page
+    .getByRole("button", { name: "Linux & terminal", exact: true })
+    .click();
+  await expect(page.locator(".learn-card")).toHaveCount(1);
+  await expect(
+    page.getByRole("heading", { name: "Linux foundations lab" }),
+  ).toBeVisible();
   await page.getByRole("button", { name: "Security", exact: true }).click();
   await expect(page.locator(".learn-card")).toHaveCount(1);
   await expect(
@@ -115,7 +122,7 @@ test("empty search can be cleared and preview links follow the chosen topic", as
     page.getByRole("heading", { name: "No matching tracks" }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Clear filters" }).click();
-  await expect(page.locator(".learn-card")).toHaveCount(2);
+  await expect(page.locator(".learn-card")).toHaveCount(3);
   await page.getByRole("button", { name: /Defend/ }).click();
   await page.getByRole("button", { name: "Show insight" }).click();
   await expect(page.locator("#preview-result")).toContainText(

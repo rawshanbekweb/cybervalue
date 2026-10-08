@@ -11,6 +11,7 @@ import {
   Code2,
   Search,
   ShieldCheck,
+  Terminal,
 } from "lucide-react";
 import type { LearningTrack } from "@/lib/learning";
 
@@ -52,7 +53,8 @@ function TrackCard({ track, query }: { track: LearningTrack; query: string }) {
   const next =
     track.lessons.find((lesson) => completed[lesson.id] !== true) ??
     track.lessons[0];
-  const Icon = track.id === "html" ? Code2 : ShieldCheck;
+  const Icon =
+    track.id === "linux" ? Terminal : track.id === "html" ? Code2 : ShieldCheck;
   const matches = query
     ? track.lessons.filter((lesson) =>
         [lesson.title, t(lesson.title)].some((title) =>
@@ -161,7 +163,10 @@ export function LearningCatalog({ tracks }: { tracks: LearningTrack[] }) {
           role="group"
           aria-label={t("Filter learning tracks")}
         >
-          {["All tracks", "Development", "Security"].map((filter) => (
+          {[
+            "All tracks",
+            ...new Set(tracks.map((track) => track.category)),
+          ].map((filter) => (
             <button
               type="button"
               key={filter}

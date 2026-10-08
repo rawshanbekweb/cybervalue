@@ -92,6 +92,12 @@ export async function WebLessonResource() {
             >
               <Download size={16} aria-hidden="true" /> {t("ZIP yuklab olish")}
             </a>
+            <Link
+              className="button button-secondary"
+              href="/playground/linux-basics"
+            >
+              <Terminal size={16} aria-hidden="true" /> {t("Open Linux lab")}
+            </Link>
           </div>
           <p className={styles.hint}>
             {t(

@@ -1,4 +1,5 @@
 import "server-only";
+import { LESSONS as LINUX_LESSONS } from "@/lib/linux/curriculum";
 import { HTML_LESSONS } from "@/components/playground/html-basics/lessons.data";
 import {
   GROUPS,
@@ -8,6 +9,22 @@ import {
 // Send catalog metadata to the browser, never the lesson implementations.
 export function getLearningTracks() {
   return [
+    {
+      id: "linux",
+      title: "Linux foundations lab",
+      category: "Linux & terminal",
+      description:
+        "Learn Linux with 16 practical lessons, a browser terminal, virtual files, command explanations and automatically checked tasks.",
+      href: "/playground/linux-basics",
+      progressKey: "cybervalue:linux:progress:v1",
+      level: "Beginner",
+      lessons: LINUX_LESSONS.map(({ id, title }) => ({ id, title: title.en })),
+      modules: [
+        "Linux, terminal and shell",
+        "Text and streams",
+        "Users and permissions",
+      ],
+    },
     {
       id: "html",
       title: "HTML foundations",
