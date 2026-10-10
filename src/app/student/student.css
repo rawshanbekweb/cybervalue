@@ -687,14 +687,14 @@ body.student-root {
   }
 }
 
-/* Quiz review: which questions were right, never the key. */
+/* Quiz review: the key only after the last attempt. */
 .student-review {
   margin: 36px 0 60px;
 }
 .student-review-list {
   display: grid;
-  gap: 12px;
-  margin: 24px 0 0;
+  gap: 36px;
+  margin: 30px 0 0;
   padding-left: 24px;
 }
 .student-review-list li::marker {
@@ -702,6 +702,52 @@ body.student-root {
 }
 .student-review-prompt {
   white-space: pre-line;
+}
+.student-review-detail {
+  display: grid;
+  gap: 6px;
+  margin: 12px 0 0;
+  font-size: 16px;
+  font-weight: 200;
+}
+.student-review-detail div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 12px;
+}
+.student-review-detail dt {
+  color: var(--color-ash-gray);
+}
+.student-review-detail dd {
+  margin: 0;
+  color: var(--color-silver-mist);
+}
+.student-review-detail .student-review-answer {
+  color: var(--color-bone-white);
+  font-weight: 400;
+}
+.student-explain {
+  margin-top: 18px;
+  padding-left: 18px;
+  border-left: 2px solid var(--color-electric-iris);
+}
+.student-explain .student-label {
+  margin-bottom: 6px;
+}
+.student-explain p:last-child {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 200;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+.student-debrief {
+  margin-top: 60px;
+  padding-left: 24px;
+  border-left: 2px solid var(--color-saffron-spark);
+}
+.student-debrief .student-prose {
+  margin-top: 0;
 }
 
 /* Personal lab */

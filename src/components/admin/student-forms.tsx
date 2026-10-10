@@ -445,12 +445,12 @@ function MaterialFields({
               aria-describedby="quiz-help"
               defaultValue={defaults.quizText}
               placeholder={
-                "? HTTPS odatda qaysi portdan foydalanadi?\n- 80\n+ 443\n- 22"
+                "? HTTPS odatda qaysi portdan foydalanadi?\n- 80\n+ 443\n- 22\n> 443 — HTTPS uchun standart port."
               }
             />
             <p id="quiz-help" className="muted">
               {t(
-                "Start a question with ?, each option with -, and the one correct option with +. Leave a blank line between questions. Answers are checked on the server and never sent to the browser.",
+                "Start a question with ?, each option with -, and the one correct option with +. Under the options, > lines explain the answer in simple words. Leave a blank line between questions. Answers are checked on the server and never sent to the browser.",
               )}
             </p>
           </div>
@@ -497,6 +497,31 @@ function MaterialFields({
             </div>
           </div>
         </>
+      )}
+      {(kind === "QUIZ" || kind === "CHALLENGE") && (
+        <div className="admin-field">
+          <label htmlFor="explanation">
+            {t("Explanation after answering (Markdown)")}
+          </label>
+          <textarea
+            id="explanation"
+            name="explanation"
+            className="admin-textarea"
+            rows={10}
+            maxLength={20000}
+            aria-describedby="explanation-help"
+            defaultValue={defaults.explanation}
+          />
+          <p id="explanation-help" className="muted">
+            {kind === "QUIZ"
+              ? t(
+                  "Shown with the correct answers after the student’s last attempt. Explain single questions with > lines under their options.",
+                )
+              : t(
+                  "Shown once the student solves the lab or runs out of attempts: what happened, why it matters and how to fix it. Separate one text per artifact variant with === variant ===.",
+                )}
+          </p>
+        </div>
       )}
       {(kind === "QUIZ" || kind === "CHALLENGE") && (
         <div className="admin-field">

@@ -43,18 +43,22 @@ In **Admin → Student materials**, create materials of four kinds:
 ? Parolni saqlashning xavfsiz usuli?
 - Ochiq matn
 + Sekin, tuzlangan hash
+> Hash bir tomonlama: bazani o‘g‘irlagan odam parolni o‘qiy olmaydi.
 ```
 
 Follow these rules when writing a test:
 
 - Each question has exactly one `+` answer.
+- Optional `>` lines under the options explain the answer in simple words; several lines make one explanation of up to 2,000 characters.
 - A test can have up to 60 questions, each with up to 8 options.
 - "Attempts per student" limits retakes; `0` means unlimited.
 
 How grading works:
 
 - The answer key never reaches the browser.
-- After an attempt, students see their score and which questions were right, but not the correct options.
+- After an attempt, students see their score, the option they chose for each question and the explanations of the questions they got right.
+- Correct options and the explanations of missed questions appear only after the last attempt, after a perfect score, or after every attempt when attempts are unlimited.
+- **Explanation after answering** (Markdown) is shown below the review at the same moment, as a short summary of what to remember.
 - The material's admin page shows every attempt and the average score.
 
 ### Writing a personal lab
@@ -83,6 +87,7 @@ How personal labs work:
 - **Download**: the file always downloads as an attachment and never renders on the site.
 - **Checking**: flags are compared on the server in constant time. A student gets 20 tries per 10 minutes, and "Attempts per student" can cap the total (`0` = unlimited).
 - **Feedback**: a wrong flag, a decoy and a classmate's flag all show the same message, so students learn nothing from it.
+- **Explanation**: the **Explanation after answering** field (Markdown) appears once the student solves the lab or runs out of attempts, and is never sent earlier. Explain what happened, how to find it, why the decoys were wrong and how to fix the problem. Separate one text per artifact variant with `=== variant ===` (same count and order as the template) so each student reads the debrief for their own file.
 
 The material's admin page has one row per student who can see the lab. It shows:
 

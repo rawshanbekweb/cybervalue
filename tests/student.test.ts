@@ -16,6 +16,7 @@ import {
 import { checkMaterial, parseRoster } from "../src/lib/student/admin";
 import {
   checkArtifact,
+  explanationFor,
   flagFor,
   judgeFlag,
   MAX_ARTIFACT,
@@ -325,4 +326,71 @@ test("decoys can be encoded like the flag and are still recognised", () => {
   }
   assert.ok(checkArtifact("{{decoy:base32}} {{flag}}"));
   assert.equal(checkArtifact("{{decoy:rot13}} {{flag:url}}"), null);
+});
+
+test("quiz explanations parse, round-trip and stay out of the public view", () => {
+  const text = `? Which port does HTTPS use?
+- 80
++ 443
+> 443 is the standard port for HTTPS.
+> Port 80 is plain HTTP.
+
+? Is DNS a phone book?
++ Yes
+- No`;
+  const parsed = parseQuiz(text);
+  assert.ok("quiz" in parsed);
+  assert.equal(
+    parsed.quiz[0].explain,
+    "443 is the standard port for HTTPS.\nPort 80 is plain HTTP.",
+  );
+  assert.equal(parsed.quiz[1].explain, undefined);
+  assert.deepEqual(parseQuiz(quizToText(parsed.quiz)), parsed);
+  assert.ok(!JSON.stringify(publicQuiz(parsed.quiz)).includes("standard port"));
+  // An explanation ends the prompt, so a stray line after it is an error.
+  const stray = parseQuiz("? Q\n> why\nloose text\n- a\n+ b");
+  assert.ok("error" in stray);
+});
+
+test("lab explanations follow the student's artifact variant", () => {
+  const secret = newChallengeSecret();
+  const material = {
+    artifact: ARTIFACT,
+    explanation: "First file\n=== variant ===\nSecond file",
+    secret,
+  };
+  for (const id of ["a", "b", "c", "d", "e", "f"]) {
+    const { variant } = renderArtifact(ARTIFACT, secret, { id, name: "N" });
+    assert.equal(
+      explanationFor(material, id),
+      variant === 1 ? "First file" : "Second file",
+    );
+  }
+  assert.equal(
+    explanationFor({ ...material, explanation: " Shared " }, "a"),
+    "Shared",
+  );
+
+  const base = {
+    slug: "lab",
+    kind: "CHALLENGE",
+    title: "Lab",
+    summary: "",
+    body: "",
+    quizText: "",
+    artifact: ARTIFACT,
+    artifactName: "a.log",
+    maxAttempts: 0,
+    groups: "",
+    position: 0,
+    published: false,
+  };
+  assert.ok(
+    "data" in checkMaterial({ ...base, explanation: material.explanation }),
+  );
+  const mismatch = checkMaterial({
+    ...base,
+    explanation: "a\n=== variant ===\nb\n=== variant ===\nc",
+  });
+  assert.ok("error" in mismatch);
 });

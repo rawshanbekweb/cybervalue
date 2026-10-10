@@ -128,6 +128,19 @@ export function renderArtifact(
   return { text, variant: variant + 1, variants: variants.length };
 }
 
+// The debrief a student sees after a lab: one shared text, or one part per
+// artifact variant ("=== variant ===") so it matches the file they received.
+export function explanationFor(
+  material: { explanation: string; artifact: string; secret: string | null },
+  studentId: string,
+) {
+  const parts = splitVariants(material.explanation);
+  if (parts.length < 2) return material.explanation.trim();
+  const count = splitVariants(material.artifact).length;
+  if (!material.secret || parts.length !== count) return "";
+  return parts[variantFor(material.secret, studentId, count)].trim();
+}
+
 export const normalizeFlag = (input: string) => input.trim().slice(0, 200);
 
 function same(a: string, b: string) {

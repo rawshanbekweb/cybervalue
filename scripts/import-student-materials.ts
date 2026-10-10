@@ -21,8 +21,11 @@ import { env } from "../src/lib/env";
 //   meta.json     slug, kind, title, summary, maxAttempts, groups, position,
 //                 artifactName (personal labs)
 //   body.md       optional Markdown shown to students
-//   quiz.txt      QUIZ questions in the ?/-/+ format
+//   quiz.txt      QUIZ questions in the ?/-/+ format, with optional ">"
+//                 explanation lines under each question
 //   artifact.txt  CHALLENGE template with {{flag}} placeholders
+//   explanation.md  optional Markdown shown once a student has answered
+//                 (one part per artifact variant, split by === variant ===)
 // Existing materials are matched by slug and updated; their flag secret is
 // kept, so flags students already found stay valid.
 
@@ -49,6 +52,7 @@ async function loadFolder(dir: string) {
     quizText: await optional(join(dir, "quiz.txt")),
     artifact: await optional(join(dir, "artifact.txt")),
     artifactName: String(meta.artifactName ?? ""),
+    explanation: await optional(join(dir, "explanation.md")),
     maxAttempts: Number(meta.maxAttempts ?? 1),
     groups: String(meta.groups ?? ""),
     position: Number(meta.position ?? 0),

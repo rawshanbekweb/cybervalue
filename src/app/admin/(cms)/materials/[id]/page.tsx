@@ -79,6 +79,7 @@ export default async function EditMaterialPage({
           quizText: quiz.success ? quizToText(quiz.data) : "",
           artifact: material.artifact,
           artifactName: material.artifactName,
+          explanation: material.explanation,
           maxAttempts: material.maxAttempts,
           groups: material.groups.join(", "),
           position: material.position,

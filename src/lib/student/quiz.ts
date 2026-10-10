@@ -6,14 +6,18 @@ import { z } from "zod";
 //   - 80
 //   + 443
 //   - 22
+//   > Port 443 is reserved for HTTP over TLS.
 //
-// "+" marks the single correct option. The parsed key stays on the server.
+// "+" marks the single correct option and optional ">" lines explain the
+// answer. The key and explanations stay on the server until a student may
+// see them.
 export const quizSchema = z
   .array(
     z.object({
       prompt: z.string().min(1).max(1000),
       options: z.array(z.string().min(1).max(500)).min(2).max(8),
       answer: z.number().int().min(0),
+      explain: z.string().max(2000).optional(),
     }),
   )
   .min(1)
@@ -28,7 +32,12 @@ export type QuizParse =
   | { error: string; values?: { line?: number; number?: number } };
 
 export function parseQuiz(text: string): QuizParse {
-  const quiz: { prompt: string; options: string[]; answer: number }[] = [];
+  const quiz: {
+    prompt: string;
+    options: string[];
+    answer: number;
+    explain?: string;
+  }[] = [];
   const correct: number[] = [];
   const lines = text.split(/\r?\n/);
   for (const [index, raw] of lines.entries()) {
@@ -56,13 +65,17 @@ export function parseQuiz(text: string): QuizParse {
         correct[correct.length - 1]++;
       }
       current.options.push(value);
-    } else if (current && current.options.length === 0) {
+    } else if (marker === ">" && current) {
+      current.explain = current.explain
+        ? `${current.explain}\n${value}`
+        : value;
+    } else if (current && current.options.length === 0 && !current.explain) {
       // A question may span several lines before its first option.
       current.prompt += `\n${line}`;
     } else {
       return {
         error:
-          "Line {line}: start with ? (question), - (option) or + (correct option).",
+          "Line {line}: start with ? (question), - (option), + (correct option) or > (explanation).",
         values: { line: index + 1 },
       };
     }
@@ -80,19 +93,21 @@ export function parseQuiz(text: string): QuizParse {
   const parsed = quizSchema.safeParse(quiz);
   if (!parsed.success)
     return {
-      error: "Quiz is too long: up to 60 questions and 8 options each.",
+      error:
+        "Quiz is too long: up to 60 questions, 8 options each and 2,000 characters per explanation.",
     };
   return { quiz: parsed.data };
 }
 
 export function quizToText(quiz: Quiz) {
   return quiz
-    .map(
-      (q) =>
-        `? ${q.prompt}\n${q.options
-          .map((option, i) => `${i === q.answer ? "+" : "-"} ${option}`)
-          .join("\n")}`,
-    )
+    .map((q) => {
+      const options = q.options.map(
+        (option, i) => `${i === q.answer ? "+" : "-"} ${option}`,
+      );
+      const explain = q.explain?.split("\n").map((line) => `> ${line}`) ?? [];
+      return [`? ${q.prompt}`, ...options, ...explain].join("\n");
+    })
     .join("\n\n");
 }
 

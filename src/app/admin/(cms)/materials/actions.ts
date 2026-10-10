@@ -47,6 +47,7 @@ export async function saveMaterialAction(
     quizText: text(form, "quizText"),
     artifact: text(form, "artifact"),
     artifactName: text(form, "artifactName"),
+    explanation: text(form, "explanation"),
     maxAttempts: Number(text(form, "maxAttempts")) || 0,
     groups: text(form, "groups"),
     position: Number(text(form, "position")) || 0,

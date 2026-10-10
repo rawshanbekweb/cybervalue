@@ -327,6 +327,9 @@ model StudentMaterial {
   maxAttempts  Int                 @default(1)
   artifact     String              @default("") @db.Text
   artifactName String              @default("")
+  // Markdown shown after the student answers: a solved or exhausted lab, or
+  // the final quiz attempt. Never sent earlier.
+  explanation  String              @default("") @db.Text
   secret       String?
   groups       String[]            @default([])
   published    Boolean             @default(false)

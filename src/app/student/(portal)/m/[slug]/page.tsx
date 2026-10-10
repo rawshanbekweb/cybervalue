@@ -6,6 +6,7 @@ import { getDb } from "@/lib/db";
 import { requireStudent } from "@/lib/student/session";
 import { materialForStudent } from "@/lib/student/materials";
 import { gradeQuiz, publicQuiz, quizSchema } from "@/lib/student/quiz";
+import { explanationFor } from "@/lib/student/challenge";
 import { Markdown } from "@/components/markdown";
 import { FlagForm, PracticeForm, QuizForm } from "@/components/student/forms";
 import { markCompleteAction } from "../../../actions";
@@ -17,6 +18,17 @@ const KIND_LABEL = {
   QUIZ: "Test",
   CHALLENGE: "Personal lab",
 } as const;
+
+function Debrief({ title, children }: { title: string; children: string }) {
+  return (
+    <section className="student-debrief" aria-label={title}>
+      <p className="student-label">{title}</p>
+      <div className="student-prose">
+        <Markdown>{children}</Markdown>
+      </div>
+    </section>
+  );
+}
 
 export default async function StudentMaterialPage({
   params,
@@ -49,6 +61,7 @@ export default async function StudentMaterialPage({
   });
   const quiz = quizSchema.safeParse(material.quiz);
   const answers = submissions[0]?.answers;
+  const chosenAnswers: unknown[] = Array.isArray(answers) ? answers : [];
   const latest =
     quiz.success && Array.isArray(answers)
       ? gradeQuiz(quiz.data, answers)
@@ -57,6 +70,17 @@ export default async function StudentMaterialPage({
     material.maxAttempts > 0
       ? Math.max(0, material.maxAttempts - submissions.length)
       : null;
+  // Correct options are shown once a retake can no longer use them: after the
+  // last attempt, a perfect score, or on a test with unlimited practice tries.
+  const revealKey =
+    latest !== null &&
+    (attemptsLeft === 0 ||
+      attemptsLeft === null ||
+      latest.score === latest.maxScore);
+  const labDebrief =
+    material.kind === "CHALLENGE" && (progress || attemptsLeft === 0)
+      ? explanationFor(material, student.id)
+      : "";
 
   return (
     <article className="student-material">
@@ -173,6 +197,15 @@ export default async function StudentMaterialPage({
               <FlagForm slug={material.slug} />
             </>
           )}
+          {labDebrief && (
+            <Debrief
+              title={
+                progress ? t("How it worked") : t("The solution explained")
+              }
+            >
+              {labDebrief}
+            </Debrief>
+          )}
         </section>
       )}
 
@@ -211,25 +244,62 @@ export default async function StudentMaterialPage({
                   total: latest.maxScore,
                 })}
               </p>
-              {/* Marks which questions were right, never the answer key. */}
+              <p className="student-quiet">
+                {revealKey
+                  ? t(
+                      "Read the explanations below: they show why each answer is right, in simple words.",
+                    )
+                  : t(
+                      "Explanations of the questions you got right are open now. For the others, review the topic and try again: correct answers and their explanations open after your last attempt.",
+                    )}
+              </p>
+              {/* The key and explanations of missed questions stay hidden
+                  while the student can still retake the test. */}
               <ol className="student-review-list">
-                {quiz.data!.map((question, i) => (
-                  <li key={i}>
-                    <span className="student-review-prompt">
-                      {question.prompt}
-                    </span>
-                    <span
-                      className={
-                        latest.results[i]
-                          ? "student-mark-ok"
-                          : "student-mark-bad"
-                      }
-                    >
-                      {latest.results[i] ? t("Correct") : t("Incorrect")}
-                    </span>
-                  </li>
-                ))}
+                {quiz.data!.map((question, i) => {
+                  const ok = latest.results[i];
+                  const chosen = question.options[Number(chosenAnswers[i])];
+                  return (
+                    <li key={i}>
+                      <span className="student-review-prompt">
+                        {question.prompt}
+                      </span>
+                      <span
+                        className={ok ? "student-mark-ok" : "student-mark-bad"}
+                      >
+                        {ok ? t("Correct") : t("Incorrect")}
+                      </span>
+                      <dl className="student-review-detail">
+                        <div>
+                          <dt>{t("Your answer")}</dt>
+                          <dd>{chosen ?? t("No answer")}</dd>
+                        </div>
+                        {!ok && revealKey && (
+                          <div>
+                            <dt>{t("Correct answer")}</dt>
+                            <dd className="student-review-answer">
+                              {question.options[question.answer]}
+                            </dd>
+                          </div>
+                        )}
+                      </dl>
+                      {question.explain && (ok || revealKey) && (
+                        <div className="student-explain">
+                          <p className="student-label">
+                            {t("In simple words")}
+                          </p>
+                          <p>{question.explain}</p>
+                        </div>
+                      )}
+                    </li>
+                  );
+                })}
               </ol>
+              {revealKey && material.explanation && (
+                <Debrief title={t("What to remember")}>
+                  {material.explanation}
+                </Debrief>
+              )}
             </div>
           )}
           {!quiz.success ? (

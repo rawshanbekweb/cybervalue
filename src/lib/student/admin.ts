@@ -1,7 +1,12 @@
 import { z } from "zod";
 import { slugSchema } from "../validation";
 import { parseQuiz, type Quiz } from "./quiz";
-import { artifactNamePattern, checkArtifact, MAX_ARTIFACT } from "./challenge";
+import {
+  artifactNamePattern,
+  checkArtifact,
+  MAX_ARTIFACT,
+  splitVariants,
+} from "./challenge";
 
 const groupName = z
   .string()
@@ -72,6 +77,7 @@ export type MaterialFormValues = {
   quizText: string;
   artifact: string;
   artifactName: string;
+  explanation: string;
   maxAttempts: number;
   groups: string;
   position: number;
@@ -92,6 +98,11 @@ export const materialSchema = z.object({
     .default("")
     .transform((value) => value.replace(/\r\n?/g, "\n")),
   artifactName: z.string().trim().max(80).default(""),
+  explanation: z
+    .string()
+    .max(20000)
+    .default("")
+    .transform((value) => value.replace(/\r\n?/g, "\n").trim()),
   maxAttempts: z.coerce.number().int().min(0).max(20),
   groups: z
     .string()
@@ -146,6 +157,12 @@ export function checkMaterial(input: unknown): MaterialCheck {
       };
     const problem = checkArtifact(fields.artifact);
     if (problem) return problem;
+    const parts = splitVariants(fields.explanation).length;
+    if (parts > 1 && parts !== splitVariants(fields.artifact).length)
+      return {
+        error:
+          "Explanation: use one text for everyone or one per artifact variant, in the same order.",
+      };
   }
   if (fields.kind !== "QUIZ") return { data: { ...fields, quiz: null } };
   const quiz = parseQuiz(quizText);
