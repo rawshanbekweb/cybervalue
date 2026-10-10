@@ -6,7 +6,10 @@ import { studentOverview } from "@/lib/student/materials";
 import { Constellation } from "@/components/student/constellation";
 import type { MaterialKind } from "@/generated/prisma/client";
 
-export const metadata = { title: "Student area" };
+export async function generateMetadata() {
+  const t = await getAdminTranslator();
+  return { title: t("Student area") };
+}
 
 const SECTIONS: {
   id: string;

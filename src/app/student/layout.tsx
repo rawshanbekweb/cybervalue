@@ -6,11 +6,18 @@ import "./student.css";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
-export const metadata: Metadata = {
-  title: { absolute: "Student | CyberValue", template: "%s | CyberValue" },
-  description: "Private learning area for invited students.",
-  robots: { index: false, follow: false },
-};
+// Titles follow the student's chosen language, like the rest of the area.
+export async function generateMetadata(): Promise<Metadata> {
+  const t = createTranslator(await getAdminLocale());
+  return {
+    title: {
+      absolute: `${t("Student area")} | CyberValue`,
+      template: "%s | CyberValue",
+    },
+    description: t("Private learning area for invited students."),
+    robots: { index: false, follow: false },
+  };
+}
 export const viewport: Viewport = {
   themeColor: "#000000",
   colorScheme: "dark",

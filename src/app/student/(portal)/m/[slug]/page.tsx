@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Check, Download } from "lucide-react";
 import { getAdminTranslator, getAdminLocale } from "@/lib/i18n/server";
 import { getDb } from "@/lib/db";
-import { requireStudent } from "@/lib/student/session";
+import { getStudentSession, requireStudent } from "@/lib/student/session";
 import { materialForStudent } from "@/lib/student/materials";
 import { gradeQuiz, publicQuiz, quizSchema } from "@/lib/student/quiz";
 import { explanationFor } from "@/lib/student/challenge";
@@ -18,6 +18,18 @@ const KIND_LABEL = {
   QUIZ: "Test",
   CHALLENGE: "Personal lab",
 } as const;
+
+// The material's own title; the page itself handles sign-in and 404s.
+export async function generateMetadata({
+  params,
+}: PageProps<"/student/m/[slug]">) {
+  const { slug } = await params;
+  const session = await getStudentSession();
+  const material = session
+    ? await materialForStudent(session.student, slug)
+    : null;
+  return material ? { title: material.title } : {};
+}
 
 function Debrief({ title, children }: { title: string; children: string }) {
   return (

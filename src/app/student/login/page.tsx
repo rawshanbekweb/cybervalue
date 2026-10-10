@@ -5,7 +5,10 @@ import { getStudentSession } from "@/lib/student/session";
 import { Constellation } from "@/components/student/constellation";
 import { StudentLoginForm } from "./login-form";
 
-export const metadata = { title: "Sign in" };
+export async function generateMetadata() {
+  const t = await getAdminTranslator();
+  return { title: t("Sign in") };
+}
 
 export default async function StudentLoginPage() {
   if (await getStudentSession()) redirect("/student");
