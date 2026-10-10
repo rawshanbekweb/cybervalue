@@ -19,7 +19,15 @@ export type AuditAction =
   | "content.delete"
   | "file.upload"
   | "file.delete"
-  | "assessment.create";
+  | "assessment.create"
+  | "student.create"
+  | "student.update"
+  | "student.code_reset"
+  | "student.delete"
+  | "material.create"
+  | "material.update"
+  | "material.delete"
+  | "submission.review";
 
 const RETENTION_MS = 180 * 86_400_000;
 

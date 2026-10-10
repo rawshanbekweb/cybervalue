@@ -22,7 +22,8 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Skip route handlers, the private CMS, framework internals and any path
-  // with a file extension (public assets, robots.txt, sitemap.xml, icons).
-  matcher: ["/((?!api/|admin|downloads/|media/|_next/|.*[.].*).*)"],
+  // Skip route handlers, the private CMS and student area, framework
+  // internals and any path with a file extension (public assets, robots.txt,
+  // sitemap.xml, icons).
+  matcher: ["/((?!api/|admin|student|downloads/|media/|_next/|.*[.].*).*)"],
 };

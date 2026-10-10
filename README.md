@@ -81,6 +81,10 @@ npm run admin:create-user -- --email you@example.com
 
 You'll be prompted for a password (12–200 characters) on stdin. Alternatively, add `--generate-password` to generate and display a random password once; with no email argument, the existing owner email is preserved. Provisioning revokes old sessions. Log in at `/admin/login`. Use Account settings to change the password, sign out other sessions, or turn on two-factor authentication (requires `AUTH_SECRET`). Security events are listed at `/admin/audit`. If the authenticator is lost, rerun the command with `--reset-2fa`. Sessions last 12 hours; `/admin` is `noindex` and disallowed in `robots.txt`. The CMS supports content editing, resource/image uploads, an uploaded file library and image ordering/descriptions. See [the publishing guide](docs/content.md) and [security tradeoffs](docs/security.md).
 
+## Student area
+
+The admin adds students in **Admin → Students** and gives each one a personal access code. Students sign in at `/student/login` to reach private lessons, labs, practice and server-graded tests that never appear on the public site. See [the student area guide](docs/students.md).
+
 ## Verification and production build
 
 HTML Basics includes a timed, single-attempt assessment with teacher-issued codes, server-side grading and an admin results dashboard. See [the teacher guide](docs/html-assessment.md).

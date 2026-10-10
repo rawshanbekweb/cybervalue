@@ -54,13 +54,15 @@ test("proxy redirects explicit language prefixes to the canonical unprefixed URL
   );
 });
 
-test("proxy matcher skips the CMS, handlers, internals and files", () => {
+test("proxy matcher skips the CMS, student area, handlers, internals and files", () => {
   const matcher = new RegExp(`^${config.matcher[0]}$`);
   for (const path of ["/", "/about", "/playground/ctf", "/resources/exam"])
     assert.ok(matcher.test(path), path);
   for (const path of [
     "/admin",
     "/admin/login",
+    "/student",
+    "/student/m/intro",
     "/api/ctf/verify",
     "/downloads/file",
     "/media/a",

@@ -9,6 +9,7 @@ import assessment from "./assessment.json";
 import resourceExam from "./resource-exam.json";
 import admin from "./admin.json";
 import linux from "./linux.json";
+import student from "./student.json";
 
 const messages = {
   ...common,
@@ -22,6 +23,7 @@ const messages = {
   ...resourceExam,
   ...admin,
   ...linux,
+  ...student,
 };
 
 export const locales = ["uz", "en"] as const;

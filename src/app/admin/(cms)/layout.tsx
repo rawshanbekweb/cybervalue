@@ -24,6 +24,8 @@ export default async function AdminCmsLayout({
           ))}
           <Link href="/admin/files">{t("File library")}</Link>
           <Link href="/admin/assessments">{t("HTML baholash")}</Link>
+          <Link href="/admin/students">{t("Students")}</Link>
+          <Link href="/admin/materials">{t("Student materials")}</Link>
           <Link href="/admin/audit">{t("Audit log")}</Link>
           <Link href="/admin/account">{t("Account settings")}</Link>
         </nav>

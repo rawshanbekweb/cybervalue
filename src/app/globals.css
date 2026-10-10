@@ -2450,3 +2450,49 @@ p {
     animation: none !important;
   }
 }
+
+/* Admin: students and private materials */
+.student-code {
+  font-family: var(--font-mono);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.student-code-large {
+  font-size: 1.4rem;
+  color: var(--accent);
+}
+.student-codes {
+  margin-bottom: 2rem;
+}
+.student-quiz-source {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+}
+.student-submissions {
+  display: grid;
+  gap: 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+.student-submissions > li {
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.student-submissions > li > p:first-child {
+  margin-top: 0;
+}
+.student-submission-body {
+  max-height: 320px;
+  overflow: auto;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: var(--bg);
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+.student-review-form {
+  max-width: 640px;
+}

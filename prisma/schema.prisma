@@ -272,3 +272,93 @@ model RateLimitBucket {
 
   @@index([expiresAt])
 }
+
+// Private learning area. Students sign in at /student with an access code the
+// admin hands out; only its SHA-256 digest is stored.
+enum MaterialKind {
+  LESSON
+  LAB
+  PRACTICE
+  QUIZ
+}
+
+model Student {
+  id          String              @id @default(cuid())
+  name        String
+  group       String              @default("")
+  note        String              @default("") @db.Text
+  codeHash    String              @unique
+  active      Boolean             @default(true)
+  expiresAt   DateTime?           @db.Timestamptz(3)
+  lastLoginAt DateTime?           @db.Timestamptz(3)
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  sessions    StudentSession[]
+  submissions StudentSubmission[]
+  progress    StudentProgress[]
+
+  @@index([group])
+}
+
+model StudentSession {
+  id        String   @id @default(cuid())
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  tokenHash String   @unique
+  expiresAt DateTime @db.Timestamptz(3)
+  createdAt DateTime @default(now())
+
+  @@index([studentId])
+}
+
+// `groups` empty means every student; otherwise only students in a listed group.
+// `quiz` holds QUIZ questions with their answer key and never reaches the browser.
+model StudentMaterial {
+  id          String              @id @default(cuid())
+  slug        String              @unique
+  kind        MaterialKind
+  title       String
+  summary     String              @default("")
+  body        String              @default("") @db.Text
+  quiz        Json?
+  maxAttempts Int                 @default(1)
+  groups      String[]            @default([])
+  published   Boolean             @default(false)
+  position    Int                 @default(0)
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  submissions StudentSubmission[]
+  progress    StudentProgress[]
+
+  @@index([published, kind, position])
+}
+
+// A practice answer (body, reviewed by the admin) or a graded quiz attempt.
+model StudentSubmission {
+  id         String          @id @default(cuid())
+  studentId  String
+  student    Student         @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  materialId String
+  material   StudentMaterial @relation(fields: [materialId], references: [id], onDelete: Cascade)
+  body       String          @default("") @db.Text
+  answers    Json?
+  score      Int?
+  maxScore   Int?
+  feedback   String          @default("") @db.Text
+  reviewedAt DateTime?       @db.Timestamptz(3)
+  createdAt  DateTime        @default(now()) @db.Timestamptz(3)
+
+  @@index([studentId, materialId])
+  @@index([materialId, createdAt])
+}
+
+model StudentProgress {
+  studentId   String
+  student     Student         @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  materialId  String
+  material    StudentMaterial @relation(fields: [materialId], references: [id], onDelete: Cascade)
+  completedAt DateTime        @default(now()) @db.Timestamptz(3)
+
+  @@id([studentId, materialId])
+  @@index([materialId])
+}
