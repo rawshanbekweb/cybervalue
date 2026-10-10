@@ -486,7 +486,7 @@ function MaterialFields({
             <div id="artifact-help" className="muted">
               <p>
                 {t(
-                  "Every student downloads their own copy. Place the flag with {{flag}}, or encoded with {{flag:base64}}, {{flag:hex}}, {{flag:rot13}}, {{flag:reverse}} or {{flag:url}}. {{decoy}} adds a fake flag, {{name}} the student’s name.",
+                  "Every student downloads their own copy. Place the flag with {{flag}}, or encoded with {{flag:base64}}, {{flag:hex}}, {{flag:rot13}}, {{flag:reverse}} or {{flag:url}}. {{decoy}} adds a fake flag (also encodable, e.g. {{decoy:base64}}), {{name}} the student’s name.",
                 )}
               </p>
               <p>

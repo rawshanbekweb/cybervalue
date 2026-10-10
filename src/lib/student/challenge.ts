@@ -9,6 +9,8 @@ import { createHmac, randomBytes, timingSafeEqual } from "node:crypto";
 //   {{flag}}            the student's flag, e.g. CV{3f9a...}
 //   {{flag:ENCODING}}   the flag encoded: base64, hex, rot13, reverse, url
 //   {{decoy}}           a flag-shaped fake, different at each position
+//   {{decoy:ENCODING}}  a fake encoded the same way, so decoding every string
+//                       in the file is not enough to find the real flag
 //   {{name}}            the student's name
 // A line "=== variant ===" separates alternative versions of the artifact.
 
@@ -76,15 +78,15 @@ export function checkArtifact(
     let flags = 0;
     for (const [, name, option] of variant.matchAll(PLACEHOLDER)) {
       const key = name.toLowerCase();
-      if (key === "flag") {
+      if (key === "flag" || key === "decoy") {
         if (option && !ENCODINGS.includes(option.toLowerCase() as Encoding))
           return {
             error:
               "Unknown encoding “{token}”. Use base64, hex, rot13, reverse or url.",
             values: { token: option },
           };
-        flags++;
-      } else if (!["decoy", "name"].includes(key) || option)
+        if (key === "flag") flags++;
+      } else if (key !== "name" || option)
         return {
           error:
             "Unknown placeholder “{token}”. Use {{flag}}, {{flag:base64}}, {{decoy}} or {{name}}.",
@@ -113,10 +115,14 @@ export function renderArtifact(
     PLACEHOLDER,
     (_, name: string, option?: string) => {
       const key = name.toLowerCase();
-      if (key === "flag")
-        return option ? encode(flag, option.toLowerCase() as Encoding) : flag;
-      if (key === "decoy") return decoyFor(secret, student.id, decoys++);
-      return student.name;
+      const value =
+        key === "flag"
+          ? flag
+          : key === "decoy"
+            ? decoyFor(secret, student.id, decoys++)
+            : null;
+      if (value === null) return student.name;
+      return option ? encode(value, option.toLowerCase() as Encoding) : value;
     },
   );
   return { text, variant: variant + 1, variants: variants.length };

@@ -308,3 +308,21 @@ test("artifact templates typed in a browser keep Unix newlines", () => {
   assert.ok("data" in result);
   assert.equal(result.data.artifact, "a={{flag}}\nb=1\nc=2");
 });
+
+test("decoys can be encoded like the flag and are still recognised", () => {
+  const secret = newChallengeSecret();
+  const me = { id: "me", name: "Me" };
+  const template = "a={{decoy:base64}}\nb={{flag:base64}}\nc={{decoy:hex}}";
+  const text = renderArtifact(template, secret, me).text;
+  const [a, b, c] = text.split("\n").map((line) => line.slice(2));
+  const fromB64 = (s: string) => Buffer.from(s, "base64").toString();
+  assert.equal(fromB64(b), flagFor(secret, "me"));
+  for (const decoy of [fromB64(a), Buffer.from(c, "hex").toString()]) {
+    assert.match(decoy, /^CV\{[a-f0-9]{24}\}$/);
+    assert.deepEqual(judgeFlag(decoy, template, secret, me, ["me"]), {
+      result: "decoy",
+    });
+  }
+  assert.ok(checkArtifact("{{decoy:base32}} {{flag}}"));
+  assert.equal(checkArtifact("{{decoy:rot13}} {{flag:url}}"), null);
+});

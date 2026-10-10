@@ -28,6 +28,7 @@
     "db:studio": "prisma studio",
     "content:import": "tsx scripts/import-content.ts",
     "admin:create-user": "tsx scripts/create-admin.ts",
+    "student:import": "tsx scripts/import-student-materials.ts",
     "postinstall": "prisma generate"
   },
   "dependencies": {

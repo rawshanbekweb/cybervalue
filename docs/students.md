@@ -69,12 +69,12 @@ A personal lab gives every student their own copy of an artifact (a log, a page,
 2026-10-11 10:02:17 nginx: GET /?q={{flag:url}} 200
 ```
 
-| Placeholder                                                                             | Becomes                                                   |
-| --------------------------------------------------------------------------------------- | --------------------------------------------------------- |
-| `{{flag}}`                                                                              | the student's flag, `CV{` + 24 hex characters + `}`       |
-| `{{flag:base64}}`, `{{flag:hex}}`, `{{flag:rot13}}`, `{{flag:reverse}}`, `{{flag:url}}` | the same flag, encoded                                    |
-| `{{decoy}}`                                                                             | a fake flag of the same shape, different at each position |
-| `{{name}}`                                                                              | the student's name                                        |
+| Placeholder                                                                             | Becomes                                                                                                                    |
+| --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `{{flag}}`                                                                              | the student's flag, `CV{` + 24 hex characters + `}`                                                                        |
+| `{{flag:base64}}`, `{{flag:hex}}`, `{{flag:rot13}}`, `{{flag:reverse}}`, `{{flag:url}}` | the same flag, encoded                                                                                                     |
+| `{{decoy}}`, `{{decoy:base64}}`, …                                                      | a fake flag of the same shape, different at each position; encodable like the flag, so decoding every string is not enough |
+| `{{name}}`                                                                              | the student's name                                                                                                         |
 
 How personal labs work:
 

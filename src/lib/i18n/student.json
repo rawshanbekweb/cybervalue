@@ -166,7 +166,6 @@
   "Personal lab": "Shaxsiy laboratoriya",
   "File name": "Fayl nomi",
   "Artifact template": "Artefakt shabloni",
-  "Every student downloads their own copy. Place the flag with {{flag}}, or encoded with {{flag:base64}}, {{flag:hex}}, {{flag:rot13}}, {{flag:reverse}} or {{flag:url}}. {{decoy}} adds a fake flag, {{name}} the student’s name.": "Har bir o‘quvchi o‘z nusxasini yuklab oladi. Flagni {{flag}} bilan yoki kodlangan holda {{flag:base64}}, {{flag:hex}}, {{flag:rot13}}, {{flag:reverse}}, {{flag:url}} bilan joylang. {{decoy}} soxta flag qo‘shadi, {{name}} o‘quvchi ismini qo‘yadi.",
   "Separate alternative versions with a line === variant ===; each student gets one of them. Flags are derived from a secret key and never stored. The file always downloads and never opens on the site.": "Muqobil versiyalarni === variant === qatori bilan ajrating; har bir o‘quvchiga ulardan biri tushadi. Flaglar maxfiy kalitdan hisoblanadi va saqlanmaydi. Fayl doim yuklab olinadi, saytda ochilmaydi.",
   "{count} flag attempts": "{count} ta flag urinishi",
   "To review ({count})": "Baholanmagan ({count})",
@@ -174,5 +173,6 @@
   "Each student’s progress on published materials. Tests show the best score and the number of attempts; practice shows the teacher’s score.": "Har bir o‘quvchining e’lon qilingan materiallar bo‘yicha natijasi. Testlarda eng yaxshi natija va urinishlar soni, amaliyotda o‘qituvchi qo‘ygan ball ko‘rsatiladi.",
   "Show": "Ko‘rsatish",
   "No published materials yet.": "Hali e’lon qilingan material yo‘q.",
-  "✓ done · — not started · ✗ (n) unsolved after n attempts": "✓ bajarilgan · — boshlanmagan · ✗ (n) n ta urinishdan keyin ham yechilmagan"
+  "✓ done · — not started · ✗ (n) unsolved after n attempts": "✓ bajarilgan · — boshlanmagan · ✗ (n) n ta urinishdan keyin ham yechilmagan",
+  "Every student downloads their own copy. Place the flag with {{flag}}, or encoded with {{flag:base64}}, {{flag:hex}}, {{flag:rot13}}, {{flag:reverse}} or {{flag:url}}. {{decoy}} adds a fake flag (also encodable, e.g. {{decoy:base64}}), {{name}} the student’s name.": "Har bir o‘quvchi o‘z nusxasini yuklab oladi. Flagni {{flag}} bilan yoki kodlangan holda {{flag:base64}}, {{flag:hex}}, {{flag:rot13}}, {{flag:reverse}}, {{flag:url}} bilan joylang. {{decoy}} soxta flag qo‘shadi (uni ham kodlash mumkin, masalan {{decoy:base64}}), {{name}} o‘quvchi ismini qo‘yadi."
 }
