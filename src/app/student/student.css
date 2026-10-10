@@ -528,10 +528,13 @@ body.student-root {
   width: 100%;
   list-style: none;
   counter-reset: question;
+  /* Long URLs and commands in a question must wrap on a 360px phone. */
+  overflow-wrap: anywhere;
 }
 /* A legend cannot carry a list marker, so the number lives in the legend. */
 .student-quiz > li {
   counter-increment: question;
+  min-width: 0;
 }
 .student-question::before {
   content: counter(question) ".";
@@ -685,6 +688,9 @@ body.student-root {
   .student-item-title {
     font-size: 24px;
   }
+  .student-question {
+    font-size: 20px;
+  }
 }
 
 /* Quiz review: the key only after the last attempt. */
@@ -696,6 +702,7 @@ body.student-root {
   gap: 36px;
   margin: 30px 0 0;
   padding-left: 24px;
+  overflow-wrap: anywhere;
 }
 .student-review-list li::marker {
   color: var(--color-ash-gray);
@@ -751,11 +758,14 @@ body.student-root {
 }
 
 /* Personal lab */
+/* Its own line with a finger-sized hit area, so the solved mark sits below. */
 .student-download {
-  display: inline-flex;
+  display: flex;
+  width: fit-content;
   align-items: center;
   gap: 12px;
-  margin-top: 24px;
+  margin-top: 12px;
+  padding: 12px 0;
   color: var(--color-saffron-spark);
   font-size: 14px;
   font-weight: 600;
