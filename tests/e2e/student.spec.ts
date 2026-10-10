@@ -322,6 +322,32 @@ test.describe("admin-issued access", () => {
     await expect(rowTwo).toContainText(`Sent the flag of Lab One ${id}`);
     await expect(rowTwo).toContainText("1 wrong attempts");
 
+    // The class results matrix and its CSV show the same outcome.
+    await page.goto("/admin/results");
+    await page.getByLabel("Group").selectOption(group);
+    await page.getByRole("button", { name: "Show" }).click();
+    await expect(page).toHaveURL(new RegExp(`group=${group}`));
+    await expect(page.getByRole("row")).toHaveCount(4);
+    await expect(
+      page.getByRole("row", { name: new RegExp(`^Lab One ${id}`) }),
+    ).toContainText("✓ (2)");
+    await expect(
+      page.getByRole("row", { name: new RegExp(`^Lab Two ${id}`) }),
+    ).toContainText("✗ (1)");
+    const csvDownload = page.waitForEvent("download");
+    await page.getByRole("link", { name: "Download CSV" }).click();
+    const csvFile = await csvDownload;
+    expect(csvFile.suggestedFilename()).toMatch(
+      new RegExp(`^results-${group}-\\d{4}-\\d{2}-\\d{2}\\.csv$`),
+    );
+    const csv = Buffer.concat(
+      await (await csvFile.createReadStream()).toArray(),
+    ).toString("utf8");
+    expect(csv).toContain(`"Lab One ${id}","${group}","1/1"`);
+    expect(csv).toContain(`"Lab Two ${id}","${group}","0/1"`);
+    expect(csv).toContain(`"Log hunt ${id}"`);
+    await page.goto(labUrl);
+
     // Cleanup.
     page.on("dialog", (dialog) => dialog.accept());
     await page.getByRole("button", { name: "Delete material" }).click();

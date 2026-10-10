@@ -97,6 +97,20 @@ Wrong answers are listed below the table; correct flags are not stored.
 
 The material's admin page lists answers that are still waiting for review first. Give an optional 0–100 score and feedback; the student sees both on the material page.
 
+## Results
+
+**Admin → Results** shows the class as a matrix: one row per student and one column per published material. You can filter the matrix by group. The cells read:
+
+- `✓`: done (a lesson or lab marked complete);
+- `85`: the teacher's practice score, or `To review (n)` while answers wait for review;
+- `90% (2)`: a test's best score and the number of attempts;
+- `✓ (3)` or `✗ (2)`: a personal lab, solved or still unsolved, with the number of attempts;
+- `—`: not started.
+
+Each row also shows completed/available and an average score: the mean of test best scores and reviewed practice scores. The footer shows how many students finished each material.
+
+**Download CSV** exports the same view for the selected group. The file is UTF-8 with a BOM, so Excel shows Uzbek letters correctly, and cells that start with `=`, `+`, `-` or `@` are escaped against formula injection.
+
 ## Data
 
 The Prisma models are `Student`, `StudentSession`, `StudentMaterial`, `StudentSubmission` and `StudentProgress`; the migrations are `20261010090000_student_portal` and `20261011090000_student_challenges`. Admin actions on students, materials and reviews are recorded in the audit log.

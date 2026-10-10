@@ -2507,3 +2507,55 @@ p {
 .student-wrong-list code {
   word-break: break-all;
 }
+/* Admin: class results matrix */
+.results-wrap {
+  overflow-x: auto;
+}
+.results-table {
+  min-width: max-content;
+}
+.results-table caption {
+  caption-side: bottom;
+  padding-top: 0.75rem;
+  text-align: left;
+}
+.results-table th,
+.results-table td {
+  white-space: nowrap;
+  text-align: center;
+}
+.results-table .results-sticky {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--bg);
+  text-align: left;
+}
+.results-table thead th:not(.results-sticky) {
+  max-width: 14rem;
+  white-space: normal;
+  vertical-align: bottom;
+}
+.results-kind {
+  display: block;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+.results-ok {
+  color: var(--accent);
+}
+.results-pending {
+  color: #ffcf6e;
+}
+.results-empty {
+  color: var(--muted);
+}
+.results-table tbody th,
+.results-table tfoot th {
+  font-size: inherit;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--text);
+}
