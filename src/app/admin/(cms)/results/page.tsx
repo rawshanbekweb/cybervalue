@@ -85,71 +85,77 @@ export default async function AdminResultsPage({
             : t("No students yet.")}
         </p>
       ) : (
-        <div className="admin-table-wrap results-wrap">
-          <table className="admin-table results-table">
-            <caption className="muted">
-              {t("✓ done · — not started · ✗ (n) unsolved after n attempts")}
-            </caption>
-            <thead>
-              <tr>
-                <th scope="col" className="results-sticky">
-                  {t("Student")}
-                </th>
-                <th scope="col">{t("Completed")}</th>
-                <th scope="col">{t("Average score")}</th>
-                {columns.map(({ material }) => (
-                  <th key={material.id} scope="col">
-                    <Link href={`/admin/materials/${material.id}`}>
-                      {material.title}
-                    </Link>
-                    <span className="results-kind">
-                      {t(KIND_LABEL[material.kind])}
-                    </span>
+        <>
+          {/* Outside the scrolling table, so it wraps on a phone. */}
+          <div className="admin-table-wrap results-wrap">
+            <table
+              className="admin-table results-table"
+              aria-describedby="results-legend"
+            >
+              <thead>
+                <tr>
+                  <th scope="col" className="results-sticky">
+                    {t("Student")}
                   </th>
+                  <th scope="col">{t("Completed")}</th>
+                  <th scope="col">{t("Average score")}</th>
+                  {columns.map(({ material }) => (
+                    <th key={material.id} scope="col">
+                      <Link href={`/admin/materials/${material.id}`}>
+                        {material.title}
+                      </Link>
+                      <span className="results-kind">
+                        {t(KIND_LABEL[material.kind])}
+                      </span>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row) => (
+                  <tr key={row.student.id}>
+                    <th scope="row" className="results-sticky">
+                      <Link href={`/admin/students/${row.student.id}`}>
+                        {row.student.name}
+                      </Link>
+                      {row.student.group && (
+                        <span className="muted"> · {row.student.group}</span>
+                      )}
+                      {!row.student.active && (
+                        <span className="admin-warn"> · {t("Blocked")}</span>
+                      )}
+                    </th>
+                    <td>
+                      {row.completed}/{row.available}
+                    </td>
+                    <td>{row.average === null ? "—" : `${row.average}%`}</td>
+                    {row.cells.map((cell, i) => (
+                      <td key={columns[i].material.id} className={tone(cell)}>
+                        {cellText(cell, t)}
+                      </td>
+                    ))}
+                  </tr>
                 ))}
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((row) => (
-                <tr key={row.student.id}>
+              </tbody>
+              <tfoot>
+                <tr>
                   <th scope="row" className="results-sticky">
-                    <Link href={`/admin/students/${row.student.id}`}>
-                      {row.student.name}
-                    </Link>
-                    {row.student.group && (
-                      <span className="muted"> · {row.student.group}</span>
-                    )}
-                    {!row.student.active && (
-                      <span className="admin-warn"> · {t("Blocked")}</span>
-                    )}
+                    {t("Completed")}
                   </th>
-                  <td>
-                    {row.completed}/{row.available}
-                  </td>
-                  <td>{row.average === null ? "—" : `${row.average}%`}</td>
-                  {row.cells.map((cell, i) => (
-                    <td key={columns[i].material.id} className={tone(cell)}>
-                      {cellText(cell, t)}
+                  <td colSpan={2} />
+                  {columns.map((c) => (
+                    <td key={c.material.id}>
+                      {c.completed}/{c.available}
                     </td>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-            <tfoot>
-              <tr>
-                <th scope="row" className="results-sticky">
-                  {t("Completed")}
-                </th>
-                <td colSpan={2} />
-                {columns.map((c) => (
-                  <td key={c.material.id}>
-                    {c.completed}/{c.available}
-                  </td>
-                ))}
-              </tr>
-            </tfoot>
-          </table>
-        </div>
+              </tfoot>
+            </table>
+          </div>
+          <p id="results-legend" className="muted results-legend">
+            {t("✓ done · — not started · ✗ (n) unsolved after n attempts")}
+          </p>
+        </>
       )}
     </div>
   );

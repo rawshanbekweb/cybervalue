@@ -2514,10 +2514,8 @@ p {
 .results-table {
   min-width: max-content;
 }
-.results-table caption {
-  caption-side: bottom;
-  padding-top: 0.75rem;
-  text-align: left;
+.results-legend {
+  margin: 0.75rem 0 0;
 }
 .results-table th,
 .results-table td {
