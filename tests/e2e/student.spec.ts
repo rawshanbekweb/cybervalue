@@ -226,4 +226,111 @@ test.describe("admin-issued access", () => {
       await expect(page).toHaveURL(/\/admin\/materials$/);
     }
   });
+
+  test("personal labs hand out per-student flags and flag shared answers", async ({
+    page,
+    browser,
+  }) => {
+    const lab = `e2e-lab-${id}`;
+    await adminLogin(page);
+    const labUrl = await createMaterial(
+      page,
+      {
+        title: `Log hunt ${id}`,
+        slug: lab,
+        kind: "CHALLENGE",
+        body: "Find your flag in the log.",
+      },
+      async (p) => {
+        await p.getByLabel("File name").fill("access.log");
+        await p
+          .getByLabel("Artifact template")
+          .fill("user={{name}}\ndebug={{decoy}}\npayload={{flag:base64}}");
+        await p.getByLabel("Attempts per student (0 = unlimited)").fill("0");
+      },
+    );
+
+    await page.goto("/admin/students");
+    await page
+      .getByLabel("One student per line: Full name | group (group is optional)")
+      .fill(`Lab One ${id} | ${group}\nLab Two ${id} | ${group}`);
+    await page
+      .getByRole("button", { name: "Create students and codes" })
+      .click();
+    await expect(page.locator("code.student-code")).toHaveCount(2);
+    const codes = await page.locator("code.student-code").allTextContents();
+
+    async function signIn(code: string) {
+      const context = await browser.newContext({ storageState: english });
+      const student = await context.newPage();
+      await student.goto("/student/login");
+      await student.getByLabel("Access code").fill(code);
+      await student.getByRole("button", { name: "Enter" }).click();
+      await expect(student).toHaveURL(/\/student$/);
+      await student.goto(`/student/m/${lab}`);
+      const download = student.waitForEvent("download");
+      await student.getByRole("link", { name: "Download access.log" }).click();
+      const file = await download;
+      expect(file.suggestedFilename()).toBe("access.log");
+      const text = await (await file.createReadStream()).toArray();
+      const lines = Buffer.concat(text).toString("utf8").split("\n");
+      return {
+        student,
+        name: lines[0].slice("user=".length),
+        decoy: lines[1].slice("debug=".length),
+        flag: Buffer.from(
+          lines[2].slice("payload=".length),
+          "base64",
+        ).toString(),
+      };
+    }
+
+    const one = await signIn(codes[0]);
+    const two = await signIn(codes[1]);
+    expect(one.name).toBe(`Lab One ${id}`);
+    expect(one.flag).toMatch(/^CV\{[a-f0-9]{24}\}$/);
+    expect(one.flag).not.toBe(two.flag);
+
+    // A decoy and a classmate's flag are both rejected the same way.
+    for (const [who, guess] of [
+      [one, one.decoy],
+      [two, one.flag],
+    ] as const) {
+      await who.student.getByLabel("Flag").fill(guess);
+      await who.student.getByRole("button", { name: "Check flag" }).click();
+      await expect(
+        who.student.getByText("That is not your flag. Keep investigating."),
+      ).toBeVisible();
+    }
+    await one.student.getByLabel("Flag").fill(one.flag);
+    await one.student.getByRole("button", { name: "Check flag" }).click();
+    await expect(one.student.getByText(/Solved on/)).toBeVisible();
+    await expect(one.student.getByLabel("Flag")).toHaveCount(0);
+
+    await page.goto(labUrl);
+    await expect(page.getByText("1 of 2 students solved it.")).toBeVisible();
+    const rowOne = page.getByRole("row", {
+      name: new RegExp(`^Lab One ${id}`),
+    });
+    const rowTwo = page.getByRole("row", {
+      name: new RegExp(`^Lab Two ${id}`),
+    });
+    await expect(rowOne).toContainText(one.flag);
+    await expect(rowOne).toContainText("Sent a decoy flag");
+    await expect(rowOne).toContainText(`Their flag was sent by Lab Two ${id}`);
+    await expect(rowOne).toContainText(/Solved .* 2 attempts/);
+    await expect(rowTwo).toContainText(`Sent the flag of Lab One ${id}`);
+    await expect(rowTwo).toContainText("1 wrong attempts");
+
+    // Cleanup.
+    page.on("dialog", (dialog) => dialog.accept());
+    await page.getByRole("button", { name: "Delete material" }).click();
+    await expect(page).toHaveURL(/\/admin\/materials$/);
+    for (const name of [`Lab One ${id}`, `Lab Two ${id}`]) {
+      await page.goto("/admin/students");
+      await page.getByRole("link", { name }).click();
+      await page.getByRole("button", { name: "Delete student" }).click();
+      await expect(page).toHaveURL(/\/admin\/students$/);
+    }
+  });
 });

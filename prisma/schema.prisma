@@ -280,6 +280,7 @@ enum MaterialKind {
   LAB
   PRACTICE
   QUIZ
+  CHALLENGE
 }
 
 model Student {
@@ -313,22 +314,27 @@ model StudentSession {
 
 // `groups` empty means every student; otherwise only students in a listed group.
 // `quiz` holds QUIZ questions with their answer key and never reaches the browser.
+// A CHALLENGE renders `artifact` per student; `secret` derives each student's
+// flag and variant, so flags themselves are never stored.
 model StudentMaterial {
-  id          String              @id @default(cuid())
-  slug        String              @unique
-  kind        MaterialKind
-  title       String
-  summary     String              @default("")
-  body        String              @default("") @db.Text
-  quiz        Json?
-  maxAttempts Int                 @default(1)
-  groups      String[]            @default([])
-  published   Boolean             @default(false)
-  position    Int                 @default(0)
-  createdAt   DateTime            @default(now())
-  updatedAt   DateTime            @updatedAt
-  submissions StudentSubmission[]
-  progress    StudentProgress[]
+  id           String              @id @default(cuid())
+  slug         String              @unique
+  kind         MaterialKind
+  title        String
+  summary      String              @default("")
+  body         String              @default("") @db.Text
+  quiz         Json?
+  maxAttempts  Int                 @default(1)
+  artifact     String              @default("") @db.Text
+  artifactName String              @default("")
+  secret       String?
+  groups       String[]            @default([])
+  published    Boolean             @default(false)
+  position     Int                 @default(0)
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+  submissions  StudentSubmission[]
+  progress     StudentProgress[]
 
   @@index([published, kind, position])
 }

@@ -2496,3 +2496,14 @@ p {
 .student-review-form {
   max-width: 640px;
 }
+.student-warning {
+  display: block;
+}
+.student-wrong-list {
+  display: grid;
+  gap: 0.4rem;
+  padding-left: 1.2rem;
+}
+.student-wrong-list code {
+  word-break: break-all;
+}

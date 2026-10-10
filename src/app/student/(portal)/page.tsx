@@ -103,7 +103,12 @@ export default async function StudentHomePage() {
       </section>
 
       {SECTIONS.map((section) => {
-        const items = materials.filter((m) => m.kind === section.kind);
+        // Personal labs sit with the other labs.
+        const items = materials.filter(
+          (m) =>
+            m.kind === section.kind ||
+            (section.kind === "LAB" && m.kind === "CHALLENGE"),
+        );
         return (
           <section
             key={section.id}

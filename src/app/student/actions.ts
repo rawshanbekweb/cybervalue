@@ -18,6 +18,7 @@ import {
 } from "@/lib/student/session";
 import { materialForStudent } from "@/lib/student/materials";
 import { gradeQuiz, quizSchema } from "@/lib/student/quiz";
+import { judgeFlag, normalizeFlag } from "@/lib/student/challenge";
 
 export type StudentLoginState = { error?: string } | undefined;
 const GENERIC_ERROR = "This access code is not valid or no longer active.";
@@ -144,5 +145,79 @@ export async function submitQuizAction(
   });
   // The page re-renders with the graded attempt.
   if (!result?.error) revalidatePath("/student", "layout");
+  return result;
+}
+
+export type FlagState =
+  { error?: string; values?: Record<string, number> } | undefined;
+
+export async function submitFlagAction(
+  slug: string,
+  _state: FlagState,
+  formData: FormData,
+): Promise<FlagState> {
+  const student = await requireStudent();
+  if (!(await limit(`student-flag:${student.id}:${slug}`, 20, 10 * 60_000)))
+    return { error: "Too many attempts. Try again in a few minutes." };
+  const raw = formData.get("flag");
+  const input = typeof raw === "string" ? normalizeFlag(raw) : "";
+  if (!input) return { error: "Enter the flag you found." };
+  const material = await materialForStudent(student, slug);
+  if (!material || material.kind !== "CHALLENGE" || !material.secret)
+    return { error: "This lab is no longer available." };
+  const db = getDb()!;
+  const classmates = await db.student.findMany({ select: { id: true } });
+  const verdict = judgeFlag(
+    input,
+    material.artifact,
+    material.secret,
+    student,
+    classmates.map((c) => c.id),
+  );
+  const correct = verdict.result === "correct";
+  const result: FlagState = await db.$transaction(async (tx) => {
+    await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${`${student.id}:${material.id}`}, 71523))`;
+    const [solved, used] = await Promise.all([
+      tx.studentProgress.findUnique({
+        where: {
+          studentId_materialId: {
+            studentId: student.id,
+            materialId: material.id,
+          },
+        },
+      }),
+      tx.studentSubmission.count({
+        where: { studentId: student.id, materialId: material.id },
+      }),
+    ]);
+    if (solved) return undefined;
+    if (material.maxAttempts > 0 && used >= material.maxAttempts)
+      return { error: "You have used all attempts for this lab." };
+    // The correct flag is never stored; wrong guesses are kept for the teacher.
+    await tx.studentSubmission.create({
+      data: {
+        studentId: student.id,
+        materialId: material.id,
+        body: correct ? "" : input,
+        answers: verdict,
+        score: correct ? 1 : 0,
+        maxScore: 1,
+      },
+    });
+    if (correct)
+      await tx.studentProgress.create({
+        data: { studentId: student.id, materialId: material.id },
+      });
+    if (correct) return undefined;
+    const left =
+      material.maxAttempts > 0 ? material.maxAttempts - used - 1 : null;
+    return left === null
+      ? { error: "That is not your flag. Keep investigating." }
+      : {
+          error: "That is not your flag. Attempts left: {left}.",
+          values: { left },
+        };
+  });
+  revalidatePath("/student", "layout");
   return result;
 }

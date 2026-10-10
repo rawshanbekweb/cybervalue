@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Check } from "lucide-react";
+import { ArrowLeft, Check, Download } from "lucide-react";
 import { getAdminTranslator, getAdminLocale } from "@/lib/i18n/server";
 import { getDb } from "@/lib/db";
 import { requireStudent } from "@/lib/student/session";
 import { materialForStudent } from "@/lib/student/materials";
 import { gradeQuiz, publicQuiz, quizSchema } from "@/lib/student/quiz";
 import { Markdown } from "@/components/markdown";
-import { PracticeForm, QuizForm } from "@/components/student/forms";
+import { FlagForm, PracticeForm, QuizForm } from "@/components/student/forms";
 import { markCompleteAction } from "../../../actions";
 
 const KIND_LABEL = {
@@ -15,6 +15,7 @@ const KIND_LABEL = {
   LAB: "Lab",
   PRACTICE: "Practice",
   QUIZ: "Test",
+  CHALLENGE: "Personal lab",
 } as const;
 
 export default async function StudentMaterialPage({
@@ -125,6 +126,51 @@ export default async function StudentMaterialPage({
                   </li>
                 ))}
               </ol>
+            </>
+          )}
+        </section>
+      )}
+
+      {material.kind === "CHALLENGE" && (
+        <section className="student-work" aria-labelledby="lab-title">
+          <h2 id="lab-title" className="student-heading-sm">
+            {t("Your personal lab")}
+          </h2>
+          <p className="student-quiet">
+            {t(
+              "This file was generated for you alone. Investigate it, find your flag in the form CV{...} and submit it. Flags from classmates will not work.",
+            )}
+          </p>
+          <a
+            href={`/student/m/${material.slug}/artifact`}
+            className="student-download"
+            download
+          >
+            <Download size={18} aria-hidden="true" />
+            {t("Download {name}", { name: material.artifactName })}
+          </a>
+          {progress ? (
+            <p className="student-done student-done-large student-solved">
+              <Check size={18} aria-hidden="true" />
+              {t("Solved on {date}", {
+                date: date.format(progress.completedAt),
+              })}
+            </p>
+          ) : attemptsLeft === 0 ? (
+            <p className="student-quiet">
+              {t("You have used all attempts for this lab.")}
+            </p>
+          ) : (
+            <>
+              <p className="student-quiet">
+                {attemptsLeft === null
+                  ? t("Unlimited attempts.")
+                  : t("Attempts left: {left} of {total}.", {
+                      left: attemptsLeft,
+                      total: material.maxAttempts,
+                    })}
+              </p>
+              <FlagForm slug={material.slug} />
             </>
           )}
         </section>

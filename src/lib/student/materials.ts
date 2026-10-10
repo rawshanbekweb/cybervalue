@@ -33,12 +33,16 @@ export async function studentOverview(student: Student) {
       select: { materialId: true },
     }),
     db.studentSubmission.findMany({
-      where: { studentId: student.id },
+      where: {
+        studentId: student.id,
+        material: { kind: { not: "CHALLENGE" } },
+      },
       select: { materialId: true },
       distinct: ["materialId"],
     }),
   ]);
-  // Handing in a practice or quiz counts as finishing it.
+  // Handing in a practice or quiz counts as finishing it; a personal lab only
+  // counts once solved, which records progress.
   const done = new Set([
     ...progress.map((p) => p.materialId),
     ...submissions.map((s) => s.materialId),

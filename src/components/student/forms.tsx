@@ -1,7 +1,11 @@
 "use client";
 import { useActionState } from "react";
 import { useTranslator } from "@/components/locale-provider";
-import { submitPracticeAction, submitQuizAction } from "@/app/student/actions";
+import {
+  submitFlagAction,
+  submitPracticeAction,
+  submitQuizAction,
+} from "@/app/student/actions";
 import type { PublicQuestion } from "@/lib/student/quiz";
 
 export function PracticeForm({ slug }: { slug: string }) {
@@ -80,6 +84,41 @@ export function QuizForm({
       )}
       <button type="submit" className="student-button" disabled={pending}>
         {pending ? t("Checking…") : t("Submit answers")}
+      </button>
+    </form>
+  );
+}
+
+export function FlagForm({ slug }: { slug: string }) {
+  const t = useTranslator();
+  const [state, action, pending] = useActionState(
+    submitFlagAction.bind(null, slug),
+    undefined,
+  );
+  return (
+    <form action={action} className="student-form">
+      <label htmlFor="flag" className="student-field-label">
+        {t("Flag")}
+      </label>
+      <input
+        id="flag"
+        name="flag"
+        required
+        maxLength={200}
+        autoComplete="off"
+        spellCheck={false}
+        placeholder="CV{...}"
+        aria-invalid={state?.error ? true : undefined}
+        aria-describedby={state?.error ? "flag-error" : undefined}
+        className="student-input student-flag-input"
+      />
+      {state?.error && (
+        <p id="flag-error" className="student-error" role="alert">
+          {t(state.error, state.values)}
+        </p>
+      )}
+      <button type="submit" className="student-button" disabled={pending}>
+        {pending ? t("Checking…") : t("Check flag")}
       </button>
     </form>
   );

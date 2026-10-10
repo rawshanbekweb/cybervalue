@@ -9,6 +9,7 @@ const KIND_LABEL = {
   LAB: "Lab",
   PRACTICE: "Practice",
   QUIZ: "Test",
+  CHALLENGE: "Personal lab",
 } as const;
 
 export default async function AdminMaterialsPage() {

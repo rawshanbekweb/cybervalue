@@ -7,6 +7,7 @@ import { quizSchema, quizToText } from "@/lib/student/quiz";
 import { ConfirmButton } from "@/components/admin/confirm-button";
 import { MaterialForm } from "@/components/admin/student-forms";
 import { SubmissionList } from "@/components/admin/submission-list";
+import { ChallengeResults } from "@/components/admin/challenge-results";
 import { deleteMaterialAction } from "../actions";
 
 export default async function EditMaterialPage({
@@ -28,7 +29,7 @@ export default async function EditMaterialPage({
           { reviewedAt: { sort: "asc", nulls: "first" } },
           { createdAt: "desc" },
         ],
-        take: 300,
+        take: 2000,
         include: { student: { select: { id: true, name: true, group: true } } },
       },
       _count: { select: { progress: true } },
@@ -55,13 +56,17 @@ export default async function EditMaterialPage({
               count: material.submissions.length,
               average,
             })
-          : material.kind === "PRACTICE"
-            ? t("{count} answers submitted", {
+          : material.kind === "CHALLENGE"
+            ? t("{count} flag attempts", {
                 count: material.submissions.length,
               })
-            : t("{count} students marked it complete", {
-                count: material._count.progress,
-              })}
+            : material.kind === "PRACTICE"
+              ? t("{count} answers submitted", {
+                  count: material.submissions.length,
+                })
+              : t("{count} students marked it complete", {
+                  count: material._count.progress,
+                })}
       </p>
       <MaterialForm
         id={material.id}
@@ -72,6 +77,8 @@ export default async function EditMaterialPage({
           summary: material.summary,
           body: material.body,
           quizText: quiz.success ? quizToText(quiz.data) : "",
+          artifact: material.artifact,
+          artifactName: material.artifactName,
           maxAttempts: material.maxAttempts,
           groups: material.groups.join(", "),
           position: material.position,
@@ -89,6 +96,15 @@ export default async function EditMaterialPage({
           {t("Delete material")}
         </ConfirmButton>
       </form>
+      {material.kind === "CHALLENGE" && (
+        <>
+          <h2>{t("Results")}</h2>
+          <ChallengeResults
+            material={material}
+            attempts={material.submissions}
+          />
+        </>
+      )}
       {(material.kind === "PRACTICE" || material.kind === "QUIZ") && (
         <>
           <h2>{t("Submissions")}</h2>

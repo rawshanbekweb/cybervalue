@@ -287,7 +287,16 @@ const KINDS = [
   ["LAB", "Lab"],
   ["PRACTICE", "Practice"],
   ["QUIZ", "Test"],
+  ["CHALLENGE", "Personal lab"],
 ] as const;
+
+const ARTIFACT_EXAMPLE = `2026-10-11 09:14:02 sshd: Failed password for admin from 203.0.113.9
+2026-10-11 09:14:05 sshd: Failed password for admin from 203.0.113.9
+2026-10-11 09:14:09 app: debug token={{decoy}}
+2026-10-11 09:15:41 app: export payload={{flag:base64}}
+=== variant ===
+2026-10-11 10:02:17 nginx: GET /?q={{flag:url}} 200
+2026-10-11 10:02:19 app: cache key {{decoy}}`;
 
 export function MaterialForm({
   id,
@@ -445,21 +454,65 @@ function MaterialFields({
               )}
             </p>
           </div>
+        </>
+      )}
+      {kind === "CHALLENGE" && (
+        <>
           <div className="admin-field">
-            <label htmlFor="maxAttempts">
-              {t("Attempts per student (0 = unlimited)")}
-            </label>
+            <label htmlFor="artifactName">{t("File name")}</label>
             <input
-              id="maxAttempts"
-              name="maxAttempts"
-              type="number"
+              id="artifactName"
+              name="artifactName"
               className="admin-input"
-              min={0}
-              max={20}
-              defaultValue={defaults.maxAttempts}
+              required
+              maxLength={80}
+              pattern="[A-Za-z0-9][A-Za-z0-9._\-]*"
+              placeholder="access.log"
+              defaultValue={defaults.artifactName}
             />
           </div>
+          <div className="admin-field">
+            <label htmlFor="artifact">{t("Artifact template")}</label>
+            <textarea
+              id="artifact"
+              name="artifact"
+              className="admin-textarea student-quiz-source"
+              rows={16}
+              required
+              aria-describedby="artifact-help"
+              defaultValue={defaults.artifact}
+              placeholder={ARTIFACT_EXAMPLE}
+            />
+            <div id="artifact-help" className="muted">
+              <p>
+                {t(
+                  "Every student downloads their own copy. Place the flag with {{flag}}, or encoded with {{flag:base64}}, {{flag:hex}}, {{flag:rot13}}, {{flag:reverse}} or {{flag:url}}. {{decoy}} adds a fake flag, {{name}} the student’s name.",
+                )}
+              </p>
+              <p>
+                {t(
+                  "Separate alternative versions with a line === variant ===; each student gets one of them. Flags are derived from a secret key and never stored. The file always downloads and never opens on the site.",
+                )}
+              </p>
+            </div>
+          </div>
         </>
+      )}
+      {(kind === "QUIZ" || kind === "CHALLENGE") && (
+        <div className="admin-field">
+          <label htmlFor="maxAttempts">
+            {t("Attempts per student (0 = unlimited)")}
+          </label>
+          <input
+            id="maxAttempts"
+            name="maxAttempts"
+            type="number"
+            className="admin-input"
+            min={0}
+            max={20}
+            defaultValue={defaults.maxAttempts}
+          />
+        </div>
       )}
       <div className="admin-field-checkbox">
         <input

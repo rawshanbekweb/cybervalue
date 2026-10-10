@@ -703,3 +703,26 @@ body.student-root {
 .student-review-prompt {
   white-space: pre-line;
 }
+
+/* Personal lab */
+.student-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+  color: var(--color-saffron-spark);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+.student-download:hover {
+  color: var(--color-bone-white);
+}
+.student-flag-input {
+  font-family: "Cascadia Code", Consolas, ui-monospace, monospace;
+  font-size: 20px;
+}
+.student-solved {
+  margin-top: 36px;
+}

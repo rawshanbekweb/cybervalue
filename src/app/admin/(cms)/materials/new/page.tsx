@@ -21,6 +21,8 @@ export default async function NewMaterialPage() {
           summary: "",
           body: "",
           quizText: "",
+          artifact: "",
+          artifactName: "",
           maxAttempts: 1,
           groups: "",
           position: 0,

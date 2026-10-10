@@ -18,12 +18,13 @@ A private learning area at `/student` for students the admin invites. Nothing in
 
 In **Admin → Student materials**, create materials of four kinds:
 
-| Kind     | Student sees                       | Completion                |
-| -------- | ---------------------------------- | ------------------------- |
-| Lesson   | Markdown body                      | "Mark as complete" button |
-| Lab      | Markdown body (+ open site labs)   | "Mark as complete" button |
-| Practice | Body + answer form; your feedback  | Submitting an answer      |
-| Test     | Body + questions, graded on server | Submitting an attempt     |
+| Kind         | Student sees                       | Completion                |
+| ------------ | ---------------------------------- | ------------------------- |
+| Lesson       | Markdown body                      | "Mark as complete" button |
+| Lab          | Markdown body (+ open site labs)   | "Mark as complete" button |
+| Practice     | Body + answer form; your feedback  | Submitting an answer      |
+| Test         | Body + questions, graded on server | Submitting an attempt     |
+| Personal lab | Body + their own file + flag form  | Submitting their own flag |
 
 - **Groups**: an empty field means every student sees the material. Otherwise list groups separated by commas.
 - **Order**: lower numbers come first.
@@ -56,10 +57,46 @@ How grading works:
 - After an attempt, students see their score and which questions were right, but not the correct options.
 - The material's admin page shows every attempt and the average score.
 
+### Writing a personal lab
+
+A personal lab gives every student their own copy of an artifact (a log, a page, a config, a script…) with their own flag inside. Set a file name such as `access.log` and write the template:
+
+```text
+2026-10-11 09:14:02 sshd: Failed password for admin from 203.0.113.9
+2026-10-11 09:14:09 app: debug token={{decoy}}
+2026-10-11 09:15:41 app: export payload={{flag:base64}}
+=== variant ===
+2026-10-11 10:02:17 nginx: GET /?q={{flag:url}} 200
+```
+
+| Placeholder                                                                             | Becomes                                                   |
+| --------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| `{{flag}}`                                                                              | the student's flag, `CV{` + 24 hex characters + `}`       |
+| `{{flag:base64}}`, `{{flag:hex}}`, `{{flag:rot13}}`, `{{flag:reverse}}`, `{{flag:url}}` | the same flag, encoded                                    |
+| `{{decoy}}`                                                                             | a fake flag of the same shape, different at each position |
+| `{{name}}`                                                                              | the student's name                                        |
+
+How personal labs work:
+
+- **Variants**: a line `=== variant ===` separates versions, up to 20; each student always gets the same one. Every variant needs at least one `{{flag}}`.
+- **Flags**: flags and variants are derived with HMAC from a secret the material creates on first save, so no flag is stored and editing the template never changes a student's flag.
+- **Download**: the file always downloads as an attachment and never renders on the site.
+- **Checking**: flags are compared on the server in constant time. A student gets 20 tries per 10 minutes, and "Attempts per student" can cap the total (`0` = unlimited).
+- **Feedback**: a wrong flag, a decoy and a classmate's flag all show the same message, so students learn nothing from it.
+
+The material's admin page has one row per student who can see the lab. It shows:
+
+- their variant and flag;
+- their attempts and when they solved it;
+- warnings when they sent a decoy or a classmate's flag, and on the owner's row whose flag was passed on;
+- a link to download exactly the file that student received.
+
+Wrong answers are listed below the table; correct flags are not stored.
+
 ### Reviewing practice
 
 The material's admin page lists answers that are still waiting for review first. Give an optional 0–100 score and feedback; the student sees both on the material page.
 
 ## Data
 
-The Prisma models are `Student`, `StudentSession`, `StudentMaterial`, `StudentSubmission` and `StudentProgress`; the migration is `20261010090000_student_portal`. Admin actions on students, materials and reviews are recorded in the audit log.
+The Prisma models are `Student`, `StudentSession`, `StudentMaterial`, `StudentSubmission` and `StudentProgress`; the migrations are `20261010090000_student_portal` and `20261011090000_student_challenges`. Admin actions on students, materials and reviews are recorded in the audit log.

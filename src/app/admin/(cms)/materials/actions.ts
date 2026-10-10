@@ -11,6 +11,7 @@ import {
   MATERIAL_KIND_VALUES,
   type MaterialFormValues,
 } from "@/lib/student/admin";
+import { newChallengeSecret } from "@/lib/student/challenge";
 
 type Values = Record<string, number | string>;
 const NO_DB = "Database is not configured.";
@@ -44,6 +45,8 @@ export async function saveMaterialAction(
     summary: text(form, "summary"),
     body: text(form, "body"),
     quizText: text(form, "quizText"),
+    artifact: text(form, "artifact"),
+    artifactName: text(form, "artifactName"),
     maxAttempts: Number(text(form, "maxAttempts")) || 0,
     groups: text(form, "groups"),
     position: Number(text(form, "position")) || 0,
@@ -66,6 +69,13 @@ export async function saveMaterialAction(
     saved = id
       ? await db.studentMaterial.update({ where: { id }, data })
       : await db.studentMaterial.create({ data });
+    // The secret is made once and kept, so editing the template never
+    // changes flags that students already found.
+    if (saved.kind === "CHALLENGE" && !saved.secret)
+      saved = await db.studentMaterial.update({
+        where: { id: saved.id },
+        data: { secret: newChallengeSecret() },
+      });
   } catch (error) {
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&
@@ -123,7 +133,8 @@ export async function reviewSubmissionAction(
     return { error: "Score: a whole number 0–100, or leave it empty." };
   const db = getDb();
   if (!db) return { error: NO_DB };
-  // Quiz scores come from the server grader and are never overwritten here.
+  // Quiz and personal-lab scores come from the server and are never
+  // overwritten here.
   const submission = await db.studentSubmission.findUnique({
     where: { id },
     include: { material: { select: { id: true, slug: true, kind: true } } },

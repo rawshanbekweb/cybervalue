@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { slugSchema } from "../validation";
 import { parseQuiz, type Quiz } from "./quiz";
+import { artifactNamePattern, checkArtifact, MAX_ARTIFACT } from "./challenge";
 
 const groupName = z
   .string()
@@ -58,6 +59,7 @@ export const MATERIAL_KIND_VALUES = [
   "LAB",
   "PRACTICE",
   "QUIZ",
+  "CHALLENGE",
 ] as const;
 
 // The raw form, as the admin typed it.
@@ -68,6 +70,8 @@ export type MaterialFormValues = {
   summary: string;
   body: string;
   quizText: string;
+  artifact: string;
+  artifactName: string;
   maxAttempts: number;
   groups: string;
   position: number;
@@ -81,6 +85,13 @@ export const materialSchema = z.object({
   summary: z.string().trim().max(400),
   body: z.string().max(60000),
   quizText: z.string().max(60000),
+  // Browsers submit textarea lines as CRLF; artifacts keep Unix newlines.
+  artifact: z
+    .string()
+    .max(MAX_ARTIFACT + 1)
+    .default("")
+    .transform((value) => value.replace(/\r\n?/g, "\n")),
+  artifactName: z.string().trim().max(80).default(""),
   maxAttempts: z.coerce.number().int().min(0).max(20),
   groups: z
     .string()
@@ -103,9 +114,10 @@ export type MaterialInput = z.infer<typeof materialSchema>;
 
 export type MaterialCheck =
   | { data: Omit<MaterialInput, "quizText"> & { quiz: Quiz | null } }
-  | { error: string; values?: Record<string, number> };
+  | { error: string; values?: Record<string, number | string> };
 
-// A quiz material must carry a valid question list; other kinds never store one.
+// A quiz must carry a valid question list and a personal lab a valid artifact
+// template; other kinds store neither.
 export function checkMaterial(input: unknown): MaterialCheck {
   const parsed = materialSchema.safeParse(input);
   if (!parsed.success) {
@@ -119,7 +131,22 @@ export function checkMaterial(input: unknown): MaterialCheck {
             : "A title is required, and each text field has a length limit.",
     };
   }
-  const { quizText, ...fields } = parsed.data;
+  const { quizText, ...rest } = parsed.data;
+  const challenge = rest.kind === "CHALLENGE";
+  const fields = {
+    ...rest,
+    artifact: challenge ? rest.artifact : "",
+    artifactName: challenge ? rest.artifactName : "",
+  };
+  if (challenge) {
+    if (!artifactNamePattern.test(fields.artifactName))
+      return {
+        error:
+          "File name: up to 80 letters, digits, dots, dashes or underscores, e.g. access.log.",
+      };
+    const problem = checkArtifact(fields.artifact);
+    if (problem) return problem;
+  }
   if (fields.kind !== "QUIZ") return { data: { ...fields, quiz: null } };
   const quiz = parseQuiz(quizText);
   if ("error" in quiz) return quiz;
