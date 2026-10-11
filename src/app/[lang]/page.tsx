@@ -16,6 +16,7 @@ import { MissionGateway } from "@/components/mission-gateway";
 import { StudioGateway } from "@/components/studio-gateway";
 import { CtfGateway } from "@/components/ctf-gateway";
 import { PracticePreview } from "@/components/practice-preview";
+import { Constellation } from "@/components/constellation";
 import {
   SectionHeading,
   EntryCard,
@@ -64,6 +65,7 @@ export default async function Home() {
         }}
       />
       <div className="cv-hero-wrap">
+        <Constellation className="cv-constellation" />
         <section className="cv-hero container" aria-labelledby="home-title">
           <div className="cv-hero-copy">
             <span className="cv-kicker">

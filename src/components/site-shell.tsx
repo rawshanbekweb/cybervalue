@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Inter } from "next/font/google";
 import { ArrowUpRight } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { HideOnConcept } from "@/components/hide-on-concept";
@@ -6,6 +7,15 @@ import { LocaleProvider } from "@/components/locale-provider";
 import { site, navigation } from "@/lib/site";
 import { getSocials } from "@/lib/content";
 import { createTranslator, type Locale } from "@/lib/i18n";
+
+// Design.MD names Inter as the PPNeueMontreal substitute; latin-ext covers
+// Uzbek letters and cyrillic covers the Russian-script fallbacks.
+const inter = Inter({
+  subsets: ["latin", "latin-ext", "cyrillic"],
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 // Document chrome shared by the public root layout and the admin root layout.
 // The locale is a prop so this component never reads cookies itself, which
@@ -17,7 +27,11 @@ export async function SiteShell({
   const socials = await getSocials();
   const t = createTranslator(locale);
   return (
-    <html lang={locale} data-scroll-behavior="smooth">
+    <html
+      lang={locale}
+      className={inter.variable}
+      data-scroll-behavior="smooth"
+    >
       <body>
         <LocaleProvider locale={locale}>
           <a href="#main" className="skip-link">

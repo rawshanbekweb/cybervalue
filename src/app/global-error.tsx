@@ -12,8 +12,8 @@ export default function GlobalError({
       <body
         style={{
           margin: 0,
-          background: "#101211",
-          color: "#f0f2ec",
+          background: "#000000",
+          color: "#ffffff",
           fontFamily: "sans-serif",
           padding: "10vh 24px",
           textAlign: "center",

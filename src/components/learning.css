@@ -9,22 +9,22 @@
   flex-wrap: wrap;
   gap: 5px;
   padding: 4px;
-  background: #191d17;
+  background: #0f0f11;
   border: 1px solid var(--border);
   border-radius: 7px;
 }
 .learn-filters button {
   padding: 8px 16px;
-  color: #acb4a5;
+  color: #abaaaf;
   background: transparent;
   border: 1px solid transparent;
   border-radius: 4px;
   font-size: 12px;
 }
 .learn-filters button[aria-pressed="true"] {
-  background: #2c3623;
-  color: var(--accent);
-  border-color: #49563b;
+  background: #2a2930;
+  color: var(--accent-text);
+  border-color: #45444d;
 }
 .learn-search {
   display: flex;
@@ -36,7 +36,7 @@
   border: 1px solid var(--border);
   border-radius: 6px;
   color: var(--muted);
-  background: #151814;
+  background: #0d0d0e;
 }
 .learn-search:focus-within {
   border-color: var(--accent);
@@ -51,7 +51,7 @@
   font-size: 12px;
 }
 .learn-search input::placeholder {
-  color: #a0a79f;
+  color: #a2a2a4;
 }
 .learn-results {
   color: var(--muted);
@@ -67,16 +67,16 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  border: 1px solid #35402e;
-  border-radius: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
   padding: 30px;
   background:
-    radial-gradient(ellipse at top right, #c2f97009, transparent 70%), #171b15;
+    radial-gradient(ellipse at top right, #8052ff09, transparent 70%), #0e0e10;
   min-width: 0;
 }
 .learn-card-security {
   background:
-    radial-gradient(ellipse at top right, #89c9e810, transparent 70%), #151b19;
+    radial-gradient(ellipse at top right, #89c9e810, transparent 70%), #0e0e10;
   border-color: #30423e;
 }
 .learn-card-top {
@@ -94,9 +94,9 @@
   height: 49px;
   flex-shrink: 0;
   border-radius: 9px;
-  background: #c2f9700d;
-  border: 1px solid #c2f97030;
-  color: var(--accent);
+  background: #8052ff0d;
+  border: 1px solid #8052ff30;
+  color: var(--accent-text);
 }
 .learn-card-security .learn-icon {
   background: #a5dce70a;
@@ -104,14 +104,14 @@
   color: #a5dce7;
 }
 .learn-level {
-  color: #c1c9bb;
+  color: #c0c0c4;
   font: 9px/1.7 var(--font-mono);
-  border: 1px solid #47503f;
+  border: 1px solid #46454a;
   border-radius: 4px;
   padding: 4px 8px;
 }
 .learn-meta {
-  color: var(--accent);
+  color: var(--accent-text);
   font: 10px/1.6 var(--font-mono);
   text-transform: uppercase;
   letter-spacing: 0.6px;
@@ -131,7 +131,7 @@
   margin-top: 12px;
 }
 .learn-card > p {
-  color: #acb5a5;
+  color: #abaab0;
   font-size: 13px;
   line-height: 1.85;
   margin-top: 13px;
@@ -148,11 +148,11 @@
   display: flex;
   align-items: center;
   gap: 7px;
-  color: #c0c9b8;
+  color: #bfbec3;
   font-size: 11px;
 }
 .learn-modules svg {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .learn-card-bottom {
   margin-top: auto;
@@ -161,7 +161,7 @@
 .learn-progress-label {
   display: flex;
   justify-content: space-between;
-  color: #aeb8a5;
+  color: #acabb2;
   font: 10px/1.6 var(--font-mono);
 }
 .learn-progress {
@@ -173,11 +173,11 @@
   border-radius: 3px;
   overflow: hidden;
   appearance: none;
-  background: #30382a;
-  color: var(--accent);
+  background: #2f2f33;
+  color: var(--accent-text);
 }
 .learn-progress::-webkit-progress-bar {
-  background: #30382a;
+  background: #2f2f33;
 }
 .learn-progress::-webkit-progress-value {
   background: var(--accent);
@@ -191,12 +191,12 @@
   align-items: center;
   gap: 18px;
   padding-top: 18px;
-  border-top: 1px solid #35402e;
-  color: var(--accent);
+  border-top: 1px solid #35343a;
+  color: var(--accent-text);
   font-size: 13px;
 }
 .learn-launch:hover {
-  color: #e2ffbb;
+  color: #bea7ff;
 }
 .learn-card-security .learn-launch {
   color: #a5dce7;
@@ -220,20 +220,20 @@
   gap: 12px;
   padding: 11px 0;
   border-bottom: 1px solid var(--border);
-  color: #d2ddc6;
+  color: #cfced5;
   font-size: 12px;
 }
 .learn-matches a:hover {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .learn-empty {
   padding: 50px 24px;
   text-align: center;
-  border: 1px dashed #536245;
+  border: 1px dashed #504e59;
   border-radius: 8px;
 }
 .learn-empty > svg {
-  color: var(--accent);
+  color: var(--accent-text);
   margin: auto auto 16px;
 }
 .learn-empty h3 {
@@ -245,7 +245,7 @@
   margin: 10px 0 22px;
 }
 .learning-header h1 > span {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .learning-highlights {
   display: flex;
@@ -257,11 +257,11 @@
   display: flex;
   align-items: center;
   gap: 9px;
-  color: #b8c4ac;
+  color: #b5b4bc;
   font-size: 12px;
 }
 .learning-highlights svg {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .learning-section-title {
   font-size: 24px;
@@ -277,7 +277,7 @@
   padding: 28px;
   border: 1px solid var(--border);
   border-radius: 8px;
-  background: #191e16;
+  background: #0f0e12;
 }
 .learning-assessment h2 {
   font-size: 21px;
@@ -314,7 +314,7 @@
   font-size: 14px;
 }
 .learning-faq details[open] summary {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .learning-faq details p {
   padding-bottom: 22px;

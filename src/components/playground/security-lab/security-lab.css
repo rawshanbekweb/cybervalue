@@ -317,7 +317,7 @@
 }
 .lab-hero h1 {
   font-size: clamp(24px, 2.6vw, 38px);
-  font-weight: 650;
+  font-weight: 400;
   letter-spacing: -1.4px;
   line-height: 1.2;
   margin: 0 0 15px;

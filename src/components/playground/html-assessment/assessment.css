@@ -44,7 +44,7 @@ body:has(.exam-working) .site-footer {
   margin: 12px 0;
 }
 .exam-eyebrow {
-  color: var(--accent);
+  color: var(--accent-text);
   letter-spacing: 0.13em;
   font-family: var(--font-mono);
   font-size: 11px;
@@ -59,7 +59,7 @@ body:has(.exam-working) .site-footer {
   letter-spacing: -0.045em;
 }
 .exam-intro h1 span {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .exam-intro > p {
   color: var(--muted);
@@ -138,7 +138,7 @@ body:has(.exam-working) .site-footer {
 }
 .exam-duration {
   font: 32px var(--font-mono);
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .exam-error {
   padding: 16px;
@@ -183,7 +183,7 @@ body:has(.exam-working) .site-footer {
 .exam-timer {
   font: 34px var(--font-mono);
   font-variant-numeric: tabular-nums;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .exam-timer-low {
   color: #ffc58b;
@@ -256,8 +256,8 @@ body:has(.exam-working) .site-footer {
   padding: 22px;
   border: 1px solid var(--border);
   border-radius: 9px;
-  background: #0d1110;
-  color: #dcebdd;
+  background: #09090a;
+  color: #e2e1e6;
   font:
     13px/1.8 var(--font-mono),
     monospace;
@@ -338,7 +338,7 @@ body:has(.exam-working) .site-footer {
 }
 .exam-result-score {
   font: 80px var(--font-mono);
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .exam-result-score small {
   font-size: 26px;

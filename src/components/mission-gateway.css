@@ -4,10 +4,10 @@
   gap: 25px;
   padding: 30px;
   margin-bottom: 32px;
-  border: 1px solid #607447;
+  border: 1px solid #ffffff1f;
   border-radius: 9px;
   background:
-    radial-gradient(ellipse at top left, #c2f97011, transparent 65%), #1a2116;
+    radial-gradient(ellipse at top left, #8052ff11, transparent 65%), #100f13;
 }
 .mission-gateway-icon {
   display: grid;
@@ -15,10 +15,10 @@
   width: 66px;
   height: 66px;
   flex-shrink: 0;
-  border: 1px solid #738850;
+  border: 1px solid #666375;
   border-radius: 50%;
-  color: var(--accent);
-  background: #c2f97008;
+  color: var(--accent-text);
+  background: #8052ff08;
 }
 .mission-gateway h2 {
   font-size: 24px;
@@ -28,7 +28,7 @@
   margin: 10px 0;
 }
 .mission-gateway p {
-  color: #b4c0a8;
+  color: #b1b0b8;
   font-size: 12px;
   line-height: 1.85;
   max-width: 590px;
@@ -41,13 +41,13 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px 18px;
-  color: #c5d7b4;
+  color: #c2c1ca;
   font: 9px/1.7 var(--font-mono);
   margin-top: 15px;
 }
 .mission-gateway-tags span::before {
   content: "+ ";
-  color: var(--accent);
+  color: var(--accent-text);
 }
 @media (max-width: 1050px) {
   .mission-gateway {

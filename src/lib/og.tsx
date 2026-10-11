@@ -10,18 +10,18 @@ export function ogImage(
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        background: "#101211",
-        color: "#f0f2ec",
+        background: "#000000",
+        color: "#ffffff",
         padding: "65px 75px",
         fontFamily: "sans-serif",
-        borderBottom: "10px solid #c2f970",
+        borderBottom: "10px solid #8052ff",
       }}
     >
       <div
         style={{
           display: "flex",
           fontSize: 34,
-          color: "#c2f970",
+          color: "#ffb829",
           letterSpacing: -1,
         }}
       >
@@ -32,7 +32,7 @@ export function ogImage(
           display: "flex",
           fontSize: 17,
           letterSpacing: 3,
-          color: "#a6b399",
+          color: "#9a9a9a",
           marginTop: 55,
         }}
       >

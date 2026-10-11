@@ -26,10 +26,10 @@
   line-height: 1.12;
   letter-spacing: -2px;
   margin: 15px 0;
-  font-weight: 550;
+  font-weight: 400;
 }
 .missions-heading h1 span {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .missions-heading p {
   color: var(--muted);
@@ -40,13 +40,13 @@
   gap: 12px;
   align-items: center;
   padding: 15px 18px;
-  border: 1px solid #3e4c32;
+  border: 1px solid #3c3a44;
   border-radius: 7px;
-  background: #1a2115;
+  background: #0f0f13;
   flex-shrink: 0;
 }
 .missions-mode svg {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .missions-mode strong,
 .missions-mode span {
@@ -73,19 +73,19 @@
   gap: 13px;
   padding: 22px 18px;
   border: 1px solid var(--border);
-  background: #171b16;
+  background: #0f0e10;
   border-radius: 7px;
 }
 .mission-selector > a[aria-current] {
-  border-color: #8cb94e;
-  background: #c2f9700b;
+  border-color: #7d7a8d;
+  background: #8052ff0b;
 }
 .mission-selector > a > svg {
   margin-left: auto;
   color: var(--muted);
 }
 .mission-number {
-  color: var(--accent);
+  color: var(--accent-text);
   font: 23px var(--font-mono);
 }
 .mission-selector strong,
@@ -105,7 +105,7 @@
   margin: 5px 0;
 }
 .mission-selector small {
-  color: #afbaa7;
+  color: #aeadb4;
   font-size: 10px;
 }
 .mission-statusbar {
@@ -126,7 +126,7 @@
   gap: 12px;
 }
 .mission-statusbar strong {
-  color: var(--accent);
+  color: var(--accent-text);
   font-weight: 500;
   letter-spacing: 1px;
 }
@@ -161,7 +161,7 @@
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 24px;
-  background: #161a15;
+  background: #0e0e0f;
   min-width: 0;
 }
 .mission-brief .mission-panel {
@@ -175,17 +175,17 @@
   margin: 16px 0;
 }
 .mission-brief p {
-  color: #b0b9a9;
+  color: #afaeb4;
   font-size: 12px;
   line-height: 1.9;
 }
 .mission-objective {
   margin-top: 23px;
   padding: 18px 0;
-  border-block: 1px solid #303a29;
+  border-block: 1px solid #302f34;
 }
 .mission-objective > span {
-  color: var(--accent);
+  color: var(--accent-text);
   font: 9px/1.7 var(--font-mono);
   letter-spacing: 1px;
 }
@@ -206,8 +206,8 @@
   gap: 10px;
 }
 .mission-checklist li > span {
-  border: 1px solid #49533f;
-  color: #aeba9f;
+  border: 1px solid #47464d;
+  color: #a9a8b1;
   border-radius: 50%;
   width: 22px;
   height: 22px;
@@ -228,11 +228,11 @@
 }
 .mission-checklist .is-done > span {
   background: var(--accent);
-  color: #17200f;
+  color: var(--accent-ink);
   border-color: var(--accent);
 }
 .mission-checklist .is-done strong {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .mission-hints h3 {
   display: flex;
@@ -282,7 +282,7 @@
   font-weight: 550;
 }
 .mission-panel-heading h3 svg {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .mission-panel-heading > span {
   font: 8px var(--font-mono);
@@ -297,28 +297,28 @@
   padding-bottom: 14px;
 }
 .mission-file-tabs button {
-  color: #adb9a3;
+  color: #abaab2;
   background: transparent;
-  border: 1px solid #35402d;
+  border: 1px solid #34333a;
   border-radius: 4px;
   padding: 7px 10px;
   font: 10px var(--font-mono);
 }
 .mission-file-tabs button[aria-pressed="true"] {
-  color: var(--accent);
-  border-color: #839f63;
-  background: #c2f9700c;
+  color: var(--accent-text);
+  border-color: #7a778b;
+  background: #8052ff0c;
 }
 .missions-root pre {
   font: 11px/1.9 var(--font-mono);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   margin: 0;
-  color: #c4d4b8;
+  color: #c3c1cb;
 }
 .mission-files pre {
-  background: #10140e;
-  border: 1px solid #2b3426;
+  background: #0a0a0b;
+  border: 1px solid #2b2b2f;
   padding: 18px;
   border-radius: 5px;
   min-height: 160px;
@@ -341,7 +341,7 @@
   flex-direction: column;
   gap: 7px;
   font-size: 11px;
-  color: #b5c1aa;
+  color: #b3b1ba;
   min-width: 0;
 }
 .mission-path {
@@ -350,9 +350,9 @@
 .missions-root input:not([type="checkbox"]):not([type="radio"]),
 .missions-root select,
 .missions-root textarea {
-  background: #10140e;
-  color: #e4edda;
-  border: 1px solid #46513c;
+  background: #0a0a0b;
+  color: #e2e1e6;
+  border: 1px solid #44434a;
   border-radius: 5px;
   padding: 10px 12px;
   min-width: 0;
@@ -368,7 +368,7 @@
   margin: 18px 0;
 }
 .mission-body-label textarea::placeholder {
-  color: #8e9c82;
+  color: #8c8a94;
 }
 .mission-request-actions {
   display: flex;
@@ -383,7 +383,7 @@
   justify-content: center;
   gap: 9px;
   background: var(--accent);
-  color: #16200e;
+  color: var(--accent-ink);
   border: 1px solid transparent;
   border-radius: 5px;
   padding: 10px 15px;
@@ -391,12 +391,12 @@
   font-weight: 550 !important;
 }
 .mission-button.secondary {
-  color: #d4e3c7;
-  border-color: #4e6040;
-  background: #232d1c;
+  color: #d3d2d8;
+  border-color: #4c4a56;
+  background: #232227;
 }
 .mission-button.quiet {
-  color: #b1bea5;
+  color: #afadb6;
   background: transparent;
   padding-inline: 8px;
 }
@@ -415,16 +415,16 @@
 .mission-notice {
   font-size: 11px;
   line-height: 1.7;
-  color: #b7c6a9;
+  color: #b4b2bd;
   margin-top: 14px;
   min-height: 36px;
 }
 .mission-response {
   margin-top: 16px;
-  border: 1px solid #35402c;
+  border: 1px solid #34333a;
   border-radius: 5px;
   overflow: hidden;
-  background: #0e120c;
+  background: #09090a;
 }
 .mission-response-bar {
   display: flex;
@@ -432,8 +432,8 @@
   justify-content: space-between;
   padding: 10px 14px;
   gap: 10px;
-  background: #20271b;
-  border-bottom: 1px solid #35402c;
+  background: #131217;
+  border-bottom: 1px solid #34333a;
 }
 .mission-response-bar > div {
   display: flex;
@@ -443,20 +443,20 @@
 .mission-response-bar button {
   border: 0;
   background: transparent;
-  color: #afbba5;
+  color: #adacb4;
   font-size: 10px;
   padding: 5px 0;
   border-bottom: 1px solid transparent;
 }
 .mission-response-bar button[aria-pressed="true"] {
-  color: var(--accent);
+  color: var(--accent-text);
   border-bottom-color: var(--accent);
 }
 .mission-response-bar strong {
   font: 13px var(--font-mono);
 }
 .status-ok {
-  color: #c2f970;
+  color: var(--accent-text);
 }
 .status-denied {
   color: #f3b898;
@@ -474,7 +474,7 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  color: #9da990;
+  color: #9a98a1;
   font-size: 11px;
 }
 .mission-response > .mission-help {
@@ -491,10 +491,10 @@
   gap: 12px;
   margin-bottom: 13px;
   font: 11px/1.8 var(--font-mono);
-  color: #c4d4b8;
+  color: #c3c1cb;
 }
 .mission-trace li > span {
-  color: #9dad8f;
+  color: #9b99a3;
 }
 .mission-compare {
   display: grid;
@@ -504,11 +504,11 @@
   padding: 18px;
 }
 .mission-compare > div + div {
-  border-left: 1px solid #35402c;
+  border-left: 1px solid #34333a;
 }
 .mission-compare > div > span {
   font: 9px var(--font-mono);
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .mission-compare p {
   color: var(--muted);
@@ -555,7 +555,7 @@
   margin: 0 0 12px;
 }
 .mission-tests details {
-  border-top: 1px solid #35402d;
+  border-top: 1px solid #34333a;
 }
 .mission-tests summary {
   display: flex;
@@ -571,7 +571,7 @@
 }
 .test-pass summary > svg,
 .test-pass summary small {
-  color: #b7e78a;
+  color: #895eff;
 }
 .test-fail summary > svg,
 .test-fail summary small {
@@ -592,7 +592,7 @@
   border: 0;
 }
 .mission-hypotheses legend {
-  color: #c1cbb8;
+  color: #bfbec5;
   font-size: 12px;
   margin-bottom: 12px;
 }
@@ -602,10 +602,10 @@
   align-items: flex-start;
   padding: 12px;
   margin-bottom: 8px;
-  border: 1px solid #35402d;
+  border: 1px solid #34333a;
   border-radius: 5px;
   font-size: 12px;
-  color: #c2cdb8;
+  color: #c0bfc6;
 }
 .mission-hypotheses input {
   accent-color: var(--accent);
@@ -618,7 +618,7 @@
   margin-top: 13px;
 }
 .mission-correct {
-  color: #c2f970;
+  color: var(--accent-text);
 }
 .mission-wrong {
   color: #f1b092;
@@ -629,12 +629,12 @@
   flex-direction: column;
   gap: 16px;
   padding: 30px;
-  border: 1px solid #7d9d5d;
+  border: 1px solid #767387;
   border-radius: 8px;
-  background: linear-gradient(135deg, #26351b, #171e13);
+  background: linear-gradient(135deg, #26252b, #0e0d11);
 }
 .mission-debrief > svg {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .mission-debrief h2 {
   font-size: 27px;
@@ -644,12 +644,12 @@
 }
 .mission-debrief p {
   font-size: 13px;
-  color: #c4d3b7;
+  color: #c2c0ca;
   line-height: 1.9;
 }
 .mission-debrief > span:not(.eyebrow) {
   font: 11px var(--font-mono);
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .mission-history > summary {
   cursor: pointer;
@@ -828,7 +828,7 @@
   }
   .mission-compare > div + div {
     border-left: 0;
-    border-top: 1px solid #35402c;
+    border-top: 1px solid #34333a;
   }
   .mission-history li {
     flex-wrap: wrap;

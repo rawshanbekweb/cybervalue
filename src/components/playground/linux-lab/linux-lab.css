@@ -11,7 +11,7 @@
   margin-bottom: 30px;
 }
 .lx-back:hover {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .lx-hero {
   display: grid;
@@ -27,15 +27,15 @@
   margin: 14px 0;
 }
 .lx-hero h1 span {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .lx-hero > div > p {
   color: var(--muted);
   max-width: 680px;
 }
 .lx-course-card {
-  border: 1px solid #3c4936;
-  background: linear-gradient(130deg, #20291c, #151b16);
+  border: 1px solid #3d3c43;
+  background: linear-gradient(130deg, #141318, #0e0e10);
   padding: 22px;
   border-radius: 12px;
 }
@@ -43,14 +43,14 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  color: var(--accent);
+  color: var(--accent-text);
   font-family: var(--font-mono);
   font-size: 13px;
 }
 .lx-live {
   margin-left: auto;
   font-size: 10px;
-  color: #c1cbb9;
+  color: #c0bfc5;
 }
 .lx-course-card > p {
   margin: 18px 0;
@@ -82,16 +82,16 @@
   align-items: flex-start;
   gap: 10px;
   padding: 13px 18px;
-  background: #1a211b;
+  background: #121113;
   border: 1px solid var(--border);
   border-radius: 8px;
-  color: #b1bdaa;
+  color: #b1b0b7;
   font-size: 12px;
   margin-bottom: 28px;
 }
 .lx-notice svg {
   margin-top: 2px;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .lx-layout {
   display: grid;
@@ -120,7 +120,7 @@
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  color: #a6b398;
+  color: #a2a1aa;
 }
 .lx-sidebar nav a {
   display: flex;
@@ -128,7 +128,7 @@
   gap: 9px;
   padding: 10px;
   border-radius: 6px;
-  color: #b6bcb2;
+  color: #b6b5b9;
   font-size: 12px;
   line-height: 1.4;
   border: 1px solid transparent;
@@ -138,9 +138,9 @@
   background: #242a23;
 }
 .lx-sidebar nav a.active {
-  background: #283522;
-  border-color: #435937;
-  color: var(--accent);
+  background: #29282f;
+  border-color: #44424e;
+  color: var(--accent-text);
 }
 .lx-number,
 .lx-done {
@@ -150,7 +150,7 @@
   font-size: 10px;
 }
 .lx-done {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .lx-sandbox {
   margin-top: 20px;
@@ -160,14 +160,14 @@
   gap: 8px;
   width: 100%;
   padding: 12px 10px;
-  border: 1px solid #495e3b;
+  border: 1px solid #484653;
   border-radius: 6px;
-  background: #212a1d;
-  color: var(--accent);
+  background: #141319;
+  color: var(--accent-text);
   font-size: 12px;
 }
 .lx-sandbox.active {
-  background: #364b28;
+  background: #36353e;
 }
 .lx-sidebar-note {
   margin: 14px 10px 0;
@@ -194,7 +194,7 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  color: var(--accent);
+  color: var(--accent-text);
   font-size: 11px;
   white-space: nowrap;
 }
@@ -209,7 +209,7 @@
   font-size: 13px;
 }
 .lx-intro {
-  color: #c4ccbe;
+  color: #c3c3c7;
   margin-bottom: 20px;
   font-size: 14px;
 }
@@ -230,10 +230,10 @@
   display: inline-block;
   vertical-align: middle;
   margin: 0 6px;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .lx-theory p {
-  color: #b3bcae;
+  color: #b3b3b7;
   margin: 0 0 14px;
   line-height: 1.8;
 }
@@ -247,12 +247,12 @@
   width: 100%;
   border: 1px solid var(--border);
   border-radius: 7px;
-  background: #192018;
+  background: #100f13;
   padding: 12px;
-  color: #c7ddaf;
+  color: #c3c1cb;
 }
 .lx-examples button:hover {
-  border-color: #70865b;
+  border-color: #6b6978;
 }
 .lx-examples button div {
   display: flex;
@@ -271,8 +271,8 @@
   font-size: 11px;
 }
 .lx-task {
-  background: #1b2219;
-  border: 1px solid #3e5033;
+  background: #111014;
+  border: 1px solid #3e3c47;
   border-radius: 9px;
   padding: 17px;
   margin-top: 24px;
@@ -281,7 +281,7 @@
   margin: 6px 0 9px;
 }
 .lx-task > p {
-  color: #c5cfbd;
+  color: #c4c3c9;
 }
 .lx-task ul {
   list-style: none;
@@ -295,22 +295,22 @@
   align-items: flex-start;
   gap: 9px;
   font-size: 12px;
-  color: #b4bdae;
+  color: #b4b3b8;
 }
 .lx-task li svg {
   margin-top: 3px;
 }
 .linux-lab .passed {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .lx-hint {
   margin-top: 17px;
-  border-top: 1px solid #34412d;
+  border-top: 1px solid #35343b;
   padding-top: 12px;
 }
 .lx-hint summary {
   cursor: pointer;
-  color: #c8d4bb;
+  color: #c5c3cc;
   font-size: 12px;
 }
 .lx-hint p {
@@ -327,9 +327,9 @@
   text-align: left;
   padding: 8px;
   margin-top: 5px;
-  background: #101810;
-  border: 1px solid #35442d;
-  color: var(--accent);
+  background: #0b0b0e;
+  border: 1px solid #36343d;
+  color: var(--accent-text);
   border-radius: 4px;
   font-size: 11px;
 }
@@ -361,8 +361,8 @@
   cursor: pointer;
 }
 .lx-quiz label:has(input:checked) {
-  border-color: #6e8557;
-  background: #232d1e;
+  border-color: #696676;
+  background: #242328;
 }
 .lx-quiz input {
   accent-color: var(--accent);
@@ -373,7 +373,7 @@
   font-size: 12px;
 }
 .lx-quiz-correct {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .lx-quiz-wrong {
   color: #f3c293;
@@ -385,7 +385,7 @@
   justify-content: center;
   background: var(--accent);
   border: 1px solid var(--accent);
-  color: #17220c;
+  color: var(--accent-ink);
   font-weight: 600;
   border-radius: 6px;
   padding: 12px 18px;
@@ -403,23 +403,23 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  background: #24351b;
-  color: var(--accent);
-  border: 1px solid #526c3c;
+  background: #26252b;
+  color: var(--accent-text);
+  border: 1px solid #504d5b;
   padding: 12px;
   border-radius: 6px;
   margin-top: 10px;
 }
 .lx-finish {
   margin-top: 15px;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .lx-tools {
   min-width: 0;
 }
 .lx-terminal {
-  border: 1px solid #3d493b;
-  background: #090e0c;
+  border: 1px solid #404044;
+  background: #070708;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 18px 45px #0002;
@@ -429,12 +429,12 @@
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  background: #202720;
+  background: #151517;
   padding: 13px 15px;
-  color: #b5c0ad;
+  color: #b4b3ba;
   font-family: var(--font-mono);
   font-size: 11px;
-  border-bottom: 1px solid #313d2d;
+  border-bottom: 1px solid #333238;
 }
 .lx-window-dots {
   display: flex;
@@ -444,7 +444,7 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #677360;
+  background: #67666d;
 }
 .lx-window-dots i:first-child {
   background: #b38173;
@@ -453,27 +453,27 @@
   background: #baad6f;
 }
 .lx-window-dots i:last-child {
-  background: #a2c884;
+  background: #a19fad;
 }
 .lx-terminal-tag {
   font-size: 9px;
   letter-spacing: 0.9px;
-  color: #a3b793;
+  color: #a19fab;
 }
 .lx-output {
   height: 370px;
   overflow: auto;
   padding: 18px;
   font: 12px/1.8 var(--font-mono);
-  scrollbar-color: #405638 #101710;
+  scrollbar-color: #44424c #0c0b0d;
 }
 .lx-welcome {
-  color: #839a79;
+  color: #86848f;
   margin-bottom: 22px;
   font-size: 11px;
 }
 .lx-welcome strong {
-  color: #b9d5a4;
+  color: #b9b7c2;
 }
 .lx-welcome p {
   margin-top: 3px;
@@ -483,16 +483,16 @@
   overflow-wrap: anywhere;
 }
 .lx-echo {
-  color: #e3eddd;
+  color: #e4e3e7;
   white-space: pre-wrap;
 }
 .lx-echo span {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .lx-entry pre {
   margin: 3px 0 0;
   font: inherit;
-  color: #c2cdbb;
+  color: #c2c1c7;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
@@ -502,17 +502,17 @@
 .lx-exit {
   display: block;
   font-size: 9px;
-  color: #8d9f83;
+  color: #8e8c96;
 }
 .lx-command-form {
   display: flex;
   align-items: center;
   gap: 8px;
-  border-top: 1px solid #263424;
+  border-top: 1px solid #2a292f;
   padding: 12px;
 }
 .lx-prompt {
-  color: var(--accent);
+  color: var(--accent-text);
   font: 12px var(--font-mono);
   max-width: 36%;
   overflow-wrap: anywhere;
@@ -524,26 +524,26 @@
   border: 0;
   outline-offset: 3px;
   background: transparent;
-  color: #ecf7e3;
+  color: #d6c7ff;
   font: 13px var(--font-mono);
   padding: 7px 3px;
 }
 .lx-command-form input::placeholder {
-  color: #8a9e80;
+  color: #8c8a94;
 }
 .lx-command-form button {
-  border: 1px solid #455f33;
+  border: 1px solid #45434f;
   border-radius: 5px;
-  background: #283d1b;
-  color: var(--accent);
+  background: #251d3b;
+  color: var(--accent-text);
   padding: 8px;
 }
 .lx-terminal-footer {
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
-  color: #9dab93;
-  background: #121b12;
+  color: #9c9ba3;
+  background: #0d0c10;
   padding: 9px 14px;
   font-size: 10px;
 }
@@ -554,9 +554,9 @@
   padding: 8px 14px;
 }
 .lx-suggestions button {
-  color: var(--accent);
-  background: #203119;
-  border: 1px solid #405c30;
+  color: var(--accent-text);
+  background: #232228;
+  border: 1px solid #42404c;
   border-radius: 3px;
   font: 11px var(--font-mono);
 }
@@ -573,13 +573,13 @@
   gap: 6px;
   align-items: center;
   padding: 5px 0;
-  color: #b6c0ad;
+  color: #b4b3ba;
   background: none;
   border: 0;
   font-size: 11px;
 }
 .lx-tools-actions button:hover {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .lx-inspector {
   border: 1px solid var(--border);
@@ -589,7 +589,7 @@
 }
 .lx-tabs {
   display: flex;
-  background: #1e241d;
+  background: #131315;
   border-bottom: 1px solid var(--border);
 }
 .lx-tabs button {
@@ -600,12 +600,12 @@
   padding: 13px 15px;
   border: 0;
   border-bottom: 2px solid transparent;
-  color: #a6b39c;
+  color: #a5a3ac;
   background: transparent;
   font-size: 12px;
 }
 .lx-tabs button[aria-selected="true"] {
-  color: var(--accent);
+  color: var(--accent-text);
   border-bottom-color: var(--accent);
 }
 .lx-inspector-help {
@@ -624,7 +624,7 @@
   gap: 9px;
   border: 0;
   background: transparent;
-  color: #c5cebd;
+  color: #c4c3c8;
   font: 11px var(--font-mono);
   padding: 10px 8px;
   width: 100%;
@@ -633,7 +633,7 @@
 }
 .lx-file-list button:hover,
 .lx-file-list button.selected {
-  background: #2b3725;
+  background: #2c2b31;
 }
 .lx-file-list button > span {
   overflow-wrap: anywhere;
@@ -641,10 +641,10 @@
 }
 .lx-file-list button > code {
   margin-left: auto;
-  color: #a9bb9b;
+  color: #a7a5b1;
 }
 .lx-file-list svg {
-  color: #a8c58a;
+  color: #a3a1af;
 }
 .lx-file-preview {
   border-top: 1px solid var(--border);
@@ -666,7 +666,7 @@
   gap: 6px;
   background: transparent;
   border: 0;
-  color: var(--accent);
+  color: var(--accent-text);
   font-size: 11px;
   padding: 6px;
 }
@@ -675,24 +675,24 @@
   cursor: not-allowed;
 }
 .lx-file-preview pre {
-  background: #0d140d;
+  background: #0a0a0b;
   padding: 12px;
   max-height: 220px;
   overflow: auto;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   font-size: 11px;
-  color: #c3d2b7;
+  color: #c1c0c9;
 }
 .lx-search {
   display: flex;
   align-items: center;
   gap: 8px;
   margin: 12px;
-  border: 1px solid #3a4834;
+  border: 1px solid #3c3b42;
   padding: 8px 10px;
   border-radius: 5px;
-  color: #a0b68d;
+  color: #9d9aa9;
 }
 .lx-search input {
   width: 100%;
@@ -717,7 +717,7 @@
   justify-content: space-between;
 }
 .lx-command-list strong {
-  color: var(--accent);
+  color: var(--accent-text);
   font: 13px var(--font-mono);
 }
 .lx-command-list button {
@@ -726,13 +726,13 @@
   align-items: center;
   border: 0;
   background: none;
-  color: #c1cdb7;
+  color: #bfbec6;
   font-size: 10px;
 }
 .lx-command-list code {
   display: block;
   font-size: 10px;
-  color: #b1bcaa;
+  color: #b1b0b6;
   margin-top: 7px;
   overflow-wrap: anywhere;
 }
@@ -748,7 +748,7 @@
 }
 .lx-limits summary {
   cursor: pointer;
-  color: #c1cbb9;
+  color: #c0bfc5;
 }
 .lx-limits p {
   margin-top: 12px;
@@ -758,7 +758,7 @@
   flex-wrap: wrap;
   gap: 15px;
   margin-top: 14px;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .lx-storage-warning {
   padding: 12px;
@@ -771,11 +771,11 @@
   margin-top: 24px;
 }
 .lx-filesystem pre {
-  background: #171f15;
+  background: #0f0e12;
   border: 1px solid var(--border);
   padding: 16px;
   overflow: auto;
-  color: #b4cd9f;
+  color: #b2b0bc;
   font: 12px/1.8 var(--font-mono);
 }
 .lx-filesystem p {

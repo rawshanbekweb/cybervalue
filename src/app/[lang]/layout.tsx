@@ -7,7 +7,7 @@ import { getTranslator } from "@/lib/i18n/server";
 import "../globals.css";
 
 export const viewport: Viewport = {
-  themeColor: "#101211",
+  themeColor: "#000000",
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
