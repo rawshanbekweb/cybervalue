@@ -4,6 +4,7 @@ import {
   ArrowUpRight,
   ClipboardCheck,
   Download,
+  Info,
   Presentation,
   Terminal,
 } from "lucide-react";
@@ -13,19 +14,17 @@ import styles from "./web-lesson-resource.module.css";
 export async function WebLessonResource() {
   const t = await getTranslator();
   return (
-    <div
-      style={{
-        display: "grid",
-        gap: "2rem",
-        gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-      }}
-    >
+    <div className={styles.grid}>
       <section className={styles.card} aria-labelledby="web-lesson-title">
         <div className={styles.preview} aria-hidden="true">
-          <Presentation size={36} strokeWidth={1.3} />
-          <span>{t("WEB / ASOSLAR")}</span>
-          <div>IP / DNS / HTTP / TLS</div>
-          <strong>{t("75 slayd")}</strong>
+          <span className={styles.icon}>
+            <Presentation size={24} strokeWidth={1.5} />
+          </span>
+          <span className={styles.tags}>
+            <span>{t("WEB / ASOSLAR")}</span>
+            <span>IP / DNS / HTTP / TLS</span>
+          </span>
+          <strong className={styles.stat}>{t("75 slayd")}</strong>
         </div>
         <div className={styles.content}>
           <span className="eyebrow">{t("Interaktiv dars · O‘zbekcha")}</span>
@@ -54,6 +53,7 @@ export async function WebLessonResource() {
             </a>
           </div>
           <p className={styles.hint}>
+            <Info size={14} aria-hidden="true" />
             {t(
               "Oflayn foydalanish: ZIPni oching va index.html faylini brauzerda ishga tushiring.",
             )}
@@ -63,10 +63,14 @@ export async function WebLessonResource() {
 
       <section className={styles.card} aria-labelledby="linux-lesson-title">
         <div className={styles.preview} aria-hidden="true">
-          <Terminal size={36} strokeWidth={1.3} />
-          <span>{t("LINUX / ASOSLAR")}</span>
-          <div>{t("BASH / PERMISSIONS / NETWORKING / SSH")}</div>
-          <strong>{t("60 slayd")}</strong>
+          <span className={styles.icon}>
+            <Terminal size={24} strokeWidth={1.5} />
+          </span>
+          <span className={styles.tags}>
+            <span>{t("LINUX / ASOSLAR")}</span>
+            <span>{t("BASH / PERMISSIONS / NETWORKING / SSH")}</span>
+          </span>
+          <strong className={styles.stat}>{t("60 slayd")}</strong>
         </div>
         <div className={styles.content}>
           <span className="eyebrow">{t("Interaktiv dars · O‘zbekcha")}</span>
@@ -100,6 +104,7 @@ export async function WebLessonResource() {
             </Link>
           </div>
           <p className={styles.hint}>
+            <Info size={14} aria-hidden="true" />
             {t(
               "Oflayn foydalanish: ZIPni oching va index.html faylini brauzerda ishga tushiring.",
             )}
@@ -108,10 +113,16 @@ export async function WebLessonResource() {
       </section>
       <section className={styles.card} aria-labelledby="resource-exam-title">
         <div className={styles.preview} aria-hidden="true">
-          <ClipboardCheck size={36} strokeWidth={1.3} />
-          <span>{t("IMTIHON / 1")}</span>
-          <div>{t("TEST + AMALIY ISHLAR")}</div>
-          <strong>{t("{points} ball", { points: MAX_TOTAL })}</strong>
+          <span className={styles.icon}>
+            <ClipboardCheck size={24} strokeWidth={1.5} />
+          </span>
+          <span className={styles.tags}>
+            <span>{t("IMTIHON / 1")}</span>
+            <span>{t("TEST + AMALIY ISHLAR")}</span>
+          </span>
+          <strong className={styles.stat}>
+            {t("{points} ball", { points: MAX_TOTAL })}
+          </strong>
         </div>
         <div className={styles.content}>
           <span className="eyebrow">{t("Imtihon · O‘zbekcha")}</span>
@@ -128,6 +139,7 @@ export async function WebLessonResource() {
             </Link>
           </div>
           <p className={styles.hint}>
+            <Info size={14} aria-hidden="true" />
             {t("Vaqt: {minutes} daqiqa. Natija darhol ko‘rsatiladi.", {
               minutes: EXAM_MINUTES,
             })}
