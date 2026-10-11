@@ -5,7 +5,6 @@ import {
   ArrowUpRight,
   BookOpen,
   Code2,
-  Fingerprint,
   FlaskConical,
   Layers3,
   ShieldCheck,
@@ -47,10 +46,6 @@ export default async function Home() {
     getSocials(),
   ]);
   const tracks = getLearningTracks();
-  const lessonCount = tracks.reduce(
-    (total, track) => total + track.lessons.length,
-    0,
-  );
   return (
     <div className="cv-home">
       <JsonLd
@@ -93,35 +88,8 @@ export default async function Home() {
                 <ArrowRight size={16} />
               </a>
             </div>
-            <div className="cv-author">
-              <Fingerprint size={28} />
-              <div>
-                <span>
-                  {t("Built by")} {site.person}
-                </span>
-                <span>{t("Learn by doing. Share what you discover.")}</span>
-              </div>
-            </div>
           </div>
         </section>
-        <div className="cv-stats container">
-          <div>
-            <strong>{lessonCount.toString().padStart(2, "0")}</strong>
-            <span>{t("Hands-on lessons")}</span>
-          </div>
-          <div>
-            <strong>{tracks.length.toString().padStart(2, "0")}</strong>
-            <span>{t("Learning tracks")}</span>
-          </div>
-          <div>
-            <Code2 size={26} />
-            <span>{t("Code. Preview. Improve.")}</span>
-          </div>
-          <div>
-            <ShieldCheck size={26} />
-            <span>{t("Practice with purpose")}</span>
-          </div>
-        </div>
       </div>
       <div className="container">
         <section className="cv-section" id="explore">
