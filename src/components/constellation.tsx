@@ -2,32 +2,31 @@
 
 import { useEffect, useRef } from "react";
 
-// Design.MD's signature visual: outlined triangular particles in vivid colours,
-// a dense cloud on the right of the hero with sparse ambient ones around it.
-// On load the particles gather from a scatter, the cloud then turns slowly in
-// depth and parts around the pointer. Purely decorative, so it is aria-hidden
-// and draws a still frame when the visitor prefers reduced motion.
-const COLORS = [
-  "#8052ff",
-  "#a68bff",
-  "#ffb829",
-  "#1fb99a",
-  "#ff5fd2",
-  "#4f8bff",
-];
-const GATHER_MS = 1600;
+// Design.MD's signature visual: outlined triangular particles in vivid colours.
+// On wide screens they gather from a scatter into the author's portrait
+// (targets from scripts/portrait-points.ts); on narrower ones they form a
+// small cloud in the corner, clear of the headline. The field then breathes, the cloud
+// turns slowly in depth, and particles part around the pointer. Purely
+// decorative, so it is aria-hidden and draws a still frame when the visitor
+// prefers reduced motion.
+const ACCENTS = ["#ffb829", "#1fb99a", "#ff5fd2", "#4f8bff"];
+const COLORS = ["#8052ff", "#a68bff", ...ACCENTS];
+const GATHER_MS = 1800;
 const TURN_SPEED = 0.12; // radians per second
-const POINTER_RADIUS = 120;
-const POINTER_PUSH = 28;
+const POINTER_RADIUS = 110;
+const POINTER_PUSH = 26;
+const ALPHA_STEPS = 6; // particles are batched per colour and alpha step
+
+type PortraitData = { aspect: number; points: number[] };
 
 type Particle = {
-  // Cloud particles orbit (cx, cy) using dx and a depth dz; ambient ones only
-  // drift around their (x, y).
+  // Orbiting particles turn around (cx, cy) using dx and a depth dz; the
+  // rest only drift around their (x, y).
   x: number;
   y: number;
   dx: number;
   dz: number;
-  inCloud: boolean;
+  orbit: boolean;
   startX: number;
   startY: number;
   delay: number;
@@ -38,8 +37,9 @@ type Particle = {
   spin: number;
   phase: number;
   drift: number;
-  color: string;
+  color: number;
   alpha: number;
+  twinkle: number;
 };
 
 type Field = { cx: number; rx: number; particles: Particle[] };
@@ -51,57 +51,112 @@ function seeded(seed: number) {
   };
 }
 
-function makeField(width: number, height: number): Field {
-  const random = seeded(7);
-  const compact = width < 850;
-  const cloudCount = compact ? 110 : 620;
-  const ambientCount = compact ? 30 : 90;
-  // On wide screens the cloud fills the right half of the hero; on phones it
-  // tucks into the top right corner so it stays clear of the headline.
-  const cx = compact ? width * 0.92 : width * 0.76;
-  const cy = compact ? height * 0.07 : height * 0.46;
-  const rx = compact ? width * 0.26 : Math.min(width * 0.25, 430);
-  const ry = compact ? height * 0.07 : Math.min(height * 0.42, 340);
-  const particles: Particle[] = [];
-  for (let i = 0; i < cloudCount + ambientCount; i++) {
-    const inCloud = i < cloudCount;
-    let x: number;
-    let y: number;
-    let dz = 0;
-    if (inCloud) {
-      // Two overlapping lobes with a soft edge read as an organic, brain-like
-      // cloud rather than a perfect ellipse.
-      const lobe = random() < 0.5 ? -1 : 1;
-      const t = random() * Math.PI * 2;
-      const r = Math.sqrt(random()) * (0.75 + random() * 0.3);
-      x = cx + lobe * rx * 0.28 + Math.cos(t) * r * rx * 0.78;
-      y = cy + Math.sin(t) * r * ry * (lobe < 0 ? 0.95 : 0.8);
-      dz = (random() - 0.5) * rx * 1.1;
-    } else {
-      x = random() * width;
-      y = random() * height;
-    }
-    particles.push({
-      x,
-      y,
-      dx: x - cx,
-      dz,
-      inCloud,
-      startX: x + (random() - 0.5) * width * 0.9,
-      startY: y + (random() - 0.5) * height * 0.9,
-      delay: random() * 500,
-      pushX: 0,
-      pushY: 0,
-      size: inCloud ? 2 + random() * 4.5 : 2 + random() * 3,
-      angle: random() * Math.PI * 2,
-      spin: (random() - 0.5) * 0.004,
-      phase: random() * Math.PI * 2,
+function particle(
+  random: () => number,
+  width: number,
+  height: number,
+  values: Pick<Particle, "x" | "y" | "size" | "drift" | "color" | "alpha"> &
+    Partial<Particle>,
+): Particle {
+  return {
+    dx: 0,
+    dz: 0,
+    orbit: false,
+    startX: values.x + (random() - 0.5) * width * 0.9,
+    startY: values.y + (random() - 0.5) * height * 0.9,
+    delay: random() * 600,
+    pushX: 0,
+    pushY: 0,
+    angle: random() * Math.PI * 2,
+    spin: (random() - 0.5) * 0.004,
+    phase: random() * Math.PI * 2,
+    twinkle: 0.25,
+    ...values,
+  };
+}
+
+function ambient(random: () => number, width: number, height: number) {
+  const count = width < 1100 ? 30 : 90;
+  return Array.from({ length: count }, () =>
+    particle(random, width, height, {
+      x: random() * width,
+      y: random() * height,
+      size: 2 + random() * 3,
       drift: 2 + random() * 5,
-      color: COLORS[Math.floor(random() * COLORS.length)],
-      alpha: !inCloud || compact ? 0.2 + random() * 0.3 : 0.45 + random() * 0.5,
-    });
+      color: Math.floor(random() * COLORS.length),
+      alpha: 0.2 + random() * 0.3,
+    }),
+  );
+}
+
+function cloudField(width: number, height: number): Field {
+  const random = seeded(7);
+  const cx = width * 0.92;
+  const cy = height * 0.07;
+  const rx = width * 0.26;
+  const ry = height * 0.07;
+  const particles = ambient(random, width, height);
+  for (let i = 0; i < 110; i++) {
+    // Two overlapping lobes with a soft edge read as an organic cloud rather
+    // than a perfect ellipse.
+    const lobe = random() < 0.5 ? -1 : 1;
+    const t = random() * Math.PI * 2;
+    const r = Math.sqrt(random()) * (0.75 + random() * 0.3);
+    const x = cx + lobe * rx * 0.28 + Math.cos(t) * r * rx * 0.78;
+    particles.push(
+      particle(random, width, height, {
+        x,
+        y: cy + Math.sin(t) * r * ry * (lobe < 0 ? 0.95 : 0.8),
+        dx: x - cx,
+        dz: (random() - 0.5) * rx * 1.1,
+        orbit: true,
+        size: 2 + random() * 4.5,
+        drift: 2 + random() * 5,
+        color: Math.floor(random() * COLORS.length),
+        alpha: 0.2 + random() * 0.3,
+      }),
+    );
   }
   return { cx, rx, particles };
+}
+
+function portraitField(
+  width: number,
+  height: number,
+  portrait: PortraitData,
+): Field {
+  const random = seeded(7);
+  // Stand the bust on the hero's bottom edge, right of the headline.
+  const h = Math.min(height * 0.94, (width * 0.4) / portrait.aspect);
+  const w = h * portrait.aspect;
+  const left = width * 0.77 - w / 2;
+  const top = height - h;
+  const particles = ambient(random, width, height);
+  const { points } = portrait;
+  for (let i = 0; i < points.length; i += 3) {
+    const tone = points[i + 2] / 9;
+    // Accents stay off the face so its light and shadow read cleanly.
+    const onFace = points[i + 1] < 520;
+    const accent = random() < (onFace ? 0.05 : 0.2);
+    particles.push(
+      particle(random, width, height, {
+        x: left + (points[i] / 999) * w,
+        y: top + (points[i + 1] / 999) * h,
+        size: 1.3 + random() * 1.3,
+        drift: 0.3 + random() * 0.7,
+        twinkle: 0.12,
+        // Tone picks the shade so light and shadow survive; a few accents
+        // keep the brand's chromatic sparks.
+        color: accent
+          ? 2 + Math.floor(random() * ACCENTS.length)
+          : tone > 0.7
+            ? 1
+            : 0,
+        alpha: 0.18 + Math.pow(tone, 1.5) * 0.82,
+      }),
+    );
+  }
+  return { cx: 0, rx: 1, particles };
 }
 
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
@@ -115,12 +170,29 @@ export function Constellation({ className }: { className?: string }) {
     if (!canvas || !context) return;
     const still = window.matchMedia("(prefers-reduced-motion: reduce)");
     const finePointer = window.matchMedia("(pointer: fine)");
+    // Below this the portrait would run into the headline.
+    const wide = window.matchMedia("(min-width: 1100px)");
+    let portrait: PortraitData | null = null;
     let field: Field = { cx: 0, rx: 1, particles: [] };
     let frame = 0;
     let visible = true;
+    let disposed = false;
     let started = -1;
     let gathered = still.matches;
     const pointer = { x: -9999, y: -9999 };
+    const buckets = Array.from(
+      { length: COLORS.length * ALPHA_STEPS },
+      () => [] as number[],
+    );
+
+    const build = () => {
+      const { width, height } = canvas.getBoundingClientRect();
+      if (!wide.matches) field = cloudField(width, height);
+      else if (portrait) field = portraitField(width, height, portrait);
+      // Until the portrait arrives only the ambient particles drift.
+      else
+        field = { cx: 0, rx: 1, particles: ambient(seeded(7), width, height) };
+    };
 
     const resize = () => {
       const ratio = Math.min(window.devicePixelRatio || 1, 2);
@@ -128,7 +200,7 @@ export function Constellation({ className }: { className?: string }) {
       canvas.width = Math.round(width * ratio);
       canvas.height = Math.round(height * ratio);
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      field = makeField(width, height);
+      build();
       if (still.matches) draw(0);
     };
 
@@ -139,14 +211,14 @@ export function Constellation({ className }: { className?: string }) {
       const cos = Math.cos(turn);
       const sin = Math.sin(turn);
       if (started < 0) started = time;
-      context.clearRect(0, 0, width, height);
-      context.lineWidth = 1.1;
       let pending = false;
+      for (const bucket of buckets) bucket.length = 0;
+
       for (const p of field.particles) {
         let x = p.x;
         let y = p.y;
         let depth = 1;
-        if (p.inCloud) {
+        if (p.orbit) {
           // Turn around a vertical axis; nearer particles grow and brighten.
           const z = p.dx * sin + p.dz * cos;
           x = field.cx + p.dx * cos - p.dz * sin;
@@ -179,29 +251,48 @@ export function Constellation({ className }: { className?: string }) {
         }
         p.pushX += (targetX - p.pushX) * 0.12;
         p.pushY += (targetY - p.pushY) * 0.12;
-        x += p.pushX;
-        y += p.pushY;
 
-        const size = p.size * Math.max(0.6, depth);
-        const a = p.angle + time * p.spin * 0.06;
-        context.globalAlpha = Math.min(
+        const alpha = Math.min(
           1,
-          p.alpha * depth * (0.7 + 0.3 * Math.sin(t * 0.8 + p.phase)),
+          p.alpha *
+            depth *
+            (1 - p.twinkle + p.twinkle * Math.sin(t * 0.8 + p.phase)),
         );
-        context.strokeStyle = p.color;
-        context.beginPath();
-        for (let k = 0; k < 3; k++) {
-          const corner = a + (k * Math.PI * 2) / 3;
-          const px = x + Math.cos(corner) * size;
-          const py = y + Math.sin(corner) * size;
-          if (k === 0) context.moveTo(px, py);
-          else context.lineTo(px, py);
-        }
-        context.closePath();
-        context.stroke();
+        const step = Math.min(ALPHA_STEPS - 1, Math.floor(alpha * ALPHA_STEPS));
+        const bucket = buckets[p.color * ALPHA_STEPS + step];
+        bucket.push(
+          x + p.pushX,
+          y + p.pushY,
+          p.size * Math.max(0.6, depth),
+          p.angle + time * p.spin * 0.06,
+        );
       }
-      if (!gathered && !pending && field.particles.length > 0) gathered = true;
+
+      context.clearRect(0, 0, width, height);
+      context.lineWidth = 1;
+      buckets.forEach((bucket, index) => {
+        if (bucket.length === 0) return;
+        context.strokeStyle = COLORS[Math.floor(index / ALPHA_STEPS)];
+        context.globalAlpha = ((index % ALPHA_STEPS) + 0.5) / ALPHA_STEPS;
+        context.beginPath();
+        for (let i = 0; i < bucket.length; i += 4) {
+          const x = bucket[i];
+          const y = bucket[i + 1];
+          const size = bucket[i + 2];
+          const angle = bucket[i + 3];
+          for (let k = 0; k < 3; k++) {
+            const corner = angle + (k * Math.PI * 2) / 3;
+            const px = x + Math.cos(corner) * size;
+            const py = y + Math.sin(corner) * size;
+            if (k === 0) context.moveTo(px, py);
+            else context.lineTo(px, py);
+          }
+          context.closePath();
+        }
+        context.stroke();
+      });
       context.globalAlpha = 1;
+      if (!gathered && !pending && field.particles.length > 0) gathered = true;
     };
 
     const loop = (time: number) => {
@@ -215,6 +306,12 @@ export function Constellation({ className }: { className?: string }) {
         draw(0);
       } else if (visible) frame = requestAnimationFrame(loop);
     };
+    const regather = () => {
+      build();
+      started = -1;
+      gathered = still.matches;
+      sync();
+    };
     const track = (event: PointerEvent) => {
       if (!finePointer.matches) return;
       const rect = canvas.getBoundingClientRect();
@@ -226,6 +323,16 @@ export function Constellation({ className }: { className?: string }) {
       pointer.y = -9999;
     };
 
+    // The portrait targets are only fetched where they are shown.
+    const loadPortrait = () => {
+      if (!wide.matches || portrait) return regather();
+      import("./portrait-points.json").then(({ default: data }) => {
+        if (disposed) return;
+        portrait = data;
+        regather();
+      });
+    };
+
     const observer = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
       sync();
@@ -234,15 +341,19 @@ export function Constellation({ className }: { className?: string }) {
     observer.observe(canvas);
     resizer.observe(canvas);
     still.addEventListener("change", sync);
+    wide.addEventListener("change", loadPortrait);
     window.addEventListener("pointermove", track, { passive: true });
     document.documentElement.addEventListener("pointerleave", release);
     resize();
     sync();
+    if (wide.matches) loadPortrait();
     return () => {
+      disposed = true;
       cancelAnimationFrame(frame);
       observer.disconnect();
       resizer.disconnect();
       still.removeEventListener("change", sync);
+      wide.removeEventListener("change", loadPortrait);
       window.removeEventListener("pointermove", track);
       document.documentElement.removeEventListener("pointerleave", release);
     };
