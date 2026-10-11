@@ -15,6 +15,7 @@ import { MissionGateway } from "@/components/mission-gateway";
 import { StudioGateway } from "@/components/studio-gateway";
 import { CtfGateway } from "@/components/ctf-gateway";
 import { Constellation } from "@/components/constellation";
+import { CardSpotlight } from "@/components/card-spotlight";
 import {
   SectionHeading,
   EntryCard,
@@ -58,6 +59,7 @@ export default async function Home() {
           author: { "@id": `${site.url}/about#person` },
         }}
       />
+      <CardSpotlight selector=".cv-explore-card, .gateway-grid > section, .learn-card" />
       <div className="cv-hero-wrap">
         <Constellation className="cv-constellation" />
         <section className="cv-hero container" aria-labelledby="home-title">

@@ -340,3 +340,123 @@
     transform: none;
   }
 }
+
+/* Motion: hero entrance, scroll reveals, card spotlight, arrow nudges */
+.cv-explore-card,
+.gateway-grid > section,
+.learn-card {
+  isolation: isolate;
+}
+.cv-explore-card::after,
+.gateway-grid > section::after,
+.learn-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    360px circle at var(--mx, 50%) var(--my, 50%),
+    #8052ff26,
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.cv-explore-card,
+.gateway-grid > section {
+  position: relative;
+}
+.cv-explore-card:hover::after,
+.gateway-grid > section:hover::after,
+.learn-card:hover::after {
+  opacity: 1;
+}
+.cv-home svg.lucide-arrow-up-right,
+.cv-home svg.lucide-arrow-right {
+  transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.cv-home a:hover > svg.lucide-arrow-up-right,
+.cv-home a:hover span > svg.lucide-arrow-up-right {
+  transform: translate(3px, -3px);
+}
+.cv-home a:hover > svg.lucide-arrow-right,
+.cv-home a:hover span > svg.lucide-arrow-right {
+  transform: translateX(4px);
+}
+@keyframes cv-rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+    filter: blur(8px);
+  }
+}
+@keyframes cv-pulse {
+  0% {
+    box-shadow: 0 0 0 0 #ffb82999;
+  }
+  100% {
+    box-shadow: 0 0 0 10px #ffb82900;
+  }
+}
+@keyframes cv-reveal {
+  from {
+    opacity: 0;
+    translate: 0 36px;
+  }
+}
+@keyframes cv-float {
+  50% {
+    transform: translate(6px, -6px);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cv-hero-copy > * {
+    animation: cv-rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .cv-hero-copy > :nth-child(2) {
+    animation-delay: 0.12s;
+  }
+  .cv-hero-copy > :nth-child(3) {
+    animation-delay: 0.28s;
+  }
+  .cv-hero-copy > :nth-child(4) {
+    animation-delay: 0.4s;
+  }
+  .cv-kicker .status-dot {
+    animation: cv-pulse 2.2s ease-out infinite;
+  }
+  .cv-connect-symbol {
+    animation: cv-float 4s ease-in-out infinite;
+  }
+  /* Scroll-driven reveals; browsers without view timelines simply show the
+     content, so nothing depends on JavaScript. */
+  @supports (animation-timeline: view()) {
+    .cv-section-intro,
+    .gateway-grid > section,
+    .learn-card,
+    .cv-feature-band,
+    .cv-feature-band li,
+    .cv-explore-card,
+    .cv-logbook > a,
+    .cv-connect {
+      animation: cv-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+    .gateway-grid > section:nth-child(2),
+    .cv-explore-card:nth-child(2),
+    .cv-feature-band li:nth-child(2) {
+      animation-range: entry 8% entry 63%;
+    }
+    .gateway-grid > section:nth-child(3),
+    .cv-explore-card:nth-child(3),
+    .cv-feature-band li:nth-child(3) {
+      animation-range: entry 16% entry 71%;
+    }
+    .cv-explore-card:nth-child(4) {
+      animation-range: entry 24% entry 79%;
+    }
+  }
+}
