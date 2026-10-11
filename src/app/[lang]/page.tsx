@@ -15,7 +15,6 @@ import { LearningCatalog } from "@/components/learning-catalog";
 import { MissionGateway } from "@/components/mission-gateway";
 import { StudioGateway } from "@/components/studio-gateway";
 import { CtfGateway } from "@/components/ctf-gateway";
-import { PracticePreview } from "@/components/practice-preview";
 import { Constellation } from "@/components/constellation";
 import {
   SectionHeading,
@@ -102,20 +101,6 @@ export default async function Home() {
                 </span>
                 <span>{t("Learn by doing. Share what you discover.")}</span>
               </div>
-            </div>
-          </div>
-          <div className="cv-workspace">
-            <div className="cv-workspace-caption">
-              <span>
-                <span className="status-dot" />{" "}
-                {t("YOUR NEXT SKILL STARTS HERE")}
-              </span>
-              <span>{t("WORKSPACE / 01")}</span>
-            </div>
-            <PracticePreview />
-            <div className="cv-workspace-note">
-              <ShieldCheck size={15} />{" "}
-              {t("Security exercises run against prepared sandbox data.")}
             </div>
           </div>
         </section>

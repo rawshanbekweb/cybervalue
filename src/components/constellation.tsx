@@ -39,11 +39,11 @@ function makeParticles(width: number, height: number) {
   const compact = width < 850;
   const cloudCount = compact ? 110 : 620;
   const ambientCount = compact ? 30 : 90;
-  // On wide screens the cloud haloes the workspace column; on phones it
+  // On wide screens the cloud fills the right half of the hero; on phones it
   // tucks into the top right corner so it stays clear of the headline.
-  const cx = compact ? width * 0.92 : width * 0.72;
+  const cx = compact ? width * 0.92 : width * 0.76;
   const cy = compact ? height * 0.07 : height * 0.46;
-  const rx = compact ? width * 0.26 : Math.min(width * 0.33, 480);
+  const rx = compact ? width * 0.26 : Math.min(width * 0.25, 430);
   const ry = compact ? height * 0.07 : Math.min(height * 0.42, 340);
   const particles: Particle[] = [];
   for (let i = 0; i < cloudCount + ambientCount; i++) {

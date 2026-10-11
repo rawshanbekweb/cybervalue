@@ -111,9 +111,7 @@ test("catalog resumes valid progress and tolerates damaged storage", async ({
   ).toHaveAttribute("href", "/playground/html-basics#lesson/1");
 });
 
-test("empty search can be cleared and preview links follow the chosen topic", async ({
-  page,
-}) => {
+test("empty search can be cleared", async ({ page }) => {
   await page.goto("/");
   await page
     .getByRole("searchbox", { name: "Search tracks and lessons" })
@@ -123,19 +121,6 @@ test("empty search can be cleared and preview links follow the chosen topic", as
   ).toBeVisible();
   await page.getByRole("button", { name: "Clear filters" }).click();
   await expect(page.locator(".learn-card")).toHaveCount(3);
-  await page.getByRole("button", { name: /Defend/ }).click();
-  await page.getByRole("button", { name: "Show insight" }).click();
-  await expect(page.locator("#preview-result")).toContainText(
-    "Check ownership on the server",
-  );
-  await expect(
-    page.getByRole("link", { name: "Explore access control" }),
-  ).toHaveAttribute("href", "/playground/web-security-lab#lesson/26");
-  await page.getByRole("button", { name: /Investigate/ }).click();
-  await expect(page.locator("#preview-result")).toBeHidden();
-  await expect(
-    page.getByRole("link", { name: "Explore HTTP lessons" }),
-  ).toHaveAttribute("href", "/playground/web-security-lab#lesson/7");
 });
 
 test("learning hub is accessible and fits mobile through desktop", async ({
