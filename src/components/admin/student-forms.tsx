@@ -13,6 +13,7 @@ import {
 } from "@/app/admin/(cms)/materials/actions";
 import { formatAccessCode } from "@/lib/student/format";
 import type { MaterialFormValues as MaterialDefaults } from "@/lib/student/admin";
+import { LEVEL_LABEL, LEVELS } from "@/lib/student/levels";
 
 function downloadCodes(rows: { name: string; group: string; code: string }[]) {
   const lines = rows.map(
@@ -148,6 +149,7 @@ export function StudentEditForm({
     id: string;
     name: string;
     group: string;
+    level: string;
     note: string;
     active: boolean;
     expiresAt: string;
@@ -181,6 +183,22 @@ export function StudentEditForm({
             maxLength={40}
             defaultValue={student.group}
           />
+        </div>
+        <div className="admin-field">
+          <label htmlFor="level">{t("Level")}</label>
+          <select
+            id="level"
+            name="level"
+            className="admin-input"
+            defaultValue={student.level}
+          >
+            <option value="">{t("Not placed yet")}</option>
+            {LEVELS.map((level) => (
+              <option key={level} value={level}>
+                {t(LEVEL_LABEL[level])}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="admin-field">
           <label htmlFor="expiresAt">{t("Access ends after")}</label>
@@ -410,6 +428,27 @@ function MaterialFields({
           />
         </div>
       </div>
+      <fieldset className="admin-field admin-levels">
+        <legend>{t("Levels")}</legend>
+        <div className="admin-levels-options">
+          {LEVELS.map((level) => (
+            <label key={level} className="admin-field-checkbox">
+              <input
+                type="checkbox"
+                name="levels"
+                value={level}
+                defaultChecked={defaults.levels.includes(level)}
+              />
+              {t(LEVEL_LABEL[level])}
+            </label>
+          ))}
+        </div>
+        <p className="muted">
+          {t(
+            "None checked = every student, including those not placed yet. Keep the entrance exam open to everyone.",
+          )}
+        </p>
+      </fieldset>
       <div className="admin-field">
         <label htmlFor="summary">{t("Summary")}</label>
         <input

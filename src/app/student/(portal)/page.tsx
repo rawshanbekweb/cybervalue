@@ -3,6 +3,7 @@ import { ArrowUpRight, Check } from "lucide-react";
 import { getAdminTranslator } from "@/lib/i18n/server";
 import { requireStudent } from "@/lib/student/session";
 import { isEntranceExam, studentOverview } from "@/lib/student/materials";
+import { isLevel, LEVEL_LABEL } from "@/lib/student/levels";
 import { Constellation } from "@/components/student/constellation";
 import type { MaterialKind } from "@/generated/prisma/client";
 
@@ -104,6 +105,8 @@ export default async function StudentHomePage() {
             {student.group
               ? t("Group {group}", { group: student.group })
               : t("Student area")}
+            {isLevel(student.level) &&
+              ` · ${t("Level: {level}", { level: t(LEVEL_LABEL[student.level]) })}`}
           </p>
           <h1 className="student-display">
             {t("Hello, {name}.", { name: student.name.split(" ")[0] })}

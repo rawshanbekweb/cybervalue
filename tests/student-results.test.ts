@@ -9,11 +9,13 @@ import {
   type ResultStudent,
 } from "../src/lib/student/results";
 import { createTranslator } from "../src/lib/i18n";
+import { suggestLevel, visibleAtLevel } from "../src/lib/student/levels";
 
 const student = (id: string, group: string): ResultStudent => ({
   id,
   name: id.toUpperCase(),
   group,
+  level: "",
   active: true,
   lastLoginAt: null,
 });
@@ -21,7 +23,14 @@ const material = (
   id: string,
   kind: ResultMaterial["kind"],
   groups: string[] = [],
-): ResultMaterial => ({ id, title: id, kind, groups });
+): ResultMaterial => ({
+  id,
+  slug: id,
+  title: id,
+  kind,
+  groups,
+  levels: [],
+});
 
 const materials = [
   material("lesson", "LESSON"),
@@ -132,7 +141,64 @@ test("CSV export is spreadsheet-safe and keeps Uzbek letters", () => {
     .split("\r\n");
   assert.equal(
     lines[0],
-    `"Ism","Guruh","Yakunlangan","O‘rtacha ball","Oxirgi kirish","Kirish darsi"`,
+    `"Ism","Guruh","Daraja","Tavsiya etilgan daraja","Yakunlangan","O‘rtacha ball","Oxirgi kirish","Kirish darsi"`,
   );
-  assert.equal(lines[1], `"Ali Valiyev","9-A","1/1","","","✓"`);
+  assert.equal(lines[1], `"Ali Valiyev","9-A","","","1/1","","","✓"`);
+});
+
+test("the entrance exam suggests a level from the test and the labs", () => {
+  const level = (testPercent: number | null, labsSolved: number) =>
+    suggestLevel({ testPercent, labsSolved, labsTotal: 2 });
+  assert.equal(level(null, 2), null);
+  assert.equal(level(40, 2), "beginner");
+  assert.equal(level(80, 0), "beginner");
+  assert.equal(level(60, 1), "intermediate");
+  assert.equal(level(96, 1), "intermediate");
+  assert.equal(level(88, 2), "advanced");
+  assert.equal(
+    suggestLevel({ testPercent: 72, labsSolved: 0, labsTotal: 0 }),
+    "intermediate",
+  );
+  assert.ok(visibleAtLevel([], ""));
+  assert.ok(visibleAtLevel(["advanced"], "advanced"));
+  assert.ok(!visibleAtLevel(["advanced"], ""));
+  assert.ok(!visibleAtLevel(["advanced"], "beginner"));
+});
+
+test("results suggest a level from entrance materials and hide other levels", () => {
+  const entrance = [
+    { ...material("t", "QUIZ"), slug: "kirish-sinovi-test" },
+    { ...material("l1", "CHALLENGE"), slug: "kirish-sinovi-a" },
+    { ...material("l2", "CHALLENGE"), slug: "kirish-sinovi-b" },
+    { ...material("adv", "LAB"), levels: ["advanced"] },
+  ];
+  const { rows } = buildResults({
+    students: [
+      student("a", "A"),
+      { ...student("b", "A"), level: "advanced" },
+      student("c", "A"),
+    ],
+    materials: entrance,
+    submissions: [
+      sub("a", "t", 23, 25),
+      sub("a", "l1", null, null),
+      sub("b", "t", 12, 25),
+      sub("b", "t", 16, 25),
+      sub("b", "l1", null, null),
+    ],
+    progress: [
+      { studentId: "a", materialId: "l1" },
+      { studentId: "a", materialId: "l2" },
+      { studentId: "b", materialId: "l1" },
+    ],
+  });
+  assert.deepEqual(
+    rows.map((r) => r.suggested),
+    ["advanced", "intermediate", null],
+  );
+  // Only the placed advanced student sees the advanced lab.
+  assert.deepEqual(
+    rows.map((r) => r.cells[3].state),
+    ["hidden", "none", "hidden"],
+  );
 });

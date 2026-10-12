@@ -240,5 +240,14 @@
   "Too large": "Juda katta",
   "Unavailable": "Mavjud emas",
   "Time limit in minutes (0 = no limit)": "Vaqt chegarasi, daqiqa (0 = cheklanmagan)",
-  "The timer starts when the student presses “Start the test” and keeps running if they leave. Answers are submitted at the deadline; an attempt left open counts as zero.": "Taymer o‘quvchi “Testni boshlash” tugmasini bosganda boshlanadi va u sahifadan chiqsa ham to‘xtamaydi. Vaqt tugaganda javoblar avtomatik topshiriladi; yakunlanmay qolgan urinish 0 ball hisoblanadi."
+  "The timer starts when the student presses “Start the test” and keeps running if they leave. Answers are submitted at the deadline; an attempt left open counts as zero.": "Taymer o‘quvchi “Testni boshlash” tugmasini bosganda boshlanadi va u sahifadan chiqsa ham to‘xtamaydi. Vaqt tugaganda javoblar avtomatik topshiriladi; yakunlanmay qolgan urinish 0 ball hisoblanadi.",
+  "Level": "Daraja",
+  "Suggested level": "Tavsiya etilgan daraja",
+  "All levels": "Barcha darajalar",
+  "Not placed yet": "Hali aniqlanmagan",
+  "{count} students have taken the entrance test but have no level yet. Levels decide which level-restricted materials they see.": "{count} ta o‘quvchi kirish testini topshirgan, lekin darajasi hali belgilanmagan. Daraja o‘quvchi qaysi darajaga mo‘ljallangan materiallarni ko‘rishini belgilaydi.",
+  "Apply suggested levels": "Tavsiya etilgan darajalarni belgilash",
+  "Set: {level}": "Belgilash: {level}",
+  "Levels": "Darajalar",
+  "None checked = every student, including those not placed yet. Keep the entrance exam open to everyone.": "Hech biri belgilanmasa — barcha o‘quvchilar, jumladan darajasi hali aniqlanmaganlar ham ko‘radi. Kirish sinovini hammaga ochiq qoldiring."
 }

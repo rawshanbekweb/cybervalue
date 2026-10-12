@@ -65,6 +65,7 @@ export default async function AdminStudentPage({
           id: student.id,
           name: student.name,
           group: student.group,
+          level: student.level,
           note: student.note,
           active: student.active,
           expiresAt: toDateInput(student.expiresAt),

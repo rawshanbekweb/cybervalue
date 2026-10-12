@@ -2,21 +2,31 @@ import "server-only";
 import type { Prisma, Student } from "@/generated/prisma/client";
 import { getDb } from "../db";
 
-// Published, and either open to every student or to the student's group.
-export function visibleTo(student: Pick<Student, "group">) {
+// Published, open to the student's group (or every group) and to their level
+// (or every level).
+export function visibleTo(student: Pick<Student, "group" | "level">) {
   return {
     published: true,
-    OR: [
-      { groups: { isEmpty: true } },
-      ...(student.group ? [{ groups: { has: student.group } }] : []),
+    AND: [
+      {
+        OR: [
+          { groups: { isEmpty: true } },
+          ...(student.group ? [{ groups: { has: student.group } }] : []),
+        ],
+      },
+      {
+        OR: [
+          { levels: { isEmpty: true } },
+          ...(student.level ? [{ levels: { has: student.level } }] : []),
+        ],
+      },
     ],
   } satisfies Prisma.StudentMaterialWhereInput;
 }
 
-// Materials whose slug starts with this prefix form the entrance exam, shown
-// as one section at the top of the student's page whatever their kind.
-export const isEntranceExam = (slug: string) =>
-  slug.startsWith("kirish-sinovi-");
+// The entrance exam is shown as one section at the top of the student's page
+// whatever the kind of its materials.
+export { isEntranceExam } from "./levels";
 
 export async function studentOverview(student: Student) {
   const db = getDb();

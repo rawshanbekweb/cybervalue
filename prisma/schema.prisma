@@ -287,6 +287,9 @@ model Student {
   id          String              @id @default(cuid())
   name        String
   group       String              @default("")
+  // Set by the teacher after the entrance exam: beginner, intermediate or
+  // advanced; "" until placed.
+  level       String              @default("")
   note        String              @default("") @db.Text
   codeHash    String              @unique
   active      Boolean             @default(true)
@@ -335,6 +338,8 @@ model StudentMaterial {
   explanation  String              @default("") @db.Text
   secret       String?
   groups       String[]            @default([])
+  // Empty means every level; otherwise only students placed at a listed one.
+  levels       String[]            @default([])
   published    Boolean             @default(false)
   position     Int                 @default(0)
   createdAt    DateTime            @default(now())

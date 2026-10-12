@@ -30,6 +30,7 @@ In **Admin → Student materials**, create materials of four kinds:
 - **Order**: lower numbers come first.
 - **Visible to students**: unchecked materials stay hidden.
 - **Entrance exam**: materials whose slug starts with `kirish-sinovi-` are shown together in an "Entrance exam" section at the top of the student's page, whatever their kind, and are left out of the other sections.
+- **Levels**: tick Beginner, Intermediate or Advanced to show a material only to students placed at those levels. With no level ticked, every student sees it, including students who are not placed yet. Keep the entrance exam open to everyone. A level works alongside groups: a student sees a material only when both their group and their level allow it.
 - Markdown is sanitized like the public site's: raw HTML and images are not rendered.
 - The Labs section also links to the existing public interactive labs.
 
@@ -109,6 +110,23 @@ Wrong answers are listed below the table; correct flags are not stored.
 
 The material's admin page lists answers that are still waiting for review first. Give an optional 0–100 score and feedback; the student sees both on the material page.
 
+## Placement after the entrance exam
+
+The entrance exam is the test and personal labs whose slug starts with `kirish-sinovi-`. The **Level** column in **Admin → Results** suggests a level from them:
+
+| Suggestion   | Rule                                                                 |
+| ------------ | -------------------------------------------------------------------- |
+| Advanced     | best test score at least 88% and every entrance lab solved           |
+| Intermediate | at least 60% and at least one lab solved (or no entrance labs exist) |
+| Beginner     | anything else, once the test is taken                                |
+
+There are two ways to confirm a suggestion:
+
+- **Set: …** on a row places that one student.
+- **Apply suggested levels** places every student in the selected group who has a result but no level yet. It never overwrites a level you already set.
+
+You can also change a student's level on their page. Every change is recorded in the audit log, and the student sees their level at the top of their page.
+
 ## Results
 
 **Admin → Results** shows the class as a matrix: one row per student and one column per published material. You can filter the matrix by group. The cells read:
@@ -125,4 +143,4 @@ Each row also shows completed/available and an average score: the mean of test b
 
 ## Data
 
-The Prisma models are `Student`, `StudentSession`, `StudentMaterial`, `StudentSubmission`, `StudentProgress` and `StudentQuizStart` (an open timed attempt); the migrations are `20261010090000_student_portal`, `20261011090000_student_challenges`, `20261012090000_student_explanations` and `20261013090000_timed_quizzes`. Admin actions on students, materials and reviews are recorded in the audit log.
+The Prisma models are `Student`, `StudentSession`, `StudentMaterial`, `StudentSubmission`, `StudentProgress` and `StudentQuizStart` (an open timed attempt); the migrations are `20261010090000_student_portal`, `20261011090000_student_challenges`, `20261012090000_student_explanations` `20261013090000_timed_quizzes` and `20261013100000_student_levels`. Admin actions on students, materials and reviews are recorded in the audit log.

@@ -75,6 +75,7 @@ export async function updateStudentAction(
   const parsed = studentUpdateSchema.safeParse({
     name: form.get("name"),
     group: form.get("group") ?? "",
+    level: form.get("level") ?? "",
     note: form.get("note") ?? "",
     active: form.get("active") === "on",
     expiresAt: form.get("expiresAt") ?? "",

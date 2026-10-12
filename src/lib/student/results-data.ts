@@ -29,6 +29,7 @@ export async function loadResults(db: PrismaClient, group: string) {
         id: true,
         name: true,
         group: true,
+        level: true,
         active: true,
         lastLoginAt: true,
       },
@@ -36,7 +37,14 @@ export async function loadResults(db: PrismaClient, group: string) {
     db.studentMaterial.findMany({
       where: { published: true },
       orderBy: [{ position: "asc" }, { createdAt: "asc" }],
-      select: { id: true, title: true, kind: true, groups: true },
+      select: {
+        id: true,
+        slug: true,
+        title: true,
+        kind: true,
+        groups: true,
+        levels: true,
+      },
     }),
   ]);
   const materials = group

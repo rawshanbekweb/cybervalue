@@ -3,7 +3,9 @@ import { getAdminTranslator } from "@/lib/i18n/server";
 import { requireAdmin } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { loadResults, resolveGroup } from "@/lib/student/results-data";
-import { cellText, type Cell } from "@/lib/student/results";
+import { cellText, levelText, type Cell } from "@/lib/student/results";
+import { isLevel, LEVEL_LABEL, LEVELS } from "@/lib/student/levels";
+import { applySuggestedLevelsAction, setStudentLevelAction } from "./actions";
 
 const KIND_LABEL = {
   LESSON: "Lesson",
@@ -25,7 +27,11 @@ export default async function AdminResultsPage({
 }: PageProps<"/admin/results">) {
   const t = await getAdminTranslator();
   await requireAdmin("/admin/results");
-  const raw = (await searchParams).group;
+  const params = await searchParams;
+  const raw = params.group;
+  // "" every level, "none" students not placed yet, or one level.
+  const levelFilter =
+    params.level === "none" || isLevel(params.level) ? params.level : "";
   const db = getDb();
   if (!db)
     return (
@@ -38,7 +44,18 @@ export default async function AdminResultsPage({
     );
   // Unknown groups fall back to everyone rather than an empty table.
   const { groups, group } = await resolveGroup(db, raw);
-  const { rows, columns } = await loadResults(db, group);
+  const results = await loadResults(db, group);
+  const { columns } = results;
+  const rows = results.rows.filter(
+    (r) =>
+      !levelFilter ||
+      (levelFilter === "none"
+        ? !r.student.level
+        : r.student.level === levelFilter),
+  );
+  const unplaced = results.rows.filter(
+    (r) => !r.student.level && r.suggested,
+  ).length;
   const exportHref = `/admin/results/export${group ? `?group=${encodeURIComponent(group)}` : ""}`;
 
   return (
@@ -73,10 +90,41 @@ export default async function AdminResultsPage({
             ))}
           </select>
         </div>
+        <div className="admin-field">
+          <label htmlFor="results-level">{t("Level")}</label>
+          <select
+            id="results-level"
+            name="level"
+            className="admin-input"
+            defaultValue={levelFilter}
+          >
+            <option value="">{t("All levels")}</option>
+            <option value="none">{t("Not placed yet")}</option>
+            {LEVELS.map((level) => (
+              <option key={level} value={level}>
+                {t(LEVEL_LABEL[level])}
+              </option>
+            ))}
+          </select>
+        </div>
         <button type="submit" className="button button-secondary">
           {t("Show")}
         </button>
       </form>
+      {unplaced > 0 && (
+        <form action={applySuggestedLevelsAction} className="results-placement">
+          <input type="hidden" name="group" value={group} />
+          <p className="muted">
+            {t(
+              "{count} students have taken the entrance test but have no level yet. Levels decide which level-restricted materials they see.",
+              { count: unplaced },
+            )}
+          </p>
+          <button type="submit" className="button button-primary">
+            {t("Apply suggested levels")}
+          </button>
+        </form>
+      )}
 
       {!rows.length || !columns.length ? (
         <p className="muted">
@@ -97,6 +145,7 @@ export default async function AdminResultsPage({
                   <th scope="col" className="results-sticky">
                     {t("Student")}
                   </th>
+                  <th scope="col">{t("Level")}</th>
                   <th scope="col">{t("Completed")}</th>
                   <th scope="col">{t("Average score")}</th>
                   {columns.map(({ material }) => (
@@ -125,6 +174,28 @@ export default async function AdminResultsPage({
                         <span className="admin-warn"> · {t("Blocked")}</span>
                       )}
                     </th>
+                    <td className="results-level">
+                      <span>{levelText(row.student.level, t) || "—"}</span>
+                      {row.suggested && row.suggested !== row.student.level && (
+                        <form
+                          action={setStudentLevelAction.bind(
+                            null,
+                            row.student.id,
+                            row.suggested,
+                          )}
+                        >
+                          <button
+                            type="submit"
+                            className="results-suggest"
+                            title={t("Suggested level")}
+                          >
+                            {t("Set: {level}", {
+                              level: levelText(row.suggested, t),
+                            })}
+                          </button>
+                        </form>
+                      )}
+                    </td>
                     <td>
                       {row.completed}/{row.available}
                     </td>
@@ -142,7 +213,7 @@ export default async function AdminResultsPage({
                   <th scope="row" className="results-sticky">
                     {t("Completed")}
                   </th>
-                  <td colSpan={2} />
+                  <td colSpan={3} />
                   {columns.map((c) => (
                     <td key={c.material.id}>
                       {c.completed}/{c.available}

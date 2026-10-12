@@ -22,6 +22,7 @@ export type AuditAction =
   | "assessment.create"
   | "student.create"
   | "student.update"
+  | "student.level"
   | "student.code_reset"
   | "student.delete"
   | "material.create"

@@ -194,5 +194,6 @@
   "Time left": "Qolgan vaqt",
   "Start the test": "Testni boshlash",
   "You have {minutes} minutes once you start. The timer keeps running if you leave the page, and your answers are submitted when time is up.": "Boshlaganingizdan keyin {minutes} daqiqa vaqtingiz bo‘ladi. Sahifadan chiqib ketsangiz ham taymer to‘xtamaydi, vaqt tugaganda javoblaringiz avtomatik topshiriladi.",
-  "Press “Start the test” first. The timer starts then.": "Avval “Testni boshlash” tugmasini bosing — taymer shundan keyin boshlanadi."
+  "Press “Start the test” first. The timer starts then.": "Avval “Testni boshlash” tugmasini bosing — taymer shundan keyin boshlanadi.",
+  "Level: {level}": "Daraja: {level}"
 }

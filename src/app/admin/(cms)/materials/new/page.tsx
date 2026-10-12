@@ -27,6 +27,7 @@ export default async function NewMaterialPage() {
           maxAttempts: 1,
           timeLimit: 0,
           groups: "",
+          levels: [],
           position: 0,
           published: false,
         }}

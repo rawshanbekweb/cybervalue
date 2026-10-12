@@ -1,4 +1,12 @@
 import type { Translator } from "../i18n";
+import {
+  isEntranceExam,
+  isLevel,
+  LEVEL_LABEL,
+  suggestLevel,
+  visibleAtLevel,
+  type Level,
+} from "./levels";
 
 // Builds the admin's class matrix: one row per student, one column per
 // published material, with the same notion of "completed" the student sees.
@@ -6,14 +14,17 @@ import type { Translator } from "../i18n";
 type Kind = "LESSON" | "LAB" | "PRACTICE" | "QUIZ" | "CHALLENGE";
 export type ResultMaterial = {
   id: string;
+  slug: string;
   title: string;
   kind: Kind;
   groups: string[];
+  levels: string[];
 };
 export type ResultStudent = {
   id: string;
   name: string;
   group: string;
+  level: string;
   active: boolean;
   lastLoginAt: Date | null;
 };
@@ -43,6 +54,8 @@ export type ResultRow = {
   available: number;
   // Mean of quiz best scores and reviewed practice scores, in percent.
   average: number | null;
+  // What the entrance exam suggests; null until its test is taken.
+  suggested: Level | null;
 };
 
 const percent = (score: number, max: number) =>
@@ -50,6 +63,10 @@ const percent = (score: number, max: number) =>
 
 export const visibleToGroup = (material: ResultMaterial, group: string) =>
   material.groups.length === 0 || material.groups.includes(group);
+
+const visibleToStudent = (material: ResultMaterial, student: ResultStudent) =>
+  visibleToGroup(material, student.group) &&
+  visibleAtLevel(material.levels, student.level);
 
 function cellFor(
   material: ResultMaterial,
@@ -105,7 +122,7 @@ export function buildResults({
   const rows: ResultRow[] = students.map((student) => {
     const scores: number[] = [];
     const cells = materials.map((material) => {
-      if (!visibleToGroup(material, student.group))
+      if (!visibleToStudent(material, student))
         return { state: "hidden" } as const;
       const cell = cellFor(
         material,
@@ -119,6 +136,7 @@ export function buildResults({
     });
     const shown = cells.filter((c) => c.state !== "hidden");
     return {
+      suggested: entranceLevel(materials, cells),
       student,
       cells,
       completed: shown.filter(isComplete).length,
@@ -139,6 +157,27 @@ export function buildResults({
   });
   return { rows, columns };
 }
+
+// The entrance exam's test and labs, read from the student's cells.
+function entranceLevel(materials: ResultMaterial[], cells: Cell[]) {
+  let testPercent: number | null = null;
+  let labsSolved = 0;
+  let labsTotal = 0;
+  for (const [i, material] of materials.entries()) {
+    const cell = cells[i];
+    if (!isEntranceExam(material.slug) || cell.state === "hidden") continue;
+    if (material.kind === "QUIZ" && cell.state === "scored")
+      testPercent = Math.max(testPercent ?? 0, cell.percent);
+    if (material.kind === "CHALLENGE") {
+      labsTotal++;
+      if (cell.state === "solved") labsSolved++;
+    }
+  }
+  return suggestLevel({ testPercent, labsSolved, labsTotal });
+}
+
+export const levelText = (level: string, t: Translator) =>
+  isLevel(level) ? t(LEVEL_LABEL[level]) : "";
 
 export function cellText(cell: Cell, t: Translator) {
   switch (cell.state) {
@@ -180,6 +219,8 @@ export function resultsCsv(
     [
       t("Name"),
       t("Group"),
+      t("Level"),
+      t("Suggested level"),
       t("Completed"),
       t("Average score"),
       t("Last sign-in"),
@@ -188,6 +229,8 @@ export function resultsCsv(
     ...rows.map((row) => [
       row.student.name,
       row.student.group,
+      levelText(row.student.level, t),
+      row.suggested ? levelText(row.suggested, t) : "",
       `${row.completed}/${row.available}`,
       row.average === null ? "" : `${row.average}%`,
       row.student.lastLoginAt?.toISOString().slice(0, 16).replace("T", " ") ??

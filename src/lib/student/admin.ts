@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { LEVELS } from "./levels";
 import { slugSchema } from "../validation";
 import { parseQuiz, type Quiz } from "./quiz";
 import {
@@ -49,6 +50,7 @@ const expiry = z
 export const studentUpdateSchema = z.object({
   name: z.string().trim().min(1).max(100),
   group: groupName,
+  level: z.union([z.literal(""), z.enum(LEVELS)]),
   note: z.string().trim().max(2000),
   active: z.boolean(),
   expiresAt: expiry,
@@ -81,6 +83,7 @@ export type MaterialFormValues = {
   maxAttempts: number;
   timeLimit: number;
   groups: string;
+  levels: string[];
   position: number;
   published: boolean;
 };
@@ -121,6 +124,10 @@ export const materialSchema = z.object({
       ].slice(0, 20),
     )
     .pipe(z.array(groupName.min(1))),
+  levels: z
+    .array(z.enum(LEVELS))
+    .default([])
+    .transform((levels) => LEVELS.filter((l) => levels.includes(l))),
   position: z.coerce.number().int().min(-10000).max(10000),
   published: z.boolean(),
 });

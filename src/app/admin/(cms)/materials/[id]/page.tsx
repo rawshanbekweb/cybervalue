@@ -83,6 +83,7 @@ export default async function EditMaterialPage({
           maxAttempts: material.maxAttempts,
           timeLimit: material.timeLimit,
           groups: material.groups.join(", "),
+          levels: material.levels,
           position: material.position,
           published: material.published,
         }}

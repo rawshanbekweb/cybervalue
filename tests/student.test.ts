@@ -483,4 +483,12 @@ test("only a test keeps its time limit", () => {
   assert.ok(
     "error" in checkMaterial({ ...base, kind: "QUIZ", timeLimit: 301 }),
   );
+  const levelled = checkMaterial({
+    ...base,
+    kind: "LAB",
+    levels: ["advanced", "beginner", "advanced"],
+  });
+  assert.ok("data" in levelled);
+  assert.deepEqual(levelled.data.levels, ["beginner", "advanced"]);
+  assert.ok("error" in checkMaterial({ ...base, levels: ["expert"] }));
 });
