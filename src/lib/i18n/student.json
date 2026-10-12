@@ -186,5 +186,9 @@
   "In simple words": "Sodda qilib aytganda",
   "What to remember": "Esda tuting",
   "How it worked": "Bu qanday ishladi",
-  "The solution explained": "Yechim tushuntirilgan"
+  "The solution explained": "Yechim tushuntirilgan",
+  "Entrance exam": "Kirish sinovi",
+  "Start here.": "Shu yerdan boshlang.",
+  "Take the parts in order. Your teacher uses the results to choose where your lessons start.": "Qismlarni tartib bilan topshiring. O‘qituvchi natijalarga qarab darslaringiz qayerdan boshlanishini tanlaydi.",
+  "Finished: {done} of {total}.": "Topshirildi: {total} tadan {done} tasi."
 }

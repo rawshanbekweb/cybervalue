@@ -13,6 +13,11 @@ export function visibleTo(student: Pick<Student, "group">) {
   } satisfies Prisma.StudentMaterialWhereInput;
 }
 
+// Materials whose slug starts with this prefix form the entrance exam, shown
+// as one section at the top of the student's page whatever their kind.
+export const isEntranceExam = (slug: string) =>
+  slug.startsWith("kirish-sinovi-");
+
 export async function studentOverview(student: Student) {
   const db = getDb();
   if (!db) return { materials: [], done: new Set<string>() };

@@ -29,6 +29,7 @@ In **Admin → Student materials**, create materials of four kinds:
 - **Groups**: an empty field means every student sees the material. Otherwise list groups separated by commas.
 - **Order**: lower numbers come first.
 - **Visible to students**: unchecked materials stay hidden.
+- **Entrance exam**: materials whose slug starts with `kirish-sinovi-` are shown together in an "Entrance exam" section at the top of the student's page, whatever their kind, and are left out of the other sections.
 - Markdown is sanitized like the public site's: raw HTML and images are not rendered.
 - The Labs section also links to the existing public interactive labs.
 
