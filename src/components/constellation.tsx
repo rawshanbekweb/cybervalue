@@ -2,31 +2,30 @@
 
 import { useEffect, useRef } from "react";
 
-// Design.MD's signature visual: outlined triangular particles in vivid colours.
-// On wide screens they gather from a scatter into the author's portrait
-// (targets from scripts/portrait-points.ts); on narrower ones they form a
-// small cloud in the corner, clear of the headline. The field then breathes, the cloud
-// turns slowly in depth, and particles part around the pointer. Purely
-// decorative, so it is aria-hidden and draws a still frame when the visitor
-// prefers reduced motion.
+// Design.MD's signature visual: outlined triangular particles in vivid colours
+// that gather from a scatter into the author's portrait (targets from
+// scripts/portrait-points.ts). On wide screens the bust stands right of the
+// headline; on narrower ones it sits below the actions, in space the hero
+// reserves for it. The field then breathes and parts around the pointer, or
+// around a tap on touch screens. Purely decorative, so it is aria-hidden and
+// draws a still frame when the visitor prefers reduced motion.
 const ACCENTS = ["#ffb829", "#1fb99a", "#ff5fd2", "#4f8bff"];
 const COLORS = ["#8052ff", "#a68bff", ...ACCENTS];
 const GATHER_MS = 1800;
-const TURN_SPEED = 0.12; // radians per second
 const POINTER_RADIUS = 110;
 const POINTER_PUSH = 26;
 const ALPHA_STEPS = 6; // particles are batched per colour and alpha step
+const TAP_MS = 700; // how long a tap keeps the particles parted
+// Must match the space .cv-hero reserves below the actions on narrow screens.
+const STACKED_MAX = 420;
+const STACKED_SHARE = 0.9;
+const FACE_LIMIT = 520; // portrait y (0–999) where the face ends and the body starts
 
 type PortraitData = { aspect: number; points: number[] };
 
 type Particle = {
-  // Orbiting particles turn around (cx, cy) using dx and a depth dz; the
-  // rest only drift around their (x, y).
   x: number;
   y: number;
-  dx: number;
-  dz: number;
-  orbit: boolean;
   startX: number;
   startY: number;
   delay: number;
@@ -41,8 +40,6 @@ type Particle = {
   alpha: number;
   twinkle: number;
 };
-
-type Field = { cx: number; rx: number; particles: Particle[] };
 
 function seeded(seed: number) {
   return () => {
@@ -59,9 +56,6 @@ function particle(
     Partial<Particle>,
 ): Particle {
   return {
-    dx: 0,
-    dz: 0,
-    orbit: false,
     startX: values.x + (random() - 0.5) * width * 0.9,
     startY: values.y + (random() - 0.5) * height * 0.9,
     delay: random() * 600,
@@ -89,60 +83,36 @@ function ambient(random: () => number, width: number, height: number) {
   );
 }
 
-function cloudField(width: number, height: number): Field {
-  const random = seeded(7);
-  const cx = width * 0.92;
-  const cy = height * 0.07;
-  const rx = width * 0.26;
-  const ry = height * 0.07;
-  const particles = ambient(random, width, height);
-  for (let i = 0; i < 110; i++) {
-    // Two overlapping lobes with a soft edge read as an organic cloud rather
-    // than a perfect ellipse.
-    const lobe = random() < 0.5 ? -1 : 1;
-    const t = random() * Math.PI * 2;
-    const r = Math.sqrt(random()) * (0.75 + random() * 0.3);
-    const x = cx + lobe * rx * 0.28 + Math.cos(t) * r * rx * 0.78;
-    particles.push(
-      particle(random, width, height, {
-        x,
-        y: cy + Math.sin(t) * r * ry * (lobe < 0 ? 0.95 : 0.8),
-        dx: x - cx,
-        dz: (random() - 0.5) * rx * 1.1,
-        orbit: true,
-        size: 2 + random() * 4.5,
-        drift: 2 + random() * 5,
-        color: Math.floor(random() * COLORS.length),
-        alpha: 0.2 + random() * 0.3,
-      }),
-    );
-  }
-  return { cx, rx, particles };
-}
-
 function portraitField(
   width: number,
   height: number,
   portrait: PortraitData,
-): Field {
+  wide: boolean,
+): Particle[] {
   const random = seeded(7);
-  // Stand the bust on the hero's bottom edge, right of the headline.
-  const h = Math.min(height * 0.94, (width * 0.4) / portrait.aspect);
+  // Either way the bust stands on the hero's bottom edge.
+  const h = wide
+    ? Math.min(height * 0.94, (width * 0.4) / portrait.aspect)
+    : Math.min(width * STACKED_SHARE, STACKED_MAX);
   const w = h * portrait.aspect;
-  const left = width * 0.77 - w / 2;
+  const left = (wide ? width * 0.77 : width / 2) - w / 2;
   const top = height - h;
   const particles = ambient(random, width, height);
   const { points } = portrait;
+  // Phones keep every point on the face, which carries the likeness, and
+  // every other one on the body to stay light.
+  const thinBody = width < 600;
   for (let i = 0; i < points.length; i += 3) {
+    const onFace = points[i + 1] < FACE_LIMIT;
+    if (thinBody && !onFace && (i / 3) % 2 === 1) continue;
     const tone = points[i + 2] / 9;
     // Accents stay off the face so its light and shadow read cleanly.
-    const onFace = points[i + 1] < 520;
     const accent = random() < (onFace ? 0.05 : 0.2);
     particles.push(
       particle(random, width, height, {
         x: left + (points[i] / 999) * w,
         y: top + (points[i + 1] / 999) * h,
-        size: 1.3 + random() * 1.3,
+        size: wide ? 1.3 + random() * 1.3 : 1.1 + random() * 1.1,
         drift: 0.3 + random() * 0.7,
         twinkle: 0.12,
         // Tone picks the shade so light and shadow survive; a few accents
@@ -156,7 +126,7 @@ function portraitField(
       }),
     );
   }
-  return { cx: 0, rx: 1, particles };
+  return particles;
 }
 
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
@@ -170,10 +140,11 @@ export function Constellation({ className }: { className?: string }) {
     if (!canvas || !context) return;
     const still = window.matchMedia("(prefers-reduced-motion: reduce)");
     const finePointer = window.matchMedia("(pointer: fine)");
-    // Below this the portrait would run into the headline.
+    // Below this the bust moves under the actions so it clears the headline.
     const wide = window.matchMedia("(min-width: 1100px)");
     let portrait: PortraitData | null = null;
-    let field: Field = { cx: 0, rx: 1, particles: [] };
+    let particles: Particle[] = [];
+    let tapTimer = 0;
     let frame = 0;
     let visible = true;
     let disposed = false;
@@ -187,11 +158,10 @@ export function Constellation({ className }: { className?: string }) {
 
     const build = () => {
       const { width, height } = canvas.getBoundingClientRect();
-      if (!wide.matches) field = cloudField(width, height);
-      else if (portrait) field = portraitField(width, height, portrait);
       // Until the portrait arrives only the ambient particles drift.
-      else
-        field = { cx: 0, rx: 1, particles: ambient(seeded(7), width, height) };
+      particles = portrait
+        ? portraitField(width, height, portrait, wide.matches)
+        : ambient(seeded(7), width, height);
     };
 
     const resize = () => {
@@ -207,25 +177,13 @@ export function Constellation({ className }: { className?: string }) {
     const draw = (time: number) => {
       const { width, height } = canvas.getBoundingClientRect();
       const t = time / 1000;
-      const turn = t * TURN_SPEED;
-      const cos = Math.cos(turn);
-      const sin = Math.sin(turn);
       if (started < 0) started = time;
       let pending = false;
       for (const bucket of buckets) bucket.length = 0;
 
-      for (const p of field.particles) {
-        let x = p.x;
-        let y = p.y;
-        let depth = 1;
-        if (p.orbit) {
-          // Turn around a vertical axis; nearer particles grow and brighten.
-          const z = p.dx * sin + p.dz * cos;
-          x = field.cx + p.dx * cos - p.dz * sin;
-          depth = 1 + (z / field.rx) * 0.35;
-        }
-        x += Math.cos(t * 0.3 + p.phase) * p.drift;
-        y += Math.sin(t * 0.4 + p.phase) * p.drift;
+      for (const p of particles) {
+        let x = p.x + Math.cos(t * 0.3 + p.phase) * p.drift;
+        let y = p.y + Math.sin(t * 0.4 + p.phase) * p.drift;
 
         if (!gathered) {
           const progress = Math.min(
@@ -254,16 +212,14 @@ export function Constellation({ className }: { className?: string }) {
 
         const alpha = Math.min(
           1,
-          p.alpha *
-            depth *
-            (1 - p.twinkle + p.twinkle * Math.sin(t * 0.8 + p.phase)),
+          p.alpha * (1 - p.twinkle + p.twinkle * Math.sin(t * 0.8 + p.phase)),
         );
         const step = Math.min(ALPHA_STEPS - 1, Math.floor(alpha * ALPHA_STEPS));
         const bucket = buckets[p.color * ALPHA_STEPS + step];
         bucket.push(
           x + p.pushX,
           y + p.pushY,
-          p.size * Math.max(0.6, depth),
+          p.size,
           p.angle + time * p.spin * 0.06,
         );
       }
@@ -292,7 +248,7 @@ export function Constellation({ className }: { className?: string }) {
         context.stroke();
       });
       context.globalAlpha = 1;
-      if (!gathered && !pending && field.particles.length > 0) gathered = true;
+      if (!gathered && !pending && particles.length > 0) gathered = true;
     };
 
     const loop = (time: number) => {
@@ -322,15 +278,15 @@ export function Constellation({ className }: { className?: string }) {
       pointer.x = -9999;
       pointer.y = -9999;
     };
-
-    // The portrait targets are only fetched where they are shown.
-    const loadPortrait = () => {
-      if (!wide.matches || portrait) return regather();
-      import("./portrait-points.json").then(({ default: data }) => {
-        if (disposed) return;
-        portrait = data;
-        regather();
-      });
+    // Touch has no hover, so a tap parts the particles for a moment instead.
+    const tap = (event: PointerEvent) => {
+      if (finePointer.matches) return;
+      const rect = canvas.getBoundingClientRect();
+      if (event.clientY < rect.top || event.clientY > rect.bottom) return;
+      pointer.x = event.clientX - rect.left;
+      pointer.y = event.clientY - rect.top;
+      window.clearTimeout(tapTimer);
+      tapTimer = window.setTimeout(release, TAP_MS);
     };
 
     const observer = new IntersectionObserver(([entry]) => {
@@ -341,20 +297,27 @@ export function Constellation({ className }: { className?: string }) {
     observer.observe(canvas);
     resizer.observe(canvas);
     still.addEventListener("change", sync);
-    wide.addEventListener("change", loadPortrait);
+    wide.addEventListener("change", regather);
     window.addEventListener("pointermove", track, { passive: true });
+    window.addEventListener("pointerdown", tap, { passive: true });
     document.documentElement.addEventListener("pointerleave", release);
     resize();
     sync();
-    if (wide.matches) loadPortrait();
+    import("./portrait-points.json").then(({ default: data }) => {
+      if (disposed) return;
+      portrait = data;
+      regather();
+    });
     return () => {
       disposed = true;
       cancelAnimationFrame(frame);
       observer.disconnect();
       resizer.disconnect();
       still.removeEventListener("change", sync);
-      wide.removeEventListener("change", loadPortrait);
+      window.clearTimeout(tapTimer);
+      wide.removeEventListener("change", regather);
       window.removeEventListener("pointermove", track);
+      window.removeEventListener("pointerdown", tap);
       document.documentElement.removeEventListener("pointerleave", release);
     };
   }, []);

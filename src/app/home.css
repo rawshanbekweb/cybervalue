@@ -460,3 +460,12 @@
     }
   }
 }
+
+/* Below 1100px the portrait stands under the actions; keep this in step with
+   STACKED_SHARE and STACKED_MAX in constellation.tsx. */
+@media (max-width: 1099px) {
+  .cv-hero {
+    min-height: auto;
+    padding-bottom: calc(min(90vw, 420px) + 12px);
+  }
+}
