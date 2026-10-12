@@ -5,7 +5,7 @@ export { formatAccessCode } from "./format";
 // Crockford base32: no I, L, O or U, so a code read aloud or copied by hand
 // survives. 16 symbols carry 80 random bits, far beyond online guessing, which
 // is why a fast SHA-256 digest is enough to store it.
-const ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+export const ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
 const LENGTH = 16;
 
 export function newAccessCode() {

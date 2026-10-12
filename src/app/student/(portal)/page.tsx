@@ -1,9 +1,11 @@
 import Link from "next/link";
-import { ArrowUpRight, Check } from "lucide-react";
+import { ArrowUpRight, Award, Check } from "lucide-react";
 import { getAdminTranslator } from "@/lib/i18n/server";
 import { requireStudent } from "@/lib/student/session";
 import { isEntranceExam, studentOverview } from "@/lib/student/materials";
 import { isLevel, LEVEL_LABEL } from "@/lib/student/levels";
+import { getDb } from "@/lib/db";
+import { formatCertificateCode } from "@/lib/student/certificate";
 import { Constellation } from "@/components/student/constellation";
 import type { MaterialKind } from "@/generated/prisma/client";
 
@@ -93,7 +95,14 @@ function MaterialItem({
 export default async function StudentHomePage() {
   const t = await getAdminTranslator();
   const student = await requireStudent();
-  const { materials, done } = await studentOverview(student);
+  const [{ materials, done }, certificates] = await Promise.all([
+    studentOverview(student),
+    getDb()?.studentCertificate.findMany({
+      where: { studentId: student.id, revokedAt: null },
+      orderBy: { issuedAt: "desc" },
+      select: { code: true, title: true },
+    }) ?? [],
+  ]);
   const finished = materials.filter((m) => done.has(m.id)).length;
   const entrance = materials.filter((m) => isEntranceExam(m.slug));
   const entranceDone = entrance.filter((m) => done.has(m.id)).length;
@@ -140,6 +149,39 @@ export default async function StudentHomePage() {
         </div>
         <Constellation className="student-hero-art" seed={11} />
       </section>
+
+      {certificates.length > 0 && (
+        <section
+          id="certificates"
+          className="student-section"
+          aria-labelledby="certificates-title"
+        >
+          <div className="student-section-head">
+            <p className="student-label">{t("Certificates")}</p>
+            <h2 id="certificates-title" className="student-heading">
+              {t("Your certificates.")}
+            </h2>
+          </div>
+          <ul className="student-list">
+            {certificates.map((c) => (
+              <li key={c.code}>
+                <Link
+                  href={`/student/certificate/${formatCertificateCode(c.code)}`}
+                  className="student-item"
+                >
+                  <span className="student-item-title">
+                    {c.title}
+                    <Award size={18} aria-hidden="true" />
+                  </span>
+                  <span className="student-item-summary">
+                    {t("Open, print or save as PDF")}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {entrance.length > 0 && (
         <section

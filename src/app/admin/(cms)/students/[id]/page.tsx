@@ -9,7 +9,19 @@ import {
   ResetCodeForm,
   StudentEditForm,
 } from "@/components/admin/student-forms";
-import { deleteStudentAction, signOutStudentAction } from "../actions";
+import {
+  deleteStudentAction,
+  issueCertificateAction,
+  setCertificateRevokedAction,
+  signOutStudentAction,
+} from "../actions";
+import {
+  CERTIFICATE_PATH,
+  DEFAULT_CERTIFICATE_TITLE,
+  formatCertificateCode,
+} from "@/lib/student/certificate";
+import { LEVEL_LABEL, LEVELS } from "@/lib/student/levels";
+import { levelText } from "@/lib/student/results";
 
 // The date input shows the Tashkent calendar day the access ends on.
 const toDateInput = (date: Date | null) =>
@@ -34,6 +46,7 @@ export default async function AdminStudentPage({
           progress: true,
         },
       },
+      certificates: { orderBy: { issuedAt: "desc" } },
       submissions: {
         orderBy: { createdAt: "desc" },
         take: 200,
@@ -91,6 +104,89 @@ export default async function AdminStudentPage({
           </ConfirmButton>
         </form>
       </div>
+      <h2>{t("Certificates")}</h2>
+      {student.certificates.length > 0 && (
+        <ul className="admin-certificates">
+          {student.certificates.map((c) => (
+            <li key={c.id}>
+              <div>
+                <strong>{c.title}</strong>
+                {c.level && (
+                  <span className="muted"> · {levelText(c.level, t)}</span>
+                )}
+                <span className="muted">
+                  {" · "}
+                  {c.issuedAt.toISOString().slice(0, 10)}
+                </span>
+                {c.revokedAt && (
+                  <span className="admin-warn"> · {t("Revoked")}</span>
+                )}
+                <br />
+                <a
+                  href={`${CERTIFICATE_PATH}/${formatCertificateCode(c.code)}`}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {formatCertificateCode(c.code)}
+                </a>
+              </div>
+              <form
+                action={setCertificateRevokedAction.bind(
+                  null,
+                  c.id,
+                  !c.revokedAt,
+                )}
+              >
+                <button type="submit" className="button button-secondary">
+                  {c.revokedAt ? t("Restore") : t("Revoke")}
+                </button>
+              </form>
+            </li>
+          ))}
+        </ul>
+      )}
+      <form
+        action={issueCertificateAction.bind(null, student.id)}
+        className="admin-form admin-certificate-form"
+      >
+        <div className="admin-field-row">
+          <div className="admin-field">
+            <label htmlFor="certificate-title">{t("Course title")}</label>
+            <input
+              id="certificate-title"
+              name="title"
+              className="admin-input"
+              required
+              maxLength={160}
+              defaultValue={DEFAULT_CERTIFICATE_TITLE}
+            />
+          </div>
+          <div className="admin-field">
+            <label htmlFor="certificate-level">{t("Level")}</label>
+            <select
+              id="certificate-level"
+              name="level"
+              className="admin-input"
+              defaultValue={student.level}
+            >
+              <option value="">{t("Not shown")}</option>
+              {LEVELS.map((level) => (
+                <option key={level} value={level}>
+                  {t(LEVEL_LABEL[level])}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <p className="muted">
+          {t(
+            "The student can print it from their page. Its QR code opens a public page that confirms the certificate; revoke it to mark it invalid there.",
+          )}
+        </p>
+        <button type="submit" className="button button-primary">
+          {t("Issue certificate")}
+        </button>
+      </form>
       <h2>{t("Submissions")}</h2>
       <SubmissionList
         submissions={student.submissions.map((s) => ({

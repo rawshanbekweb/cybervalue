@@ -2113,6 +2113,26 @@ svg {
   flex: 1;
   min-width: 180px;
 }
+.admin-certificates {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  list-style: none;
+}
+.admin-certificates li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.admin-certificate-form {
+  margin-bottom: 2rem;
+}
 .admin-levels {
   border: 0;
   margin: 0;
@@ -2566,6 +2586,60 @@ p {
 }
 .student-wrong-list code {
   word-break: break-all;
+}
+/* Public certificate check, opened from the QR code */
+.certificate-check {
+  max-width: 720px;
+  padding-block: 72px 96px;
+}
+.certificate-check h1 {
+  margin: 24px 0 32px;
+  font-size: clamp(34px, 7vw, 64px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  overflow-wrap: anywhere;
+}
+.certificate-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+.certificate-status-ok {
+  border: 1px solid #15846e;
+  background: rgba(21, 132, 110, 0.15);
+  color: #5fd3b8;
+}
+.certificate-status-bad {
+  border: 1px solid #ff6b6b;
+  background: rgba(255, 107, 107, 0.12);
+  color: #ff9b9b;
+}
+.certificate-facts {
+  display: grid;
+  gap: 14px;
+  margin: 0 0 24px;
+}
+.certificate-facts div {
+  display: grid;
+  grid-template-columns: minmax(90px, 140px) 1fr;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.certificate-facts dt {
+  color: var(--muted);
+}
+.certificate-facts dd {
+  margin: 0;
+}
+.certificate-code {
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
 }
 /* Admin: class results matrix */
 .results-wrap {

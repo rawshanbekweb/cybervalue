@@ -19,6 +19,12 @@ import {
 } from "../src/lib/student/quiz";
 import { checkMaterial, parseRoster } from "../src/lib/student/admin";
 import {
+  certificateUrl,
+  formatCertificateCode,
+  newCertificateCode,
+  parseCertificateCode,
+} from "../src/lib/student/certificate";
+import {
   checkArtifact,
   explanationFor,
   flagFor,
@@ -491,4 +497,23 @@ test("only a test keeps its time limit", () => {
   assert.ok("data" in levelled);
   assert.deepEqual(levelled.data.levels, ["beginner", "advanced"]);
   assert.ok("error" in checkMaterial({ ...base, levels: ["expert"] }));
+});
+
+test("certificate codes are unguessable, readable and verify typed input", () => {
+  const codes = new Set(Array.from({ length: 300 }, newCertificateCode));
+  assert.equal(codes.size, 300);
+  const code = [...codes][0];
+  assert.equal(code.length, 12);
+  assert.equal(parseCertificateCode(code), code);
+  const printed = formatCertificateCode(code);
+  assert.match(printed, /^[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{4}$/);
+  assert.equal(parseCertificateCode(printed.toLowerCase()), code);
+  assert.equal(parseCertificateCode(` ${printed} `), code);
+  assert.equal(parseCertificateCode("0O1I-L000-0000"), "001110000000");
+  assert.equal(parseCertificateCode("AAAA-BBBB"), null);
+  assert.equal(parseCertificateCode("UUUU-UUUU-UUUU"), null);
+  assert.equal(
+    certificateUrl("https://cybervalue.uz/", code),
+    `https://cybervalue.uz/sertifikat/${printed}`,
+  );
 });

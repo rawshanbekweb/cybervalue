@@ -127,6 +127,17 @@ There are two ways to confirm a suggestion:
 
 You can also change a student's level on their page. Every change is recorded in the audit log, and the student sees their level at the top of their page.
 
+## Certificates
+
+On a student's page in **Admin → Students**, **Issue certificate** creates a certificate with a course title and, optionally, a level. The student's name, the title and the level are copied at that moment, so later edits to the student do not change what was issued.
+
+- The student finds it under **Certificates** on their page and can print it or save it as a PDF (one A4 landscape sheet).
+- The QR code and the code printed under it, such as `W6VE-B91E-55JW`, open the public page `/sertifikat/<code>`. That page shows the name, course, level and date, and is `noindex`. Codes carry 60 random bits, so they cannot be guessed, and look-alike letters are accepted.
+- **Revoke** keeps the record: the public page then says the certificate was revoked and on what date, and the student no longer sees it. **Restore** undoes this. The public page is cached for up to a minute.
+- Certificates outlive the student's account: deleting a student keeps the certificates they were issued valid.
+
+Issuing, revoking and restoring are recorded in the audit log.
+
 ## Results
 
 **Admin → Results** shows the class as a matrix: one row per student and one column per published material. You can filter the matrix by group. The cells read:
@@ -143,4 +154,4 @@ Each row also shows completed/available and an average score: the mean of test b
 
 ## Data
 
-The Prisma models are `Student`, `StudentSession`, `StudentMaterial`, `StudentSubmission`, `StudentProgress` and `StudentQuizStart` (an open timed attempt); the migrations are `20261010090000_student_portal`, `20261011090000_student_challenges`, `20261012090000_student_explanations` `20261013090000_timed_quizzes` and `20261013100000_student_levels`. Admin actions on students, materials and reviews are recorded in the audit log.
+The Prisma models are `Student`, `StudentSession`, `StudentMaterial`, `StudentSubmission`, `StudentProgress`, `StudentQuizStart` (an open timed attempt) and `StudentCertificate`; the migrations are `20261010090000_student_portal`, `20261011090000_student_challenges`, `20261012090000_student_explanations` `20261013090000_timed_quizzes`, `20261013100000_student_levels` and `20261013110000_student_certificates`. Admin actions on students, materials and reviews are recorded in the audit log.

@@ -818,3 +818,133 @@ body.student-root {
   justify-items: start;
   gap: 18px;
 }
+
+/* Certificate: a framed sheet on screen, a clean A4 landscape page in print. */
+.student-certificate-page {
+  display: grid;
+  gap: 24px;
+}
+.student-certificate-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.student-certificate-actions .student-button {
+  gap: 8px;
+}
+.student-certificate {
+  display: grid;
+  gap: 12px;
+  padding: clamp(24px, 6vw, 72px);
+  border: 1px solid rgba(128, 82, 255, 0.55);
+  border-radius: var(--radius-24);
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(128, 82, 255, 0.18),
+      transparent 45%
+    ),
+    var(--color-void);
+  text-align: center;
+}
+.student-certificate-lead {
+  margin: 0;
+  color: var(--color-silver-mist);
+  font-size: 18px;
+  font-weight: 200;
+}
+.student-certificate-name {
+  margin: 0;
+  color: var(--color-bone-white);
+  font-size: clamp(36px, 7vw, 78px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  overflow-wrap: anywhere;
+}
+.student-certificate-title {
+  margin: 0;
+  color: var(--color-saffron-spark);
+  font-size: clamp(22px, 3.5vw, 36px);
+  line-height: 1.2;
+}
+.student-certificate-meta {
+  margin: 0;
+  color: var(--color-silver-mist);
+  font-size: 15px;
+}
+.student-certificate-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 36px;
+  text-align: left;
+}
+.student-certificate-code {
+  margin: 6px 0 0;
+  color: var(--color-ash-gray);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.1em;
+}
+.student-certificate-qr {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  margin: 0;
+}
+.student-certificate-qr img {
+  padding: 8px;
+  border-radius: 8px;
+  background: #fff;
+}
+.student-certificate-qr figcaption {
+  color: var(--color-ash-gray);
+  font-size: 12px;
+}
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 12mm;
+  }
+  .student-nav,
+  .student-certificate-actions {
+    display: none !important;
+  }
+  html,
+  body,
+  .student-page {
+    min-height: 0 !important;
+    background: #fff !important;
+  }
+  /* One sheet: no screen padding or gaps spilling onto a second page. */
+  .student-page {
+    padding: 0 !important;
+  }
+  .student-certificate {
+    break-inside: avoid;
+  }
+  .student-certificate {
+    border-color: #8052ff;
+    background: #fff;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .student-certificate-name {
+    color: #000;
+  }
+  .student-certificate-lead,
+  .student-certificate-meta,
+  .student-certificate-code,
+  .student-certificate-qr figcaption {
+    color: #333;
+  }
+  .student-certificate-title {
+    color: #5a2fd6;
+  }
+}

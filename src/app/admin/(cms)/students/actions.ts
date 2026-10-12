@@ -6,6 +6,8 @@ import { audit } from "@/lib/audit";
 import { getDb } from "@/lib/db";
 import { limit } from "@/lib/rate-limit-db";
 import { hashSecret, newAccessCode } from "@/lib/student/access";
+import { newCertificateCode } from "@/lib/student/certificate";
+import { isLevel } from "@/lib/student/levels";
 import {
   parseRoster,
   rosterOptionsSchema,
@@ -133,4 +135,57 @@ export async function deleteStudentAction(id: string) {
   if (student) await audit("student.delete", session.user.id, student.name);
   revalidatePath("/admin/students");
   redirect("/admin/students");
+}
+
+// Issues a certificate with the student's current name. The title and level
+// are copied, so later edits to the student do not change what was issued.
+export async function issueCertificateAction(id: string, form: FormData) {
+  const session = await requireAdmin(`/admin/students/${id}`);
+  const title = String(form.get("title") ?? "").trim();
+  const level = String(form.get("level") ?? "");
+  if (!title || title.length > 160) return;
+  const db = getDb();
+  if (!db) return;
+  const student = await db.student.findUnique({
+    where: { id },
+    select: { name: true },
+  });
+  if (!student) return;
+  await db.studentCertificate.create({
+    data: {
+      code: newCertificateCode(),
+      studentId: id,
+      name: student.name,
+      title,
+      level: isLevel(level) ? level : "",
+    },
+  });
+  await audit(
+    "certificate.issue",
+    session.user.id,
+    `${student.name}: ${title}`,
+  );
+  revalidatePath(`/admin/students/${id}`);
+}
+
+// Revoking keeps the record: the public page then says the certificate is no
+// longer valid instead of "not found".
+export async function setCertificateRevokedAction(
+  certificateId: string,
+  revoked: boolean,
+) {
+  const session = await requireAdmin("/admin/students");
+  const db = getDb();
+  if (!db) return;
+  const certificate = await db.studentCertificate.update({
+    where: { id: certificateId },
+    data: { revokedAt: revoked ? new Date() : null },
+  });
+  await audit(
+    revoked ? "certificate.revoke" : "certificate.restore",
+    session.user.id,
+    `${certificate.name}: ${certificate.code}`,
+  );
+  if (certificate.studentId)
+    revalidatePath(`/admin/students/${certificate.studentId}`);
 }

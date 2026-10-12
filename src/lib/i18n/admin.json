@@ -249,5 +249,13 @@
   "Apply suggested levels": "Tavsiya etilgan darajalarni belgilash",
   "Set: {level}": "Belgilash: {level}",
   "Levels": "Darajalar",
-  "None checked = every student, including those not placed yet. Keep the entrance exam open to everyone.": "Hech biri belgilanmasa — barcha o‘quvchilar, jumladan darajasi hali aniqlanmaganlar ham ko‘radi. Kirish sinovini hammaga ochiq qoldiring."
+  "None checked = every student, including those not placed yet. Keep the entrance exam open to everyone.": "Hech biri belgilanmasa — barcha o‘quvchilar, jumladan darajasi hali aniqlanmaganlar ham ko‘radi. Kirish sinovini hammaga ochiq qoldiring.",
+  "Certificates": "Sertifikatlar",
+  "Revoked": "Bekor qilingan",
+  "Restore": "Tiklash",
+  "Revoke": "Bekor qilish",
+  "Course title": "Kurs nomi",
+  "Not shown": "Ko‘rsatilmaydi",
+  "The student can print it from their page. Its QR code opens a public page that confirms the certificate; revoke it to mark it invalid there.": "O‘quvchi uni o‘z sahifasidan chop etadi. QR kod sertifikatni tasdiqlaydigan ochiq sahifani ochadi; bekor qilinsa, o‘sha sahifada yaroqsiz deb ko‘rsatiladi.",
+  "Issue certificate": "Sertifikat berish"
 }

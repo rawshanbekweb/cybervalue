@@ -284,23 +284,24 @@ enum MaterialKind {
 }
 
 model Student {
-  id          String              @id @default(cuid())
-  name        String
-  group       String              @default("")
+  id           String               @id @default(cuid())
+  name         String
+  group        String               @default("")
   // Set by the teacher after the entrance exam: beginner, intermediate or
   // advanced; "" until placed.
-  level       String              @default("")
-  note        String              @default("") @db.Text
-  codeHash    String              @unique
-  active      Boolean             @default(true)
-  expiresAt   DateTime?           @db.Timestamptz(3)
-  lastLoginAt DateTime?           @db.Timestamptz(3)
-  createdAt   DateTime            @default(now())
-  updatedAt   DateTime            @updatedAt
-  sessions    StudentSession[]
-  submissions StudentSubmission[]
-  progress    StudentProgress[]
-  quizStarts  StudentQuizStart[]
+  level        String               @default("")
+  note         String               @default("") @db.Text
+  codeHash     String               @unique
+  active       Boolean              @default(true)
+  expiresAt    DateTime?            @db.Timestamptz(3)
+  lastLoginAt  DateTime?            @db.Timestamptz(3)
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+  sessions     StudentSession[]
+  submissions  StudentSubmission[]
+  progress     StudentProgress[]
+  quizStarts   StudentQuizStart[]
+  certificates StudentCertificate[]
 
   @@index([group])
 }
@@ -392,4 +393,21 @@ model StudentQuizStart {
 
   @@id([studentId, materialId])
   @@index([materialId])
+}
+
+// A certificate the teacher issued. `code` is public and printed as a QR code
+// that opens /sertifikat/<code>; name and title are copied at issue time, and
+// the certificate outlives the student's account.
+model StudentCertificate {
+  id        String    @id @default(cuid())
+  code      String    @unique
+  studentId String?
+  student   Student?  @relation(fields: [studentId], references: [id], onDelete: SetNull)
+  name      String
+  title     String
+  level     String    @default("")
+  issuedAt  DateTime  @default(now()) @db.Timestamptz(3)
+  revokedAt DateTime? @db.Timestamptz(3)
+
+  @@index([studentId])
 }
