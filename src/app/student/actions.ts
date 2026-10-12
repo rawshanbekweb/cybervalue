@@ -17,7 +17,8 @@ import {
   requireStudent,
 } from "@/lib/student/session";
 import { materialForStudent } from "@/lib/student/materials";
-import { gradeQuiz, quizSchema } from "@/lib/student/quiz";
+import { gradeQuiz, isQuizExpired, quizSchema } from "@/lib/student/quiz";
+import { closeExpiredStart, lockAttempts } from "@/lib/student/quiz-timer";
 import { judgeFlag, normalizeFlag } from "@/lib/student/challenge";
 
 export type StudentLoginState = { error?: string } | undefined;
@@ -117,26 +118,51 @@ export async function submitQuizAction(
   const quiz = quizSchema.safeParse(material?.quiz);
   if (!material || material.kind !== "QUIZ" || !quiz.success)
     return { error: "This test is no longer available." };
+  // A question left blank (possible when the timer submits the form) must stay
+  // null: Number(null) would read as option 0.
   const answers = quiz.data.map((_, i) => {
-    const value = Number(formData.get(`q${i}`));
-    return Number.isInteger(value) ? value : null;
+    const raw = formData.get(`q${i}`);
+    if (typeof raw !== "string" || !/^\d+$/.test(raw)) return null;
+    return Number(raw);
   });
   const db = getDb()!;
-  // Serialize a student's attempts on one quiz so double submits cannot
-  // slip past the attempt limit.
   const result: QuizState = await db.$transaction(async (tx) => {
-    await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${`${student.id}:${material.id}`}, 71523))`;
+    await lockAttempts(tx, student.id, material.id);
+    const timed = material.timeLimit > 0;
+    const start = timed
+      ? await tx.studentQuizStart.findUnique({
+          where: {
+            studentId_materialId: {
+              studentId: student.id,
+              materialId: material.id,
+            },
+          },
+        })
+      : null;
+    if (timed && !start)
+      return { error: "Press “Start the test” first. The timer starts then." };
     const used = await tx.studentSubmission.count({
       where: { studentId: student.id, materialId: material.id },
     });
     if (material.maxAttempts > 0 && used >= material.maxAttempts)
       return { error: "You have used all attempts for this test." };
-    const grade = gradeQuiz(quiz.data, answers);
+    // Answers that arrive after the deadline and its grace period score zero.
+    const late = start !== null && isQuizExpired(start, material.timeLimit);
+    const grade = gradeQuiz(quiz.data, late ? [] : answers);
+    if (start)
+      await tx.studentQuizStart.delete({
+        where: {
+          studentId_materialId: {
+            studentId: student.id,
+            materialId: material.id,
+          },
+        },
+      });
     await tx.studentSubmission.create({
       data: {
         studentId: student.id,
         materialId: material.id,
-        answers,
+        answers: late ? quiz.data.map(() => null) : answers,
         score: grade.score,
         maxScore: grade.maxScore,
       },
@@ -146,6 +172,35 @@ export async function submitQuizAction(
   // The page re-renders with the graded attempt.
   if (!result?.error) revalidatePath("/student", "layout");
   return result;
+}
+
+// Opens a timed attempt. A start that is still running is kept, so reloading
+// or a second tab never resets the timer.
+export async function startQuizAction(slug: string) {
+  const student = await requireStudent();
+  const material = await materialForStudent(student, slug);
+  const quiz = quizSchema.safeParse(material?.quiz);
+  if (!material || material.kind !== "QUIZ" || material.timeLimit <= 0) return;
+  if (!quiz.success) return;
+  await getDb()!.$transaction(async (tx) => {
+    await lockAttempts(tx, student.id, material.id);
+    await closeExpiredStart(tx, student.id, material, quiz.data.length);
+    const used = await tx.studentSubmission.count({
+      where: { studentId: student.id, materialId: material.id },
+    });
+    if (material.maxAttempts > 0 && used >= material.maxAttempts) return;
+    await tx.studentQuizStart.upsert({
+      where: {
+        studentId_materialId: {
+          studentId: student.id,
+          materialId: material.id,
+        },
+      },
+      create: { studentId: student.id, materialId: material.id },
+      update: {},
+    });
+  });
+  revalidatePath(`/student/m/${slug}`);
 }
 
 export type FlagState =

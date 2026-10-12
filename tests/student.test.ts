@@ -9,8 +9,12 @@ import {
 } from "../src/lib/student/access";
 import {
   gradeQuiz,
+  isQuizExpired,
   parseQuiz,
   publicQuiz,
+  QUIZ_GRACE_MS,
+  quizDeadline,
+  quizMsLeft,
   quizToText,
 } from "../src/lib/student/quiz";
 import { checkMaterial, parseRoster } from "../src/lib/student/admin";
@@ -393,4 +397,90 @@ test("lab explanations follow the student's artifact variant", () => {
     explanation: "a\n=== variant ===\nb\n=== variant ===\nc",
   });
   assert.ok("error" in mismatch);
+});
+
+test("a seeded quiz view shuffles per student and still grades by stored position", () => {
+  const parsed = parseQuiz(
+    Array.from(
+      { length: 12 },
+      (_, i) => `? Q${i}\n- a${i}\n+ b${i}\n- c${i}\n- d${i}`,
+    ).join("\n\n"),
+  );
+  assert.ok("quiz" in parsed);
+  const plain = publicQuiz(parsed.quiz);
+  assert.deepEqual(
+    plain.map((q) => q.index),
+    plain.map((_, i) => i),
+  );
+  const a = publicQuiz(parsed.quiz, "student-a:quiz:0");
+  // The same seed gives the same order, so a reload does not reshuffle.
+  assert.deepEqual(publicQuiz(parsed.quiz, "student-a:quiz:0"), a);
+  const b = publicQuiz(parsed.quiz, "student-b:quiz:0");
+  const order = (view: typeof a) =>
+    view.map((q) => `${q.index}:${q.options.map((o) => o.value)}`).join("|");
+  assert.notEqual(order(a), order(b));
+  assert.notEqual(order(a), order(publicQuiz(parsed.quiz, "student-a:quiz:1")));
+  // Every question and option is still there, labelled with its stored index.
+  assert.deepEqual(
+    a.map((q) => q.index).sort((x, y) => x - y),
+    plain.map((q) => q.index),
+  );
+  for (const q of a) {
+    assert.equal(q.prompt, `Q${q.index}`);
+    for (const o of q.options)
+      assert.equal(o.label, `${"abcd"[o.value]}${q.index}`);
+  }
+  // Picking the option labelled b in a shuffled view scores full marks.
+  const answers: number[] = [];
+  for (const q of a)
+    answers[q.index] = q.options.find((o) => o.label.startsWith("b"))!.value;
+  assert.equal(gradeQuiz(parsed.quiz, answers).score, 12);
+  assert.ok(!JSON.stringify(a).includes('"answer"'));
+});
+
+test("a timed attempt expires after its deadline and the grace period", () => {
+  const start = { startedAt: new Date("2026-10-13T09:00:00Z") };
+  const at = (iso: string) => new Date(iso);
+  assert.equal(
+    quizDeadline(start, 30).toISOString(),
+    "2026-10-13T09:30:00.000Z",
+  );
+  assert.equal(quizMsLeft(start, 30, at("2026-10-13T09:29:00Z")), 60_000);
+  assert.equal(quizMsLeft(start, 30, at("2026-10-13T09:45:00Z")), 0);
+  assert.equal(isQuizExpired(start, 30, at("2026-10-13T09:30:30Z")), false);
+  assert.equal(
+    isQuizExpired(
+      start,
+      30,
+      new Date(start.startedAt.getTime() + 30 * 60_000 + QUIZ_GRACE_MS + 1),
+    ),
+    true,
+  );
+});
+
+test("only a test keeps its time limit", () => {
+  const base = {
+    slug: "timed",
+    title: "Timed",
+    summary: "",
+    body: "",
+    quizText: "? Q\n- a\n+ b",
+    artifact: "",
+    artifactName: "",
+    explanation: "",
+    maxAttempts: 1,
+    timeLimit: 30,
+    groups: "",
+    position: 0,
+    published: false,
+  };
+  const quiz = checkMaterial({ ...base, kind: "QUIZ" });
+  assert.ok("data" in quiz);
+  assert.equal(quiz.data.timeLimit, 30);
+  const lesson = checkMaterial({ ...base, kind: "LESSON" });
+  assert.ok("data" in lesson);
+  assert.equal(lesson.data.timeLimit, 0);
+  assert.ok(
+    "error" in checkMaterial({ ...base, kind: "QUIZ", timeLimit: 301 }),
+  );
 });

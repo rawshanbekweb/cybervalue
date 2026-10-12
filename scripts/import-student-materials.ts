@@ -19,7 +19,7 @@ import { env } from "../src/lib/env";
 // Imports private student materials from a folder kept out of git (answer
 // keys and CTF templates must not be public). Each subfolder is one material:
 //   meta.json     slug, kind, title, summary, maxAttempts, groups, position,
-//                 artifactName (personal labs)
+//                 timeLimit (tests, minutes), artifactName (personal labs)
 //   body.md       optional Markdown shown to students
 //   quiz.txt      QUIZ questions in the ?/-/+ format, with optional ">"
 //                 explanation lines under each question
@@ -54,6 +54,7 @@ async function loadFolder(dir: string) {
     artifactName: String(meta.artifactName ?? ""),
     explanation: await optional(join(dir, "explanation.md")),
     maxAttempts: Number(meta.maxAttempts ?? 1),
+    timeLimit: Number(meta.timeLimit ?? 0),
     groups: String(meta.groups ?? ""),
     position: Number(meta.position ?? 0),
     published: false,

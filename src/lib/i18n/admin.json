@@ -238,5 +238,7 @@
   "File path": "Fayl yo‘li",
   "PDF, TXT, MD, CSV or ZIP, up to 20 MiB. The file must be available before publishing.": "PDF, TXT, MD, CSV yoki ZIP, 20 MiB gacha. Fayl e’lon qilishdan oldin mavjud bo‘lishi kerak.",
   "Too large": "Juda katta",
-  "Unavailable": "Mavjud emas"
+  "Unavailable": "Mavjud emas",
+  "Time limit in minutes (0 = no limit)": "Vaqt chegarasi, daqiqa (0 = cheklanmagan)",
+  "The timer starts when the student presses “Start the test” and keeps running if they leave. Answers are submitted at the deadline; an attempt left open counts as zero.": "Taymer o‘quvchi “Testni boshlash” tugmasini bosganda boshlanadi va u sahifadan chiqsa ham to‘xtamaydi. Vaqt tugaganda javoblar avtomatik topshiriladi; yakunlanmay qolgan urinish 0 ball hisoblanadi."
 }

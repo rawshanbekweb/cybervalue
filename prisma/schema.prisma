@@ -297,6 +297,7 @@ model Student {
   sessions    StudentSession[]
   submissions StudentSubmission[]
   progress    StudentProgress[]
+  quizStarts  StudentQuizStart[]
 
   @@index([group])
 }
@@ -325,6 +326,8 @@ model StudentMaterial {
   body         String              @default("") @db.Text
   quiz         Json?
   maxAttempts  Int                 @default(1)
+  // QUIZ only: minutes from pressing "Start" to the deadline; 0 = no limit.
+  timeLimit    Int                 @default(0)
   artifact     String              @default("") @db.Text
   artifactName String              @default("")
   // Markdown shown after the student answers: a solved or exhausted lab, or
@@ -338,6 +341,7 @@ model StudentMaterial {
   updatedAt    DateTime            @updatedAt
   submissions  StudentSubmission[]
   progress     StudentProgress[]
+  quizStarts   StudentQuizStart[]
 
   @@index([published, kind, position])
 }
@@ -367,6 +371,19 @@ model StudentProgress {
   materialId  String
   material    StudentMaterial @relation(fields: [materialId], references: [id], onDelete: Cascade)
   completedAt DateTime        @default(now()) @db.Timestamptz(3)
+
+  @@id([studentId, materialId])
+  @@index([materialId])
+}
+
+// The open attempt on a timed quiz. It is deleted when the attempt is
+// submitted, or turned into a zero-score attempt once its deadline passes.
+model StudentQuizStart {
+  studentId  String
+  student    Student         @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  materialId String
+  material   StudentMaterial @relation(fields: [materialId], references: [id], onDelete: Cascade)
+  startedAt  DateTime        @default(now()) @db.Timestamptz(3)
 
   @@id([studentId, materialId])
   @@index([materialId])

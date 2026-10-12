@@ -782,3 +782,39 @@ body.student-root {
 .student-solved {
   margin-top: 36px;
 }
+
+/* Timed tests: the countdown stays in view while the student scrolls. */
+.student-timer {
+  position: sticky;
+  top: 12px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 24px;
+  padding: 12px 18px;
+  border: 1px solid rgba(128, 82, 255, 0.45);
+  border-radius: var(--radius-24);
+  background: rgba(0, 0, 0, 0.88);
+  color: var(--color-silver-mist);
+  font-size: 14px;
+  backdrop-filter: blur(8px);
+}
+.student-timer strong {
+  color: var(--color-bone-white);
+  font-size: 24px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+.student-timer.is-urgent {
+  border-color: var(--color-saffron-spark);
+}
+.student-timer.is-urgent strong {
+  color: var(--color-saffron-spark);
+}
+.student-start {
+  display: grid;
+  justify-items: start;
+  gap: 18px;
+}

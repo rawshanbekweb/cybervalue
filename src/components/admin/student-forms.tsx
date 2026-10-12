@@ -539,6 +539,28 @@ function MaterialFields({
           />
         </div>
       )}
+      {kind === "QUIZ" && (
+        <div className="admin-field">
+          <label htmlFor="timeLimit">
+            {t("Time limit in minutes (0 = no limit)")}
+          </label>
+          <input
+            id="timeLimit"
+            name="timeLimit"
+            type="number"
+            className="admin-input"
+            min={0}
+            max={300}
+            aria-describedby="timeLimit-help"
+            defaultValue={defaults.timeLimit}
+          />
+          <p id="timeLimit-help" className="muted">
+            {t(
+              "The timer starts when the student presses “Start the test” and keeps running if they leave. Answers are submitted at the deadline; an attempt left open counts as zero.",
+            )}
+          </p>
+        </div>
+      )}
       <div className="admin-field-checkbox">
         <input
           id="published"

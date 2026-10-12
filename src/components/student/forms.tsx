@@ -1,5 +1,5 @@
 "use client";
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { useTranslator } from "@/components/locale-provider";
 import {
   submitFlagAction,
@@ -48,29 +48,85 @@ export function PracticeForm({ slug }: { slug: string }) {
 
 // The page re-renders after a graded attempt and shows its result, so the
 // form itself only reports errors.
+const clock = (ms: number) => {
+  const total = Math.max(0, Math.ceil(ms / 1000));
+  const minutes = Math.floor(total / 60);
+  return `${minutes}:${String(total % 60).padStart(2, "0")}`;
+};
+
+// Counts down from the server's remaining time (not the device clock, which
+// may be wrong) and submits whatever is answered when it reaches zero. The
+// server enforces the deadline either way.
+function QuizTimer({
+  msLeft,
+  formRef,
+}: {
+  msLeft: number;
+  formRef: React.RefObject<HTMLFormElement | null>;
+}) {
+  const t = useTranslator();
+  const [left, setLeft] = useState(msLeft);
+  useEffect(() => {
+    const end = performance.now() + msLeft;
+    let sent = false;
+    const tick = () => {
+      const now = end - performance.now();
+      setLeft(now);
+      if (now <= 0 && !sent && formRef.current) {
+        sent = true;
+        // Unanswered questions must not block the automatic submission.
+        formRef.current.noValidate = true;
+        formRef.current.requestSubmit();
+      }
+    };
+    const timer = setInterval(tick, 1000);
+    return () => clearInterval(timer);
+  }, [msLeft, formRef]);
+  return (
+    <p
+      className={`student-timer${left < 60_000 ? " is-urgent" : ""}`}
+      role="timer"
+      aria-label={t("Time left")}
+    >
+      <span>{t("Time left")}</span>
+      <strong>{clock(left)}</strong>
+    </p>
+  );
+}
+
 export function QuizForm({
   slug,
   questions,
+  msLeft,
 }: {
   slug: string;
   questions: PublicQuestion[];
+  // Set on a timed test: milliseconds until the deadline.
+  msLeft?: number;
 }) {
   const t = useTranslator();
+  const formRef = useRef<HTMLFormElement>(null);
   const [state, action, pending] = useActionState(
     submitQuizAction.bind(null, slug),
     undefined,
   );
   return (
-    <form action={action} className="student-form">
+    <form ref={formRef} action={action} className="student-form">
+      {msLeft !== undefined && <QuizTimer msLeft={msLeft} formRef={formRef} />}
       <ol className="student-quiz">
-        {questions.map((question, i) => (
-          <li key={i}>
+        {questions.map((question) => (
+          <li key={question.index}>
             <fieldset>
               <legend className="student-question">{question.prompt}</legend>
-              {question.options.map((option, j) => (
-                <label key={j} className="student-option">
-                  <input type="radio" name={`q${i}`} value={j} required />
-                  <span>{option}</span>
+              {question.options.map((option) => (
+                <label key={option.value} className="student-option">
+                  <input
+                    type="radio"
+                    name={`q${question.index}`}
+                    value={option.value}
+                    required
+                  />
+                  <span>{option.label}</span>
                 </label>
               ))}
             </fieldset>

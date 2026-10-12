@@ -79,6 +79,7 @@ export type MaterialFormValues = {
   artifactName: string;
   explanation: string;
   maxAttempts: number;
+  timeLimit: number;
   groups: string;
   position: number;
   published: boolean;
@@ -104,6 +105,8 @@ export const materialSchema = z.object({
     .default("")
     .transform((value) => value.replace(/\r\n?/g, "\n").trim()),
   maxAttempts: z.coerce.number().int().min(0).max(20),
+  // Minutes; only a QUIZ keeps it.
+  timeLimit: z.coerce.number().int().min(0).max(300).default(0),
   groups: z
     .string()
     .max(400)
@@ -148,6 +151,7 @@ export function checkMaterial(input: unknown): MaterialCheck {
     ...rest,
     artifact: challenge ? rest.artifact : "",
     artifactName: challenge ? rest.artifactName : "",
+    timeLimit: rest.kind === "QUIZ" ? rest.timeLimit : 0,
   };
   if (challenge) {
     if (!artifactNamePattern.test(fields.artifactName))

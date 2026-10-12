@@ -81,6 +81,7 @@ export default async function EditMaterialPage({
           artifactName: material.artifactName,
           explanation: material.explanation,
           maxAttempts: material.maxAttempts,
+          timeLimit: material.timeLimit,
           groups: material.groups.join(", "),
           position: material.position,
           published: material.published,

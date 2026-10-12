@@ -49,6 +49,7 @@ export async function saveMaterialAction(
     artifactName: text(form, "artifactName"),
     explanation: text(form, "explanation"),
     maxAttempts: Number(text(form, "maxAttempts")) || 0,
+    timeLimit: Number(text(form, "timeLimit")) || 0,
     groups: text(form, "groups"),
     position: Number(text(form, "position")) || 0,
     published: form.get("published") === "on",

@@ -24,7 +24,14 @@ export const quizSchema = z
   .max(60)
   .refine((questions) => questions.every((q) => q.answer < q.options.length));
 export type Quiz = z.infer<typeof quizSchema>;
-export type PublicQuestion = { prompt: string; options: string[] };
+// What the browser gets: no key, no explanations. `index` is the question's
+// and `value` the option's position in the stored quiz, so a shuffled form
+// still submits answers the grader understands.
+export type PublicQuestion = {
+  index: number;
+  prompt: string;
+  options: { value: number; label: string }[];
+};
 
 // Errors are translation keys; `line` or `number` fill their placeholders.
 export type QuizParse =
@@ -111,8 +118,51 @@ export function quizToText(quiz: Quiz) {
     .join("\n\n");
 }
 
-export const publicQuiz = (quiz: Quiz): PublicQuestion[] =>
-  quiz.map(({ prompt, options }) => ({ prompt, options }));
+// A small seeded generator (cyrb53 hash into mulberry32): the same seed always
+// gives the same order, so a reload does not reshuffle an open attempt.
+function seededRandom(seed: string) {
+  let h1 = 0xdeadbeef;
+  let h2 = 0x41c6ce57;
+  for (let i = 0; i < seed.length; i++) {
+    const c = seed.charCodeAt(i);
+    h1 = Math.imul(h1 ^ c, 2654435761);
+    h2 = Math.imul(h2 ^ c, 1597334677);
+  }
+  let state = (h1 ^ Math.imul(h2, 16777619)) >>> 0;
+  return () => {
+    state = (state + 0x6d2b79f5) >>> 0;
+    let t = state;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function shuffle<T>(items: T[], random: () => number) {
+  const copy = [...items];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+// Without a seed the stored order is kept. With one (student, test and
+// attempt), questions and their options are shuffled, so classmates sitting
+// side by side do not see the same "1-B, 2-A".
+export function publicQuiz(quiz: Quiz, seed?: string): PublicQuestion[] {
+  const questions = quiz.map(({ prompt, options }, index) => ({
+    index,
+    prompt,
+    options: options.map((label, value) => ({ value, label })),
+  }));
+  if (seed === undefined) return questions;
+  const random = seededRandom(seed);
+  return shuffle(questions, random).map((q) => ({
+    ...q,
+    options: shuffle(q.options, random),
+  }));
+}
 
 // Unanswered or out-of-range choices count as wrong.
 export function gradeQuiz(quiz: Quiz, answers: unknown[]) {
@@ -123,3 +173,25 @@ export function gradeQuiz(quiz: Quiz, answers: unknown[]) {
     results,
   };
 }
+
+type QuizStart = { startedAt: Date };
+
+// A timed quiz starts when the student presses "Start" and ends at
+// startedAt + timeLimit minutes. The form submits itself at the deadline;
+// the grace period covers a slow network, not extra thinking time.
+export const QUIZ_GRACE_MS = 60_000;
+
+export const quizDeadline = (start: QuizStart, minutes: number) =>
+  new Date(start.startedAt.getTime() + minutes * 60_000);
+
+export const quizMsLeft = (
+  start: QuizStart,
+  minutes: number,
+  now = new Date(),
+) => Math.max(0, quizDeadline(start, minutes).getTime() - now.getTime());
+
+export const isQuizExpired = (
+  start: QuizStart,
+  minutes: number,
+  now = new Date(),
+) => now.getTime() > quizDeadline(start, minutes).getTime() + QUIZ_GRACE_MS;

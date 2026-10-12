@@ -53,6 +53,12 @@ Follow these rules when writing a test:
 - Optional `>` lines under the options explain the answer in simple words; several lines make one explanation of up to 2,000 characters.
 - A test can have up to 60 questions, each with up to 8 options.
 - "Attempts per student" limits retakes; `0` means unlimited.
+- Every student gets the questions, and the options inside each question, in their own order, which changes with each attempt. Reloading the page keeps the order. Grading uses the stored order, so the answer key and results do not change.
+- **Time limit** (minutes, `0` = none) makes the test timed. Students see a "Start the test" button first, and the questions appear once they press it. The timer:
+  - is measured on the server, so it keeps running if the student reloads or leaves the page;
+  - submits the form automatically at the deadline, and unanswered questions count as wrong;
+  - allows 60 seconds of grace for a slow connection; answers that arrive later score 0;
+  - turns an attempt that was started but never submitted into a zero-score attempt once its deadline passes, so leaving the page cannot buy a fresh timer.
 
 How grading works:
 
@@ -119,4 +125,4 @@ Each row also shows completed/available and an average score: the mean of test b
 
 ## Data
 
-The Prisma models are `Student`, `StudentSession`, `StudentMaterial`, `StudentSubmission` and `StudentProgress`; the migrations are `20261010090000_student_portal` and `20261011090000_student_challenges`. Admin actions on students, materials and reviews are recorded in the audit log.
+The Prisma models are `Student`, `StudentSession`, `StudentMaterial`, `StudentSubmission`, `StudentProgress` and `StudentQuizStart` (an open timed attempt); the migrations are `20261010090000_student_portal`, `20261011090000_student_challenges`, `20261012090000_student_explanations` and `20261013090000_timed_quizzes`. Admin actions on students, materials and reviews are recorded in the audit log.

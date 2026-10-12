@@ -5,11 +5,17 @@ import { getAdminTranslator, getAdminLocale } from "@/lib/i18n/server";
 import { getDb } from "@/lib/db";
 import { getStudentSession, requireStudent } from "@/lib/student/session";
 import { materialForStudent } from "@/lib/student/materials";
-import { gradeQuiz, publicQuiz, quizSchema } from "@/lib/student/quiz";
+import {
+  gradeQuiz,
+  publicQuiz,
+  quizMsLeft,
+  quizSchema,
+} from "@/lib/student/quiz";
 import { explanationFor } from "@/lib/student/challenge";
 import { Markdown } from "@/components/markdown";
 import { FlagForm, PracticeForm, QuizForm } from "@/components/student/forms";
-import { markCompleteAction } from "../../../actions";
+import { closeExpiredStart, lockAttempts } from "@/lib/student/quiz-timer";
+import { markCompleteAction, startQuizAction } from "../../../actions";
 
 const KIND_LABEL = {
   LESSON: "Lesson",
@@ -52,7 +58,15 @@ export default async function StudentMaterialPage({
   const t = await getAdminTranslator();
   const locale = await getAdminLocale();
   const db = getDb()!;
-  const [submissions, progress] = await Promise.all([
+  const quiz = quizSchema.safeParse(material.quiz);
+  // A timed attempt left open past its deadline becomes a zero-score attempt
+  // before anything is counted.
+  if (material.kind === "QUIZ" && material.timeLimit > 0 && quiz.success)
+    await db.$transaction(async (tx) => {
+      await lockAttempts(tx, student.id, material.id);
+      await closeExpiredStart(tx, student.id, material, quiz.data.length);
+    });
+  const [submissions, progress, quizStart] = await Promise.all([
     db.studentSubmission.findMany({
       where: { studentId: student.id, materialId: material.id },
       orderBy: { createdAt: "desc" },
@@ -65,13 +79,22 @@ export default async function StudentMaterialPage({
         },
       },
     }),
+    material.kind === "QUIZ" && material.timeLimit > 0
+      ? db.studentQuizStart.findUnique({
+          where: {
+            studentId_materialId: {
+              studentId: student.id,
+              materialId: material.id,
+            },
+          },
+        })
+      : null,
   ]);
   const date = new Intl.DateTimeFormat(locale === "uz" ? "uz-UZ" : "en-GB", {
     dateStyle: "medium",
     timeStyle: "short",
     timeZone: "Asia/Tashkent",
   });
-  const quiz = quizSchema.safeParse(material.quiz);
   const answers = submissions[0]?.answers;
   const chosenAnswers: unknown[] = Array.isArray(answers) ? answers : [];
   const latest =
@@ -322,8 +345,35 @@ export default async function StudentMaterialPage({
             <p className="student-quiet">
               {t("You have used all attempts for this test.")}
             </p>
+          ) : material.timeLimit > 0 && !quizStart ? (
+            <form
+              action={startQuizAction.bind(null, material.slug)}
+              className="student-start"
+            >
+              <p className="student-quiet">
+                {t(
+                  "You have {minutes} minutes once you start. The timer keeps running if you leave the page, and your answers are submitted when time is up.",
+                  { minutes: material.timeLimit },
+                )}
+              </p>
+              <button type="submit" className="student-button">
+                {t("Start the test")}
+              </button>
+            </form>
           ) : (
-            <QuizForm slug={material.slug} questions={publicQuiz(quiz.data)} />
+            // Each student, and each of their attempts, gets its own order.
+            <QuizForm
+              slug={material.slug}
+              questions={publicQuiz(
+                quiz.data,
+                `${student.id}:${material.id}:${submissions.length}`,
+              )}
+              msLeft={
+                quizStart
+                  ? quizMsLeft(quizStart, material.timeLimit)
+                  : undefined
+              }
+            />
           )}
         </section>
       )}
