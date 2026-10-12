@@ -213,6 +213,7 @@ svg {
   color: #a5aba4;
   font-size: 12px;
   padding: 12px 0;
+  white-space: nowrap;
   position: relative;
   transition: color 0.15s;
 }
@@ -1544,6 +1545,10 @@ svg {
     justify-content: space-between;
     margin-top: 8px;
   }
+  .navigation > a.nav-student {
+    justify-content: center;
+    margin: 8px 0 0;
+  }
   .hero {
     padding-top: 48px;
     grid-template-columns: 1fr 1fr;
@@ -2304,6 +2309,42 @@ p {
 .navigation .nav-contact:hover {
   border-color: var(--accent);
   background: var(--accent-soft);
+}
+.navigation > a.nav-student,
+.site-header-overlay .navigation > a.nav-student {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 8px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+.navigation > a.nav-student:hover,
+.site-header-overlay .navigation > a.nav-student:hover {
+  background: var(--accent-hover);
+}
+/* On desktop the student button takes the contact link's place: both do not
+   fit beside the nav. Contact stays in the mobile menu, on the home page and
+   on the About page. */
+@media (min-width: 1201px) {
+  .navigation .nav-contact {
+    display: none;
+  }
+}
+@media (min-width: 1201px) and (max-width: 1300px) {
+  .navigation {
+    gap: 12px;
+  }
+}
+.navigation > a.nav-student:focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 2px;
 }
 .entry-card,
 .about-card,

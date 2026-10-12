@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { Menu, X, ArrowUpRight, GraduationCap } from "lucide-react";
 import { useTranslator } from "./locale-provider";
 
 export function Navigation({
@@ -57,6 +57,15 @@ export function Navigation({
           onClick={() => setOpen(false)}
         >
           {t("Let’s connect")} <ArrowUpRight size={14} />
+        </Link>
+        {/* Signed-out visitors land on the student sign-in page. */}
+        <Link
+          className="nav-student"
+          href="/student"
+          onClick={() => setOpen(false)}
+        >
+          <GraduationCap size={16} aria-hidden="true" />
+          {t("Student portal")}
         </Link>
       </nav>
     </>
