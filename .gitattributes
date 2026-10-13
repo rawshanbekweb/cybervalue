@@ -1,0 +1,16 @@
+# Keep LF line endings in the repository and in every checkout, so Prettier
+# and CI agree on Windows as well (core.autocrlf would otherwise write CRLF).
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.mp4 binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.zip binary
+*.pdf binary
