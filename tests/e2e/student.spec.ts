@@ -343,8 +343,8 @@ test.describe("admin-issued access", () => {
     const csv = Buffer.concat(
       await (await csvFile.createReadStream()).toArray(),
     ).toString("utf8");
-    expect(csv).toContain(`"Lab One ${id}","${group}","1/1"`);
-    expect(csv).toContain(`"Lab Two ${id}","${group}","0/1"`);
+    expect(csv).toContain(`"Lab One ${id}","${group}","","","1/1"`);
+    expect(csv).toContain(`"Lab Two ${id}","${group}","","","0/1"`);
     expect(csv).toContain(`"Log hunt ${id}"`);
     await page.goto(labUrl);
 

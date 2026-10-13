@@ -129,6 +129,8 @@ test("damaged browser records do not break either lesson editor", async ({
 test("both language variants fit small screens and pass accessibility checks", async ({
   page,
 }) => {
+  // Scroll-driven reveals fade sections in; axe must see their final colours.
+  await page.emulateMedia({ reducedMotion: "reduce" });
   for (const language of ["uz", "en"]) {
     await page.goto("/");
     await page
