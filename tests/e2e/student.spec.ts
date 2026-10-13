@@ -1,4 +1,21 @@
 import { test, expect, type Page } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
+
+// Students use these pages daily; they must pass the same WCAG checks as the
+// public site.
+async function audit(page: Page, label: string) {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const result = await new AxeBuilder({ page })
+    .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+    .analyze();
+  expect(
+    result.violations.map((v) => ({
+      id: v.id,
+      nodes: v.nodes.map((n) => n.target),
+    })),
+    label,
+  ).toEqual([]);
+}
 
 // Assertions use the English interface copy.
 const english = {
@@ -34,6 +51,7 @@ test("the student area requires a code, stays noindex and hides which part faile
   await expect(
     page.getByText("This access code is not valid or no longer active."),
   ).toBeVisible();
+  await audit(page, "student login with an error");
   await page.goto("/student/m/anything");
   await expect(page).toHaveURL(/\/student\/login$/);
 });
@@ -154,6 +172,7 @@ test.describe("admin-issued access", () => {
       student.getByRole("heading", { name: "Hello, Test." }),
     ).toBeVisible();
     await expect(student.getByText(`Group ${group}`)).toBeVisible();
+    await audit(student, "student home");
 
     await student.getByRole("link", { name: `Private lesson ${id}` }).click();
     await expect(
@@ -169,6 +188,7 @@ test.describe("admin-issued access", () => {
     await student.getByRole("button", { name: "Submit answers" }).click();
     await expect(student.getByText("Latest result: 2 of 2")).toBeVisible();
     await expect(student.getByText("Correct", { exact: true })).toHaveCount(2);
+    await audit(student, "graded test");
     await student.reload();
     await expect(
       student.getByText("You have used all attempts for this test."),
