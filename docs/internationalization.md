@@ -35,6 +35,7 @@ state does not.
 | HTML & CSS Project Studio: briefs, hints, structural checks and exports       | Yes            | Yes              |
 | Graded HTML assessment and resource exam: rules, questions, feedback, errors  | Yes            | Yes              |
 | Admin CMS, 2FA, audit log and assessment results                              | Yes            | Yes              |
+| Linux lab and IP addressing lab: lessons, simulators, feedback                | Yes            | Yes              |
 | Standalone slide decks and offline ZIPs                                       | Original Uzbek | Labeled as Uzbek |
 
 CMS-authored articles, learner code, notes, protocol examples, flags, and evidence
@@ -77,3 +78,24 @@ crashes on damaged progress/drafts and inflated progress counts.
 Database-dependent CMS, admin and graded-assessment workflows require a reachable
 database and test credentials. A database-free public-site build does not validate
 those integration flows.
+
+## Two ways to hold copy
+
+Pick one by where the text lives:
+
+- **Dictionary (`src/lib/i18n/*.json` + `t()`)** for interface text shared by
+  pages, server components and catalogs: titles, buttons, metadata, gateway
+  cards. English is the key; one string can be reused anywhere.
+- **Inline pairs** for long course content that belongs to a single lab and
+  rarely leaves it. The Linux and IP labs keep each text as `{ uz, en }` next to
+  the data it explains (`src/lib/linux/curriculum.ts`,
+  `src/lib/network/*.ts`) and render it with the lab's own helper
+  (`t("uz", "en")` or `text({ uz, en })`, see
+  `src/components/playground/network-lab/use-t.ts`). Both languages sit
+  side by side, so a lesson is edited in one place and cannot lose a
+  translation; tests assert that every lesson text has both.
+
+When a lab's text also appears outside the lab — a lesson title in the
+learning catalog, a gateway card — add it to the dictionary too. The IP lab
+generates those entries from its curriculum into `src/lib/i18n/network.json`,
+so the catalog and the lab never disagree.
