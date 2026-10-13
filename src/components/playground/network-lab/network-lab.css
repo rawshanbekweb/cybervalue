@@ -588,6 +588,12 @@
   font-size: 12px;
   color: var(--muted);
 }
+/* Long domain names in labels must wrap on a 320px phone. */
+.nl-field > span,
+.nl-card > * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
 .nl-field input,
 .nl-classify select {
   width: 100%;
@@ -906,6 +912,541 @@
 @media (prefers-reduced-motion: reduce) {
   .nl-wire.used,
   .nl-wire.ok {
+    animation: none;
+  }
+}
+
+/* Lessons 9–11: where addresses come from */
+.nl-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.nl-router-panel {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid #3e3c47;
+  border-radius: 10px;
+  background: #121116;
+}
+.nl-router-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  color: var(--accent-text);
+}
+.nl-router-head strong {
+  color: var(--text);
+  font-size: 14px;
+}
+.nl-router-head code {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 12px;
+}
+.nl-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.nl-switch input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+}
+.nl-pool-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.nl-pool-inputs label {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.nl-pool-inputs code {
+  color: #c5c3cc;
+}
+.nl-pool-inputs input {
+  width: 68px;
+  min-height: 36px;
+  padding: 6px 8px;
+  border: 1px solid #36343d;
+  border-radius: 6px;
+  background: #0b0b0e;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+.nl-pool {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.nl-pool li {
+  display: grid;
+  gap: 2px;
+  padding: 6px 8px;
+  border: 1px dashed #3a3942;
+  border-radius: 6px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.nl-pool li code {
+  color: #c5c3cc;
+  font-size: 13px;
+}
+.nl-pool li.used {
+  border-style: solid;
+  border-color: var(--accent);
+  background: var(--nl-net-bg);
+  color: var(--text);
+}
+.nl-devices-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.nl-devices-grid li {
+  display: grid;
+  justify-items: start;
+  gap: 4px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #0f0e12;
+  color: #8d8c94;
+  transition: border-color 0.2s;
+}
+.nl-devices-grid li > svg {
+  margin-bottom: 4px;
+}
+.nl-devices-grid li strong {
+  color: var(--text);
+  font-size: 13px;
+}
+.nl-mac {
+  font-size: 10px;
+  color: #8d8c94;
+}
+.nl-device-ip {
+  margin: 4px 0 6px;
+  font-size: 13px;
+  color: #b4b3b8;
+}
+.nl-devices-grid li.online {
+  border-color: #2a6b55;
+  color: var(--nl-ok);
+}
+.nl-devices-grid li.online .nl-device-ip {
+  color: var(--nl-ok);
+}
+.nl-devices-grid li.apipa {
+  border-color: #6b2a2a;
+  color: var(--nl-bad);
+}
+.nl-devices-grid li.apipa .nl-device-ip {
+  color: var(--nl-bad);
+}
+.nl-devices-grid li.active {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+.nl-devices-grid li.static {
+  border-style: dashed;
+}
+.nl-devices-grid button {
+  padding: 7px 12px;
+  font-size: 12px;
+}
+
+/* Message exchanges and lookup steps appear one after another. */
+.nl-exchange ol,
+.nl-steps {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.nl-steps {
+  counter-reset: step;
+}
+.nl-msg,
+.nl-steps li {
+  animation: nl-appear 0.35s ease-out both;
+}
+.nl-msg {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  gap: 2px 12px;
+  padding: 10px 12px;
+  border-left: 3px solid #3a3942;
+  border-radius: 0 8px 8px 0;
+  background: #121116;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.nl-msg code {
+  color: var(--muted);
+  font-size: 11px;
+}
+.nl-msg > span:last-child {
+  grid-column: 2;
+  color: #d4d3d9;
+}
+.nl-msg-name {
+  grid-row: span 2;
+  align-self: start;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 12px;
+}
+.nl-msg-discover,
+.nl-msg-request {
+  border-left-color: var(--nl-host);
+}
+.nl-msg-discover .nl-msg-name,
+.nl-msg-request .nl-msg-name {
+  color: var(--nl-host);
+}
+.nl-msg-offer,
+.nl-msg-ack {
+  border-left-color: var(--nl-net);
+}
+.nl-msg-offer .nl-msg-name,
+.nl-msg-ack .nl-msg-name {
+  color: var(--nl-net);
+}
+.nl-steps li {
+  counter-increment: step;
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #d4d3d9;
+}
+.nl-steps li::before {
+  content: counter(step);
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #26252b;
+  color: var(--accent-text);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+@keyframes nl-appear {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+/* Browser and DNS chain */
+.nl-browser {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 8px 8px 14px;
+  border: 1px solid #3e3c47;
+  border-radius: 10px;
+  background: #121116;
+}
+.nl-browser-dots {
+  display: inline-flex;
+  gap: 5px;
+}
+.nl-browser-dots i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #3a3942;
+}
+.nl-browser input {
+  flex: 1;
+  min-width: 0;
+  min-height: 38px;
+  padding: 6px 12px;
+  border: 1px solid #36343d;
+  border-radius: 9999px;
+  background: #0b0b0e;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+.nl-browser input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+.nl-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.nl-chips button {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+.nl-chain {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.nl-chain li {
+  position: relative;
+  display: grid;
+  gap: 2px;
+  padding: 8px;
+  border: 1px solid #36343d;
+  border-radius: 8px;
+  background: #0f0e12;
+  text-align: center;
+  font-size: 11px;
+  min-width: 0;
+}
+.nl-chain li strong {
+  font-size: 12px;
+}
+.nl-chain li code {
+  color: var(--muted);
+  font-size: 10px;
+  overflow-wrap: anywhere;
+}
+.nl-chain li.reached {
+  border-color: var(--nl-host);
+}
+.nl-chain li.ok {
+  border-color: var(--nl-ok);
+}
+.nl-chain li.ok code {
+  color: var(--nl-ok);
+}
+.nl-chain li.stop {
+  border-color: var(--nl-bad);
+  background: #2a1414;
+}
+.nl-page {
+  margin-top: 12px;
+  border: 1px solid #2a6b55;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.nl-page.fake {
+  border-color: #6b2a2a;
+}
+.nl-page-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 8px 12px;
+  background: #121116;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.nl-page > div {
+  display: flex;
+  gap: 14px;
+  padding: 16px;
+  color: var(--accent-text);
+}
+.nl-page > div p {
+  margin: 6px 0 0;
+  color: #c5c3cc;
+  font-size: 13px;
+}
+.nl-page strong {
+  color: var(--text);
+}
+.nl-tag {
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: #26252b;
+  color: var(--nl-ok);
+  font-size: 11px;
+  font-weight: 500;
+}
+.nl-cache,
+.nl-nat section {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+.nl-cache button {
+  justify-self: start;
+  font-family: var(--font-mono);
+}
+.nl-cache table,
+.nl-nat table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.nl-cache :is(th, td),
+.nl-nat :is(th, td) {
+  padding: 6px 8px;
+  border-bottom: 1px solid #26252b;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.nl-cache th,
+.nl-nat th {
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-weight: 500;
+}
+
+/* NAT */
+/* Home → router → site, top to bottom, the way the packet travels. */
+.nl-nat {
+  display: grid;
+  gap: 10px;
+}
+.nl-nat section + section {
+  position: relative;
+}
+.nl-nat section + section::before {
+  content: "↓";
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  translate: -50% -50%;
+  color: var(--muted);
+  font-size: 14px;
+}
+.nl-home {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 6px;
+}
+/* IP:port pairs read as one token; a narrow table scrolls instead. */
+.nl-nat section {
+  overflow-x: auto;
+}
+.nl-nat td {
+  white-space: nowrap;
+}
+.nl-nat section {
+  align-content: start;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #0f0e12;
+}
+.nl-nat-router {
+  border-color: #44424e !important;
+}
+.nl-home-device {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 4px 10px;
+  padding: 8px;
+  border-radius: 8px;
+  color: var(--accent-text);
+}
+.nl-home-device.active {
+  background: #1d1c22;
+}
+.nl-home-device div {
+  display: grid;
+}
+.nl-home-device strong {
+  color: var(--text);
+  font-size: 13px;
+}
+.nl-home-device code {
+  color: var(--nl-host);
+  font-size: 12px;
+}
+.nl-home-device button {
+  grid-column: 1 / -1;
+  padding: 7px 10px;
+  font-size: 12px;
+}
+.nl-public {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: 13px;
+}
+.nl-public code {
+  color: var(--nl-net);
+}
+.nl-nat tr.active td {
+  color: var(--nl-ok);
+}
+.nl-packets {
+  display: grid;
+  gap: 8px;
+}
+.nl-packets > div {
+  display: grid;
+  gap: 2px;
+  padding: 10px 12px;
+  border-left: 3px solid var(--nl-host);
+  border-radius: 0 8px 8px 0;
+  background: #121116;
+  font-size: 12px;
+  color: var(--muted);
+}
+.nl-packets > div.after {
+  border-left-color: var(--nl-net);
+}
+.nl-packets code {
+  color: var(--text);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 560px) {
+  .nl-chain {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .nl-msg {
+    grid-template-columns: 1fr;
+  }
+  .nl-msg-name {
+    grid-row: auto;
+  }
+  .nl-msg > span:last-child {
+    grid-column: 1;
+  }
+  .nl-browser-dots {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nl-msg,
+  .nl-steps li {
     animation: none;
   }
 }

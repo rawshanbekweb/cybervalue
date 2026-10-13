@@ -31,7 +31,7 @@ export function getLearningTracks() {
       title: "IP addressing lab",
       category: "Networking",
       description:
-        "Learn IP addresses, subnet masks and gateways with clickable bits, a network simulator, automatically checked tasks and a subnet calculator.",
+        "Learn IP addresses, subnet masks and gateways, then watch DHCP hand out addresses, DNS find a site’s IP and NAT share one public address, with a network simulator and a subnet calculator.",
       href: "/playground/network-basics",
       progressKey: "cybervalue:network:progress:v1",
       level: "Beginner",

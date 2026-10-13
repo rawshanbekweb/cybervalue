@@ -101,7 +101,14 @@ test("the IP lab fits small screens and passes an accessibility audit", async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  for (const hash of ["#lesson/1", "#lesson/4", "#lesson/6"]) {
+  for (const hash of [
+    "#lesson/1",
+    "#lesson/4",
+    "#lesson/6",
+    "#lesson/9",
+    "#lesson/10",
+    "#lesson/11",
+  ]) {
     await page.goto(`/playground/network-basics${hash}`);
     for (const width of [320, 390, 768, 1440]) {
       await page.setViewportSize({ width, height: 1000 });
@@ -117,4 +124,62 @@ test("the IP lab fits small screens and passes an accessibility audit", async ({
       .analyze();
     expect(audit.violations, hash).toEqual([]);
   }
+});
+
+test("DHCP hands out addresses until the pool runs out", async ({ page }) => {
+  await page.goto("/playground/network-basics#lesson/9");
+  for (const device of ["Laptop", "Phone", "TV", "Tablet", "Game console"])
+    await page.getByRole("button", { name: `Connect: ${device}` }).click();
+  await expect(page.locator(".nl-exchange")).toContainText("no free address");
+  await page.getByLabel("Pool end").fill("105");
+  for (const device of ["Game console", "Camera"])
+    await page.getByRole("button", { name: `Connect: ${device}` }).click();
+  await expect(page.locator(".nl-exchange")).toContainText("ACK");
+  await expect(page.locator(".nl-devices-grid")).toContainText("192.168.1.105");
+  await page.getByRole("button", { name: "Check" }).click();
+  await expect(page.getByText("Correct! Lesson completed.")).toBeVisible();
+  await page.getByRole("button", { name: "Disconnect" }).first().click();
+  await page.getByLabel("DHCP server on").uncheck();
+  await page.getByRole("button", { name: "Connect: Laptop" }).click();
+  await expect(page.locator(".nl-devices-grid")).toContainText("169.254.");
+});
+
+test("DNS resolves names, uses its cache and exposes the look-alike site", async ({
+  page,
+}) => {
+  await page.goto("/playground/network-basics#lesson/10");
+  const suggestion = (name: string) =>
+    page.getByRole("button", { name, exact: true });
+  await suggestion("bank.example").click();
+  await expect(page.locator(".nl-page")).toContainText("198.51.100.20");
+  await expect(page.locator(".nl-steps")).toContainText("authoritative");
+  await suggestion("bank.example").click();
+  await expect(page.locator(".nl-page")).toContainText("from cache");
+  await suggestion("bank.example.hisob-tekshiruv.example").click();
+  await expect(page.locator(".nl-page.fake")).toContainText("192.0.2.66");
+  await suggestion("yoq.example").click();
+  await expect(page.locator(".nl-steps")).toContainText("NXDOMAIN");
+  await page
+    .getByLabel("bank.example — IP", { exact: true })
+    .fill("198.51.100.20");
+  await page
+    .getByLabel("bank.example.hisob-tekshiruv.example — IP")
+    .fill("192.0.2.66");
+  await page.getByRole("button", { name: "Check" }).click();
+  await expect(page.getByText("Correct! Lesson completed.")).toBeVisible();
+});
+
+test("NAT shows every home device to the site as one public address", async ({
+  page,
+}) => {
+  await page.goto("/playground/network-basics#lesson/11");
+  await page.getByRole("button", { name: "Laptop: open the site" }).click();
+  await page.getByRole("button", { name: "TV: open the site" }).click();
+  const log = page.getByRole("region", { name: "Site server" });
+  await expect(log).toContainText("203.0.113.7:40001");
+  await expect(log).toContainText("203.0.113.7:40002");
+  await expect(log).not.toContainText("192.168.1.");
+  await page.getByLabel(/All as the router’s single public IP/).check();
+  await page.getByRole("button", { name: "Check" }).click();
+  await expect(page.getByText("Correct! Lesson completed.")).toBeVisible();
 });

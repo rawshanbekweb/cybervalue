@@ -14,7 +14,6 @@ import {
   Send,
   X,
 } from "lucide-react";
-import { useLocale } from "@/components/locale-provider";
 import { useHashLessonId } from "../useHashLessonId";
 import { useLocalStorageState } from "../useLocalStorageState";
 import {
@@ -51,17 +50,9 @@ import {
   type Lesson,
   type Widget,
 } from "@/lib/network/curriculum";
+import { useT } from "./use-t";
+import { DhcpWidget, DnsWidget, NatWidget } from "./origins";
 import "./network-lab.css";
-
-type Locale = "uz" | "en";
-const useT = () => {
-  const locale = useLocale() as Locale;
-  return {
-    locale,
-    t: (uz: string, en: string) => (locale === "uz" ? uz : en),
-    text: (value: Text) => value[locale],
-  };
-};
 
 const WEIGHTS = [128, 64, 32, 16, 8, 4, 2, 1];
 
@@ -347,6 +338,12 @@ function WidgetView({
       );
     case "ipconfig":
       return <IpconfigWidget {...widget} onSolved={onSolved} />;
+    case "dhcp":
+      return <DhcpWidget start={widget.start} onSolved={onSolved} />;
+    case "dns":
+      return <DnsWidget ask={widget.ask} onSolved={onSolved} />;
+    case "nat":
+      return <NatWidget {...widget} onSolved={onSolved} />;
   }
 }
 

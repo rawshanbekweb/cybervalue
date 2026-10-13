@@ -4,20 +4,23 @@ Route: `/playground/network-basics`, linked from Labs, the learning catalog on t
 home page and Playground, and the open labs on the student page. Supports Uzbek
 and English through the site's locale. No account or database is required.
 
-The lab teaches IP addresses, subnet masks and the default gateway in eight
-lessons. Each lesson has a picture from everyday life, a short explanation and
+The lab teaches IP addresses, subnet masks and the default gateway, then
+where addresses come from, in eleven lessons. Each lesson has a picture from everyday life, a short explanation and
 one interactive exercise that decides when its task is solved:
 
-| #   | Lesson                       | Exercise                                                           |
-| --- | ---------------------------- | ------------------------------------------------------------------ |
-| 1   | An IP address                | Click 32 bits to build `192.168.1.10`                              |
-| 2   | Subnet mask                  | Slide the prefix; pick the smallest mask for 40 computers (`/26`)  |
-| 3   | Network, broadcast and hosts | Explore any block; answer for `172.16.5.130/25`                    |
-| 4   | Same network? AND            | Bitwise AND shown per device; tick neighbours of `10.0.0.25/28`    |
-| 5   | Gateway                      | Network simulator: add the missing gateway                         |
-| 6   | Find the fault               | Network simulator: fix an IP conflict and a gateway with no router |
-| 7   | Private, public and special  | Classify eight addresses; links to the private IPv4 lesson         |
-| 8   | Reading `ipconfig`           | Diagnose an APIPA address from real-looking output                 |
+| #   | Lesson                       | Exercise                                                             |
+| --- | ---------------------------- | -------------------------------------------------------------------- |
+| 1   | An IP address                | Click 32 bits to build `192.168.1.10`                                |
+| 2   | Subnet mask                  | Slide the prefix; pick the smallest mask for 40 computers (`/26`)    |
+| 3   | Network, broadcast and hosts | Explore any block; answer for `172.16.5.130/25`                      |
+| 4   | Same network? AND            | Bitwise AND shown per device; tick neighbours of `10.0.0.25/28`      |
+| 5   | Gateway                      | Network simulator: add the missing gateway                           |
+| 6   | Find the fault               | Network simulator: fix an IP conflict and a gateway with no router   |
+| 7   | Private, public and special  | Classify eight addresses; links to the private IPv4 lesson           |
+| 8   | Reading `ipconfig`           | Diagnose an APIPA address from real-looking output                   |
+| 9   | DHCP                         | Connect six devices; watch DORA, widen the pool, see APIPA           |
+| 10  | DNS                          | Open sites by name; follow root → TLD → authoritative, see the cache |
+| 11  | NAT                          | Open a site from home devices; read the NAT table and the site log   |
 
 A separate **subnet calculator** accepts any address with a dotted mask or
 `/prefix` and shows the block, both bit strips and every derived address.
@@ -35,6 +38,16 @@ A separate **subnet calculator** accepts any address with a dotted mask or
   router, a mask so wide the internet looks local, and replies that cannot
   return. `networkWorks` passes only when the printer answers directly and the
   internet through the gateway.
+- `src/lib/network/dhcp.ts`: a pool on the router, DISCOVER → OFFER →
+  REQUEST → ACK, renewals, a full pool, pools that would swallow the printer's
+  static address, and a stable 169.254.x.x fallback when the server is off.
+- `src/lib/network/dns.ts`: names under the reserved `.example` zone with
+  documentation-range addresses, so no real site is imitated. Lookups go cache
+  → resolver → root → TLD → authoritative, answers are cached with a TTL,
+  missing names return NXDOMAIN at the right server, and `imitates` flags names
+  such as `bank.example.hisob-tekshiruv.example` that borrow another domain.
+- `src/lib/network/nat.ts`: three home devices behind `203.0.113.7`; each
+  connection gets its own public port, even when two devices share an inner one.
 - `src/lib/network/curriculum.ts`: the bilingual lessons and progress restore.
 - `src/components/playground/network-lab/`: the page component and styles.
   Violet marks the network part of an address and amber the host part.

@@ -189,13 +189,13 @@ test("every lesson task is solvable and its starting state is not", () => {
   }
   assert.deepEqual(
     LESSONS.map((l) => l.id),
-    [1, 2, 3, 4, 5, 6, 7, 8],
+    LESSONS.map((_, i) => i + 1),
   );
 });
 
 test("stored progress keeps only real lesson ids marked true", () => {
   assert.deepEqual(
-    restoreProgress({ 1: true, 2: "yes", 9: true, x: true, 8: true }),
+    restoreProgress({ 1: true, 2: "yes", 99: true, x: true, 8: true }),
     { 1: true, 8: true },
   );
   assert.deepEqual(restoreProgress(null), {});

@@ -2,6 +2,7 @@
 // one interactive widget; the widget decides when its task is solved.
 import type { Text } from "./ip";
 import type { PcConfig } from "./sim";
+import type { DhcpConfig } from "./dhcp";
 
 export type Widget =
   | { type: "bits"; target: string }
@@ -22,7 +23,11 @@ export type Widget =
       output: string;
       options: Text[];
       answer: number;
-    };
+    }
+  | { type: "dhcp"; start: DhcpConfig }
+  // Names whose addresses the student must look up and type.
+  | { type: "dns"; ask: string[] }
+  | { type: "nat"; options: Text[]; answer: number };
 
 export type Lesson = {
   id: number;
@@ -41,6 +46,7 @@ export type Lesson = {
 const BASICS = { uz: "Manzil va mask", en: "Address and mask" };
 const NETWORKS = { uz: "Tarmoq ichida", en: "Inside a network" };
 const PRACTICE = { uz: "Amaliyot", en: "In practice" };
+const ORIGINS = { uz: "IP qayerdan keladi", en: "Where addresses come from" };
 
 export const LESSONS: Lesson[] = [
   {
@@ -405,6 +411,153 @@ export const LESSONS: Lesson[] = [
         {
           uz: "Kompyuterda IP to‘qnashuvi bor",
           en: "The computer has an IP conflict",
+        },
+      ],
+      answer: 1,
+    },
+  },
+  {
+    id: 9,
+    group: ORIGINS,
+    title: {
+      uz: "DHCP: kompyuter IP’ni qanday oladi",
+      en: "DHCP: how a computer gets its IP",
+    },
+    minutes: 10,
+    intro: {
+      uz: "Uyda yoki maktabda hech kim telefoningizga IP’ni qo‘lda yozmaydi. Wi-Fi’ga ulanishingiz bilan router uni o‘zi beradi — buni DHCP qiladi.",
+      en: "At home or at school nobody types an IP into your phone. The moment you join the Wi-Fi the router hands one out: that is DHCP.",
+    },
+    analogy: {
+      uz: "DHCP — mehmonxona qabulxonasi: kelgan mehmonga bo‘sh xona kalitini beradi va kim qaysi xonada ekanini daftarga yozib qo‘yadi. Mehmon ketsa, xona boshqasiga beriladi.",
+      en: "DHCP is a hotel front desk: each guest gets the key to a free room and the desk notes who is where. When a guest leaves, the room goes to someone else.",
+    },
+    theory: [
+      {
+        uz: "To‘rt xabar: DISCOVER (qurilma: “server bormi?”), OFFER (router: “mana senga manzil”), REQUEST (qurilma: “olaman”), ACK (router: “tasdiqlandi”). Qisqasi — DORA.",
+        en: "Four messages: DISCOVER (device: “any server here?”), OFFER (router: “here is an address”), REQUEST (device: “I’ll take it”), ACK (router: “confirmed”). DORA for short.",
+      },
+      {
+        uz: "Router manzillarni hovuzdan (pool) beradi, masalan 192.168.1.100–192.168.1.199. IP bilan birga mask, gateway va DNS server ham beriladi. Manzil vaqtincha — ijara (lease) muddatiga.",
+        en: "The router hands out addresses from a pool, such as 192.168.1.100–192.168.1.199, together with the mask, gateway and DNS server. The address is rented for a lease time.",
+      },
+      {
+        uz: "Printer va serverlarga esa statik (doimiy) manzil beriladi — ular hovuzdan tashqarida bo‘lishi kerak, aks holda to‘qnashuv bo‘ladi.",
+        en: "Printers and servers get static addresses, which must stay outside the pool or they will clash.",
+      },
+    ],
+    task: {
+      uz: "Hovuzda atigi 4 ta manzil bor, qurilmalar esa 6 ta. Hovuzni sozlang va hamma qurilmani tarmoqqa ulang.",
+      en: "The pool has only 4 addresses for 6 devices. Adjust the pool and connect every device.",
+    },
+    hint: {
+      uz: "Hovuz oxirini 105 qiling. 50 ni hovuzga kiritmang — u printerniki.",
+      en: "Set the pool end to 105. Keep 50 out of the pool: it belongs to the printer.",
+    },
+    widget: {
+      type: "dhcp",
+      start: { enabled: true, start: 100, end: 103 },
+    },
+  },
+  {
+    id: 10,
+    group: ORIGINS,
+    title: {
+      uz: "DNS: sayt nomidan IP manzilga",
+      en: "DNS: from a site name to an IP",
+    },
+    minutes: 10,
+    intro: {
+      uz: "Brauzerga kutubxona.example deb yozasiz, lekin kompyuterlar nomlar bilan emas, IP manzillar bilan gaplashadi. Nomni IP’ga DNS aylantiradi.",
+      en: "You type kutubxona.example, but computers talk in IP addresses, not names. DNS turns the name into an IP.",
+    },
+    analogy: {
+      uz: "DNS — telefon kitobchasi: “Kutubxona” ismini qidirasiz, raqamini topasiz. Raqamni yodlash shart emas.",
+      en: "DNS is a phone book: you look up “Library” and find the number. Nobody has to memorise numbers.",
+    },
+    theory: [
+      {
+        uz: "Avval kompyuter o‘z keshiga qaraydi. Topilmasa, DNS resolver’ga so‘raydi. Resolver root → .example (TLD) → domen egasining avtoritativ serveri zanjiri bo‘ylab javobni topadi.",
+        en: "The computer checks its cache first. If the name is missing, it asks a DNS resolver, which walks the chain root → .example (TLD) → the domain’s authoritative server.",
+      },
+      {
+        uz: "Javob TTL bilan keladi — qancha vaqt eslab qolish mumkinligi. Keyingi so‘rov keshdan, bir zumda javob oladi. Windows’da keshni ipconfig /flushdns tozalaydi.",
+        en: "Answers carry a TTL: how long they may be remembered. The next lookup comes straight from the cache. On Windows, ipconfig /flushdns clears it.",
+      },
+      {
+        uz: "Xavfsizlik: domen o‘ngdan chapga o‘qiladi. bank.example.hisob-tekshiruv.example egasi — hisob-tekshiruv.example, bank emas. Uning IP’si ham boshqa — bu fishingning asosiy hiylasi.",
+        en: "Security: a name is read right to left. bank.example.hisob-tekshiruv.example belongs to hisob-tekshiruv.example, not the bank, and points to a different IP. That is the core phishing trick.",
+      },
+    ],
+    task: {
+      uz: "Ikkala saytni oching va IP manzillarini yozing: haqiqiy bank va soxta “bank”.",
+      en: "Open both sites and write down their IPs: the real bank and the fake “bank”.",
+    },
+    hint: {
+      uz: "Takliflardagi bank.example va bank.example.hisob-tekshiruv.example tugmalarini bosing.",
+      en: "Press the suggested bank.example and bank.example.hisob-tekshiruv.example buttons.",
+    },
+    widget: {
+      type: "dns",
+      ask: ["bank.example", "bank.example.hisob-tekshiruv.example"],
+    },
+  },
+  {
+    id: 11,
+    group: ORIGINS,
+    title: {
+      uz: "NAT: sayt sizni qaysi IP bilan ko‘radi",
+      en: "NAT: which IP a site sees",
+    },
+    minutes: 8,
+    intro: {
+      uz: "Uydagi noutbuk, telefon va televizorning private manzillari internetda ishlamaydi. Ular saytga routerning bitta public IP’si orqali chiqadi.",
+      en: "The private addresses of the laptop, phone and TV at home do not work on the internet. They reach sites through the router’s one public IP.",
+    },
+    analogy: {
+      uz: "NAT — ofis kotibasi: hamma xatlar ofisning umumiy manzilidan ketadi, kotiba esa javob kelganda qaysi xodimga berishni daftaridan topadi.",
+      en: "NAT is an office receptionist: all letters leave from the office address, and when a reply arrives the receptionist checks a notebook for who it belongs to.",
+    },
+    theory: [
+      {
+        uz: "Router chiqayotgan paketda “kimdan” manzilini o‘zining public IP’siga almashtiradi va har bir ulanishga alohida port beradi: 192.168.1.100:51514 → 203.0.113.7:40001.",
+        en: "The router rewrites the sender of each outgoing packet to its public IP and gives every connection its own port: 192.168.1.100:51514 → 203.0.113.7:40001.",
+      },
+      {
+        uz: "Javob kelganda router jadvaldan portni topib, paketni to‘g‘ri qurilmaga uzatadi. Shuning uchun ikki qurilma bir xil ichki portni ishlatsa ham adashmaydi.",
+        en: "When the reply arrives, the router looks the port up and forwards the packet to the right device, so two devices may even use the same inner port.",
+      },
+      {
+        uz: "Sayt jurnalida faqat public IP ko‘rinadi. “Mening IP’im qanday?” saytlari ko‘rsatadigan manzil ham — routerning public IP’si.",
+        en: "A site’s log shows only the public IP. The address “what is my IP” sites show you is the router’s public IP too.",
+      },
+    ],
+    task: {
+      uz: "Kamida ikkita qurilmadan saytni oching va sayt jurnaliga qarang. Sayt ularni qanday IP bilan ko‘radi?",
+      en: "Open the site from at least two devices and look at the site’s log. Which IP does the site see?",
+    },
+    hint: {
+      uz: "Sayt jurnalidagi “kimdan” ustuniga qarang.",
+      en: "Look at the “from” column of the site log.",
+    },
+    widget: {
+      type: "nat",
+      options: [
+        {
+          uz: "Har bir qurilmaning o‘z private IP’si (192.168.1.100, .101, .102)",
+          en: "Each device’s own private IP (192.168.1.100, .101, .102)",
+        },
+        {
+          uz: "Hammasi routerning bitta public IP’si — 203.0.113.7, faqat portlari har xil",
+          en: "All as the router’s single public IP, 203.0.113.7, with different ports",
+        },
+        {
+          uz: "Routerning ichki manzili 192.168.1.1",
+          en: "The router’s inside address 192.168.1.1",
+        },
+        {
+          uz: "Sayt IP manzilni umuman ko‘rmaydi",
+          en: "The site sees no IP address at all",
         },
       ],
       answer: 1,

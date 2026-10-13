@@ -1,8 +1,7 @@
 {
   "IP addressing lab": "IP manzillash laboratoriyasi",
-  "Learn IP addresses, subnet masks and gateways with clickable bits, a network simulator, automatically checked tasks and a subnet calculator.": "IP manzil, subnet mask va gateway’ni bosiladigan bitlar, tarmoq simulyatori, avtomatik tekshiriladigan topshiriqlar va subnet kalkulyator bilan o‘rganing.",
+  "Learn IP addresses, subnet masks and gateways, then watch DHCP hand out addresses, DNS find a site’s IP and NAT share one public address, with a network simulator and a subnet calculator.": "IP manzil, subnet mask va gateway’ni o‘rganing, so‘ng DHCP manzil berishini, DNS sayt IP’sini topishini va NAT bitta public manzilni bo‘lishishini ko‘ring — tarmoq simulyatori va subnet kalkulyator bilan.",
   "Networking": "Tarmoqlar",
-  "8 LESSONS · NETWORK SIMULATOR": "8 DARS · TARMOQ SIMULYATORI",
   "Clickable bits": "Bosiladigan bitlar",
   "Network simulator": "Tarmoq simulyatori",
   "Open IP lab": "IP labini ochish",
@@ -16,5 +15,10 @@
   "Find the fault: “No internet”": "Nosozlikni toping: “Internet yo‘q”",
   "Private, public and special addresses": "Private, public va maxsus manzillar",
   "In practice": "Amaliyot",
-  "Reading ipconfig output": "ipconfig natijasini o‘qish"
+  "Reading ipconfig output": "ipconfig natijasini o‘qish",
+  "DHCP: how a computer gets its IP": "DHCP: kompyuter IP’ni qanday oladi",
+  "Where addresses come from": "IP qayerdan keladi",
+  "DNS: from a site name to an IP": "DNS: sayt nomidan IP manzilga",
+  "NAT: which IP a site sees": "NAT: sayt sizni qaysi IP bilan ko‘radi",
+  "11 LESSONS · NETWORK SIMULATOR": "11 DARS · TARMOQ SIMULYATORI"
 }
