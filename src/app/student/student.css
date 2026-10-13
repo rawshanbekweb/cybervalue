@@ -79,7 +79,7 @@ body.student-root {
   display: flex;
   align-items: center;
   gap: 30px;
-  padding: 24px 0;
+  padding: 18px 0;
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.025em;
@@ -105,12 +105,6 @@ body.student-root {
   );
   clip-path: polygon(50% 0, 100% 100%, 0 100%);
 }
-.student-nav-links {
-  display: flex;
-  gap: 24px;
-  margin-left: auto;
-}
-.student-nav-links a,
 .student-ghost {
   color: var(--color-ash-gray);
   background: none;
@@ -123,7 +117,6 @@ body.student-root {
   text-transform: uppercase;
   transition: color 0.15s;
 }
-.student-nav-links a:hover,
 .student-ghost:hover {
   color: var(--color-bone-white);
 }
@@ -131,8 +124,9 @@ body.student-root {
   display: flex;
   align-items: center;
   gap: 18px;
+  margin-left: auto;
 }
-.student-nav:not(:has(.student-nav-links)) .student-ghost {
+.student-nav > .student-ghost {
   margin-left: auto;
 }
 .student-nav-name {
@@ -238,15 +232,22 @@ body.student-root {
 /* Hero */
 .student-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 36px;
-  min-height: min(78vh, 760px);
-  padding: 60px 0 96px;
+  padding: 24px 0 36px;
+}
+.student-hero .student-display {
+  font-size: clamp(40px, 5.6vw, 72px);
+}
+.student-hero .student-lead {
+  margin-top: 18px;
+}
+.student-hero .student-progress {
+  margin-top: 24px;
 }
 .student-hero-art {
-  width: 100%;
-  max-width: 560px;
+  width: 240px;
   justify-self: end;
 }
 .student-constellation polygon {
@@ -379,50 +380,152 @@ body.student-root {
   background: var(--color-electric-iris);
 }
 
-/* Sections: two-column headline + list, floating on black. */
+/* Section jump links: one row of pills with item counts. */
+.student-jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 18px 0;
+  border-top: 1px solid #1c1c1c;
+  border-bottom: 1px solid #1c1c1c;
+}
+.student-jump a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 6px 14px;
+  border: 1px solid #2a2a2a;
+  border-radius: 9999px;
+  color: var(--color-silver-mist);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  transition:
+    border-color 0.15s,
+    color 0.15s;
+}
+.student-jump a:hover {
+  border-color: var(--color-electric-iris);
+  color: var(--color-bone-white);
+}
+.student-jump span {
+  color: var(--color-ash-gray);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Sections: a small heading over a dense grid of cards. */
 .student-section {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
-  gap: 60px;
-  padding: 96px 0 0;
+  padding: 48px 0 0;
   scroll-margin-top: 24px;
 }
 .student-section-head {
-  position: sticky;
-  top: 36px;
-  align-self: start;
+  margin-bottom: 18px;
+}
+.student-section-head .student-quiet {
+  margin-top: 6px;
+  max-width: 720px;
+}
+.student-section-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 .student-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+  gap: 12px;
   list-style: none;
   margin: 0;
   padding: 0;
 }
-.student-item {
+.student-list > li {
   display: grid;
-  gap: 6px;
-  padding: 24px 0;
-  border-bottom: 1px solid #1c1c1c;
-  transition: padding 0.2s;
 }
-.student-list li:first-child .student-item {
-  padding-top: 0;
+.student-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px 18px;
+  border: 1px solid #1f1f1f;
+  border-radius: 16px;
+  background: #0a0a0a;
+  transition: border-color 0.15s;
+}
+.student-item:hover {
+  border-color: #3a3a3a;
 }
 .student-item-title {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  font-size: 27px;
+  gap: 10px;
+  font-size: 18px;
   font-weight: 400;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
 .student-item-summary {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  color: var(--color-ash-gray);
+  font-size: 14px;
+  line-height: 1.45;
+}
+.student-item-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  margin-top: auto;
+  padding-top: 6px;
   color: var(--color-silver-mist);
-  font-size: 16px;
+  font-size: 13px;
+  font-weight: 400;
 }
 .student-item:hover .student-item-title {
   color: var(--color-saffron-spark);
+}
+
+/* Open site labs: a compact row of links under the class labs. */
+.student-open-labs {
+  margin-top: 18px;
+}
+.student-open-labs .student-field-label {
+  margin: 0 0 10px;
+  font-size: 12px;
+}
+.student-open-labs ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.student-open-labs a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 6px 14px;
+  border: 1px solid #2a2a2a;
+  border-radius: 9999px;
+  color: var(--color-silver-mist);
+  font-size: 14px;
+  font-weight: 400;
+  transition:
+    border-color 0.15s,
+    color 0.15s;
+}
+.student-open-labs a:hover {
+  border-color: var(--color-saffron-spark);
+  color: var(--color-bone-white);
 }
 .student-done {
   display: inline-flex;
@@ -647,35 +750,14 @@ body.student-root {
     flex-wrap: wrap;
     gap: 12px 24px;
   }
-  .student-nav-links {
-    order: 3;
-    flex-wrap: wrap;
-    gap: 6px 18px;
-    width: 100%;
-    margin-left: 0;
-  }
-  .student-nav-end {
-    margin-left: auto;
-  }
-  .student-hero,
-  .student-section {
-    grid-template-columns: 1fr;
-  }
   .student-hero {
-    min-height: 0;
-    padding: 36px 0 60px;
+    padding: 12px 0 30px;
   }
   .student-hero-art {
-    order: -1;
-    max-width: 360px;
-    justify-self: center;
+    width: 160px;
   }
   .student-section {
-    gap: 30px;
-    padding-top: 60px;
-  }
-  .student-section-head {
-    position: static;
+    padding-top: 36px;
   }
 }
 @media (max-width: 520px) {
@@ -685,8 +767,11 @@ body.student-root {
   .student-nav-name {
     display: none;
   }
-  .student-item-title {
-    font-size: 24px;
+  .student-hero {
+    grid-template-columns: 1fr;
+  }
+  .student-hero-art {
+    display: none;
   }
   .student-question {
     font-size: 20px;

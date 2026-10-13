@@ -33,6 +33,7 @@ In **Admin → Student materials**, create materials of four kinds:
 - **Levels**: tick Beginner, Intermediate or Advanced to show a material only to students placed at those levels. With no level ticked, every student sees it, including students who are not placed yet. Keep the entrance exam open to everyone. A level works alongside groups: a student sees a material only when both their group and their level allow it.
 - Markdown is sanitized like the public site's: raw HTML and images are not rendered.
 - The Labs section also links to the existing public interactive labs.
+- The student's page lists only sections that have materials (Labs always shows, for the open labs), as compact cards with a row of section links at the top.
 
 ### Writing a test
 
@@ -53,7 +54,7 @@ Follow these rules when writing a test:
 - Each question has exactly one `+` answer.
 - Optional `>` lines under the options explain the answer in simple words; several lines make one explanation of up to 2,000 characters.
 - A test can have up to 60 questions, each with up to 8 options.
-- "Attempts per student" limits retakes; `0` means unlimited.
+- "Attempts per student" limits retakes; new materials start at 3, and `0` means unlimited. The student's page shows each test's best score and the attempts used.
 - Every student gets the questions, and the options inside each question, in their own order, which changes with each attempt. Reloading the page keeps the order. Grading uses the stored order, so the answer key and results do not change.
 - **Time limit** (minutes, `0` = none) makes the test timed. Students see a "Start the test" button first, and the questions appear once they press it. The timer:
   - is measured on the server, so it keeps running if the student reloads or leaves the page;
@@ -154,4 +155,4 @@ Each row also shows completed/available and an average score: the mean of test b
 
 ## Data
 
-The Prisma models are `Student`, `StudentSession`, `StudentMaterial`, `StudentSubmission`, `StudentProgress`, `StudentQuizStart` (an open timed attempt) and `StudentCertificate`; the migrations are `20261010090000_student_portal`, `20261011090000_student_challenges`, `20261012090000_student_explanations` `20261013090000_timed_quizzes`, `20261013100000_student_levels` and `20261013110000_student_certificates`. Admin actions on students, materials and reviews are recorded in the audit log.
+The Prisma models are `Student`, `StudentSession`, `StudentMaterial`, `StudentSubmission`, `StudentProgress`, `StudentQuizStart` (an open timed attempt) and `StudentCertificate`; the migrations are `20261010090000_student_portal`, `20261011090000_student_challenges`, `20261012090000_student_explanations` `20261013090000_timed_quizzes`, `20261013100000_student_levels`, `20261013110000_student_certificates` and `20261014090000_more_quiz_attempts` (which raises tests limited to one or two attempts to three). Admin actions on students, materials and reviews are recorded in the audit log.

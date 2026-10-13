@@ -2,7 +2,11 @@ import Link from "next/link";
 import { ArrowUpRight, Award, Check } from "lucide-react";
 import { getAdminTranslator } from "@/lib/i18n/server";
 import { requireStudent } from "@/lib/student/session";
-import { isEntranceExam, studentOverview } from "@/lib/student/materials";
+import {
+  isEntranceExam,
+  studentOverview,
+  type TestStats,
+} from "@/lib/student/materials";
 import { isLevel, LEVEL_LABEL } from "@/lib/student/levels";
 import { getDb } from "@/lib/db";
 import { formatCertificateCode } from "@/lib/student/certificate";
@@ -14,41 +18,11 @@ export async function generateMetadata() {
   return { title: t("Student area") };
 }
 
-const SECTIONS: {
-  id: string;
-  kind: MaterialKind;
-  label: string;
-  title: string;
-  empty: string;
-}[] = [
-  {
-    id: "lessons",
-    kind: "LESSON",
-    label: "Lessons",
-    title: "Materials that stay inside the class.",
-    empty: "No private lessons yet.",
-  },
-  {
-    id: "labs",
-    kind: "LAB",
-    label: "Labs",
-    title: "Hands-on labs.",
-    empty: "No private labs yet.",
-  },
-  {
-    id: "practice",
-    kind: "PRACTICE",
-    label: "Practice",
-    title: "Practice your teacher reviews.",
-    empty: "No practice tasks yet.",
-  },
-  {
-    id: "tests",
-    kind: "QUIZ",
-    label: "Tests",
-    title: "Tests graded on the server.",
-    empty: "No tests yet.",
-  },
+const SECTIONS: { id: string; kind: MaterialKind; label: string }[] = [
+  { id: "lessons", kind: "LESSON", label: "Lessons" },
+  { id: "labs", kind: "LAB", label: "Labs" },
+  { id: "practice", kind: "PRACTICE", label: "Practice" },
+  { id: "tests", kind: "QUIZ", label: "Tests" },
 ];
 
 // Interactive modules that already exist on the site, linked from the lab section.
@@ -61,31 +35,55 @@ const OPEN_LABS = [
   { href: "/playground/studio", title: "HTML & CSS project studio" },
 ];
 
-type Item = Awaited<ReturnType<typeof studentOverview>>["materials"][number];
+type Overview = Awaited<ReturnType<typeof studentOverview>>;
+type Item = Overview["materials"][number];
+type T = Awaited<ReturnType<typeof getAdminTranslator>>;
+
+// One line under a test: best score and attempts used, or the attempts on offer.
+function testStatus(t: T, item: Item, stats: TestStats | undefined) {
+  if (!stats)
+    return item.maxAttempts > 0
+      ? t("{count} attempts", { count: item.maxAttempts })
+      : t("Unlimited attempts");
+  const best = t("Best {percent}%", { percent: stats.best });
+  const used =
+    item.maxAttempts > 0
+      ? t("{used} of {max} attempts", {
+          used: stats.attempts,
+          max: item.maxAttempts,
+        })
+      : t("{count} attempts", { count: stats.attempts });
+  return `${best} · ${used}`;
+}
 
 function MaterialItem({
   item,
   done,
+  status,
   doneLabel,
 }: {
   item: Item;
   done: boolean;
+  status?: string;
   doneLabel: string;
 }) {
   return (
     <li>
       <Link href={`/student/m/${item.slug}`} className="student-item">
-        <span className="student-item-title">
-          {item.title}
-          {done && (
-            <span className="student-done">
-              <Check size={14} aria-hidden="true" />
-              {doneLabel}
-            </span>
-          )}
-        </span>
+        <span className="student-item-title">{item.title}</span>
         {item.summary && (
           <span className="student-item-summary">{item.summary}</span>
+        )}
+        {(done || status) && (
+          <span className="student-item-status">
+            {done && (
+              <span className="student-done">
+                <Check size={14} aria-hidden="true" />
+                {doneLabel}
+              </span>
+            )}
+            {status && <span>{status}</span>}
+          </span>
         )}
       </Link>
     </li>
@@ -95,7 +93,7 @@ function MaterialItem({
 export default async function StudentHomePage() {
   const t = await getAdminTranslator();
   const student = await requireStudent();
-  const [{ materials, done }, certificates] = await Promise.all([
+  const [{ materials, done, tests }, certificates] = await Promise.all([
     studentOverview(student),
     getDb()?.studentCertificate.findMany({
       where: { studentId: student.id, revokedAt: null },
@@ -106,6 +104,49 @@ export default async function StudentHomePage() {
   const finished = materials.filter((m) => done.has(m.id)).length;
   const entrance = materials.filter((m) => isEntranceExam(m.slug));
   const entranceDone = entrance.filter((m) => done.has(m.id)).length;
+  // Personal labs sit with the other labs; the entrance exam has its own
+  // section. Empty sections are left out, except Labs with the open labs.
+  const sections = SECTIONS.map((section) => ({
+    ...section,
+    items: materials.filter(
+      (m) =>
+        !isEntranceExam(m.slug) &&
+        (m.kind === section.kind ||
+          (section.kind === "LAB" && m.kind === "CHALLENGE")),
+    ),
+  })).filter((s) => s.items.length > 0 || s.kind === "LAB");
+  const jumps = [
+    ...(certificates.length
+      ? [
+          {
+            id: "certificates",
+            label: "Certificates",
+            count: certificates.length,
+          },
+        ]
+      : []),
+    ...(entrance.length
+      ? [{ id: "entrance", label: "Entrance exam", count: entrance.length }]
+      : []),
+    ...sections.map((s) => ({
+      id: s.id,
+      label: s.label,
+      count: s.items.length + (s.kind === "LAB" ? OPEN_LABS.length : 0),
+    })),
+  ];
+  const renderItem = (item: Item) => (
+    <MaterialItem
+      key={item.id}
+      item={item}
+      done={done.has(item.id)}
+      status={
+        item.kind === "QUIZ"
+          ? testStatus(t, item, tests.get(item.id))
+          : undefined
+      }
+      doneLabel={t("Done")}
+    />
+  );
   return (
     <>
       <section className="student-hero">
@@ -150,6 +191,15 @@ export default async function StudentHomePage() {
         <Constellation className="student-hero-art" seed={11} />
       </section>
 
+      <nav className="student-jump" aria-label={t("Sections")}>
+        {jumps.map((jump) => (
+          <a key={jump.id} href={`#${jump.id}`}>
+            {t(jump.label)}
+            <span>{jump.count}</span>
+          </a>
+        ))}
+      </nav>
+
       {certificates.length > 0 && (
         <section
           id="certificates"
@@ -157,9 +207,8 @@ export default async function StudentHomePage() {
           aria-labelledby="certificates-title"
         >
           <div className="student-section-head">
-            <p className="student-label">{t("Certificates")}</p>
-            <h2 id="certificates-title" className="student-heading">
-              {t("Your certificates.")}
+            <h2 id="certificates-title" className="student-section-title">
+              {t("Certificates")}
             </h2>
           </div>
           <ul className="student-list">
@@ -171,7 +220,7 @@ export default async function StudentHomePage() {
                 >
                   <span className="student-item-title">
                     {c.title}
-                    <Award size={18} aria-hidden="true" />
+                    <Award size={16} aria-hidden="true" />
                   </span>
                   <span className="student-item-summary">
                     {t("Open, print or save as PDF")}
@@ -190,9 +239,8 @@ export default async function StudentHomePage() {
           aria-labelledby="entrance-title"
         >
           <div className="student-section-head">
-            <p className="student-label">{t("Entrance exam")}</p>
-            <h2 id="entrance-title" className="student-heading">
-              {t("Start here.")}
+            <h2 id="entrance-title" className="student-section-title">
+              {t("Entrance exam")}
             </h2>
             <p className="student-quiet">
               {t(
@@ -204,72 +252,44 @@ export default async function StudentHomePage() {
               })}
             </p>
           </div>
-          <ul className="student-list">
-            {entrance.map((item) => (
-              <MaterialItem
-                key={item.id}
-                item={item}
-                done={done.has(item.id)}
-                doneLabel={t("Done")}
-              />
-            ))}
-          </ul>
+          <ul className="student-list">{entrance.map(renderItem)}</ul>
         </section>
       )}
 
-      {SECTIONS.map((section) => {
-        // Personal labs sit with the other labs; the entrance exam has its own section.
-        const items = materials.filter(
-          (m) =>
-            !isEntranceExam(m.slug) &&
-            (m.kind === section.kind ||
-              (section.kind === "LAB" && m.kind === "CHALLENGE")),
-        );
-        return (
-          <section
-            key={section.id}
-            id={section.id}
-            className="student-section"
-            aria-labelledby={`${section.id}-title`}
-          >
-            <div className="student-section-head">
-              <p className="student-label">{t(section.label)}</p>
-              <h2 id={`${section.id}-title`} className="student-heading">
-                {t(section.title)}
-              </h2>
-            </div>
-            <div>
-              {items.length === 0 && section.kind !== "LAB" && (
-                <p className="student-quiet">{t(section.empty)}</p>
-              )}
-              <ul className="student-list">
-                {items.map((item) => (
-                  <MaterialItem
-                    key={item.id}
-                    item={item}
-                    done={done.has(item.id)}
-                    doneLabel={t("Done")}
-                  />
+      {sections.map((section) => (
+        <section
+          key={section.id}
+          id={section.id}
+          className="student-section"
+          aria-labelledby={`${section.id}-title`}
+        >
+          <div className="student-section-head">
+            <h2 id={`${section.id}-title`} className="student-section-title">
+              {t(section.label)}
+            </h2>
+          </div>
+          {section.items.length > 0 && (
+            <ul className="student-list">{section.items.map(renderItem)}</ul>
+          )}
+          {section.kind === "LAB" && (
+            <div className="student-open-labs">
+              <p className="student-field-label">
+                {t("Open interactive labs")}
+              </p>
+              <ul>
+                {OPEN_LABS.map((lab) => (
+                  <li key={lab.href}>
+                    <a href={lab.href}>
+                      {t(lab.title)}
+                      <ArrowUpRight size={14} aria-hidden="true" />
+                    </a>
+                  </li>
                 ))}
-                {section.kind === "LAB" &&
-                  OPEN_LABS.map((lab) => (
-                    <li key={lab.href}>
-                      <a href={lab.href} className="student-item">
-                        <span className="student-item-title">
-                          {t(lab.title)}
-                          <ArrowUpRight size={18} aria-hidden="true" />
-                        </span>
-                        <span className="student-item-summary">
-                          {t("Open interactive lab")}
-                        </span>
-                      </a>
-                    </li>
-                  ))}
               </ul>
             </div>
-          </section>
-        );
-      })}
+          )}
+        </section>
+      ))}
     </>
   );
 }

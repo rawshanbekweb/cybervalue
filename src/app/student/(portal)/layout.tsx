@@ -16,12 +16,6 @@ export default async function StudentPortalLayout({
           <span aria-hidden="true" className="student-logo-mark" />
           cybervalue
         </Link>
-        <nav aria-label={t("Student area")} className="student-nav-links">
-          <Link href="/student#lessons">{t("Lessons")}</Link>
-          <Link href="/student#labs">{t("Labs")}</Link>
-          <Link href="/student#practice">{t("Practice")}</Link>
-          <Link href="/student#tests">{t("Tests")}</Link>
-        </nav>
         <div className="student-nav-end">
           <LanguageSwitcher />
           <span className="student-nav-name">{student.name}</span>

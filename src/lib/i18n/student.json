@@ -214,5 +214,11 @@
   "Course": "Kurs",
   "Issued": "Berilgan sana",
   "Code": "Kod",
-  "The name, course and date above must match the printed certificate.": "Yuqoridagi ism, kurs va sana chop etilgan sertifikatdagi bilan bir xil bo‘lishi kerak."
+  "The name, course and date above must match the printed certificate.": "Yuqoridagi ism, kurs va sana chop etilgan sertifikatdagi bilan bir xil bo‘lishi kerak.",
+  "{count} attempts": "{count} ta urinish",
+  "Unlimited attempts": "Cheksiz urinish",
+  "Best {percent}%": "Eng yaxshi natija: {percent}%",
+  "{used} of {max} attempts": "{used}/{max} urinish",
+  "Sections": "Bo‘limlar",
+  "Open interactive labs": "Interaktiv laboratoriyalar"
 }
