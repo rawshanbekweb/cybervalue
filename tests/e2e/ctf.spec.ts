@@ -1,5 +1,12 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+
+// The workspace remounts for each challenge; wait for the solved one's
+// debrief to go before typing, or a slow runner fills the old form.
+async function nextChallenge(page: Page) {
+  await page.getByRole("link", { name: "Keyingi tugun" }).click();
+  await expect(page.locator(".ctf-debrief")).toHaveCount(0);
+}
 
 test("operator solves five connected challenges, uses tools, and retains progress", async ({
   page,
@@ -29,7 +36,7 @@ test("operator solves five connected challenges, uses tools, and retains progres
   await page.reload();
   await expect(page.getByRole("progressbar")).toHaveAttribute("value", "1");
   await expect(page.locator(".ctf-metrics")).toContainText("090");
-  await page.getByRole("link", { name: "Keyingi tugun" }).click();
+  await nextChallenge(page);
 
   await page.getByText("Operator asboblari", { exact: true }).click();
   await page.getByLabel("Kodlangan matn").fill("UEl7ZWJnbmdyX2d1cl9mdnRhbnl9");
@@ -40,7 +47,7 @@ test("operator solves five connected challenges, uses tools, and retains progres
   await page.getByLabel("Flag", { exact: true }).fill(signal);
   await page.getByRole("button", { name: "Flagni yuborish" }).click();
   await expect(page.locator(".ctf-debrief")).toContainText("KALIT: O");
-  await page.getByRole("link", { name: "Keyingi tugun" }).click();
+  await nextChallenge(page);
 
   await page.getByRole("button", { name: "Ochish", exact: true }).click();
   await expect(page.locator(".ctf-path-response")).toContainText(
@@ -59,11 +66,11 @@ test("operator solves five connected challenges, uses tools, and retains progres
   await page.getByLabel("Flag", { exact: true }).fill(archiveFlag);
   await page.getByRole("button", { name: "Flagni yuborish" }).click();
   await expect(page.locator(".ctf-debrief")).toContainText("KALIT: V");
-  await page.getByRole("link", { name: "Keyingi tugun" }).click();
+  await nextChallenge(page);
   await page.getByLabel("Flag", { exact: true }).fill("CV{trace_before_trust}");
   await page.getByRole("button", { name: "Flagni yuborish" }).click();
   await expect(page.locator(".ctf-debrief")).toContainText("KALIT: A");
-  await page.getByRole("link", { name: "Keyingi tugun" }).click();
+  await nextChallenge(page);
   await page.getByLabel("Flag", { exact: true }).fill("CV{NOVA_0017}");
   await page.getByRole("button", { name: "Flagni yuborish" }).click();
   await expect(
