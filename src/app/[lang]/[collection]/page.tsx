@@ -5,6 +5,7 @@ import { Archive, type SearchParams } from "@/components/archive";
 import { Breadcrumbs } from "@/components/ui";
 import { CtfGateway } from "@/components/ctf-gateway";
 import { LinuxGateway } from "@/components/linux-gateway";
+import { NetworkGateway } from "@/components/network-gateway";
 import { WebLessonResource } from "@/components/web-lesson-resource";
 import { getTranslator } from "@/lib/i18n/server";
 
@@ -45,6 +46,7 @@ export default async function CollectionPage({ params, searchParams }: Props) {
       </header>
       {collection === "ctf" && <CtfGateway />}
       {collection === "labs" && <LinuxGateway />}
+      {collection === "labs" && <NetworkGateway />}
       {collection === "resources" && <WebLessonResource />}
       <Archive collection={collection} params={await searchParams} />
     </div>

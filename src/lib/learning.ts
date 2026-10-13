@@ -1,5 +1,6 @@
 import "server-only";
 import { LESSONS as LINUX_LESSONS } from "@/lib/linux/curriculum";
+import { LESSONS as NETWORK_LESSONS } from "@/lib/network/curriculum";
 import { HTML_LESSONS } from "@/components/playground/html-basics/lessons.data";
 import {
   GROUPS,
@@ -24,6 +25,23 @@ export function getLearningTracks() {
         "Text and streams",
         "Users and permissions",
       ],
+    },
+    {
+      id: "network",
+      title: "IP addressing lab",
+      category: "Networking",
+      description:
+        "Learn IP addresses, subnet masks and gateways with clickable bits, a network simulator, automatically checked tasks and a subnet calculator.",
+      href: "/playground/network-basics",
+      progressKey: "cybervalue:network:progress:v1",
+      level: "Beginner",
+      lessons: NETWORK_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: NETWORK_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
     },
     {
       id: "html",

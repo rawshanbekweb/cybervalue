@@ -29,6 +29,7 @@ const SECTIONS: { id: string; kind: MaterialKind; label: string }[] = [
 const OPEN_LABS = [
   { href: "/playground/web-security-lab", title: "Web Security Lab" },
   { href: "/playground/linux-basics", title: "Linux foundations lab" },
+  { href: "/playground/network-basics", title: "IP addressing lab" },
   { href: "/playground/ctf", title: "00:17 CTF investigation" },
   { href: "/playground/missions", title: "Investigation missions" },
   { href: "/playground/html-basics", title: "HTML Basics" },

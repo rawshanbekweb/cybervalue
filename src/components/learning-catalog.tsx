@@ -9,6 +9,7 @@ import {
   BookOpen,
   Check,
   Code2,
+  Network,
   Search,
   ShieldCheck,
   Terminal,
@@ -54,7 +55,13 @@ function TrackCard({ track, query }: { track: LearningTrack; query: string }) {
     track.lessons.find((lesson) => completed[lesson.id] !== true) ??
     track.lessons[0];
   const Icon =
-    track.id === "linux" ? Terminal : track.id === "html" ? Code2 : ShieldCheck;
+    track.id === "linux"
+      ? Terminal
+      : track.id === "network"
+        ? Network
+        : track.id === "html"
+          ? Code2
+          : ShieldCheck;
   const matches = query
     ? track.lessons.filter((lesson) =>
         [lesson.title, t(lesson.title)].some((title) =>

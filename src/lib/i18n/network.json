@@ -1,0 +1,20 @@
+{
+  "IP addressing lab": "IP manzillash laboratoriyasi",
+  "Learn IP addresses, subnet masks and gateways with clickable bits, a network simulator, automatically checked tasks and a subnet calculator.": "IP manzil, subnet mask va gateway’ni bosiladigan bitlar, tarmoq simulyatori, avtomatik tekshiriladigan topshiriqlar va subnet kalkulyator bilan o‘rganing.",
+  "Networking": "Tarmoqlar",
+  "8 LESSONS · NETWORK SIMULATOR": "8 DARS · TARMOQ SIMULYATORI",
+  "Clickable bits": "Bosiladigan bitlar",
+  "Network simulator": "Tarmoq simulyatori",
+  "Open IP lab": "IP labini ochish",
+  "An IP address is a device’s address": "IP manzil — qurilmaning manzili",
+  "Address and mask": "Manzil va mask",
+  "Subnet mask: street and house number": "Subnet mask: ko‘cha va uy raqami",
+  "Network address, broadcast and hosts": "Tarmoq manzili, broadcast va hostlar",
+  "Same network? The AND operation": "Bir tarmoqdami? AND amali",
+  "Inside a network": "Tarmoq ichida",
+  "Gateway: the door out of the network": "Gateway: tarmoqdan chiqish eshigi",
+  "Find the fault: “No internet”": "Nosozlikni toping: “Internet yo‘q”",
+  "Private, public and special addresses": "Private, public va maxsus manzillar",
+  "In practice": "Amaliyot",
+  "Reading ipconfig output": "ipconfig natijasini o‘qish"
+}

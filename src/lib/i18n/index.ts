@@ -9,6 +9,7 @@ import assessment from "./assessment.json";
 import resourceExam from "./resource-exam.json";
 import admin from "./admin.json";
 import linux from "./linux.json";
+import network from "./network.json";
 import student from "./student.json";
 
 const messages = {
@@ -23,6 +24,7 @@ const messages = {
   ...resourceExam,
   ...admin,
   ...linux,
+  ...network,
   ...student,
 };
 
