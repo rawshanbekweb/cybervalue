@@ -55,7 +55,7 @@ async function loadFolder(dir: string) {
     artifact: await optional(join(dir, "artifact.txt")),
     artifactName: String(meta.artifactName ?? ""),
     explanation: await optional(join(dir, "explanation.md")),
-    maxAttempts: Number(meta.maxAttempts ?? 1),
+    maxAttempts: Number(meta.maxAttempts ?? 3),
     timeLimit: Number(meta.timeLimit ?? 0),
     groups: String(meta.groups ?? ""),
     levels: Array.isArray(meta.levels) ? meta.levels.map(String) : [],

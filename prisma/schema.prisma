@@ -329,7 +329,7 @@ model StudentMaterial {
   summary      String              @default("")
   body         String              @default("") @db.Text
   quiz         Json?
-  maxAttempts  Int                 @default(1)
+  maxAttempts  Int                 @default(3)
   // QUIZ only: minutes from pressing "Start" to the deadline; 0 = no limit.
   timeLimit    Int                 @default(0)
   artifact     String              @default("") @db.Text

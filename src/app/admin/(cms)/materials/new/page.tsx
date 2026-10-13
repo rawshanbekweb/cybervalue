@@ -24,7 +24,7 @@ export default async function NewMaterialPage() {
           artifact: "",
           artifactName: "",
           explanation: "",
-          maxAttempts: 1,
+          maxAttempts: 3,
           timeLimit: 0,
           groups: "",
           levels: [],
