@@ -1,5 +1,7 @@
 # CyberValue
 
+[![CI](https://github.com/rawshanbekweb/cybervalue/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/rawshanbekweb/cybervalue/actions/workflows/ci.yml)
+
 A personal cybersecurity and software development portfolio for Rawshanbek Gayipbaev. No demo achievements, fabricated projects, or invented social accounts are seeded.
 
 ## Run locally
