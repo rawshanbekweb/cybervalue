@@ -1450,3 +1450,354 @@
     animation: none;
   }
 }
+
+/* Practice: new examples and a solved counter */
+.nl-task-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.nl-task-actions .nl-check {
+  flex: 1 1 160px;
+  width: auto;
+}
+.nl-score {
+  margin: 10px 0 0;
+  color: var(--accent-text);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.nl-goal {
+  margin: 0;
+  padding: 10px 12px;
+  border-left: 2px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  background: #15131d;
+  color: #e2e1e6;
+  font-size: 13px;
+}
+.nl-field select {
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid #36343d;
+  border-radius: 6px;
+  background: #0b0b0e;
+  color: var(--text);
+  font-size: 13px;
+}
+.nl-checks {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+}
+.nl-checks li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nl-checks svg {
+  flex: none;
+}
+
+/* Frame-by-frame packets */
+.nl-frames {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid #3e3c47;
+  border-radius: 10px;
+  background: #0f0e12;
+}
+.nl-frames-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+}
+.nl-frames button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.nl-frames-empty {
+  margin: 0;
+}
+.nl-frame {
+  display: grid;
+  gap: 10px;
+  animation: nl-appear 0.3s ease-out both;
+}
+.nl-frame-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 13px;
+}
+.nl-frame-kind {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+}
+.nl-frame-kind.arp {
+  background: var(--nl-host-bg);
+  color: var(--nl-host);
+}
+.nl-frame-kind.icmp {
+  background: var(--nl-net-bg);
+  color: var(--nl-net);
+}
+.nl-headers {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.nl-headers :is(th, td) {
+  padding: 6px 8px;
+  border: 1px solid #26252b;
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+.nl-headers th {
+  width: 76px;
+  color: var(--accent-text);
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+.nl-headers td:first-of-type {
+  color: var(--muted);
+}
+.nl-headers code {
+  color: var(--text);
+}
+.nl-frame-note {
+  margin: 0;
+  color: #d4d3d9;
+  font-size: 13px;
+  line-height: 1.55;
+}
+.nl-frame.stop .nl-frame-note {
+  color: #f3c293;
+}
+
+/* Subnetting */
+.nl-subnets {
+  display: flex;
+  gap: 3px;
+  min-height: 46px;
+}
+.nl-subnets span {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 2px;
+  min-width: 0;
+  border-radius: 4px;
+  background: #1a1a1f;
+  color: #77767e;
+  font-size: 10px;
+  overflow: hidden;
+}
+.nl-subnets span.used {
+  background: var(--nl-net-bg);
+  color: var(--nl-net);
+}
+.nl-subnets span.asked {
+  box-shadow: inset 0 0 0 2px var(--nl-host);
+}
+.nl-subnets b {
+  font-size: 12px;
+}
+.nl-subnets code {
+  font-size: 10px;
+}
+
+/* Traceroute */
+.nl-route {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.nl-route li {
+  display: grid;
+  gap: 2px;
+  padding: 8px;
+  border: 1px solid #36343d;
+  border-radius: 8px;
+  background: #0f0e12;
+  font-size: 11px;
+  min-width: 0;
+}
+.nl-route li strong {
+  font-size: 12px;
+}
+.nl-route li code {
+  color: var(--muted);
+  font-size: 10px;
+  overflow-wrap: anywhere;
+}
+.nl-route li small {
+  color: var(--nl-host);
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+.nl-route .nl-route-me {
+  border-style: dashed;
+}
+.nl-route li.passed {
+  border-color: var(--nl-host);
+}
+.nl-route li.expired {
+  border-color: var(--nl-bad);
+  background: #2a1414;
+}
+.nl-route li.reached {
+  border-color: var(--nl-ok);
+}
+.nl-ttl {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+.nl-ttl input {
+  width: 64px;
+  min-height: 38px;
+  padding: 6px 8px;
+  border: 1px solid #36343d;
+  border-radius: 6px;
+  background: #0b0b0e;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+/* Ports */
+.nl-server {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.nl-ports {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.nl-ports li {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) 96px auto;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid #26252b;
+  border-left: 3px solid #3a3942;
+  border-radius: 6px;
+  font-size: 12px;
+}
+.nl-ports li.open {
+  border-left-color: var(--nl-ok);
+}
+.nl-ports li.closed {
+  border-left-color: var(--muted);
+}
+.nl-ports li.filtered {
+  border-left-color: var(--nl-host);
+}
+.nl-port {
+  font-size: 15px;
+  font-weight: 700;
+}
+.nl-ports select {
+  width: 100%;
+  min-height: 36px;
+  padding: 6px 8px;
+  border: 1px solid #36343d;
+  border-radius: 6px;
+  background: #0b0b0e;
+  color: var(--text);
+  font-size: 12px;
+}
+.nl-port-state {
+  color: var(--muted);
+}
+.nl-ports li.open .nl-port-state {
+  color: var(--nl-ok);
+}
+.nl-ports li.filtered .nl-port-state {
+  color: var(--nl-host);
+}
+
+/* IPv6 */
+.nl-v6 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: clamp(15px, 2vw, 19px);
+}
+.nl-v6 span {
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+.nl-v6 span.net {
+  background: var(--nl-net-bg);
+  color: var(--nl-net);
+}
+.nl-v6 span.host {
+  background: var(--nl-host-bg);
+  color: var(--nl-host);
+}
+.nl-v6-input {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid #36343d;
+  border-radius: 6px;
+  background: #0b0b0e;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 16px;
+}
+.nl-v6-input:focus,
+.nl-ttl input:focus,
+.nl-field select:focus,
+.nl-ports select:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+@media (max-width: 560px) {
+  .nl-ports li {
+    grid-template-columns: 48px minmax(0, 1fr);
+  }
+  .nl-port-state {
+    grid-column: 1 / 2;
+  }
+  .nl-headers th {
+    width: 56px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nl-frame {
+    animation: none;
+  }
+}

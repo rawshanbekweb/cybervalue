@@ -27,7 +27,18 @@ export type Widget =
   | { type: "dhcp"; start: DhcpConfig }
   // Names whose addresses the student must look up and type.
   | { type: "dns"; ask: string[] }
-  | { type: "nat"; options: Text[]; answer: number };
+  | { type: "nat"; options: Text[]; answer: number }
+  | {
+      type: "subnetting";
+      base: string;
+      departments: number;
+      hosts: number;
+      // Which department's network address the student must give.
+      ask: number;
+    }
+  | { type: "traceroute" }
+  | { type: "ports" }
+  | { type: "ipv6"; address: string };
 
 export type Lesson = {
   id: number;
@@ -47,6 +58,7 @@ const BASICS = { uz: "Manzil va mask", en: "Address and mask" };
 const NETWORKS = { uz: "Tarmoq ichida", en: "Inside a network" };
 const PRACTICE = { uz: "Amaliyot", en: "In practice" };
 const ORIGINS = { uz: "IP qayerdan keladi", en: "Where addresses come from" };
+const DEEPER = { uz: "Chuqurroq", en: "Going deeper" };
 
 export const LESSONS: Lesson[] = [
   {
@@ -80,12 +92,12 @@ export const LESSONS: Lesson[] = [
       },
     ],
     task: {
-      uz: "Bitlarni bosib 192.168.1.10 manzilini yig‘ing.",
-      en: "Click the bits to build the address 192.168.1.10.",
+      uz: "Bitlarni bosib maqsad manzilni yig‘ing. Keyin “Yangi misol” bilan yana mashq qiling.",
+      en: "Click the bits to build the target address. Then practise more with “New example”.",
     },
     hint: {
-      uz: "168 = 128 + 32 + 8; 10 = 8 + 2; 1 — faqat oxirgi bit.",
-      en: "168 = 128 + 32 + 8; 10 = 8 + 2; 1 is just the last bit.",
+      uz: "Har oktetni eng katta og‘irlikdan boshlab yig‘ing: 168 dan 128 ni oling (40 qoldi), 32 ni (8 qoldi), 8 ni — 168 = 128 + 32 + 8.",
+      en: "Build each octet from the biggest weight down: take 128 from 168 (40 left), then 32 (8 left), then 8: 168 = 128 + 32 + 8.",
     },
     widget: { type: "bits", target: "192.168.1.10" },
   },
@@ -120,12 +132,12 @@ export const LESSONS: Lesson[] = [
       },
     ],
     task: {
-      uz: "Sinfda 40 ta kompyuter bor. Hammasi sig‘adigan eng kichik tarmoq maskini tanlang.",
-      en: "A classroom has 40 computers. Pick the smallest mask that fits them all.",
+      uz: "Xonadagi qurilmalarning hammasi sig‘adigan eng kichik tarmoqni tanlang (qurilmalar soni yuqorida).",
+      en: "Pick the smallest network that fits every device in the room (the count is shown above).",
     },
     hint: {
-      uz: "/27 da atigi 30 ta host bor — yetmaydi. Bitta bit chapga suring.",
-      en: "/27 has only 30 hosts, which is not enough. Move one bit to the left.",
+      uz: "Sig‘magan joydan boshlab bittadan chapga suring: har qadam joyni ikki baravar oshiradi. Birinchi yetarli bo‘lgani — javob.",
+      en: "Start where it does not fit and move left one bit at a time; each step doubles the room. The first one that fits is the answer.",
     },
     widget: { type: "mask", ip: "192.168.1.10", hosts: 40 },
   },
@@ -160,12 +172,12 @@ export const LESSONS: Lesson[] = [
       },
     ],
     task: {
-      uz: "172.16.5.130/25 uchun tarmoq manzilini, broadcast manzilini va hostlar sonini toping.",
-      en: "For 172.16.5.130/25, find the network address, the broadcast address and the number of hosts.",
+      uz: "Ko‘rsatilgan manzil uchun tarmoq manzilini, broadcast manzilini va hostlar sonini toping.",
+      en: "For the address shown, find the network address, the broadcast address and the number of hosts.",
     },
     hint: {
-      uz: "/25 da blok 128 talik: 0–127 va 128–255. 130 ikkinchi blokda.",
-      en: "With /25 the blocks are 128 wide: 0–127 and 128–255. 130 is in the second.",
+      uz: "Blok hajmi = 2^(32 − prefiks). Manzilni shu hajmga bo‘lib, butun qismini hajmga ko‘paytiring — bu tarmoq manzili. Broadcast = tarmoq + hajm − 1.",
+      en: "Block size = 2^(32 − prefix). Divide the address by it, keep the whole part and multiply back: that is the network. Broadcast = network + size − 1.",
     },
     widget: {
       type: "range",
@@ -202,12 +214,12 @@ export const LESSONS: Lesson[] = [
       },
     ],
     task: {
-      uz: "Kompyuter 10.0.0.25/28. Ro‘yxatdan u bilan bir tarmoqdagi qurilmalarni belgilang.",
-      en: "The PC is 10.0.0.25/28. Tick the devices on the same network.",
+      uz: "Ro‘yxatdan kompyuter bilan bir tarmoqdagi qurilmalarni belgilang.",
+      en: "Tick the devices on the same network as the PC.",
     },
     hint: {
-      uz: "/28 da blok 16 talik: 0–15, 16–31, 32–47. 25 qaysi blokda?",
-      en: "With /28 the blocks are 16 wide: 0–15, 16–31, 32–47. Which block holds 25?",
+      uz: "Kompyuter blokini toping: /28 da blok 16 talik (0–15, 16–31, …). Shu blokdagi manzillargina qo‘shni.",
+      en: "Find the PC’s block: with /28 blocks are 16 wide (0–15, 16–31, …). Only addresses in that block are neighbours.",
     },
     widget: {
       type: "compare",
@@ -335,8 +347,8 @@ export const LESSONS: Lesson[] = [
       en: "Choose the kind of each address.",
     },
     hint: {
-      uz: "172.32.x.x private emas: private blok 172.31 da tugaydi.",
-      en: "172.32.x.x is not private: the private block ends at 172.31.",
+      uz: "Chegaralarga e’tibor bering: 172.16–172.31 private, 172.32 esa yo‘q; 169.254 — APIPA, 127 — loopback.",
+      en: "Watch the edges: 172.16–172.31 is private but 172.32 is not; 169.254 is APIPA and 127 is loopback.",
     },
     widget: {
       type: "classify",
@@ -561,6 +573,175 @@ export const LESSONS: Lesson[] = [
         },
       ],
       answer: 1,
+    },
+  },
+  {
+    id: 12,
+    group: DEEPER,
+    title: {
+      uz: "Subnetting: tarmoqni bo‘laklarga bo‘lish",
+      en: "Subnetting: splitting a network",
+    },
+    minutes: 12,
+    intro: {
+      uz: "Bitta katta tarmoq o‘rniga har bir bo‘limga alohida kichik tarmoq beriladi: buxgalteriya kompyuterlari o‘quvchilarnikini ko‘rmaydi va tartib saqlanadi.",
+      en: "Instead of one big network, each department gets its own small one: the accounting computers stay apart from the students’ and things stay tidy.",
+    },
+    analogy: {
+      uz: "Katta yerni teng uchastkalarga bo‘lish kabi: uchastkalar qancha ko‘p bo‘lsa, har biri shuncha kichik bo‘ladi.",
+      en: "Like dividing a field into equal plots: the more plots, the smaller each one.",
+    },
+    theory: [
+      {
+        uz: "Maskka har bir qo‘shimcha bit tarmoqni ikkiga bo‘ladi: /24 → 2 ta /25 → 4 ta /26 → 8 ta /27. Bo‘laklar soni = 2^(qo‘shilgan bitlar).",
+        en: "Each extra mask bit halves the network: /24 → two /25 → four /26 → eight /27. Subnets = 2^(borrowed bits).",
+      },
+      {
+        uz: "Ikki shart bir vaqtda bajarilishi kerak: bo‘laklar hamma bo‘limga yetsin va har bir bo‘lakka bo‘limdagi kompyuterlar sig‘sin.",
+        en: "Two conditions must hold together: there are enough subnets for every department, and each subnet fits a department’s computers.",
+      },
+      {
+        uz: "N-bo‘lakning tarmoq manzili = asosiy manzil + (N − 1) × blok hajmi. /26 da blok 64: 0, 64, 128, 192.",
+        en: "Subnet N starts at base + (N − 1) × block size. With /26 the block is 64: 0, 64, 128, 192.",
+      },
+    ],
+    task: {
+      uz: "Bo‘limlar uchun to‘g‘ri maskni tanlang va so‘ralgan bo‘limning tarmoq manzilini yozing.",
+      en: "Choose the right mask for the departments and write the network address of the department asked for.",
+    },
+    hint: {
+      uz: "Ikkala belgi ham yashil bo‘ladigan maskni toping, so‘ng bloklar chizig‘ida kerakli bo‘limning boshlanishini o‘qing.",
+      en: "Find the mask where both marks turn green, then read where the department’s block starts on the bar.",
+    },
+    widget: {
+      type: "subnetting",
+      base: "192.168.10.0",
+      departments: 4,
+      hosts: 50,
+      ask: 3,
+    },
+  },
+  {
+    id: 13,
+    group: DEEPER,
+    title: {
+      uz: "Traceroute: paket qaysi yo‘ldan boradi",
+      en: "Traceroute: the path a packet takes",
+    },
+    minutes: 10,
+    intro: {
+      uz: "Saytgacha paket bir nechta routerdan o‘tadi. tracert (Windows) yoki traceroute (Linux) shu yo‘lni va har bir qadamdagi kechikishni ko‘rsatadi.",
+      en: "On its way to a site a packet crosses several routers. tracert (Windows) or traceroute (Linux) shows that path and the delay at each step.",
+    },
+    analogy: {
+      uz: "TTL — paketning “yoqilg‘isi”: har bir router bir litr oladi. Yoqilg‘i tugagan joyda paket to‘xtaydi va o‘sha router “men shu yerdaman” deb xabar beradi.",
+      en: "TTL is the packet’s fuel: every router takes one litre. Where the fuel runs out the packet stops, and that router reports “I am here”.",
+    },
+    theory: [
+      {
+        uz: "Har bir IP paketda TTL (Time To Live) bor. Router uni 1 ga kamaytiradi; 0 bo‘lsa, paketni tashlaydi va “ICMP time exceeded” qaytaradi. Bu paketlarning abadiy aylanib yurishiga yo‘l qo‘ymaydi.",
+        en: "Every IP packet carries a TTL (Time To Live). Each router lowers it by 1; at 0 it drops the packet and returns “ICMP time exceeded”. That stops packets from looping forever.",
+      },
+      {
+        uz: "Traceroute ataylab TTL=1, 2, 3, … bilan paket yuboradi: birinchisi 1-routerda, ikkinchisi 2-routerda to‘xtaydi. Javoblardan yo‘l xaritasi yig‘iladi.",
+        en: "Traceroute sends packets with TTL 1, 2, 3, … on purpose: the first dies at router 1, the second at router 2. The replies draw the map.",
+      },
+      {
+        uz: "Kechikish (ms) qaysi qadamda keskin oshsa, muammo yoki uzoq masofa o‘sha yerda — masalan, xalqaro kanal.",
+        en: "Where the delay (ms) jumps sharply is where the trouble or the long distance is, such as an international link.",
+      },
+    ],
+    task: {
+      uz: "TTL bilan tajriba qiling va ikki savolga javob bering.",
+      en: "Experiment with the TTL and answer the two questions.",
+    },
+    hint: {
+      uz: "TTL=3 bilan yuboring va qaysi router javob berganini ko‘ring. Keyin tracert natijasida ms qiymatlari qayerda sakraganini toping.",
+      en: "Send with TTL 3 and see which router answers. Then find where the ms values jump in the tracert output.",
+    },
+    widget: { type: "traceroute" },
+  },
+  {
+    id: 14,
+    group: DEEPER,
+    title: {
+      uz: "Portlar: IP — bino, port — eshik",
+      en: "Ports: the IP is the building, the port the door",
+    },
+    minutes: 10,
+    intro: {
+      uz: "Bitta serverda bir nechta xizmat ishlaydi: sayt, pochta, ma’lumotlar bazasi. IP serverni topadi, port esa qaysi xizmatga murojaat qilinayotganini aytadi.",
+      en: "One server runs several services: a website, mail, a database. The IP finds the server; the port says which service you want.",
+    },
+    analogy: {
+      uz: "IP — ko‘p qavatli uy manzili, port — xonadon raqami. Xat to‘g‘ri uyga yetsa ham, xonadon raqamisiz egasiga bormaydi.",
+      en: "The IP is the building’s address and the port the flat number. A letter that reaches the right building still needs the flat number.",
+    },
+    theory: [
+      {
+        uz: "Mashhur portlar: 22 — SSH, 53 — DNS, 80 — HTTP, 443 — HTTPS, 3306 — MySQL. Portlar 1 dan 65535 gacha.",
+        en: "Well-known ports: 22 SSH, 53 DNS, 80 HTTP, 443 HTTPS, 3306 MySQL. Ports run from 1 to 65535.",
+      },
+      {
+        uz: "TCP ulanish uch qadamda ochiladi: SYN → SYN-ACK → ACK. Yopiq port RST bilan javob beradi, firewall bilan filtrlangan port esa umuman javob bermaydi.",
+        en: "A TCP connection opens in three steps: SYN → SYN-ACK → ACK. A closed port answers with RST; a port filtered by a firewall does not answer at all.",
+      },
+      {
+        uz: "Xavfsizlik qoidasi: internetga faqat hamma uchun mo‘ljallangan xizmatlar ochiq bo‘ladi. Ma’lumotlar bazasi yoki boshqaruv (SSH) porti tashqariga ochiq qolsa — bu hujum uchun eshik.",
+        en: "Security rule: only services meant for everyone face the internet. A database or admin (SSH) port left open to the outside is a door for attackers.",
+      },
+    ],
+    task: {
+      uz: "Har bir portga xizmatni moslang, keyin firewall’ni yoqib, tashqaridan faqat veb-portlar ochiq qolganini tekshiring.",
+      en: "Match each port to its service, then turn on the firewall and check that only the web ports stay open from outside.",
+    },
+    hint: {
+      uz: "Portlarni bittadan tekshirib ko‘ring: SYN-ACK — ochiq, RST — yopiq, javob yo‘q — filtrlangan.",
+      en: "Probe the ports one by one: SYN-ACK means open, RST closed, no answer filtered.",
+    },
+    widget: { type: "ports" },
+  },
+  {
+    id: 15,
+    group: DEEPER,
+    title: {
+      uz: "IPv6 asoslari: qisqartirib yozish",
+      en: "IPv6 basics: the short form",
+    },
+    minutes: 10,
+    intro: {
+      uz: "IPv4 manzillari (4 milliardga yaqin) tugadi. IPv6 manzili 128 bit — har bir qum zarrasiga ham yetadi. Lekin u uzun, shuning uchun qisqartirib yoziladi.",
+      en: "IPv4’s roughly 4 billion addresses have run out. An IPv6 address is 128 bits, enough for every grain of sand, but long, so it is written in a short form.",
+    },
+    analogy: {
+      uz: "Uzun telefon raqamidagi ortiqcha nollarni tashlab yozish kabi — ma’nosi o‘zgarmaydi, faqat qisqaradi.",
+      en: "Like dropping the needless zeros from a long number: the meaning stays, it just gets shorter.",
+    },
+    theory: [
+      {
+        uz: "IPv6 — 8 ta guruh, har biri 4 ta 16 lik raqam (0–9, a–f), ikki nuqta bilan ajratiladi: 2001:0db8:0000:0000:0000:ff00:0042:8329. Odatda birinchi 64 bit — tarmoq, qolgan 64 bit — qurilma.",
+        en: "IPv6 is 8 groups of 4 hex digits (0–9, a–f) separated by colons: 2001:0db8:0000:0000:0000:ff00:0042:8329. Usually the first 64 bits are the network and the last 64 the device.",
+      },
+      {
+        uz: "Qoida 1: har guruhdagi bosh nollar tashlanadi (0db8 → db8, 0000 → 0). Qoida 2: nollardan iborat eng uzun ketma-ket guruhlar (kamida 2 ta) “::” bilan almashtiriladi — faqat bir marta. Qoida 3: kichik harflar.",
+        en: "Rule 1: drop leading zeros in each group (0db8 → db8, 0000 → 0). Rule 2: replace the longest run of all-zero groups (at least two) with “::”, only once. Rule 3: lowercase.",
+      },
+      {
+        uz: "Natija: 2001:db8::ff00:42:8329. ::1 — IPv6’dagi loopback (IPv4’dagi 127.0.0.1).",
+        en: "Result: 2001:db8::ff00:42:8329. ::1 is IPv6 loopback (IPv4’s 127.0.0.1).",
+      },
+    ],
+    task: {
+      uz: "Manzilni qoidalar bo‘yicha eng qisqa (kanonik) shaklda yozing.",
+      en: "Write the address in its shortest (canonical) form following the rules.",
+    },
+    hint: {
+      uz: "Avval har guruhdagi bosh nollarni o‘chiring, so‘ng eng uzun “0:0:…” qatorini toping va o‘rniga “::” qo‘ying.",
+      en: "First drop the leading zeros in every group, then find the longest “0:0:…” stretch and put “::” in its place.",
+    },
+    widget: {
+      type: "ipv6",
+      address: "2001:0db8:0000:0000:0000:ff00:0042:8329",
     },
   },
 ];

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight, Network } from "lucide-react";
 import { getTranslator } from "@/lib/i18n/server";
+import { LESSONS } from "@/lib/network/curriculum";
 import "./mission-gateway.css";
 
 export async function NetworkGateway() {
@@ -14,7 +15,11 @@ export async function NetworkGateway() {
         <Network size={32} />
       </div>
       <div>
-        <span className="eyebrow">{t("11 LESSONS · NETWORK SIMULATOR")}</span>
+        <span className="eyebrow">
+          {t("{count} LESSONS · NETWORK SIMULATOR", {
+            count: LESSONS.length,
+          })}
+        </span>
         <h2 id="network-gateway-title">{t("IP addressing lab")}</h2>
         <p>
           {t(

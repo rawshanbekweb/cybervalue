@@ -12,6 +12,9 @@ import {
   Network,
   RotateCcw,
   Send,
+  Shuffle,
+  StepBack,
+  StepForward,
   X,
 } from "lucide-react";
 import { useHashLessonId } from "../useHashLessonId";
@@ -52,6 +55,14 @@ import {
 } from "@/lib/network/curriculum";
 import { useT } from "./use-t";
 import { DhcpWidget, DnsWidget, NatWidget } from "./origins";
+import {
+  Ipv6Widget,
+  PortsWidget,
+  SubnettingWidget,
+  TracerouteWidget,
+} from "./deeper";
+import { nextExercise, random } from "@/lib/network/practice";
+import { frames, type Frame } from "@/lib/network/packets";
 import "./network-lab.css";
 
 const WEIGHTS = [128, 64, 32, 16, 8, 4, 2, 1];
@@ -187,15 +198,32 @@ function Workspace({
   onNext: () => void;
 }) {
   const { t, text } = useT();
+  const [widget, setWidget] = useState(lesson.widget);
+  const [round, setRound] = useState(0);
   const [solved, setSolved] = useState(false);
   const [feedback, setFeedback] = useState<"pass" | "fail" | null>(null);
+  // Examples solved in this visit; each example counts once.
+  const [score, setScore] = useState({ count: 0, counted: -1 });
   const report = (next: boolean) => {
     setSolved(next);
     setFeedback(null);
   };
   const check = () => {
     setFeedback(solved ? "pass" : "fail");
-    if (solved) onComplete();
+    if (!solved) return;
+    onComplete();
+    if (score.counted !== round)
+      setScore({ count: score.count + 1, counted: round });
+  };
+  const practice = nextExercise(lesson.widget, random(0)) !== null;
+  const newExample = () => {
+    // Seeded so a generated exercise could be replayed; any seed will do here.
+    const next = nextExercise(widget, random(Date.now() >>> 0));
+    if (!next) return;
+    setWidget(next);
+    setRound(round + 1);
+    setSolved(false);
+    setFeedback(null);
   };
   const last = lesson.id === LESSONS.length;
   return (
@@ -258,14 +286,32 @@ function Workspace({
               <summary>{t("Yordam kerakmi?", "Need a hint?")}</summary>
               <p>{text(lesson.hint)}</p>
             </details>
-            <button className="nl-primary nl-check" onClick={check}>
-              <Check size={16} />
-              {t("Tekshirish", "Check")}
-            </button>
+            <div className="nl-task-actions">
+              <button className="nl-primary nl-check" onClick={check}>
+                <Check size={16} />
+                {t("Tekshirish", "Check")}
+              </button>
+              {practice && (
+                <button className="nl-ghost" onClick={newExample}>
+                  <Shuffle size={15} />
+                  {t("Yangi misol", "New example")}
+                </button>
+              )}
+            </div>
+            {practice && score.count > 0 && (
+              <p className="nl-score">
+                {t(
+                  `Yechilgan misollar: ${score.count}`,
+                  `Examples solved: ${score.count}`,
+                )}
+              </p>
+            )}
             <div aria-live="polite">
               {feedback === "pass" && (
                 <p className="nl-pass">
                   {t("To‘g‘ri! Dars bajarildi.", "Correct! Lesson completed.")}
+                  {practice &&
+                    ` ${t("Yana mashq qilish uchun “Yangi misol”ni bosing.", "Press “New example” to practise more.")}`}
                 </p>
               )}
               {feedback === "fail" && (
@@ -298,7 +344,8 @@ function Workspace({
           aria-label={t("Interaktiv mashq", "Interactive exercise")}
         >
           <WidgetView
-            widget={lesson.widget}
+            key={round}
+            widget={widget}
             checked={feedback !== null}
             onSolved={report}
           />
@@ -344,6 +391,14 @@ function WidgetView({
       return <DnsWidget ask={widget.ask} onSolved={onSolved} />;
     case "nat":
       return <NatWidget {...widget} onSolved={onSolved} />;
+    case "subnetting":
+      return <SubnettingWidget {...widget} onSolved={onSolved} />;
+    case "traceroute":
+      return <TracerouteWidget onSolved={onSolved} />;
+    case "ports":
+      return <PortsWidget onSolved={onSolved} />;
+    case "ipv6":
+      return <Ipv6Widget address={widget.address} onSolved={onSolved} />;
   }
 }
 
@@ -464,6 +519,12 @@ function MaskWidget({
   const fits = s.hosts >= hosts;
   return (
     <div className="nl-card">
+      <p className="nl-goal">
+        {t(
+          `Xonada ${hosts} ta qurilma bor. Hammasi sig‘adigan eng kichik tarmoq qaysi?`,
+          `The room has ${hosts} devices. What is the smallest network that fits them all?`,
+        )}
+      </p>
       <label htmlFor={sliderId} className="nl-slider-label">
         {t("Mask uzunligi", "Mask length")} <strong>/{prefix}</strong>
       </label>
@@ -801,16 +862,36 @@ function usedLinks(hops: Node[]) {
   return used;
 }
 
+// Nodes a single frame crosses; LAN devices meet at the switch.
+function framePath(frame: Frame): Node[] {
+  if (frame.to === "all")
+    return ["pc", "switch", "printer", "switch", "router"];
+  if (frame.from === frame.to) return [frame.from];
+  const pair = [frame.from, frame.to].sort().join("-");
+  if (pair === "internet-router") return [frame.from, frame.to];
+  return [frame.from, "switch", frame.to];
+}
+
 function Topology({
   config,
   result,
+  frame,
 }: {
   config: PcConfig;
   result: PingResult | null;
+  frame: Frame | null;
 }) {
   const { t } = useT();
-  const links = usedLinks(result?.hops ?? []);
-  const stop = result && !result.ok ? result.hops.at(-1) : null;
+  const path = frame ? framePath(frame) : (result?.hops ?? []);
+  const links = usedLinks(path);
+  const ok = frame ? !frame.stop : !!result?.ok;
+  const stop = frame
+    ? frame.stop
+      ? frame.from
+      : null
+    : result && !result.ok
+      ? result.hops.at(-1)
+      : null;
   const labels: Record<Node, [string, string]> = {
     pc: [t("Kompyuter", "Computer"), config.ip || "—"],
     switch: ["Switch", "LAN"],
@@ -837,7 +918,7 @@ function Topology({
         return (
           <line
             key={key}
-            className={`nl-wire ${links.has(key) ? (result?.ok ? "ok" : "used") : ""}`}
+            className={`nl-wire ${links.has(key) ? (ok ? "ok" : "used") : ""}`}
             x1={NODES[a].x}
             y1={NODES[a].y}
             x2={NODES[b].x}
@@ -846,15 +927,9 @@ function Topology({
         );
       })}
       {(Object.keys(NODES) as Node[]).map((node) => {
-        const reached = result?.hops.includes(node);
+        const reached = path.includes(node);
         const state =
-          node === stop
-            ? "stop"
-            : reached
-              ? result?.ok
-                ? "ok"
-                : "reached"
-              : "";
+          node === stop ? "stop" : reached ? (ok ? "ok" : "reached") : "";
         return (
           <g
             key={node}
@@ -883,17 +958,29 @@ function NetworkWidget({
 }) {
   const { t, locale } = useT();
   const [config, setConfig] = useState(start);
-  const [run, setRun] = useState<{ target: Target; result: PingResult } | null>(
-    null,
-  );
+  const [run, setRun] = useState<{
+    target: Target;
+    result: PingResult;
+    frames: Frame[];
+  } | null>(null);
+  // null shows the whole path; a number steps through single frames.
+  const [step, setStep] = useState<number | null>(null);
   const set = (key: keyof PcConfig, value: string) => {
     const next = { ...config, [key]: value };
     setConfig(next);
     setRun(null);
+    setStep(null);
     onSolved(networkWorks(next));
   };
-  const send = (target: Target) =>
-    setRun({ target, result: ping(config, target) });
+  const send = (target: Target) => {
+    setRun({
+      target,
+      result: ping(config, target),
+      frames: frames(config, target),
+    });
+    setStep(null);
+  };
+  const frame = run && step !== null ? run.frames[step] : null;
   const fields: [keyof PcConfig, string][] = [
     ["ip", t("IP manzil", "IP address")],
     ["mask", "Subnet mask"],
@@ -902,7 +989,7 @@ function NetworkWidget({
   return (
     <div className="nl-card">
       <div className="nl-topology-frame">
-        <Topology config={config} result={run?.result ?? null} />
+        <Topology config={config} result={run?.result ?? null} frame={frame} />
       </div>
       <div className="nl-config">
         <p className="nl-row-label">
@@ -933,6 +1020,7 @@ function NetworkWidget({
           onClick={() => {
             setConfig(start);
             setRun(null);
+            setStep(null);
             onSolved(false);
           }}
         >
@@ -952,14 +1040,163 @@ function NetworkWidget({
               </strong>
             </p>
             <ol>
-              {run.result.log.map((step, i) => (
-                <li key={i}>{fill(step, locale)}</li>
+              {run.result.log.map((line, i) => (
+                <li key={i}>{fill(line, locale)}</li>
               ))}
             </ol>
           </div>
         )}
+        {run && (
+          <FrameStepper frames={run.frames} step={step} onStep={setStep} />
+        )}
       </div>
     </div>
+  );
+}
+
+const NODE_LABEL: Record<Node, Text> = {
+  pc: { uz: "Kompyuter", en: "Computer" },
+  switch: { uz: "Switch", en: "Switch" },
+  printer: { uz: "Printer", en: "Printer" },
+  router: { uz: "Router", en: "Router" },
+  internet: { uz: "Internet", en: "Internet" },
+};
+
+// One frame at a time, with its Ethernet, ARP and IP fields.
+function FrameStepper({
+  frames: list,
+  step,
+  onStep,
+}: {
+  frames: Frame[];
+  step: number | null;
+  onStep: (step: number | null) => void;
+}) {
+  const { t, text, locale } = useT();
+  if (!list.length)
+    return (
+      <p className="nl-caption nl-frames-empty">
+        {t(
+          "Kadrlar yo‘q: xato kompyuterning o‘zida topildi, paket tarmoqqa chiqmadi.",
+          "No frames: the error was caught on the computer itself; nothing went on the wire.",
+        )}
+      </p>
+    );
+  const frame = step === null ? null : list[step];
+  return (
+    <section
+      className="nl-frames"
+      aria-label={t("Paket kadrlari", "Packet frames")}
+    >
+      <div className="nl-frames-head">
+        <strong>
+          {t("Kadrma-kadr", "Frame by frame")}
+          {step !== null && ` · ${step + 1} / ${list.length}`}
+        </strong>
+        <div className="nl-actions">
+          <button
+            className="nl-ghost"
+            onClick={() => onStep(step === null ? 0 : Math.max(0, step - 1))}
+            disabled={step === 0}
+          >
+            <StepBack size={14} /> {t("Oldingi", "Previous")}
+          </button>
+          <button
+            className="nl-primary"
+            onClick={() =>
+              onStep(step === null ? 0 : Math.min(list.length - 1, step + 1))
+            }
+            disabled={step === list.length - 1}
+          >
+            {step === null
+              ? t("Boshlash", "Start")
+              : t("Keyingi qadam", "Next step")}
+            <StepForward size={14} />
+          </button>
+          {step !== null && (
+            <button className="nl-ghost" onClick={() => onStep(null)}>
+              {t("Butun yo‘l", "Whole path")}
+            </button>
+          )}
+        </div>
+      </div>
+      {frame && (
+        <div
+          className={`nl-frame ${frame.stop ? "stop" : ""}`}
+          aria-live="polite"
+          key={step}
+        >
+          <p className="nl-frame-title">
+            <span className={`nl-frame-kind ${frame.kind.toLowerCase()}`}>
+              {frame.kind}
+              {frame.arp && ` ${frame.arp.op}`}
+              {frame.ip && ` echo ${frame.ip.type}`}
+            </span>
+            {text(NODE_LABEL[frame.from])} →{" "}
+            {frame.to === "all"
+              ? t("hammaga (broadcast)", "everyone (broadcast)")
+              : text(NODE_LABEL[frame.to])}
+          </p>
+          <table className="nl-headers">
+            <tbody>
+              <tr>
+                <th rowSpan={2}>Ethernet</th>
+                <td>{t("MAC kimdan", "Source MAC")}</td>
+                <td>
+                  <code>{frame.eth.src}</code>
+                </td>
+              </tr>
+              <tr>
+                <td>{t("MAC kimga", "Destination MAC")}</td>
+                <td>
+                  <code>{frame.eth.dst}</code>
+                </td>
+              </tr>
+              {frame.arp && (
+                <tr>
+                  <th>ARP</th>
+                  <td colSpan={2}>
+                    {fill(
+                      { text: frame.arp.text, values: frame.arp.values },
+                      locale,
+                    )}
+                  </td>
+                </tr>
+              )}
+              {frame.ip && (
+                <>
+                  <tr>
+                    <th rowSpan={3}>IP</th>
+                    <td>{t("IP kimdan", "Source IP")}</td>
+                    <td>
+                      <code>{frame.ip.src}</code>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>{t("IP kimga", "Destination IP")}</td>
+                    <td>
+                      <code>{frame.ip.dst}</code>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>TTL</td>
+                    <td>
+                      <code>{frame.ip.ttl}</code>
+                    </td>
+                  </tr>
+                </>
+              )}
+            </tbody>
+          </table>
+          <p className="nl-frame-note">{fill(frame.note, locale)}</p>
+          {frame.stop && (
+            <p className="nl-fail">
+              {t("Paket shu yerda to‘xtadi.", "The packet stops here.")}
+            </p>
+          )}
+        </div>
+      )}
+    </section>
   );
 }
 

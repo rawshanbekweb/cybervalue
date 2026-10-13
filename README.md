@@ -115,7 +115,7 @@ The [00:17 CTF](docs/ctf.md) at `/playground/ctf` is a five-challenge Uzbek-lang
 
 The [HTML & CSS project studio](docs/studio.md) at `/playground/studio` includes three fictional client briefs, separate HTML/CSS editors, isolated live previews, structural feedback, saved drafts, and HTML/review exports.
 
-The [IP addressing lab](docs/network-lab.md) at `/playground/network-basics` teaches IP addresses, subnet masks and the default gateway, then how addresses are obtained (DHCP), found (DNS) and shared (NAT), in eleven lessons with clickable bits, a bitwise AND view, a small network simulator that explains every ping, and a subnet calculator.
+The [IP addressing lab](docs/network-lab.md) at `/playground/network-basics` teaches IP addresses, subnet masks and the default gateway, then how addresses are obtained (DHCP), found (DNS) and shared (NAT), plus subnetting, traceroute, ports and IPv6, in fifteen lessons with clickable bits, frame-by-frame packets, generated practice examples, a bitwise AND view, a small network simulator that explains every ping, and a subnet calculator.
 
 The hub now includes [three investigation missions](docs/missions.md) at `/playground/missions`: invoice authorization, checkout integrity, and webhook replay. Learners edit requests, collect evidence, choose defense policies, and run behavioral regression checks. Completion requires demonstrated outcomes. These browser simulations complement the existing guided lessons and real local API exercises.
 

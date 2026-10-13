@@ -108,6 +108,10 @@ test("the IP lab fits small screens and passes an accessibility audit", async ({
     "#lesson/9",
     "#lesson/10",
     "#lesson/11",
+    "#lesson/12",
+    "#lesson/13",
+    "#lesson/14",
+    "#lesson/15",
   ]) {
     await page.goto(`/playground/network-basics${hash}`);
     for (const width of [320, 390, 768, 1440]) {
@@ -180,6 +184,78 @@ test("NAT shows every home device to the site as one public address", async ({
   await expect(log).toContainText("203.0.113.7:40002");
   await expect(log).not.toContainText("192.168.1.");
   await page.getByLabel(/All as the router’s single public IP/).check();
+  await page.getByRole("button", { name: "Check" }).click();
+  await expect(page.getByText("Correct! Lesson completed.")).toBeVisible();
+});
+
+test("packets can be stepped frame by frame", async ({ page }) => {
+  await page.goto("/playground/network-basics#lesson/5");
+  await page.getByLabel("Default gateway").fill("192.168.1.1");
+  await page.getByRole("button", { name: "ping 8.8.8.8" }).click();
+  await page.getByRole("button", { name: "Start" }).click();
+  const frame = page.locator(".nl-frame");
+  await expect(frame).toContainText("ff:ff:ff:ff:ff:ff");
+  await page.getByRole("button", { name: "Next step" }).click();
+  await page.getByRole("button", { name: "Next step" }).click();
+  await expect(frame).toContainText("00:11:22:33:44:01");
+  await expect(frame).toContainText("8.8.8.8");
+});
+
+test("new examples replace the exercise and count solved ones", async ({
+  page,
+}) => {
+  await page.goto("/playground/network-basics#lesson/15");
+  await page.getByLabel("Short form").fill("2001:db8::ff00:42:8329");
+  await page.getByRole("button", { name: "Check" }).click();
+  await expect(page.getByText("Examples solved: 1")).toBeVisible();
+  const before = await page.locator(".nl-v6").getAttribute("aria-label");
+  await page.getByRole("button", { name: "New example" }).click();
+  await expect(page.locator(".nl-v6")).not.toHaveAttribute(
+    "aria-label",
+    before!,
+  );
+  await page.getByRole("button", { name: "Check" }).click();
+  await expect(page.getByText("Not yet.")).toBeVisible();
+});
+
+test("subnetting, traceroute and ports lessons can be completed", async ({
+  page,
+}) => {
+  await page.goto("/playground/network-basics#lesson/12");
+  await page.locator('input[type="range"]').fill("26");
+  await page
+    .getByLabel("Network address of department 3")
+    .fill("192.168.10.128");
+  await page.getByRole("button", { name: "Check" }).click();
+  await expect(page.getByText("Correct! Lesson completed.")).toBeVisible();
+
+  await page.goto("/playground/network-basics#lesson/13");
+  await page.getByRole("spinbutton", { name: "TTL" }).fill("3");
+  await page.getByRole("button", { name: "Send packet" }).click();
+  await expect(page.locator(".nl-route .expired")).toContainText(
+    "198.51.100.1",
+  );
+  await page.getByLabel(/TTL 3\?/).selectOption("198.51.100.1");
+  await page.getByLabel(/delay jump/).selectOption("198.51.100.77");
+  await page.getByRole("button", { name: "Check" }).click();
+  await expect(page.getByText("Correct! Lesson completed.")).toBeVisible();
+
+  await page.goto("/playground/network-basics#lesson/14");
+  await page.getByRole("button", { name: "Connect to port 3306" }).click();
+  await expect(page.locator(".nl-steps")).toContainText("SYN-ACK");
+  for (const [port, name] of [
+    [22, "SSH"],
+    [53, "DNS"],
+    [80, "HTTP"],
+    [443, "HTTPS"],
+    [3306, "MySQL"],
+  ] as const)
+    await page
+      .getByLabel(`Service on port ${port}`)
+      .selectOption({ value: name });
+  await page.getByLabel(/Firewall/).check();
+  await page.getByRole("button", { name: "Connect to port 3306" }).click();
+  await expect(page.locator(".nl-steps")).toContainText("filtered");
   await page.getByRole("button", { name: "Check" }).click();
   await expect(page.getByText("Correct! Lesson completed.")).toBeVisible();
 });

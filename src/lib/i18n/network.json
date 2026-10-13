@@ -20,5 +20,10 @@
   "Where addresses come from": "IP qayerdan keladi",
   "DNS: from a site name to an IP": "DNS: sayt nomidan IP manzilga",
   "NAT: which IP a site sees": "NAT: sayt sizni qaysi IP bilan ko‘radi",
-  "11 LESSONS · NETWORK SIMULATOR": "11 DARS · TARMOQ SIMULYATORI"
+  "Subnetting: splitting a network": "Subnetting: tarmoqni bo‘laklarga bo‘lish",
+  "Going deeper": "Chuqurroq",
+  "Traceroute: the path a packet takes": "Traceroute: paket qaysi yo‘ldan boradi",
+  "Ports: the IP is the building, the port the door": "Portlar: IP — bino, port — eshik",
+  "IPv6 basics: the short form": "IPv6 asoslari: qisqartirib yozish",
+  "{count} LESSONS · NETWORK SIMULATOR": "{count} DARS · TARMOQ SIMULYATORI"
 }
