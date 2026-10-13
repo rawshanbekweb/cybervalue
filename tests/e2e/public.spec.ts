@@ -142,6 +142,8 @@ test("responsive layouts and keyboard navigation", async ({ page }) => {
 test("home, archives and about pass automated accessibility checks", async ({
   page,
 }) => {
+  // The hero and sections fade in; axe must see their final colours.
+  await page.emulateMedia({ reducedMotion: "reduce" });
   for (const route of ["/", "/about", "/labs", "/search"]) {
     await page.goto(route);
     const result = await new AxeBuilder({ page })
