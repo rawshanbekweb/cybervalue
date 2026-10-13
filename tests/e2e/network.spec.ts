@@ -112,6 +112,8 @@ test("the IP lab fits small screens and passes an accessibility audit", async ({
     "#lesson/13",
     "#lesson/14",
     "#lesson/15",
+    "#lesson/16",
+    "#lesson/17",
   ]) {
     await page.goto(`/playground/network-basics${hash}`);
     for (const width of [320, 390, 768, 1440]) {
@@ -256,6 +258,59 @@ test("subnetting, traceroute and ports lessons can be completed", async ({
   await page.getByLabel(/Firewall/).check();
   await page.getByRole("button", { name: "Connect to port 3306" }).click();
   await expect(page.locator(".nl-steps")).toContainText("filtered");
+  await page.getByRole("button", { name: "Check" }).click();
+  await expect(page.getByText("Correct! Lesson completed.")).toBeVisible();
+});
+
+test("a page load can be stepped packet by packet with the eavesdropper's view", async ({
+  page,
+}) => {
+  await page.goto("/playground/network-basics#lesson/16");
+  const ladder = page.locator(".nl-ladder li");
+  await expect(ladder).toHaveCount(10);
+  await expect(page.locator(".nl-frame")).toContainText("UDP 51000 → 53");
+  await page.getByLabel("DNS cached").check();
+  await expect(ladder).toHaveCount(8);
+  await page.getByLabel("HTTPS").uncheck();
+  await expect(ladder).toHaveCount(5);
+  await page.getByLabel("Wi-Fi eavesdropper’s view").check();
+  await page.getByRole("button", { name: "GET /kitoblar HTTP/1.1" }).click();
+  await expect(page.locator(".nl-spy.danger")).toContainText("cookie");
+  await page.getByLabel("DNS", { exact: true }).check();
+  await page.getByLabel("The page path (/kitoblar) and the cookie").check();
+  await page.getByRole("button", { name: "Check" }).click();
+  await expect(page.getByText("Correct! Lesson completed.")).toBeVisible();
+});
+
+test("hand-built HTTP requests collect every status code", async ({ page }) => {
+  await page.goto("/playground/network-basics#lesson/17");
+  const send = () => page.getByRole("button", { name: "Send request" }).click();
+  const path = page.getByLabel("Path");
+  const response = page.getByLabel("Response text");
+  await send();
+  await expect(response).toContainText("HTTP/1.1 200 OK");
+  await path.fill("/eski-sahifa");
+  await send();
+  await expect(response).toContainText("Location: /kitoblar");
+  await path.fill("/nope");
+  await send();
+  await expect(response).toContainText("404 Not Found");
+  await path.fill("/admin");
+  await send();
+  await expect(response).toContainText("401 Unauthorized");
+  await page.getByLabel("Method").selectOption("POST");
+  await path.fill("/kirish");
+  await page.getByLabel("Body (form)").fill("login=talaba&parol=kitob123");
+  await expect(page.getByLabel("Request text")).toContainText(
+    "Content-Length: 27",
+  );
+  await send();
+  await expect(response).toContainText("Set-Cookie: session=u-7d41");
+  await page.getByRole("button", { name: "Use the cookie you got" }).click();
+  await page.getByLabel("Method").selectOption("GET");
+  await path.fill("/admin");
+  await send();
+  await expect(response).toContainText("403 Forbidden");
   await page.getByRole("button", { name: "Check" }).click();
   await expect(page.getByText("Correct! Lesson completed.")).toBeVisible();
 });

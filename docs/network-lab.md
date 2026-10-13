@@ -5,7 +5,7 @@ home page and Playground, and the open labs on the student page. Supports Uzbek
 and English through the site's locale. No account or database is required.
 
 The lab teaches IP addresses, subnet masks and the default gateway, then
-where addresses come from and how traffic moves, in fifteen lessons. Each lesson has a picture from everyday life, a short explanation and
+where addresses come from and how traffic moves, in seventeen lessons. Each lesson has a picture from everyday life, a short explanation and
 one interactive exercise that decides when its task is solved:
 
 | #   | Lesson                       | Exercise                                                             |
@@ -25,6 +25,8 @@ one interactive exercise that decides when its task is solved:
 | 13  | Traceroute                   | Send probes with any TTL, see where they expire, read `tracert`      |
 | 14  | Ports                        | Probe ports (SYN-ACK / RST / silence), name services, add a firewall |
 | 15  | IPv6                         | Shorten an address to its canonical form with live rule checks       |
+| 16  | Opening a site               | DNS → TCP → TLS → HTTP as packets, timeline, eavesdropper’s view     |
+| 17  | HTTP by hand                 | Build requests; collect 200, 301, 302, 401, 403 and 404              |
 
 Lessons 1–4, 7, 12 and 15 have a **New example** button that generates a
 fresh, solvable exercise (`src/lib/network/practice.ts`, seeded so tests can
@@ -63,6 +65,11 @@ A separate **subnet calculator** accepts any address with a dotted mask or
 - `src/lib/network/traceroute.ts`, `ports.ts`, `ipv6.ts`: TTL probes along a
   fixed path, TCP handshake/reset/filtered answers behind an optional
   firewall, and IPv6 parsing with RFC 5952 compression and rule-by-rule review.
+- `src/lib/network/web.ts`: a page load as DNS (UDP 53), TCP, TLS (SNI,
+  certificate) and HTTP packets with timings and what an eavesdropper on the
+  same Wi-Fi can read with and without HTTPS; and a small HTTP server with
+  redirects, a sign-in that sets a cookie, 401 versus 403, 404 and 405,
+  printed as raw HTTP text.
 - `src/lib/network/curriculum.ts`: the bilingual lessons and progress restore.
 - `src/components/playground/network-lab/`: the page component and styles.
   Violet marks the network part of an address and amber the host part.

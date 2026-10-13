@@ -1801,3 +1801,292 @@
     animation: none;
   }
 }
+
+/* Lessons 16–17: how the web works */
+.network-lab {
+  --nl-dns: #ffb829;
+  --nl-tcp: #4fd1a5;
+  --nl-tls: #a68bff;
+  --nl-http: #6fb4ff;
+}
+.nl-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+}
+.nl-browser-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 8px 12px;
+  border: 1px solid #36343d;
+  border-radius: 9999px;
+  background: #0b0b0e;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.nl-waterfall {
+  display: grid;
+  gap: 6px;
+}
+.nl-wf-row {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 54px;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.nl-wf-row > div {
+  position: relative;
+  height: 14px;
+  border-radius: 3px;
+  background: #16151a;
+}
+.nl-wf-row i {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 3px;
+}
+.nl-wf-row code {
+  color: var(--muted);
+  text-align: right;
+}
+.nl-waterfall .nl-caption {
+  text-align: right;
+}
+i.nl-wf-dns,
+.nl-arrow.nl-wf-dns {
+  --lane: var(--nl-dns);
+}
+i.nl-wf-tcp,
+.nl-arrow.nl-wf-tcp {
+  --lane: var(--nl-tcp);
+}
+i.nl-wf-tls,
+.nl-arrow.nl-wf-tls {
+  --lane: var(--nl-tls);
+}
+i.nl-wf-http,
+.nl-arrow.nl-wf-http {
+  --lane: var(--nl-http);
+}
+.nl-wf-row i {
+  background: var(--lane);
+}
+
+/* Ladder diagram: three lanes, one arrow per packet */
+.nl-ladder {
+  display: grid;
+  gap: 6px;
+}
+.nl-ladder-head,
+.nl-ladder li {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+.nl-ladder-head span {
+  display: grid;
+  justify-items: center;
+  padding: 6px;
+  border-bottom: 2px solid #36343d;
+  font-size: 12px;
+  text-align: center;
+}
+.nl-ladder-head code {
+  color: var(--muted);
+  font-size: 10px;
+}
+.nl-ladder ol {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.nl-arrow {
+  position: relative;
+  min-height: 34px;
+  padding: 6px 22px;
+  border: 0;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--lane) 12%, transparent);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-align: center;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+.nl-arrow::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border: 7px solid transparent;
+  translate: 0 -50%;
+}
+.nl-arrow.right::after {
+  right: 4px;
+  border-left-color: var(--lane);
+}
+.nl-arrow.left::after {
+  left: 4px;
+  border-right-color: var(--lane);
+}
+.nl-arrow::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 4px;
+  height: 2px;
+  background: var(--lane);
+  opacity: 0.6;
+}
+.nl-arrow.active {
+  outline: 2px solid var(--lane);
+  background: color-mix(in srgb, var(--lane) 24%, transparent);
+}
+.nl-spy {
+  display: flex;
+  gap: 8px;
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #121116;
+  color: #d4d3d9;
+  font-size: 13px;
+}
+.nl-spy svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--nl-host);
+}
+.nl-spy.danger {
+  background: #2a1414;
+  color: #ffd2d2;
+}
+.nl-spy.danger svg {
+  color: var(--nl-bad);
+}
+.nl-question p {
+  margin: 4px 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.nl-question + .nl-question {
+  margin-top: 10px;
+}
+
+/* HTTP request builder */
+.nl-goals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.nl-goals li {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border: 1px dashed #3a3942;
+  border-radius: 9999px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+.nl-goals li.done {
+  border-style: solid;
+  color: var(--text);
+}
+.nl-goals li.done.s2xx {
+  border-color: var(--nl-ok);
+}
+.nl-goals li.done.s3xx {
+  border-color: var(--nl-http);
+}
+.nl-goals li.done.s4xx {
+  border-color: var(--nl-host);
+}
+.nl-request-form {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+}
+.nl-request-form .nl-wide {
+  grid-column: 1 / -1;
+}
+.nl-http {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px;
+}
+.nl-raw {
+  margin: 0;
+  padding: 12px;
+  overflow-x: auto;
+  border: 1px solid #26252b;
+  border-radius: 8px;
+  background: #050506;
+  color: #c5c3cc;
+  font-size: 12px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.nl-raw b {
+  color: var(--nl-http);
+}
+.nl-raw i {
+  font-style: normal;
+  color: var(--accent-text);
+}
+.nl-raw-body {
+  color: #9a99a2;
+}
+.nl-response {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+.nl-response > p:last-child {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+}
+.nl-response.s2xx .nl-raw b {
+  color: var(--nl-ok);
+}
+.nl-response.s3xx .nl-raw b {
+  color: var(--nl-http);
+}
+.nl-response.s4xx .nl-raw b {
+  color: var(--nl-host);
+}
+.nl-history {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 11px;
+  color: var(--muted);
+}
+@media (max-width: 560px) {
+  .nl-request-form {
+    grid-template-columns: 1fr;
+  }
+  .nl-arrow {
+    padding: 6px 18px;
+    font-size: 10px;
+  }
+}

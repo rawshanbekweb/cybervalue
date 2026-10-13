@@ -38,7 +38,12 @@ export type Widget =
     }
   | { type: "traceroute" }
   | { type: "ports" }
-  | { type: "ipv6"; address: string };
+  | { type: "ipv6"; address: string }
+  | {
+      type: "pageload";
+      questions: { ask: Text; options: Text[]; answer: number }[];
+    }
+  | { type: "http" };
 
 export type Lesson = {
   id: number;
@@ -59,6 +64,7 @@ const NETWORKS = { uz: "Tarmoq ichida", en: "Inside a network" };
 const PRACTICE = { uz: "Amaliyot", en: "In practice" };
 const ORIGINS = { uz: "IP qayerdan keladi", en: "Where addresses come from" };
 const DEEPER = { uz: "Chuqurroq", en: "Going deeper" };
+const WEB = { uz: "Veb qanday ishlaydi", en: "How the web works" };
 
 export const LESSONS: Lesson[] = [
   {
@@ -743,6 +749,124 @@ export const LESSONS: Lesson[] = [
       type: "ipv6",
       address: "2001:0db8:0000:0000:0000:ff00:0042:8329",
     },
+  },
+  {
+    id: 16,
+    group: WEB,
+    title: {
+      uz: "Sayt ochilganda nima bo‘ladi: DNS → TCP → TLS → HTTP",
+      en: "Opening a site: DNS → TCP → TLS → HTTP",
+    },
+    minutes: 12,
+    intro: {
+      uz: "Brauzerga kutubxona.example/kitoblar deb yozib Enter bosganingizdan sahifa chiqquncha bir necha o‘nta paket almashinadi. Ularni birma-bir ko‘ramiz.",
+      en: "Between typing kutubxona.example/kitoblar and seeing the page, dozens of packets go back and forth. Let’s watch them one by one.",
+    },
+    analogy: {
+      uz: "Do‘konga borish kabi: avval manzilni bilib olasiz (DNS), eshikni ochasiz (TCP), sotuvchi bilan maxfiy til kelishasiz (TLS), keyin buyurtma berasiz (HTTP).",
+      en: "Like visiting a shop: find the address (DNS), open the door (TCP), agree on a private language with the clerk (TLS), then place your order (HTTP).",
+    },
+    theory: [
+      {
+        uz: "DNS — nomdan IP. TCP — ishonchli ulanish (SYN, SYN-ACK, ACK). TLS — shifrlash va sertifikat tekshiruvi (faqat HTTPS’da). HTTP — so‘rov (GET /kitoblar) va javob (200 OK + HTML).",
+        en: "DNS turns the name into an IP. TCP makes a reliable connection (SYN, SYN-ACK, ACK). TLS adds encryption and checks the certificate (HTTPS only). HTTP carries the request (GET /kitoblar) and the answer (200 OK + HTML).",
+      },
+      {
+        uz: "Brauzerdagi DevTools → Network bo‘limi xuddi shu vaqt diagrammasini ko‘rsatadi: DNS, Connect, SSL, Waiting, Download.",
+        en: "Your browser’s DevTools → Network panel shows this same timeline: DNS, Connect, SSL, Waiting, Download.",
+      },
+      {
+        uz: "Xavfsizlik: ochiq Wi-Fi’da boshqalar paketlaringizni ko‘ra oladi. HTTPS mazmunni yashiradi, lekin qaysi saytga kirayotganingiz (DNS, SNI, IP) baribir ko‘rinadi.",
+        en: "Security: on open Wi-Fi others can see your packets. HTTPS hides the content, but which site you visit (DNS, SNI, IP) still shows.",
+      },
+    ],
+    task: {
+      uz: "Kalitlarni almashtirib, paketlarni ko‘rib chiqing va ikki savolga javob bering.",
+      en: "Flip the switches, step through the packets and answer the two questions.",
+    },
+    hint: {
+      uz: "“DNS keshda” ni yoqing — qaysi bosqich yo‘qoladi? Keyin HTTPS’da “Wi-Fi’dagi hujumchi ko‘zi” bilan GET paketiga qarang.",
+      en: "Turn on “DNS cached”: which phase disappears? Then look at the GET packet through the Wi-Fi eavesdropper’s eyes over HTTPS.",
+    },
+    widget: {
+      type: "pageload",
+      questions: [
+        {
+          ask: {
+            uz: "Sayt IP’si keshda bo‘lsa, qaysi bosqich butunlay tushib qoladi?",
+            en: "If the site’s IP is cached, which phase disappears entirely?",
+          },
+          options: [
+            { uz: "DNS", en: "DNS" },
+            { uz: "TCP", en: "TCP" },
+            { uz: "TLS", en: "TLS" },
+            { uz: "HTTP", en: "HTTP" },
+          ],
+          answer: 0,
+        },
+        {
+          ask: {
+            uz: "HTTPS’da kafe Wi-Fi’sidagi hujumchi nimani ko‘ra OLMAYDI?",
+            en: "Over HTTPS, what can an eavesdropper on café Wi-Fi NOT see?",
+          },
+          options: [
+            {
+              uz: "Qaysi saytga kirayotganingizni (nom va IP)",
+              en: "Which site you visit (name and IP)",
+            },
+            {
+              uz: "Sahifa yo‘li (/kitoblar) va cookie",
+              en: "The page path (/kitoblar) and the cookie",
+            },
+            {
+              uz: "Qachon va qancha ma’lumot almashganingizni",
+              en: "When and how much data you exchanged",
+            },
+          ],
+          answer: 1,
+        },
+      ],
+    },
+  },
+  {
+    id: 17,
+    group: WEB,
+    title: {
+      uz: "HTTP so‘rov va javob: o‘zingiz yuboring",
+      en: "HTTP requests and responses: send your own",
+    },
+    minutes: 12,
+    intro: {
+      uz: "HTTP — oddiy matn. So‘rovning birinchi qatori metod va yo‘l, keyin sarlavhalar, keyin bo‘sh qator va tana. Javob ham shunday, faqat birinchi qatorda status kodi.",
+      en: "HTTP is plain text. A request starts with the method and path, then headers, a blank line and a body. A response looks the same with a status code on the first line.",
+    },
+    analogy: {
+      uz: "Status kodlari — svetofor: 2xx — yashil (bo‘ldi), 3xx — “boshqa yo‘ldan yuring”, 4xx — siz xato qildingiz, 5xx — server buzildi.",
+      en: "Status codes are traffic lights: 2xx green (done), 3xx “take another road”, 4xx you made a mistake, 5xx the server broke.",
+    },
+    theory: [
+      {
+        uz: "Metodlar: GET — olish, POST — yuborish (forma, login), HEAD — faqat sarlavhalar, DELETE — o‘chirish. Server har bir manzil uchun qaysi metodlar mumkinligini o‘zi belgilaydi.",
+        en: "Methods: GET fetches, POST sends (forms, sign-in), HEAD returns headers only, DELETE removes. The server decides which methods each address allows.",
+      },
+      {
+        uz: "Muhim kodlar: 200 OK, 301 doimiy ko‘chdi, 302 vaqtincha boshqa joyga, 401 — kimligingiz noma’lum, 403 — taniymiz, lekin ruxsat yo‘q, 404 — topilmadi, 405 — bu metod mumkin emas.",
+        en: "Key codes: 200 OK, 301 moved for good, 302 go elsewhere for now, 401 we don’t know who you are, 403 we know you but no, 404 not found, 405 method not allowed.",
+      },
+      {
+        uz: "HTTP o‘zi “xotirasiz”: har so‘rov alohida. Sizni eslab qolish uchun server Set-Cookie bilan sessiya kalitini beradi, brauzer uni har so‘rovga Cookie sarlavhasi bilan qo‘shadi.",
+        en: "HTTP itself has no memory: every request stands alone. To remember you the server hands out a session key with Set-Cookie, and the browser sends it back in a Cookie header each time.",
+      },
+    ],
+    task: {
+      uz: "So‘rovlar tuzib, serverdan quyidagi barcha status kodlarini oling: 200, 301, 302, 401, 403, 404.",
+      en: "Build requests that get every one of these status codes from the server: 200, 301, 302, 401, 403, 404.",
+    },
+    hint: {
+      uz: "302 uchun /kirish ga POST bilan login=talaba&parol=kitob123 yuboring. 401 va 403 — /admin’ga cookie’siz va oddiy foydalanuvchi cookie’si bilan.",
+      en: "For 302, POST login=talaba&parol=kitob123 to /kirish. For 401 and 403, request /admin with no cookie and with a regular user’s cookie.",
+    },
+    widget: { type: "http" },
   },
 ];
 

@@ -25,5 +25,8 @@
   "Traceroute: the path a packet takes": "Traceroute: paket qaysi yo‘ldan boradi",
   "Ports: the IP is the building, the port the door": "Portlar: IP — bino, port — eshik",
   "IPv6 basics: the short form": "IPv6 asoslari: qisqartirib yozish",
-  "{count} LESSONS · NETWORK SIMULATOR": "{count} DARS · TARMOQ SIMULYATORI"
+  "{count} LESSONS · NETWORK SIMULATOR": "{count} DARS · TARMOQ SIMULYATORI",
+  "Opening a site: DNS → TCP → TLS → HTTP": "Sayt ochilganda nima bo‘ladi: DNS → TCP → TLS → HTTP",
+  "How the web works": "Veb qanday ishlaydi",
+  "HTTP requests and responses: send your own": "HTTP so‘rov va javob: o‘zingiz yuboring"
 }

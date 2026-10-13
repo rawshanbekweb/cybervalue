@@ -61,6 +61,7 @@ import {
   SubnettingWidget,
   TracerouteWidget,
 } from "./deeper";
+import { HttpWidget, PageLoadWidget } from "./web";
 import { nextExercise, random } from "@/lib/network/practice";
 import { frames, type Frame } from "@/lib/network/packets";
 import "./network-lab.css";
@@ -399,6 +400,12 @@ function WidgetView({
       return <PortsWidget onSolved={onSolved} />;
     case "ipv6":
       return <Ipv6Widget address={widget.address} onSolved={onSolved} />;
+    case "pageload":
+      return (
+        <PageLoadWidget questions={widget.questions} onSolved={onSolved} />
+      );
+    case "http":
+      return <HttpWidget onSolved={onSolved} />;
   }
 }
 
