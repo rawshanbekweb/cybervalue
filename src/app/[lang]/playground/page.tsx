@@ -11,6 +11,7 @@ import { LearningCatalog } from "@/components/learning-catalog";
 import { MissionGateway } from "@/components/mission-gateway";
 import { StudioGateway } from "@/components/studio-gateway";
 import { CtfGateway } from "@/components/ctf-gateway";
+import { DefendGateway } from "@/components/defend-gateway";
 import { getLearningTracks } from "@/lib/learning";
 import { metadata as buildMetadata } from "@/lib/seo";
 import "@/components/learning.css";
@@ -62,6 +63,7 @@ export default async function PlaygroundPage() {
         <CtfGateway />
         <MissionGateway />
         <StudioGateway />
+        <DefendGateway />
       </div>
       <section aria-labelledby="tracks-title">
         <h2 id="tracks-title" className="learning-section-title">
