@@ -524,7 +524,11 @@ function ResultLine({
       )}
       {report.threw && (
         <p className="defend-evidence">
-          {t("Your code threw an error: {message}", { message: report.threw })}
+          {report.timedOut
+            ? t("No result in time: the code may never finish.")
+            : t("Your code threw an error: {message}", {
+                message: report.threw,
+              })}
         </p>
       )}
       <div className="defend-io">
