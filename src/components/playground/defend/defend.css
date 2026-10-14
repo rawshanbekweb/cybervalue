@@ -110,7 +110,7 @@
   color: var(--muted);
 }
 .defend-nav small.is-defended {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .defend-layout {
@@ -195,7 +195,7 @@
 .defend-hints div span {
   font-size: 10px;
   letter-spacing: 1px;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .defend-hints div p {
   margin: 2px 0 0;
@@ -343,7 +343,7 @@
 }
 .defend-line.pass svg,
 .defend-line.pass b {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .defend-line.fail svg,
 .defend-line.fail b {
@@ -402,7 +402,7 @@
   background: #151b11;
 }
 .defend-debrief > svg {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .defend-debrief h2 {
   margin: 8px 0;

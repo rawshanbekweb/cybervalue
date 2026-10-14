@@ -1,6 +1,11 @@
 "use client";
 
-import { armInput, buildDocument, newNonce } from "@/lib/defend/harness";
+import {
+  armInput,
+  buildDocument,
+  canaryName,
+  newNonce,
+} from "@/lib/defend/harness";
 import type { RunReport, Scenario } from "@/lib/defend/scenarios";
 
 const TIMEOUT_MS = 2500;
@@ -53,7 +58,12 @@ export function runCase(
       if (event.source !== frame.contentWindow) return;
       const data = event.data as { channel?: string; report?: RunReport };
       if (data?.channel !== nonce || !data.report) return;
-      finish(empty(data.report));
+      // Show the same readable marker as the input instead of the detector.
+      const html = String(data.report.html ?? "").replaceAll(
+        canaryName(nonce),
+        "pwned",
+      );
+      finish(empty({ ...data.report, html }));
     };
     const timer = setTimeout(
       () =>
