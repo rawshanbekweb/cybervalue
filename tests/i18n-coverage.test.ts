@@ -1,5 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { createTranslator } from "../src/lib/i18n";
 import { STUDIO_PROJECTS } from "../src/lib/studio/projects";
 import { checkProject } from "../src/lib/studio/checks";
@@ -18,6 +19,7 @@ import {
 import { challengeFor } from "../src/lib/html-assessment/challenge";
 import { CHOICES, GROUP_LABELS, TASKS } from "../src/lib/resource-exam/content";
 import { gradeExam } from "../src/lib/resource-exam/grading";
+import { SCENARIOS } from "../src/lib/defend/scenarios";
 
 // Each module's source text must change when rendered in the other language.
 function assertTranslated(
@@ -186,4 +188,42 @@ test("the resource exam's questions, tasks and feedback have English text", () =
     texts.filter((text) => prose(text) && text !== "ISP gateway"),
     "Resource exam",
   );
+});
+
+test("every Build & Defend scenario, case, hint and interface string is translated", () => {
+  const texts: string[] = [];
+  for (const scenario of SCENARIOS) {
+    texts.push(
+      scenario.title,
+      scenario.client,
+      scenario.brief,
+      scenario.debrief,
+      ...scenario.hints,
+    );
+    // The attack class is a standard English term in Uzbek security writing.
+    if (scenario.level !== "Open redirect") texts.push(scenario.level);
+    for (const item of scenario.cases) texts.push(item.label, item.failure);
+  }
+  // Interface copy is every string literal passed to t(), directly or as
+  // either branch of a condition, plus the page metadata.
+  const source = [
+    "src/components/playground/defend/DefendLab.tsx",
+    "src/components/defend-gateway.tsx",
+  ]
+    .map((file) => readFileSync(file, "utf8"))
+    .join("\n");
+  for (const match of source.matchAll(/\bt\(\s*"([^"]*)"/g))
+    texts.push(match[1]);
+  for (const match of source.matchAll(
+    /\bt\(\s*[^"()]*?\?\s*"([^"]*)"\s*:\s*"([^"]*)"/g,
+  ))
+    texts.push(match[1], match[2]);
+  const page = readFileSync(
+    "src/app/[lang]/playground/defend/page.tsx",
+    "utf8",
+  );
+  const [, title, description] =
+    /metadata\(\s*"([^"]*)",\s*"([^"]*)"/.exec(page) ?? [];
+  texts.push(title, description);
+  assertTranslated("uz", texts, "Build & Defend");
 });
