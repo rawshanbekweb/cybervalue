@@ -66,7 +66,7 @@ const result = schema.safeParse(process.env);
 if (!result.success) {
   const names = [...new Set(result.error.issues.map((i) => i.path.join(".")))];
   let hint = names.includes("SITE_URL")
-    ? " Set SITE_URL to a complete HTTP(S) origin (for production, e.g. https://datalife.uz), without a path, query, or credentials."
+    ? " Set SITE_URL to a complete HTTP(S) origin (for production, e.g. https://example.com), without a path, query, or credentials."
     : "";
   if (names.includes("SECURITY_CONTACT"))
     hint += " SECURITY_CONTACT must be mailto:you@example.com or an HTTPS URL.";
