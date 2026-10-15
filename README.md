@@ -119,6 +119,8 @@ The [HTML & CSS project studio](docs/studio.md) at `/playground/studio` includes
 
 The [IP addressing lab](docs/network-lab.md) at `/playground/network-basics` teaches IP addresses, subnet masks and the default gateway, then how addresses are obtained (DHCP), found (DNS) and shared (NAT), plus subnetting, traceroute, ports, IPv6, and DNS, TLS and HTTP on the wire, in seventeen lessons with clickable bits, frame-by-frame packets, generated practice examples, a bitwise AND view, a small network simulator that explains every ping, and a subnet calculator.
 
+The [Build & Defend lab](docs/defend.md) at `/playground/defend` has four vulnerable rendering functions (stored XSS, attribute/URL/CSS injection, reflected XSS and an open redirect). Learners fix the code while an attacker bot runs real payloads against it in an isolated, offline sandbox; a scenario is defended when every attack fails and every feature still works.
+
 The hub now includes [three investigation missions](docs/missions.md) at `/playground/missions`: invoice authorization, checkout integrity, and webhook replay. Learners edit requests, collect evidence, choose defense policies, and run behavioral regression checks. Completion requires demonstrated outcomes. These browser simulations complement the existing guided lessons and real local API exercises.
 
 Home and `/playground` share a searchable catalog of the existing HTML and web security lessons. Track counts and lesson titles come from the course data through `src/lib/learning.ts`; only catalog metadata is passed to the client. Both courses support direct links in the form `#lesson/2`.
