@@ -11,6 +11,7 @@ import admin from "./admin.json";
 import linux from "./linux.json";
 import network from "./network.json";
 import student from "./student.json";
+import junior from "./junior.json";
 import defend from "./defend.json";
 
 const messages = {
@@ -27,6 +28,7 @@ const messages = {
   ...linux,
   ...network,
   ...student,
+  ...junior,
   ...defend,
 };
 

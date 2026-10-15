@@ -121,6 +121,8 @@ The [IP addressing lab](docs/network-lab.md) at `/playground/network-basics` tea
 
 The hub now includes [three investigation missions](docs/missions.md) at `/playground/missions`: invoice authorization, checkout integrity, and webhook replay. Learners edit requests, collect evidence, choose defense policies, and run behavioral regression checks. Completion requires demonstrated outcomes. These browser simulations complement the existing guided lessons and real local API exercises.
 
+New learners start with [Cybervalue Academy Junior](docs/junior.md) at `/playground/junior`: six short beginner missions (passwords, phishing, ciphers, digital footprint, a first CTF and ethical hacking rules), public and fully in the browser.
+
 Home and `/playground` share a searchable catalog of the existing HTML and web security lessons. Track counts and lesson titles come from the course data through `src/lib/learning.ts`; only catalog metadata is passed to the client. Both courses support direct links in the form `#lesson/2`.
 
 The catalog reads each course's existing browser progress, counts only valid completed lessons, and links to the first unfinished lesson. Completed tracks offer a review link. Progress stays on the current browser and does not sync to an account. Missing or malformed storage does not block the catalog. Home's Build / Investigate / Defend panel presents educational examples and opens the corresponding exercise.
