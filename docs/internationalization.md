@@ -35,6 +35,7 @@ state does not.
 | HTML & CSS Project Studio: briefs, hints, structural checks and exports       | Yes            | Yes              |
 | Graded HTML assessment and resource exam: rules, questions, feedback, errors  | Yes            | Yes              |
 | Admin CMS, 2FA, audit log and assessment results                              | Yes            | Yes              |
+| Cybervalue Academy Junior: six beginner missions and the Playground card      | Yes            | Yes              |
 | Linux lab and IP addressing lab: lessons, simulators, feedback                | Yes            | Yes              |
 | Standalone slide decks and offline ZIPs                                       | Original Uzbek | Labeled as Uzbek |
 

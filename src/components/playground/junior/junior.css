@@ -1,0 +1,462 @@
+.junior {
+  max-width: 920px;
+}
+.jr-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 26px;
+}
+.jr-back:hover {
+  color: var(--accent-text);
+}
+.jr-hero h1 {
+  font-size: clamp(30px, 5vw, 46px);
+  font-weight: 550;
+  letter-spacing: -1.2px;
+  line-height: 1.15;
+  margin: 14px 0;
+}
+.jr-hero > p {
+  color: #c2c1ca;
+  font-size: 15px;
+  line-height: 1.8;
+  max-width: 680px;
+}
+.jr-progress {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin: 22px 0 8px;
+  color: #c2c1ca;
+  font: 12px/1.5 var(--font-mono);
+}
+.jr-bar {
+  width: min(280px, 100%);
+  height: 8px;
+  border-radius: 8px;
+  background: #ffffff1a;
+  overflow: hidden;
+}
+.jr-bar span {
+  display: block;
+  height: 100%;
+  background: #4ade80;
+  transition: width 0.3s;
+}
+.jr-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 26px 0 18px;
+}
+.jr-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  padding: 6px 14px 6px 8px;
+  border: 1px solid #ffffff24;
+  border-radius: 999px;
+  background: #100f13;
+  color: #d6d5dc;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.jr-tab:hover {
+  border-color: var(--accent);
+}
+.jr-tab.on {
+  border-color: var(--accent);
+  background: #8052ff22;
+  color: #fff;
+}
+.jr-num {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #ffffff18;
+  font: 12px var(--font-mono);
+}
+.jr-tab.done .jr-num {
+  background: #4ade80;
+  color: #04140a;
+}
+.jr-mission {
+  padding: 28px;
+  border: 1px solid #ffffff1f;
+  border-radius: 9px;
+  background:
+    radial-gradient(ellipse at top left, #8052ff11, transparent 65%), #100f13;
+}
+.jr-mission h2 {
+  font-size: 26px;
+  font-weight: 550;
+  letter-spacing: -0.7px;
+  margin: 10px 0 6px;
+}
+.jr-hook {
+  color: #c2c1ca;
+  font-size: 15px;
+  line-height: 1.7;
+}
+.jr-goal {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  margin: 14px 0 22px;
+  padding: 11px 14px;
+  border-left: 3px solid var(--accent);
+  background: #ffffff08;
+  color: #e4e3ea;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.jr-goal svg {
+  flex-shrink: 0;
+  margin-top: 4px;
+  color: var(--accent-text);
+}
+.jr-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.jr-lead {
+  color: #d6d5dc;
+  font-size: 15px;
+  line-height: 1.8;
+}
+.jr-note {
+  color: #b1b0b8;
+  font-size: 13px;
+  line-height: 1.7;
+  padding: 9px 12px;
+  border: 1px dashed #ffffff2e;
+  border-radius: 6px;
+}
+.jr-label {
+  color: #d6d5dc;
+  font-size: 13px;
+  margin-top: 6px;
+}
+.jr-sub {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 8px 0 0;
+}
+.jr-input {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 14px;
+  border: 1px solid #ffffff33;
+  border-radius: 6px;
+  background: #08080a;
+  color: #fff;
+  font: 15px var(--font-mono);
+}
+.jr-input:focus-visible,
+.jr-range:focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 2px;
+}
+.jr-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.jr-row .jr-input {
+  flex: 1;
+  min-width: 200px;
+  width: auto;
+}
+.jr-range {
+  width: 100%;
+  accent-color: var(--accent);
+  min-height: 32px;
+}
+.jr-meter {
+  height: 12px;
+  border-radius: 12px;
+  background: #ffffff1a;
+  overflow: hidden;
+}
+.jr-meter span {
+  display: block;
+  height: 100%;
+  transition: width 0.2s;
+}
+.jr-meter .low {
+  background: #ff6b6b;
+}
+.jr-meter .mid {
+  background: #ffb829;
+}
+.jr-meter .good {
+  background: #4ade80;
+}
+.jr-result {
+  font: 600 15px/1.6 var(--font-mono);
+  color: #fff;
+}
+.jr-tips {
+  margin: 0;
+  padding-left: 20px;
+  color: #ffd27a;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.jr-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.jr-chip {
+  min-height: 40px;
+  padding: 6px 14px;
+  border: 1px solid #ffffff33;
+  border-radius: 6px;
+  background: #08080a;
+  color: #e4e3ea;
+  font: 13px var(--font-mono);
+  cursor: pointer;
+}
+.jr-chip:hover {
+  border-color: var(--accent);
+}
+.jr-code {
+  display: block;
+  padding: 12px 14px;
+  border-radius: 6px;
+  background: #08080a;
+  border: 1px solid #ffffff1f;
+  color: #8ff0b4;
+  font: 14px/1.7 var(--font-mono);
+  overflow-wrap: anywhere;
+}
+.jr-pre {
+  white-space: pre-wrap;
+  color: #d6d5dc;
+}
+.jr-live {
+  color: #fff;
+}
+.jr-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.jr-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid #ffffff1f;
+  border-radius: 8px;
+  background: #0b0b0d;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #e4e3ea;
+}
+.jr-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: #b1b0b8;
+  font: 12px var(--font-mono);
+}
+.jr-link {
+  align-self: flex-start;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: #ffffff10;
+  color: #ffb829;
+  font: 13px var(--font-mono);
+  overflow-wrap: anywhere;
+}
+.jr-pick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.jr-pick label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 6px 16px;
+  border: 1px solid #ffffff33;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.jr-pick label.on {
+  border-color: var(--accent);
+  background: #8052ff2a;
+}
+.jr-pick label:focus-within {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 2px;
+}
+.jr-post {
+  padding: 14px;
+  border-radius: 8px;
+  background: #1b1a22;
+  font-weight: 600;
+}
+.jr-checks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.jr-checks label {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  border: 1px solid #ffffff1f;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1.6;
+  cursor: pointer;
+}
+.jr-checks input {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  accent-color: var(--accent);
+}
+.jr-verdict {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.jr-verdict svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.jr-ok {
+  color: #7ff0a8;
+}
+.jr-bad {
+  color: #ff9d9d;
+}
+.jr-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.jr-done {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: #7ff0a8;
+  font-weight: 600;
+}
+.jr-linkbtn {
+  align-self: flex-start;
+  padding: 6px 0;
+  border: 0;
+  background: none;
+  color: var(--accent-text);
+  font: inherit;
+  font-size: 13px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.jr-next {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+  padding: 8px 0;
+  border: 0;
+  background: none;
+  color: var(--accent-text);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.jr-tool {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.jr-finish {
+  margin-top: 30px;
+  padding: 28px;
+  border: 1px solid #4ade8066;
+  border-radius: 9px;
+  background: #4ade800d;
+}
+.jr-finish > svg {
+  color: #7ff0a8;
+}
+.jr-finish h2 {
+  font-size: 24px;
+  margin: 10px 0;
+}
+.jr-finish p {
+  color: #d6d5dc;
+  line-height: 1.7;
+}
+.jr-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+  margin: 18px 0;
+  padding: 0;
+  list-style: none;
+}
+.jr-steps a {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  height: 100%;
+  padding: 14px;
+  border: 1px solid #ffffff2e;
+  border-radius: 8px;
+  background: #0b0b0d;
+  font-size: 13px;
+  color: #b1b0b8;
+}
+.jr-steps a:hover {
+  border-color: var(--accent);
+}
+.jr-steps strong {
+  color: #fff;
+  font-size: 15px;
+}
+.jr-foot {
+  margin-top: 22px;
+  color: #b1b0b8;
+  font-size: 13px;
+}
+@media (max-width: 600px) {
+  .jr-mission {
+    padding: 18px;
+  }
+  .jr-meta {
+    flex-direction: column;
+  }
+}

@@ -14,9 +14,11 @@ function subscribe(onStoreChange: () => void) {
 export function useHashLessonId(
   total: number,
   defaultId = 1,
+  prefix = "lesson",
 ): [number, (id: number) => void] {
+  const pattern = new RegExp(`#${prefix}/(\\d+)`);
   const getSnapshot = () => {
-    const match = /#lesson\/(\d+)/.exec(window.location.hash);
+    const match = pattern.exec(window.location.hash);
     const id = match ? Number(match[1]) : defaultId;
     return id >= 1 && id <= total ? id : defaultId;
   };
@@ -28,9 +30,12 @@ export function useHashLessonId(
     getServerSnapshot,
   );
 
-  const setLessonId = useCallback((id: number) => {
-    window.location.hash = `#lesson/${id}`;
-  }, []);
+  const setLessonId = useCallback(
+    (id: number) => {
+      window.location.hash = `#${prefix}/${id}`;
+    },
+    [prefix],
+  );
 
   return [lessonId, setLessonId];
 }

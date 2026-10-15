@@ -8,6 +8,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { LearningCatalog } from "@/components/learning-catalog";
+import { JuniorGateway } from "@/components/junior-gateway";
 import { MissionGateway } from "@/components/mission-gateway";
 import { StudioGateway } from "@/components/studio-gateway";
 import { CtfGateway } from "@/components/ctf-gateway";
@@ -58,6 +59,7 @@ export default async function PlaygroundPage() {
           </span>
         </div>
       </header>
+      <JuniorGateway />
       <div className="gateway-grid">
         <CtfGateway />
         <MissionGateway />
