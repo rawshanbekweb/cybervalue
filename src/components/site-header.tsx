@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { Fingerprint } from "lucide-react";
 import { Navigation } from "@/components/navigation";
 import { LanguageSwitcher } from "./language-switcher";
@@ -12,9 +11,7 @@ export function SiteHeader({
 }: {
   items: { href: string; label: string }[];
 }) {
-  const pathname = usePathname();
   const t = useTranslator();
-  if (pathname?.startsWith("/concept")) return null;
 
   return (
     <header className="site-header">

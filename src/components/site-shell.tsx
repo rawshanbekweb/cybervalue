@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Inter } from "next/font/google";
 import { ArrowUpRight } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
-import { HideOnConcept } from "@/components/hide-on-concept";
 import { LocaleProvider } from "@/components/locale-provider";
 import { site, navigation } from "@/lib/site";
 import { getSocials } from "@/lib/content";
@@ -39,40 +38,34 @@ export async function SiteShell({
           </a>
           <SiteHeader items={navigation} />
           <main id="main">{children}</main>
-          <HideOnConcept>
-            <footer className="site-footer container">
-              <div className="footer-top">
-                <div>
-                  <Link className="wordmark" href="/">
-                    cyber<span>value</span>
-                    <span className="brand-period">.</span>
-                  </Link>
-                  <p>{t("Curiosity. Practice. Evidence.")}</p>
-                </div>
-                <div className="footer-links">
-                  <Link href="/activity">{t("Activity")}</Link>
-                  <Link href="/search">{t("Search the archive")}</Link>
-                  {socials.map((s) => (
-                    <a
-                      key={s.platform}
-                      href={s.url}
-                      rel="me noopener noreferrer"
-                    >
-                      {s.platform}
-                      <ArrowUpRight size={13} />
-                    </a>
-                  ))}
-                </div>
+          <footer className="site-footer container">
+            <div className="footer-top">
+              <div>
+                <Link className="wordmark" href="/">
+                  cyber<span>value</span>
+                  <span className="brand-period">.</span>
+                </Link>
+                <p>{t("Curiosity. Practice. Evidence.")}</p>
               </div>
-              <div className="footer-bottom">
-                <span>
-                  © {new Date().getFullYear()} {site.person}
-                </span>
-                <span>{t("Think critically. Build securely.")}</span>
-                <a href="#main">{t("Back to top ↑")}</a>
+              <div className="footer-links">
+                <Link href="/activity">{t("Activity")}</Link>
+                <Link href="/search">{t("Search the archive")}</Link>
+                {socials.map((s) => (
+                  <a key={s.platform} href={s.url} rel="me noopener noreferrer">
+                    {s.platform}
+                    <ArrowUpRight size={13} />
+                  </a>
+                ))}
               </div>
-            </footer>
-          </HideOnConcept>
+            </div>
+            <div className="footer-bottom">
+              <span>
+                © {new Date().getFullYear()} {site.person}
+              </span>
+              <span>{t("Think critically. Build securely.")}</span>
+              <a href="#main">{t("Back to top ↑")}</a>
+            </div>
+          </footer>
         </LocaleProvider>
       </body>
     </html>
