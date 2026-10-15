@@ -631,7 +631,7 @@
   padding: 30px;
   border: 1px solid #767387;
   border-radius: 8px;
-  background: linear-gradient(135deg, #26252b, #0e0d11);
+  background: #18171c;
 }
 .mission-debrief > svg {
   color: var(--accent-text);
