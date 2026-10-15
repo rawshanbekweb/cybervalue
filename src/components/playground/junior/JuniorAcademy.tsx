@@ -69,6 +69,12 @@ export function JuniorAcademy() {
   const all = count === MISSIONS.length;
   const mission = MISSIONS[id - 1];
   const Panel = PANELS[mission.id];
+  const open = (next: number) => {
+    setId(next);
+    document
+      .getElementById("jr-mission")
+      ?.scrollIntoView({ block: "start", behavior: "smooth" });
+  };
   const complete = (missionId: MissionId) =>
     setProgress({ ...progress, [missionId]: true });
   return (
@@ -111,7 +117,7 @@ export function JuniorAcademy() {
               type="button"
               className={`jr-tab${item.number === id ? " on" : ""}${finished ? " done" : ""}`}
               aria-current={item.number === id ? "step" : undefined}
-              onClick={() => setId(item.number)}
+              onClick={() => open(item.number)}
             >
               <span className="jr-num">
                 {finished ? (
@@ -135,6 +141,7 @@ export function JuniorAcademy() {
       </nav>
 
       <section
+        id="jr-mission"
         className="jr-mission"
         aria-labelledby="jr-mission-title"
         key={mission.id}
@@ -161,7 +168,7 @@ export function JuniorAcademy() {
           <button
             type="button"
             className="jr-next"
-            onClick={() => setId(id + 1)}
+            onClick={() => open(id + 1)}
           >
             {t("Keyingi missiya", "Next mission")}
             <ArrowRight size={15} aria-hidden="true" />

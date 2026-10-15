@@ -1,5 +1,21 @@
 .junior {
+  padding-top: 28px;
+}
+.jr-mission,
+.jr-finish,
+.jr-foot {
   max-width: 920px;
+}
+.junior .button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.jr-panel > .button,
+.jr-actions .button {
+  align-self: flex-start;
+}
+.jr-mission {
+  scroll-margin-top: 90px;
 }
 .jr-back {
   display: inline-flex;

@@ -212,7 +212,7 @@ export function PasswordMission({ done, onComplete }: PanelProps) {
             )
           : t("Parol yozishni boshlang.", "Start typing a password.")}
       </p>
-      {strength.issues.length > 0 && (
+      {value && strength.issues.length > 0 && (
         <ul className="jr-tips">
           {strength.issues.map((issue) => (
             <li key={issue}>{tips[issue]}</li>
