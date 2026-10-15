@@ -9,7 +9,7 @@
   --font-mono: "Cascadia Code", Consolas, monospace;
 }
 :root {
-  /* Design.MD: black void, bone-white type, Electric Iris + Saffron Spark */
+  /* docs/design.md: black void, bone-white type, Electric Iris + Saffron Spark */
   --bg: #000000;
   --surface: #0b0b0d;
   --border: #222226;
