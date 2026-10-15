@@ -100,7 +100,7 @@ export default async function PlaygroundPage() {
           <summary>{t("Where should I start?")}</summary>
           <p>
             {t(
-              "New to building websites? Start with HTML foundations. If you already understand basic page structure, the security track begins with architecture and works toward HTTP, identity, and vulnerabilities.",
+              "New to cybersecurity? Start with Cybervalue Academy Junior: six short missions, no coding. Then pick a track: HTML foundations if you want to build websites, or the security track once you understand basic page structure. It begins with architecture and works toward HTTP, identity, and vulnerabilities.",
             )}
           </p>
         </details>
