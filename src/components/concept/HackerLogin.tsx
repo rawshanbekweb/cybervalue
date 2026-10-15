@@ -83,9 +83,9 @@ export function HackerLogin() {
             <i />
             identity verification
           </span>
-          <h2 className="hk-glitch" data-text="WHO GOES THERE?">
+          <h1 className="hk-glitch" data-text="WHO GOES THERE?">
             WHO GOES THERE?
-          </h2>
+          </h1>
           <p>
             Every session is logged, sandboxed, and reviewed. This one just
             isn&rsquo;t real.

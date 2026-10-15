@@ -63,7 +63,7 @@
   z-index: 4;
   padding: 40px;
 }
-.hk-login-visual-copy h2 {
+.hk-login-visual-copy h1 {
   font-size: clamp(26px, 3.4vw, 40px);
   margin: 16px 0 10px;
   letter-spacing: -0.5px;
