@@ -35,7 +35,7 @@
 }
 .lx-course-card {
   border: 1px solid #3d3c43;
-  background: linear-gradient(130deg, #141318, #0e0e10);
+  background: #111014;
   padding: 22px;
   border-radius: 12px;
 }
@@ -135,7 +135,7 @@
 }
 .lx-sidebar nav a:hover {
   color: var(--text);
-  background: #242a23;
+  background: #222126;
 }
 .lx-sidebar nav a.active {
   background: #29282f;

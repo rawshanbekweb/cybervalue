@@ -24,9 +24,9 @@
 .defend-heading h1 {
   font-size: clamp(35px, 4.5vw, 58px);
   line-height: 1.12;
-  letter-spacing: -2px;
+  letter-spacing: -0.04em;
   margin: 15px 0;
-  font-weight: 550;
+  font-weight: 400;
 }
 .defend-heading h1 span {
   color: var(--defend-red);
@@ -99,7 +99,7 @@
 }
 .defend-nav strong {
   font-size: 14px;
-  font-weight: 550;
+  font-weight: 500;
 }
 .defend-nav small {
   display: flex;
@@ -167,7 +167,7 @@
   margin: 0;
   padding: 10px 12px;
   border-radius: 6px;
-  background: #0c0e0d;
+  background: #0e0e10;
   font-size: 12px;
   overflow-x: auto;
 }
@@ -212,14 +212,14 @@
   color: var(--text);
 }
 
-.defend-code {
+.defend-root .defend-code {
   display: block;
   width: 100%;
   min-height: 300px;
   padding: 14px;
-  border: 1px solid var(--border-strong, #424940);
+  border: 1px solid var(--border-strong);
   border-radius: 8px;
-  background: #0c0e0d;
+  background: #0e0e10;
   color: var(--text);
   font-family: var(--font-mono, monospace);
   font-size: 13px;
@@ -246,9 +246,9 @@
   gap: 8px;
   padding: 10px 16px;
   border: 1px solid var(--accent);
-  border-radius: 7px;
+  border-radius: var(--radius-pill);
   background: var(--accent);
-  color: var(--bg);
+  color: var(--accent-ink);
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -256,11 +256,12 @@
 .defend-button.attack {
   border-color: var(--defend-red);
   background: var(--defend-red);
+  color: var(--bg);
 }
 .defend-button.secondary {
   background: transparent;
   color: var(--text);
-  border-color: var(--border-strong, #424940);
+  border-color: var(--border-strong);
 }
 .defend-button.quiet {
   background: transparent;
@@ -282,7 +283,7 @@
   height: 240px;
   border: 1px solid var(--border);
   border-radius: 8px;
-  background: #f7f8f3;
+  background: #f8f8f9;
 }
 .defend-empty {
   margin: 0;
@@ -301,7 +302,7 @@
   min-height: 120px;
   padding: 14px;
   border-radius: 8px;
-  background: #0a0c0b;
+  background: #0c0c0d;
   font-family: var(--font-mono, monospace);
   font-size: 12px;
 }
@@ -386,7 +387,7 @@
   max-height: 180px;
   overflow: auto;
   border-radius: 6px;
-  background: #121513;
+  background: #151417;
   white-space: pre-wrap;
   word-break: break-word;
   font-size: 11px;
@@ -397,9 +398,9 @@
 }
 .defend-debrief {
   padding: 24px;
-  border: 1px solid #3e4c32;
+  border: 1px solid #494752;
   border-radius: 10px;
-  background: #151b11;
+  background: #19191c;
 }
 .defend-debrief > svg {
   color: var(--accent-text);

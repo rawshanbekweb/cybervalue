@@ -20,6 +20,8 @@ In PowerShell, use `Copy-Item .env.example .env`. Visit http://localhost:3000. A
 
 Next.js App Router with Server Components, TypeScript, Tailwind CSS, PostgreSQL/Prisma, and Zod. Home, about, activity, content details, and sitemap use static generation/60-second ISR. Searchable archives use server rendering. Only navigation and error recovery need client components.
 
+The visual design follows [the style reference](docs/design.md): a black canvas, white type, Electric Iris (`#8052ff`) for actions and Saffron Spark (`#ffb829`) for highlights. Shared tokens live at the top of `src/app/globals.css`; lab stylesheets build on them.
+
 ```text
 src/app/                   Public routes, metadata, error states, downloads
 src/app/admin/             Private CMS: login, dashboard, per-collection CRUD
@@ -34,7 +36,7 @@ content/templates/         Draft authoring templates (never publicly loaded)
 content/private/downloads/ Private downloadable files (not committed)
 public/images/             Reviewed public screenshots
 tests/                     Unit and Playwright accessibility/SEO tests
-docs/                      Architecture, publishing, security, deployment
+docs/                      Architecture, design, publishing, security, deployment
 ```
 
 Shared `Content` records contain unique stable slugs, publication state, dates, metadata, author, category, tags, images, and related content. `Project`, `Lab`, `ResearchArticle`, `CTFEvent`, and `Resource` are one-to-one detail tables. `User` stores authorship and, optionally, the admin login (`email`/`passwordHash`); `Session` stores active admin logins; `SocialLink` stores verified links. Activity is derived from published records rather than separately maintained. The importer and the admin CMS share the same schema and enforce the same type consistency and authorized-labs rule.
