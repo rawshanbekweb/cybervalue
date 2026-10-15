@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Private IPv4 diapazonlari (RFC 1918): 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 — animatsion o‘zbekcha dars, IP tekshirgich, NAT sxemasi va test.">
 <title>Private IPv4 diapazonlari — Interaktiv dars</title>
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
 <style>
 /* Layout: one teaching column; each idea is a "sahna" (scene) panel with its own animation and controls. */
 :root{
@@ -190,6 +191,8 @@ footer{font-size:13px;color:var(--muted)}
 @media (max-width:720px){
   .ranges,.facts{grid-template-columns:1fr}
   .scan{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .readout{grid-template-columns:minmax(0,1fr)}
+  .readout>span:empty{display:none}
   .homes{grid-template-columns:1fr}
   .minmax{grid-template-columns:1fr}
 }

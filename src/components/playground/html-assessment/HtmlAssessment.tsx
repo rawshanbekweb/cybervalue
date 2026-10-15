@@ -326,6 +326,7 @@ export function HtmlAssessment() {
   if (loading)
     return (
       <div className="exam-shell" lang="uz">
+        <h1 className="visually-hidden">{t("HTML sinovi")}</h1>
         <p role="status">{t("Sinov holati yuklanmoqda…")}</p>
       </div>
     );
