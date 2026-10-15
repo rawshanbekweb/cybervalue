@@ -104,6 +104,8 @@ test("terminal history, completion, quotes, file preview, export, reload and ind
     name: "Terminal command",
     exact: true,
   });
+  // Typing before hydration finishes is wiped when React takes over the input.
+  await page.waitForLoadState("networkidle");
   await input.fill("pw");
   await input.press("Tab");
   await expect(input).toHaveValue("pwd");

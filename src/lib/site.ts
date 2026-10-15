@@ -84,8 +84,9 @@ export function collectionFor(kind: string): Collection {
 export function contentUrl(entry: { kind: string; slug: string }) {
   return `/${collectionFor(entry.kind)}/${entry.slug}`;
 }
+// The wordmark links home, so the list starts with the newcomer's way in.
+// Nine entries do not fit beside the student button below 1280px.
 export const navigation = [
-  { href: "/", label: "Overview" },
   { href: "/playground/junior", label: "Start here" },
   ...Object.entries(collections).map(([key, value]) => ({
     href: `/${key}`,

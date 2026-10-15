@@ -155,3 +155,18 @@ test("home, archives and about pass automated accessibility checks", async ({
     ).toEqual([]);
   }
 });
+
+test("the header never overflows the viewport between mobile menu and wide desktop", async ({
+  page,
+}) => {
+  for (const width of [1201, 1240, 1280, 1366]) {
+    await page.setViewportSize({ width, height: 800 });
+    await page.goto("/playground/html-basics/assessment");
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+      `width ${width}`,
+    ).toBe(true);
+  }
+});

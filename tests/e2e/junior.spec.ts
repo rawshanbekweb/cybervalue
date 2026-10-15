@@ -173,5 +173,5 @@ test("the main navigation marks only the most specific section as current", asyn
   await page.goto("/playground/ctf");
   await expect(nav.locator('[aria-current="page"]')).toHaveText("Playground");
   await page.goto("/");
-  await expect(nav.locator('[aria-current="page"]')).toHaveText("Overview");
+  await expect(nav.locator('[aria-current="page"]')).toHaveCount(0);
 });
