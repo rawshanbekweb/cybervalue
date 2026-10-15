@@ -14,6 +14,8 @@ import { LearningCatalog } from "@/components/learning-catalog";
 import { MissionGateway } from "@/components/mission-gateway";
 import { StudioGateway } from "@/components/studio-gateway";
 import { CtfGateway } from "@/components/ctf-gateway";
+import { DefendGateway } from "@/components/defend-gateway";
+import { JuniorGateway } from "@/components/junior-gateway";
 import { Constellation } from "@/components/constellation";
 import { CardSpotlight } from "@/components/card-spotlight";
 import {
@@ -81,14 +83,14 @@ export default async function Home() {
               )}
             </p>
             <div className="cv-hero-actions">
-              <Link className="button button-primary" href="/playground">
-                {t("Enter the playground")}
+              <Link className="button button-primary" href="/playground/junior">
+                {t("Start your first mission")}
                 <ArrowUpRight size={18} />
               </Link>
-              <a className="cv-secondary-link" href="#explore">
-                {t("Explore the platform")}
+              <Link className="cv-secondary-link" href="/playground">
+                {t("Enter the playground")}
                 <ArrowRight size={16} />
-              </a>
+              </Link>
             </div>
           </div>
         </section>
@@ -110,10 +112,12 @@ export default async function Home() {
               )}
             </p>
           </div>
+          <JuniorGateway />
           <div className="gateway-grid">
             <CtfGateway />
             <MissionGateway />
             <StudioGateway />
+            <DefendGateway />
           </div>
           <LearningCatalog tracks={tracks} />
         </section>

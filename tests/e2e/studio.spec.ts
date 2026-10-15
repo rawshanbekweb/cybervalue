@@ -108,6 +108,9 @@ test("studio recovers storage, supports deep links, and isolates active preview 
       '{"html":42,"css":null}',
     ),
   );
+  // A cold load, as when a student opens a shared link: a hash-only change
+  // before hydration finishes is dropped by the router.
+  await page.goto("about:blank");
   await page.goto("/playground/studio#project/launch");
   await expect(page.getByLabel("HTML source", { exact: true })).toHaveValue(
     /FIELD NOTES/,
@@ -155,4 +158,13 @@ test("studio fits small screens and its controls are accessible", async ({
     .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
     .analyze();
   expect(result.violations).toEqual([]);
+});
+
+test("studio hydrates without errors in both languages", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto("/playground/studio");
+  await expect(page.locator(".studio-caption")).toBeVisible();
+  await page.waitForLoadState("networkidle");
+  expect(errors).toEqual([]);
 });

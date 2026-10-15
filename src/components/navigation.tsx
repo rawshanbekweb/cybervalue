@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { Menu, X, ArrowUpRight, GraduationCap } from "lucide-react";
 import { useTranslator } from "./locale-provider";
 
@@ -13,6 +13,21 @@ export function Navigation({
   const path = usePathname();
   const t = useTranslator();
   const [open, setOpen] = useState(false);
+  // Prerendered pages are built without knowing the request path, and React does
+  // not patch attributes that differ during hydration. Mark the current section
+  // only after hydration so server and client markup start identical.
+  const hydrated = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
+  // The most specific entry wins, so /playground/junior highlights "Start here"
+  // and not "Playground" as well.
+  const matches = (href: string) =>
+    href === "/" ? path === "/" : path === href || path.startsWith(`${href}/`);
+  const current = (hydrated ? items : [])
+    .filter((item) => matches(item.href))
+    .sort((a, b) => b.href.length - a.href.length)[0]?.href;
   return (
     <>
       <button
@@ -38,8 +53,7 @@ export function Navigation({
         }}
       >
         {items.map((item) => {
-          const active =
-            item.href === "/" ? path === "/" : path.startsWith(item.href);
+          const active = item.href === current;
           return (
             <Link
               key={item.href}

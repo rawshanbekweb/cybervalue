@@ -27,6 +27,7 @@ const SECTIONS: { id: string; kind: MaterialKind; label: string }[] = [
 
 // Interactive modules that already exist on the site, linked from the lab section.
 const OPEN_LABS = [
+  { href: "/playground/junior", title: "Cybervalue Academy Junior" },
   { href: "/playground/web-security-lab", title: "Web Security Lab" },
   { href: "/playground/linux-basics", title: "Linux foundations lab" },
   { href: "/playground/network-basics", title: "IP addressing lab" },
@@ -34,6 +35,7 @@ const OPEN_LABS = [
   { href: "/playground/missions", title: "Investigation missions" },
   { href: "/playground/html-basics", title: "HTML Basics" },
   { href: "/playground/studio", title: "HTML & CSS project studio" },
+  { href: "/playground/defend", title: "Build & Defend" },
 ];
 
 type Overview = Awaited<ReturnType<typeof studentOverview>>;

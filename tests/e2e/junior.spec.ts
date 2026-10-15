@@ -146,3 +146,32 @@ test("Uzbek is the default language", async ({ browser }) => {
   ).toBeVisible();
   await context.close();
 });
+
+test("the home page leads a newcomer to Junior and shows every practice card", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await expect(
+    page.getByRole("link", { name: /Start your first mission/ }).first(),
+  ).toHaveAttribute("href", "/playground/junior");
+  await expect(
+    page.getByRole("heading", { name: "Cybervalue Academy Junior" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", {
+      name: "Write the code. Then let a bot attack it.",
+    }),
+  ).toHaveCount(1);
+});
+
+test("the main navigation marks only the most specific section as current", async ({
+  page,
+}) => {
+  const nav = page.getByRole("navigation", { name: "Main navigation" });
+  await page.goto("/playground/junior");
+  await expect(nav.locator('[aria-current="page"]')).toHaveText("Start here");
+  await page.goto("/playground/ctf");
+  await expect(nav.locator('[aria-current="page"]')).toHaveText("Playground");
+  await page.goto("/");
+  await expect(nav.locator('[aria-current="page"]')).toHaveText("Overview");
+});

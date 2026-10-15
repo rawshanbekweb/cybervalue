@@ -86,6 +86,7 @@ export function contentUrl(entry: { kind: string; slug: string }) {
 }
 export const navigation = [
   { href: "/", label: "Overview" },
+  { href: "/playground/junior", label: "Start here" },
   ...Object.entries(collections).map(([key, value]) => ({
     href: `/${key}`,
     label: value.title,

@@ -29,6 +29,7 @@ import {
 import { useLocalStorageState } from "../useLocalStorageState";
 import { useLocale, useTranslator } from "@/components/locale-provider";
 import { downloadText } from "../security-lab/storage";
+import { formatCount } from "@/lib/format";
 import "./studio.css";
 
 function subscribe(listener: () => void) {
@@ -109,7 +110,7 @@ function Workspace({ project }: { project: StudioProject }) {
   } | null>(null);
   const [notice, setNotice] = useState("");
   const t = useTranslator();
-  const numberLocale = useLocale() === "uz" ? "uz-UZ" : "en-US";
+  const locale = useLocale();
   const deferredHtml = useDeferredValue(draft.html);
   const deferredCss = useDeferredValue(draft.css);
   const preview = useMemo(
@@ -171,11 +172,11 @@ function Workspace({ project }: { project: StudioProject }) {
             </div>
             <span className="studio-caption">
               {t("{count} / {limit} characters", {
-                count: draft[editor].length.toLocaleString(numberLocale),
-                limit: (editor === "html"
-                  ? HTML_LIMIT
-                  : CSS_LIMIT
-                ).toLocaleString(numberLocale),
+                count: formatCount(draft[editor].length, locale),
+                limit: formatCount(
+                  editor === "html" ? HTML_LIMIT : CSS_LIMIT,
+                  locale,
+                ),
               })}
             </span>
           </div>

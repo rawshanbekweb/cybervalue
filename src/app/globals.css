@@ -2422,10 +2422,10 @@ p {
     transform: none;
   }
 }
-/* Gateway cards: one balanced row instead of three stacked banners */
+/* Gateway cards: a balanced two-column grid (four cards make two even rows) */
 .gateway-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
   margin-bottom: 40px;
 }
