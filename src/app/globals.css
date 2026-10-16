@@ -2895,3 +2895,89 @@ h2 {
 .admin-checklist-inline {
   grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
 }
+
+/* Class panel */
+.admin-activity {
+  margin: 0;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #0d0d0f;
+}
+.admin-activity-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 120px;
+  border-bottom: 1px solid #2a2930;
+}
+.admin-activity-bar {
+  position: relative;
+  flex: 1;
+  border-radius: 4px 4px 0 0;
+  background: var(--accent);
+}
+.admin-activity-bar:hover {
+  background: var(--accent-text);
+}
+.admin-activity-bar:hover::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #16151b;
+  color: var(--text);
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1;
+}
+.admin-activity-axis {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.admin-activity figcaption {
+  margin-top: 8px;
+  font-size: 12px;
+}
+.admin-attention {
+  display: grid;
+  gap: 6px;
+  padding: 0;
+  list-style: none;
+}
+.admin-attention li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  padding: 10px 12px;
+  border: 1px solid #ffb82944;
+  border-radius: 6px;
+  background: #ffb8290a;
+}
+.admin-chip {
+  display: inline-block;
+  min-width: 38px;
+  margin-right: 4px;
+  padding: 2px 6px;
+  border: 1px solid #333;
+  border-radius: 9999px;
+  color: var(--muted);
+  font-size: 11px;
+  text-align: center;
+}
+.admin-chip.ok {
+  border-color: #2ee6a666;
+  color: #2ee6a6;
+}
+.admin-chip.warn {
+  border-color: #ffb82966;
+  color: var(--spark);
+}

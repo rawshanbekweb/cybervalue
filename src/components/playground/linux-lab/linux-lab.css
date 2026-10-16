@@ -886,3 +886,7 @@
     scroll-behavior: auto;
   }
 }
+
+.lx-sandbox + .lx-sandbox {
+  margin-top: 8px;
+}

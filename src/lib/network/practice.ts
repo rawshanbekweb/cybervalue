@@ -28,11 +28,11 @@ export function random(seed: number): Random {
 
 export const int = (r: Random, min: number, max: number) =>
   min + Math.floor(r() * (max - min + 1));
-const pick = <T>(r: Random, items: readonly T[]) =>
+export const pick = <T>(r: Random, items: readonly T[]) =>
   items[int(r, 0, items.length - 1)];
 
 // Fisher–Yates with the seeded generator.
-function shuffle<T>(r: Random, items: T[]) {
+export function shuffle<T>(r: Random, items: T[]) {
   const out = [...items];
   for (let i = out.length - 1; i > 0; i--) {
     const j = int(r, 0, i);

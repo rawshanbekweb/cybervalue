@@ -171,7 +171,9 @@ test.describe("admin-issued access", () => {
     await expect(
       student.getByRole("heading", { name: "Hello, Test." }),
     ).toBeVisible();
-    await expect(student.getByText(`Group ${group}`)).toBeVisible();
+    await expect(
+      student.getByText(`Group ${group}`, { exact: true }),
+    ).toBeVisible();
     await audit(student, "student home");
 
     await student.getByRole("link", { name: `Private lesson ${id}` }).click();

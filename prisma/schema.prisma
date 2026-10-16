@@ -346,6 +346,7 @@ model Student {
   progress     StudentProgress[]
   quizStarts   StudentQuizStart[]
   certificates StudentCertificate[]
+  checkpoints  StudentCheckpoint[]
   // Particle points from the student's own photo ({ aspect, points }); the
   // photo itself is never stored.
   portrait     Json?
@@ -457,4 +458,20 @@ model StudentCertificate {
   revokedAt DateTime? @db.Timestamptz(3)
 
   @@index([studentId])
+}
+
+// A graded lab checkpoint attempt. The seed rebuilds the exact questions; it
+// is unique per student so a graded set cannot be resubmitted.
+model StudentCheckpoint {
+  id         String   @id @default(cuid())
+  studentId  String
+  student    Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  checkpoint String
+  seed       Int
+  score      Int
+  total      Int
+  createdAt  DateTime @default(now()) @db.Timestamptz(3)
+
+  @@unique([studentId, checkpoint, seed])
+  @@index([checkpoint, createdAt])
 }

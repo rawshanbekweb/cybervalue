@@ -22,6 +22,7 @@ import {
   RotateCcw,
   Search,
   Terminal,
+  ClipboardCheck,
   X,
 } from "lucide-react";
 import { useLocale } from "@/components/locale-provider";
@@ -43,6 +44,7 @@ import {
   restoreSession,
   type Session,
 } from "@/lib/linux/storage";
+import { Checkpoints } from "../checkpoint/Checkpoints";
 import "./linux-lab.css";
 
 function download(name: string, text: string) {
@@ -174,6 +176,11 @@ export function LinuxLab() {
             {t("Erkin mashq", "Free practice")}
             <ArrowRight size={15} />
           </button>
+          <a className="lx-sandbox" href="#checkpoints">
+            <ClipboardCheck size={17} />
+            {t("Nazorat testi", "Checkpoint")}
+            <ArrowRight size={15} />
+          </a>
           <p className="lx-sidebar-note">
             {t(
               "Istalgan darsdan boshlang. Misollar buyruq satriga qo‘yiladi; bajarish uchun Enter bosing.",
@@ -194,6 +201,7 @@ export function LinuxLab() {
           onNext={() => select(Math.min(id + 1, LESSONS.length))}
         />
       </div>
+      <Checkpoints ids={["linux-1"]} />
     </div>
   );
 }
