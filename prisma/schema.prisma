@@ -281,6 +281,8 @@ model JuniorMember {
   xp           Int             @default(0)
   lastLoginAt  DateTime?       @db.Timestamptz(3)
   lastActiveAt DateTime?       @db.Timestamptz(3)
+  // Opens the read-only progress page for parents: /report/<token>.
+  reportToken  String?         @unique
   createdAt    DateTime        @default(now())
   updatedAt    DateTime        @updatedAt
   sessions     JuniorSession[]
@@ -351,6 +353,8 @@ model Student {
   // Particle points from the student's own photo ({ aspect, points }); the
   // photo itself is never stored.
   portrait     Json?
+  // Opens the read-only progress page for parents: /report/<token>.
+  reportToken  String?              @unique
 
   @@index([group])
 }
@@ -554,4 +558,27 @@ model LiveAnswer {
 
   @@id([playerId, question])
   @@index([gameId, question])
+}
+
+// A Telegram chat that receives notifications. `subject` names who it is
+// for: "teacher:<userId>", "student:<id>", "parent:student:<id>" or
+// "parent:junior:<id>".
+model TelegramChat {
+  id        String   @id @default(cuid())
+  chatId    String
+  subject   String
+  name      String   @default("")
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+  @@unique([chatId, subject])
+  @@index([subject])
+}
+
+// Notifications already sent, so a reminder goes out once even when the
+// daily job runs again.
+model NotificationLog {
+  key    String   @id
+  sentAt DateTime @default(now()) @db.Timestamptz(3)
+
+  @@index([sentAt])
 }

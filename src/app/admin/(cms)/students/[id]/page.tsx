@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ParentAccess } from "@/components/admin/parent-access";
 import { notFound } from "next/navigation";
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
 import { loadStandings } from "@/lib/student/standing";
@@ -60,12 +61,15 @@ export default async function AdminStudentPage({
   });
   if (!student) notFound();
   const locale = await getAdminLocale();
-  const [standings, checkpoints] = await Promise.all([
+  const [standings, checkpoints, parentChats] = await Promise.all([
     loadStandings(db, [student]),
     db.studentCheckpoint.findMany({
       where: { studentId: student.id },
       orderBy: { createdAt: "desc" },
       take: 30,
+    }),
+    db.telegramChat.count({
+      where: { subject: `parent:student:${student.id}` },
     }),
   ]);
   const standing = standings.get(student.id)!;
@@ -189,6 +193,13 @@ export default async function AdminStudentPage({
           </ConfirmButton>
         </form>
       </div>
+      <ParentAccess
+        kind="student"
+        id={student.id}
+        token={student.reportToken}
+        chats={parentChats}
+        t={t}
+      />
       <h2>{t("Certificates")}</h2>
       {student.certificates.length > 0 && (
         <ul className="admin-certificates">

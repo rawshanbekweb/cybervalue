@@ -22,6 +22,7 @@ export default async function AdminCmsLayout({
           <Link href="/admin/class">{t("Class")}</Link>
           <Link href="/admin/assignments">{t("Assignments")}</Link>
           <Link href="/admin/live">{t("Live quiz")}</Link>
+          <Link href="/admin/telegram">Telegram</Link>
           <Link href="/admin/users">{t("All users")}</Link>
           <Link href="/admin/students">{t("Students")}</Link>
           <Link href="/admin/junior">Academy Junior</Link>

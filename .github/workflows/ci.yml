@@ -53,6 +53,11 @@ jobs:
       E2E_ADMIN_PASSWORD: ci-only-admin-password
       E2E_ISOLATED_ACCOUNT: "true"
       E2E_HTML_ASSESSMENT: "true"
+      # A stand-in bot: tests/e2e/telegram.spec.ts answers at TELEGRAM_API_URL.
+      TELEGRAM_BOT_TOKEN: "123456:ci-only-fake-token-not-a-real-bot-000"
+      TELEGRAM_BOT_USERNAME: cybervalue_ci_bot
+      TELEGRAM_API_URL: http://127.0.0.1:3199
+      CRON_SECRET: ci-only-cron-secret-not-used-anywhere
       PORT: "3100"
     steps:
       - uses: actions/checkout@v7

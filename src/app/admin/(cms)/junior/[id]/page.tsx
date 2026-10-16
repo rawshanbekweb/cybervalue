@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ParentAccess } from "@/components/admin/parent-access";
 import { notFound } from "next/navigation";
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
 import { requireAdmin } from "@/lib/auth";
@@ -44,6 +45,9 @@ export default async function AdminJuniorMemberPage({
     },
   });
   if (!member) notFound();
+  const parentChats = await db.telegramChat.count({
+    where: { subject: `parent:junior:${member.id}` },
+  });
   const row = juniorRow(member);
   const next = RANKS[row.rankIndex + 1];
   const done = new Set(Object.keys(row.progress.missions));
@@ -168,6 +172,14 @@ export default async function AdminJuniorMemberPage({
           active: member.active,
           expiresAt: toDateInput(member.expiresAt),
         }}
+      />
+
+      <ParentAccess
+        kind="junior"
+        id={member.id}
+        token={member.reportToken}
+        chats={parentChats}
+        t={t}
       />
 
       <h2>{t("Access")}</h2>

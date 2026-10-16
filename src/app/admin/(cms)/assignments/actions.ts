@@ -5,6 +5,8 @@ import { requireAdmin } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { limit } from "@/lib/rate-limit-db";
 import { assignmentSchema } from "@/lib/student/assignments";
+import { assignmentCreated } from "@/lib/telegram/events";
+import { quietly } from "@/lib/telegram/notify";
 
 export type AssignmentState =
   { error?: string; success?: string; at?: number } | undefined;
@@ -51,6 +53,7 @@ export async function createAssignmentAction(
   }
   const saved = await db.studentAssignment.create({ data: parsed.data });
   await audit("assignment.create", session.user.id, saved.title);
+  await quietly(() => assignmentCreated(db, saved.id));
   revalidatePath("/admin/assignments");
   revalidatePath("/admin/class");
   revalidatePath("/student", "layout");

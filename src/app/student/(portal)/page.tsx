@@ -12,6 +12,9 @@ import { requireStudent } from "@/lib/student/session";
 import { studentAssignments } from "@/lib/student/assignment-data";
 import { visibleSince } from "@/lib/student/assignments";
 import { AssignmentsSection } from "@/components/student/assignments-panel";
+import { deepLink, telegramConfig } from "@/lib/telegram/api";
+import { signLink } from "@/lib/telegram/link";
+import { linkSecret } from "@/lib/telegram/webhook";
 import {
   isEntranceExam,
   studentOverview,
@@ -187,6 +190,12 @@ export default async function StudentHomePage() {
       me: c.id === student.id,
     }))
     .filter((row, i) => i < 10 || row.me);
+  const bot = telegramConfig();
+  const secret = linkSecret();
+  const telegram =
+    bot && secret
+      ? deepLink(bot.username, signLink(secret, "s", student.id))
+      : null;
   const finished = materials.filter((m) => done.has(m.id)).length;
   const portrait = isPortraitData(saved?.portrait) ? saved.portrait : null;
   const entrance = materials.filter((m) => isEntranceExam(m.slug));
@@ -339,6 +348,15 @@ export default async function StudentHomePage() {
           </a>
         ))}
       </nav>
+
+      {telegram && (
+        <p className="student-telegram">
+          <a href={telegram} target="_blank" rel="noreferrer">
+            {t("Get assignment reminders in Telegram")}
+            <ArrowUpRight size={14} aria-hidden="true" />
+          </a>
+        </p>
+      )}
 
       {assignments.length > 0 && (
         <AssignmentsSection

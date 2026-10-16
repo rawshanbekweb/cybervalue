@@ -42,7 +42,10 @@ export type AuditAction =
   | "junior.progress_reset"
   | "junior.delete"
   | "assignment.create"
-  | "assignment.delete";
+  | "assignment.delete"
+  | "report.link"
+  | "telegram.webhook"
+  | "telegram.unlink";
 
 const RETENTION_MS = 180 * 86_400_000;
 
