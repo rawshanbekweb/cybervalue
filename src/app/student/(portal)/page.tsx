@@ -11,6 +11,13 @@ import { isLevel, LEVEL_LABEL } from "@/lib/student/levels";
 import { getDb } from "@/lib/db";
 import { formatCertificateCode } from "@/lib/student/certificate";
 import { Constellation } from "@/components/student/constellation";
+import { Constellation as ParticlePortrait } from "@/components/constellation";
+import { PortraitUploadForm } from "@/components/portrait-upload";
+import { isPortraitData } from "@/lib/portrait-data";
+import {
+  removeStudentPortraitAction,
+  saveStudentPortraitAction,
+} from "../actions";
 import type { MaterialKind } from "@/generated/prisma/client";
 
 export async function generateMetadata() {
@@ -96,15 +103,20 @@ function MaterialItem({
 export default async function StudentHomePage() {
   const t = await getAdminTranslator();
   const student = await requireStudent();
-  const [{ materials, done, tests }, certificates] = await Promise.all([
+  const [{ materials, done, tests }, certificates, saved] = await Promise.all([
     studentOverview(student),
     getDb()?.studentCertificate.findMany({
       where: { studentId: student.id, revokedAt: null },
       orderBy: { issuedAt: "desc" },
       select: { code: true, title: true },
     }) ?? [],
+    getDb()?.student.findUnique({
+      where: { id: student.id },
+      select: { portrait: true },
+    }),
   ]);
   const finished = materials.filter((m) => done.has(m.id)).length;
+  const portrait = isPortraitData(saved?.portrait) ? saved.portrait : null;
   const entrance = materials.filter((m) => isEntranceExam(m.slug));
   const entranceDone = entrance.filter((m) => done.has(m.id)).length;
   // Personal labs sit with the other labs; the entrance exam has its own
@@ -191,7 +203,34 @@ export default async function StudentHomePage() {
             </div>
           )}
         </div>
-        <Constellation className="student-hero-art" seed={11} />
+        <div className="student-portrait">
+          {portrait ? (
+            <ParticlePortrait
+              className="student-portrait-canvas"
+              layout="card"
+              data={portrait}
+            />
+          ) : (
+            <Constellation className="student-hero-art" seed={11} />
+          )}
+          <details className="student-portrait-edit">
+            <summary>
+              {portrait ? t("Change your photo") : t("Add your photo")}
+            </summary>
+            <PortraitUploadForm
+              action={saveStudentPortraitAction}
+              variant="student"
+              label={t("Your photo")}
+            />
+            {portrait && (
+              <form action={removeStudentPortraitAction}>
+                <button type="submit" className="student-ghost">
+                  {t("Remove portrait")}
+                </button>
+              </form>
+            )}
+          </details>
+        </div>
       </section>
 
       <nav className="student-jump" aria-label={t("Sections")}>

@@ -14,6 +14,7 @@ export default async function AdminStudentsPage() {
         db.student.findMany({
           orderBy: [{ group: "asc" }, { name: "asc" }],
           take: 1000,
+          omit: { portrait: true },
           include: {
             _count: { select: { progress: true, submissions: true } },
           },

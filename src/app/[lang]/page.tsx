@@ -26,6 +26,7 @@ import {
   formatDate,
 } from "@/components/ui";
 import { getFeatured, getRecent, getSocials } from "@/lib/content";
+import { homePortraitVersion } from "@/lib/home-portrait";
 import { getLearningTracks } from "@/lib/learning";
 import { metadata } from "@/lib/seo";
 import { contentUrl, site } from "@/lib/site";
@@ -43,10 +44,11 @@ export const generateMetadata = () =>
 export default async function Home() {
   const t = await getTranslator();
   const locale = await getLocale();
-  const [featured, recent, socials] = await Promise.all([
+  const [featured, recent, socials, portraitVersion] = await Promise.all([
     getFeatured(),
     getRecent(4),
     getSocials(),
+    homePortraitVersion(),
   ]);
   const tracks = getLearningTracks();
   return (
@@ -63,7 +65,12 @@ export default async function Home() {
       />
       <CardSpotlight selector=".cv-explore-card, .gateway-grid > section, .learn-card" />
       <div className="cv-hero-wrap">
-        <Constellation className="cv-constellation" />
+        <Constellation
+          className="cv-constellation"
+          src={
+            portraitVersion ? `/api/portrait?v=${portraitVersion}` : undefined
+          }
+        />
         <section className="cv-hero container" aria-labelledby="home-title">
           <div className="cv-hero-copy">
             <span className="cv-kicker">

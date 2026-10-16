@@ -20,6 +20,11 @@ import { materialForStudent } from "@/lib/student/materials";
 import { gradeQuiz, isQuizExpired, quizSchema } from "@/lib/student/quiz";
 import { closeExpiredStart, lockAttempts } from "@/lib/student/quiz-timer";
 import { judgeFlag, normalizeFlag } from "@/lib/student/challenge";
+import { Prisma } from "@/generated/prisma/client";
+import {
+  portraitFromForm,
+  type PortraitFormState,
+} from "@/lib/portrait-upload";
 
 export type StudentLoginState = { error?: string } | undefined;
 const GENERIC_ERROR = "This access code is not valid or no longer active.";
@@ -275,4 +280,34 @@ export async function submitFlagAction(
   });
   revalidatePath("/student", "layout");
   return result;
+}
+
+// A student's own animated portrait. Only the particle points are stored; the
+// photo is discarded once they are computed.
+export async function saveStudentPortraitAction(
+  _state: PortraitFormState,
+  formData: FormData,
+): Promise<PortraitFormState> {
+  const student = await requireStudent();
+  if (!(await limit(`student-portrait:${student.id}`, 10, 10 * 60_000)))
+    return { error: "Too many attempts. Try again in a few minutes." };
+  const db = getDb();
+  if (!db) return { error: "The learning area is not available right now." };
+  const result = await portraitFromForm(formData);
+  if ("error" in result) return { error: result.error };
+  await db.student.update({
+    where: { id: student.id },
+    data: { portrait: result.data },
+  });
+  revalidatePath("/student");
+  return { success: "Your portrait is ready." };
+}
+
+export async function removeStudentPortraitAction() {
+  const student = await requireStudent();
+  await getDb()?.student.update({
+    where: { id: student.id },
+    data: { portrait: Prisma.DbNull },
+  });
+  revalidatePath("/student");
 }

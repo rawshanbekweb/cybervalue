@@ -209,5 +209,19 @@
   "Best {percent}%": "Eng yaxshi natija: {percent}%",
   "{used} of {max} attempts": "{used}/{max} urinish",
   "Sections": "Bo‘limlar",
-  "Open interactive labs": "Interaktiv laboratoriyalar"
+  "Open interactive labs": "Interaktiv laboratoriyalar",
+  "A head-and-shoulders photo against a plain background works best. Only the particle points are kept, not the photo.": "Bir xil rangli fonda boshdan yelkagacha olingan rasm eng yaxshi natija beradi. Rasmning o‘zi saqlanmaydi, faqat zarracha nuqtalari saqlanadi.",
+  "Building the portrait…": "Portret yaratilmoqda…",
+  "Upload photo": "Rasmni yuklash",
+  "Choose a photo first.": "Avval rasm tanlang.",
+  "This image could not be read. Use a PNG, JPG or WebP photo.": "Bu rasmni o‘qib bo‘lmadi. PNG, JPG yoki WebP rasm ishlating.",
+  "This photo is too large. Use one under 1 MB.": "Rasm juda katta. 1 MB dan kichik rasm ishlating.",
+  "The portrait could not be made. Try another photo.": "Portret yaratilmadi. Boshqa rasm bilan urinib ko‘ring.",
+  "Use a photo at least 120 pixels on each side.": "Har tomoni kamida 120 pikseldan iborat rasm ishlating.",
+  "No person could be found in this photo. Try a clearer portrait.": "Bu rasmda odam topilmadi. Aniqroq portret bilan urinib ko‘ring.",
+  "Your portrait is ready.": "Portretingiz tayyor.",
+  "Change your photo": "Rasmni almashtirish",
+  "Add your photo": "Rasmingizni qo‘shing",
+  "Your photo": "Rasmingiz",
+  "Remove portrait": "Portretni o‘chirish"
 }
