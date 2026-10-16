@@ -67,7 +67,7 @@ export function ExerciseCard({
       <Given exercise={exercise} />
       {exercise.options ? (
         <fieldset className="cr-options">
-          <legend className="sr-only">{text(exercise.task)}</legend>
+          <legend className="visually-hidden">{text(exercise.task)}</legend>
           {exercise.options.map((option, i) => (
             <label key={i} className={answer === String(i) ? "on" : undefined}>
               <input
@@ -85,7 +85,7 @@ export function ExerciseCard({
         </fieldset>
       ) : (
         <>
-          <label htmlFor={inputId} className="sr-only">
+          <label htmlFor={inputId} className="visually-hidden">
             {t("Javobingiz", "Your answer")}
           </label>
           <input

@@ -46,23 +46,37 @@ const all = (state: BadgeState, id: string) => {
   return (state.ciphers[cipher.id]?.length ?? 0) === cipher.exercises.length;
 };
 
+export type BadgeIcon =
+  | "rocket"
+  | "fish"
+  | "search"
+  | "cap"
+  | "scroll"
+  | "chart"
+  | "cog"
+  | "radio"
+  | "mail"
+  | "flame"
+  | "key"
+  | "crown";
+
 export const BADGES: readonly {
   id: string;
-  emoji: string;
+  icon: BadgeIcon;
   title: Text;
   how: Text;
   earned: (state: BadgeState) => boolean;
 }[] = [
   {
     id: "first",
-    emoji: "🚀",
+    icon: "rocket",
     title: { uz: "Birinchi qadam", en: "First step" },
     how: { uz: "Bitta missiyani bajaring", en: "Finish one mission" },
     earned: (s) => s.missions >= 1,
   },
   {
     id: "phish",
-    emoji: "🎣",
+    icon: "fish",
     title: { uz: "Fishing ovchisi", en: "Phish hunter" },
     how: {
       uz: "«Fishingni top» missiyasini bajaring",
@@ -72,7 +86,7 @@ export const BADGES: readonly {
   },
   {
     id: "detective",
-    emoji: "🕵️",
+    icon: "search",
     title: { uz: "Detektiv", en: "Detective" },
     how: {
       uz: "Kiber-shtab hujumchisini fosh qiling",
@@ -82,14 +96,14 @@ export const BADGES: readonly {
   },
   {
     id: "recruit",
-    emoji: "🎓",
+    icon: "cap",
     title: { uz: "Junior bitiruvchisi", en: "Junior graduate" },
     how: { uz: "Barcha 6 missiyani bajaring", en: "Finish all 6 missions" },
     earned: (s) => s.missions === s.missionTotal,
   },
   {
     id: "historian",
-    emoji: "📜",
+    icon: "scroll",
     title: { uz: "Tarixchi", en: "Historian" },
     how: {
       uz: "Shifrlar xonasidagi barcha shifrlarni oching",
@@ -99,7 +113,7 @@ export const BADGES: readonly {
   },
   {
     id: "kindi",
-    emoji: "📊",
+    icon: "chart",
     title: { uz: "Al-Kindiy shogirdi", en: "Al-Kindi’s apprentice" },
     how: {
       uz: "Chastota tahlilining barcha mashqlarini yeching",
@@ -109,7 +123,7 @@ export const BADGES: readonly {
   },
   {
     id: "bletchley",
-    emoji: "⚙️",
+    icon: "cog",
     title: { uz: "Bletchli-Park", en: "Bletchley Park" },
     how: {
       uz: "Enigmaning barcha mashqlarini yeching",
@@ -119,7 +133,7 @@ export const BADGES: readonly {
   },
   {
     id: "sos",
-    emoji: "📡",
+    icon: "radio",
     title: { uz: "Tezkor barmoqlar", en: "Fast fingers" },
     how: {
       uz: "Telegraf kalitida SOS yuboring",
@@ -129,7 +143,7 @@ export const BADGES: readonly {
   },
   {
     id: "secret",
-    emoji: "✉️",
+    icon: "mail",
     title: { uz: "Sir saqlovchi", en: "Secret keeper" },
     how: {
       uz: "Do‘stingizga shifrlangan xabar yuboring",
@@ -139,7 +153,7 @@ export const BADGES: readonly {
   },
   {
     id: "streak",
-    emoji: "🔥",
+    icon: "flame",
     title: { uz: "3 kunlik olov", en: "3-day streak" },
     how: {
       uz: "Kunlik topishmoqni 3 kun ketma-ket yeching",
@@ -149,7 +163,7 @@ export const BADGES: readonly {
   },
   {
     id: "master",
-    emoji: "🗝️",
+    icon: "key",
     title: { uz: "Shifr ustasi", en: "Cipher master" },
     how: {
       uz: "Shifrlar xonasidagi barcha mashqlarni yeching",
@@ -159,7 +173,7 @@ export const BADGES: readonly {
   },
   {
     id: "chief",
-    emoji: "👑",
+    icon: "crown",
     title: { uz: "Bosh agent", en: "Chief agent" },
     how: { uz: "Eng yuqori unvonga erishing", en: "Reach the top rank" },
     earned: (s) => s.rank === RANKS.length - 1,

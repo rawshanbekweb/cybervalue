@@ -33,7 +33,12 @@ export type AuditAction =
   | "material.delete"
   | "submission.review"
   | "portrait.update"
-  | "portrait.reset";
+  | "portrait.reset"
+  | "junior.create"
+  | "junior.update"
+  | "junior.code_reset"
+  | "junior.progress_reset"
+  | "junior.delete";
 
 const RETENTION_MS = 180 * 86_400_000;
 

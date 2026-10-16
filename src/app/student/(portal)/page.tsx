@@ -14,8 +14,6 @@ import { Constellation } from "@/components/student/constellation";
 import { Constellation as ParticlePortrait } from "@/components/constellation";
 import { PortraitUploadForm } from "@/components/portrait-upload";
 import { isPortraitData } from "@/lib/portrait-data";
-import { groupRanking } from "@/lib/student/junior";
-import { JuniorSync } from "@/components/student/junior-sync";
 import {
   removeStudentPortraitAction,
   saveStudentPortraitAction,
@@ -114,11 +112,9 @@ export default async function StudentHomePage() {
     }) ?? [],
     getDb()?.student.findUnique({
       where: { id: student.id },
-      select: { portrait: true, juniorXp: true, juniorSyncedAt: true },
+      select: { portrait: true },
     }),
   ]);
-  const db = getDb();
-  const ranking = db ? await groupRanking(db, student) : [];
   const finished = materials.filter((m) => done.has(m.id)).length;
   const portrait = isPortraitData(saved?.portrait) ? saved.portrait : null;
   const entrance = materials.filter((m) => isEntranceExam(m.slug));
@@ -135,7 +131,6 @@ export default async function StudentHomePage() {
     ),
   })).filter((s) => s.items.length > 0 || s.kind === "LAB");
   const jumps = [
-    { id: "junior", label: "Junior ranking", count: ranking.length },
     ...(certificates.length
       ? [
           {
@@ -246,49 +241,6 @@ export default async function StudentHomePage() {
           </a>
         ))}
       </nav>
-
-      <section
-        id="junior"
-        className="student-section"
-        aria-labelledby="junior-title"
-      >
-        <div className="student-section-head">
-          <h2 id="junior-title" className="student-section-title">
-            {t("Junior ranking")}
-          </h2>
-          <p className="student-quiet">
-            {t(
-              "Cybervalue Academy Junior and its Cipher Room run in your browser. Share your results to join your group’s ranking; only your codename (or first name) and XP are shown.",
-            )}{" "}
-            <Link href="/playground/junior">
-              {t("Open Junior")}
-              <ArrowUpRight size={14} aria-hidden="true" />
-            </Link>
-          </p>
-        </div>
-        <JuniorSync shared={saved?.juniorSyncedAt ? saved.juniorXp : null} />
-        {ranking.length > 0 ? (
-          <ol className="student-ranking">
-            {ranking.map((row) => (
-              <li key={row.place} className={row.me ? "me" : undefined}>
-                <span className="student-ranking-place">{row.place}</span>
-                <span className="student-ranking-name">
-                  {row.name}
-                  {row.me && <small> · {t("you")}</small>}
-                </span>
-                <span className="student-ranking-rank">{t(row.rank.en)}</span>
-                <span className="student-ranking-xp">{row.xp} XP</span>
-              </li>
-            ))}
-          </ol>
-        ) : (
-          <p className="student-quiet">
-            {student.group
-              ? t("No one in your group has shared results yet. Be the first!")
-              : t("The ranking appears once your teacher puts you in a group.")}
-          </p>
-        )}
-      </section>
 
       {certificates.length > 0 && (
         <section

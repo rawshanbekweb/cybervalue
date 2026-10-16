@@ -91,7 +91,7 @@ function Pick({
 }) {
   return (
     <fieldset className="jr-pick" disabled={disabled}>
-      <legend className="sr-only">{legend}</legend>
+      <legend className="visually-hidden">{legend}</legend>
       {([true, false] as const).map((option, index) => (
         <label key={String(option)} className={value === option ? "on" : ""}>
           <input

@@ -2833,3 +2833,65 @@ h1,
 h2 {
   letter-spacing: -0.035em;
 }
+
+/* Academy Junior results */
+.admin-meter {
+  display: inline-block;
+  width: 72px;
+  height: 6px;
+  border-radius: 999px;
+  background: #1c1b21;
+  overflow: hidden;
+  vertical-align: middle;
+}
+.admin-meter > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent, #8b5cf6);
+}
+.admin-bars {
+  display: grid;
+  gap: 8px;
+  max-width: 620px;
+  padding: 0;
+  list-style: none;
+}
+.admin-bars li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 140px 44px;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+}
+.admin-bars .admin-meter {
+  width: 100%;
+}
+.admin-checklist {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+  padding: 0;
+  list-style: none;
+}
+.admin-checklist li {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #0d0d0f;
+  color: var(--muted);
+  font-size: 13px;
+}
+.admin-checklist li.done {
+  color: var(--text, #f4f4f5);
+  border-color: #2ee6a655;
+}
+.admin-checklist li.done > span:first-child {
+  color: #2ee6a6;
+}
+.admin-checklist-inline {
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+}

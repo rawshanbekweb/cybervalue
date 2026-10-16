@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, ChevronUp, RotateCcw } from "lucide-react";
+import { ChevronDown, ChevronUp, Lightbulb, RotateCcw } from "lucide-react";
 import { useT } from "../../network-lab/use-t";
 import {
   parsePositions,
@@ -141,7 +141,9 @@ export function EnigmaBench() {
             </span>
           ))}
           {" → "}
-          <b className="cr-path-lamp">💡 {last.output}</b>
+          <b className="cr-path-lamp">
+            <Lightbulb size={13} aria-hidden="true" /> {last.output}
+          </b>
         </p>
       )}
       <div className="cr-two">

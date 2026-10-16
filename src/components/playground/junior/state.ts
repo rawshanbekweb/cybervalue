@@ -1,18 +1,21 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { useLocalStorageState } from "../useLocalStorageState";
 import { MISSION_IDS } from "@/lib/junior/content";
-import { PROGRESS_KEY, restoreProgress } from "@/lib/junior/logic";
+import type { Progress } from "@/lib/junior/logic";
 import {
-  CIPHER_PROGRESS_KEY,
-  restoreCipherProgress,
   TOTAL_EXERCISES,
+  type CipherProgress,
 } from "@/lib/junior/cipher-content";
-import { STORY_KEY, restoreStory } from "@/lib/junior/story";
-import { EVENTS_KEY, restoreEvents, type Events } from "@/lib/junior/badges";
-import { DAILY_KEY, dayIndex, restoreDaily, streak } from "@/lib/junior/daily";
-import { rankFor, xpFor } from "@/lib/junior/rank";
+import type { Events } from "@/lib/junior/badges";
+import { dayIndex, streak } from "@/lib/junior/daily";
+import { rankFor } from "@/lib/junior/rank";
+import {
+  exercisesOf,
+  restoreJuniorProgress,
+  xpOf,
+} from "@/lib/junior/progress";
+import { useJuniorStore } from "./store";
 
 const never = () => () => {};
 
@@ -25,60 +28,42 @@ export function useToday() {
   );
 }
 
-// Everything Junior keeps in the browser, read and validated in one place so
-// every panel on the page agrees (the storage hook shares one value per key).
-export function useJuniorState() {
-  const [missionsRaw, setMissions] = useLocalStorageState<unknown>(
-    PROGRESS_KEY,
-    {},
-  );
-  const [ciphersRaw, setCiphers] = useLocalStorageState<unknown>(
-    CIPHER_PROGRESS_KEY,
-    {},
-  );
-  const [storyRaw, setStory] = useLocalStorageState<unknown>(STORY_KEY, {});
-  const [eventsRaw, setEventsRaw] = useLocalStorageState<unknown>(
-    EVENTS_KEY,
-    {},
-  );
-  const [dailyRaw, setDaily] = useLocalStorageState<unknown>(DAILY_KEY, {});
-  const today = useToday();
+const EMPTY = restoreJuniorProgress({});
 
-  const missions = restoreProgress(missionsRaw, MISSION_IDS);
-  const ciphers = restoreCipherProgress(ciphersRaw);
-  const story = restoreStory(storyRaw);
-  const events = restoreEvents(eventsRaw);
-  const days = restoreDaily(dailyRaw);
-  const missionCount = Object.keys(missions).length;
-  const exercises = Object.values(ciphers).reduce(
-    (sum, list) => sum + (list?.length ?? 0),
-    0,
-  );
-  const xp = xpFor({
-    missions: missionCount,
-    exercises,
-    daily: days.length,
-    story,
-  });
+// Everything Junior knows about the signed-in member, derived in one place so
+// every panel agrees. Outside the academy (a friend opening a secret link)
+// the state is empty and changes go nowhere.
+export function useJuniorState() {
+  const store = useJuniorStore();
+  const today = useToday();
+  const progress = store?.progress ?? EMPTY;
+  const set = store?.set ?? (() => {});
+  const xp = xpOf(progress);
 
   return {
-    missions,
-    setMissions: (value: Record<string, true>) => setMissions(value),
-    ciphers,
-    setCiphers,
-    story,
-    solveStory: () => setStory({ solved: true }),
-    events,
-    addEvent: (patch: Events) => setEventsRaw({ ...events, ...patch }),
-    days,
+    signedIn: Boolean(store),
+    member: store?.member ?? null,
+    unsaved: store?.unsaved ?? false,
+    missions: progress.missions,
+    setMissions: (value: Progress) => set("missions", value),
+    ciphers: progress.ciphers,
+    setCiphers: (value: CipherProgress) => set("ciphers", value),
+    story: progress.story,
+    solveStory: () => set("story", true),
+    events: progress.events,
+    addEvent: (patch: Events) =>
+      set("events", { ...progress.events, ...patch }),
+    days: progress.daily,
     today,
-    streak: today === null ? 0 : streak(days, today),
+    streak: today === null ? 0 : streak(progress.daily, today),
     solveDay: (day: number) => {
-      if (!days.includes(day)) setDaily({ days: [...days, day] });
+      if (!progress.daily.includes(day)) set("daily", [...progress.daily, day]);
     },
-    missionCount,
+    agent: progress.agent,
+    setAgent: (value: { name: string; rank: number }) => set("agent", value),
+    missionCount: Object.keys(progress.missions).length,
     missionTotal: MISSION_IDS.length,
-    exercises,
+    exercises: exercisesOf(progress),
     exerciseTotal: TOTAL_EXERCISES,
     xp,
     ...rankFor(xp),

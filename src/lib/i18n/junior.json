@@ -12,5 +12,14 @@
   "The Cipher Room": "Shifrlar xonasi",
   "Ten ciphers from history with interactive visual explanations, stories and homework: Atbash, the Spartan scytale, Polybius, Caesar, Al-Kindi's frequency analysis, Vigenère, pigpen, Morse code, the Enigma machine and public-key key exchange.": "Tarixdagi 10 ta shifr — interaktiv vizual tushuntirishlar, qiziqarli tarix va uy vazifalari: Atbash, Sparta skitali, Polibiy kvadrati, Sezar, Al-Kindiyning chastota tahlili, Vijener, masonlar shifri, Morze alifbosi, Enigma mashinasi va ochiq kalit almashinuvi.",
   "Secret message": "Maxfiy xabar",
-  "Encrypt a message with a historic cipher and send a friend a link only the two of you can read. The message stays in the link and is never sent to the server.": "Xabarni tarixiy shifr bilan shifrlang va do‘stingizga faqat siz ikkovingiz o‘qiy oladigan havola yuboring. Xabar havolaning ichida qoladi va serverga yuborilmaydi."
+  "Encrypt a message with a historic cipher and send a friend a link only the two of you can read. The message stays in the link and is never sent to the server.": "Xabarni tarixiy shifr bilan shifrlang va do‘stingizga faqat siz ikkovingiz o‘qiy oladigan havola yuboring. Xabar havolaning ichida qoladi va serverga yuborilmaydi.",
+  "Sign in with an access code": "Kirish kodi bilan",
+  "New to cybersecurity? Start here. Missions, a mystery to solve, a cipher room from Caesar to Enigma, homework and ranks. Members sign in with the code from their teacher.": "Kiberxavfsizlikka yangimisiz? Shu yerdan boshlang. Missiyalar, sirli ish, Sezardan Enigmagacha shifrlar xonasi, uy vazifalari va unvonlar. A’zolar o‘qituvchi bergan kod bilan kiradi.",
+  "Enter the academy": "Akademiyaga kirish",
+  "10 historic ciphers": "10 ta tarixiy shifr",
+  "Junior homework": "Junior uy vazifalari",
+  "The daily puzzle, cipher exercises and a printable homework sheet for Cybervalue Academy Junior members.": "Cybervalue Academy Junior a’zolari uchun kunlik topishmoq, shifr mashqlari va chop etiladigan uy vazifasi varag‘i.",
+  "Junior achievements": "Junior yutuqlari",
+  "Rank, badges, certificate and group ranking for Cybervalue Academy Junior members.": "Cybervalue Academy Junior a’zolari uchun unvon, nishonlar, sertifikat va guruh reytingi.",
+  "A first step into cybersecurity for beginners: missions, a story case, a cipher room, homework and ranks. Members sign in with the access code from their teacher.": "Yangi boshlovchilar uchun kiberxavfsizlikka birinchi qadam: missiyalar, sirli ish, shifrlar xonasi, uy vazifalari va unvonlar. A’zolar o‘qituvchi bergan kod bilan kiradi."
 }

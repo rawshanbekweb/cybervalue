@@ -1,4 +1,7 @@
 import { CipherRoom } from "@/components/playground/junior/ciphers/CipherRoom";
+import { JuniorLogin } from "@/components/playground/junior/JuniorLogin";
+import { AcademyShell } from "@/components/playground/junior/AcademyShell";
+import { getJuniorMember } from "@/lib/junior/session";
 import { metadata } from "@/lib/seo";
 
 export const generateMetadata = () =>
@@ -8,6 +11,11 @@ export const generateMetadata = () =>
     "/playground/junior/ciphers",
   );
 
-export default function CipherRoomPage() {
-  return <CipherRoom />;
+export default async function CipherRoomPage() {
+  if (!(await getJuniorMember())) return <JuniorLogin />;
+  return (
+    <AcademyShell>
+      <CipherRoom />
+    </AcademyShell>
+  );
 }

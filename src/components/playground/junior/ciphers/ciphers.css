@@ -885,7 +885,7 @@
   border-color: var(--accent);
   background: #8052ff1a;
 }
-.cr-select {
+.jr-input.cr-select {
   width: auto;
   min-width: 70px;
 }

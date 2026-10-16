@@ -1,6 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { dayIndex, puzzleFor } from "../../src/lib/junior/daily";
+import { needsDatabase, signInJunior } from "./junior-member";
 
 // Assertions use the English interface copy.
 const english = {
@@ -46,24 +47,23 @@ async function audit(page: Page, label: string) {
 test("the case file collects evidence and the right suspect closes the case", async ({
   page,
 }) => {
-  await page.goto("/playground/junior");
+  needsDatabase();
+  await signInJunior(page);
   const caseFile = page.getByRole("region", { name: "The Cyber HQ case" });
   await expect(caseFile).toContainText("Collect all the evidence (0/6)");
-  await expect(
-    page.getByRole("region", { name: "Achievements" }),
-  ).toContainText("0/12");
+});
 
-  await page.evaluate((missions) => {
-    localStorage.setItem(
-      "cybervalue:junior:progress:v1",
-      JSON.stringify(missions),
-    );
-    localStorage.setItem(
-      "cybervalue:junior:agent:v1",
-      JSON.stringify({ name: "Swift Falcon" }),
-    );
-  }, ALL_MISSIONS);
-  await page.reload();
+test("a member who finished every mission solves the case and earns a certificate", async ({
+  page,
+}) => {
+  needsDatabase();
+  await signInJunior(page, {
+    progress: {
+      missions: ALL_MISSIONS,
+      agent: { name: "Swift Falcon", rank: 0 },
+    },
+  });
+  const caseFile = page.getByRole("region", { name: "The Cyber HQ case" });
   await expect(
     caseFile.getByText(/The sender’s address ends in \.xyz/),
   ).toBeVisible();
@@ -75,7 +75,13 @@ test("the case file collects evidence and the right suspect closes the case", as
   ).toBeVisible();
   await caseFile.getByRole("button", { name: "It’s them!" }).nth(1).click();
   await expect(caseFile.getByText("Case closed.")).toBeVisible();
+  // Six missions plus the case: 700 XP.
+  await expect(page.locator(".jr-topbar")).toContainText("700 XP");
 
+  await page
+    .getByRole("navigation", { name: "Academy sections" })
+    .getByRole("link", { name: "Achievements" })
+    .click();
   const certificate = page.getByRole("region", {
     name: "Your certificate is ready!",
   });
@@ -86,17 +92,19 @@ test("the case file collects evidence and the right suspect closes the case", as
   await expect(certificate.locator(".jr-cert-name")).toHaveText(
     "Aziza Karimova",
   );
-  // Six missions plus the case: 700 XP.
   await expect(
     page.getByRole("region", { name: "Agent ID card" }),
   ).toContainText("700 XP");
   await expect(
     page.getByRole("region", { name: "Achievements" }),
   ).toContainText("4/12");
+  await audit(page, "achievements with a certificate");
 });
 
 test("today's puzzle is solved once and starts a streak", async ({ page }) => {
-  await page.goto("/playground/junior");
+  needsDatabase();
+  await signInJunior(page);
+  await page.goto("/playground/junior/homework");
   const puzzle = puzzleFor(dayIndex(Date.now()), "en");
   const daily = page.getByRole("region", { name: "Daily puzzle" });
   await expect(daily.locator("code")).toHaveText(puzzle.given);
@@ -109,12 +117,12 @@ test("today's puzzle is solved once and starts a streak", async ({ page }) => {
   await daily.getByRole("button", { name: "Check the puzzle" }).click();
   await expect(daily.getByText(/Today’s puzzle is solved/)).toBeVisible();
   await expect(daily).toContainText("1-day streak");
-  await expect(
-    page.getByRole("region", { name: "Agent ID card" }),
-  ).toContainText("20 XP");
+  await expect(page.locator(".jr-topbar")).toContainText("20 XP");
 });
 
 test("the Enigma machine lights the historical lamps", async ({ page }) => {
+  needsDatabase();
+  await signInJunior(page);
   await page.goto("/playground/junior/ciphers#cipher/9");
   await expect(
     page.getByRole("heading", { name: "The Enigma machine" }),
@@ -167,81 +175,4 @@ test("a secret message travels in the link and opens with the key", async ({
   await expect(
     friend.getByRole("heading", { name: "Write a secret message" }),
   ).toBeVisible();
-});
-
-test.describe("class ranking", () => {
-  const email = process.env.E2E_ADMIN_EMAIL;
-  const password = process.env.E2E_ADMIN_PASSWORD;
-  test.skip(
-    !process.env.DATABASE_URL || !email || !password,
-    "Requires DATABASE_URL and E2E_ADMIN_EMAIL/E2E_ADMIN_PASSWORD for a seeded admin account",
-  );
-
-  test("a student shares Junior results with their group's ranking", async ({
-    page,
-    browser,
-  }) => {
-    await page.goto("/admin/login");
-    await page.getByLabel("Email").fill(email!);
-    await page.getByLabel("Password").fill(password!);
-    await page.getByRole("button", { name: "Sign in" }).click();
-    await expect(page).toHaveURL(/\/admin$/);
-    const group = `rank-${Date.now().toString(36)}`;
-    await page.goto("/admin/students");
-    await page
-      .getByLabel("One student per line: Full name | group (group is optional)")
-      .fill(`Ranking Student | ${group}`);
-    await page
-      .getByRole("button", { name: "Create students and codes" })
-      .click();
-    const code = (await page
-      .locator("code.student-code")
-      .first()
-      .textContent())!;
-
-    const student = await (
-      await browser.newContext({ storageState: english })
-    ).newPage();
-    await student.goto("/playground/junior");
-    await student.evaluate(
-      (missions) => {
-        localStorage.setItem(
-          "cybervalue:junior:progress:v1",
-          JSON.stringify(missions),
-        );
-        localStorage.setItem(
-          "cybervalue:junior:agent:v1",
-          JSON.stringify({ name: "Grey Owl" }),
-        );
-        // A hand-edited claim the server must ignore.
-        localStorage.setItem(
-          "cybervalue:junior:ciphers:v1",
-          JSON.stringify({ caesar: [0, 1, 999] }),
-        );
-      },
-      { password: true, phishing: true },
-    );
-    await student.goto("/student/login");
-    await student.getByLabel("Access code").fill(code);
-    await student.getByRole("button", { name: "Enter" }).click();
-    await expect(student).toHaveURL(/\/student$/);
-    const section = student.getByRole("region", { name: "Junior ranking" });
-    await expect(section).toContainText("On this device: 230 XP");
-    await expect(section).toContainText(
-      "No one in your group has shared results yet",
-    );
-    await section
-      .getByRole("button", { name: "Share my Junior results" })
-      .click();
-    await expect(
-      section.getByText("Your Junior results are in the ranking."),
-    ).toBeVisible();
-    await expect(section.locator(".student-ranking li.me")).toContainText(
-      "Grey Owl",
-    );
-    await expect(section.locator(".student-ranking li.me")).toContainText(
-      "230 XP",
-    );
-    await audit(student, "student ranking");
-  });
 });

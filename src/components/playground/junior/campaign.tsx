@@ -2,7 +2,19 @@
 
 import { useId, useState } from "react";
 import {
+  BookMarked,
   CalendarDays,
+  ChartColumn,
+  Cog,
+  Crown,
+  Fish,
+  Flame,
+  GraduationCap,
+  KeyRound,
+  Mail,
+  RadioTower,
+  Rocket,
+  ScanSearch,
   CheckCircle2,
   FileSearch,
   Lock,
@@ -14,12 +26,10 @@ import {
 import { useT } from "../network-lab/use-t";
 import { MISSIONS } from "@/lib/junior/content";
 import { EVIDENCE, STORY_INTRO, SUSPECTS } from "@/lib/junior/story";
-import { BADGES } from "@/lib/junior/badges";
+import { BADGES, type BadgeIcon } from "@/lib/junior/badges";
 import { CIPHERS } from "@/lib/junior/cipher-content";
 import { puzzleFor } from "@/lib/junior/daily";
 import { sameAnswer } from "@/lib/junior/ciphers";
-import { AGENT_KEY, restoreCodename } from "@/lib/junior/rank";
-import { useLocalStorageState } from "../useLocalStorageState";
 import { useJuniorState } from "./state";
 import { Narrator } from "./Narrator";
 
@@ -91,10 +101,15 @@ export function CaseFile() {
           <ul>
             {SUSPECTS.map((suspect) => (
               <li key={suspect.id}>
-                <span className="jr-suspect-face" aria-hidden="true">
-                  {suspect.emoji}
+                <span className="jr-ring jr-suspect-face" aria-hidden="true">
+                  {suspect.handle
+                    .split("_")
+                    .map((part) => part[0])
+                    .join("")
+                    .toUpperCase()}
                 </span>
                 <strong>{text(suspect.name)}</strong>
+                <code className="jr-suspect-handle">@{suspect.handle}</code>
                 <ul>
                   {suspect.facts.map((fact, i) => (
                     <li key={i}>{text(fact)}</li>
@@ -151,12 +166,12 @@ const UZ_MONTHS = [
 
 export function Certificate() {
   const { t, text, locale } = useT();
-  const { story, missionCount, missionTotal, rank, xp } = useJuniorState();
-  const [agent] = useLocalStorageState<unknown>(AGENT_KEY, {});
+  const { story, missionCount, missionTotal, rank, xp, agent } =
+    useJuniorState();
   const [name, setName] = useState<string | null>(null);
   const inputId = useId();
   if (!story || missionCount < missionTotal) return null;
-  const shown = name ?? restoreCodename(agent);
+  const shown = name ?? agent.name;
   // Browsers lack Uzbek month names, so the Uzbek date is built by hand.
   const now = new Date();
   const date =
@@ -213,6 +228,26 @@ export function Certificate() {
 
 // Badges -------------------------------------------------------------------------
 
+const GLYPHS: Record<BadgeIcon, typeof Rocket> = {
+  rocket: Rocket,
+  fish: Fish,
+  search: ScanSearch,
+  cap: GraduationCap,
+  scroll: BookMarked,
+  chart: ChartColumn,
+  cog: Cog,
+  radio: RadioTower,
+  mail: Mail,
+  flame: Flame,
+  key: KeyRound,
+  crown: Crown,
+};
+
+function BadgeGlyph({ icon }: { icon: BadgeIcon }) {
+  const Glyph = GLYPHS[icon];
+  return <Glyph size={20} strokeWidth={1.6} />;
+}
+
 export function Badges() {
   const { t, text } = useT();
   const state = useJuniorState();
@@ -241,12 +276,17 @@ export function Badges() {
           const on = earned.includes(badge.id);
           return (
             <li key={badge.id} className={on ? "on" : undefined}>
-              <span className="jr-badge-icon" aria-hidden="true">
-                {on ? badge.emoji : <Lock size={16} />}
+              <span className="jr-ring jr-badge-icon" aria-hidden="true">
+                <BadgeGlyph icon={badge.icon} />
+                {!on && (
+                  <span className="jr-badge-lock">
+                    <Lock size={10} />
+                  </span>
+                )}
               </span>
               <strong>{text(badge.title)}</strong>
               <small>{text(badge.how)}</small>
-              <span className="sr-only">
+              <span className="visually-hidden">
                 {on
                   ? t("Olingan", "Earned")
                   : t("Hali olinmagan", "Not yet earned")}
@@ -277,9 +317,12 @@ export function DailyPuzzle() {
       <h2 id="jr-daily-title">
         <CalendarDays size={18} aria-hidden="true" />{" "}
         {t("Kunlik topishmoq", "Daily puzzle")}
-        <span className="jr-daily-streak">
-          🔥 {t(`${streak} kun ketma-ket`, `${streak}-day streak`)}
-        </span>
+        {streak > 0 && (
+          <span className="jr-daily-streak">
+            <Flame size={13} aria-hidden="true" />{" "}
+            {t(`${streak} kun ketma-ket`, `${streak}-day streak`)}
+          </span>
+        )}
       </h2>
       <p className="jr-note">
         {t(

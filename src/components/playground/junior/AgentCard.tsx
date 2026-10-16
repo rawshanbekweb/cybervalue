@@ -2,17 +2,9 @@
 
 import { useEffect, useId, useState } from "react";
 import { Dices, Pencil, ShieldCheck, Sparkles } from "lucide-react";
-import { useLocalStorageState } from "../useLocalStorageState";
 import { useT } from "../network-lab/use-t";
-import {
-  AGENT_KEY,
-  RANKS,
-  randomCodename,
-  restoreCodename,
-} from "@/lib/junior/rank";
+import { RANKS, randomCodename, restoreCodename } from "@/lib/junior/rank";
 import { useJuniorState } from "./state";
-
-type Stored = { name?: unknown; rank?: unknown };
 
 // The agent ID card shared by Junior and the Cipher room: a codename the
 // student picks, XP from missions and cipher exercises, and a rank that
@@ -20,10 +12,6 @@ type Stored = { name?: unknown; rank?: unknown };
 export function AgentCard() {
   const { t, text, locale } = useT();
   const inputId = useId();
-  const [raw, setRaw] = useLocalStorageState<Stored>(AGENT_KEY, {});
-  const name = restoreCodename(raw);
-  const seenRank =
-    typeof raw.rank === "number" && Number.isInteger(raw.rank) ? raw.rank : 0;
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState("");
   const {
@@ -37,18 +25,25 @@ export function AgentCard() {
     exercises,
     exerciseTotal,
     streak,
+    agent,
+    setAgent,
   } = useJuniorState();
+  const name = agent.name;
+  const seenRank = agent.rank;
 
   // A new rank is announced for a few seconds, then remembered.
   const celebrating = index > seenRank;
   useEffect(() => {
     if (!celebrating) return;
-    const id = window.setTimeout(() => setRaw({ ...raw, rank: index }), 6000);
+    const id = window.setTimeout(
+      () => setAgent({ ...agent, rank: index }),
+      6000,
+    );
     return () => window.clearTimeout(id);
-  }, [celebrating, index, raw, setRaw]);
+  }, [celebrating, index, agent, setAgent]);
 
   const save = (value: string) => {
-    setRaw({ ...raw, name: restoreCodename({ name: value }) });
+    setAgent({ ...agent, name: restoreCodename({ name: value }) });
     setEditing(false);
   };
 
@@ -58,14 +53,12 @@ export function AgentCard() {
       aria-label={t("Agent guvohnomasi", "Agent ID card")}
       data-rank={index}
     >
-      <div className="jr-agent-badge" aria-hidden="true">
-        <ShieldCheck size={30} />
+      <div className="jr-ring jr-agent-badge" aria-hidden="true">
+        <ShieldCheck size={26} strokeWidth={1.6} />
         <span>{index + 1}</span>
       </div>
       <div className="jr-agent-body">
-        <p className="jr-agent-eyebrow">
-          {t("AGENT GUVOHNOMASI", "AGENT ID")} · CYBERVALUE
-        </p>
+        <p className="jr-agent-eyebrow">{t("AGENT GUVOHNOMASI", "AGENT ID")}</p>
         {editing ? (
           <form
             className="jr-agent-edit"
@@ -74,7 +67,7 @@ export function AgentCard() {
               save(draft);
             }}
           >
-            <label htmlFor={inputId} className="sr-only">
+            <label htmlFor={inputId} className="visually-hidden">
               {t("Taxallus", "Codename")}
             </label>
             <input
@@ -145,12 +138,13 @@ export function AgentCard() {
             `Missiyalar ${missions}/${missionTotal} · Shifr mashqlari ${exercises}/${exerciseTotal}`,
             `Missions ${missions}/${missionTotal} · Cipher exercises ${exercises}/${exerciseTotal}`,
           )}
-          {streak > 0 && t(` · 🔥 ${streak} kun`, ` · 🔥 ${streak}-day streak`)}
+          {streak > 0 &&
+            t(` · ${streak} kunlik seriya`, ` · ${streak}-day streak`)}
         </p>
         <ol className="jr-agent-ladder" aria-label={t("Unvonlar", "Ranks")}>
           {RANKS.map((item, i) => (
             <li key={item.xp} className={i <= index ? "on" : undefined}>
-              <span className="sr-only">
+              <span className="visually-hidden">
                 {text(item.title)} ({item.xp} XP)
                 {i <= index ? t(" — olingan", " — earned") : ""}
               </span>
