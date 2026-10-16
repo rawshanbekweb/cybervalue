@@ -504,3 +504,54 @@ model StudentAssignment {
   @@index([group, dueAt])
   @@index([dueAt])
 }
+
+// A live quiz the teacher runs on the classroom screen. Players join from
+// their phones with `code` and a name; the questions are a snapshot of a
+// test, so editing the test later does not change a running game.
+model LiveGame {
+  id        String       @id @default(cuid())
+  code      String
+  title     String
+  questions Json
+  // lobby, question, reveal or finished.
+  state     String       @default("lobby")
+  current   Int          @default(-1)
+  seconds   Int          @default(20)
+  startedAt DateTime?    @db.Timestamptz(3)
+  createdAt DateTime     @default(now()) @db.Timestamptz(3)
+  endedAt   DateTime?    @db.Timestamptz(3)
+  players   LivePlayer[]
+  answers   LiveAnswer[]
+
+  @@index([code, state])
+  @@index([createdAt])
+}
+
+model LivePlayer {
+  id        String       @id @default(cuid())
+  gameId    String
+  game      LiveGame     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  name      String
+  tokenHash String       @unique
+  score     Int          @default(0)
+  createdAt DateTime     @default(now()) @db.Timestamptz(3)
+  answers   LiveAnswer[]
+
+  @@unique([gameId, name])
+}
+
+model LiveAnswer {
+  gameId   String
+  game     LiveGame   @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  playerId String
+  player   LivePlayer @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  question Int
+  choice   Int
+  correct  Boolean
+  points   Int
+  ms       Int
+  at       DateTime   @default(now()) @db.Timestamptz(3)
+
+  @@id([playerId, question])
+  @@index([gameId, question])
+}
