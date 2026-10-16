@@ -11,10 +11,12 @@ import {
   newAssignmentText,
   parentJuniorText,
   parentStudentText,
+  certificateText,
   practiceText,
   reminderText,
 } from "./messages";
 import { notify, teacherSubjects } from "./notify";
+import { awardCertificates } from "../student/awards";
 
 const DAY = 86_400_000;
 const uz = createTranslator("uz");
@@ -195,4 +197,16 @@ async function parentText(
     exercises: `${report.exercises}/${report.exerciseTotal}`,
     url: link,
   });
+}
+
+/** Issues newly earned certificates and congratulates a linked student. */
+export async function certificatesEarned(db: PrismaClient, studentId: string) {
+  const titles = await awardCertificates(db, studentId);
+  for (const title of titles)
+    await notify(
+      db,
+      [`student:${studentId}`],
+      certificateText({ title, url: absolute("/student#certificates") }),
+    ).catch(() => 0);
+  return titles;
 }

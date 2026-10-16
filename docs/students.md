@@ -195,3 +195,15 @@ The student page shows the rank card, badges, the group ranking (first name and 
 - The host starts the game and each question runs for 10–60 seconds. Phones poll `POST /api/live/state` every 1.5–2.5 seconds and answer with `POST /api/live/answer`; the right answer never leaves the server before the reveal.
 - A right answer earns 500 points plus up to 500 for speed. The screen reveals by itself when time is up or everyone has answered, then shows how the class voted, the explanation and the top five. The last question leads to a podium and the full ranking.
 - Host commands only move from the state they were read in, so a double click cannot skip a question. Games stay listed with their results until deleted.
+
+## From Academy Junior to the Academy
+
+A Junior member's admin page has **Move to the Academy**. It creates a student account with the same name in the chosen group and shows its access code once. The member's Junior XP becomes `bonusXp` on the student (counted in their XP and rank), the parent report link and parent Telegram chats move over, and a member who finished every mission or the Cyber HQ case receives the certificate “Academy Junior: kiberxavfsizlik asoslari”. **Close the Junior account** (on by default) deactivates the old code. A member can be moved once (`Student.juniorId`; migration `20261022090000_linked_accounts`).
+
+## Automatic certificates
+
+`src/lib/student/award-rules.ts` lists certificates the site issues by itself: a lab finished (every lesson) together with its checkpoint(s) passed, and all lab checkpoints passed. They are checked whenever a signed-in student saves lab progress or a checkpoint result; each is issued once (`StudentCertificate.rule`), shows on the student page with the others and, when Telegram is linked, comes with a congratulation.
+
+## One sign-in for the HTML exam
+
+When creating an HTML exam, **Student-area group** adds every active student of that group with their account (`HtmlCandidate.accountId`). They see the exam under **Tests and exams** on their own page and press **Start the exam**: no separate code. Pressing it again in another browser continues the same attempt there and the old tab stops saving. Codes are still generated as a fallback, and the typed roster works as before.

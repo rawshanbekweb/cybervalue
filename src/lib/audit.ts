@@ -45,7 +45,8 @@ export type AuditAction =
   | "assignment.delete"
   | "report.link"
   | "telegram.webhook"
-  | "telegram.unlink";
+  | "telegram.unlink"
+  | "junior.promote";
 
 const RETENTION_MS = 180 * 86_400_000;
 

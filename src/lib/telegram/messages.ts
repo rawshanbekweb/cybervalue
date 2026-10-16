@@ -106,3 +106,10 @@ export function parentJuniorText(a: {
     link(a.url, "To‘liq hisobot"),
   ].join("\n");
 }
+
+export function certificateText(a: { title: string; url: string }) {
+  return [
+    `<b>Tabriklaymiz!</b> Siz “${e(a.title)}” sertifikatini oldingiz.`,
+    link(a.url, "Sertifikatni ochish"),
+  ].join("\n");
+}

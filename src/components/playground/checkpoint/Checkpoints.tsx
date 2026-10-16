@@ -17,6 +17,8 @@ type Result = {
   percent: number;
   passed: boolean;
   saved: boolean;
+  // Certificates this result just earned.
+  certificates?: string[];
   correct: boolean[];
   review: { answer: number; explain: Text }[];
 };
@@ -297,6 +299,15 @@ function CheckpointCard({
                     )}
                 {result.saved && ` ${t("Natija saqlandi.", "Result saved.")}`}
               </span>
+              {result.certificates?.map((title) => (
+                <Link
+                  key={title}
+                  href="/student#certificates"
+                  className="cp-award"
+                >
+                  {t(`Yangi sertifikat: ${title}`, `New certificate: ${title}`)}
+                </Link>
+              ))}
               <button
                 type="button"
                 className="button button-secondary"

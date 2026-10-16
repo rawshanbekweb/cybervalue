@@ -22,6 +22,9 @@ model HtmlCandidate {
   examId       String
   exam         HtmlExam  @relation(fields: [examId], references: [id], onDelete: Cascade)
   studentId    String
+  // The student-area account, when the candidate was added from a group:
+  // they start from their own page without typing the code.
+  accountId    String?
   name         String
   codeHash     String    @unique
   sessionHash  String?   @unique
@@ -43,6 +46,7 @@ model HtmlCandidate {
 
   @@unique([examId, studentId])
   @@index([examId, submittedAt])
+  @@index([accountId])
 }
 
 enum ContentKind {
@@ -355,6 +359,9 @@ model Student {
   portrait     Json?
   // Opens the read-only progress page for parents: /report/<token>.
   reportToken  String?              @unique
+  // XP carried over from Academy Junior, and the member it came from.
+  bonusXp      Int                  @default(0)
+  juniorId     String?              @unique
 
   @@index([group])
 }
@@ -461,7 +468,11 @@ model StudentCertificate {
   level     String    @default("")
   issuedAt  DateTime  @default(now()) @db.Timestamptz(3)
   revokedAt DateTime? @db.Timestamptz(3)
+  // Set for certificates the site issues by itself (see lib/student/awards),
+  // so each one is issued once.
+  rule      String?
 
+  @@unique([studentId, rule])
   @@index([studentId])
 }
 

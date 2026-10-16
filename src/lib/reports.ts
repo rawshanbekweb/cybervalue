@@ -26,6 +26,7 @@ export async function studentReport(
       name: true,
       group: true,
       level: true,
+      bonusXp: true,
       active: true,
       certificates: {
         where: { revokedAt: null },

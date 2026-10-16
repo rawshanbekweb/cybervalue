@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PromoteJuniorForm } from "@/components/admin/promote-junior";
 import { ParentAccess } from "@/components/admin/parent-access";
 import { notFound } from "next/navigation";
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
@@ -45,9 +46,15 @@ export default async function AdminJuniorMemberPage({
     },
   });
   if (!member) notFound();
-  const parentChats = await db.telegramChat.count({
-    where: { subject: `parent:junior:${member.id}` },
-  });
+  const [parentChats, promoted] = await Promise.all([
+    db.telegramChat.count({
+      where: { subject: `parent:junior:${member.id}` },
+    }),
+    db.student.findUnique({
+      where: { juniorId: member.id },
+      select: { id: true, name: true },
+    }),
+  ]);
   const row = juniorRow(member);
   const next = RANKS[row.rankIndex + 1];
   const done = new Set(Object.keys(row.progress.missions));
@@ -174,6 +181,12 @@ export default async function AdminJuniorMemberPage({
         }}
       />
 
+      <PromoteJuniorForm
+        id={member.id}
+        group={member.group}
+        xp={row.xp}
+        promoted={promoted}
+      />
       <ParentAccess
         kind="junior"
         id={member.id}

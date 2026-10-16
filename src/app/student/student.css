@@ -1344,3 +1344,10 @@ body.student-root {
 .student-telegram a:hover {
   color: var(--color-bone-white);
 }
+.student-html-exam form {
+  gap: 10px;
+}
+.student-error {
+  color: var(--color-saffron-spark);
+  font-size: 13px;
+}

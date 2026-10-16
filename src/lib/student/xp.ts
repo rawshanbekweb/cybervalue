@@ -24,6 +24,8 @@ export type XpInput = {
   }[];
   // Completed lessons in the open labs, synced from the browser.
   labs?: { lab: string; lessons: number[] }[];
+  // XP carried over from Academy Junior.
+  bonus?: number;
 };
 
 export const XP = {
@@ -246,6 +248,7 @@ export function standing(input: XpInput, now = Date.now()) {
     (input.labs ?? []).map((l) => [l.lab, new Set(l.lessons).size]),
   );
   for (const count of Object.values(labs)) xp += count * XP.labLesson;
+  xp += Math.max(0, input.bonus ?? 0);
 
   const challenges = input.materials.filter(
     (m) => m.kind === "CHALLENGE" && solved.has(m.id),

@@ -1,0 +1,62 @@
+// Certificates the site issues by itself once a student meets the rule. The
+// rule id is stored with the certificate, so each one is issued only once.
+import { CHECKPOINT_META } from "../checkpoints/meta";
+import { LAB_PROGRESS, type LabId } from "../lab-progress";
+
+export type AwardFacts = {
+  // Lessons finished per lab.
+  labs: Partial<Record<LabId, number>>;
+  // Best checkpoint percent per checkpoint id.
+  checkpoints: Record<string, number>;
+};
+
+export type AwardRule = {
+  id: string;
+  title: string;
+  earned: (facts: AwardFacts) => boolean;
+};
+
+const passed = (facts: AwardFacts, id: string) => {
+  const meta = CHECKPOINT_META.find((c) => c.id === id);
+  return meta !== undefined && (facts.checkpoints[id] ?? -1) >= meta.pass;
+};
+const finished = (facts: AwardFacts, lab: LabId) =>
+  (facts.labs[lab] ?? 0) >= LAB_PROGRESS[lab].total;
+
+// Titles are in Uzbek, like the certificates the teacher issues.
+export const AWARD_RULES: readonly AwardRule[] = [
+  {
+    id: "lab-network",
+    title: "IP manzillash va tarmoq asoslari",
+    earned: (f) =>
+      finished(f, "network") &&
+      passed(f, "network-1") &&
+      passed(f, "network-2"),
+  },
+  {
+    id: "lab-linux",
+    title: "Linux asoslari",
+    earned: (f) => finished(f, "linux") && passed(f, "linux-1"),
+  },
+  {
+    id: "lab-html",
+    title: "HTML asoslari",
+    earned: (f) => finished(f, "html") && passed(f, "html-1"),
+  },
+  {
+    id: "lab-security",
+    title: "Veb-xavfsizlik asoslari",
+    earned: (f) => finished(f, "security") && passed(f, "security-1"),
+  },
+  {
+    id: "checkpoints-all",
+    title: "Barcha laboratoriya nazoratlari",
+    earned: (f) => CHECKPOINT_META.every((c) => passed(f, c.id)),
+  },
+];
+
+/** Rules met by these facts and not issued yet. */
+export function newAwards(facts: AwardFacts, issued: Iterable<string>) {
+  const have = new Set(issued);
+  return AWARD_RULES.filter((rule) => !have.has(rule.id) && rule.earned(facts));
+}

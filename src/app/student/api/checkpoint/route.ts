@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import type { NextRequest } from "next/server";
 import { Prisma } from "@/generated/prisma/client";
 import { serverSecret } from "@/lib/server-secret";
+import { certificatesEarned } from "@/lib/telegram/events";
 import { getDb } from "@/lib/db";
 import { limit } from "@/lib/rate-limit-db";
 import { clientKey } from "@/lib/rate-limit";
@@ -88,6 +89,7 @@ export async function POST(request: NextRequest) {
     const questions = questionsFor(checkpoint, attempt.seed);
     const result = grade(questions, body.answers);
     let saved = false;
+    let certificates: string[] = [];
     if (attempt.student && me?.id === attempt.student) {
       try {
         await getDb()!.studentCheckpoint.create({
@@ -100,6 +102,9 @@ export async function POST(request: NextRequest) {
           },
         });
         saved = true;
+        certificates = await certificatesEarned(getDb()!, me.id).catch(
+          () => [],
+        );
       } catch (error) {
         if (
           error instanceof Prisma.PrismaClientKnownRequestError &&
@@ -113,6 +118,7 @@ export async function POST(request: NextRequest) {
       ...result,
       passed: result.percent >= checkpoint.pass,
       saved,
+      certificates,
       review: questions.map((q) => ({ answer: q.answer, explain: q.explain })),
     });
   }
