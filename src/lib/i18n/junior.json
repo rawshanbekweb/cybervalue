@@ -8,5 +8,7 @@
   "Start your first mission": "Birinchi missiyani boshlash",
   "A first step into cybersecurity for beginners: six short missions on passwords, phishing, ciphers, digital footprint, your first CTF and ethical hacking rules.": "Kiberxavfsizlikka birinchi qadam: parollar, fishing, shifrlar, raqamli iz, birinchi CTF va etik xakerlik qoidalari haqida oltita qisqa missiya.",
   "New to cybersecurity? Start with Cybervalue Academy Junior: six short missions, no coding. Then pick a track: HTML foundations if you want to build websites, or the security track once you understand basic page structure. It begins with architecture and works toward HTTP, identity, and vulnerabilities.": "Kiberxavfsizlikka yangimisiz? Cybervalue Academy Junior dan boshlang: oltita qisqa missiya, dasturlash shart emas. Keyin yo‘nalish tanlang: sayt yaratmoqchi bo‘lsangiz HTML asoslari, sahifa tuzilishini tushungach esa xavfsizlik yo‘nalishi. U arxitekturadan boshlanib, HTTP, identifikatsiya va zaifliklargacha boradi.",
-  "Start here": "Boshlash"
+  "Start here": "Boshlash",
+  "The Cipher Room": "Shifrlar xonasi",
+  "Nine ciphers from history with interactive visual explanations, stories and homework: Atbash, the Spartan scytale, Polybius, Caesar, Al-Kindi's frequency analysis, pigpen, Vigenère, Morse code and public-key key exchange.": "Tarixdagi 9 ta shifr — interaktiv vizual tushuntirishlar, qiziqarli tarix va uy vazifalari: Atbash, Sparta skitali, Polibiy kvadrati, Sezar, Al-Kindiyning chastota tahlili, masonlar shifri, Vijener, Morze alifbosi va ochiq kalit almashinuvi."
 }

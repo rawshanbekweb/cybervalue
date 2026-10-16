@@ -1,11 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Award, Check, Compass } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Award,
+  Check,
+  ChevronRight,
+  Compass,
+} from "lucide-react";
 import { useLocalStorageState } from "../useLocalStorageState";
 import { useT } from "../network-lab/use-t";
 import { MISSIONS, MISSION_IDS, type MissionId } from "@/lib/junior/content";
 import { PROGRESS_KEY, restoreProgress } from "@/lib/junior/logic";
+import {
+  CIPHER_PROGRESS_KEY,
+  restoreCipherProgress,
+  TOTAL_EXERCISES,
+} from "@/lib/junior/cipher-content";
+import { AgentCard } from "./AgentCard";
 import {
   CipherMission,
   CtfMission,
@@ -30,6 +43,13 @@ const PANELS: Record<
 };
 
 const NEXT_STEPS = [
+  {
+    href: "/playground/junior/ciphers",
+    uz: "Shifrlar xonasi",
+    en: "The Cipher Room",
+    noteUz: "9 ta tarixiy shifr, vizual tushuntirish va uy vazifalari.",
+    noteEn: "9 historic ciphers, visual explanations and homework.",
+  },
   {
     href: "/playground/html-basics",
     uz: "HTML asoslari",
@@ -65,6 +85,11 @@ export function JuniorAcademy() {
   const [id, setId] = useHashLessonId(MISSIONS.length, 1, "mission");
   const [raw, setProgress] = useLocalStorageState<unknown>(PROGRESS_KEY, {});
   const progress = restoreProgress(raw, MISSION_IDS);
+  const [ciphersRaw] = useLocalStorageState<unknown>(CIPHER_PROGRESS_KEY, {});
+  const exercises = Object.values(restoreCipherProgress(ciphersRaw)).reduce(
+    (sum, list) => sum + (list?.length ?? 0),
+    0,
+  );
   const count = Object.keys(progress).length;
   const all = count === MISSIONS.length;
   const mission = MISSIONS[id - 1];
@@ -83,30 +108,55 @@ export function JuniorAcademy() {
         <ArrowLeft size={15} aria-hidden="true" />{" "}
         {t("Playground", "Playground")}
       </Link>
-      <header className="jr-hero">
-        <span className="eyebrow">
-          <span className="status-dot" />{" "}
-          {t("1-DARAJA · BIRINCHI QADAM", "LEVEL 1 · FIRST STEP")}
-        </span>
-        <h1>Cybervalue Academy Junior</h1>
-        <p>
-          {t(
-            "Kiberxavfsizlik — bu internetdagi himoyachilar kasbi. Bu yerda siz 6 ta qisqa missiyada parollarni sinaysiz, aldovchilarni fosh qilasiz, shifrlarni ochasiz va birinchi CTF bayrog‘ingizni topasiz. Dasturlashni bilish shart emas.",
-            "Cybersecurity is the craft of defending people on the internet. In 6 short missions you will test passwords, expose scammers, break ciphers and capture your first CTF flag. No coding needed.",
-          )}
-        </p>
-        <div className="jr-progress" role="status">
-          <div className="jr-bar" aria-hidden="true">
-            <span style={{ width: `${(count / MISSIONS.length) * 100}%` }} />
-          </div>
-          <span>
-            {t(
-              `${count} / ${MISSIONS.length} missiya bajarildi`,
-              `${count} / ${MISSIONS.length} missions complete`,
-            )}
+      <header className="jr-hero jr-hero-grid">
+        <div>
+          <span className="eyebrow">
+            <span className="status-dot" />{" "}
+            {t("1-DARAJA · BIRINCHI QADAM", "LEVEL 1 · FIRST STEP")}
           </span>
+          <h1>Cybervalue Academy Junior</h1>
+          <p>
+            {t(
+              "Kiberxavfsizlik — bu internetdagi himoyachilar kasbi. Bu yerda siz 6 ta qisqa missiyada parollarni sinaysiz, aldovchilarni fosh qilasiz, shifrlarni ochasiz va birinchi CTF bayrog‘ingizni topasiz. Dasturlashni bilish shart emas.",
+              "Cybersecurity is the craft of defending people on the internet. In 6 short missions you will test passwords, expose scammers, break ciphers and capture your first CTF flag. No coding needed.",
+            )}
+          </p>
+          <div className="jr-progress" role="status">
+            <div className="jr-bar" aria-hidden="true">
+              <span style={{ width: `${(count / MISSIONS.length) * 100}%` }} />
+            </div>
+            <span>
+              {t(
+                `${count} / ${MISSIONS.length} missiya bajarildi`,
+                `${count} / ${MISSIONS.length} missions complete`,
+              )}
+            </span>
+          </div>
         </div>
+        <AgentCard
+          missions={count}
+          missionTotal={MISSIONS.length}
+          exercises={exercises}
+          exerciseTotal={TOTAL_EXERCISES}
+        />
       </header>
+
+      <Link className="jr-promo" href="/playground/junior/ciphers">
+        <span className="jr-promo-icon" aria-hidden="true">
+          A↔Z
+        </span>
+        <span>
+          <strong>
+            <span className="jr-promo-new">{t("YANGI", "NEW")}</span>
+            {t("Shifrlar xonasi", "The Cipher Room")}
+          </strong>
+          {t(
+            "Sparta tayoqchasi, Sezar g‘ildiragi, Al-Kindiy sirlari, Morze telegrafi va ochiq kalit sehri — 9 ta shifr, uy vazifalari va XP.",
+            "A Spartan rod, Caesar’s wheel, Al-Kindi’s secret, the Morse telegraph and the magic of public keys — 9 ciphers, homework and XP.",
+          )}
+        </span>
+        <ChevronRight size={22} aria-hidden="true" />
+      </Link>
 
       <nav className="jr-nav" aria-label={t("Missiyalar", "Missions")}>
         {MISSIONS.map((item) => {
