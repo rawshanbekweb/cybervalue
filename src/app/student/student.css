@@ -1232,14 +1232,16 @@ body.student-root {
   color: var(--color-ash-gray);
   font-size: 12px;
 }
-.student-ranking {
+.student-ranking,
+.student-heroes {
   display: grid;
   gap: 4px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
-.student-ranking li {
+.student-ranking li,
+.student-heroes li {
   display: grid;
   grid-template-columns: 28px minmax(0, 1fr) auto auto;
   align-items: center;
@@ -1248,7 +1250,8 @@ body.student-root {
   border-radius: 10px;
   font-size: 14px;
 }
-.student-ranking li.me {
+.student-ranking li.me,
+.student-heroes li.me {
   background: #8052ff1f;
 }
 .student-ranking-place {
@@ -1318,7 +1321,8 @@ body.student-root {
   gap: 4px;
 }
 @media (max-width: 560px) {
-  .student-ranking li {
+  .student-ranking li,
+  .student-heroes li {
     grid-template-columns: 24px minmax(0, 1fr) auto;
   }
   .student-ranking-rank {

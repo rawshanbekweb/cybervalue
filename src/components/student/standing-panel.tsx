@@ -213,7 +213,7 @@ export function AchievementsSection({
             <Crown size={16} aria-hidden="true" /> {t("Hero of the week")}
           </h3>
           {heroes.length > 0 ? (
-            <ol className="student-ranking student-heroes">
+            <ol className="student-heroes">
               {heroes.map((row, i) => (
                 <li key={row.name} className={row.me ? "me" : undefined}>
                   <span className="student-ranking-place">{i + 1}</span>
