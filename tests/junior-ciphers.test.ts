@@ -24,6 +24,7 @@ import {
   restoreCipherProgress,
   type Exercise,
 } from "../src/lib/junior/cipher-content";
+import { enigma } from "../src/lib/junior/enigma";
 import {
   RANKS,
   randomCodename,
@@ -156,6 +157,8 @@ function solve(id: string, exercise: Exercise): string | null {
         : morseDecode(exercise.given);
     case "pigpen":
       return exercise.given;
+    case "enigma":
+      return enigma(exercise.given, key);
     case "frequency":
       return caesar(exercise.given, -crackCaesar(exercise.given, "uz")) ===
         exercise.answer
@@ -167,7 +170,7 @@ function solve(id: string, exercise: Exercise): string | null {
 }
 
 test("every cipher is complete in both languages and every answer is right", () => {
-  assert.equal(CIPHERS.length, 9);
+  assert.equal(CIPHERS.length, 10);
   const texts = (value: { uz: string; en: string }, where: string) => {
     assert.ok(value.uz.trim(), `${where} uz`);
     assert.ok(value.en.trim(), `${where} en`);

@@ -6,30 +6,18 @@ import { useLocalStorageState } from "../useLocalStorageState";
 import { useT } from "../network-lab/use-t";
 import {
   AGENT_KEY,
-  EXERCISE_XP,
-  MISSION_XP,
   RANKS,
   randomCodename,
-  rankFor,
   restoreCodename,
 } from "@/lib/junior/rank";
+import { useJuniorState } from "./state";
 
 type Stored = { name?: unknown; rank?: unknown };
 
 // The agent ID card shared by Junior and the Cipher room: a codename the
 // student picks, XP from missions and cipher exercises, and a rank that
 // celebrates each step up.
-export function AgentCard({
-  missions,
-  missionTotal,
-  exercises,
-  exerciseTotal,
-}: {
-  missions: number;
-  missionTotal: number;
-  exercises: number;
-  exerciseTotal: number;
-}) {
+export function AgentCard() {
   const { t, text, locale } = useT();
   const inputId = useId();
   const [raw, setRaw] = useLocalStorageState<Stored>(AGENT_KEY, {});
@@ -38,8 +26,18 @@ export function AgentCard({
     typeof raw.rank === "number" && Number.isInteger(raw.rank) ? raw.rank : 0;
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState("");
-  const xp = missions * MISSION_XP + exercises * EXERCISE_XP;
-  const { index, rank, next, progress } = rankFor(xp);
+  const {
+    xp,
+    index,
+    rank,
+    next,
+    progress,
+    missionCount: missions,
+    missionTotal,
+    exercises,
+    exerciseTotal,
+    streak,
+  } = useJuniorState();
 
   // A new rank is announced for a few seconds, then remembered.
   const celebrating = index > seenRank;
@@ -147,6 +145,7 @@ export function AgentCard({
             `Missiyalar ${missions}/${missionTotal} · Shifr mashqlari ${exercises}/${exerciseTotal}`,
             `Missions ${missions}/${missionTotal} · Cipher exercises ${exercises}/${exerciseTotal}`,
           )}
+          {streak > 0 && t(` · 🔥 ${streak} kun`, ` · 🔥 ${streak}-day streak`)}
         </p>
         <ol className="jr-agent-ladder" aria-label={t("Unvonlar", "Ranks")}>
           {RANKS.map((item, i) => (

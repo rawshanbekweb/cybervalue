@@ -9,8 +9,9 @@ import {
   vigenere,
   type AnswerFormat,
 } from "./ciphers";
+import { enigma } from "./enigma";
 
-// The Junior "Cipher room": nine ciphers in the order they were invented, each
+// The Junior "Cipher room": ten ciphers in the order they were invented, each
 // with a short story, a fun fact and homework. Every text is a { uz, en }
 // pair. Answers are computed with the cipher functions, never typed by hand,
 // so an exercise cannot carry a wrong key.
@@ -24,6 +25,7 @@ export type CipherId =
   | "pigpen"
   | "vigenere"
   | "morse"
+  | "enigma"
   | "publickey";
 
 export type Exercise = {
@@ -686,8 +688,107 @@ export const CIPHERS: readonly Cipher[] = [
     ],
   },
   {
-    id: "publickey",
+    id: "enigma",
     number: 9,
+    title: t("Enigma mashinasi", "The Enigma machine"),
+    when: t("1939–1945", "1939–1945"),
+    year: 1939,
+    level: 3,
+    tagline: t(
+      "Har bir tugma bosilganda shifr o‘zgaradi.",
+      "The cipher changes with every key you press.",
+    ),
+    story: [
+      t(
+        "Enigmani nemis muhandisi Artur Sherbius 1918-yilda ixtiro qilgan. Ikkinchi jahon urushida nemis armiyasi barcha maxfiy buyruqlarini shu mashinada shifrlagan. Ichidagi aylanuvchi g‘ildiraklar (rotorlar) har bir harfdan keyin buriladi, shuning uchun bir xil harf har safar boshqacha chiqadi.",
+        "The German engineer Arthur Scherbius invented Enigma in 1918. In the Second World War the German military enciphered its secret orders with it. Spinning wheels (rotors) inside turn after every letter, so the same letter comes out differently each time.",
+      ),
+      t(
+        "1932-yilda polshalik yosh matematik Marian Rejevskiy va do‘stlari Enigmani birinchi bo‘lib buzishdi. 1939-yilda ular sirni inglizlarga berishdi. Bletchli-Parkda Alan Tyuring va uning jamoasi «Bomba» degan mashina qurib, har kuni yangi kalitni topishgan. Tarixchilar bu urushni taxminan ikki yilga qisqartirgan deb hisoblashadi.",
+        "In 1932 the young Polish mathematician Marian Rejewski and his friends were the first to break Enigma. In 1939 they handed the secret to the British. At Bletchley Park, Alan Turing and his team built a machine called the Bombe that found the new key every day. Historians think this shortened the war by about two years.",
+      ),
+    ],
+    fact: t(
+      "Enigmada harf hech qachon o‘zi bo‘lib shifrlanmaydi: A hech qachon A bo‘lmaydi. Shu kichik zaiflik buzuvchilarga katta yordam bergan. Haqiqiy mashinada 158 kvintilliondan ortiq sozlash bo‘lgan!",
+      "Enigma never enciphers a letter as itself: A never becomes A. That tiny weakness helped the codebreakers enormously. The real machine had more than 158 quintillion settings!",
+    ),
+    how: t(
+      "Rotorlarning boshlang‘ich holatini tanlang va klaviaturadagi harfni bosing: chiroq yonadi, o‘ng rotor buriladi. Signal yo‘li pastda ko‘rinadi. Ochish uchun xuddi o‘sha holatdan boshlab shifrni qayta tering — Enigma o‘zini o‘zi ochadi.",
+      "Set the rotors’ start position and press a key: a lamp lights and the right rotor turns. The signal’s path is shown below. To decrypt, start from the same position and type the ciphertext — Enigma undoes itself.",
+    ),
+    exercises: [
+      {
+        task: t("Shifrni oching (boshlanish: AAA)", "Decrypt (start: AAA)"),
+        given: enigma("SALOM", "AAA"),
+        key: "AAA",
+        answer: "SALOM",
+        format: "letters",
+      },
+      {
+        task: t("Shifrlang (boshlanish: BCD)", "Encrypt (start: BCD)"),
+        given: "HUJUM",
+        key: "BCD",
+        answer: enigma("HUJUM", "BCD"),
+        format: "letters",
+      },
+      {
+        task: t("Shifrni oching (boshlanish: QEV)", "Decrypt (start: QEV)"),
+        given: enigma("BLETCHLEY PARK", "QEV"),
+        key: "QEV",
+        answer: "BLETCHLEY PARK",
+        format: "letters",
+        hint: t(
+          "Tyuring ishlagan joyning nomi.",
+          "The name of the place where Turing worked.",
+        ),
+      },
+      {
+        task: t("Shifrni oching (boshlanish: AAA)", "Decrypt (start: AAA)"),
+        given: enigma("AAAAA", "AAA"),
+        key: "AAA",
+        answer: "AAAAA",
+        format: "letters",
+        hint: t(
+          "Bir xil harf besh marta — lekin shifrda hammasi har xil!",
+          "The same letter five times — yet every cipher letter differs!",
+        ),
+      },
+      {
+        task: t(
+          "Enigmani birinchi bo‘lib kimlar buzgan?",
+          "Who were the first to break Enigma?",
+        ),
+        given: "",
+        answer: "1",
+        format: "choice",
+        options: [
+          t("Yuliy Sezar", "Julius Caesar"),
+          t("Polshalik matematiklar", "Polish mathematicians"),
+          t("Samuel Morze", "Samuel Morse"),
+        ],
+      },
+      {
+        task: t(
+          "Enigmaning qaysi xususiyati buzuvchilarga yordam bergan?",
+          "Which property of Enigma helped the codebreakers?",
+        ),
+        given: "",
+        answer: "0",
+        format: "choice",
+        options: [
+          t(
+            "Harf hech qachon o‘zi bo‘lib shifrlanmaydi",
+            "A letter is never enciphered as itself",
+          ),
+          t("U juda og‘ir edi", "It was very heavy"),
+          t("Unda faqat 10 ta harf bor edi", "It had only 10 letters"),
+        ],
+      },
+    ],
+  },
+  {
+    id: "publickey",
+    number: 10,
     title: t("Ochiq kalit sehri", "The magic of public keys"),
     when: t("1976-yil", "1976"),
     year: 1976,
@@ -974,6 +1075,32 @@ export function generateExercise(
             task: DECODE,
             given: vigenere(word, key),
             key,
+            answer: word,
+            format: "letters",
+          };
+    }
+    case "enigma": {
+      const start = Array.from({ length: 3 }, () =>
+        String.fromCharCode(65 + Math.floor(random() * 26)),
+      ).join("");
+      const task = encode
+        ? t(`Shifrlang (boshlanish: ${start})`, `Encrypt (start: ${start})`)
+        : t(
+            `Shifrni oching (boshlanish: ${start})`,
+            `Decrypt (start: ${start})`,
+          );
+      return encode
+        ? {
+            task,
+            given: word,
+            key: start,
+            answer: enigma(word, start),
+            format: "letters",
+          }
+        : {
+            task,
+            given: enigma(word, start),
+            key: start,
             answer: word,
             format: "letters",
           };

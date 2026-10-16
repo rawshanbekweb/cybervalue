@@ -9,21 +9,17 @@ import {
   Check,
   FlaskConical,
   Lightbulb,
+  Mail,
   NotebookPen,
   Star,
 } from "lucide-react";
-import { useLocalStorageState } from "../../useLocalStorageState";
 import { useHashLessonId } from "../../useHashLessonId";
 import { useT } from "../../network-lab/use-t";
-import {
-  CIPHER_PROGRESS_KEY,
-  CIPHERS,
-  restoreCipherProgress,
-  TOTAL_EXERCISES,
-} from "@/lib/junior/cipher-content";
-import { MISSION_IDS } from "@/lib/junior/content";
-import { PROGRESS_KEY, restoreProgress } from "@/lib/junior/logic";
+import { CIPHERS } from "@/lib/junior/cipher-content";
 import { AgentCard } from "../AgentCard";
+import { DailyPuzzle } from "../campaign";
+import { Narrator } from "../Narrator";
+import { useJuniorState } from "../state";
 import { BENCHES } from "./visuals";
 import { Homework, HomeworkSheet } from "./homework";
 import "../junior.css";
@@ -32,16 +28,12 @@ import "./ciphers.css";
 export function CipherRoom() {
   const { t, text } = useT();
   const [id, setId] = useHashLessonId(CIPHERS.length, 1, "cipher");
-  const [raw, setRaw] = useLocalStorageState<unknown>(CIPHER_PROGRESS_KEY, {});
-  const [missionsRaw] = useLocalStorageState<unknown>(PROGRESS_KEY, {});
-  const progress = restoreCipherProgress(raw);
-  const missions = Object.keys(
-    restoreProgress(missionsRaw, MISSION_IDS),
-  ).length;
-  const solvedTotal = Object.values(progress).reduce(
-    (sum, list) => sum + (list?.length ?? 0),
-    0,
-  );
+  const {
+    ciphers: progress,
+    setCiphers: setRaw,
+    events,
+    addEvent,
+  } = useJuniorState();
   const timeline = useRef<HTMLOListElement>(null);
   // Keep the chosen stop visible on narrow screens, where the timeline
   // scrolls sideways; the page itself does not move.
@@ -55,6 +47,11 @@ export function CipherRoom() {
       });
   }, [id]);
   const cipher = CIPHERS[id - 1];
+  // Opening every cipher earns the Historian badge.
+  const fresh = !events.visited?.includes(cipher.id);
+  useEffect(() => {
+    if (fresh) addEvent({ visited: [...(events.visited ?? []), cipher.id] });
+  }, [fresh, events, cipher.id, addEvent]);
   const Bench = BENCHES[cipher.id];
   const solved = progress[cipher.id] ?? [];
   const open = (next: number) => {
@@ -82,13 +79,29 @@ export function CipherRoom() {
             )}
           </p>
         </div>
-        <AgentCard
-          missions={missions}
-          missionTotal={MISSION_IDS.length}
-          exercises={solvedTotal}
-          exerciseTotal={TOTAL_EXERCISES}
-        />
+        <AgentCard />
       </header>
+
+      <div className="jr-side">
+        <DailyPuzzle />
+        <Link
+          className="jr-promo cr-secret-promo"
+          href="/playground/junior/secret"
+        >
+          <span className="jr-promo-icon" aria-hidden="true">
+            <Mail size={22} />
+          </span>
+          <span>
+            <strong>
+              {t("Do‘stingizga maxfiy xabar", "Send a friend a secret")}
+            </strong>
+            {t(
+              "Xabarni shifrlang va havolani yuboring. Kalitni esa unga yuzma-yuz ayting — xuddi haqiqiy josuslardek!",
+              "Encrypt a message and send the link. Tell them the key face to face — just like real spies!",
+            )}
+          </span>
+        </Link>
+      </div>
 
       <nav
         className="cr-timeline"
@@ -163,6 +176,9 @@ export function CipherRoom() {
             {cipher.story.map((paragraph, i) => (
               <p key={i}>{text(paragraph)}</p>
             ))}
+            <Narrator
+              text={[...cipher.story, cipher.fact].map(text).join(" ")}
+            />
             <div className="cr-fact">
               <Lightbulb size={16} aria-hidden="true" />
               <p>

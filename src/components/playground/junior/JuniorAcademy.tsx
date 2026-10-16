@@ -9,16 +9,12 @@ import {
   ChevronRight,
   Compass,
 } from "lucide-react";
-import { useLocalStorageState } from "../useLocalStorageState";
 import { useT } from "../network-lab/use-t";
-import { MISSIONS, MISSION_IDS, type MissionId } from "@/lib/junior/content";
-import { PROGRESS_KEY, restoreProgress } from "@/lib/junior/logic";
-import {
-  CIPHER_PROGRESS_KEY,
-  restoreCipherProgress,
-  TOTAL_EXERCISES,
-} from "@/lib/junior/cipher-content";
+import { MISSIONS, type MissionId } from "@/lib/junior/content";
 import { AgentCard } from "./AgentCard";
+import { Badges, CaseFile, Certificate, DailyPuzzle } from "./campaign";
+import { Narrator } from "./Narrator";
+import { useJuniorState } from "./state";
 import {
   CipherMission,
   CtfMission,
@@ -47,8 +43,8 @@ const NEXT_STEPS = [
     href: "/playground/junior/ciphers",
     uz: "Shifrlar xonasi",
     en: "The Cipher Room",
-    noteUz: "9 ta tarixiy shifr, vizual tushuntirish va uy vazifalari.",
-    noteEn: "9 historic ciphers, visual explanations and homework.",
+    noteUz: "10 ta tarixiy shifr, vizual tushuntirish va uy vazifalari.",
+    noteEn: "10 historic ciphers, visual explanations and homework.",
   },
   {
     href: "/playground/html-basics",
@@ -83,14 +79,11 @@ const NEXT_STEPS = [
 export function JuniorAcademy() {
   const { t, text } = useT();
   const [id, setId] = useHashLessonId(MISSIONS.length, 1, "mission");
-  const [raw, setProgress] = useLocalStorageState<unknown>(PROGRESS_KEY, {});
-  const progress = restoreProgress(raw, MISSION_IDS);
-  const [ciphersRaw] = useLocalStorageState<unknown>(CIPHER_PROGRESS_KEY, {});
-  const exercises = Object.values(restoreCipherProgress(ciphersRaw)).reduce(
-    (sum, list) => sum + (list?.length ?? 0),
-    0,
-  );
-  const count = Object.keys(progress).length;
+  const {
+    missions: progress,
+    setMissions: setProgress,
+    missionCount: count,
+  } = useJuniorState();
   const all = count === MISSIONS.length;
   const mission = MISSIONS[id - 1];
   const Panel = PANELS[mission.id];
@@ -133,12 +126,7 @@ export function JuniorAcademy() {
             </span>
           </div>
         </div>
-        <AgentCard
-          missions={count}
-          missionTotal={MISSIONS.length}
-          exercises={exercises}
-          exerciseTotal={TOTAL_EXERCISES}
-        />
+        <AgentCard />
       </header>
 
       <Link className="jr-promo" href="/playground/junior/ciphers">
@@ -151,8 +139,8 @@ export function JuniorAcademy() {
             {t("Shifrlar xonasi", "The Cipher Room")}
           </strong>
           {t(
-            "Sparta tayoqchasi, Sezar g‘ildiragi, Al-Kindiy sirlari, Morze telegrafi va ochiq kalit sehri — 9 ta shifr, uy vazifalari va XP.",
-            "A Spartan rod, Caesar’s wheel, Al-Kindi’s secret, the Morse telegraph and the magic of public keys — 9 ciphers, homework and XP.",
+            "Sparta tayoqchasi, Sezar g‘ildiragi, Al-Kindiy sirlari, Morze telegrafi, Enigma va ochiq kalit sehri — 10 ta shifr, uy vazifalari va XP.",
+            "A Spartan rod, Caesar’s wheel, Al-Kindi’s secret, the Morse telegraph, Enigma and the magic of public keys — 10 ciphers, homework and XP.",
           )}
         </span>
         <ChevronRight size={22} aria-hidden="true" />
@@ -209,6 +197,9 @@ export function JuniorAcademy() {
               <strong>{t("Maqsad:", "Goal:")}</strong> {text(mission.goal)}
             </span>
           </p>
+          <Narrator
+            text={`${text(mission.title)}. ${text(mission.hook)} ${t("Maqsad:", "Goal:")} ${text(mission.goal)}`}
+          />
         </header>
         <Panel
           done={Boolean(progress[mission.id])}
@@ -225,6 +216,11 @@ export function JuniorAcademy() {
           </button>
         )}
       </section>
+
+      <div className="jr-side">
+        <CaseFile />
+        <DailyPuzzle />
+      </div>
 
       {all ? (
         <section className="jr-finish" aria-labelledby="jr-finish-title">
@@ -259,14 +255,17 @@ export function JuniorAcademy() {
             {t("Boshidan boshlash", "Start over")}
           </button>
         </section>
-      ) : (
+      ) : null}
+      <Certificate />
+      {!all ? (
         <p className="jr-foot">
           {t(
             "Barcha missiyalarni bajargach, keyingi qadamlar ochiladi. Natijangiz shu brauzerda saqlanadi.",
             "Finish every mission to unlock your next steps. Your progress is saved in this browser.",
           )}
         </p>
-      )}
+      ) : null}
+      <Badges />
     </div>
   );
 }

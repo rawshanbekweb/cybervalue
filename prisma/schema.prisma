@@ -292,27 +292,31 @@ enum MaterialKind {
 }
 
 model Student {
-  id           String               @id @default(cuid())
-  name         String
-  group        String               @default("")
+  id             String               @id @default(cuid())
+  name           String
+  group          String               @default("")
   // Set by the teacher after the entrance exam: beginner, intermediate or
   // advanced; "" until placed.
-  level        String               @default("")
-  note         String               @default("") @db.Text
-  codeHash     String               @unique
-  active       Boolean              @default(true)
-  expiresAt    DateTime?            @db.Timestamptz(3)
-  lastLoginAt  DateTime?            @db.Timestamptz(3)
-  createdAt    DateTime             @default(now())
-  updatedAt    DateTime             @updatedAt
-  sessions     StudentSession[]
-  submissions  StudentSubmission[]
-  progress     StudentProgress[]
-  quizStarts   StudentQuizStart[]
-  certificates StudentCertificate[]
+  level          String               @default("")
+  note           String               @default("") @db.Text
+  codeHash       String               @unique
+  active         Boolean              @default(true)
+  expiresAt      DateTime?            @db.Timestamptz(3)
+  lastLoginAt    DateTime?            @db.Timestamptz(3)
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+  sessions       StudentSession[]
+  submissions    StudentSubmission[]
+  progress       StudentProgress[]
+  quizStarts     StudentQuizStart[]
+  certificates   StudentCertificate[]
   // Particle points from the student's own photo ({ aspect, points }); the
   // photo itself is never stored.
-  portrait     Json?
+  portrait       Json?
+  // Junior results the student chose to share with their group's ranking.
+  juniorXp       Int                  @default(0)
+  juniorCodename String               @default("")
+  juniorSyncedAt DateTime?            @db.Timestamptz(3)
 
   @@index([group])
 }

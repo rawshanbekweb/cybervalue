@@ -788,6 +788,69 @@ body.student-root {
   line-height: 1.5;
 }
 
+/* Junior ranking */
+.student-junior-sync {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.student-section-head .student-quiet a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-saffron-spark);
+}
+.student-ranking {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.student-ranking li {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border: 1px solid #ffffff1f;
+  border-radius: 12px;
+}
+.student-ranking li.me {
+  border-color: var(--color-electric-iris);
+  background: #8052ff1a;
+}
+.student-ranking-place {
+  font-weight: 700;
+  color: var(--color-saffron-spark);
+}
+.student-ranking-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.student-ranking-name small {
+  color: var(--color-ash-gray);
+}
+.student-ranking-rank {
+  color: var(--color-ash-gray);
+  font-size: 14px;
+}
+.student-ranking-xp {
+  font-weight: 600;
+}
+@media (max-width: 520px) {
+  .student-ranking li {
+    grid-template-columns: 28px minmax(0, 1fr) auto;
+  }
+  .student-ranking-rank {
+    display: none;
+  }
+}
+
 /* Responsive */
 @media (max-width: 960px) {
   .student-nav {

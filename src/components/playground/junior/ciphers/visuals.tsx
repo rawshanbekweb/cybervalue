@@ -25,6 +25,8 @@ import {
   type Rgb,
 } from "@/lib/junior/ciphers";
 import type { CipherId } from "@/lib/junior/cipher-content";
+import { EnigmaBench } from "./enigma-bench";
+import { useJuniorState } from "../state";
 
 const ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
@@ -833,6 +835,12 @@ function MorseBench() {
   const lastRelease = useRef(0);
   const holdOsc = useRef<OscillatorNode | null>(null);
   const encoded = morseEncode(text);
+  // Tapping SOS on the key earns the "Fast fingers" badge.
+  const { events, addEvent } = useJuniorState();
+  const sentSos = morseDecode(code).replace(/\s/g, "").includes("SOS");
+  useEffect(() => {
+    if (sentSos && !events.sos) addEvent({ sos: true });
+  }, [sentSos, events, addEvent]);
 
   const stop = () => {
     timers.current.forEach((id) => window.clearTimeout(id));
@@ -1108,5 +1116,6 @@ export const BENCHES: Record<CipherId, () => React.ReactNode> = {
   pigpen: PigpenBench,
   vigenere: VigenereBench,
   morse: MorseBench,
+  enigma: EnigmaBench,
   publickey: PaintBench,
 };

@@ -5,6 +5,22 @@ import type { Text } from "./logic";
 
 export const MISSION_XP = 100;
 export const EXERCISE_XP = 15;
+export const DAILY_XP = 20;
+export const STORY_XP = 100;
+
+export function xpFor(stats: {
+  missions: number;
+  exercises: number;
+  daily: number;
+  story: boolean;
+}) {
+  return (
+    stats.missions * MISSION_XP +
+    stats.exercises * EXERCISE_XP +
+    stats.daily * DAILY_XP +
+    (stats.story ? STORY_XP : 0)
+  );
+}
 
 export const RANKS: readonly { xp: number; title: Text }[] = [
   { xp: 0, title: { uz: "Yangi nomzod", en: "New recruit" } },
