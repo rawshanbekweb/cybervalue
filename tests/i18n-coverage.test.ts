@@ -218,10 +218,7 @@ test("every Build & Defend scenario, case, hint and interface string is translat
     /\bt\(\s*[^"()]*?\?\s*"([^"]*)"\s*:\s*"([^"]*)"/g,
   ))
     texts.push(match[1], match[2]);
-  const page = readFileSync(
-    "src/app/[lang]/playground/defend/page.tsx",
-    "utf8",
-  );
+  const page = readFileSync("src/app/[lang]/akademiya/defend/page.tsx", "utf8");
   const [, title, description] =
     /metadata\(\s*"([^"]*)",\s*"([^"]*)"/.exec(page) ?? [];
   texts.push(title, description);

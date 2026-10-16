@@ -175,7 +175,7 @@ function renderComments(root, comments) {
   ],
   debrief:
     "Stored XSS happens when saved input is later rendered as code. The fix is not to filter “bad” words but to choose a sink that treats data as text: textContent and createElement. When you truly need user-supplied HTML, use a proven sanitizer and a Content Security Policy as a second layer.",
-  lesson: "/playground/web-security-lab#lesson/25",
+  lesson: "/akademiya/web-security-lab#lesson/25",
 };
 
 const profile = (overrides: Record<string, string> = {}) => ({
@@ -314,7 +314,7 @@ function renderProfile(root, profile) {
   ],
   debrief:
     "Context decides the defense: text needs textContent, attributes need DOM properties, URLs need parsing plus a protocol allow-list, and styles need strict validation. One generic “escape” function cannot protect every context.",
-  lesson: "/playground/web-security-lab#lesson/25",
+  lesson: "/akademiya/web-security-lab#lesson/25",
 };
 
 const results = (...items: [string, string][]) =>
@@ -444,7 +444,7 @@ function renderResults(root, query, results) {
   ],
   debrief:
     "Reflected XSS turns a link into a weapon. Treat the query as text everywhere it appears, including inside highlighting. Building the highlighted title from DOM nodes keeps both the feature and the safety.",
-  lesson: "/playground/web-security-lab#lesson/25",
+  lesson: "/akademiya/web-security-lab#lesson/25",
 };
 
 const sameSite = (report: RunReport) => {
@@ -550,7 +550,7 @@ function safeRedirect(next) {
   ],
   debrief:
     "Open redirects borrow your site’s trust for phishing. Parsing with the same URL rules the browser uses, then comparing origins, defeats tricks that string checks miss: protocol-relative URLs, backslashes and hidden control characters.",
-  lesson: "/playground/web-security-lab#lesson/27",
+  lesson: "/akademiya/web-security-lab#lesson/27",
 };
 
 export const SCENARIOS: Scenario[] = [

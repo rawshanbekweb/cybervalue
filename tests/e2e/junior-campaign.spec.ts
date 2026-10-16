@@ -104,7 +104,7 @@ test("a member who finished every mission solves the case and earns a certificat
 test("today's puzzle is solved once and starts a streak", async ({ page }) => {
   needsDatabase();
   await signInJunior(page);
-  await page.goto("/playground/junior/homework");
+  await page.goto("/junior/homework");
   const puzzle = puzzleFor(dayIndex(Date.now()), "en");
   const daily = page.getByRole("region", { name: "Daily puzzle" });
   await expect(daily.locator("code")).toHaveText(puzzle.given);
@@ -123,7 +123,7 @@ test("today's puzzle is solved once and starts a streak", async ({ page }) => {
 test("the Enigma machine lights the historical lamps", async ({ page }) => {
   needsDatabase();
   await signInJunior(page);
-  await page.goto("/playground/junior/ciphers#cipher/9");
+  await page.goto("/junior/ciphers#cipher/9");
   await expect(
     page.getByRole("heading", { name: "The Enigma machine" }),
   ).toBeVisible();
@@ -140,7 +140,7 @@ test("a secret message travels in the link and opens with the key", async ({
   page,
   browser,
 }) => {
-  await page.goto("/playground/junior/secret");
+  await page.goto("/junior/secret");
   await page
     .getByLabel("Message", { exact: true })
     .fill("Meet me at the library at 9");
@@ -149,7 +149,7 @@ test("a secret message travels in the link and opens with the key", async ({
   await page.getByLabel("Hint (optional)").fill("the bird of wisdom");
   await page.getByRole("button", { name: "Create the link" }).click();
   const link = await page.getByLabel("Send this to your friend:").inputValue();
-  expect(link).toContain("/playground/junior/secret#m=");
+  expect(link).toContain("/junior/secret#m=");
   expect(link).not.toContain("library");
   await audit(page, "secret message composer");
 

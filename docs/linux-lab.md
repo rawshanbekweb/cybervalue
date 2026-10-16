@@ -1,6 +1,6 @@
 # Linux foundations lab
 
-Route: `/playground/linux-basics`, linked from Labs, the Linux learning resource,
+Route: `/akademiya/linux-basics`, linked from Labs, the Linux learning resource,
 and the learning catalog on the home page and Playground. Supports Uzbek and
 English through the site's locale.
 

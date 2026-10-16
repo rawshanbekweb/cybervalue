@@ -347,6 +347,7 @@ model Student {
   quizStarts   StudentQuizStart[]
   certificates StudentCertificate[]
   checkpoints  StudentCheckpoint[]
+  labProgress  StudentLabProgress[]
   // Particle points from the student's own photo ({ aspect, points }); the
   // photo itself is never stored.
   portrait     Json?
@@ -474,4 +475,16 @@ model StudentCheckpoint {
 
   @@unique([studentId, checkpoint, seed])
   @@index([checkpoint, createdAt])
+}
+
+// Completed lessons of an open lab (network, linux, html, security) for a
+// signed-in student, mirrored from the browser so progress follows them.
+model StudentLabProgress {
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  lab       String
+  lessons   Int[]
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  @@id([studentId, lab])
 }

@@ -113,17 +113,17 @@ Playwright starts its own server on `PORT` and only reuses a running one when `P
 
 ## Learning hub
 
-The [00:17 CTF](docs/ctf.md) at `/playground/ctf` is a five-challenge Uzbek-language investigation with a signal map, evidence viewer, decoder, local archive, server-verified flags, and a final transmission unlocked by four recovered keys.
+The [00:17 CTF](docs/ctf.md) at `/akademiya/ctf` is a five-challenge Uzbek-language investigation with a signal map, evidence viewer, decoder, local archive, server-verified flags, and a final transmission unlocked by four recovered keys.
 
-The [HTML & CSS project studio](docs/studio.md) at `/playground/studio` includes three fictional client briefs, separate HTML/CSS editors, isolated live previews, structural feedback, saved drafts, and HTML/review exports.
+The [HTML & CSS project studio](docs/studio.md) at `/akademiya/studio` includes three fictional client briefs, separate HTML/CSS editors, isolated live previews, structural feedback, saved drafts, and HTML/review exports.
 
-The [IP addressing lab](docs/network-lab.md) at `/playground/network-basics` teaches IP addresses, subnet masks and the default gateway, then how addresses are obtained (DHCP), found (DNS) and shared (NAT), plus subnetting, traceroute, ports, IPv6, and DNS, TLS and HTTP on the wire, in seventeen lessons with clickable bits, frame-by-frame packets, generated practice examples, a bitwise AND view, a small network simulator that explains every ping, and a subnet calculator.
+The [IP addressing lab](docs/network-lab.md) at `/akademiya/network-basics` teaches IP addresses, subnet masks and the default gateway, then how addresses are obtained (DHCP), found (DNS) and shared (NAT), plus subnetting, traceroute, ports, IPv6, and DNS, TLS and HTTP on the wire, in seventeen lessons with clickable bits, frame-by-frame packets, generated practice examples, a bitwise AND view, a small network simulator that explains every ping, and a subnet calculator.
 
-The hub now includes [three investigation missions](docs/missions.md) at `/playground/missions`: invoice authorization, checkout integrity, and webhook replay. Learners edit requests, collect evidence, choose defense policies, and run behavioral regression checks. Completion requires demonstrated outcomes. These browser simulations complement the existing guided lessons and real local API exercises.
+The hub now includes [three investigation missions](docs/missions.md) at `/akademiya/missions`: invoice authorization, checkout integrity, and webhook replay. Learners edit requests, collect evidence, choose defense policies, and run behavioral regression checks. Completion requires demonstrated outcomes. These browser simulations complement the existing guided lessons and real local API exercises.
 
-New learners start with [Cybervalue Academy Junior](docs/junior.md) at `/playground/junior`: six short beginner missions (passwords, phishing, ciphers, digital footprint, a first CTF and ethical hacking rules), public and fully in the browser.
+New learners start with [Cybervalue Academy Junior](docs/junior.md) at `/junior`: six short beginner missions (passwords, phishing, ciphers, digital footprint, a first CTF and ethical hacking rules), public and fully in the browser.
 
-Home and `/playground` share a searchable catalog of the existing HTML and web security lessons. Track counts and lesson titles come from the course data through `src/lib/learning.ts`; only catalog metadata is passed to the client. Both courses support direct links in the form `#lesson/2`.
+Home and `/akademiya` share a searchable catalog of the existing HTML and web security lessons. Track counts and lesson titles come from the course data through `src/lib/learning.ts`; only catalog metadata is passed to the client. Both courses support direct links in the form `#lesson/2`.
 
 The catalog reads each course's existing browser progress, counts only valid completed lessons, and links to the first unfinished lesson. Completed tracks offer a review link. Progress stays on the current browser and does not sync to an account. Missing or malformed storage does not block the catalog. Home's Build / Investigate / Defend panel presents educational examples and opens the corresponding exercise.
 

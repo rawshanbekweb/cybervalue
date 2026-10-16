@@ -4,7 +4,7 @@ import { Archive, type SearchParams } from "@/components/archive";
 export const generateMetadata = () =>
   metadata(
     "Search the archive",
-    "Find published projects, security labs, research, CTF writeups, and technical resources on CyberValue.",
+    "Find published projects, security labs, research, CTF writeups, and technical resources on Cybervalue.",
     "/search",
     true,
   );

@@ -51,7 +51,7 @@ export async function signInJunior(
   options?: Parameters<typeof createJunior>[0],
 ) {
   const member = await createJunior(options);
-  await page.goto("/playground/junior");
+  await page.goto("/junior");
   await enterCode(page, member.code);
   return member;
 }

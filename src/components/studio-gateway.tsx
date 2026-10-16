@@ -26,7 +26,7 @@ export async function StudioGateway() {
           <span>{t("Export your work")}</span>
         </div>
       </div>
-      <Link href="/playground/studio" className="button button-primary">
+      <Link href="/akademiya/studio" className="button button-primary">
         {t("Open project studio")}
         <ArrowUpRight size={17} />
       </Link>

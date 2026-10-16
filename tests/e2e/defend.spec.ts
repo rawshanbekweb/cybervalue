@@ -33,9 +33,9 @@ test.describe("in English", () => {
   test("the starter code is exploited for real and the attack shows the evidence", async ({
     page,
   }) => {
-    await page.goto("/playground");
+    await page.goto("/akademiya");
     await page.getByRole("link", { name: "Open Build & Defend" }).click();
-    await expect(page).toHaveURL(/\/playground\/defend$/);
+    await expect(page).toHaveURL(/\/akademiya\/defend$/);
     await attack(page);
     await expect(notice(page)).toContainText(/\d of 4 attacks blocked/);
     const exploited = page
@@ -54,9 +54,9 @@ test.describe("in English", () => {
   test("every scenario can be defended, and progress survives a reload", async ({
     page,
   }) => {
-    await page.goto("/playground/defend");
+    await page.goto("/akademiya/defend");
     for (const [id, code] of Object.entries(defendSolutions)) {
-      await page.goto(`/playground/defend#scenario/${id}`);
+      await page.goto(`/akademiya/defend#scenario/${id}`);
       await attack(page, code);
       await expect(notice(page)).toHaveText(
         "Every attack failed and every feature works. Scenario defended.",
@@ -83,7 +83,7 @@ test.describe("in English", () => {
   test("editing after an attack marks the result as stale", async ({
     page,
   }) => {
-    await page.goto("/playground/defend#scenario/redirect");
+    await page.goto("/akademiya/defend#scenario/redirect");
     await attack(page, defendSolutions.redirect);
     await page
       .getByLabel("JavaScript code", { exact: true })
@@ -97,7 +97,7 @@ test.describe("in English", () => {
   test("the lab has no detectable accessibility violations", async ({
     page,
   }) => {
-    await page.goto("/playground/defend");
+    await page.goto("/akademiya/defend");
     await attack(page);
     const result = await new AxeBuilder({ page })
       .exclude("iframe")
@@ -111,7 +111,7 @@ test.describe("in Uzbek", () => {
   test.use({ storageState: locale("uz") });
 
   test("the lab and its scenarios are shown in Uzbek", async ({ page }) => {
-    await page.goto("/playground/defend");
+    await page.goto("/akademiya/defend");
     await expect(page.getByRole("heading", { level: 1 })).toContainText(
       "Hujumdan omon qoling.",
     );

@@ -66,7 +66,7 @@ export default async function StudentCertificatePage({
         <div className="student-certificate-foot">
           <div>
             <p className="student-certificate-meta">{date}</p>
-            <p className="student-certificate-meta">CyberValue</p>
+            <p className="student-certificate-meta">Cybervalue</p>
             <p className="student-certificate-code">
               {formatCertificateCode(certificate.code)}
             </p>

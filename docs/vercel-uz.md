@@ -1,4 +1,4 @@
-# CyberValue loyihasini Vercel'ga joylash
+# Cybervalue loyihasini Vercel'ga joylash
 
 Loyihani kontentsiz joylab, keyin `/admin` orqali maqolalar, loyihalar va lab yozuvlarini qo'shish mumkin. Kontent va admin akkaunt PostgreSQL bazasida saqlanadi, shuning uchun qayta deploy ularni o'chirmaydi. Baza zaxira nusxalarini hosting provayderida sozlang.
 

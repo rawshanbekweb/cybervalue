@@ -65,10 +65,9 @@ export default async function AdminJuniorPage({
         <div>
           <h1>Academy Junior</h1>
           <p className="muted">
-            {t(
-              "{count} members · sign-in page: /playground/junior (access code)",
-              { count: members.length },
-            )}
+            {t("{count} members · sign-in page: /junior (access code)", {
+              count: members.length,
+            })}
           </p>
         </div>
         <a href={exportHref} className="button button-primary" download>

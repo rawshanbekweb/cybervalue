@@ -44,14 +44,14 @@ test("Labs and Linux resources link to the terminal course", async ({
   await page.goto("/resources");
   await expect(
     page.getByRole("link", { name: "Open Linux lab" }),
-  ).toHaveAttribute("href", "/playground/linux-basics");
+  ).toHaveAttribute("href", "/akademiya/linux-basics");
 });
 
 test("catalog opens Linux, every lesson can be completed, progress resumes", async ({
   page,
 }) => {
   test.setTimeout(180_000);
-  await page.goto("/playground");
+  await page.goto("/akademiya");
   await page
     .locator(".learn-card-linux")
     .getByRole("link", { name: "Start learning" })
@@ -90,7 +90,7 @@ test("catalog opens Linux, every lesson can be completed, progress resumes", asy
   await page.reload();
   await expect(page.locator("#lx-progress")).toHaveAttribute("value", "16");
   await expect(page.locator(".lx-complete-badge")).toContainText("Completed");
-  await page.goto("/playground");
+  await page.goto("/akademiya");
   await expect(
     page.locator(".learn-card-linux").getByRole("progressbar"),
   ).toHaveAttribute("value", "16");
@@ -99,7 +99,7 @@ test("catalog opens Linux, every lesson can be completed, progress resumes", asy
 test("terminal history, completion, quotes, file preview, export, reload and independent sessions", async ({
   page,
 }) => {
-  await page.goto("/playground/linux-basics#lesson/5");
+  await page.goto("/akademiya/linux-basics#lesson/5");
   const input = page.getByRole("textbox", {
     name: "Terminal command",
     exact: true,
@@ -152,7 +152,7 @@ test("terminal history, completion, quotes, file preview, export, reload and ind
 test("reset requires confirmation and only resets the current lesson", async ({
   page,
 }) => {
-  await page.goto("/playground/linux-basics#lesson/1");
+  await page.goto("/akademiya/linux-basics#lesson/1");
   await run(page, "pwd");
   await run(page, "whoami");
   await page.getByRole("radio", { name: "Shell", exact: true }).check();
@@ -190,7 +190,7 @@ test("corrupt local storage and unavailable storage do not break practice", asyn
       JSON.stringify({ 1: "true", 999: true }),
     );
   });
-  await page.goto("/playground/linux-basics");
+  await page.goto("/akademiya/linux-basics");
   await expect(page.locator("#lx-progress")).toHaveAttribute("value", "0");
   await run(page, "pwd");
   await expect(page.locator(".lx-output")).toContainText("/home/student");
@@ -211,7 +211,7 @@ test("Uzbek lesson and progress survive a language change", async ({
   await context.addCookies([
     { name: "cybervalue-locale", value: "uz", domain: "localhost", path: "/" },
   ]);
-  await page.goto("/playground/linux-basics#lesson/13");
+  await page.goto("/akademiya/linux-basics#lesson/13");
   await expect(
     page.getByRole("heading", {
       name: "Foydalanuvchilar va ruxsatlar",
@@ -239,7 +239,7 @@ test("Uzbek lesson and progress survive a language change", async ({
 test("responsive Linux workspace is accessible on desktop and mobile", async ({
   page,
 }) => {
-  await page.goto("/playground/linux-basics");
+  await page.goto("/akademiya/linux-basics");
   for (const width of [320, 390, 768, 1024, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
     expect(

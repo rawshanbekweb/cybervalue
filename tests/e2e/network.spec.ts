@@ -22,11 +22,11 @@ test.use({
 test("the labs page and catalog lead to the IP lab", async ({ page }) => {
   await page.goto("/labs");
   await page.getByRole("link", { name: "Open IP lab" }).click();
-  await expect(page).toHaveURL(/\/playground\/network-basics$/);
+  await expect(page).toHaveURL(/\/akademiya\/network-basics$/);
   await expect(
     page.getByRole("heading", { level: 1, name: /IP, mask and gateway/ }),
   ).toBeVisible();
-  await page.goto("/playground");
+  await page.goto("/akademiya");
   await page.getByRole("button", { name: "Networking", exact: true }).click();
   await expect(page.locator(".learn-card")).toHaveCount(1);
   await expect(
@@ -37,7 +37,7 @@ test("the labs page and catalog lead to the IP lab", async ({ page }) => {
 test("building an address bit by bit completes the first lesson and survives a reload", async ({
   page,
 }) => {
-  await page.goto("/playground/network-basics#lesson/1");
+  await page.goto("/akademiya/network-basics#lesson/1");
   await page.getByRole("button", { name: "Check" }).click();
   await expect(page.getByText("Not yet.")).toBeVisible();
   for (const [octet, weight] of [
@@ -65,7 +65,7 @@ test("building an address bit by bit completes the first lesson and survives a r
 test("the simulator explains a missing gateway and passes once it is set", async ({
   page,
 }) => {
-  await page.goto("/playground/network-basics#lesson/5");
+  await page.goto("/akademiya/network-basics#lesson/5");
   await page.getByRole("button", { name: "ping 192.168.1.50" }).click();
   await expect(page.locator(".nl-log")).toContainText("reply received");
   await page.getByRole("button", { name: "ping 8.8.8.8" }).click();
@@ -85,7 +85,7 @@ test("the simulator explains a missing gateway and passes once it is set", async
 });
 
 test("the subnet calculator breaks down any address", async ({ page }) => {
-  await page.goto("/playground/network-basics");
+  await page.goto("/akademiya/network-basics");
   await page.getByRole("button", { name: "Subnet calculator" }).click();
   await page.getByLabel("IP address").fill("172.16.5.130");
   await page.getByLabel("Mask or /prefix").fill("/25");
@@ -115,7 +115,7 @@ test("the IP lab fits small screens and passes an accessibility audit", async ({
     "#lesson/16",
     "#lesson/17",
   ]) {
-    await page.goto(`/playground/network-basics${hash}`);
+    await page.goto(`/akademiya/network-basics${hash}`);
     for (const width of [320, 390, 768, 1440]) {
       await page.setViewportSize({ width, height: 1000 });
       expect(
@@ -133,7 +133,7 @@ test("the IP lab fits small screens and passes an accessibility audit", async ({
 });
 
 test("DHCP hands out addresses until the pool runs out", async ({ page }) => {
-  await page.goto("/playground/network-basics#lesson/9");
+  await page.goto("/akademiya/network-basics#lesson/9");
   for (const device of ["Laptop", "Phone", "TV", "Tablet", "Game console"])
     await page.getByRole("button", { name: `Connect: ${device}` }).click();
   await expect(page.locator(".nl-exchange")).toContainText("no free address");
@@ -153,7 +153,7 @@ test("DHCP hands out addresses until the pool runs out", async ({ page }) => {
 test("DNS resolves names, uses its cache and exposes the look-alike site", async ({
   page,
 }) => {
-  await page.goto("/playground/network-basics#lesson/10");
+  await page.goto("/akademiya/network-basics#lesson/10");
   const suggestion = (name: string) =>
     page.getByRole("button", { name, exact: true });
   await suggestion("bank.example").click();
@@ -178,7 +178,7 @@ test("DNS resolves names, uses its cache and exposes the look-alike site", async
 test("NAT shows every home device to the site as one public address", async ({
   page,
 }) => {
-  await page.goto("/playground/network-basics#lesson/11");
+  await page.goto("/akademiya/network-basics#lesson/11");
   await page.getByRole("button", { name: "Laptop: open the site" }).click();
   await page.getByRole("button", { name: "TV: open the site" }).click();
   const log = page.getByRole("region", { name: "Site server" });
@@ -191,7 +191,7 @@ test("NAT shows every home device to the site as one public address", async ({
 });
 
 test("packets can be stepped frame by frame", async ({ page }) => {
-  await page.goto("/playground/network-basics#lesson/5");
+  await page.goto("/akademiya/network-basics#lesson/5");
   await page.getByLabel("Default gateway").fill("192.168.1.1");
   await page.getByRole("button", { name: "ping 8.8.8.8" }).click();
   await page.getByRole("button", { name: "Start" }).click();
@@ -206,7 +206,7 @@ test("packets can be stepped frame by frame", async ({ page }) => {
 test("new examples replace the exercise and count solved ones", async ({
   page,
 }) => {
-  await page.goto("/playground/network-basics#lesson/15");
+  await page.goto("/akademiya/network-basics#lesson/15");
   await page.getByLabel("Short form").fill("2001:db8::ff00:42:8329");
   await page.getByRole("button", { name: "Check" }).click();
   await expect(page.getByText("Examples solved: 1")).toBeVisible();
@@ -223,7 +223,7 @@ test("new examples replace the exercise and count solved ones", async ({
 test("subnetting, traceroute and ports lessons can be completed", async ({
   page,
 }) => {
-  await page.goto("/playground/network-basics#lesson/12");
+  await page.goto("/akademiya/network-basics#lesson/12");
   await page.locator('input[type="range"]').fill("26");
   await page
     .getByLabel("Network address of department 3")
@@ -231,7 +231,7 @@ test("subnetting, traceroute and ports lessons can be completed", async ({
   await page.getByRole("button", { name: "Check" }).click();
   await expect(page.getByText("Correct! Lesson completed.")).toBeVisible();
 
-  await page.goto("/playground/network-basics#lesson/13");
+  await page.goto("/akademiya/network-basics#lesson/13");
   await page.getByRole("spinbutton", { name: "TTL" }).fill("3");
   await page.getByRole("button", { name: "Send packet" }).click();
   await expect(page.locator(".nl-route .expired")).toContainText(
@@ -242,7 +242,7 @@ test("subnetting, traceroute and ports lessons can be completed", async ({
   await page.getByRole("button", { name: "Check" }).click();
   await expect(page.getByText("Correct! Lesson completed.")).toBeVisible();
 
-  await page.goto("/playground/network-basics#lesson/14");
+  await page.goto("/akademiya/network-basics#lesson/14");
   await page.getByRole("button", { name: "Connect to port 3306" }).click();
   await expect(page.locator(".nl-steps")).toContainText("SYN-ACK");
   for (const [port, name] of [
@@ -265,7 +265,7 @@ test("subnetting, traceroute and ports lessons can be completed", async ({
 test("a page load can be stepped packet by packet with the eavesdropper's view", async ({
   page,
 }) => {
-  await page.goto("/playground/network-basics#lesson/16");
+  await page.goto("/akademiya/network-basics#lesson/16");
   const ladder = page.locator(".nl-ladder li");
   await expect(ladder).toHaveCount(10);
   await expect(page.locator(".nl-frame")).toContainText("UDP 51000 → 53");
@@ -283,7 +283,7 @@ test("a page load can be stepped packet by packet with the eavesdropper's view",
 });
 
 test("hand-built HTTP requests collect every status code", async ({ page }) => {
-  await page.goto("/playground/network-basics#lesson/17");
+  await page.goto("/akademiya/network-basics#lesson/17");
   const send = () => page.getByRole("button", { name: "Send request" }).click();
   const path = page.getByLabel("Path");
   const response = page.getByLabel("Response text");

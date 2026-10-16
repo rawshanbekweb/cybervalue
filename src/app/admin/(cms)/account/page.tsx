@@ -19,7 +19,7 @@ async function mfaView(user: {
   if (!user.totpPendingSecret) return { status: "off" };
   try {
     const secret = unseal(user.totpPendingSecret);
-    const uri = otpauthUri(secret, user.email ?? "admin", "CyberValue");
+    const uri = otpauthUri(secret, user.email ?? "admin", "Cybervalue");
     const svg = await QRCode.toString(uri, { type: "svg", margin: 1 });
     return {
       status: "setup",

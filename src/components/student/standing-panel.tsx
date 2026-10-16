@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import type { Text } from "@/lib/network/ip";
 import { CHECKPOINT_META } from "@/lib/checkpoints/meta";
+import { LAB_PROGRESS, type LabId } from "@/lib/lab-progress";
 import {
   STUDENT_BADGES,
   WEEKLY_GOAL,
@@ -40,6 +41,29 @@ const ICONS: Record<BadgeIcon, LucideIcon> = {
   half: PieChart,
   crown: Crown,
 };
+
+const LABS: { id: LabId; title: Text; href: string }[] = [
+  {
+    id: "network",
+    title: { uz: "IP manzillash laboratoriyasi", en: "IP addressing lab" },
+    href: "/akademiya/network-basics",
+  },
+  {
+    id: "linux",
+    title: { uz: "Linux asoslari laboratoriyasi", en: "Linux foundations lab" },
+    href: "/akademiya/linux-basics",
+  },
+  {
+    id: "html",
+    title: { uz: "HTML asoslari", en: "HTML Basics" },
+    href: "/akademiya/html-basics",
+  },
+  {
+    id: "security",
+    title: { uz: "Veb-xavfsizlik laboratoriyasi", en: "Web Security Lab" },
+    href: "/akademiya/web-security-lab",
+  },
+];
 
 export type RankingEntry = {
   place: number;
@@ -200,6 +224,34 @@ export function AchievementsSection({
                   )}
             </p>
           )}
+          <h3 className="student-panel-sub">{t("Lab lessons")}</h3>
+          <ul className="student-checkpoints">
+            {LABS.map((lab) => {
+              const done = standing.labs[lab.id] ?? 0;
+              const total = LAB_PROGRESS[lab.id].total;
+              return (
+                <li key={lab.id}>
+                  <a href={lab.href}>
+                    <span>
+                      <strong>{lab.title[locale]}</strong>
+                      <span
+                        className="student-meter student-meter-sm"
+                        role="img"
+                        aria-label={`${done}/${total}`}
+                      >
+                        <span style={{ width: `${(done / total) * 100}%` }} />
+                      </span>
+                    </span>
+                    <span
+                      className={`student-pill ${done === total ? "on" : ""}`}
+                    >
+                      {done}/{total}
+                    </span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
           <h3 className="student-panel-sub">{t("Lab checkpoints")}</h3>
           <ul className="student-checkpoints">
             {CHECKPOINT_META.map((c) => {

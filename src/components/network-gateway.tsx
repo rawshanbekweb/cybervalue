@@ -32,7 +32,7 @@ export async function NetworkGateway() {
           <span>{t("Beginner")}</span>
         </div>
       </div>
-      <Link href="/playground/network-basics" className="button button-primary">
+      <Link href="/akademiya/network-basics" className="button button-primary">
         {t("Open IP lab")}
         <ArrowUpRight size={17} />
       </Link>

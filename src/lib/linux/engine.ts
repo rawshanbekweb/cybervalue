@@ -92,7 +92,7 @@ export function initialShell(): Shell {
   add(`${HOME}/backup.sh`, "#!/bin/sh\necho backup-ready\n");
   add(
     "/etc/os-release",
-    'NAME="CyberValue Linux (simulation)"\nID=cybervalue\n',
+    'NAME="Cybervalue Linux (simulation)"\nID=cybervalue\n',
   );
   add("/etc/hostname", "linux-lab\n");
   return {

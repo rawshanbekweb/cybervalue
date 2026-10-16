@@ -4,25 +4,25 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CloudOff, LogOut } from "lucide-react";
 import { useT } from "../network-lab/use-t";
-import { juniorLogoutAction } from "@/app/[lang]/playground/junior/actions";
+import { juniorLogoutAction } from "@/app/[lang]/junior/actions";
 import { useJuniorState } from "./state";
 import "./junior.css";
 
 const SECTIONS = [
-  { href: "/playground/junior", uz: "Missiyalar", en: "Missions" },
+  { href: "/junior", uz: "Missiyalar", en: "Missions" },
   {
-    href: "/playground/junior/ciphers",
+    href: "/junior/ciphers",
     uz: "Shifrlar xonasi",
     en: "Cipher Room",
   },
-  { href: "/playground/junior/homework", uz: "Uy vazifalari", en: "Homework" },
+  { href: "/junior/homework", uz: "Uy vazifalari", en: "Homework" },
   {
-    href: "/playground/junior/achievements",
+    href: "/junior/achievements",
     uz: "Yutuqlar",
     en: "Achievements",
   },
   {
-    href: "/playground/junior/secret",
+    href: "/junior/secret",
     uz: "Maxfiy xabar",
     en: "Secret message",
   },
@@ -35,13 +35,13 @@ export function AcademyShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { member, agent, rank, xp, unsaved } = useJuniorState();
   const current = (href: string) =>
-    href === "/playground/junior"
-      ? /\/playground\/junior\/?$/.test(pathname)
+    href === "/junior"
+      ? /\/junior\/?$/.test(pathname)
       : pathname.endsWith(href);
   return (
     <div className="junior jr-academy container page-content">
       <header className="jr-topbar">
-        <Link href="/playground/junior" className="jr-brand">
+        <Link href="/junior" className="jr-brand">
           <span>Cybervalue Academy</span> Junior
         </Link>
         <div className="jr-who">

@@ -78,7 +78,7 @@ export function HtmlBasics() {
         <span className="htb-tag">{t("12 SHORT EXERCISES")}</span>
         <Link
           className="htb-assessment-link"
-          href="/playground/html-basics/assessment"
+          href="/akademiya/html-basics/assessment"
         >
           {t("HTML test · one-time assessment →")}
         </Link>

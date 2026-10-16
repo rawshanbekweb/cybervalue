@@ -4,7 +4,7 @@
 
 1. `/admin/assessments` sahifasiga kiring. Sinov nomi, vaqt (15–120 daqiqa, standart 45) va `ID | Ism Familiya` ko‘rinishidagi ro‘yxatni kiriting. Bitta sinovda 200 nafargacha o‘quvchi bo‘lishi mumkin.
 2. Shaxsiy kodlarni yarating va darhol TXT faylini yuklab oling. Kodlar ochiq ko‘rinishda bazaga saqlanmaydi va keyin qayta ko‘rsatilmaydi. Har bir kodni faqat o‘z egasiga bering; umumiy ro‘yxatni o‘quvchilarga tarqatmang.
-3. O‘quvchilar `/playground/html-basics/assessment` sahifasiga (HTML Basics ichidagi havola orqali ham) kiradi. Kodni tekshirish vaqtni boshlamaydi. Ism, vaqt va qoidalarni tekshirib, “Sinovni boshlash”ni bosganda urinish boshlanadi.
+3. O‘quvchilar `/akademiya/html-basics/assessment` sahifasiga (HTML Basics ichidagi havola orqali ham) kiradi. Kodni tekshirish vaqtni boshlamaydi. Ism, vaqt va qoidalarni tekshirib, “Sinovni boshlash”ni bosganda urinish boshlanadi.
 4. Natijalar sahifasida o‘quvchini tanlang. Uning HTML kodi, test javoblari, izohlari, har bir amaliy mezon uchun ball va kuzatuv qaydlari ko‘rinadi.
 5. Ikkita izohni 0–10 ball bilan baholang va fikr-mulohaza yozing. Shundan keyin /100 yakuniy baho hosil bo‘ladi. CSV orqali sinf natijalarini yuklab olish mumkin.
 6. “Yangi kirishlarni yopish” hali boshlamagan kodlarni bloklaydi. Boshlangan urinishning muddati o‘zgarmaydi.

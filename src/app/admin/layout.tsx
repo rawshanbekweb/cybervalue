@@ -7,7 +7,7 @@ import "../globals.css";
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 export const metadata: Metadata = {
-  title: { absolute: "Admin | CyberValue" },
+  title: { absolute: "Admin | Cybervalue" },
   description: "Private administration area.",
   robots: { index: false, follow: true },
 };

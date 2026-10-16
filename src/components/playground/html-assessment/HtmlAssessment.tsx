@@ -333,9 +333,7 @@ export function HtmlAssessment() {
   if (!attempt)
     return (
       <div className="exam-shell" lang="uz">
-        <Link href="/playground/html-basics">
-          {t("← HTML Basics darslari")}
-        </Link>
+        <Link href="/akademiya/html-basics">{t("← HTML Basics darslari")}</Link>
         <section className="exam-intro">
           <span className="exam-eyebrow">{t("HTML BASICS / BAHOLASH")}</span>
           <h1>
@@ -519,7 +517,7 @@ export function HtmlAssessment() {
             </button>
             <Link
               className="button button-secondary"
-              href="/playground/html-basics"
+              href="/akademiya/html-basics"
             >
               {t("Darslarga qaytish")}
             </Link>

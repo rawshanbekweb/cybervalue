@@ -6,7 +6,7 @@ test.setTimeout(90000);
 test("English CTF translates hints and grading without resetting progress", async ({
   page,
 }) => {
-  await page.goto("/playground/ctf#challenge/source");
+  await page.goto("/akademiya/ctf#challenge/source");
   await page.getByRole("button", { name: "English", exact: true }).click();
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
     "SILENCE.",
@@ -60,7 +60,7 @@ test("Uzbek is server-rendered by default and both languages persist across rout
   );
   await page.reload();
   await expect(page.getByRole("searchbox")).toHaveValue("html");
-  await page.goto("/playground");
+  await page.goto("/akademiya");
   await expect(
     page.getByRole("heading", { name: "HTML foundations", exact: true }),
   ).toBeVisible();
@@ -86,7 +86,7 @@ test("switching language preserves an HTML draft, selected lesson, and completed
 }) => {
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await page.goto("/playground/html-basics#lesson/2");
+  await page.goto("/akademiya/html-basics#lesson/2");
   await page
     .getByRole("button", { name: "Namuna yechim", exact: true })
     .click();
@@ -109,7 +109,7 @@ test("switching language preserves an HTML draft, selected lesson, and completed
 test("damaged browser records do not break either lesson editor", async ({
   page,
 }) => {
-  await page.goto("/playground");
+  await page.goto("/akademiya");
   await page.evaluate(() => {
     localStorage.setItem("htmldars:progress:v1", "null");
     localStorage.setItem("htmldars:code:v1", '{"1": {"invalid": true}}');
@@ -119,10 +119,10 @@ test("damaged browser records do not break either lesson editor", async ({
     );
     localStorage.setItem("sabaq:notes:v1", "null");
   });
-  await page.goto("/playground/html-basics");
+  await page.goto("/akademiya/html-basics");
   await expect(page.getByRole("textbox")).toHaveValue(/<!DOCTYPE html>/);
   await expect(page.locator(".htb-progress-label")).toContainText("0 / 12");
-  await page.goto("/playground/web-security-lab");
+  await page.goto("/akademiya/web-security-lab");
   await expect(page.locator(".lab-progress-caption")).toContainText("1 / 36");
 });
 

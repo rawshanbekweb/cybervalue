@@ -46,10 +46,10 @@ export const entryTranslations: Record<
 > = {
   "cybervalue-platformasi": {
     uz: {
-      title: "CyberValue: portfel va o‘quv platformasi",
+      title: "Cybervalue: portfel va o‘quv platformasi",
       summary:
         "Loyihalar, laboratoriya qo‘llanmalari, maqolalar va yuklab olinadigan resurslarni yagona kontent boshqaruv panelidan e’lon qiluvchi platforma.",
-      body: `CyberValue dasturiy ta’minot ishlab chiqish va kiberxavfsizlik bo‘yicha ishlarni hujjatlashtiradi hamda amaliy o‘quv materiallarini taqdim etadi. Ushbu sharh repozitoriyda amalga oshirilgan imkoniyatlarni tavsiflaydi.
+      body: `Cybervalue dasturiy ta’minot ishlab chiqish va kiberxavfsizlik bo‘yicha ishlarni hujjatlashtiradi hamda amaliy o‘quv materiallarini taqdim etadi. Ushbu sharh repozitoriyda amalga oshirilgan imkoniyatlarni tavsiflaydi.
 
 ## Platforma bilan tanishing
 
@@ -146,7 +146,7 @@ SQL misollari uchta sintetik foydalanuvchidan iborat SQLite bazasida bajariladi 
         "SQL laboratoriyasi: qatorlarni birlashtirish va parametrli so‘rovlar",
       summary:
         "O‘quv laboratoriyasi ichida SQL matniga qo‘shilgan qiymatlarni bog‘langan parametrlar bilan solishtirish bo‘yicha amaliy qo‘llanma.",
-      body: `Ushbu qo‘llanma CyberValue ichidagi SQL darsiga hamroh bo‘ladi. Undagi xulosalar endpoint amalga oshirilishidan kutiladigan xatti-harakatni tavsiflaydi.
+      body: `Ushbu qo‘llanma Cybervalue ichidagi SQL darsiga hamroh bo‘ladi. Undagi xulosalar endpoint amalga oshirilishidan kutiladigan xatti-harakatni tavsiflaydi.
 
 SQL darsini [Veb-xavfsizlik laboratoriyasi](/playground/web-security-lab)da oching. Har bir urinish uchun rejimni, kiritilgan qiymatni va qaytarilgan qatorlar sonini yonma-yon yozib boring.`,
       lab: {
@@ -167,7 +167,7 @@ SQL darsini [Veb-xavfsizlik laboratoriyasi](/playground/web-security-lab)da ochi
         lessonsLearned:
           "Himoyalangan rejimning xuddi shu kiritmaga javobini zaif natija yonida yozib qo‘ying.",
         environment:
-          "CyberValue veb-xavfsizlik laboratoriyasi; sintetik ma’lumotlar",
+          "Cybervalue veb-xavfsizlik laboratoriyasi; sintetik ma’lumotlar",
       },
     },
     en: {},
@@ -200,7 +200,7 @@ Amalga oshirilgan qoida oddiy: xavfsiz rejimda foydalanuvchi so‘ralgan yozuvga
         lessonsLearned:
           "Avtorizatsiya testlari kamida uchta holatni qamrab olishi kerak: foydalanuvchining o‘z resursi, boshqa foydalanuvchining resursi va autentifikatsiyasiz so‘rov.",
         environment:
-          "CyberValue veb-xavfsizlik laboratoriyasi; sintetik ma’lumotlar",
+          "Cybervalue veb-xavfsizlik laboratoriyasi; sintetik ma’lumotlar",
       },
     },
     en: {},
@@ -241,7 +241,7 @@ Bu kirish xarakteridagi o‘quv eslatmasi, to‘liq qulaylik auditi emas.
 
 Autentifikatsiya so‘rovni kim yuborayotganini aniqlaydi. Avtorizatsiya esa bu foydalanuvchi so‘ralgan amalni bajara olishini belgilaydi. Muvaffaqiyatli kirish har bir resursga ruxsat berilishini anglatmaydi.
 
-## CyberValue misoli
+## Cybervalue misoli
 
 O‘rnatilgan laboratoriyada oddiy foydalanuvchi o‘z profilini ocha oladi. Boshqa sintetik foydalanuvchi ID’si so‘ralganda, xavfsiz rejim egalikni yoki admin rolini tekshiradi. Bu holatlarni solishtirish uchun IDOR qo‘llanmasidan foydalaning.
 
@@ -262,14 +262,14 @@ O‘rnatilgan laboratoriyada oddiy foydalanuvchi o‘z profilini ocha oladi. Bos
     uz: {
       title: "SQL xavfsizligi: buyruqlarni ma’lumotdan ajratib saqlash",
       summary:
-        "CyberValue’ning SQL o‘quv laboratoriyasidagi ikki kod yo‘li yordamida parametrli so‘rovlar bilan tanishtirish.",
+        "Cybervalue’ning SQL o‘quv laboratoriyasidagi ikki kod yo‘li yordamida parametrli so‘rovlar bilan tanishtirish.",
       body: `## Muammo qayerdan boshlanadi
 
 Foydalanuvchi matnini SQL buyrug‘iga qo‘shish ma’lumot bilan ko‘rsatma o‘rtasidagi chegarani xiralashtirishi mumkin. Parametrli so‘rovlar qiymatlarni so‘rov tuzilmasidan alohida saqlaydi.
 
 ## Amalga oshirishdan misol
 
-CyberValue laboratoriyasida xavfsiz rejim WHERE username = ? ni tayyorlaydi va foydalanuvchi nomini alohida uzatadi. Zaif rejim qiymatni SQL qatoriga qo‘shadi. Har bir chaqiruv faqat vaqtinchalik sintetik jadvalda ishlaydi.
+Cybervalue laboratoriyasida xavfsiz rejim WHERE username = ? ni tayyorlaydi va foydalanuvchi nomini alohida uzatadi. Zaif rejim qiymatni SQL qatoriga qo‘shadi. Har bir chaqiruv faqat vaqtinchalik sintetik jadvalda ishlaydi.
 
 ## Qamrov va cheklovlar
 

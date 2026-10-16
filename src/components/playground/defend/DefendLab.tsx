@@ -81,8 +81,8 @@ export function DefendLab() {
   return (
     <div className="defend-root container">
       <header className="defend-header">
-        <Link href="/playground" className="defend-back">
-          <ArrowLeft size={15} /> {t("Playground")}
+        <Link href="/akademiya" className="defend-back">
+          <ArrowLeft size={15} /> {t("Academy")}
         </Link>
         <div className="defend-heading">
           <div>

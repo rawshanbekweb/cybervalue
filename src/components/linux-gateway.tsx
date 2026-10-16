@@ -26,7 +26,7 @@ export async function LinuxGateway() {
           <span>{t("Beginner")}</span>
         </div>
       </div>
-      <Link href="/playground/linux-basics" className="button button-primary">
+      <Link href="/akademiya/linux-basics" className="button button-primary">
         {t("Open Linux lab")}
         <ArrowUpRight size={17} />
       </Link>

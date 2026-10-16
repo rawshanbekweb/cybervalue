@@ -10,7 +10,7 @@ export const revalidate = 60;
 export const generateMetadata = () =>
   metadata(
     "About Rawshanbek Gayipbaev",
-    "Meet Rawshanbek Gayipbaev and the purpose behind CyberValue: application security, software development, and a portfolio grounded in real practice.",
+    "Meet Rawshanbek Gayipbaev and the purpose behind Cybervalue: application security, software development, and a portfolio grounded in real practice.",
     "/about",
   );
 export default async function About() {
@@ -29,7 +29,7 @@ export default async function About() {
         }}
       />
       <header className="page-header">
-        <span className="eyebrow">{t("The person behind CyberValue")}</span>
+        <span className="eyebrow">{t("The person behind Cybervalue")}</span>
         <h1>
           Rawshanbek
           <br />
@@ -42,7 +42,7 @@ export default async function About() {
           <h2>{t("A place for the work.")}</h2>
           <p>
             {t(
-              "I’m Rawshanbek. CyberValue is my personal space for cybersecurity and software development: a place to document projects, investigate security questions, and keep a record of what I learn.",
+              "I’m Rawshanbek. Cybervalue is my personal space for cybersecurity and software development: a place to document projects, investigate security questions, and keep a record of what I learn.",
             )}
           </p>
           <p>
@@ -53,7 +53,7 @@ export default async function About() {
           <h2>{t("What I’m focused on")}</h2>
           <p>
             {t(
-              "Application security and secure development sit at the center of CyberValue. The direction is to connect an understanding of how applications break with the engineering decisions that help protect them.",
+              "Application security and secure development sit at the center of Cybervalue. The direction is to connect an understanding of how applications break with the engineering decisions that help protect them.",
             )}
           </p>
           <h2>{t("Tools follow the problem")}</h2>
@@ -72,7 +72,7 @@ export default async function About() {
             <nav className="about-archive" aria-label={t("The archive")}>
               <ArrowLink href="/work">{t("Work")}</ArrowLink>
               <ArrowLink href="/research">{t("Research")}</ArrowLink>
-              <ArrowLink href="/labs">{t("Labs")}</ArrowLink>
+              <ArrowLink href="/labs">{t("Lab write-ups")}</ArrowLink>
               <ArrowLink href="/ctf">CTF</ArrowLink>
               <ArrowLink href="/resources">{t("Resources")}</ArrowLink>
             </nav>
@@ -82,7 +82,7 @@ export default async function About() {
           <Fingerprint size={48} strokeWidth={1.2} />
           <span className="eyebrow">{t("The guiding principle")}</span>
           <h2>{t("Evidence over claims.")}</h2>
-          <p>{t("CyberValue grows one documented piece of work at a time.")}</p>
+          <p>{t("Cybervalue grows one documented piece of work at a time.")}</p>
           <ul>
             <li>{t("Think like an attacker.")}</li>
             <li>{t("Build like a developer.")}</li>

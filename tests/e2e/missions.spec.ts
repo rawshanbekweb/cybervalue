@@ -23,7 +23,7 @@ test.use({
 test("invoice case requires evidence and preserves verified progress across reloads", async ({
   page,
 }) => {
-  await page.goto("/playground/missions");
+  await page.goto("/akademiya/missions");
   await page.getByRole("button", { name: "Send request", exact: true }).click();
   await page
     .getByRole("textbox", { name: "Sandbox path" })
@@ -68,7 +68,7 @@ test("invoice case requires evidence and preserves verified progress across relo
 test("checkout investigation supports freeform cart editing and verifies a complete fix", async ({
   page,
 }) => {
-  await page.goto("/playground/missions#mission/checkout");
+  await page.goto("/akademiya/missions#mission/checkout");
   await expect(
     page.getByRole("heading", { name: "The one-cent order", exact: true }),
   ).toBeVisible();
@@ -97,7 +97,7 @@ test("checkout investigation supports freeform cart editing and verifies a compl
 test("webhook retries need stable IDs; body comparison fails the changed-metadata regression", async ({
   page,
 }) => {
-  await page.goto("/playground/missions#mission/webhook");
+  await page.goto("/akademiya/missions#mission/webhook");
   const send = page.getByRole("button", { name: "Send request", exact: true });
   await send.click();
   await send.click();
@@ -130,7 +130,7 @@ test("webhook retries need stable IDs; body comparison fails the changed-metadat
 test("hints, malformed input, case reset and damaged storage remain usable", async ({
   page,
 }) => {
-  await page.goto("/playground/missions#mission/checkout");
+  await page.goto("/akademiya/missions#mission/checkout");
   await page.getByRole("textbox", { name: "JSON request body" }).fill("{");
   await page.getByRole("button", { name: "Send request", exact: true }).click();
   await expect(page.locator(".mission-response")).toContainText(
@@ -156,7 +156,7 @@ test("mission workspace is keyboard accessible and fits small screens", async ({
 }) => {
   for (const width of [320, 375, 768, 1024, 1440]) {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto("/playground/missions#mission/webhook");
+    await page.goto("/akademiya/missions#mission/webhook");
     await expect(page.locator("h1")).toHaveCount(1);
     expect(
       await page.evaluate(

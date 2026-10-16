@@ -1,6 +1,6 @@
 # IP addressing lab
 
-Route: `/playground/network-basics`, linked from Labs, the learning catalog on the
+Route: `/akademiya/network-basics`, linked from Labs, the learning catalog on the
 home page and Playground, and the open labs on the student page. Supports Uzbek
 and English through the site's locale. No account or database is required.
 

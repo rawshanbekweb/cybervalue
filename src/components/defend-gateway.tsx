@@ -31,7 +31,7 @@ export async function DefendGateway() {
           <span>{t("Export your defense")}</span>
         </div>
       </div>
-      <Link href="/playground/defend" className="button button-primary">
+      <Link href="/akademiya/defend" className="button button-primary">
         {t("Open Build & Defend")}
         <ArrowUpRight size={17} />
       </Link>

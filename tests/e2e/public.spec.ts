@@ -129,7 +129,7 @@ test("responsive layouts and keyboard navigation", async ({ page }) => {
         .getByRole("navigation", { name: "Main navigation" })
         .getByRole("link", { name: "Academy", exact: true })
         .click();
-      await expect(page).toHaveURL(/\/playground$/);
+      await expect(page).toHaveURL(/\/akademiya$/);
       await expect(menu).toHaveAttribute("aria-expanded", "false");
     }
   }
@@ -161,7 +161,7 @@ test("the header never overflows the viewport between mobile menu and wide deskt
 }) => {
   for (const width of [1201, 1240, 1280, 1366]) {
     await page.setViewportSize({ width, height: 800 });
-    await page.goto("/playground/html-basics/assessment");
+    await page.goto("/akademiya/html-basics/assessment");
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth,

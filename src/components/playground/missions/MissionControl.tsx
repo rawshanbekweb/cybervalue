@@ -65,8 +65,8 @@ export function MissionControl() {
   return (
     <div className="missions-root container">
       <header className="missions-header">
-        <Link href="/playground" className="missions-back">
-          <ArrowLeft size={15} /> {t("Playground")}
+        <Link href="/akademiya" className="missions-back">
+          <ArrowLeft size={15} /> {t("Academy")}
         </Link>
         <div className="missions-heading">
           <div>

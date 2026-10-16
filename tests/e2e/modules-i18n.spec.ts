@@ -4,17 +4,17 @@ import { test, expect, type Page } from "@playwright/test";
 // "only available in one language" notice.
 const modules = [
   {
-    path: "/playground/web-security-lab",
+    path: "/akademiya/web-security-lab",
     uz: "Bitta so‘rovning sayohati",
     en: "The journey of a single request",
   },
   {
-    path: "/playground/missions",
+    path: "/akademiya/missions",
     uz: "Qo‘shnining hisob-fakturasi",
     en: "The invoice next door",
   },
   {
-    path: "/playground/studio",
+    path: "/akademiya/studio",
     uz: "Eshitiladigan xabar",
     en: "A report that gets heard",
   },
@@ -24,7 +24,7 @@ const modules = [
     en: "RESOURCES / EXAM 1",
   },
   {
-    path: "/playground/html-basics/assessment",
+    path: "/akademiya/html-basics/assessment",
     uz: "Shaxsiy kod bilan kirish",
     en: "Sign in with your personal code",
   },

@@ -17,7 +17,7 @@ function downloadCodes(rows: { name: string; group: string; code: string }[]) {
   const url = URL.createObjectURL(
     new Blob(
       [
-        `Cybervalue Academy Junior — ${location.origin}/playground/junior\n\n${lines.join("\n")}\n`,
+        `Cybervalue Academy Junior — ${location.origin}/junior\n\n${lines.join("\n")}\n`,
       ],
       { type: "text/plain;charset=utf-8" },
     ),

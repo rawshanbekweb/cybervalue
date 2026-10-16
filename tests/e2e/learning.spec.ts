@@ -21,7 +21,7 @@ test.use({
 test("learning catalog filters lessons and opens the selected HTML exercise", async ({
   page,
 }) => {
-  await page.goto("/playground");
+  await page.goto("/akademiya");
   await expect(page.locator(".learn-card")).toHaveCount(4);
   await page
     .getByRole("button", { name: "Linux & terminal", exact: true })
@@ -51,7 +51,7 @@ test("learning catalog filters lessons and opens the selected HTML exercise", as
 test("completed HTML work can be resumed from the catalog", async ({
   page,
 }) => {
-  await page.goto("/playground/html-basics#lesson/1");
+  await page.goto("/akademiya/html-basics#lesson/1");
   await page
     .getByRole("button", { name: "Sample solution", exact: true })
     .click();
@@ -64,7 +64,7 @@ test("completed HTML work can be resumed from the catalog", async ({
     page.getByRole("heading", { name: "Headings and paragraphs", exact: true }),
   ).toBeVisible();
   await expect(page.locator(".htb-celebrate")).toHaveCount(0);
-  await page.goto("/playground");
+  await page.goto("/akademiya");
   await expect(
     page.getByRole("progressbar", { name: "HTML foundations progress" }),
   ).toHaveAttribute("value", "1");
@@ -77,7 +77,7 @@ test("completed HTML work can be resumed from the catalog", async ({
 test("catalog resumes valid progress and tolerates damaged storage", async ({
   page,
 }) => {
-  await page.goto("/playground");
+  await page.goto("/akademiya");
   await page.evaluate(() => {
     localStorage.setItem(
       "htmldars:progress:v1",
@@ -91,7 +91,7 @@ test("catalog resumes valid progress and tolerates damaged storage", async ({
   ).toHaveAttribute("value", "2");
   await expect(
     page.getByRole("link", { name: /Continue · Formatting text/ }),
-  ).toHaveAttribute("href", "/playground/html-basics#lesson/3");
+  ).toHaveAttribute("href", "/akademiya/html-basics#lesson/3");
   await expect(
     page.getByRole("progressbar", {
       name: "Web application security progress",
@@ -108,11 +108,11 @@ test("catalog resumes valid progress and tolerates damaged storage", async ({
   });
   await expect(
     page.getByRole("link", { name: "Review the track" }),
-  ).toHaveAttribute("href", "/playground/html-basics#lesson/1");
+  ).toHaveAttribute("href", "/akademiya/html-basics#lesson/1");
 });
 
 test("empty search can be cleared", async ({ page }) => {
-  await page.goto("/playground");
+  await page.goto("/akademiya");
   await page
     .getByRole("searchbox", { name: "Search tracks and lessons" })
     .fill("zz-no-such-lesson");
@@ -128,7 +128,7 @@ test("learning hub is accessible and fits mobile through desktop", async ({
 }) => {
   for (const width of [320, 375, 768, 1024, 1440]) {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto("/playground");
+    await page.goto("/akademiya");
     await expect(page.locator("h1")).toHaveCount(1);
     expect(
       await page.evaluate(

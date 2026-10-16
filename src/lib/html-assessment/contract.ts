@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const ASSESSMENT_PATH = "/playground/html-basics/assessment";
+export const ASSESSMENT_PATH = "/akademiya/html-basics/assessment";
 export const MAX_CODE_LENGTH = 24000;
 export const signalsSchema = z
   .object({
