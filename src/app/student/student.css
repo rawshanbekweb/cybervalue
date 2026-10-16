@@ -1330,3 +1330,17 @@ body.student-root {
   height: 4px;
   margin-top: 6px;
 }
+
+.student-telegram {
+  margin: -8px 0 24px;
+  font-size: 14px;
+}
+.student-telegram a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-silver-mist);
+}
+.student-telegram a:hover {
+  color: var(--color-bone-white);
+}

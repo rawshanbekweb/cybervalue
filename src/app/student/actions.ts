@@ -3,6 +3,8 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { practiceSubmitted } from "@/lib/telegram/events";
+import { quietly } from "@/lib/telegram/notify";
 import { getDb } from "@/lib/db";
 import { clientKey } from "@/lib/rate-limit";
 import { limit } from "@/lib/rate-limit-db";
@@ -102,9 +104,11 @@ export async function submitPracticeAction(
   const material = await materialForStudent(student, slug);
   if (!material || material.kind !== "PRACTICE")
     return reject("This practice is no longer available.");
-  await getDb()!.studentSubmission.create({
+  const db = getDb()!;
+  await db.studentSubmission.create({
     data: { studentId: student.id, materialId: material.id, body: body.data },
   });
+  await quietly(() => practiceSubmitted(db, student, material));
   revalidatePath("/student", "layout");
   return { success: "Submitted. Your teacher will review it.", at: Date.now() };
 }

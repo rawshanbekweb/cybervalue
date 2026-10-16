@@ -1,7 +1,8 @@
-import { createHash, randomInt } from "node:crypto";
+import { randomInt } from "node:crypto";
 import { headers } from "next/headers";
 import type { NextRequest } from "next/server";
 import { Prisma } from "@/generated/prisma/client";
+import { serverSecret } from "@/lib/server-secret";
 import { getDb } from "@/lib/db";
 import { limit } from "@/lib/rate-limit-db";
 import { clientKey } from "@/lib/rate-limit";
@@ -22,14 +23,7 @@ const NO_STORE = { "Cache-Control": "no-store", "X-Robots-Tag": "noindex" };
 const json = (body: unknown, status = 200) =>
   Response.json(body, { status, headers: NO_STORE });
 
-// AUTH_SECRET when set; otherwise a key derived from the database URL, which
-// is just as private and present wherever results can be saved.
-function secret() {
-  const value = process.env.AUTH_SECRET || process.env.DATABASE_URL;
-  if (value)
-    return createHash("sha256").update(`checkpoint:${value}`).digest("hex");
-  return process.env.NODE_ENV === "production" ? null : "dev-checkpoint-secret";
-}
+const secret = () => serverSecret("checkpoint");
 
 async function student() {
   return (await getStudentSession())?.student ?? null;

@@ -3177,6 +3177,33 @@ h2 {
   gap: 6px;
 }
 
+/* Telegram and parent links */
+.admin-steps {
+  display: grid;
+  gap: 6px;
+  margin: 0 0 12px;
+  padding-left: 20px;
+}
+.admin-inline-form {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+}
+.admin-copy {
+  display: flex;
+  gap: 8px;
+}
+.admin-copy .admin-input {
+  flex: 1;
+  min-width: 0;
+}
+.admin-copy .button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
 /* Site settings */
 .admin-settings {
   display: grid;
