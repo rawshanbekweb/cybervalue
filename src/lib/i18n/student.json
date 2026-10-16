@@ -249,7 +249,6 @@
   "Passed · {percent}%": "O‘tdi · {percent}%",
   "Lab lessons": "Laboratoriya darslari",
   "Tests and exams": "Testlar va imtihonlar",
-  "Short tests at the end of the IP addressing and Linux labs. Your best score shows under Achievements.": "IP manzillash va Linux laboratoriyalari oxiridagi qisqa testlar. Eng yaxshi natijangiz “Yutuqlar” bo‘limida ko‘rinadi.",
   "HTML exam": "HTML sinovi",
   "A timed, graded HTML exam. It needs its own code from your teacher.": "Vaqtli va baholanadigan HTML sinovi. Buning uchun o‘qituvchingiz alohida kod beradi.",
   "Resources exam": "Resurslar imtihoni",
@@ -312,5 +311,18 @@
   "Waiting for players": "O‘yinchilar kutilmoqda",
   "Running": "Davom etmoqda",
   "Finished": "Tugagan",
-  "Choose a test with questions.": "Savollari bor testni tanlang."
+  "Choose a test with questions.": "Savollari bor testni tanlang.",
+  "Short tests at the end of the IP addressing, Linux, HTML and Web Security labs. Your best score shows under Achievements.": "IP manzillash, Linux, HTML va Veb-xavfsizlik laboratoriyalari oxiridagi qisqa testlar. Eng yaxshi natijangiz “Yutuqlar” bo‘limida ko‘rinadi.",
+  "Hero of the week": "Hafta qahramoni",
+  "No one has earned XP this week yet. Be the first.": "Bu hafta hali hech kim XP olmadi. Birinchi bo‘ling.",
+  "You this week: +{xp} XP": "Siz bu hafta: +{xp} XP",
+  "Last week’s hero: {name}": "O‘tgan hafta qahramoni: {name}",
+  "This week’s CTF": "Hafta CTF’i",
+  "Solved. Well done.": "Yechildi. Barakalla.",
+  "{count} in your group already solved it.": "Guruhingizda {count} kishi allaqachon yechdi.",
+  "Nobody in your group has solved it yet. Be first.": "Guruhingizda hali hech kim yechmadi. Birinchi bo‘ling.",
+  "+{xp} XP since Monday": "Dushanbadan beri +{xp} XP",
+  "No XP earned this week yet": "Bu hafta hali XP olinmagan",
+  "last week: {name}": "o‘tgan hafta: {name}",
+  "XP this week": "Bu haftagi XP"
 }

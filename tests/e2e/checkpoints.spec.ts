@@ -73,6 +73,26 @@ test("anyone can take a checkpoint; the server grades it", async ({ page }) => {
   await expect(linux.locator(".cp-form li")).toHaveCount(10);
 });
 
+test("the HTML and Web Security labs end with their own checkpoints", async ({
+  page,
+}) => {
+  for (const [path, name, count] of [
+    ["/akademiya/html-basics", "Checkpoint: HTML basics", 10],
+    ["/akademiya/web-security-lab", "Checkpoint: web security basics", 12],
+  ] as const) {
+    await page.goto(path);
+    const card = page.getByRole("article", { name });
+    await card.getByRole("button", { name: "Take the test" }).click();
+    await expect(card.locator(".cp-form li")).toHaveCount(count);
+    expect(await answerAll(page, card)).toBe(count);
+    await card.getByRole("button", { name: "Submit" }).click();
+    await expect(card.getByRole("status")).toContainText(
+      new RegExp(`\\d+/${count} · \\d+%`),
+    );
+    await audit(page, name, "#checkpoints");
+  }
+});
+
 test("the API keeps answers on the server and rejects forged attempts", async ({
   request,
 }) => {

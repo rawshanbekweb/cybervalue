@@ -1351,3 +1351,22 @@ body.student-root {
   color: var(--color-saffron-spark);
   font-size: 13px;
 }
+.student-weekly-ctf {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 16px;
+  padding: 18px 20px;
+  border: 1px solid #ffb82955;
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 10% 0%, #ffb82914, transparent 55%), #0a0a0a;
+}
+.student-weekly-ctf:hover {
+  border-color: var(--color-saffron-spark);
+}
+.student-weekly-ctf .student-label {
+  margin: 0;
+}
+.student-heroes {
+  margin-bottom: 6px;
+}

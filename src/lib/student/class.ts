@@ -2,7 +2,7 @@
 // the same standings the students see.
 import { CHECKPOINT_META } from "../checkpoints/meta";
 import { toCsv } from "./results";
-import type { Standing } from "./xp";
+import type { Standing, WeeklyStanding } from "./xp";
 
 const DAY = 86_400_000;
 
@@ -41,7 +41,7 @@ export const REASON_TEXT: Record<Reason, string> = {
 export type ClassRow = {
   name: string;
   group: string;
-  standing: Standing;
+  standing: WeeklyStanding;
   reasons: Reason[];
 };
 
@@ -57,6 +57,7 @@ export function classCsv(
       t("Group"),
       t("Rank"),
       "XP",
+      t("XP this week"),
       t("Completed"),
       t("Test average"),
       ...CHECKPOINT_META.map((c) => c.title[locale]),
@@ -70,6 +71,7 @@ export function classCsv(
       group,
       s.rank.title[locale],
       s.xp,
+      s.weekXp,
       `${s.done}/${s.available}`,
       s.average === null ? "" : `${s.average}%`,
       ...CHECKPOINT_META.map((c) =>

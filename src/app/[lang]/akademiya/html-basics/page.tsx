@@ -1,3 +1,4 @@
+import { Checkpoints } from "@/components/playground/checkpoint/Checkpoints";
 import { ProgressSync } from "@/components/playground/ProgressSync";
 import { requireSection } from "@/lib/site-config-server";
 import { HtmlBasics } from "@/components/playground/html-basics/HtmlBasics";
@@ -16,6 +17,9 @@ export default async function HtmlBasicsPage() {
     <>
       <ProgressSync lab="html" />
       <HtmlBasics />
+      <div className="container">
+        <Checkpoints ids={["html-1"]} />
+      </div>
     </>
   );
 }

@@ -44,6 +44,8 @@ const ICONS: Record<BadgeIcon, LucideIcon> = {
 
 const LABS = LAB_META;
 
+export type WeekHero = { name: string; xp: number; me: boolean };
+
 export type RankingEntry = {
   place: number;
   name: string;
@@ -121,12 +123,16 @@ export function AchievementsSection({
   standing,
   ranking,
   group,
+  heroes = [],
+  lastHero = null,
   t,
   locale,
 }: {
-  standing: Standing;
+  standing: Standing & { weekXp?: number };
   ranking: RankingEntry[];
   group: string;
+  heroes?: WeekHero[];
+  lastHero?: WeekHero | null;
   t: T;
   locale: "uz" | "en";
 }) {
@@ -203,6 +209,32 @@ export function AchievementsSection({
                   )}
             </p>
           )}
+          <h3 className="student-panel-sub">
+            <Crown size={16} aria-hidden="true" /> {t("Hero of the week")}
+          </h3>
+          {heroes.length > 0 ? (
+            <ol className="student-ranking student-heroes">
+              {heroes.map((row, i) => (
+                <li key={row.name} className={row.me ? "me" : undefined}>
+                  <span className="student-ranking-place">{i + 1}</span>
+                  <span className="student-ranking-name">
+                    {row.name}
+                    {row.me && <small> · {t("you")}</small>}
+                  </span>
+                  <span className="student-ranking-xp">+{row.xp} XP</span>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <p className="student-quiet">
+              {t("No one has earned XP this week yet. Be the first.")}
+            </p>
+          )}
+          <p className="student-quiet">
+            {t("You this week: +{xp} XP", { xp: standing.weekXp ?? 0 })}
+            {lastHero &&
+              ` · ${t("Last week’s hero: {name}", { name: lastHero.name })}`}
+          </p>
           <h3 className="student-panel-sub">{t("Lab lessons")}</h3>
           <ul className="student-checkpoints">
             {LABS.map((lab) => {

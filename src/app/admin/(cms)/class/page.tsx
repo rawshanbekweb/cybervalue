@@ -6,7 +6,7 @@ import { formatDate } from "@/components/ui";
 import { CHECKPOINT_META } from "@/lib/checkpoints/meta";
 import { REASON_TEXT } from "@/lib/student/class";
 import { classGroups, loadClass } from "@/lib/student/class-data";
-import { dayIndex } from "@/lib/student/xp";
+import { dayIndex, heroes } from "@/lib/student/xp";
 import { formatDue, targetName } from "@/lib/student/assignments";
 
 const DAY = 86_400_000;
@@ -59,6 +59,14 @@ export default async function AdminClassPage({
     ).map((c) => r.standing.checkpoints[c.id] >= c.pass),
   );
   const flagged = rows.filter((r) => r.reasons.length > 0);
+  const [hero] = heroes(
+    rows.map((r) => ({ name: r.name, xp: r.standing.weekXp })),
+    1,
+  );
+  const [lastHero] = heroes(
+    rows.map((r) => ({ name: r.name, xp: r.standing.lastWeekXp })),
+    1,
+  );
   // Actions per day over the last two weeks, all students together.
   const days = Array.from({ length: 14 }, (_, i) =>
     rows.reduce((sum, r) => sum + r.standing.days[i], 0),
@@ -144,6 +152,17 @@ export default async function AdminClassPage({
           <span className="eyebrow">{t("Needs attention")}</span>
           <strong>{flagged.length}</strong>
           <span className="muted">{t("see the list below")}</span>
+        </div>
+        <div className="admin-card">
+          <span className="eyebrow">{t("Hero of the week")}</span>
+          <strong>{hero ? hero.name : "—"}</strong>
+          <span className="muted">
+            {hero
+              ? t("+{xp} XP since Monday", { xp: hero.xp })
+              : t("No XP earned this week yet")}
+            {lastHero &&
+              ` · ${t("last week: {name}", { name: lastHero.name })}`}
+          </span>
         </div>
         <Link
           href={`/admin/junior${group ? `?group=${encodeURIComponent(group)}` : ""}`}

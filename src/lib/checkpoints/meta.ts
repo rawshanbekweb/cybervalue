@@ -49,6 +49,31 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/akademiya/linux-basics#checkpoints",
     pass: 70,
   },
+  {
+    id: "html-1",
+    lab: { uz: "HTML asoslari", en: "HTML Basics" },
+    title: { uz: "Nazorat: HTML asoslari", en: "Checkpoint: HTML basics" },
+    covers: {
+      uz: "Barcha 12 darsdan 10 savol",
+      en: "10 questions from all 12 lessons",
+    },
+    href: "/akademiya/html-basics#checkpoints",
+    pass: 70,
+  },
+  {
+    id: "security-1",
+    lab: { uz: "Veb-xavfsizlik laboratoriyasi", en: "Web Security Lab" },
+    title: {
+      uz: "Nazorat: veb-xavfsizlik asoslari",
+      en: "Checkpoint: web security basics",
+    },
+    covers: {
+      uz: "HTTP, auth, SQLi, XSS, IDOR · 12 savol",
+      en: "HTTP, auth, SQLi, XSS, IDOR · 12 questions",
+    },
+    href: "/akademiya/web-security-lab#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

@@ -24,6 +24,9 @@ import {
 } from "../network/practice";
 import { LESSONS as LINUX_LESSONS } from "../linux/curriculum";
 import { checkpointMeta, type CheckpointMeta } from "./meta";
+import { HTML_POOL, SECURITY_EXTRA, type PoolItem } from "./pools";
+import { QUIZ as SECURITY_QUIZ } from "../../components/playground/security-lab/lessons.data";
+import { createTranslator } from "../i18n";
 
 export type Question = {
   ask: Text;
@@ -560,6 +563,25 @@ function linuxQuestions(r: Random) {
     });
 }
 
+// --- HTML Basics and Web Security -------------------------------------------
+
+const fromPool = (r: Random, item: PoolItem) =>
+  choice(r, item.ask, item.right, item.wrong, item.explain, item.code);
+
+// The Web Security Lab's final quiz is written in English with Uzbek in the
+// shared dictionary; both languages come from there.
+const uz = createTranslator("uz");
+const both = (text: string): Text => ({ uz: uz(text), en: text });
+const SECURITY_POOL: PoolItem[] = [
+  ...SECURITY_QUIZ.map((q) => ({
+    ask: both(q.q),
+    right: both(q.a[q.correct]),
+    wrong: q.a.filter((_, i) => i !== q.correct).map(both),
+    explain: both(q.why),
+  })),
+  ...SECURITY_EXTRA,
+];
+
 const BUILDERS: Record<string, (r: Random) => Question[]> = {
   "network-1": (r) => [
     octetToBinary(r),
@@ -584,6 +606,14 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
     validGateway(r),
   ],
   "linux-1": linuxQuestions,
+  "html-1": (r) =>
+    shuffle(r, HTML_POOL)
+      .slice(0, 10)
+      .map((item) => fromPool(r, item)),
+  "security-1": (r) =>
+    shuffle(r, SECURITY_POOL)
+      .slice(0, 12)
+      .map((item) => fromPool(r, item)),
 };
 
 export const CHECKPOINTS: readonly Checkpoint[] = Object.keys(BUILDERS).map(
