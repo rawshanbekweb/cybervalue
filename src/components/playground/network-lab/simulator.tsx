@@ -78,9 +78,9 @@ function Topology({
       ? result.hops.at(-1)
       : null;
   const labels: Record<Node, [string, string]> = {
-    pc: [t("Kompyuter", "Computer"), config.ip || "—"],
+    pc: [t("Computer"), config.ip || "—"],
     switch: ["Switch", "LAN"],
-    printer: [t("Printer", "Printer"), PRINTER_IP],
+    printer: [t("Printer"), PRINTER_IP],
     router: ["Router", ROUTER_IP],
     internet: ["Internet", INTERNET_IP],
   };
@@ -90,7 +90,6 @@ function Topology({
       viewBox="0 0 660 250"
       role="img"
       aria-label={t(
-        "Tarmoq sxemasi: kompyuter va printer switchga, switch routerga, router internetga ulangan.",
         "Network diagram: the computer and printer connect to a switch, the switch to a router, the router to the internet.",
       )}
     >
@@ -167,7 +166,7 @@ export function NetworkWidget({
   };
   const frame = run && step !== null ? run.frames[step] : null;
   const fields: [keyof PcConfig, string][] = [
-    ["ip", t("IP manzil", "IP address")],
+    ["ip", t("IP address")],
     ["mask", "Subnet mask"],
     ["gateway", "Default gateway"],
   ];
@@ -177,15 +176,13 @@ export function NetworkWidget({
         <Topology config={config} result={run?.result ?? null} frame={frame} />
       </div>
       <div className="nl-config">
-        <p className="nl-row-label">
-          {t("Kompyuter sozlamalari", "Computer settings")}
-        </p>
+        <p className="nl-row-label">{t("Computer settings")}</p>
         {fields.map(([key, label]) => (
           <label className="nl-field" key={key}>
             <span>{label}</span>
             <input
               value={config[key]}
-              placeholder={key === "gateway" ? t("bo‘sh", "empty") : ""}
+              placeholder={key === "gateway" ? t("empty") : ""}
               onChange={(e) => set(key, e.target.value)}
               spellCheck={false}
               autoComplete="off"
@@ -209,7 +206,7 @@ export function NetworkWidget({
             onSolved(false);
           }}
         >
-          <RotateCcw size={14} /> {t("Boshidan", "Reset")}
+          <RotateCcw size={14} /> {t("Reset")}
         </button>
       </div>
       <div aria-live="polite">
@@ -219,9 +216,7 @@ export function NetworkWidget({
               {run.result.ok ? <Check size={16} /> : <X size={16} />}
               <strong>
                 ping {run.target === "printer" ? PRINTER_IP : INTERNET_IP}:{" "}
-                {run.result.ok
-                  ? t("javob keldi", "reply received")
-                  : t("javob yo‘q", "no reply")}
+                {run.result.ok ? t("reply received") : t("no reply")}
               </strong>
             </p>
             <ol>
@@ -262,20 +257,16 @@ function FrameStepper({
     return (
       <p className="nl-caption nl-frames-empty">
         {t(
-          "Kadrlar yo‘q: xato kompyuterning o‘zida topildi, paket tarmoqqa chiqmadi.",
           "No frames: the error was caught on the computer itself; nothing went on the wire.",
         )}
       </p>
     );
   const frame = step === null ? null : list[step];
   return (
-    <section
-      className="nl-frames"
-      aria-label={t("Paket kadrlari", "Packet frames")}
-    >
+    <section className="nl-frames" aria-label={t("Packet frames")}>
       <div className="nl-frames-head">
         <strong>
-          {t("Kadrma-kadr", "Frame by frame")}
+          {t("Frame by frame")}
           {step !== null && ` · ${step + 1} / ${list.length}`}
         </strong>
         <div className="nl-actions">
@@ -284,7 +275,7 @@ function FrameStepper({
             onClick={() => onStep(step === null ? 0 : Math.max(0, step - 1))}
             disabled={step === 0}
           >
-            <StepBack size={14} /> {t("Oldingi", "Previous")}
+            <StepBack size={14} /> {t("Previous")}
           </button>
           <button
             className="nl-primary"
@@ -293,14 +284,12 @@ function FrameStepper({
             }
             disabled={step === list.length - 1}
           >
-            {step === null
-              ? t("Boshlash", "Start")
-              : t("Keyingi qadam", "Next step")}
+            {step === null ? t("Start") : t("Next step")}
             <StepForward size={14} />
           </button>
           {step !== null && (
             <button className="nl-ghost" onClick={() => onStep(null)}>
-              {t("Butun yo‘l", "Whole path")}
+              {t("Whole path")}
             </button>
           )}
         </div>
@@ -319,20 +308,20 @@ function FrameStepper({
             </span>
             {text(NODE_LABEL[frame.from])} →{" "}
             {frame.to === "all"
-              ? t("hammaga (broadcast)", "everyone (broadcast)")
+              ? t("everyone (broadcast)")
               : text(NODE_LABEL[frame.to])}
           </p>
           <table className="nl-headers">
             <tbody>
               <tr>
                 <th rowSpan={2}>Ethernet</th>
-                <td>{t("MAC kimdan", "Source MAC")}</td>
+                <td>{t("Source MAC")}</td>
                 <td>
                   <code>{frame.eth.src}</code>
                 </td>
               </tr>
               <tr>
-                <td>{t("MAC kimga", "Destination MAC")}</td>
+                <td>{t("Destination MAC")}</td>
                 <td>
                   <code>{frame.eth.dst}</code>
                 </td>
@@ -352,13 +341,13 @@ function FrameStepper({
                 <>
                   <tr>
                     <th rowSpan={3}>IP</th>
-                    <td>{t("IP kimdan", "Source IP")}</td>
+                    <td>{t("Source IP")}</td>
                     <td>
                       <code>{frame.ip.src}</code>
                     </td>
                   </tr>
                   <tr>
-                    <td>{t("IP kimga", "Destination IP")}</td>
+                    <td>{t("Destination IP")}</td>
                     <td>
                       <code>{frame.ip.dst}</code>
                     </td>
@@ -375,9 +364,7 @@ function FrameStepper({
           </table>
           <p className="nl-frame-note">{fill(frame.note, locale)}</p>
           {frame.stop && (
-            <p className="nl-fail">
-              {t("Paket shu yerda to‘xtadi.", "The packet stops here.")}
-            </p>
+            <p className="nl-fail">{t("The packet stops here.")}</p>
           )}
         </div>
       )}

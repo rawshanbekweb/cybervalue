@@ -85,7 +85,7 @@ You'll be prompted for a password (12–200 characters) on stdin. Alternatively,
 
 ## Student area
 
-The admin adds students in **Admin → Students** and gives each one a personal access code. Students sign in at `/student/login` to reach private lessons, labs, practice and server-graded tests that never appear on the public site. See [the student area guide](docs/students.md) (assignments, the test builder, question analysis and the live quiz) and [Telegram notifications and parent reports](docs/telegram.md).
+The admin adds students in **Admin → Students** and gives each one a personal access code. Students sign in at `/student/login` to reach private lessons, labs, practice and server-graded tests that never appear on the public site. See [the student area guide](docs/students.md) (assignments, the test builder, question analysis and the live quiz) and [Telegram notifications and parent reports](docs/telegram.md). Errors, the status page, backups and offline use are in [operations](docs/operations.md).
 
 ## Verification and production build
 

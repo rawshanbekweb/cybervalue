@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { ArrowUpRight } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { LocaleProvider } from "@/components/locale-provider";
+import { ServiceWorker } from "@/components/service-worker";
 import { site } from "@/lib/site";
 import { getSiteConfig } from "@/lib/site-config-server";
 import { pick } from "@/lib/site-config";
@@ -103,6 +104,7 @@ export async function SiteShell({
             </div>
           </footer>
         </LocaleProvider>
+        <ServiceWorker />
       </body>
     </html>
   );

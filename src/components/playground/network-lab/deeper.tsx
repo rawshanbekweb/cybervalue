@@ -1,4 +1,5 @@
 "use client";
+import type { Text } from "@/lib/network/ip";
 
 // Lessons 12–15: subnetting, traceroute, ports and IPv6.
 import { useId, useState } from "react";
@@ -70,12 +71,12 @@ export function SubnettingWidget({
     <div className="nl-card">
       <p className="nl-goal">
         {t(
-          `${base}/24 tarmog‘ini ${departments} ta bo‘limga bo‘ling. Har bir bo‘limda ${hosts} ta kompyuter bor.`,
-          `Split ${base}/24 among ${departments} departments with ${hosts} computers each.`,
+          "Split {base}/24 among {departments} departments with {hosts} computers each.",
+          { base, departments, hosts },
         )}
       </p>
       <label htmlFor={sliderId} className="nl-slider-label">
-        {t("Yangi mask", "New mask")} <strong>/{prefix}</strong>
+        {t("New mask")} <strong>/{prefix}</strong>
       </label>
       <input
         id={sliderId}
@@ -92,10 +93,10 @@ export function SubnettingWidget({
       <div
         className="nl-subnets"
         role="img"
-        aria-label={t(
-          `${blocks} ta bo‘lak, har biri ${size} ta manzil`,
-          `${blocks} subnets of ${size} addresses each`,
-        )}
+        aria-label={t("{blocks} subnets of {size} addresses each", {
+          blocks,
+          size,
+        })}
       >
         {Array.from({ length: blocks }, (_, i) => (
           <span
@@ -114,26 +115,18 @@ export function SubnettingWidget({
       <ul className="nl-checks">
         <li>
           <Mark ok={enoughSubnets} />
-          {t(
-            `Bo‘laklar: ${blocks} ta (kerak: ${departments})`,
-            `Subnets: ${blocks} (needed: ${departments})`,
-          )}
+          {t("Subnets: {blocks} (needed: {departments})", {
+            blocks,
+            departments,
+          })}
         </li>
         <li>
           <Mark ok={enoughRoom} />
-          {t(
-            `Har bir bo‘lakda joy: ${room} ta (kerak: ${hosts})`,
-            `Room in each: ${room} (needed: ${hosts})`,
-          )}
+          {t("Room in each: {room} (needed: {hosts})", { room, hosts })}
         </li>
       </ul>
       <label className="nl-field">
-        <span>
-          {t(
-            `${ask}-bo‘limning tarmoq manzili`,
-            `Network address of department ${ask}`,
-          )}
-        </span>
+        <span>{t("Network address of department {ask}", { ask })}</span>
         <input
           value={answer}
           onChange={(e) => {
@@ -170,12 +163,9 @@ export function TracerouteWidget({
   };
   return (
     <div className="nl-card">
-      <ol
-        className="nl-route"
-        aria-label={t("Saytgacha yo‘l", "Path to the site")}
-      >
+      <ol className="nl-route" aria-label={t("Path to the site")}>
         <li className="nl-route-me">
-          <strong>{t("Siz", "You")}</strong>
+          <strong>{t("You")}</strong>
           <code>192.168.1.10</code>
         </li>
         {ROUTE.map((hop, i) => {
@@ -225,7 +215,7 @@ export function TracerouteWidget({
           }}
         >
           <Send size={15} />
-          {t("Paket yuborish", "Send packet")}
+          {t("Send packet")}
         </button>
         <button className="nl-ghost" onClick={() => setTraced(true)}>
           tracert {DESTINATION.name.en}
@@ -247,7 +237,6 @@ export function TracerouteWidget({
           <span>C:\&gt; tracert kutubxona.example</span>
           {"\n\n"}
           {t(
-            "kutubxona.example [203.0.113.10] ga yo‘l, ko‘pi bilan 30 ta hop:",
             "Tracing route to kutubxona.example [203.0.113.10] over a maximum of 30 hops:",
           )}
           {"\n\n"}
@@ -258,23 +247,20 @@ export function TracerouteWidget({
                 .join(" ")}  ${hop.ip}\n`,
           ).join("")}
           {"\n"}
-          {t("Iz tugadi.", "Trace complete.")}
+          {t("Trace complete.")}
         </pre>
       )}
       <fieldset className="nl-answers">
-        <legend>{t("Javobingiz", "Your answer")}</legend>
+        <legend>{t("Your answer")}</legend>
         <label className="nl-field">
           <span>
-            {t(
-              "TTL=3 bilan yuborilgan paketga kim “time exceeded” qaytaradi?",
-              "Who returns “time exceeded” for a packet sent with TTL 3?",
-            )}
+            {t("Who returns “time exceeded” for a packet sent with TTL 3?")}
           </span>
           <select
             value={answers.ttl3}
             onChange={(e) => answer("ttl3", e.target.value)}
           >
-            <option value="">{t("Tanlang…", "Choose…")}</option>
+            <option value="">{t("Choose…")}</option>
             {ROUTE.map((hop) => (
               <option key={hop.ip} value={hop.ip}>
                 {hop.ip} — {text(hop.name)}
@@ -283,17 +269,12 @@ export function TracerouteWidget({
           </select>
         </label>
         <label className="nl-field">
-          <span>
-            {t(
-              "Kechikish qaysi hopda keskin oshadi?",
-              "At which hop does the delay jump?",
-            )}
-          </span>
+          <span>{t("At which hop does the delay jump?")}</span>
           <select
             value={answers.slow}
             onChange={(e) => answer("slow", e.target.value)}
           >
-            <option value="">{t("Tanlang…", "Choose…")}</option>
+            <option value="">{t("Choose…")}</option>
             {ROUTE.map((hop) => (
               <option key={hop.ip} value={hop.ip}>
                 {hop.ip} — {text(hop.name)}
@@ -306,10 +287,10 @@ export function TracerouteWidget({
   );
 }
 
-const STATE_LABEL: Record<PortState, [string, string]> = {
-  open: ["ochiq", "open"],
-  closed: ["yopiq", "closed"],
-  filtered: ["filtrlangan", "filtered"],
+const STATE_LABEL: Record<PortState, Text> = {
+  open: { uz: "ochiq", en: "open" },
+  closed: { uz: "yopiq", en: "closed" },
+  filtered: { uz: "filtrlangan", en: "filtered" },
 };
 
 // Lesson 14: knock on ports, name the services and close what should not
@@ -339,7 +320,7 @@ export function PortsWidget({
       <div className="nl-server">
         <p className="nl-public">
           <ShieldCheck size={18} aria-hidden="true" />
-          {t("Server", "Server")} <code>{SERVER_IP}</code>
+          {t("Server")} <code>{SERVER_IP}</code>
         </p>
         <label className="nl-switch">
           <input
@@ -352,12 +333,7 @@ export function PortsWidget({
               onSolved(solved(names, e.target.checked));
             }}
           />
-          <span>
-            {t(
-              "Firewall: tashqaridan faqat veb-portlar",
-              "Firewall: only web ports from outside",
-            )}
-          </span>
+          <span>{t("Firewall: only web ports from outside")}</span>
         </label>
       </div>
       <ul className="nl-ports">
@@ -368,10 +344,7 @@ export function PortsWidget({
               <code className="nl-port">{service.port}</code>
               <label>
                 <span className="nl-visually-hidden">
-                  {t(
-                    `${service.port}-port xizmati`,
-                    `Service on port ${service.port}`,
-                  )}
+                  {t("Service on port {port}", { port: service.port })}
                 </span>
                 <select
                   value={names[service.port] ?? ""}
@@ -381,7 +354,7 @@ export function PortsWidget({
                     onSolved(solved(next, firewall));
                   }}
                 >
-                  <option value="">{t("Xizmat…", "Service…")}</option>
+                  <option value="">{t("Service…")}</option>
                   {SERVICES.map((s) => (
                     <option key={s.name} value={s.name}>
                       {s.name} — {text(s.what)}
@@ -390,17 +363,12 @@ export function PortsWidget({
                 </select>
               </label>
               <span className="nl-port-state">
-                {result
-                  ? t(...STATE_LABEL[result.state])
-                  : t("tekshirilmagan", "not probed")}
+                {result ? text(STATE_LABEL[result.state]) : t("not probed")}
               </span>
               <button
                 className="nl-ghost"
                 onClick={() => knock(service.port)}
-                aria-label={t(
-                  `${service.port}-portga ulanish`,
-                  `Connect to port ${service.port}`,
-                )}
+                aria-label={t("Connect to port {port}", { port: service.port })}
               >
                 <Send size={13} /> SYN
               </button>
@@ -421,27 +389,23 @@ export function PortsWidget({
       </div>
       <p className={firewall ? "nl-pass" : "nl-fail"}>
         {!firewall && <Flame size={15} aria-hidden="true" />}{" "}
-        {t(
-          "Internetdan ko‘rinadigan ochiq portlar:",
-          "Open ports visible from the internet:",
-        )}{" "}
+        {t("Open ports visible from the internet:")}{" "}
         {exposedNow.map((s) => `${s.port} (${s.name})`).join(", ")}
-        {!firewall &&
-          ` — ${t("22 va 3306 tashqariga ochiq bo‘lmasligi kerak!", "22 and 3306 must not face the internet!")}`}
+        {!firewall && ` — ${t("22 and 3306 must not face the internet!")}`}
       </p>
     </div>
   );
 }
 
-const RULE_TEXT: Record<Ipv6Check["rule"], [string, string]> = {
-  valid: ["To‘g‘ri IPv6 yozuvi", "Valid IPv6 notation"],
-  same: ["Aynan shu manzil", "The same address"],
-  zeros: ["Bosh nollar olib tashlangan", "Leading zeros dropped"],
-  run: [
-    "Eng uzun nol qatori “::” bilan, bir marta",
-    "Longest zero run as “::”, once",
-  ],
-  case: ["Kichik harflar", "Lowercase"],
+const RULE_TEXT: Record<Ipv6Check["rule"], Text> = {
+  valid: { uz: "To‘g‘ri IPv6 yozuvi", en: "Valid IPv6 notation" },
+  same: { uz: "Aynan shu manzil", en: "The same address" },
+  zeros: { uz: "Bosh nollar olib tashlangan", en: "Leading zeros dropped" },
+  run: {
+    uz: "Eng uzun nol qatori “::” bilan, bir marta",
+    en: "Longest zero run as “::”, once",
+  },
+  case: { uz: "Kichik harflar", en: "Lowercase" },
 };
 
 // Lesson 15: shorten an IPv6 address by the rules, with live feedback.
@@ -452,7 +416,7 @@ export function Ipv6Widget({
   address: string;
   onSolved: (solved: boolean) => void;
 }) {
-  const { t } = useT();
+  const { t, text } = useT();
   const inputId = useId();
   const [answer, setAnswer] = useState("");
   const groups = expand(parseIpv6(address)!).split(":");
@@ -460,7 +424,7 @@ export function Ipv6Widget({
   const checks = answer.trim() ? review(address, answer) : [];
   return (
     <div className="nl-card">
-      <p className="nl-row-label">{t("To‘liq manzil", "Full address")}</p>
+      <p className="nl-row-label">{t("Full address")}</p>
       <p className="nl-v6" aria-label={address}>
         {groups.map((g, i) => (
           <span key={i} className={i < 4 ? "net" : "host"}>
@@ -469,13 +433,11 @@ export function Ipv6Widget({
         ))}
       </p>
       <p className="nl-legend">
-        <span className="net">{t("tarmoq (64 bit)", "network (64 bits)")}</span>
-        <span className="host">
-          {t("qurilma (64 bit)", "interface (64 bits)")}
-        </span>
+        <span className="net">{t("network (64 bits)")}</span>
+        <span className="host">{t("interface (64 bits)")}</span>
       </p>
       <label className="nl-field" htmlFor={inputId}>
-        <span>{t("Qisqa shakli", "Short form")}</span>
+        <span>{t("Short form")}</span>
       </label>
       <input
         id={inputId}
@@ -494,21 +456,19 @@ export function Ipv6Widget({
           {checks.map((check) => (
             <li key={check.rule}>
               <Mark ok={check.ok} />
-              {t(...RULE_TEXT[check.rule])}
+              {text(RULE_TEXT[check.rule])}
             </li>
           ))}
         </ul>
       )}
       {parsed && (
         <p className="nl-caption">
-          {t("Siz yozgan manzil to‘liq holda:", "Your address in full:")}{" "}
-          <code>{expand(parsed)}</code>
+          {t("Your address in full:")} <code>{expand(parsed)}</code>
         </p>
       )}
       {isCanonical(address, answer) && (
         <p className="nl-pass">
-          {t("Kanonik shakl:", "Canonical form:")}{" "}
-          <code>{compress(parseIpv6(address)!)}</code>
+          {t("Canonical form:")} <code>{compress(parseIpv6(address)!)}</code>
         </p>
       )}
     </div>

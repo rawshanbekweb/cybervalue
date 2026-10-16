@@ -50,14 +50,12 @@ export function CaseFile() {
       <div className="jr-case-head">
         <ShieldAlert size={22} aria-hidden="true" />
         <div>
-          <h2 id="jr-case-title">
-            {t("Kiber-shtab ishi", "The Cyber HQ case")}
-          </h2>
+          <h2 id="jr-case-title">{t("The Cyber HQ case")}</h2>
           <p>{text(STORY_INTRO)}</p>
           <Narrator text={text(STORY_INTRO)} />
         </div>
       </div>
-      <ol className="jr-evidence" aria-label={t("Dalillar", "Evidence")}>
+      <ol className="jr-evidence" aria-label={t("Evidence")}>
         {MISSIONS.map((mission) => {
           const found = Boolean(missions[mission.id]);
           return (
@@ -67,14 +65,14 @@ export function CaseFile() {
               </span>
               <span>
                 <strong>
-                  {t(`Dalil ${mission.number}`, `Evidence ${mission.number}`)}
+                  {t("Evidence {number}", { number: mission.number })}
                 </strong>{" "}
                 {found
                   ? text(EVIDENCE[mission.id])
-                  : t(
-                      `«${mission.title.uz}» missiyasini bajaring.`,
-                      `Finish “${mission.title.en}”.`,
-                    )}
+                  : text({
+                      uz: `«${mission.title.uz}» missiyasini bajaring.`,
+                      en: `Finish “${mission.title.en}”.`,
+                    })}
               </span>
             </li>
           );
@@ -85,16 +83,14 @@ export function CaseFile() {
         <p className="jr-verdict jr-ok jr-case-solved" role="status">
           <CheckCircle2 size={18} aria-hidden="true" />
           <span>
-            <strong>{t("Ish yopildi.", "Case closed.")}</strong>{" "}
-            {text(culprit.verdict)}
+            <strong>{t("Case closed.")}</strong> {text(culprit.verdict)}
           </span>
         </p>
       ) : ready ? (
         <div className="jr-suspects">
-          <h3>{t("Hujumchi kim?", "Who is the attacker?")}</h3>
+          <h3>{t("Who is the attacker?")}</h3>
           <p className="jr-note">
             {t(
-              "Har bir dalilni gumonlanuvchilar haqidagi faktlar bilan solishtiring. Bitta xato — butun ishni buzadi!",
               "Compare every piece of evidence with the facts about each suspect. One mistake ruins the case!",
             )}
           </p>
@@ -123,7 +119,7 @@ export function CaseFile() {
                     if (suspect.culprit) solveStory();
                   }}
                 >
-                  {t("Aynan u!", "It’s them!")}
+                  {t("It’s them!")}
                 </button>
               </li>
             ))}
@@ -138,8 +134,8 @@ export function CaseFile() {
       ) : (
         <p className="jr-note">
           {t(
-            `Barcha dalillarni to‘plang (${missionCount}/${missionTotal}) — shundan keyin hujumchini fosh qilasiz.`,
-            `Collect all the evidence (${missionCount}/${missionTotal}) — then you can unmask the attacker.`,
+            "Collect all the evidence ({missionCount}/{missionTotal}) — then you can unmask the attacker.",
+            { missionCount, missionTotal },
           )}
         </p>
       )}
@@ -186,11 +182,11 @@ export function Certificate() {
     <section className="jr-certwrap" aria-labelledby="jr-cert-title">
       <h2 id="jr-cert-title">
         <Trophy size={20} aria-hidden="true" />{" "}
-        {t("Sertifikatingiz tayyor!", "Your certificate is ready!")}
+        {t("Your certificate is ready!")}
       </h2>
       <div className="jr-actions">
         <label htmlFor={inputId} className="jr-label">
-          {t("Sertifikatdagi ism:", "Name on the certificate:")}
+          {t("Name on the certificate:")}
         </label>
         <input
           id={inputId}
@@ -204,21 +200,20 @@ export function Certificate() {
           className="button button-primary"
           onClick={() => window.print()}
         >
-          <Printer size={15} aria-hidden="true" /> {t("Chop etish", "Print")}
+          <Printer size={15} aria-hidden="true" /> {t("Print")}
         </button>
       </div>
       <div className="jr-cert">
         <p className="jr-cert-brand">CYBERVALUE ACADEMY · JUNIOR</p>
-        <p className="jr-cert-kicker">{t("SERTIFIKAT", "CERTIFICATE")}</p>
+        <p className="jr-cert-kicker">{t("CERTIFICATE")}</p>
         <p className="jr-cert-name">{shown || "—"}</p>
         <p>
           {t(
-            "Cybervalue Academy Junior ning barcha 6 missiyasini bajarib, Kiber-shtab ishini muvaffaqiyatli yopdi.",
             "completed all 6 Cybervalue Academy Junior missions and closed the Cyber HQ case.",
           )}
         </p>
         <p className="jr-cert-rank">
-          {t("Unvon:", "Rank:")} <strong>{text(rank.title)}</strong> · {xp} XP
+          {t("Rank:")} <strong>{text(rank.title)}</strong> · {xp} XP
         </p>
         <p className="jr-cert-date">{date}</p>
       </div>
@@ -266,7 +261,7 @@ export function Badges() {
   return (
     <section className="jr-badges" aria-labelledby="jr-badges-title">
       <h2 id="jr-badges-title">
-        {t("Yutuqlar", "Achievements")}{" "}
+        {t("Achievements")}{" "}
         <span className="jr-badges-count">
           {earned.length}/{BADGES.length}
         </span>
@@ -287,9 +282,7 @@ export function Badges() {
               <strong>{text(badge.title)}</strong>
               <small>{text(badge.how)}</small>
               <span className="visually-hidden">
-                {on
-                  ? t("Olingan", "Earned")
-                  : t("Hali olinmagan", "Not yet earned")}
+                {on ? t("Earned") : t("Not yet earned")}
               </span>
             </li>
           );
@@ -315,18 +308,16 @@ export function DailyPuzzle() {
   return (
     <section className="jr-daily" aria-labelledby="jr-daily-title">
       <h2 id="jr-daily-title">
-        <CalendarDays size={18} aria-hidden="true" />{" "}
-        {t("Kunlik topishmoq", "Daily puzzle")}
+        <CalendarDays size={18} aria-hidden="true" /> {t("Daily puzzle")}
         {streak > 0 && (
           <span className="jr-daily-streak">
             <Flame size={13} aria-hidden="true" />{" "}
-            {t(`${streak} kun ketma-ket`, `${streak}-day streak`)}
+            {t("{streak}-day streak", { streak })}
           </span>
         )}
       </h2>
       <p className="jr-note">
         {t(
-          "Har kuni yangi shifrlangan maqol yoki xavfsizlik maslahati. Yechsangiz +20 XP, ketma-ket kunlar olov yoqadi!",
           "A new encrypted saying or safety tip every day. Solve it for +20 XP; days in a row keep the fire burning!",
         )}
       </p>
@@ -334,11 +325,11 @@ export function DailyPuzzle() {
         <strong>{text(cipher.title).split(" — ")[0]}</strong>
         {puzzle.key && (
           <span className="cr-ex-key">
-            {t("kalit", "key")}: <b>{puzzle.key}</b>
+            {t("key")}: <b>{puzzle.key}</b>
           </span>
         )}
         <a href={`/junior/ciphers#cipher/${cipher.number}`}>
-          {t("Asbobni ochish ↗", "Open the tool ↗")}
+          {t("Open the tool ↗")}
         </a>
       </p>
       <code className="jr-code">{puzzle.given}</code>
@@ -346,16 +337,15 @@ export function DailyPuzzle() {
         <p className="jr-verdict jr-ok" role="status">
           <CheckCircle2 size={16} aria-hidden="true" />
           <span>
-            {t(
-              `Bugungi topishmoq yechildi: «${puzzle.answer}». Ertaga yangisi!`,
-              `Today’s puzzle is solved: “${puzzle.answer}”. A new one tomorrow!`,
-            )}
+            {t("Today’s puzzle is solved: “{answer}”. A new one tomorrow!", {
+              answer: puzzle.answer,
+            })}
           </span>
         </p>
       ) : (
         <>
           <label htmlFor={inputId} className="jr-label">
-            {t("Ochilgan xabar", "The decrypted message")}
+            {t("The decrypted message")}
           </label>
           <div className="jr-row">
             <input
@@ -378,17 +368,14 @@ export function DailyPuzzle() {
                 if (ok) solveDay(today);
               }}
             >
-              {t("Topishmoqni tekshirish", "Check the puzzle")}
+              {t("Check the puzzle")}
             </button>
           </div>
           {checked && !ok && (
             <p className="jr-verdict jr-bad" role="status">
               <XCircle size={16} aria-hidden="true" />
               <span>
-                {t(
-                  "Hali emas. Kalitni asbobga kiriting va qayta urining.",
-                  "Not yet. Put the key into the tool and try again.",
-                )}
+                {t("Not yet. Put the key into the tool and try again.")}
               </span>
             </p>
           )}

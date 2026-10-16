@@ -31,6 +31,13 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     description: t(site.description),
     robots: { index: await siteIndexable(), follow: true },
+    manifest: "/manifest.webmanifest",
+    icons: { apple: "/icons/apple-touch-icon.png" },
+    appleWebApp: {
+      capable: true,
+      title: "Cybervalue",
+      statusBarStyle: "black",
+    },
   };
 }
 

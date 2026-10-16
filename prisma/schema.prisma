@@ -593,3 +593,22 @@ model NotificationLog {
 
   @@index([sentAt])
 }
+
+// Errors from the server (instrumentation onRequestError) and from browsers
+// (error boundaries), grouped by fingerprint so a repeat only bumps `count`.
+model ErrorEvent {
+  id          String    @id @default(cuid())
+  fingerprint String    @unique
+  source      String
+  message     String    @db.Text
+  digest      String    @default("")
+  path        String    @default("")
+  route       String    @default("")
+  stack       String    @default("") @db.Text
+  count       Int       @default(1)
+  firstAt     DateTime  @default(now()) @db.Timestamptz(3)
+  lastAt      DateTime  @default(now()) @db.Timestamptz(3)
+  resolvedAt  DateTime? @db.Timestamptz(3)
+
+  @@index([lastAt])
+}

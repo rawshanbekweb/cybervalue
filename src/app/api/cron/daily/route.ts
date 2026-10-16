@@ -2,6 +2,7 @@ import { timingSafeEqual } from "node:crypto";
 import { getDb } from "@/lib/db";
 import { telegramConfig } from "@/lib/telegram/api";
 import { daily } from "@/lib/telegram/events";
+import { markCronRun } from "@/lib/system";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -23,10 +24,14 @@ export async function GET(request: Request) {
   const db = getDb();
   if (!db)
     return Response.json({ error: "no database" }, { status: 503, headers });
-  // Old log entries only keep the table small; a week covers every repeat.
+  // Old log entries only keep the tables small.
   await db.notificationLog.deleteMany({
     where: { sentAt: { lt: new Date(Date.now() - 30 * 86_400_000) } },
   });
+  await db.errorEvent.deleteMany({
+    where: { resolvedAt: { lt: new Date(Date.now() - 90 * 86_400_000) } },
+  });
+  await markCronRun(db);
   if (!telegramConfig())
     return Response.json({ skipped: "telegram not configured" }, { headers });
   return Response.json(await daily(db), { headers });

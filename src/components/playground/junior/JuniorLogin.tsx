@@ -39,14 +39,14 @@ const FEATURES = [
 
 // The academy's front door: members enter with the code their teacher gave.
 export function JuniorLogin() {
-  const { t } = useT();
+  const { t, text } = useT();
   const id = useId();
   const pathname = usePathname();
   const [state, action, pending] = useActionState(juniorLoginAction, undefined);
   return (
     <div className="junior container page-content">
       <Link className="jr-back" href="/">
-        <ArrowLeft size={15} aria-hidden="true" /> {t("Bosh sahifa", "Home")}
+        <ArrowLeft size={15} aria-hidden="true" /> {t("Home")}
       </Link>
       <div className="jr-login">
         <div>
@@ -54,19 +54,18 @@ export function JuniorLogin() {
             <span className="status-dot" /> CYBERVALUE ACADEMY JUNIOR
           </span>
           <h1>
-            {t("Akademiyaga", "Welcome to")}
+            {t("Welcome to")}
             <br />
-            <span>{t("xush kelibsiz.", "the academy.")}</span>
+            <span>{t("the academy.")}</span>
           </h1>
           <p className="jr-login-lead">
             {t(
-              "Kiberxavfsizlikning birinchi qadami: missiyalar, shifrlar, uy vazifalari va o‘z unvoningiz. Kirish uchun o‘qituvchingiz bergan kodni kiriting.",
               "Your first step into cybersecurity: missions, ciphers, homework and a rank of your own. Enter the code your teacher gave you.",
             )}
           </p>
           <form action={action} className="jr-login-form">
             <input type="hidden" name="next" value={pathname} />
-            <label htmlFor={id}>{t("Kirish kodi", "Access code")}</label>
+            <label htmlFor={id}>{t("Access code")}</label>
             <input
               id={id}
               name="code"
@@ -79,17 +78,18 @@ export function JuniorLogin() {
             />
             {state?.error && (
               <p className="jr-verdict jr-bad" role="alert">
-                {t(
-                  {
-                    "This access code is not valid or no longer active.":
-                      "Bu kod noto‘g‘ri yoki endi faol emas.",
-                    "Too many attempts. Try again in a few minutes.":
-                      "Urinishlar juda ko‘p. Bir necha daqiqadan keyin qayta urining.",
-                    "The academy is not available right now.":
-                      "Akademiya hozir ishlamayapti.",
-                  }[state.error] ?? state.error,
-                  state.error,
-                )}
+                {text({
+                  uz:
+                    {
+                      "This access code is not valid or no longer active.":
+                        "Bu kod noto‘g‘ri yoki endi faol emas.",
+                      "Too many attempts. Try again in a few minutes.":
+                        "Urinishlar juda ko‘p. Bir necha daqiqadan keyin qayta urining.",
+                      "The academy is not available right now.":
+                        "Akademiya hozir ishlamayapti.",
+                    }[state.error] ?? state.error,
+                  en: state.error,
+                })}
               </p>
             )}
             <button
@@ -97,13 +97,10 @@ export function JuniorLogin() {
               className="button button-primary"
               disabled={pending}
             >
-              {pending
-                ? t("Tekshirilmoqda…", "Checking…")
-                : t("Kirish", "Enter")}
+              {pending ? t("Checking…") : t("Enter")}
             </button>
             <p className="jr-login-note">
               {t(
-                "Kodingiz yo‘qmi? O‘qituvchingizdan so‘rang. Kod shaxsiy — uni boshqalarga bermang.",
                 "No code? Ask your teacher. Your code is personal — don’t share it.",
               )}
             </p>
@@ -115,7 +112,7 @@ export function JuniorLogin() {
               <span className="jr-ring" aria-hidden="true">
                 <Icon size={20} />
               </span>
-              {t(uz, en)}
+              {text({ uz: uz, en: en })}
             </li>
           ))}
         </ul>

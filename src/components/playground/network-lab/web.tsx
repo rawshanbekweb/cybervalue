@@ -77,7 +77,7 @@ export function PageLoadWidget({
             checked={cached}
             onChange={(e) => toggle(setCached, e.target.checked)}
           />
-          <span>{t("DNS keshda", "DNS cached")}</span>
+          <span>{t("DNS cached")}</span>
         </label>
         <label className="nl-switch">
           <input
@@ -85,9 +85,7 @@ export function PageLoadWidget({
             checked={spy}
             onChange={(e) => setSpy(e.target.checked)}
           />
-          <span>
-            {t("Wi-Fi’dagi hujumchi ko‘zi", "Wi-Fi eavesdropper’s view")}
-          </span>
+          <span>{t("Wi-Fi eavesdropper’s view")}</span>
         </label>
       </div>
       <p className="nl-browser-line">
@@ -103,10 +101,7 @@ export function PageLoadWidget({
       <div
         className="nl-waterfall"
         role="img"
-        aria-label={t(
-          `Vaqt diagrammasi, jami ${load.total} ms`,
-          `Timeline, ${load.total} ms in total`,
-        )}
+        aria-label={t("Timeline, {total} ms in total", { total: load.total })}
       >
         {load.timings.map((timing) => (
           <div key={timing.phase} className="nl-wf-row">
@@ -124,7 +119,7 @@ export function PageLoadWidget({
           </div>
         ))}
         <p className="nl-caption">
-          {t("Jami", "Total")}: {load.total} ms
+          {t("Total")}: {load.total} ms
         </p>
       </div>
       <div className="nl-ladder">
@@ -163,14 +158,14 @@ export function PageLoadWidget({
           onClick={() => setStep(Math.max(0, step - 1))}
           disabled={step === 0}
         >
-          {t("Oldingi", "Previous")}
+          {t("Previous")}
         </button>
         <button
           className="nl-primary"
           onClick={() => setStep(Math.min(load.packets.length - 1, step + 1))}
           disabled={step >= load.packets.length - 1}
         >
-          {t("Keyingi paket", "Next packet")}
+          {t("Next packet")}
         </button>
         <span className="nl-caption">
           {Math.min(step, load.packets.length - 1) + 1} / {load.packets.length}
@@ -208,16 +203,14 @@ export function PageLoadWidget({
           >
             <Eye size={15} aria-hidden="true" />
             <span>
-              <strong>
-                {t("Hujumchi ko‘radi:", "The eavesdropper sees:")}
-              </strong>{" "}
+              <strong>{t("The eavesdropper sees:")}</strong>{" "}
               {text(current.visible)}
             </span>
           </p>
         )}
       </div>
       <fieldset className="nl-quiz">
-        <legend>{t("Savollar", "Questions")}</legend>
+        <legend>{t("Questions")}</legend>
         {questions.map((question, q) => (
           <div key={q} className="nl-question">
             <p>{text(question.ask)}</p>
@@ -308,7 +301,7 @@ export function HttpWidget({
   const setCookie = response?.headers.find(([k]) => k === "Set-Cookie");
   return (
     <div className="nl-card">
-      <ul className="nl-goals" aria-label={t("Kerakli kodlar", "Codes to get")}>
+      <ul className="nl-goals" aria-label={t("Codes to get")}>
         {GOALS.map((code) => (
           <li
             key={code}
@@ -321,7 +314,7 @@ export function HttpWidget({
       </ul>
       <div className="nl-request-form">
         <label className="nl-field">
-          <span>{t("Metod", "Method")}</span>
+          <span>{text({ uz: "Metod", en: "Method" })}</span>
           <select
             value={request.method}
             onChange={(e) => set("method", e.target.value as Method)}
@@ -332,7 +325,7 @@ export function HttpWidget({
           </select>
         </label>
         <label className="nl-field">
-          <span>{t("Yo‘l", "Path")}</span>
+          <span>{t("Path")}</span>
           <input
             list={pathsId}
             value={request.path}
@@ -354,16 +347,16 @@ export function HttpWidget({
               set("cookie", e.target.value as HttpRequest["cookie"])
             }
           >
-            <option value="">{t("yo‘q", "none")}</option>
+            <option value="">{t("none")}</option>
             <option value="user">
-              {t("oddiy foydalanuvchi", "regular user")} ({COOKIES.user})
+              {t("regular user")} ({COOKIES.user})
             </option>
             <option value="admin">admin ({COOKIES.admin})</option>
           </select>
         </label>
         {request.method === "POST" && (
           <label className="nl-field nl-wide">
-            <span>{t("Tana (forma)", "Body (form)")}</span>
+            <span>{t("Body (form)")}</span>
             <input
               value={request.body}
               onChange={(e) => set("body", e.target.value)}
@@ -382,39 +375,33 @@ export function HttpWidget({
       </div>
       <div className="nl-actions">
         <button className="nl-primary" onClick={send}>
-          <Send size={15} /> {t("So‘rovni yuborish", "Send request")}
+          <Send size={15} /> {t("Send request")}
         </button>
         {setCookie && request.cookie !== "user" && (
           <button className="nl-ghost" onClick={() => set("cookie", "user")}>
-            {t("Olingan cookie’ni ishlatish", "Use the cookie you got")}
+            {t("Use the cookie you got")}
           </button>
         )}
       </div>
       <div className="nl-http" aria-live="polite">
-        <Raw
-          text={formatRequest(request)}
-          label={t("So‘rov matni", "Request text")}
-        />
+        <Raw text={formatRequest(request)} label={t("Request text")} />
         {response && (
           <div className={`nl-response ${statusClass(response.status)}`}>
             {sent && (
               <p className="nl-row-label">
-                {t("Javob:", "Response to:")}{" "}
+                {t("Response to:")}{" "}
                 <code>
                   {sent.method} {sent.path}
                 </code>
               </p>
             )}
-            <Raw
-              text={formatResponse(response)}
-              label={t("Javob matni", "Response text")}
-            />
+            <Raw text={formatResponse(response)} label={t("Response text")} />
             <p>{text(response.explain)}</p>
           </div>
         )}
       </div>
       {history.length > 0 && (
-        <ol className="nl-history" aria-label={t("Tarix", "History")}>
+        <ol className="nl-history" aria-label={t("History")}>
           {history.map((line, i) => (
             <li key={i}>
               <code>{line}</code>

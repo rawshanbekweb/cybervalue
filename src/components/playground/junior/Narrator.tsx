@@ -63,14 +63,11 @@ export function Narrator({ text }: { text: string }) {
         ) : (
           <Volume2 size={14} aria-hidden="true" />
         )}{" "}
-        {speaking ? t("To‘xtatish", "Stop") : t("Tinglash", "Listen")}
+        {speaking ? t("Stop") : t("Listen")}
       </button>
       {missingVoice && (
         <small>
-          {t(
-            "Qurilmangizda o‘zbek ovozi topilmadi, matn boshqa ovozda o‘qilmoqda.",
-            "No Uzbek voice on this device; reading with another voice.",
-          )}
+          {t("No Uzbek voice on this device; reading with another voice.")}
         </small>
       )}
     </span>

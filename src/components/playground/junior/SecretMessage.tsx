@@ -72,12 +72,11 @@ function Compose() {
   return (
     <section className="jr-mission jr-secret" aria-labelledby="jr-secret-title">
       <h2 id="jr-secret-title">
-        <Mail size={20} aria-hidden="true" />{" "}
-        {t("Maxfiy xabar yozing", "Write a secret message")}
+        <Mail size={20} aria-hidden="true" /> {t("Write a secret message")}
       </h2>
       <div className="jr-panel">
         <label htmlFor={ids.message} className="jr-label">
-          {t("Xabar", "Message")}
+          {t("Message")}
         </label>
         <textarea
           id={ids.message}
@@ -91,7 +90,7 @@ function Compose() {
           }}
         />
         <fieldset className="cr-sheet-pick">
-          <legend className="jr-label">{t("Shifr", "Cipher")}</legend>
+          <legend className="jr-label">{t("Cipher")}</legend>
           {SECRET_CIPHERS.map((id) => (
             <label key={id} className={cipher === id ? "on" : undefined}>
               <input
@@ -119,7 +118,7 @@ function Compose() {
         {needsKey(cipher) && (
           <>
             <label htmlFor={ids.key} className="jr-label">
-              <KeyRound size={14} aria-hidden="true" /> {t("Kalit", "Key")} —{" "}
+              <KeyRound size={14} aria-hidden="true" /> {t("Key")} —{" "}
               {KEY_HELP[cipher][locale]}
             </label>
             <input
@@ -142,12 +141,11 @@ function Compose() {
                   setLink("");
                 }}
               />
-              {t("Kalitni havolaga qo‘shish", "Put the key in the link")}
+              {t("Put the key in the link")}
             </label>
             {!includeKey && (
               <p className="jr-note">
                 {t(
-                  "Kalit havolada bo‘lmaydi: uni do‘stingizga yuzma-yuz ayting. Haqiqiy shifrlashda ham kalitni xabardan alohida uzatish eng muhim qoida!",
                   "The key stays out of the link: tell your friend face to face. Keeping the key apart from the message is the golden rule of real encryption too!",
                 )}
               </p>
@@ -155,17 +153,14 @@ function Compose() {
           </>
         )}
         <label htmlFor={ids.hint} className="jr-label">
-          {t("Maslahat (ixtiyoriy)", "Hint (optional)")}
+          {t("Hint (optional)")}
         </label>
         <input
           id={ids.hint}
           className="jr-input"
           value={hint}
           maxLength={80}
-          placeholder={t(
-            "Masalan: kalit — sinfimiz raqami",
-            "e.g. the key is our class number",
-          )}
+          placeholder={t("e.g. the key is our class number")}
           onChange={(event) => {
             setHint(event.target.value);
             setLink("");
@@ -177,12 +172,12 @@ function Compose() {
           disabled={!ready}
           onClick={create}
         >
-          {t("Havola yaratish", "Create the link")}
+          {t("Create the link")}
         </button>
         {link && (
           <>
             <label htmlFor={ids.link} className="jr-label">
-              {t("Do‘stingizga yuboring:", "Send this to your friend:")}
+              {t("Send this to your friend:")}
             </label>
             <input
               id={ids.link}
@@ -203,9 +198,7 @@ function Compose() {
                 }
               >
                 <Copy size={15} aria-hidden="true" />{" "}
-                {copied
-                  ? t("Nusxa olindi!", "Copied!")
-                  : t("Nusxa olish", "Copy")}
+                {copied ? t("Copied!") : t("Copy")}
               </button>
               {typeof navigator !== "undefined" && "share" in navigator && (
                 <button
@@ -217,14 +210,12 @@ function Compose() {
                       .catch(() => {})
                   }
                 >
-                  <Share2 size={15} aria-hidden="true" />{" "}
-                  {t("Ulashish", "Share")}
+                  <Share2 size={15} aria-hidden="true" /> {t("Share")}
                 </button>
               )}
             </div>
             <p className="jr-note">
               {t(
-                "Shifrlangan matn havolaning # qismida turadi — brauzer uni serverga yubormaydi.",
                 "The ciphertext lives after the # in the link — browsers never send that part to the server.",
               )}
             </p>
@@ -245,23 +236,22 @@ function Read({ payload }: { payload: SecretPayload }) {
   return (
     <section className="jr-mission jr-secret" aria-labelledby="jr-read-title">
       <h2 id="jr-read-title">
-        <Mail size={20} aria-hidden="true" />{" "}
-        {t("Sizga maxfiy xabar keldi!", "You have a secret message!")}
+        <Mail size={20} aria-hidden="true" /> {t("You have a secret message!")}
       </h2>
       <div className="jr-panel">
         <p className="jr-lead">
-          {t("Shifr:", "Cipher:")} <strong>{text(info.title)}</strong>
+          {t("Cipher:")} <strong>{text(info.title)}</strong>
         </p>
         <code className="jr-code">{payload.t}</code>
         {payload.h && (
           <p className="jr-note">
-            {t("Maslahat:", "Hint:")} {payload.h}
+            {t("Hint:")} {payload.h}
           </p>
         )}
         {needsKey(payload.c) && (
           <>
             <label htmlFor={keyId} className="jr-label">
-              <KeyRound size={14} aria-hidden="true" /> {t("Kalit", "Key")} —{" "}
+              <KeyRound size={14} aria-hidden="true" /> {t("Key")} —{" "}
               {KEY_HELP[payload.c][locale]}
             </label>
             <input
@@ -276,10 +266,7 @@ function Read({ payload }: { payload: SecretPayload }) {
             />
             {!payload.k && (
               <p className="jr-note">
-                {t(
-                  "Kalit havolada yo‘q — uni xabar yuborgan do‘stingizdan so‘rang.",
-                  "The key is not in the link — ask the friend who sent it.",
-                )}
+                {t("The key is not in the link — ask the friend who sent it.")}
               </p>
             )}
           </>
@@ -290,7 +277,7 @@ function Read({ payload }: { payload: SecretPayload }) {
           disabled={!keyOk}
           onClick={() => setOpened(true)}
         >
-          <Unlock size={15} aria-hidden="true" /> {t("Ochish", "Decrypt")}
+          <Unlock size={15} aria-hidden="true" /> {t("Decrypt")}
         </button>
         {opened && (
           <code className="jr-code jr-live cr-out" aria-live="polite">
@@ -302,7 +289,7 @@ function Read({ payload }: { payload: SecretPayload }) {
             href={`/junior/ciphers#cipher/${info.number}`}
             className="jr-linkbtn"
           >
-            {t("Bu shifr haqida o‘qish", "Learn about this cipher")}
+            {t("Learn about this cipher")}
           </Link>
           <button
             type="button"
@@ -311,7 +298,7 @@ function Read({ payload }: { payload: SecretPayload }) {
               window.location.hash = "";
             }}
           >
-            {t("O‘zim ham xabar yozaman", "Write my own message")}
+            {t("Write my own message")}
           </button>
         </div>
       </div>
@@ -340,25 +327,20 @@ export function SecretMessage() {
       )}
       <header className="jr-hero jr-page-head">
         <span className="eyebrow">
-          <span className="status-dot" /> {t("MAXFIY POCHTA", "SECRET MAIL")}
+          <span className="status-dot" /> {t("SECRET MAIL")}
         </span>
         <h1>
-          {t("Maxfiy xabar.", "Secret message.")}{" "}
-          <span>{t("Faqat ikkovingiz uchun.", "For the two of you.")}</span>
+          {t("Secret message.")} <span>{t("For the two of you.")}</span>
         </h1>
         <p>
           {t(
-            "Do‘stingizga faqat siz ikkovingiz o‘qiy oladigan xabar yuboring. Shifrni tanlang, kalitni o‘ylab toping va havolani ulashing.",
             "Send a friend a message only the two of you can read. Pick a cipher, choose a key and share the link.",
           )}
         </p>
       </header>
       {broken && (
         <p className="jr-verdict jr-bad" role="alert">
-          {t(
-            "Bu havola buzilgan yoki noto‘g‘ri. Yangi xabar yozishingiz mumkin.",
-            "This link is broken or invalid. You can write a new message.",
-          )}
+          {t("This link is broken or invalid. You can write a new message.")}
         </p>
       )}
       {payload ? <Read key={hash} payload={payload} /> : <Compose />}

@@ -53,14 +53,14 @@ export function ExerciseCard({
         <strong>{text(exercise.task)}</strong>
         {exercise.key && (
           <span className="cr-ex-key">
-            {t("kalit", "key")}: <b>{exercise.key}</b>
+            {t("key")}: <b>{exercise.key}</b>
           </span>
         )}
         {solved && (
           <CheckCircle2
             className="cr-ex-done"
             size={16}
-            aria-label={t("Bajarilgan", "Solved")}
+            aria-label={t("Solved")}
           />
         )}
       </div>
@@ -86,13 +86,13 @@ export function ExerciseCard({
       ) : (
         <>
           <label htmlFor={inputId} className="visually-hidden">
-            {t("Javobingiz", "Your answer")}
+            {t("Your answer")}
           </label>
           <input
             id={inputId}
             className="jr-input"
             value={answer}
-            placeholder={t("Javobingiz", "Your answer")}
+            placeholder={t("Your answer")}
             onChange={(event) => {
               setAnswer(event.target.value);
               setChecked(false);
@@ -112,7 +112,7 @@ export function ExerciseCard({
           onClick={check}
           disabled={!answer}
         >
-          {t("Tekshirish", "Check")}
+          {t("Check")}
         </button>
         {exercise.hint && (
           <button
@@ -121,7 +121,7 @@ export function ExerciseCard({
             aria-expanded={hint}
             onClick={() => setHint(!hint)}
           >
-            <Lightbulb size={14} aria-hidden="true" /> {t("Yordam", "Hint")}
+            <Lightbulb size={14} aria-hidden="true" /> {t("Hint")}
           </button>
         )}
       </div>
@@ -140,11 +140,8 @@ export function ExerciseCard({
           )}
           <span>
             {ok
-              ? t("To‘g‘ri! Zo‘r ish, agent.", "Correct! Nice work, agent.")
-              : t(
-                  "Hali emas. Yuqoridagi asbob bilan tekshirib ko‘ring.",
-                  "Not yet. Check it with the tool above.",
-                )}
+              ? t("Correct! Nice work, agent.")
+              : t("Not yet. Check it with the tool above.")}
           </span>
         </p>
       )}
@@ -194,8 +191,7 @@ export function Homework({
             if (next) setExtra([...extra, next]);
           }}
         >
-          <Dices size={15} aria-hidden="true" />{" "}
-          {t("Yangi misol", "New exercise")}
+          <Dices size={15} aria-hidden="true" /> {t("New exercise")}
         </button>
       )}
     </div>
@@ -229,17 +225,14 @@ export function HomeworkSheet() {
   return (
     <section className="cr-sheet" aria-labelledby="cr-sheet-title">
       <div className="cr-sheet-controls">
-        <h2 id="cr-sheet-title">
-          {t("Uy vazifasi varag‘i", "Homework sheet")}
-        </h2>
+        <h2 id="cr-sheet-title">{t("Homework sheet")}</h2>
         <p className="jr-lead">
           {t(
-            "O‘qituvchilar va ota-onalar uchun: shifrlarni tanlang, har biridan nechta misol kerakligini belgilang va har safar yangi varaq yarating. Javoblar alohida ko‘rsatiladi.",
             "For teachers and parents: pick the ciphers and how many exercises each, and make a fresh sheet every time. Answers are shown separately.",
           )}
         </p>
         <fieldset className="cr-sheet-pick">
-          <legend className="jr-label">{t("Shifrlar", "Ciphers")}</legend>
+          <legend className="jr-label">{t("Ciphers")}</legend>
           {CIPHERS.filter((c) => GENERATED.includes(c.id)).map((cipher) => (
             <label
               key={cipher.id}
@@ -262,7 +255,7 @@ export function HomeworkSheet() {
         </fieldset>
         <div className="jr-actions">
           <label htmlFor={perId} className="jr-label">
-            {t("Har biridan:", "Each:")}
+            {t("Each:")}
           </label>
           <select
             id={perId}
@@ -282,8 +275,7 @@ export function HomeworkSheet() {
             onClick={build}
             disabled={!chosen.length}
           >
-            <Dices size={15} aria-hidden="true" />{" "}
-            {t("Varaq yaratish", "Make a sheet")}
+            <Dices size={15} aria-hidden="true" /> {t("Make a sheet")}
           </button>
           {items.length > 0 && (
             <>
@@ -292,8 +284,7 @@ export function HomeworkSheet() {
                 className="button button-secondary"
                 onClick={() => window.print()}
               >
-                <Printer size={15} aria-hidden="true" />{" "}
-                {t("Chop etish", "Print")}
+                <Printer size={15} aria-hidden="true" /> {t("Print")}
               </button>
               <label className="cr-check">
                 <input
@@ -301,7 +292,7 @@ export function HomeworkSheet() {
                   checked={answers}
                   onChange={(event) => setAnswers(event.target.checked)}
                 />
-                {t("Javoblarni ko‘rsatish", "Show answers")}
+                {t("Show answers")}
               </label>
             </>
           )}
@@ -309,15 +300,9 @@ export function HomeworkSheet() {
       </div>
       {items.length > 0 && (
         <div className="cr-print">
-          <h3>
-            Cybervalue Academy Junior ·{" "}
-            {t("Shifrlar — uy vazifasi", "Ciphers — homework")}
-          </h3>
+          <h3>Cybervalue Academy Junior · {t("Ciphers — homework")}</h3>
           <p className="cr-print-name">
-            {t(
-              "Ism: ____________________   Sana: ____________",
-              "Name: ____________________   Date: ____________",
-            )}
+            {t("Name: ____________________   Date: ____________")}
           </p>
           <ol>
             {items.map(({ cipher, exercise }, i) => {
@@ -327,7 +312,7 @@ export function HomeworkSheet() {
                   <p>
                     <b>{text(info.title).split(" — ")[0]}.</b>{" "}
                     {text(exercise.task)}
-                    {exercise.key && ` (${t("kalit", "key")}: ${exercise.key})`}
+                    {exercise.key && ` (${t("key")}: ${exercise.key})`}
                   </p>
                   {exercise.glyphs ? (
                     <PigpenText text={exercise.given} size={28} />

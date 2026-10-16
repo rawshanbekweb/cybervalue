@@ -91,16 +91,13 @@ export function JuniorAcademy() {
     <>
       <header className="jr-hero jr-page-head">
         <span className="eyebrow">
-          <span className="status-dot" />{" "}
-          {t("1-DARAJA · BIRINCHI QADAM", "LEVEL 1 · FIRST STEP")}
+          <span className="status-dot" /> {t("LEVEL 1 · FIRST STEP")}
         </span>
         <h1>
-          {t("Oltita missiya.", "Six missions.")}{" "}
-          <span>{t("Bitta sirli ish.", "One mystery to solve.")}</span>
+          {t("Six missions.")} <span>{t("One mystery to solve.")}</span>
         </h1>
         <p>
           {t(
-            "Har bir missiyada parollar, aldovchilar, shifrlar va internetdagi izlar haqida bitta muhim narsani o‘rganasiz — va Kiber-shtab ishi uchun bitta dalil topasiz. Dasturlashni bilish shart emas.",
             "Each mission teaches one key idea about passwords, scams, ciphers or your online trail — and gives you one piece of evidence for the Cyber HQ case. No coding needed.",
           )}
         </p>
@@ -109,15 +106,15 @@ export function JuniorAcademy() {
             <span style={{ width: `${(count / MISSIONS.length) * 100}%` }} />
           </div>
           <span>
-            {t(
-              `${count} / ${MISSIONS.length} missiya bajarildi`,
-              `${count} / ${MISSIONS.length} missions complete`,
-            )}
+            {t("{count} / {length} missions complete", {
+              count,
+              length: MISSIONS.length,
+            })}
           </span>
         </div>
       </header>
 
-      <nav className="jr-nav" aria-label={t("Missiyalar", "Missions")}>
+      <nav className="jr-nav" aria-label={t("Missions")}>
         {MISSIONS.map((item) => {
           const finished = Boolean(progress[item.id]);
           return (
@@ -138,10 +135,7 @@ export function JuniorAcademy() {
               <span>
                 {text(item.title)}
                 {finished && (
-                  <span className="visually-hidden">
-                    {" "}
-                    {t("(bajarildi)", "(complete)")}
-                  </span>
+                  <span className="visually-hidden"> {t("(complete)")}</span>
                 )}
               </span>
             </button>
@@ -157,19 +151,19 @@ export function JuniorAcademy() {
       >
         <header>
           <span className="eyebrow">
-            {t(`MISSIYA ${mission.number}`, `MISSION ${mission.number}`)} ·{" "}
-            {t(`${mission.minutes} daqiqa`, `${mission.minutes} min`)}
+            {t("MISSION {number}", { number: mission.number })} ·{" "}
+            {t("{minutes} min", { minutes: mission.minutes })}
           </span>
           <h2 id="jr-mission-title">{text(mission.title)}</h2>
           <p className="jr-hook">{text(mission.hook)}</p>
           <p className="jr-goal">
             <Compass size={15} aria-hidden="true" />
             <span>
-              <strong>{t("Maqsad:", "Goal:")}</strong> {text(mission.goal)}
+              <strong>{t("Goal:")}</strong> {text(mission.goal)}
             </span>
           </p>
           <Narrator
-            text={`${text(mission.title)}. ${text(mission.hook)} ${t("Maqsad:", "Goal:")} ${text(mission.goal)}`}
+            text={`${text(mission.title)}. ${text(mission.hook)} ${t("Goal:")} ${text(mission.goal)}`}
           />
         </header>
         <Panel
@@ -182,7 +176,7 @@ export function JuniorAcademy() {
             className="jr-next"
             onClick={() => open(id + 1)}
           >
-            {t("Keyingi missiya", "Next mission")}
+            {t("Next mission")}
             <ArrowRight size={15} aria-hidden="true" />
           </button>
         )}
@@ -193,15 +187,9 @@ export function JuniorAcademy() {
       {all ? (
         <section className="jr-finish" aria-labelledby="jr-finish-title">
           <Award size={34} aria-hidden="true" />
-          <h2 id="jr-finish-title">
-            {t(
-              "Tabriklaymiz, kiber-nomzod!",
-              "Congratulations, cyber recruit!",
-            )}
-          </h2>
+          <h2 id="jr-finish-title">{t("Congratulations, cyber recruit!")}</h2>
           <p>
             {t(
-              "Siz Cybervalue Academy Junior ning barcha 6 missiyasini bajardingiz. Endi keyingi qadamni tanlang:",
               "You finished all 6 Cybervalue Academy Junior missions. Pick your next step:",
             )}
           </p>
@@ -209,8 +197,8 @@ export function JuniorAcademy() {
             {NEXT_STEPS.map((step) => (
               <li key={step.href}>
                 <Link href={step.href}>
-                  <strong>{t(step.uz, step.en)}</strong>
-                  <span>{t(step.noteUz, step.noteEn)}</span>
+                  <strong>{text({ uz: step.uz, en: step.en })}</strong>
+                  <span>{text({ uz: step.noteUz, en: step.noteEn })}</span>
                 </Link>
               </li>
             ))}
@@ -220,14 +208,13 @@ export function JuniorAcademy() {
             className="jr-linkbtn"
             onClick={() => setProgress({})}
           >
-            {t("Missiyalarni qaytadan boshlash", "Restart the missions")}
+            {t("Restart the missions")}
           </button>
         </section>
       ) : null}
       {!all ? (
         <p className="jr-foot">
           {t(
-            "Barcha missiyalarni bajargach, keyingi qadamlar ochiladi. Natijangiz shu brauzerda saqlanadi.",
             "Finish every mission to unlock your next steps. Your progress is saved in this browser.",
           )}
         </p>

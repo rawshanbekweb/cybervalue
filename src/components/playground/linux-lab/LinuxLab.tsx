@@ -25,7 +25,7 @@ import {
   ClipboardCheck,
   X,
 } from "lucide-react";
-import { useLocale } from "@/components/locale-provider";
+import { useLocale, useTranslator } from "@/components/locale-provider";
 import { useHashLessonId } from "../useHashLessonId";
 import { useLocalStorageState } from "../useLocalStorageState";
 import { COMMANDS, complete, execute, HOME } from "@/lib/linux/engine";
@@ -60,7 +60,7 @@ function download(name: string, text: string) {
 
 export function LinuxLab() {
   const locale = useLocale();
-  const t = (uz: string, en: string) => (locale === "uz" ? uz : en);
+  const t = useTranslator();
   const [id, setId] = useHashLessonId(LESSONS.length);
   const [sandbox, setSandbox] = useState(false);
   const [rawProgress, setProgress] = useLocalStorageState<unknown>(
@@ -77,24 +77,20 @@ export function LinuxLab() {
   return (
     <div className="linux-lab">
       <Link className="lx-back" href="/akademiya">
-        <ArrowLeft size={15} /> {t("Akademiya", "Academy")}
+        <ArrowLeft size={15} /> {t("Academy")}
       </Link>
       <header className="lx-hero">
         <div>
           <span className="eyebrow">
-            <span className="status-dot" />{" "}
-            {t("AMALIY LINUX KURSI", "HANDS-ON LINUX COURSE")}
+            <span className="status-dot" /> {t("HANDS-ON LINUX COURSE")}
           </span>
           <h1>
-            {t("Linuxni tushuning.", "Understand Linux.")}
+            {t("Understand Linux.")}
             <br />
-            <span>
-              {t("Buyruq bilan sinab ko‘ring.", "Try it in the terminal.")}
-            </span>
+            <span>{t("Try it in the terminal.")}</span>
           </h1>
           <p>
             {t(
-              "Buyruqni o‘qing, terminalda bajaring, natijasini tushuning. Birinchi katalogdan mustaqil jurnal auditigacha.",
               "Read a command, run it and understand the result. From your first directory to an independent log audit.",
             )}
           </p>
@@ -103,15 +99,14 @@ export function LinuxLab() {
           <div>
             <Terminal size={22} />
             <strong>LINUX / LAB</strong>
-            <span className="lx-live">{t("Brauzerda", "In your browser")}</span>
+            <span className="lx-live">{t("In your browser")}</span>
           </div>
           <p>
-            {LESSONS.length} {t("amaliy dars", "practical lessons")}{" "}
-            <span>·</span> {Object.keys(COMMANDS).length}{" "}
-            {t("buyruq", "commands")}
+            {LESSONS.length} {t("practical lessons")} <span>·</span>{" "}
+            {Object.keys(COMMANDS).length} {t("commands")}
           </p>
           <label htmlFor="lx-progress">
-            {t("O‘zlashtirish", "Your progress")}{" "}
+            {t("Your progress")}{" "}
             <strong>
               {done}/{LESSONS.length}
             </strong>
@@ -119,7 +114,6 @@ export function LinuxLab() {
           <progress id="lx-progress" value={done} max={LESSONS.length} />
           <small>
             {t(
-              "Natijalar shu brauzerda saqlanadi. Qurilmalar orasida sinxronlanmaydi.",
               "Progress is saved in this browser and does not sync across devices.",
             )}
           </small>
@@ -129,7 +123,6 @@ export function LinuxLab() {
         <Terminal size={16} />
         <p>
           {t(
-            "O‘quv simulyatori: virtual fayllar va cheklangan shell. Haqiqiy server, paket o‘rnatish, skript bajarish va internet so‘rovlari yo‘q. Har bir dars o‘z muhitiga ega.",
             "Teaching simulator: virtual files and a limited shell. No real server, package installation, script execution or internet requests. Each lesson has its own environment.",
           )}
         </p>
@@ -138,9 +131,9 @@ export function LinuxLab() {
         <aside className="lx-sidebar">
           <div className="lx-sidebar-title">
             <BookOpen size={16} />
-            <h2>{t("O‘quv yo‘li", "Learning path")}</h2>
+            <h2>{t("Learning path")}</h2>
           </div>
-          <nav aria-label={t("Linux darslari", "Linux lessons")}>
+          <nav aria-label={t("Linux lessons")}>
             {LESSONS.map((item, index) => (
               <div key={item.id}>
                 {(index === 0 ||
@@ -155,10 +148,7 @@ export function LinuxLab() {
                 >
                   <span className={progress[item.id] ? "lx-done" : "lx-number"}>
                     {progress[item.id] ? (
-                      <Check
-                        size={14}
-                        aria-label={t("Bajarilgan", "Completed")}
-                      />
+                      <Check size={14} aria-label={t("Completed")} />
                     ) : (
                       String(item.id).padStart(2, "0")
                     )}
@@ -173,17 +163,16 @@ export function LinuxLab() {
             onClick={() => setSandbox(true)}
           >
             <Terminal size={17} />
-            {t("Erkin mashq", "Free practice")}
+            {t("Free practice")}
             <ArrowRight size={15} />
           </button>
           <a className="lx-sandbox" href="#checkpoints">
             <ClipboardCheck size={17} />
-            {t("Nazorat testi", "Checkpoint")}
+            {t("Checkpoint")}
             <ArrowRight size={15} />
           </a>
           <p className="lx-sidebar-note">
             {t(
-              "Istalgan darsdan boshlang. Misollar buyruq satriga qo‘yiladi; bajarish uchun Enter bosing.",
               "Start with any lesson. Examples fill the command line; press Enter to run them.",
             )}
           </p>
@@ -220,7 +209,7 @@ function Workspace({
   onNext: () => void;
 }) {
   const locale = useLocale();
-  const t = (uz: string, en: string) => (locale === "uz" ? uz : en);
+  const t = useTranslator();
   const text = (value: Text) => value[locale];
   const key = `cybervalue:linux:session:${lesson?.id ?? "sandbox"}:v1`;
   const [raw, setRaw] = useLocalStorageState<unknown>(key, EMPTY_SESSION);
@@ -319,10 +308,7 @@ function Workspace({
   const reset = () => {
     if (
       !window.confirm(
-        t(
-          "Shu mashq fayllari, buyruqlar tarixi va natijasini boshlang‘ich holatga qaytarasizmi?",
-          "Reset this exercise's files, command history and completion?",
-        ),
+        t("Reset this exercise's files, command history and completion?"),
       )
     )
       return;
@@ -352,42 +338,34 @@ function Workspace({
         <div>
           <span className="eyebrow">
             {lesson
-              ? `${t("DARS", "LESSON")} ${String(lesson.id).padStart(2, "0")} / ${LESSONS.length} · ${lesson.minutes} ${t("daqiqa", "min")}`
-              : t("MUSTAQIL TAJRIBA", "YOUR OWN EXPERIMENTS")}
+              ? `${t("LESSON")} ${String(lesson.id).padStart(2, "0")} / ${LESSONS.length} · ${lesson.minutes} ${t("min")}`
+              : t("YOUR OWN EXPERIMENTS")}
           </span>
-          <h2>
-            {lesson
-              ? text(lesson.title)
-              : t("Erkin terminal maydoni", "Free terminal practice")}
-          </h2>
+          <h2>{lesson ? text(lesson.title) : t("Free terminal practice")}</h2>
         </div>
         {completed && lesson && (
           <span className="lx-complete-badge">
             <Check size={15} />
-            {t("Bajarilgan", "Completed")}
+            {t("Completed")}
           </span>
         )}
       </header>
       {storageIssue && (
         <p className="lx-storage-warning" role="status">
           {t(
-            "Brauzerga saqlab bo‘lmadi. Ishingiz hozirgi oynada davom etadi; yopishdan oldin hisobotni yuklab oling.",
             "Could not save to this browser. You can continue in this window; export your report before closing it.",
           )}
         </p>
       )}
       <div className="lx-practice-grid">
-        <section
-          className="lx-instructions"
-          aria-label={t("Dars va topshiriq", "Lesson and task")}
-        >
+        <section className="lx-instructions" aria-label={t("Lesson and task")}>
           {lesson ? (
             <>
               <p className="lx-intro">{text(lesson.intro)}</p>
               <details className="lx-theory" open>
                 <summary>
                   <BookOpen size={16} />
-                  {t("Avval tushunib oling", "Understand first")}
+                  {t("Understand first")}
                 </summary>
                 <div>
                   {lesson.theory.map((paragraph, i) => (
@@ -395,16 +373,13 @@ function Workspace({
                   ))}
                 </div>
               </details>
-              <h3>{t("Buyruqni sinab ko‘ring", "Try a command")}</h3>
+              <h3>{t("Try a command")}</h3>
               <div className="lx-examples">
                 {lesson.examples.map((example) => (
                   <button
                     key={example.code}
                     onClick={() => insert(example.code)}
-                    title={t(
-                      "Buyruq satriga qo‘yish",
-                      "Insert into command line",
-                    )}
+                    title={t("Insert into command line")}
                   >
                     <div>
                       <code>{example.code}</code>
@@ -415,12 +390,8 @@ function Workspace({
                 ))}
               </div>
               <section className="lx-task" aria-labelledby="lx-task-title">
-                <span className="eyebrow">
-                  {t("ENDI SIZNING NAVBATINGIZ", "YOUR TURN")}
-                </span>
-                <h3 id="lx-task-title">
-                  {t("Amaliy topshiriq", "Practical task")}
-                </h3>
+                <span className="eyebrow">{t("YOUR TURN")}</span>
+                <h3 id="lx-task-title">{t("Practical task")}</h3>
                 <p>{text(lesson.task)}</p>
                 <ul>
                   {requirements.map((r, i) => (
@@ -428,18 +399,15 @@ function Workspace({
                       {r.passed ? <Check size={16} /> : <Circle size={14} />}
                       <span>{text(r.label)}</span>
                       <span className="visually-hidden">
-                        {r.passed
-                          ? t("Bajarildi", "Passed")
-                          : t("Hali bajarilmadi", "Not passed yet")}
+                        {r.passed ? t("Passed") : t("Not passed yet")}
                       </span>
                     </li>
                   ))}
                 </ul>
                 <details className="lx-hint">
-                  <summary>{t("Yordam kerakmi?", "Need a hint?")}</summary>
+                  <summary>{t("Need a hint?")}</summary>
                   <p>
                     {t(
-                      "Har bir buyruqni alohida bajaring. Muhitni o‘zgartirib yuborgan bo‘lsangiz, mashqni qayta boshlang.",
                       "Run each command separately. If you have changed the starting files, reset the exercise first.",
                     )}
                   </p>
@@ -455,9 +423,7 @@ function Workspace({
                 </details>
               </section>
               <fieldset className="lx-quiz">
-                <legend>
-                  {t("O‘zingizni tekshiring", "Check your understanding")}
-                </legend>
+                <legend>{t("Check your understanding")}</legend>
                 <p>{text(lesson.quiz.question)}</p>
                 {lesson.quiz.choices.map((choice, index) => (
                   <label key={index}>
@@ -484,10 +450,8 @@ function Workspace({
                     role="status"
                   >
                     {session.answer === lesson.quiz.answer
-                      ? t("To‘g‘ri. ", "Correct. ") +
-                        text(lesson.quiz.explanation)
+                      ? t("Correct. ") + text(lesson.quiz.explanation)
                       : t(
-                          "Yana o‘ylab ko‘ring. Izohni yuqoridagi nazariyadan topasiz.",
                           "Try again. Review the explanation in the theory above.",
                         )}
                   </p>
@@ -495,33 +459,29 @@ function Workspace({
               </fieldset>
               <button className="lx-primary lx-check" onClick={check}>
                 <Check size={17} />
-                {t("Natijani tekshirish", "Check result")}
+                {t("Check result")}
               </button>
               <div aria-live="polite" className="lx-feedback">
                 {feedback === "fail" && (
                   <p>
                     {t(
-                      "Hali tugamadi: belgilanmagan amallarni bajaring va savolga to‘g‘ri javob bering.",
                       "Not finished: complete the unchecked tasks and answer the question correctly.",
                     )}
                   </p>
                 )}
                 {feedback === "pass" && (
-                  <p className="passed">
-                    {t("Ajoyib, dars bajarildi!", "Lesson completed!")}
-                  </p>
+                  <p className="passed">{t("Lesson completed!")}</p>
                 )}
               </div>
               {feedback === "pass" && lesson.id < LESSONS.length && (
                 <button className="lx-next" onClick={onNext}>
-                  {t("Keyingi dars", "Next lesson")}
+                  {t("Next lesson")}
                   <ArrowRight size={16} />
                 </button>
               )}
               {feedback === "pass" && lesson.id === LESSONS.length && (
                 <p className="lx-finish">
                   {t(
-                    "Yakuniy audit bajarildi. Qolgan darslarni ham tekshiring yoki erkin terminalda mustaqil mashq qiling.",
                     "Final audit completed. Review any remaining lessons or experiment in free practice.",
                   )}
                 </p>
@@ -529,18 +489,10 @@ function Workspace({
             </>
           ) : (
             <>
-              <span className="eyebrow">
-                {t("O‘Z TEZLIGINGIZDA", "AT YOUR OWN PACE")}
-              </span>
-              <h3>
-                {t(
-                  "G‘oyangizni buyruqqa aylantiring",
-                  "Turn an idea into a command",
-                )}
-              </h3>
+              <span className="eyebrow">{t("AT YOUR OWN PACE")}</span>
+              <h3>{t("Turn an idea into a command")}</h3>
               <p>
                 {t(
-                  "Bu terminal darslardan alohida saqlanadi. Fayllar yarating, oqimlarni ulang va natijani tekshiring. help mavjud buyruqlarni ko‘rsatadi.",
                   "This terminal is saved separately from the lessons. Create files, connect streams and inspect the results. Use help to list commands.",
                 )}
               </p>
@@ -558,7 +510,7 @@ function Workspace({
                 ))}
               </div>
               <div className="lx-filesystem">
-                <h3>{t("Linux kataloglari", "Linux directories")}</h3>
+                <h3>{t("Linux directories")}</h3>
                 <pre>
                   {
                     "/\n├── etc        → configuration\n├── home\n│   └── student → ~\n├── tmp        → temporary\n└── var\n    └── log    → logs"
@@ -566,7 +518,6 @@ function Workspace({
                 </pre>
                 <p>
                   {t(
-                    "Yozish uchun /home/student va /tmp kataloglaridan foydalaning. Tizim fayllari o‘quv namunalaridir.",
                     "Write inside /home/student and /tmp. System files are teaching fixtures.",
                   )}
                 </p>
@@ -575,10 +526,7 @@ function Workspace({
           )}
         </section>
         <div className="lx-tools">
-          <section
-            className="lx-terminal"
-            aria-label={t("Linux terminali", "Linux terminal")}
-          >
+          <section className="lx-terminal" aria-label={t("Linux terminal")}>
             <div className="lx-terminal-bar">
               <span className="lx-window-dots" aria-hidden="true">
                 <i />
@@ -586,27 +534,20 @@ function Workspace({
                 <i />
               </span>
               <span>student@linux-lab</span>
-              <span className="lx-terminal-tag">
-                {t("SIMULYATOR", "SIMULATOR")}
-              </span>
+              <span className="lx-terminal-tag">{t("SIMULATOR")}</span>
             </div>
             <div
               className="lx-output"
               ref={outputRef}
               tabIndex={0}
               role="log"
-              aria-label={t("Terminal natijalari", "Terminal output")}
+              aria-label={t("Terminal output")}
               aria-live="polite"
               aria-relevant="additions"
             >
               <div className="lx-welcome">
                 <strong>Cybervalue Linux Lab</strong>
-                <p>
-                  {t(
-                    "Boshlash uchun buyruq kiriting. Yordam: help",
-                    "Enter a command to start. For help: help",
-                  )}
-                </p>
+                <p>{t("Enter a command to start. For help: help")}</p>
               </div>
               {session.transcript.map((line, i) => (
                 <div className="lx-entry" key={i}>
@@ -630,9 +571,7 @@ function Workspace({
               }}
             >
               <label htmlFor="lx-command" className="lx-prompt">
-                <span className="visually-hidden">
-                  {t("Terminal buyrug‘i", "Terminal command")}
-                </span>
+                <span className="visually-hidden">{t("Terminal command")}</span>
                 <span aria-hidden="true">
                   {session.shell.cwd.replace(HOME, "~")} $
                 </span>
@@ -651,13 +590,13 @@ function Workspace({
                 autoComplete="off"
                 autoCapitalize="off"
                 spellCheck={false}
-                placeholder={t("buyruq kiriting…", "enter a command…")}
+                placeholder={t("enter a command…")}
                 aria-describedby="lx-shortcuts"
               />
               <button
                 type="submit"
-                aria-label={t("Buyruqni bajarish", "Run command")}
-                title={t("Buyruqni bajarish", "Run command")}
+                aria-label={t("Run command")}
+                title={t("Run command")}
               >
                 <Play size={17} />
               </button>
@@ -677,15 +616,15 @@ function Workspace({
               </div>
             )}
             <div className="lx-terminal-footer" id="lx-shortcuts">
-              Enter ↵ <span>↑ ↓ {t("tarix", "history")}</span>
-              <span>Tab {t("to‘ldirish", "complete")}</span>
-              <span>Ctrl+L {t("tozalash", "clear")}</span>
+              Enter ↵ <span>↑ ↓ {t("history")}</span>
+              <span>Tab {t("complete")}</span>
+              <span>Ctrl+L {t("clear")}</span>
             </div>
           </section>
           <div className="lx-tools-actions">
             <button onClick={reset}>
               <RotateCcw size={14} />
-              {t("Mashqni qayta boshlash", "Reset exercise")}
+              {t("Reset exercise")}
             </button>
             <button
               onClick={() =>
@@ -696,14 +635,14 @@ function Workspace({
               }
             >
               <Download size={14} />
-              {t("Hisobotni yuklab olish", "Export report")}
+              {t("Export report")}
             </button>
           </div>
           <section className="lx-inspector">
             <div
               className="lx-tabs"
               role="tablist"
-              aria-label={t("Terminal yordamchilari", "Terminal tools")}
+              aria-label={t("Terminal tools")}
             >
               <button
                 id="lx-files-tab"
@@ -713,7 +652,7 @@ function Workspace({
                 onClick={() => setTab("files")}
               >
                 <Folder size={15} />
-                {t("Fayllar", "Files")}
+                {t("Files")}
               </button>
               <button
                 id="lx-commands-tab"
@@ -723,7 +662,7 @@ function Workspace({
                 onClick={() => setTab("commands")}
               >
                 <BookOpen size={15} />
-                {t("Buyruqlar qo‘llanmasi", "Command reference")}
+                {t("Command reference")}
               </button>
             </div>
             {tab === "files" ? (
@@ -734,7 +673,6 @@ function Workspace({
               >
                 <p className="lx-inspector-help">
                   {t(
-                    "Virtual fayl holatini ko‘ring. O‘qish ruxsati bo‘lmagan fayl mazmuni ochilmaydi.",
                     "Inspect virtual files. Files without read permission cannot be opened.",
                   )}
                 </p>
@@ -772,28 +710,20 @@ function Workspace({
                       <code>{selectedFile.replace(HOME, "~")}</code>
                       <button
                         onClick={() => setSelectedFile(null)}
-                        aria-label={t(
-                          "Fayl ko‘rinishini yopish",
-                          "Close file preview",
-                        )}
+                        aria-label={t("Close file preview")}
                       >
                         <X size={15} />
                       </button>
                     </div>
                     {file.kind === "dir" ? (
-                      <p>
-                        {t(
-                          "Katalog. Ichiga o‘tish uchun cd buyrug‘idan foydalaning.",
-                          "Directory. Use cd to enter it.",
-                        )}
-                      </p>
+                      <p>{t("Directory. Use cd to enter it.")}</p>
                     ) : (
                       <>
                         <pre>
                           {execute(
                             session.shell,
                             `cat '${selectedFile.replace(/'/g, "'\\''")}'`,
-                          ).output || t("Bo‘sh fayl", "Empty file")}
+                          ).output || t("Empty file")}
                         </pre>
                         <button
                           onClick={() => {
@@ -815,7 +745,7 @@ function Workspace({
                           }
                         >
                           <Download size={14} />
-                          {t("Faylni yuklab olish", "Download file")}
+                          {t("Download file")}
                         </button>
                       </>
                     )}
@@ -833,23 +763,18 @@ function Workspace({
                   <input
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    placeholder={t(
-                      "Buyruq yoki vazifa bo‘yicha qidirish",
-                      "Search by command or purpose",
-                    )}
-                    aria-label={t("Buyruqlarni qidirish", "Search commands")}
+                    placeholder={t("Search by command or purpose")}
+                    aria-label={t("Search commands")}
                   />
                 </label>
                 <div className="lx-command-list">
-                  {commandList.length === 0 && (
-                    <p>{t("Buyruq topilmadi.", "No commands found.")}</p>
-                  )}
+                  {commandList.length === 0 && <p>{t("No commands found.")}</p>}
                   {commandList.map(([name, syntax]) => (
                     <article key={name}>
                       <div>
                         <strong>{name}</strong>
                         <button onClick={() => insert(`help ${name}`)}>
-                          {t("Sintaksis", "Syntax")}
+                          {t("Syntax")}
                           <ChevronRight size={13} />
                         </button>
                       </div>
@@ -864,27 +789,19 @@ function Workspace({
             )}
           </section>
           <details className="lx-limits">
-            <summary>
-              {t(
-                "Terminal imkoniyatlari va chegaralari",
-                "Terminal capabilities and limits",
-              )}
-            </summary>
+            <summary>{t("Terminal capabilities and limits")}</summary>
             <p>
               {t(
-                "Qo‘llanadi: |, >, >>, <, &&, ;, tirnoqlar, o‘zgaruvchilar, mutlaq va nisbiy yo‘llar. Barcha fayllar student ga tegishli. Ruxsatlarning egaga tegishli bitlari tekshiriladi.",
                 "Supported: |, >, >>, <, &&, ;, quotes, variables, absolute and relative paths. All files belong to student. Owner permission bits are checked.",
               )}
             </p>
             <p>
               {t(
-                "To‘liq Bash emas: regex, umumiy wildcard, skriptlar, sudo, tarmoq, paketlar, interaktiv muharrirlar va fon jarayonlari yo‘q. ps va kill oldindan berilgan virtual jarayonlar bilan ishlaydi. Fayl vaqt belgilari modellashtirilmagan. Ayrim chiqish formatlari soddalashtirilgan.",
                 "Not full Bash: no regex, general wildcards, scripts, sudo, networking, packages, interactive editors or background jobs. ps and kill use predefined virtual processes. File timestamps are not modelled. Some output formats are simplified.",
               )}
             </p>
             <p>
               {t(
-                "Chegaralar: 250 fayl/katalog, faylga 32 000 belgi, buyruqqa 2 000 belgi. Tarixning oxirgi 100 buyrug‘i va ekranning 80 yozuvi saqlanadi.",
                 "Limits: 250 files/directories, 32,000 characters per file, 2,000 per command. The last 100 commands and 80 screen entries are retained.",
               )}
             </p>

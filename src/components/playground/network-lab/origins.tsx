@@ -118,14 +118,12 @@ export function DhcpWidget({
               update({ ...config, enabled: e.target.checked }, leases)
             }
           />
-          <span>{t("DHCP server yoqilgan", "DHCP server on")}</span>
+          <span>{t("DHCP server on")}</span>
         </label>
         <div className="nl-pool-inputs">
-          <span>{t("Hovuz (pool):", "Pool:")}</span>
+          <span>{t("Pool:")}</span>
           <label>
-            <span className="nl-visually-hidden">
-              {t("Hovuz boshi", "Pool start")}
-            </span>
+            <span className="nl-visually-hidden">{t("Pool start")}</span>
             <code>{LAN}</code>
             <input
               type="number"
@@ -137,9 +135,7 @@ export function DhcpWidget({
           </label>
           <span>—</span>
           <label>
-            <span className="nl-visually-hidden">
-              {t("Hovuz oxiri", "Pool end")}
-            </span>
+            <span className="nl-visually-hidden">{t("Pool end")}</span>
             <code>{LAN}</code>
             <input
               type="number"
@@ -156,18 +152,13 @@ export function DhcpWidget({
           </p>
         ) : (
           pool.length <= 40 && (
-            <ul
-              className="nl-pool"
-              aria-label={t("Hovuzdagi manzillar", "Addresses in the pool")}
-            >
+            <ul className="nl-pool" aria-label={t("Addresses in the pool")}>
               {pool.map((ip) => {
                 const holder = owner(ip);
                 return (
                   <li key={ip} className={holder ? "used" : ""}>
                     <code>.{ip.split(".")[3]}</code>
-                    <span>
-                      {holder ? text(holder.name) : t("bo‘sh", "free")}
-                    </span>
+                    <span>{holder ? text(holder.name) : t("free")}</span>
                   </li>
                 );
               })}
@@ -188,20 +179,18 @@ export function DhcpWidget({
               <Icon size={22} aria-hidden="true" />
               <strong>{text(device.name)}</strong>
               <code className="nl-mac">{device.mac}</code>
-              <code className="nl-device-ip">
-                {ip ?? t("IP yo‘q", "no IP")}
-              </code>
+              <code className="nl-device-ip">{ip ?? t("no IP")}</code>
               {ip ? (
                 <button className="nl-ghost" onClick={() => leave(device.id)}>
-                  {t("Uzish", "Disconnect")}
+                  {t("Disconnect")}
                 </button>
               ) : (
                 <button
                   className="nl-primary"
                   onClick={() => join(device.id)}
-                  aria-label={`${t("Ulash", "Connect")}: ${text(device.name)}`}
+                  aria-label={`${t("Connect")}: ${text(device.name)}`}
                 >
-                  {t("Ulash", "Connect")}
+                  {t("Connect")}
                 </button>
               )}
             </li>
@@ -209,8 +198,8 @@ export function DhcpWidget({
         })}
         <li className="online static">
           <Printer size={22} aria-hidden="true" />
-          <strong>{t("Printer", "Printer")}</strong>
-          <code className="nl-mac">{t("statik manzil", "static address")}</code>
+          <strong>{t("Printer")}</strong>
+          <code className="nl-mac">{t("static address")}</code>
           <code className="nl-device-ip">{PRINTER_IP}</code>
         </li>
       </ul>
@@ -219,7 +208,7 @@ export function DhcpWidget({
           <div className="nl-exchange" key={JSON.stringify(last)}>
             <p className="nl-row-label">
               {text(DEVICES.find((d) => d.id === last.device)!.name)} ·{" "}
-              {t("DHCP almashinuvi", "DHCP exchange")}
+              {t("DHCP exchange")}
             </p>
             <ol>
               {last.result.messages.map((message, i) => (
@@ -317,7 +306,7 @@ export function DnsWidget({
           <i />
         </span>
         <label htmlFor={addressId} className="nl-visually-hidden">
-          {t("Sayt manzili", "Site address")}
+          {t("Site address")}
         </label>
         <input
           id={addressId}
@@ -327,7 +316,7 @@ export function DnsWidget({
           autoComplete="off"
         />
         <button className="nl-primary" type="submit">
-          {t("Ochish", "Open")}
+          {t("Open")}
         </button>
       </form>
       <div className="nl-chips">
@@ -337,10 +326,7 @@ export function DnsWidget({
           </button>
         ))}
       </div>
-      <ol
-        className="nl-chain"
-        aria-label={t("DNS so‘rovi yo‘li", "Path of the DNS lookup")}
-      >
+      <ol className="nl-chain" aria-label={t("Path of the DNS lookup")}>
         {DNS_NODES.map((node) => (
           <li
             key={node.id}
@@ -386,22 +372,19 @@ export function DnsWidget({
                     <strong>
                       IP: <code>{result.ip}</code>
                       {result.fromCache && (
-                        <span className="nl-tag">
-                          {t("keshdan", "from cache")}
-                        </span>
+                        <span className="nl-tag">{t("from cache")}</span>
                       )}
                     </strong>
                     {result.owner && (
                       <p>
-                        {t("Domen egasi:", "Domain owner:")}{" "}
-                        <code>{result.owner}</code>
+                        {t("Domain owner:")} <code>{result.owner}</code>
                       </p>
                     )}
                     {fake && (
                       <p className="nl-fail">
                         {t(
-                          `Ehtiyot bo‘ling: nom ${fake} bilan boshlansa ham, sayt ${result.owner} egasiga tegishli va boshqa serverda.`,
-                          `Careful: although the name starts with ${fake}, the site belongs to ${result.owner} and lives on another server.`,
+                          "Careful: although the name starts with {fake}, the site belongs to {owner} and lives on another server.",
+                          { fake, owner: result.owner ?? "" },
                         )}
                       </p>
                     )}
@@ -413,14 +396,12 @@ export function DnsWidget({
         )}
       </div>
       <div className="nl-cache">
-        <p className="nl-row-label">
-          {t("Kompyuter DNS keshi", "Computer DNS cache")}
-        </p>
+        <p className="nl-row-label">{t("Computer DNS cache")}</p>
         {cache.length ? (
           <table>
             <thead>
               <tr>
-                <th>{t("Nom", "Name")}</th>
+                <th>{text({ uz: "Nom", en: "Name" })}</th>
                 <th>IP</th>
                 <th>TTL</th>
               </tr>
@@ -436,9 +417,7 @@ export function DnsWidget({
             </tbody>
           </table>
         ) : (
-          <p className="nl-caption">
-            {t("Kesh bo‘sh.", "The cache is empty.")}
-          </p>
+          <p className="nl-caption">{t("The cache is empty.")}</p>
         )}
         <button
           className="nl-ghost"
@@ -451,7 +430,7 @@ export function DnsWidget({
         </button>
       </div>
       <fieldset className="nl-answers">
-        <legend>{t("Javobingiz", "Your answer")}</legend>
+        <legend>{t("Your answer")}</legend>
         {ask.map((name) => (
           <label className="nl-field" key={name}>
             <span>
@@ -500,8 +479,8 @@ export function NatWidget({
   return (
     <div className="nl-card">
       <div className="nl-nat">
-        <section aria-label={t("Uy tarmog‘i", "Home network")}>
-          <p className="nl-row-label">{t("Uy (private)", "Home (private)")}</p>
+        <section aria-label={t("Home network")}>
+          <p className="nl-row-label">{t("Home (private)")}</p>
           <div className="nl-home">
             {HOME.map((device) => {
               const Icon = ICONS[device.id];
@@ -518,9 +497,9 @@ export function NatWidget({
                   <button
                     className="nl-primary"
                     onClick={() => go(device.id)}
-                    aria-label={`${text(device.name)}: ${t("saytni ochish", "open the site")}`}
+                    aria-label={`${text(device.name)}: ${t("open the site")}`}
                   >
-                    {t("Saytni ochish", "Open site")}
+                    {t("Open site")}
                   </button>
                 </div>
               );
@@ -529,18 +508,18 @@ export function NatWidget({
         </section>
         <section
           className="nl-nat-router"
-          aria-label={t("Router va NAT jadvali", "Router and NAT table")}
+          aria-label={t("Router and NAT table")}
         >
           <p className="nl-row-label">Router · NAT</p>
           <p className="nl-public">
             <Router size={18} aria-hidden="true" />
-            {t("Public IP", "Public IP")} <code>{PUBLIC_IP}</code>
+            {t("Public IP")} <code>{PUBLIC_IP}</code>
           </p>
           <table>
             <thead>
               <tr>
-                <th>{t("Ichkarida", "Inside")}</th>
-                <th>{t("Tashqarida", "Outside")}</th>
+                <th>{t("Inside")}</th>
+                <th>{t("Outside")}</th>
               </tr>
             </thead>
             <tbody>
@@ -558,16 +537,14 @@ export function NatWidget({
                 ))
               ) : (
                 <tr>
-                  <td colSpan={2}>{t("Jadval bo‘sh", "Table is empty")}</td>
+                  <td colSpan={2}>{t("Table is empty")}</td>
                 </tr>
               )}
             </tbody>
           </table>
         </section>
-        <section aria-label={t("Sayt serveri", "Site server")}>
-          <p className="nl-row-label">
-            {t("Internet: sayt", "Internet: site")}
-          </p>
+        <section aria-label={t("Site server")}>
+          <p className="nl-row-label">{t("Internet: site")}</p>
           <p className="nl-public">
             <Server size={18} aria-hidden="true" />
             {SITE.name} <code>{SITE.ip}</code>
@@ -575,7 +552,7 @@ export function NatWidget({
           <table>
             <thead>
               <tr>
-                <th>{t("Sayt jurnali · kimdan", "Site log · from")}</th>
+                <th>{t("Site log · from")}</th>
               </tr>
             </thead>
             <tbody>
@@ -587,7 +564,7 @@ export function NatWidget({
                 ))
               ) : (
                 <tr>
-                  <td>{t("Hali tashrif yo‘q", "No visits yet")}</td>
+                  <td>{t("No visits yet")}</td>
                 </tr>
               )}
             </tbody>
@@ -598,13 +575,13 @@ export function NatWidget({
         {last && (
           <div className="nl-packets" key={JSON.stringify(last) + log.length}>
             <div>
-              <span>{t("Router oldidan", "Before the router")}</span>
+              <span>{t("Before the router")}</span>
               <code>
                 {last.before.src} → {last.before.dst}
               </code>
             </div>
             <div className="after">
-              <span>{t("Routerdan keyin", "After the router")}</span>
+              <span>{t("After the router")}</span>
               <code>
                 {last.after.src} → {last.after.dst}
               </code>
@@ -621,10 +598,7 @@ export function NatWidget({
       </div>
       <fieldset className="nl-quiz">
         <legend>
-          {t(
-            "Sayt uydagi qurilmalarni qanday IP bilan ko‘radi?",
-            "Which IP does the site see for the devices at home?",
-          )}
+          {t("Which IP does the site see for the devices at home?")}
         </legend>
         {options.map((option, i) => (
           <label key={i}>
@@ -650,7 +624,7 @@ export function NatWidget({
           report([], choice);
         }}
       >
-        <RotateCcw size={14} /> {t("Boshidan", "Reset")}
+        <RotateCcw size={14} /> {t("Reset")}
       </button>
     </div>
   );

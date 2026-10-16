@@ -1,4 +1,5 @@
 "use client";
+import type { Translator } from "@/lib/i18n";
 
 import { useId, useState } from "react";
 import { CheckCircle2, XCircle } from "lucide-react";
@@ -45,7 +46,7 @@ function Finish({
     return (
       <p className="jr-done" role="status">
         <CheckCircle2 size={18} aria-hidden="true" />
-        {t("Missiya bajarildi!", "Mission complete!")}
+        {t("Mission complete!")}
       </p>
     );
   return (
@@ -55,7 +56,7 @@ function Finish({
       disabled={!ready}
       onClick={onComplete}
     >
-      {t("Missiyani yakunlash", "Finish the mission")}
+      {t("Finish the mission")}
     </button>
   );
 }
@@ -109,26 +110,23 @@ function Pick({
 
 // 1 · Passwords --------------------------------------------------------------
 
-function durationText(
-  duration: Duration,
-  t: (uz: string, en: string) => string,
-) {
+function durationText(duration: Duration, t: Translator) {
   const { unit, value } = duration;
   switch (unit) {
     case "instant":
-      return t("bir lahzada", "instantly");
+      return t("instantly");
     case "seconds":
-      return t(`${value} soniyada`, `${value} seconds`);
+      return t("{value} seconds", { value });
     case "minutes":
-      return t(`${value} daqiqada`, `${value} minutes`);
+      return t("{value} minutes", { value });
     case "hours":
-      return t(`${value} soatda`, `${value} hours`);
+      return t("{value} hours", { value });
     case "days":
-      return t(`${value} kunda`, `${value} days`);
+      return t("{value} days", { value });
     case "years":
-      return t(`${value} yilda`, `${value} years`);
+      return t("{value} years", { value });
     case "millennia":
-      return t(`${value} ming yildan ko‘p`, `${value} thousand+ years`);
+      return t("{value} thousand+ years", { value });
   }
 }
 
@@ -149,42 +147,27 @@ export function PasswordMission({ done, onComplete }: PanelProps) {
   );
   const tips: Record<StrengthIssue, string> = {
     common: t(
-      "Bu parol hamma biladigan ro‘yxatda bor: hujumchi uni birinchi sinab ko‘radi.",
       "This one is on the lists everybody knows: an attacker tries it first.",
     ),
-    short: t(
-      "Juda qisqa. Uzunlik eng muhim narsa.",
-      "Too short. Length is what matters most.",
-    ),
-    sequence: t(
-      "abc, 123 yoki qwe kabi ketma-ketliklar oson topiladi.",
-      "Runs like abc, 123 or qwe are easy to guess.",
-    ),
-    repeats: t(
-      "Takrorlangan belgilar kuch qo‘shmaydi.",
-      "Repeated characters add almost no strength.",
-    ),
-    "one-class": t(
-      "Faqat kichik harflar: uzunroq qiling yoki so‘zlarni ko‘paytiring.",
-      "Only lowercase letters: make it longer or add more words.",
-    ),
+    short: t("Too short. Length is what matters most."),
+    sequence: t("Runs like abc, 123 or qwe are easy to guess."),
+    repeats: t("Repeated characters add almost no strength."),
+    "one-class": t("Only lowercase letters: make it longer or add more words."),
   };
   return (
     <div className="jr-panel">
       <p className="jr-lead">
         {t(
-          "Quyida parol yozing va uni buzish uchun kompyuterga qancha vaqt kerakligini ko‘ring. Hisob soniyasiga 10 milliard urinish tezligidagi hujum uchun.",
           "Type a password below and see how long a computer would need to crack it. The estimate assumes an attack of 10 billion guesses per second.",
         )}
       </p>
       <p className="jr-note">
         {t(
-          "Haqiqiy parolingizni yozmang! Bu yerga o‘ylab topilgan parollarni yozing. Yozganingiz hech qayerga yuborilmaydi va saqlanmaydi.",
           "Never type your real password! Use made-up ones here. What you type is never sent or stored.",
         )}
       </p>
       <label htmlFor={id} className="jr-label">
-        {t("Sinov paroli", "Test password")}
+        {t("Test password")}
       </label>
       <input
         id={id}
@@ -193,10 +176,7 @@ export function PasswordMission({ done, onComplete }: PanelProps) {
         onChange={(event) => setValue(event.target.value)}
         autoComplete="off"
         spellCheck={false}
-        placeholder={t(
-          "masalan: olma-bulut-ko‘k-tosh",
-          "e.g. apple-cloud-blue-rock",
-        )}
+        placeholder={t("e.g. apple-cloud-blue-rock")}
       />
       <div className="jr-meter" aria-hidden="true">
         <span
@@ -206,11 +186,10 @@ export function PasswordMission({ done, onComplete }: PanelProps) {
       </div>
       <p className="jr-result" aria-live="polite">
         {value
-          ? t(
-              `Buzish uchun kerak bo‘ladi: ${durationText(duration, t)}`,
-              `Time to crack: ${durationText(duration, t)}`,
-            )
-          : t("Parol yozishni boshlang.", "Start typing a password.")}
+          ? t("Time to crack: {durationText}", {
+              durationText: durationText(duration, t),
+            })
+          : t("Start typing a password.")}
       </p>
       {value && strength.issues.length > 0 && (
         <ul className="jr-tips">
@@ -219,7 +198,7 @@ export function PasswordMission({ done, onComplete }: PanelProps) {
           ))}
         </ul>
       )}
-      <h3 className="jr-sub">{t("Sinab ko‘ring", "Try these")}</h3>
+      <h3 className="jr-sub">{t("Try these")}</h3>
       <div className="jr-chips">
         {PASSWORD_TRIES.map((item) => (
           <button
@@ -235,7 +214,6 @@ export function PasswordMission({ done, onComplete }: PanelProps) {
       </div>
       <p className="jr-note">
         {t(
-          "Maslahat: 5 va undan ko‘p tasodifiy so‘z, yoki 14 ta va undan ko‘p aralash belgi. Har bir sayt uchun alohida parol, va imkon bo‘lsa, ikki bosqichli tasdiqlash yoqing.",
           "Tip: 5 or more random words, or 14+ mixed characters. A different password for every site, and turn on two-step verification where you can.",
         )}
       </p>
@@ -257,10 +235,7 @@ export function PhishingMission({ done, onComplete }: PanelProps) {
   return (
     <div className="jr-panel">
       <p className="jr-lead">
-        {t(
-          "Har bir xabarni o‘qing va qaror qiling: bu fishingmi (aldov) yoki xavfsizmi?",
-          "Read each message and decide: is it phishing (a scam) or safe?",
-        )}
+        {t("Read each message and decide: is it phishing (a scam) or safe?")}
       </p>
       <ol className="jr-cards">
         {PHISHING.map((item) => (
@@ -275,7 +250,7 @@ export function PhishingMission({ done, onComplete }: PanelProps) {
               name={`phish-${item.id}`}
               legend={text(item.body)}
               value={answers[item.id]}
-              options={[t("Fishing", "Phishing"), t("Xavfsiz", "Safe")]}
+              options={[t("Phishing"), t("Safe")]}
               disabled={checked}
               onChange={(value) =>
                 setAnswers((current) => ({ ...current, [item.id]: value }))
@@ -297,15 +272,15 @@ export function PhishingMission({ done, onComplete }: PanelProps) {
             disabled={Object.keys(answers).length < PHISHING.length}
             onClick={() => setChecked(true)}
           >
-            {t("Tekshirish", "Check my answers")}
+            {t("Check my answers")}
           </button>
         ) : (
           <>
             <p className="jr-result" aria-live="polite">
-              {t(
-                `Natija: ${score} / ${PHISHING.length}`,
-                `Score: ${score} / ${PHISHING.length}`,
-              )}
+              {t("Score: {score} / {length}", {
+                score,
+                length: PHISHING.length,
+              })}
             </p>
             {!passed && (
               <button
@@ -316,7 +291,7 @@ export function PhishingMission({ done, onComplete }: PanelProps) {
                   setChecked(false);
                 }}
               >
-                {t("Qayta urinish", "Try again")}
+                {t("Try again")}
               </button>
             )}
           </>
@@ -341,14 +316,13 @@ export function CipherMission({ done, onComplete }: PanelProps) {
     <div className="jr-panel">
       <p className="jr-lead">
         {t(
-          "Sezar shifrida har bir harf alifboda bir necha qadam surilgan. Masalan, 3 qadamda A harfi D bo‘ladi. Siljishni topsangiz, xabar o‘qiladi.",
           "In a Caesar cipher every letter is moved a few steps along the alphabet. With 3 steps, A becomes D. Find the right shift and the message becomes readable.",
         )}
       </p>
-      <p className="jr-label">{t("Shifrlangan xabar", "Encrypted message")}</p>
+      <p className="jr-label">{t("Encrypted message")}</p>
       <code className="jr-code">{CIPHER_TEXT}</code>
       <label htmlFor={sliderId} className="jr-label">
-        {t("Orqaga siljitish:", "Shift back by:")} <strong>{shift}</strong>
+        {t("Shift back by:")} <strong>{shift}</strong>
       </label>
       <input
         id={sliderId}
@@ -359,12 +333,12 @@ export function CipherMission({ done, onComplete }: PanelProps) {
         value={shift}
         onChange={(event) => setShift(Number(event.target.value))}
       />
-      <p className="jr-label">{t("Natija", "Result")}</p>
+      <p className="jr-label">{t("Result")}</p>
       <code className="jr-code jr-live" aria-live="polite">
         {caesar(CIPHER_TEXT, -shift)}
       </code>
       <label htmlFor={answerId} className="jr-label">
-        {t("Xabardagi yashirin so‘z:", "The hidden word in the message:")}
+        {t("The hidden word in the message:")}
       </label>
       <div className="jr-row">
         <input
@@ -383,20 +357,16 @@ export function CipherMission({ done, onComplete }: PanelProps) {
           className="button button-secondary"
           onClick={() => setChecked(true)}
         >
-          {t("Tekshirish", "Check")}
+          {t("Check")}
         </button>
       </div>
       {checked && (
         <Verdict ok={solved}>
           {solved
             ? t(
-                "To‘g‘ri! Siljish 7 edi. Bunday shifrni kompyuter soniyada buzadi, shuning uchun hozirgi shifrlar ancha murakkab.",
                 "Correct! The shift was 7. A computer breaks this in a second, which is why modern ciphers are far more complex.",
               )
-            : t(
-                "Hali emas. Slayderni surib, o‘qiladigan matn chiqquncha harakat qiling.",
-                "Not yet. Move the slider until readable text appears.",
-              )}
+            : t("Not yet. Move the slider until readable text appears.")}
         </Verdict>
       )}
       <Finish ready={solved} done={done} onComplete={onComplete} />
@@ -418,7 +388,6 @@ export function FootprintMission({ done, onComplete }: PanelProps) {
     <div className="jr-panel">
       <p className="jr-lead">
         {t(
-          "Bu post ochiq profilda turibdi. Begona odam undan nimalarni bilib olishi mumkin? Xavfli deb hisoblagan joylaringizni belgilang.",
           "This post is on a public profile. What could a stranger learn from it? Tick every detail you think is risky.",
         )}
       </p>
@@ -454,16 +423,13 @@ export function FootprintMission({ done, onComplete }: PanelProps) {
           className="button button-secondary"
           onClick={() => setChecked(true)}
         >
-          {t("Tekshirish", "Check")}
+          {t("Check")}
         </button>
         {checked && (
           <p className="jr-result" aria-live="polite">
             {wrong === 0
-              ? t("Hammasi to‘g‘ri!", "All correct!")
-              : t(
-                  `${wrong} ta joy noto‘g‘ri belgilangan.`,
-                  `${wrong} item(s) marked wrongly.`,
-                )}
+              ? t("All correct!")
+              : t("{wrong} item(s) marked wrongly.", { wrong })}
           </p>
         )}
         <Finish ready={passed} done={done} onComplete={onComplete} />
@@ -507,13 +473,12 @@ function FlagCard({
       {children}
       {solved ? (
         <Verdict ok>
-          {t("Bayroq qabul qilindi:", "Flag accepted:")}{" "}
-          <code>{flag.flag}</code>
+          {t("Flag accepted:")} <code>{flag.flag}</code>
         </Verdict>
       ) : (
         <>
           <label htmlFor={id} className="jr-label">
-            {t("Bayroq", "Flag")}
+            {t("Flag")}
           </label>
           <div className="jr-row">
             <input
@@ -534,16 +499,11 @@ function FlagCard({
               className="button button-secondary"
               onClick={submit}
             >
-              {t("Yuborish", "Submit")}
+              {t("Submit")}
             </button>
           </div>
           {wrong && (
-            <Verdict ok={false}>
-              {t(
-                "Bu bayroq emas. Qayta urinib ko‘ring.",
-                "That’s not the flag. Try again.",
-              )}
-            </Verdict>
+            <Verdict ok={false}>{t("That’s not the flag. Try again.")}</Verdict>
           )}
           <button
             type="button"
@@ -551,9 +511,7 @@ function FlagCard({
             onClick={() => setHint((open) => !open)}
             aria-expanded={hint}
           >
-            {hint
-              ? t("Maslahatni yashirish", "Hide hint")
-              : t("Maslahat", "Hint")}
+            {hint ? t("Hide hint") : t("Hint")}
           </button>
           {hint && <p className="jr-note">{text(flag.hint)}</p>}
         </>
@@ -570,7 +528,7 @@ function Base64Tool() {
   return (
     <div className="jr-tool">
       <label htmlFor={id} className="jr-label">
-        {t("Base64 ochuvchi", "Base64 decoder")}
+        {t("Base64 decoder")}
       </label>
       <input
         id={id}
@@ -581,7 +539,7 @@ function Base64Tool() {
         spellCheck={false}
       />
       <code className="jr-code jr-live" aria-live="polite">
-        {value ? (decoded ?? t("(o‘qib bo‘lmadi)", "(could not decode)")) : "…"}
+        {value ? (decoded ?? t("(could not decode)")) : "…"}
       </code>
     </div>
   );
@@ -602,12 +560,11 @@ export function CtfMission({ done, onComplete }: PanelProps) {
     <div className="jr-panel">
       <p className="jr-lead">
         {t(
-          "CTF (Capture The Flag) musobaqasida har bir topshiriq ichida yashirin “bayroq” bo‘ladi. Uni topib yuborsangiz, ball olasiz. Bu yerda 3 ta oson topshiriq bor.",
           "In a CTF (Capture The Flag) contest every challenge hides a “flag”. Find it, submit it, score a point. Here are 3 easy challenges.",
         )}
       </p>
       <p className="jr-result" aria-live="polite">
-        {t(`Topilgan bayroqlar: ${count} / 3`, `Flags found: ${count} / 3`)}
+        {t("Flags found: {count} / 3", { count })}
       </p>
       <ol className="jr-cards">
         {CTF_FLAGS.map((flag, index) => (
@@ -646,7 +603,6 @@ export function EthicsMission({ done, onComplete }: PanelProps) {
     <div className="jr-panel">
       <p className="jr-lead">
         {t(
-          "Etik xaker asosiy qoida: ruxsat bo‘lmasa, tegmaydi. Har bir vaziyatda bunday qilish mumkinmi yoki yo‘qmi?",
           "The ethical hacker’s golden rule: no permission, no touching. In each situation, is it okay or not?",
         )}
       </p>
@@ -658,7 +614,7 @@ export function EthicsMission({ done, onComplete }: PanelProps) {
               name={`ethics-${item.id}`}
               legend={text(item.situation)}
               value={answers[item.id]}
-              options={[t("Mumkin", "Okay"), t("Mumkin emas", "Not okay")]}
+              options={[t("Okay"), t("Not okay")]}
               disabled={passed}
               onChange={(value) => {
                 setAnswers((current) => ({ ...current, [item.id]: value }));
@@ -680,7 +636,7 @@ export function EthicsMission({ done, onComplete }: PanelProps) {
           disabled={Object.keys(answers).length < ETHICS.length}
           onClick={() => setChecked(true)}
         >
-          {t("Tekshirish", "Check my answers")}
+          {t("Check my answers")}
         </button>
         <Finish ready={passed} done={done} onComplete={onComplete} />
       </div>

@@ -50,30 +50,21 @@ export function AcademyShell({ children }: { children: React.ReactNode }) {
             {text(rank.title)} · {xp} XP
           </span>
           <form action={juniorLogoutAction}>
-            <button
-              type="submit"
-              className="jr-icon-btn"
-              title={t("Chiqish", "Sign out")}
-            >
+            <button type="submit" className="jr-icon-btn" title={t("Sign out")}>
               <LogOut size={16} aria-hidden="true" />
-              <span className="visually-hidden">
-                {t("Chiqish", "Sign out")}
-              </span>
+              <span className="visually-hidden">{t("Sign out")}</span>
             </button>
           </form>
         </div>
       </header>
-      <nav
-        className="jr-tabs"
-        aria-label={t("Akademiya bo‘limlari", "Academy sections")}
-      >
+      <nav className="jr-tabs" aria-label={t("Academy sections")}>
         {SECTIONS.map((section) => (
           <Link
             key={section.href}
             href={section.href}
             aria-current={current(section.href) ? "page" : undefined}
           >
-            {t(section.uz, section.en)}
+            {text({ uz: section.uz, en: section.en })}
           </Link>
         ))}
       </nav>
@@ -82,7 +73,6 @@ export function AcademyShell({ children }: { children: React.ReactNode }) {
           <CloudOff size={16} aria-hidden="true" />
           <span>
             {t(
-              "Oxirgi natija saqlanmadi. Internetni tekshiring — keyingi harakatda yana urinamiz.",
               "Your last result was not saved. Check your connection — it will try again on your next step.",
             )}
           </span>

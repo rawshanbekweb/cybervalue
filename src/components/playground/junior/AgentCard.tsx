@@ -50,7 +50,7 @@ export function AgentCard() {
   return (
     <section
       className="jr-agent"
-      aria-label={t("Agent guvohnomasi", "Agent ID card")}
+      aria-label={t("Agent ID card")}
       data-rank={index}
     >
       <div className="jr-ring jr-agent-badge" aria-hidden="true">
@@ -58,7 +58,7 @@ export function AgentCard() {
         <span>{index + 1}</span>
       </div>
       <div className="jr-agent-body">
-        <p className="jr-agent-eyebrow">{t("AGENT GUVOHNOMASI", "AGENT ID")}</p>
+        <p className="jr-agent-eyebrow">{t("AGENT ID")}</p>
         {editing ? (
           <form
             className="jr-agent-edit"
@@ -68,14 +68,14 @@ export function AgentCard() {
             }}
           >
             <label htmlFor={inputId} className="visually-hidden">
-              {t("Taxallus", "Codename")}
+              {t("Codename")}
             </label>
             <input
               id={inputId}
               className="jr-input"
               value={draft}
               maxLength={24}
-              placeholder={t("Taxallusingiz", "Your codename")}
+              placeholder={t("Your codename")}
               onChange={(event) => setDraft(event.target.value)}
               autoFocus
             />
@@ -84,17 +84,15 @@ export function AgentCard() {
               className="button button-secondary"
               onClick={() => setDraft(randomCodename(locale, Math.random))}
             >
-              <Dices size={15} aria-hidden="true" /> {t("Tasodifiy", "Random")}
+              <Dices size={15} aria-hidden="true" /> {t("Random")}
             </button>
             <button type="submit" className="button button-primary">
-              {t("Saqlash", "Save")}
+              {t("Save")}
             </button>
           </form>
         ) : (
           <p className="jr-agent-name">
-            <strong>
-              {name || t("Taxallus tanlanmagan", "No codename yet")}
-            </strong>
+            <strong>{name || t("No codename yet")}</strong>
             <button
               type="button"
               className="jr-linkbtn"
@@ -104,19 +102,17 @@ export function AgentCard() {
               }}
             >
               <Pencil size={13} aria-hidden="true" />{" "}
-              {name
-                ? t("O‘zgartirish", "Change")
-                : t("Taxallus tanlash", "Pick a codename")}
+              {name ? t("Change") : t("Pick a codename")}
             </button>
           </p>
         )}
         <p className="jr-agent-rank">
-          {t("Unvon:", "Rank:")} <strong>{text(rank.title)}</strong> · {xp} XP
+          {t("Rank:")} <strong>{text(rank.title)}</strong> · {xp} XP
         </p>
         <div
           className="jr-agent-bar"
           role="progressbar"
-          aria-label={t("Keyingi unvongacha", "Progress to the next rank")}
+          aria-label={t("Progress to the next rank")}
           aria-valuemin={0}
           aria-valuemax={100}
           aria-valuenow={Math.round(progress * 100)}
@@ -125,28 +121,24 @@ export function AgentCard() {
         </div>
         <p className="jr-agent-meta">
           {next
-            ? t(
-                `Keyingi unvon «${next.title.uz}» — yana ${next.xp - xp} XP`,
-                `Next rank “${next.title.en}” — ${next.xp - xp} XP to go`,
-              )
-            : t(
-                "Eng yuqori unvon! Siz afsonasiz.",
-                "Top rank! You are a legend.",
-              )}
+            ? text({
+                uz: `Keyingi unvon «${next.title.uz}» — yana ${next.xp - xp} XP`,
+                en: `Next rank “${next.title.en}” — ${next.xp - xp} XP to go`,
+              })
+            : t("Top rank! You are a legend.")}
           <br />
           {t(
-            `Missiyalar ${missions}/${missionTotal} · Shifr mashqlari ${exercises}/${exerciseTotal}`,
-            `Missions ${missions}/${missionTotal} · Cipher exercises ${exercises}/${exerciseTotal}`,
+            "Missions {missions}/{missionTotal} · Cipher exercises {exercises}/{exerciseTotal}",
+            { missions, missionTotal, exercises, exerciseTotal },
           )}
-          {streak > 0 &&
-            t(` · ${streak} kunlik seriya`, ` · ${streak}-day streak`)}
+          {streak > 0 && t(" · {streak}-day streak", { streak })}
         </p>
-        <ol className="jr-agent-ladder" aria-label={t("Unvonlar", "Ranks")}>
+        <ol className="jr-agent-ladder" aria-label={t("Ranks")}>
           {RANKS.map((item, i) => (
             <li key={item.xp} className={i <= index ? "on" : undefined}>
               <span className="visually-hidden">
                 {text(item.title)} ({item.xp} XP)
-                {i <= index ? t(" — olingan", " — earned") : ""}
+                {i <= index ? t(" — earned") : ""}
               </span>
             </li>
           ))}
@@ -155,7 +147,10 @@ export function AgentCard() {
       {celebrating && (
         <p className="jr-agent-toast" role="status">
           <Sparkles size={16} aria-hidden="true" />
-          {t(`Yangi unvon: ${rank.title.uz}!`, `New rank: ${rank.title.en}!`)}
+          {text({
+            uz: `Yangi unvon: ${rank.title.uz}!`,
+            en: `New rank: ${rank.title.en}!`,
+          })}
         </p>
       )}
     </section>

@@ -50,24 +50,20 @@ export function NetworkLab() {
   return (
     <div className="network-lab">
       <Link className="nl-back" href="/akademiya">
-        <ArrowLeft size={15} /> {t("Akademiya", "Academy")}
+        <ArrowLeft size={15} /> {t("Academy")}
       </Link>
       <header className="nl-hero">
         <div>
           <span className="eyebrow">
-            <span className="status-dot" />{" "}
-            {t("AMALIY TARMOQ KURSI", "HANDS-ON NETWORKING COURSE")}
+            <span className="status-dot" /> {t("HANDS-ON NETWORKING COURSE")}
           </span>
           <h1>
-            {t("IP, mask va gateway.", "IP, mask and gateway.")}
+            {t("IP, mask and gateway.")}
             <br />
-            <span>
-              {t("Ko‘rib, bosib, tushunib.", "See it, click it, get it.")}
-            </span>
+            <span>{t("See it, click it, get it.")}</span>
           </h1>
           <p>
             {t(
-              "Bitlarni o‘z qo‘lingiz bilan yoqing, maskni suring, kompyuterni sozlab ping yuboring va paket qayerda to‘xtaganini ko‘ring.",
               "Flip the bits yourself, slide the mask, configure a computer, send a ping and watch where the packet stops.",
             )}
           </p>
@@ -76,14 +72,14 @@ export function NetworkLab() {
           <div>
             <Network size={22} />
             <strong>NETWORK / LAB</strong>
-            <span className="nl-live">{t("Brauzerda", "In your browser")}</span>
+            <span className="nl-live">{t("In your browser")}</span>
           </div>
           <p>
-            {LESSONS.length} {t("amaliy dars", "practical lessons")}{" "}
-            <span>·</span> {t("subnet kalkulyator", "subnet calculator")}
+            {LESSONS.length} {t("practical lessons")} <span>·</span>{" "}
+            {t("subnet calculator")}
           </p>
           <label htmlFor="nl-progress">
-            {t("O‘zlashtirish", "Your progress")}{" "}
+            {t("Your progress")}{" "}
             <strong>
               {done}/{LESSONS.length}
             </strong>
@@ -91,7 +87,6 @@ export function NetworkLab() {
           <progress id="nl-progress" value={done} max={LESSONS.length} />
           <small>
             {t(
-              "Natijalar shu brauzerda saqlanadi. Qurilmalar orasida sinxronlanmaydi.",
               "Progress is saved in this browser and does not sync across devices.",
             )}
           </small>
@@ -101,9 +96,9 @@ export function NetworkLab() {
         <aside className="nl-sidebar">
           <div className="nl-sidebar-title">
             <BookOpen size={16} />
-            <h2>{t("O‘quv yo‘li", "Learning path")}</h2>
+            <h2>{t("Learning path")}</h2>
           </div>
-          <nav aria-label={t("Tarmoq darslari", "Networking lessons")}>
+          <nav aria-label={t("Networking lessons")}>
             {LESSONS.map((item, index) => (
               <div key={item.id}>
                 {(index === 0 ||
@@ -120,10 +115,7 @@ export function NetworkLab() {
                 >
                   <span className={progress[item.id] ? "nl-done" : "nl-number"}>
                     {progress[item.id] ? (
-                      <Check
-                        size={14}
-                        aria-label={t("Bajarilgan", "Completed")}
-                      />
+                      <Check size={14} aria-label={t("Completed")} />
                     ) : (
                       String(item.id).padStart(2, "0")
                     )}
@@ -138,12 +130,12 @@ export function NetworkLab() {
             onClick={() => setCalculator(true)}
           >
             <Calculator size={17} />
-            {t("Subnet kalkulyator", "Subnet calculator")}
+            {t("Subnet calculator")}
             <ArrowRight size={15} />
           </button>
           <a className="nl-tool" href="#checkpoints">
             <ClipboardCheck size={17} />
-            {t("Nazorat testlari", "Checkpoints")}
+            {t("Checkpoints")}
             <ArrowRight size={15} />
           </a>
         </aside>
@@ -209,23 +201,20 @@ function Workspace({
       <header className="nl-lesson-header">
         <div>
           <span className="eyebrow">
-            {t("DARS", "LESSON")} {String(lesson.id).padStart(2, "0")} /{" "}
-            {LESSONS.length} · {lesson.minutes} {t("daqiqa", "min")}
+            {t("LESSON")} {String(lesson.id).padStart(2, "0")} /{" "}
+            {LESSONS.length} · {lesson.minutes} {t("min")}
           </span>
           <h2>{text(lesson.title)}</h2>
         </div>
         {completed && (
           <span className="nl-complete-badge">
             <Check size={15} />
-            {t("Bajarilgan", "Completed")}
+            {t("Completed")}
           </span>
         )}
       </header>
       <div className="nl-grid">
-        <section
-          className="nl-instructions"
-          aria-label={t("Dars va topshiriq", "Lesson and task")}
-        >
+        <section className="nl-instructions" aria-label={t("Lesson and task")}>
           <p className="nl-intro">{text(lesson.intro)}</p>
           <p className="nl-analogy">
             <Lightbulb size={16} aria-hidden="true" />
@@ -234,7 +223,7 @@ function Workspace({
           <details className="nl-theory" open>
             <summary>
               <BookOpen size={16} />
-              {t("Avval tushunib oling", "Understand first")}
+              {t("Understand first")}
             </summary>
             <div>
               {lesson.theory.map((paragraph, i) => (
@@ -248,79 +237,65 @@ function Workspace({
                     className="nl-link"
                     href="/lessons/private-ipv4/index.html"
                   >
-                    {t(
-                      "Batafsil: Private IPv4 diapazonlari darsi",
-                      "More: the private IPv4 ranges lesson",
-                    )}
+                    {t("More: the private IPv4 ranges lesson")}
                   </a>
                 </p>
               )}
             </div>
           </details>
           <div className="nl-task">
-            <span className="eyebrow">{t("TOPSHIRIQ", "TASK")}</span>
+            <span className="eyebrow">{t("TASK")}</span>
             <p>{text(lesson.task)}</p>
             <details className="nl-hint">
-              <summary>{t("Yordam kerakmi?", "Need a hint?")}</summary>
+              <summary>{t("Need a hint?")}</summary>
               <p>{text(lesson.hint)}</p>
             </details>
             <div className="nl-task-actions">
               <button className="nl-primary nl-check" onClick={check}>
                 <Check size={16} />
-                {t("Tekshirish", "Check")}
+                {t("Check")}
               </button>
               {practice && (
                 <button className="nl-ghost" onClick={newExample}>
                   <Shuffle size={15} />
-                  {t("Yangi misol", "New example")}
+                  {t("New example")}
                 </button>
               )}
             </div>
             {practice && score.count > 0 && (
               <p className="nl-score">
-                {t(
-                  `Yechilgan misollar: ${score.count}`,
-                  `Examples solved: ${score.count}`,
-                )}
+                {t("Examples solved: {count}", { count: score.count })}
               </p>
             )}
             <div aria-live="polite">
               {feedback === "pass" && (
                 <p className="nl-pass">
-                  {t("To‘g‘ri! Dars bajarildi.", "Correct! Lesson completed.")}
-                  {practice &&
-                    ` ${t("Yana mashq qilish uchun “Yangi misol”ni bosing.", "Press “New example” to practise more.")}`}
+                  {t("Correct! Lesson completed.")}
+                  {practice && ` ${t("Press “New example” to practise more.")}`}
                 </p>
               )}
               {feedback === "fail" && (
                 <p className="nl-fail">
-                  {t(
-                    "Hali emas. Vizualga qarang va yordamni oching.",
-                    "Not yet. Look at the visual and open the hint.",
-                  )}
+                  {t("Not yet. Look at the visual and open the hint.")}
                 </p>
               )}
             </div>
             {(completed || feedback === "pass") && !last && (
               <button className="nl-next" onClick={onNext}>
-                {t("Keyingi dars", "Next lesson")}
+                {t("Next lesson")}
                 <ArrowRight size={16} />
               </button>
             )}
             {(completed || feedback === "pass") && last && (
               <p className="nl-finish">
                 {t(
-                  "Barcha darslar tugadi. Endi subnet kalkulyatorida o‘z tarmog‘ingizni hisoblab ko‘ring.",
                   "All lessons done. Try your own network in the subnet calculator.",
                 )}
               </p>
             )}
           </div>
         </section>
-        <section
-          className="nl-visual"
-          aria-label={t("Interaktiv mashq", "Interactive exercise")}
-        >
+        <section className="nl-visual" aria-label={t("Interactive exercise")}>
           <WidgetView
             key={round}
             widget={widget}

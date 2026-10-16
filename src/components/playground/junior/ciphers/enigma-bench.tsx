@@ -62,16 +62,12 @@ export function EnigmaBench() {
         }
       }}
     >
-      <div
-        className="cr-rotors"
-        role="group"
-        aria-label={t("Rotorlar", "Rotors")}
-      >
+      <div className="cr-rotors" role="group" aria-label={t("Rotors")}>
         {(["I", "II", "III"] as const).map((name, i) => (
           <div key={name} className="cr-rotor">
             <button
               type="button"
-              aria-label={t(`${name} rotorni oldinga`, `Rotor ${name} forward`)}
+              aria-label={t("Rotor {name} forward", { name })}
               onClick={() => turn(i, 1)}
             >
               <ChevronUp size={16} aria-hidden="true" />
@@ -81,7 +77,7 @@ export function EnigmaBench() {
             </span>
             <button
               type="button"
-              aria-label={t(`${name} rotorni orqaga`, `Rotor ${name} back`)}
+              aria-label={t("Rotor {name} back", { name })}
               onClick={() => turn(i, -1)}
             >
               <ChevronDown size={16} aria-hidden="true" />
@@ -91,11 +87,10 @@ export function EnigmaBench() {
         ))}
         <div className="cr-rotor-info">
           <span>
-            {t("Boshlanish:", "Start:")} <b>{showPositions(start)}</b>
+            {t("Start:")} <b>{showPositions(start)}</b>
           </span>
           <button type="button" className="jr-linkbtn" onClick={() => reset()}>
-            <RotateCcw size={13} aria-hidden="true" />{" "}
-            {t("Boshiga qaytarish", "Reset")}
+            <RotateCcw size={13} aria-hidden="true" /> {t("Reset")}
           </button>
         </div>
       </div>
@@ -114,11 +109,7 @@ export function EnigmaBench() {
           </div>
         ))}
       </div>
-      <div
-        className="cr-keys"
-        role="group"
-        aria-label={t("Klaviatura", "Keyboard")}
-      >
+      <div className="cr-keys" role="group" aria-label={t("Keyboard")}>
         {ROWS.map((row) => (
           <div key={row}>
             {row.split("").map((letter) => (
@@ -148,17 +139,16 @@ export function EnigmaBench() {
       )}
       <div className="cr-two">
         <div className="cr-field">
-          <p className="jr-label">{t("Bosilgan harflar", "Keys pressed")}</p>
+          <p className="jr-label">{t("Keys pressed")}</p>
           <code className="jr-code cr-out">{tape.input || "—"}</code>
         </div>
         <div className="cr-field">
-          <p className="jr-label">{t("Yongan chiroqlar", "Lamps lit")}</p>
+          <p className="jr-label">{t("Lamps lit")}</p>
           <code className="jr-code jr-live cr-out">{tape.output || "—"}</code>
         </div>
       </div>
       <p className="jr-note">
         {t(
-          "Kompyuter klaviaturasida ham harflarni bosishingiz mumkin. «AAAAA» ni AAA holatidan tering — har safar boshqa chiroq yonadi.",
           "You can type on your own keyboard too. Type “AAAAA” from AAA — a different lamp lights every time.",
         )}
       </p>
