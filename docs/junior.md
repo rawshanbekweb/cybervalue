@@ -17,6 +17,31 @@ Six short missions (about 30 minutes in total). Every mission has a goal, a hand
 
 When all six are complete, the page shows next steps: HTML foundations, the Linux lab, the IP addressing lab and the story CTF.
 
+## Agent card and ranks
+
+The Junior page and the Cipher Room show an **agent ID card** (`AgentCard.tsx`): a codename the student picks (or rolls at random), XP and a rank. Each finished mission is worth 100 XP and each solved Cipher Room exercise 15 XP; the ranks run from _New recruit_ to _Chief agent_ (`src/lib/junior/rank.ts`). A new rank is announced once. The card is stored in the browser under `cybervalue:junior:agent:v1` and the codename is sanitised on read.
+
+## Cipher Room
+
+`/playground/junior/ciphers` is a timeline of nine ciphers, each with a short history, a fun fact, an interactive workbench and homework:
+
+| #   | Cipher                        | Era     | Workbench                                                    |
+| --- | ----------------------------- | ------- | ------------------------------------------------------------ |
+| 1   | Atbash                        | ~600 BC | Mirror alphabet that highlights the letters in use           |
+| 2   | Spartan scytale               | ~400 BC | The rod (lines) and the unwound strip, coloured by column    |
+| 3   | Polybius square               | ~150 BC | 5 × 5 grid that steps through a word; plays it as tap code   |
+| 4   | Caesar                        | ~50 BC  | Rotating cipher wheel                                        |
+| 5   | Al-Kindi’s frequency analysis | ~850 AD | Letter-frequency bars against Uzbek or English; “Crack it”   |
+| 6   | Vigenère                      | 1553    | Letter + key letter = cipher letter, worked out with numbers |
+| 7   | Pigpen                        | 1700s   | The key grids and the message drawn as symbols               |
+| 8   | Morse code (an encoding)      | 1838    | Lamp and beep playback, and a telegraph key to tap your own  |
+| 9   | Public keys (Diffie–Hellman)  | 1976    | Paint mixing: Ali and Vali share a colour Eve cannot make    |
+
+- **Homework:** 3–6 fixed exercises per cipher (45 in total) count towards XP and are saved under `cybervalue:junior:ciphers:v1` as `{ "<cipher id>": [solved exercise indexes] }`. _New exercise_ adds unlimited generated practice (not counted).
+- **Homework sheet:** teachers and parents pick ciphers and a number per cipher, make a fresh random sheet, print it (only the sheet prints) and can show the answers.
+- Only A–Z are enciphered; answers are compared on letters only, so `o‘`/`g‘` apostrophes, case and spaces do not matter. Uzbek letter frequencies were counted from the site’s Uzbek copy.
+- All content lives in `src/lib/junior/cipher-content.ts` as `{ uz, en }` pairs; answers are computed with the cipher functions in `src/lib/junior/ciphers.ts`, and `tests/junior-ciphers.test.ts` re-solves every exercise and 2,400 generated ones.
+
 ## Design rules
 
 - **Tone:** a recruit joining a team of defenders, not a children’s game. Short sentences; each new term is explained where it first appears.
@@ -34,6 +59,9 @@ When all six are complete, the page shows next steps: HTML foundations, the Linu
 | `src/components/junior-gateway.tsx`                | Card on the Playground page                                    |
 | `src/lib/i18n/junior.json`                         | Dictionary entries for the card and page metadata              |
 | `tests/junior.test.ts`, `tests/e2e/junior.spec.ts` | Unit tests and a full end-to-end run                           |
+| `src/lib/junior/ciphers.ts`, `cipher-content.ts`   | Cipher Room: cipher functions, stories, homework, generator    |
+| `src/lib/junior/rank.ts`                           | XP, ranks and codenames for the agent card                     |
+| `src/components/playground/junior/ciphers/`        | Cipher Room page, workbenches, homework and printable sheet    |
 
 ## Password estimate
 

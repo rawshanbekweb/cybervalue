@@ -468,6 +468,224 @@
   color: #b1b0b8;
   font-size: 13px;
 }
+/* Hero with the agent card */
+.jr-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 380px);
+  gap: 28px;
+  align-items: start;
+}
+.jr-agent {
+  position: relative;
+  display: flex;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid #8052ff66;
+  border-radius: 14px;
+  background:
+    radial-gradient(120% 90% at 100% 0%, #8052ff33, transparent 60%),
+    repeating-linear-gradient(135deg, #ffffff05 0 2px, transparent 2px 8px),
+    #0e0c16;
+  box-shadow: 0 10px 40px -20px #8052ff;
+}
+.jr-agent-badge {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: linear-gradient(160deg, #8052ff, #3b1e9e);
+  color: #fff;
+}
+.jr-agent[data-rank="3"] .jr-agent-badge,
+.jr-agent[data-rank="4"] .jr-agent-badge {
+  background: linear-gradient(160deg, #ffb829, #b36b00);
+}
+.jr-agent[data-rank="5"] .jr-agent-badge {
+  background: linear-gradient(160deg, #4ade80, #0d7a3e);
+}
+.jr-agent-badge span {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #0e0c16;
+  border-radius: 50%;
+  background: #fff;
+  color: #111;
+  font: 700 11px var(--font-mono);
+}
+.jr-agent-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  flex: 1;
+}
+.jr-agent-eyebrow {
+  margin: 0;
+  color: #b1b0b8;
+  font: 11px var(--font-mono);
+  letter-spacing: 0.08em;
+}
+.jr-agent-name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin: 0;
+  font-size: 18px;
+}
+.jr-agent-name strong {
+  overflow-wrap: anywhere;
+}
+.jr-agent-name .jr-linkbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+}
+.jr-agent-edit {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.jr-agent-edit .jr-input {
+  flex: 1 1 160px;
+  width: auto;
+}
+.jr-agent-rank {
+  margin: 0;
+  color: #e4e3ea;
+  font-size: 14px;
+}
+.jr-agent-rank strong {
+  color: #ffd27a;
+}
+.jr-agent-bar {
+  height: 8px;
+  border-radius: 8px;
+  background: #ffffff1a;
+  overflow: hidden;
+}
+.jr-agent-bar span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #8052ff, #ffb829);
+  transition: width 0.4s;
+}
+.jr-agent-meta {
+  margin: 0;
+  color: #b1b0b8;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.jr-agent-ladder {
+  display: flex;
+  gap: 4px;
+  margin: 2px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.jr-agent-ladder li {
+  flex: 1;
+  height: 4px;
+  border-radius: 4px;
+  background: #ffffff1f;
+}
+.jr-agent-ladder li.on {
+  background: #ffb829;
+}
+.jr-agent-toast {
+  position: absolute;
+  left: 50%;
+  top: -16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #ffb829;
+  color: #1a1206;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  animation: jr-pop 0.5s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+@keyframes jr-pop {
+  from {
+    transform: translateX(-50%) scale(0.4);
+    opacity: 0;
+  }
+}
+
+/* Cipher room promo */
+.jr-promo {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  max-width: 920px;
+  margin: 26px 0 6px;
+  padding: 18px 20px;
+  border: 1px solid #ffb82966;
+  border-radius: 12px;
+  background:
+    radial-gradient(80% 140% at 0% 50%, #ffb82922, transparent 70%), #0e0c0a;
+  color: #e4e3ea;
+}
+.jr-promo:hover {
+  border-color: #ffb829;
+}
+.jr-promo .jr-promo-icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: #ffb8291f;
+  color: #ffb829;
+  font: 700 18px var(--font-mono);
+}
+.jr-promo strong {
+  display: block;
+  font-size: 17px;
+  margin-bottom: 2px;
+}
+.jr-promo span {
+  color: #c2c1ca;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.jr-promo .jr-promo-new {
+  margin-right: 6px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: #ffb829;
+  color: #1a1206;
+  font: 700 10px var(--font-mono);
+  vertical-align: 2px;
+}
+@media (max-width: 900px) {
+  .jr-hero-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 600px) {
+  .jr-promo {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .jr-promo > svg {
+    display: none;
+  }
+}
 @media (max-width: 600px) {
   .jr-mission {
     padding: 18px;
