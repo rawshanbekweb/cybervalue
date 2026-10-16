@@ -162,7 +162,7 @@ The Prisma models are `Student`, `StudentSession`, `StudentMaterial`, `StudentSu
 The IP addressing and Linux labs end with **checkpoint tests** (`src/lib/checkpoints/`): `network-1` (lessons 1–6, 12 questions), `network-2` (lessons 7–12, 10 questions) and `linux-1` (10 questions from the lesson quizzes). Pass mark: 70%.
 
 - Every attempt gets fresh questions from a random seed. Address arithmetic is generated with the lab's own `ip.ts`/`practice.ts` code; concept questions come from fixed pools.
-- `POST /student/api/checkpoint` with `{action: "start", id}` returns the questions **without answers** and a signed attempt token (HMAC with `AUTH_SECRET`, valid 2 hours, bound to the signed-in student). `{action: "submit", token, answers}` rebuilds the questions from the seed and grades them on the server; the right answers and explanations are returned only then.
+- `POST /student/api/checkpoint` with `{action: "start", id}` returns the questions **without answers** and a signed attempt token (HMAC keyed from `AUTH_SECRET`, or from `DATABASE_URL` when it is unset; valid 2 hours, bound to the signed-in student). `{action: "submit", token, answers}` rebuilds the questions from the seed and grades them on the server; the right answers and explanations are returned only then.
 - Anyone can take a checkpoint. For a signed-in student (the route sits under `/student`, so the `cv_student` cookie reaches it) the result is stored in `StudentCheckpoint`; a seed can be graded only once per student.
 
 ## XP, ranks, badges and the group ranking
