@@ -167,7 +167,7 @@ export function CipherRoom() {
 
         <Link
           className="cr-homework-link"
-          href={`/playground/junior/homework#cipher/${cipher.number}`}
+          href={`/junior/homework#cipher/${cipher.number}`}
         >
           <span className="jr-ring" aria-hidden="true">
             <NotebookPen size={18} />

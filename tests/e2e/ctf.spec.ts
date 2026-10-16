@@ -11,7 +11,7 @@ async function nextChallenge(page: Page) {
 test("operator solves five connected challenges, uses tools, and retains progress", async ({
   page,
 }) => {
-  await page.goto("/playground/ctf#challenge/vault");
+  await page.goto("/akademiya/ctf#challenge/vault");
   await expect(
     page.getByRole("heading", { name: "Seyf hali jim." }),
   ).toBeVisible();
@@ -99,7 +99,7 @@ test("operator solves five connected challenges, uses tools, and retains progres
 test("CTF handles malformed storage, unavailable verification, and invalid tool input", async ({
   page,
 }) => {
-  await page.goto("/playground/ctf");
+  await page.goto("/akademiya/ctf");
   await page.evaluate(() =>
     localStorage.setItem(
       "cybervalue:ctf:signal-0017:v1",
@@ -170,7 +170,7 @@ test("verification API validates requests and does not reveal answers on failure
 test("CTF map and workbench fit phones and support accessible controls", async ({
   page,
 }) => {
-  await page.goto("/playground/ctf");
+  await page.goto("/akademiya/ctf");
   for (const width of [320, 375, 768, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
     expect(

@@ -24,7 +24,7 @@ export function CreateExamForm() {
     const url = URL.createObjectURL(
       new Blob(
         [
-          `HTML sinovi: ${location.origin}/playground/html-basics/assessment\nHar bir kodni faqat uning egasiga bering.\n\n${data}`,
+          `HTML sinovi: ${location.origin}/akademiya/html-basics/assessment\nHar bir kodni faqat uning egasiga bering.\n\n${data}`,
         ],
         { type: "text/plain;charset=utf-8" },
       ),

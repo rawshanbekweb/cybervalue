@@ -29,6 +29,24 @@ const config: NextConfig = {
   // for notFound()/redirect(). Matching every user agent here makes 404s and
   // redirects return real status codes for all clients, not just crawlers.
   htmlLimitedBots: /.*/,
+  // The academy moved from /playground to /akademiya and Junior to /junior.
+  // Old links and bookmarks keep working.
+  async redirects() {
+    return [
+      { source: "/playground/junior", destination: "/junior", permanent: true },
+      {
+        source: "/playground/junior/:path*",
+        destination: "/junior/:path*",
+        permanent: true,
+      },
+      { source: "/playground", destination: "/akademiya", permanent: true },
+      {
+        source: "/playground/:path*",
+        destination: "/akademiya/:path*",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

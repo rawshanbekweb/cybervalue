@@ -31,7 +31,7 @@ export async function MissionGateway() {
           <span>{t("Verified objectives")}</span>
         </div>
       </div>
-      <Link href="/playground/missions" className="button button-primary">
+      <Link href="/akademiya/missions" className="button button-primary">
         {t("Open mission control")}
         <ArrowUpRight size={17} />
       </Link>

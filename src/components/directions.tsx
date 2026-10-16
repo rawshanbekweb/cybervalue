@@ -48,7 +48,7 @@ export function Directions({
         t("A cipher room from Caesar to Enigma"),
         t("Homework, ranks and a group ranking"),
       ],
-      href: "/playground/junior",
+      href: "/junior",
       action: t("Enter Junior"),
     },
     {
@@ -64,7 +64,7 @@ export function Directions({
         t("CTF investigations and a build-and-defend arena"),
         t("A student portal with tests, XP and certificates"),
       ],
-      href: "/playground",
+      href: "/akademiya",
       action: t("Open the labs"),
       ...(config.sections.studentArea
         ? { extra: { href: "/student", label: t("Student portal") } }

@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { saveJuniorPartAction } from "@/app/[lang]/playground/junior/actions";
+import { saveJuniorPartAction } from "@/app/[lang]/junior/actions";
 import type { JuniorProgress, ProgressPart } from "@/lib/junior/progress";
 
 type Store = {

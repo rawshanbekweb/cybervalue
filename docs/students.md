@@ -167,7 +167,7 @@ The IP addressing and Linux labs end with **checkpoint tests** (`src/lib/checkpo
 
 ## XP, ranks, badges and the group ranking
 
-`src/lib/student/xp.ts` turns what a student has done into XP: lesson or lab completed 20, practice handed in 30, test best percent (up to 100), personal lab solved 100, checkpoint best percent × 0.6. Ranks run from Trainee (0) to Expert (3200). Twelve badges reward first steps, tests, flags, checkpoints, a three-week streak and finishing everything. Weeks start on Monday, Tashkent time; the weekly goal is three actions.
+`src/lib/student/xp.ts` turns what a student has done into XP: lesson or lab completed 20, practice handed in 30, test best percent (up to 100), personal lab solved 100, checkpoint best percent × 0.6, each finished lesson in an open lab 5. Ranks run from Trainee (0) to Expert (3200). Twelve badges reward first steps, tests, flags, checkpoints, a three-week streak and finishing everything. Weeks start on Monday, Tashkent time; the weekly goal is three actions.
 
 The student page shows the rank card, badges, the group ranking (first name and initial only, active students of the same group) and the lab checkpoints with their best scores.
 

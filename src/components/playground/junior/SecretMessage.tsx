@@ -299,7 +299,7 @@ function Read({ payload }: { payload: SecretPayload }) {
         )}
         <div className="jr-actions">
           <Link
-            href={`/playground/junior/ciphers#cipher/${info.number}`}
+            href={`/junior/ciphers#cipher/${info.number}`}
             className="jr-linkbtn"
           >
             {t("Bu shifr haqida o‘qish", "Learn about this cipher")}
@@ -334,7 +334,7 @@ export function SecretMessage() {
   return (
     <div className={signedIn ? undefined : "junior container page-content"}>
       {!signedIn && (
-        <Link className="jr-back" href="/playground/junior">
+        <Link className="jr-back" href="/junior">
           <ArrowLeft size={15} aria-hidden="true" /> Cybervalue Academy Junior
         </Link>
       )}

@@ -137,7 +137,7 @@ export function SettingsForm({
           config.announcement.href,
           {
             max: 300,
-            placeholder: "/playground/junior",
+            placeholder: "/junior",
           },
         )}
       </section>

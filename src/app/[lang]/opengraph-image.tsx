@@ -1,5 +1,5 @@
 import { ogImage } from "@/lib/og";
-export const alt = "CyberValue — Cybersecurity × Software Development";
+export const alt = "Cybervalue — Cybersecurity × Software Development";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 import { locales } from "@/lib/i18n";

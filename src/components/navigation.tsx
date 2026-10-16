@@ -23,7 +23,7 @@ export function Navigation({
     () => true,
     () => false,
   );
-  // The most specific entry wins, so /playground/junior highlights "Academy
+  // The most specific entry wins, so /junior highlights "Academy
   // Junior" and not "Academy" as well.
   const matches = (href: string) =>
     href === "/" ? path === "/" : path === href || path.startsWith(`${href}/`);

@@ -69,7 +69,7 @@ export function HomeworkPage() {
         <div className="jr-hw-head">
           <h3>{text(cipher.title)}</h3>
           <Link
-            href={`/playground/junior/ciphers#cipher/${cipher.number}`}
+            href={`/junior/ciphers#cipher/${cipher.number}`}
             className="jr-linkbtn"
           >
             <FlaskConical size={14} aria-hidden="true" />{" "}

@@ -12,9 +12,9 @@ export const SECTIONS = [
     id: "junior",
     group: "main",
     label: "Academy Junior",
-    href: "/playground/junior",
+    href: "/junior",
   },
-  { id: "academy", group: "main", label: "Academy labs", href: "/playground" },
+  { id: "academy", group: "main", label: "Academy labs", href: "/akademiya" },
   {
     id: "studentArea",
     group: "main",
@@ -26,49 +26,49 @@ export const SECTIONS = [
     id: "network",
     group: "lab",
     label: "IP addressing lab",
-    href: "/playground/network-basics",
+    href: "/akademiya/network-basics",
   },
   {
     id: "linux",
     group: "lab",
     label: "Linux foundations lab",
-    href: "/playground/linux-basics",
+    href: "/akademiya/linux-basics",
   },
   {
     id: "html",
     group: "lab",
     label: "HTML Basics",
-    href: "/playground/html-basics",
+    href: "/akademiya/html-basics",
   },
   {
     id: "security",
     group: "lab",
     label: "Web Security Lab",
-    href: "/playground/web-security-lab",
+    href: "/akademiya/web-security-lab",
   },
   {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",
-    href: "/playground/ctf",
+    href: "/akademiya/ctf",
   },
   {
     id: "missions",
     group: "lab",
     label: "Investigation missions",
-    href: "/playground/missions",
+    href: "/akademiya/missions",
   },
   {
     id: "studio",
     group: "lab",
     label: "HTML & CSS project studio",
-    href: "/playground/studio",
+    href: "/akademiya/studio",
   },
   {
     id: "defend",
     group: "lab",
     label: "Build & Defend",
-    href: "/playground/defend",
+    href: "/akademiya/defend",
   },
   // The author's portfolio: projects, research, lab write-ups, CTF, resources.
   {
@@ -175,5 +175,5 @@ export function closedSection(
     if (section.group === "lab" && !config.sections.academy) return "academy";
     return null;
   }
-  return path === "/playground" && !config.sections.academy ? "academy" : null;
+  return path === "/akademiya" && !config.sections.academy ? "academy" : null;
 }

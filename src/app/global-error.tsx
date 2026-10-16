@@ -20,10 +20,10 @@ export default function GlobalError({
         }}
       >
         <main>
-          <h1>CyberValue vaqtincha ishlamayapti.</h1>
+          <h1>Cybervalue vaqtincha ishlamayapti.</h1>
           <p>Birozdan so‘ng qayta urinib ko‘ring.</p>
           <p lang="en">
-            CyberValue is temporarily unavailable. Please try again in a moment.
+            Cybervalue is temporarily unavailable. Please try again in a moment.
           </p>
           <button
             onClick={reset}

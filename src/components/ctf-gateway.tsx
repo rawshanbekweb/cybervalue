@@ -21,7 +21,7 @@ export async function CtfGateway() {
           )}
         </p>
       </div>
-      <Link href="/playground/ctf">
+      <Link href="/akademiya/ctf">
         {t("Operatsiyani boshlash")}
         <ArrowUpRight size={17} />
       </Link>

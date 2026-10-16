@@ -146,8 +146,8 @@ export function SignalCTF() {
     <div className="ctf-root">
       <div className="ctf-shell container">
         <div className="ctf-topline">
-          <Link href="/playground">
-            <ArrowLeft size={14} /> {t("Playground")}
+          <Link href="/akademiya">
+            <ArrowLeft size={14} /> {t("Academy")}
           </Link>
           <span>
             <span className="ctf-led" /> {t("INTERAKTIV CTF / VOL. 01")}

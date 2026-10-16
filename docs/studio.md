@@ -1,6 +1,6 @@
 # HTML & CSS project studio
 
-Open `/playground/studio` from the home page or playground. Three fictional projects extend the HTML foundations lessons: an incident intake form, service status page, and product launch page. Direct links use `#project/incident`, `#project/status`, and `#project/launch`.
+Open `/akademiya/studio` from the home page or playground. Three fictional projects extend the HTML foundations lessons: an incident intake form, service status page, and product launch page. Direct links use `#project/incident`, `#project/status`, and `#project/launch`.
 
 Each project includes starter HTML/CSS, requirements, optional hints, structural feedback, and manual review prompts. The live preview supports a 320px phone width, 768px tablet width, and the available workspace width. Wider previews scroll inside their panel on smaller screens.
 

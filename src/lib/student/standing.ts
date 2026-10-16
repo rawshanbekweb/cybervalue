@@ -13,36 +13,47 @@ export async function loadStandings(
   now = Date.now(),
 ) {
   const ids = students.map((s) => s.id);
-  const [materials, progress, submissions, checkpoints] = await Promise.all([
-    db.studentMaterial.findMany({
-      where: { published: true },
-      select: { id: true, slug: true, kind: true, groups: true, levels: true },
-    }),
-    db.studentProgress.findMany({
-      where: { studentId: { in: ids } },
-      select: { studentId: true, materialId: true, completedAt: true },
-    }),
-    db.studentSubmission.findMany({
-      where: { studentId: { in: ids } },
-      select: {
-        studentId: true,
-        materialId: true,
-        score: true,
-        maxScore: true,
-        createdAt: true,
-      },
-    }),
-    db.studentCheckpoint.findMany({
-      where: { studentId: { in: ids } },
-      select: {
-        studentId: true,
-        checkpoint: true,
-        score: true,
-        total: true,
-        createdAt: true,
-      },
-    }),
-  ]);
+  const [materials, progress, submissions, checkpoints, labs] =
+    await Promise.all([
+      db.studentMaterial.findMany({
+        where: { published: true },
+        select: {
+          id: true,
+          slug: true,
+          kind: true,
+          groups: true,
+          levels: true,
+        },
+      }),
+      db.studentProgress.findMany({
+        where: { studentId: { in: ids } },
+        select: { studentId: true, materialId: true, completedAt: true },
+      }),
+      db.studentSubmission.findMany({
+        where: { studentId: { in: ids } },
+        select: {
+          studentId: true,
+          materialId: true,
+          score: true,
+          maxScore: true,
+          createdAt: true,
+        },
+      }),
+      db.studentCheckpoint.findMany({
+        where: { studentId: { in: ids } },
+        select: {
+          studentId: true,
+          checkpoint: true,
+          score: true,
+          total: true,
+          createdAt: true,
+        },
+      }),
+      db.studentLabProgress.findMany({
+        where: { studentId: { in: ids } },
+        select: { studentId: true, lab: true, lessons: true },
+      }),
+    ]);
   const result = new Map<string, Standing>();
   for (const student of students) {
     const mine = <T extends { studentId: string }>(rows: T[]) =>
@@ -59,6 +70,7 @@ export async function loadStandings(
           progress: mine(progress),
           submissions: mine(submissions),
           checkpoints: mine(checkpoints),
+          labs: mine(labs),
         },
         now,
       ),

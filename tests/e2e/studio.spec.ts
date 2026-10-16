@@ -22,7 +22,7 @@ import { studioSolutions } from "../fixtures/studio";
 test("project editing, checks, independent drafts, reload, and exports", async ({
   page,
 }) => {
-  await page.goto("/playground");
+  await page.goto("/akademiya");
   await page.getByRole("link", { name: "Open project studio" }).click();
   await page
     .getByRole("button", { name: "Check structure", exact: true })
@@ -101,7 +101,7 @@ test("project editing, checks, independent drafts, reload, and exports", async (
 test("studio recovers storage, supports deep links, and isolates active preview content", async ({
   page,
 }) => {
-  await page.goto("/playground/studio");
+  await page.goto("/akademiya/studio");
   await page.evaluate(() =>
     localStorage.setItem(
       "cybervalue:studio:launch:v1",
@@ -111,7 +111,7 @@ test("studio recovers storage, supports deep links, and isolates active preview 
   // A cold load, as when a student opens a shared link: a hash-only change
   // before hydration finishes is dropped by the router.
   await page.goto("about:blank");
-  await page.goto("/playground/studio#project/launch");
+  await page.goto("/akademiya/studio#project/launch");
   await expect(page.getByLabel("HTML source", { exact: true })).toHaveValue(
     /FIELD NOTES/,
   );
@@ -142,7 +142,7 @@ test("studio recovers storage, supports deep links, and isolates active preview 
 test("studio fits small screens and its controls are accessible", async ({
   page,
 }) => {
-  await page.goto("/playground/studio");
+  await page.goto("/akademiya/studio");
   for (const width of [320, 375, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await page.getByRole("button", { name: "Tablet", exact: true }).click();
@@ -163,7 +163,7 @@ test("studio fits small screens and its controls are accessible", async ({
 test("studio hydrates without errors in both languages", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await page.goto("/playground/studio");
+  await page.goto("/akademiya/studio");
   await expect(page.locator(".studio-caption")).toBeVisible();
   await page.waitForLoadState("networkidle");
   expect(errors).toEqual([]);

@@ -23,7 +23,7 @@ function downloadCodes(rows: { name: string; group: string; code: string }[]) {
   const url = URL.createObjectURL(
     new Blob(
       [
-        `CyberValue — ${location.origin}/student/login\n\n${lines.join("\n")}\n`,
+        `Cybervalue — ${location.origin}/student/login\n\n${lines.join("\n")}\n`,
       ],
       { type: "text/plain;charset=utf-8" },
     ),

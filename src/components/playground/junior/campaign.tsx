@@ -337,7 +337,7 @@ export function DailyPuzzle() {
             {t("kalit", "key")}: <b>{puzzle.key}</b>
           </span>
         )}
-        <a href={`/playground/junior/ciphers#cipher/${cipher.number}`}>
+        <a href={`/junior/ciphers#cipher/${cipher.number}`}>
           {t("Asbobni ochish ↗", "Open the tool ↗")}
         </a>
       </p>

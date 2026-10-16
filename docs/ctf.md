@@ -1,6 +1,6 @@
 # 00:17 — So‘nggi signal
 
-An Uzbek-language, story-based CTF at `/playground/ctf`. Links appear on the home page, playground, and `/ctf` competition archive. No account or database is required.
+An Uzbek-language, story-based CTF at `/akademiya/ctf`. Links appear on the home page, playground, and `/ctf` competition archive. No account or database is required.
 
 Five challenges restore a fictional NOVA station: inspecting HTML source, reversing Base64/ROT13, following an archive's robots.txt clues, reconstructing interleaved trace logs, and opening a final transmission with four recovered letters and the station time. The 00:17 clock is a story artifact, not a countdown. All evidence is synthetic. The archive path inspector reads fixed local fixtures and makes no HTTP requests.
 

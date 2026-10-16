@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { Fingerprint } from "lucide-react";
 import { Navigation } from "@/components/navigation";
 import { LanguageSwitcher } from "./language-switcher";
@@ -14,14 +13,12 @@ export function SiteHeader({
   items: { href: string; label: string }[];
   studentArea?: boolean;
 }) {
-  const pathname = usePathname();
   const t = useTranslator();
-  if (pathname?.startsWith("/concept")) return null;
 
   return (
     <header className="site-header">
       <div className="header-inner">
-        <Link className="wordmark" href="/" aria-label={t("CyberValue home")}>
+        <Link className="wordmark" href="/" aria-label={t("Cybervalue home")}>
           <span className="brand-mark">
             <Fingerprint size={23} />
           </span>

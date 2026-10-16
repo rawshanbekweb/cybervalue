@@ -56,8 +56,8 @@ export function ProjectStudio() {
   return (
     <div className="studio-root container">
       <header className="studio-header">
-        <Link href="/playground" className="studio-back">
-          <ArrowLeft size={15} /> {t("Playground")}
+        <Link href="/akademiya" className="studio-back">
+          <ArrowLeft size={15} /> {t("Academy")}
         </Link>
         <span className="eyebrow">
           <span className="status-dot" /> {t("THE PROJECT STUDIO")}
@@ -149,7 +149,7 @@ function Workspace({ project }: { project: StudioProject }) {
             ))}
           </ul>
         </details>
-        <Link href="/playground/html-basics" className="studio-back">
+        <Link href="/akademiya/html-basics" className="studio-back">
           {t("Review HTML foundations")} <ArrowUpRight size={15} />
         </Link>
       </aside>

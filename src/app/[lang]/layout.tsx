@@ -26,8 +26,8 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: new URL(site.url),
     applicationName: site.name,
     title: {
-      default: t("CyberValue — Cybersecurity & Software Development"),
-      template: "%s | CyberValue",
+      default: t("Cybervalue — Cybersecurity & Software Development"),
+      template: "%s | Cybervalue",
     },
     description: t(site.description),
     robots: { index: await siteIndexable(), follow: true },

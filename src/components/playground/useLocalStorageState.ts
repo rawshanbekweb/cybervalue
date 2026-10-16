@@ -60,3 +60,26 @@ export function useLocalStorageState<T>(
 
   return [value, setValue];
 }
+
+/** Reads a stored value outside React (for background sync). */
+export function readStoredValue<T>(key: string, fallback: T): T {
+  if (!cache.has(key)) cache.set(key, readJSON(key, fallback));
+  return cache.get(key) as T;
+}
+
+/** Writes a stored value and re-renders every component that reads it. */
+export function writeStoredValue(key: string, value: unknown) {
+  cache.set(key, value);
+  writeJSON(key, value);
+  listeners.get(key)?.forEach((listener) => listener());
+}
+
+/** Calls `onChange` whenever the value under `key` is written. */
+export function watchStoredValue(key: string, onChange: () => void) {
+  let set = listeners.get(key);
+  if (!set) listeners.set(key, (set = new Set()));
+  set.add(onChange);
+  return () => {
+    set.delete(onChange);
+  };
+}

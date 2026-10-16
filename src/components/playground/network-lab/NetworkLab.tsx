@@ -49,8 +49,8 @@ export function NetworkLab() {
   const lesson = LESSONS[id - 1];
   return (
     <div className="network-lab">
-      <Link className="nl-back" href="/playground">
-        <ArrowLeft size={15} /> {t("Laboratoriyalar", "Playground")}
+      <Link className="nl-back" href="/akademiya">
+        <ArrowLeft size={15} /> {t("Akademiya", "Academy")}
       </Link>
       <header className="nl-hero">
         <div>

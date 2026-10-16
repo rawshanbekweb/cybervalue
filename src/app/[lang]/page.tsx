@@ -22,7 +22,7 @@ import "../home.css";
 export const revalidate = 60;
 export const generateMetadata = () =>
   metadata(
-    "CyberValue Academy — learn cybersecurity by doing it",
+    "Cybervalue Academy — learn cybersecurity by doing it",
     "Two learning paths: Academy Junior for school students and hands-on Academy labs for networks, Linux, the web and security.",
     "/",
   );
@@ -80,16 +80,13 @@ export default async function Home() {
             </p>
             <div className="cv-hero-actions">
               {open.junior && (
-                <Link
-                  className="button button-primary"
-                  href="/playground/junior"
-                >
+                <Link className="button button-primary" href="/junior">
                   {t("Academy Junior")}
                   <ArrowUpRight size={18} />
                 </Link>
               )}
               {open.academy && (
-                <Link className="cv-secondary-link" href="/playground">
+                <Link className="cv-secondary-link" href="/akademiya">
                   {t("Academy labs")}
                   <ArrowRight size={16} />
                 </Link>

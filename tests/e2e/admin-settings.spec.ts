@@ -74,7 +74,7 @@ test.describe("site settings and users", () => {
     await expect(page.locator(".admin-error")).toContainText(
       "The banner link must start with / or https://.",
     );
-    await page.getByLabel("Link (optional)").fill("/playground/junior");
+    await page.getByLabel("Link (optional)").fill("/junior");
     await page.getByRole("button", { name: "Save settings" }).click();
     await expect(page.getByRole("status")).toHaveText(
       "Saved. The site is updated.",
@@ -90,10 +90,7 @@ test.describe("site settings and users", () => {
       await visitor.goto("/");
       await expect(banner).toContainText(text, { timeout: 2000 });
     }).toPass({ timeout: 30_000 });
-    await expect(banner.getByRole("link")).toHaveAttribute(
-      "href",
-      "/playground/junior",
-    );
+    await expect(banner.getByRole("link")).toHaveAttribute("href", "/junior");
     await visitor.context().close();
 
     await page.reload();

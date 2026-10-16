@@ -185,7 +185,7 @@ export async function Archive({
                 )}
           </p>
           <Link className="text-link" href={filtered ? "/search" : "/about"}>
-            {filtered ? t("Clear search") : t("About CyberValue")}
+            {filtered ? t("Clear search") : t("About Cybervalue")}
             <ArrowRight size={15} />
           </Link>
         </div>

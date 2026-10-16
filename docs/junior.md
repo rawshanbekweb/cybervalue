@@ -1,23 +1,23 @@
 # Cybervalue Academy Junior
 
-A first step into cybersecurity for beginners (aimed at 7th-grade students, 13–14 years old) at `/playground/junior`. Members sign in with an access code from their teacher; the Playground page shows a card for it above the other gateways.
+A first step into cybersecurity for beginners (aimed at 7th-grade students, 13–14 years old) at `/junior`. Members sign in with an access code from their teacher; the Playground page shows a card for it above the other gateways.
 
 ## Accounts and access codes
 
 - An admin creates members at **Admin → Academy Junior** (`/admin/junior`) from a list (`Full name | group`, one per line), optionally with an end date. Each member gets an 8-symbol code shown as `XXXX-XXXX` (Crockford base32, `src/lib/junior/codes.ts`). Codes are shown once and stored only as SHA-256 digests; a lost code is replaced from the member's page, which also closes their sessions.
-- Signing in (`juniorLoginAction`) is rate limited per client (40 per 5 minutes) and globally (400 per 5 minutes) and opens a 24-hour session in the `cv_junior` cookie (path `/playground/junior`, `src/lib/junior/session.ts`). Blocking a member or passing the end date ends access at once.
+- Signing in (`juniorLoginAction`) is rate limited per client (40 per 5 minutes) and globally (400 per 5 minutes) and opens a 24-hour session in the `cv_junior` cookie (path `/junior`, `src/lib/junior/session.ts`). Blocking a member or passing the end date ends access at once.
 - Progress lives on the server in `JuniorMember.progress` (JSON, `src/lib/junior/progress.ts`): missions, cipher exercises, the case, solved daily puzzles, badge events and the agent card. Each part is saved separately (`saveJuniorPartAction`), re-validated with the same restore functions, and the XP is recomputed on the server, so an edited request can only claim what a real run could earn. The client store (`store.tsx`) updates at once and retries failed saves on the next change; a banner shows while something is unsaved.
-- `/playground/junior/secret` stays public so a friend without a code can open a secret link.
+- `/junior/secret` stays public so a friend without a code can open a secret link.
 
 ## Pages
 
-| Path                              | What is there                                                     |
-| --------------------------------- | ----------------------------------------------------------------- |
-| `/playground/junior`              | Sign-in when signed out; missions and the Cyber HQ case otherwise |
-| `/playground/junior/ciphers`      | The Cipher Room: history, fun facts and workbenches               |
-| `/playground/junior/homework`     | Daily puzzle, cipher exercises (`#cipher/N`), printable sheet     |
-| `/playground/junior/achievements` | Agent card, group ranking, certificate and badges                 |
-| `/playground/junior/secret`       | Secret messages (public)                                          |
+| Path                   | What is there                                                     |
+| ---------------------- | ----------------------------------------------------------------- |
+| `/junior`              | Sign-in when signed out; missions and the Cyber HQ case otherwise |
+| `/junior/ciphers`      | The Cipher Room: history, fun facts and workbenches               |
+| `/junior/homework`     | Daily puzzle, cipher exercises (`#cipher/N`), printable sheet     |
+| `/junior/achievements` | Agent card, group ranking, certificate and badges                 |
+| `/junior/secret`       | Secret messages (public)                                          |
 
 Every signed-in page shares `AcademyShell.tsx`: the member's name, rank and XP, a sign-out button and the section tabs. Icons are lucide glyphs inside the site's outline rings (`.jr-ring`); decorative emoji are not used.
 
@@ -52,7 +52,7 @@ When all six are complete, the page shows next steps: HTML foundations, the Linu
 
 ## Secret messages
 
-`/playground/junior/secret` encrypts a message with Caesar, Atbash, Vigenère, Enigma or Morse and makes a link. The ciphertext travels in the link’s `#m=` fragment, which browsers never send to the server; the key is left out unless the sender ticks the box, so the friend has to ask for it. Links are validated on read (`decodeSecret`): unknown ciphers, bad keys, oversized or malformed payloads are rejected and markup is stripped.
+`/junior/secret` encrypts a message with Caesar, Atbash, Vigenère, Enigma or Morse and makes a link. The ciphertext travels in the link’s `#m=` fragment, which browsers never send to the server; the key is left out unless the sender ticks the box, so the friend has to ask for it. Links are validated on read (`decodeSecret`): unknown ciphers, bad keys, oversized or malformed payloads are rejected and markup is stripped.
 
 ## Group ranking
 
@@ -64,7 +64,7 @@ The achievements page shows an **agent ID card** (`AgentCard.tsx`): a codename t
 
 ## Cipher Room
 
-`/playground/junior/ciphers` is a timeline of ten ciphers, each with a short history, a fun fact, an interactive workbench and homework:
+`/junior/ciphers` is a timeline of ten ciphers, each with a short history, a fun fact, an interactive workbench and homework:
 
 | #   | Cipher                             | Era       | Workbench                                                    |
 | --- | ---------------------------------- | --------- | ------------------------------------------------------------ |

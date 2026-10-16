@@ -36,20 +36,42 @@ const SECTIONS: { id: string; kind: MaterialKind; label: string }[] = [
   { id: "lessons", kind: "LESSON", label: "Lessons" },
   { id: "labs", kind: "LAB", label: "Labs" },
   { id: "practice", kind: "PRACTICE", label: "Practice" },
-  { id: "tests", kind: "QUIZ", label: "Tests" },
+  { id: "tests", kind: "QUIZ", label: "Tests and exams" },
+];
+
+// Every other way to be tested, listed with the teacher's tests so students
+// find all of them in one place.
+const EXAMS = [
+  {
+    href: "#achievements",
+    title: "Lab checkpoints",
+    summary:
+      "Short tests at the end of the IP addressing and Linux labs. Your best score shows under Achievements.",
+  },
+  {
+    href: "/akademiya/html-basics/assessment",
+    title: "HTML exam",
+    summary:
+      "A timed, graded HTML exam. It needs its own code from your teacher.",
+  },
+  {
+    href: "/resources/exam",
+    title: "Resources exam",
+    summary:
+      "A self-check on the Web basics and Linux slides. You see the result at once; it is not sent to the teacher.",
+  },
 ];
 
 // Interactive modules that already exist on the site, linked from the lab section.
 const OPEN_LABS = [
-  { href: "/playground/junior", title: "Cybervalue Academy Junior" },
-  { href: "/playground/web-security-lab", title: "Web Security Lab" },
-  { href: "/playground/linux-basics", title: "Linux foundations lab" },
-  { href: "/playground/network-basics", title: "IP addressing lab" },
-  { href: "/playground/ctf", title: "00:17 CTF investigation" },
-  { href: "/playground/missions", title: "Investigation missions" },
-  { href: "/playground/html-basics", title: "HTML Basics" },
-  { href: "/playground/studio", title: "HTML & CSS project studio" },
-  { href: "/playground/defend", title: "Build & Defend" },
+  { href: "/akademiya/web-security-lab", title: "Web Security Lab" },
+  { href: "/akademiya/linux-basics", title: "Linux foundations lab" },
+  { href: "/akademiya/network-basics", title: "IP addressing lab" },
+  { href: "/akademiya/ctf", title: "00:17 CTF investigation" },
+  { href: "/akademiya/missions", title: "Investigation missions" },
+  { href: "/akademiya/html-basics", title: "HTML Basics" },
+  { href: "/akademiya/studio", title: "HTML & CSS project studio" },
+  { href: "/akademiya/defend", title: "Build & Defend" },
 ];
 
 type Overview = Awaited<ReturnType<typeof studentOverview>>;
@@ -169,7 +191,9 @@ export default async function StudentHomePage() {
         (m.kind === section.kind ||
           (section.kind === "LAB" && m.kind === "CHALLENGE")),
     ),
-  })).filter((s) => s.items.length > 0 || s.kind === "LAB");
+  })).filter(
+    (s) => s.items.length > 0 || s.kind === "LAB" || s.kind === "QUIZ",
+  );
   const jumps = [
     ...(standing
       ? [
@@ -195,7 +219,10 @@ export default async function StudentHomePage() {
     ...sections.map((s) => ({
       id: s.id,
       label: s.label,
-      count: s.items.length + (s.kind === "LAB" ? OPEN_LABS.length : 0),
+      count:
+        s.items.length +
+        (s.kind === "LAB" ? OPEN_LABS.length : 0) +
+        (s.kind === "QUIZ" ? EXAMS.length : 0),
     })),
   ];
   const renderItem = (item: Item) => (
@@ -374,6 +401,23 @@ export default async function StudentHomePage() {
           </div>
           {section.items.length > 0 && (
             <ul className="student-list">{section.items.map(renderItem)}</ul>
+          )}
+          {section.kind === "QUIZ" && (
+            <ul className="student-list student-exams">
+              {EXAMS.map((exam) => (
+                <li key={exam.href}>
+                  <a href={exam.href} className="student-item">
+                    <span className="student-item-title">
+                      {t(exam.title)}
+                      <ArrowUpRight size={16} aria-hidden="true" />
+                    </span>
+                    <span className="student-item-summary">
+                      {t(exam.summary)}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
           )}
           {section.kind === "LAB" && (
             <div className="student-open-labs">

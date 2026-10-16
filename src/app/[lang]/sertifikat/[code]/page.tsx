@@ -19,7 +19,7 @@ export async function generateMetadata({
   const { code } = await params;
   return metadata(
     "Certificate check",
-    "Confirms a CyberValue course certificate.",
+    "Confirms a Cybervalue course certificate.",
     `${CERTIFICATE_PATH}/${code}`,
     true,
   );
@@ -58,11 +58,11 @@ export default async function CertificateCheckPage({
         <p>
           {certificate
             ? t(
-                "CyberValue issued this certificate, but it is no longer valid since {date}.",
+                "Cybervalue issued this certificate, but it is no longer valid since {date}.",
                 { date: date(certificate.revokedAt!) },
               )
             : t(
-                "Check that the code matches the one printed under the QR code. If it does, the certificate was not issued by CyberValue.",
+                "Check that the code matches the one printed under the QR code. If it does, the certificate was not issued by Cybervalue.",
               )}
         </p>
       </div>

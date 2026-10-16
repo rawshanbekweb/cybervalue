@@ -21,7 +21,7 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
       en: "Checkpoint: IP, mask and gateway",
     },
     covers: { uz: "1–6-darslar · 12 savol", en: "Lessons 1–6 · 12 questions" },
-    href: "/playground/network-basics#checkpoints",
+    href: "/akademiya/network-basics#checkpoints",
     pass: 70,
   },
   {
@@ -35,7 +35,7 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
       uz: "7–12-darslar · 10 savol",
       en: "Lessons 7–12 · 10 questions",
     },
-    href: "/playground/network-basics#checkpoints",
+    href: "/akademiya/network-basics#checkpoints",
     pass: 70,
   },
   {
@@ -46,7 +46,7 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
       uz: "Barcha darslardan 10 savol",
       en: "10 questions from every lesson",
     },
-    href: "/playground/linux-basics#checkpoints",
+    href: "/akademiya/linux-basics#checkpoints",
     pass: 70,
   },
 ];

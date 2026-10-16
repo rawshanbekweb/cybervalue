@@ -32,35 +32,35 @@ const PANELS: Record<
 
 const NEXT_STEPS = [
   {
-    href: "/playground/junior/ciphers",
+    href: "/junior/ciphers",
     uz: "Shifrlar xonasi",
     en: "The Cipher Room",
     noteUz: "10 ta tarixiy shifr, vizual tushuntirish va uy vazifalari.",
     noteEn: "10 historic ciphers, visual explanations and homework.",
   },
   {
-    href: "/playground/html-basics",
+    href: "/akademiya/html-basics",
     uz: "HTML asoslari",
     en: "HTML foundations",
     noteUz: "Saytlar qanday qurilishini o‘rganing.",
     noteEn: "Learn how websites are built.",
   },
   {
-    href: "/playground/linux-basics",
+    href: "/akademiya/linux-basics",
     uz: "Linux laboratoriyasi",
     noteUz: "Brauzerdagi terminalda buyruqlarni sinang.",
     en: "Linux lab",
     noteEn: "Try commands in a browser terminal.",
   },
   {
-    href: "/playground/network-basics",
+    href: "/akademiya/network-basics",
     uz: "IP manzillar laboratoriyasi",
     noteUz: "Internet qanday ulanishini ko‘ring.",
     en: "IP addressing lab",
     noteEn: "See how the internet connects.",
   },
   {
-    href: "/playground/ctf",
+    href: "/akademiya/ctf",
     uz: "Hikoyali CTF",
     noteUz: "Haqiqiy CTF topshiriqlariga o‘ting.",
     en: "Story CTF",

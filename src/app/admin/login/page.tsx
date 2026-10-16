@@ -15,7 +15,7 @@ export default async function AdminLoginPage({
   const { next, changed } = await searchParams;
   return (
     <div className="container admin-auth-page">
-      <span className="eyebrow">{t("CyberValue admin")}</span>
+      <span className="eyebrow">{t("Cybervalue admin")}</span>
       <h1>{t("Sign in")}</h1>
       <p className="muted">{t("Private area. Not for public use.")}</p>
       {changed === "1" && (

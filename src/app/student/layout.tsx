@@ -11,8 +11,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const t = createTranslator(await getAdminLocale());
   return {
     title: {
-      absolute: `${t("Student area")} | CyberValue`,
-      template: "%s | CyberValue",
+      absolute: `${t("Student area")} | Cybervalue`,
+      template: "%s | Cybervalue",
     },
     description: t("Private learning area for invited students."),
     robots: { index: false, follow: false },

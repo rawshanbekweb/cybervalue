@@ -11,7 +11,7 @@ import {
   Trophy,
 } from "lucide-react";
 import { useT } from "../network-lab/use-t";
-import { juniorLoginAction } from "@/app/[lang]/playground/junior/actions";
+import { juniorLoginAction } from "@/app/[lang]/junior/actions";
 import "./junior.css";
 
 const FEATURES = [
@@ -45,8 +45,8 @@ export function JuniorLogin() {
   const [state, action, pending] = useActionState(juniorLoginAction, undefined);
   return (
     <div className="junior container page-content">
-      <Link className="jr-back" href="/playground">
-        <ArrowLeft size={15} aria-hidden="true" /> Playground
+      <Link className="jr-back" href="/">
+        <ArrowLeft size={15} aria-hidden="true" /> {t("Bosh sahifa", "Home")}
       </Link>
       <div className="jr-login">
         <div>

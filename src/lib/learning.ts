@@ -1,4 +1,5 @@
 import "server-only";
+import { LAB_PROGRESS } from "@/lib/lab-progress";
 import { LESSONS as LINUX_LESSONS } from "@/lib/linux/curriculum";
 import { LESSONS as NETWORK_LESSONS } from "@/lib/network/curriculum";
 import { HTML_LESSONS } from "@/components/playground/html-basics/lessons.data";
@@ -16,8 +17,8 @@ export function getLearningTracks() {
       category: "Linux & terminal",
       description:
         "Learn Linux with 16 practical lessons, a browser terminal, virtual files, command explanations and automatically checked tasks.",
-      href: "/playground/linux-basics",
-      progressKey: "cybervalue:linux:progress:v1",
+      href: "/akademiya/linux-basics",
+      progressKey: LAB_PROGRESS.linux.key,
       level: "Beginner",
       lessons: LINUX_LESSONS.map(({ id, title }) => ({ id, title: title.en })),
       modules: [
@@ -32,8 +33,8 @@ export function getLearningTracks() {
       category: "Networking",
       description:
         "Learn IP addresses, subnet masks and gateways, then watch DHCP hand out addresses, DNS find a site’s IP and NAT share one public address, with a network simulator and a subnet calculator.",
-      href: "/playground/network-basics",
-      progressKey: "cybervalue:network:progress:v1",
+      href: "/akademiya/network-basics",
+      progressKey: LAB_PROGRESS.network.key,
       level: "Beginner",
       lessons: NETWORK_LESSONS.map(({ id, title }) => ({
         id,
@@ -49,8 +50,8 @@ export function getLearningTracks() {
       category: "Development",
       description:
         "Build the web from the first tag. Write real HTML, see it render, and check your work as you go.",
-      href: "/playground/html-basics",
-      progressKey: "htmldars:progress:v1",
+      href: "/akademiya/html-basics",
+      progressKey: LAB_PROGRESS.html.key,
       level: "Beginner",
       lessons: HTML_LESSONS.map(({ id, title }) => ({ id, title })),
       modules: [
@@ -65,8 +66,8 @@ export function getLearningTracks() {
       category: "Security",
       description:
         "Follow a request from browser to database. Explore authentication, investigate vulnerabilities, and understand the fix.",
-      href: "/playground/web-security-lab",
-      progressKey: "sabaq:progress:v1",
+      href: "/akademiya/web-security-lab",
+      progressKey: LAB_PROGRESS.security.key,
       level: "Beginner → intermediate",
       lessons: LESSONS.map(({ id, title }) => ({ id, title })),
       modules: GROUPS.map(({ title }) => title.replace(/^\d+ · /, "")),

@@ -31,7 +31,7 @@ export async function metadata(
           url: "/opengraph-image",
           width: 1200,
           height: 630,
-          alt: "CyberValue — Cybersecurity × Software Development",
+          alt: "Cybervalue — Cybersecurity × Software Development",
         },
       ],
     },

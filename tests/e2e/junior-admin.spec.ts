@@ -80,17 +80,17 @@ test.describe("Academy Junior administration", () => {
     const member = await (
       await browser.newContext({ storageState: english })
     ).newPage();
-    await member.goto("/playground/junior/homework#cipher/4");
+    await member.goto("/junior/homework#cipher/4");
     await enterCode(member, code);
-    await expect(member).toHaveURL(/\/playground\/junior\/homework/);
-    await member.goto("/playground/junior/homework#cipher/4");
+    await expect(member).toHaveURL(/\/junior\/homework/);
+    await member.goto("/junior/homework#cipher/4");
     const first = member.locator(".cr-ex").first();
     await first.getByLabel("Your answer").fill("ALYD");
     await first.getByRole("button", { name: "Check" }).click();
     await expect(member.locator(".jr-topbar")).toContainText("15 XP");
 
     // The group ranking shows both, the member marked as "you".
-    await member.goto("/playground/junior/achievements");
+    await member.goto("/junior/achievements");
     const ranking = member.locator(".jr-ranking");
     await expect(ranking.locator("li")).toHaveCount(2);
     await expect(ranking.locator("li").first()).toContainText("Classmate");

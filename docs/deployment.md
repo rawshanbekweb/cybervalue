@@ -1,4 +1,4 @@
-# Deploying CyberValue
+# Deploying Cybervalue
 
 No production domain or hosting credentials were supplied. Deployment is prepared, not performed.
 

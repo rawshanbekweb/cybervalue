@@ -48,7 +48,7 @@ async function answerAll(page: Page, card: ReturnType<Page["locator"]>) {
 }
 
 test("anyone can take a checkpoint; the server grades it", async ({ page }) => {
-  await page.goto("/playground/network-basics");
+  await page.goto("/akademiya/network-basics");
   await page.getByRole("link", { name: "Checkpoints" }).click();
   const section = page.locator("#checkpoints");
   await expect(section).toContainText("Sign in to the student area first");
@@ -67,7 +67,7 @@ test("anyone can take a checkpoint; the server grades it", async ({ page }) => {
   await expect(card.locator(".cp-right")).toHaveCount(12);
   await audit(page, "network checkpoint", "#checkpoints");
 
-  await page.goto("/playground/linux-basics");
+  await page.goto("/akademiya/linux-basics");
   const linux = page.getByRole("article", { name: "Checkpoint: Linux basics" });
   await linux.getByRole("button", { name: "Take the test" }).click();
   await expect(linux.locator(".cp-form li")).toHaveCount(10);
@@ -135,7 +135,7 @@ test.describe("saved results", () => {
     await expect(page.getByLabel("Your rank")).toContainText("Trainee");
     await expect(page.getByLabel("Your rank")).toContainText("0 XP");
 
-    await page.goto("/playground/network-basics#checkpoints");
+    await page.goto("/akademiya/network-basics#checkpoints");
     const section = page.locator("#checkpoints");
     await expect(section).toContainText("Malika, your result goes to");
     const card = section.getByRole("article", {

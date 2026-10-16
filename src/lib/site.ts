@@ -1,7 +1,7 @@
 import { env } from "./env";
 
 export const site = {
-  name: "CyberValue",
+  name: "Cybervalue",
   person: "Rawshanbek Gayipbaev",
   url: env.SITE_URL.replace(/\/$/, ""),
   description:
@@ -35,7 +35,7 @@ export const collections = {
   },
   labs: {
     kind: "LAB",
-    title: "Labs",
+    title: "Lab write-ups",
     eyebrow: "Theory meets practice",
     description:
       "Controlled security experiments. The method, the discovery, and what it takes to fix it.",

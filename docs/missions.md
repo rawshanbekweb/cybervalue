@@ -1,6 +1,6 @@
 # Security missions
 
-Open `/playground/missions`. The learning hub, home page, and existing security course link to this workspace.
+Open `/akademiya/missions`. The learning hub, home page, and existing security course link to this workspace.
 
 Three investigations complement the guided lessons:
 

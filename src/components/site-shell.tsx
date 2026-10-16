@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Inter } from "next/font/google";
 import { ArrowUpRight } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
-import { HideOnConcept } from "@/components/hide-on-concept";
 import { LocaleProvider } from "@/components/locale-provider";
 import { site } from "@/lib/site";
 import { getSiteConfig } from "@/lib/site-config-server";
@@ -32,10 +31,8 @@ export async function SiteShell({
   const open = config.sections;
   // Two directions up front; the author's portfolio lives under About.
   const navigation = [
-    ...(open.junior
-      ? [{ href: "/playground/junior", label: "Academy Junior" }]
-      : []),
-    ...(open.academy ? [{ href: "/playground", label: "Academy" }] : []),
+    ...(open.junior ? [{ href: "/junior", label: "Academy Junior" }] : []),
+    ...(open.academy ? [{ href: "/akademiya", label: "Academy" }] : []),
     { href: "/about", label: "About" },
   ];
   const announcement =
@@ -52,67 +49,59 @@ export async function SiteShell({
             {t("Skip to content")}
           </a>
           {announcement && (
-            <HideOnConcept>
-              <div className="site-announcement" role="note">
-                <span className="status-dot" aria-hidden="true" />
-                {config.announcement.href ? (
-                  <a href={config.announcement.href}>
-                    {announcement}
-                    <ArrowUpRight size={14} aria-hidden="true" />
-                  </a>
-                ) : (
-                  <span>{announcement}</span>
-                )}
-              </div>
-            </HideOnConcept>
+            <div className="site-announcement" role="note">
+              <span className="status-dot" aria-hidden="true" />
+              {config.announcement.href ? (
+                <a href={config.announcement.href}>
+                  {announcement}
+                  <ArrowUpRight size={14} aria-hidden="true" />
+                </a>
+              ) : (
+                <span>{announcement}</span>
+              )}
+            </div>
           )}
           <SiteHeader items={navigation} studentArea={open.studentArea} />
           <main id="main">{children}</main>
-          <HideOnConcept>
-            <footer className="site-footer container">
-              <div className="footer-top">
-                <div>
-                  <Link className="wordmark" href="/">
-                    cyber<span>value</span>
-                    <span className="brand-period">.</span>
-                  </Link>
-                  <p>{t("Curiosity. Practice. Evidence.")}</p>
-                </div>
-                <div className="footer-links">
-                  {open.portfolio && (
-                    <>
-                      <Link href="/work">{t("Work")}</Link>
-                      <Link href="/research">{t("Research")}</Link>
-                      <Link href="/labs">{t("Labs")}</Link>
-                      <Link href="/ctf">CTF</Link>
-                      <Link href="/resources">{t("Resources")}</Link>
-                    </>
-                  )}
-                  <Link href="/search">{t("Search the archive")}</Link>
-                  {config.email && (
-                    <a href={`mailto:${config.email}`}>{config.email}</a>
-                  )}
-                  {socials.map((s) => (
-                    <a
-                      key={s.platform}
-                      href={s.url}
-                      rel="me noopener noreferrer"
-                    >
-                      {s.platform}
-                      <ArrowUpRight size={13} />
-                    </a>
-                  ))}
-                </div>
+          <footer className="site-footer container">
+            <div className="footer-top">
+              <div>
+                <Link className="wordmark" href="/">
+                  cyber<span>value</span>
+                  <span className="brand-period">.</span>
+                </Link>
+                <p>{t("Curiosity. Practice. Evidence.")}</p>
               </div>
-              <div className="footer-bottom">
-                <span>
-                  © {new Date().getFullYear()} {site.person}
-                </span>
-                <span>{t("Think critically. Build securely.")}</span>
-                <a href="#main">{t("Back to top ↑")}</a>
+              <div className="footer-links">
+                {open.portfolio && (
+                  <>
+                    <Link href="/work">{t("Work")}</Link>
+                    <Link href="/research">{t("Research")}</Link>
+                    <Link href="/labs">{t("Lab write-ups")}</Link>
+                    <Link href="/ctf">CTF</Link>
+                    <Link href="/resources">{t("Resources")}</Link>
+                  </>
+                )}
+                <Link href="/search">{t("Search the archive")}</Link>
+                {config.email && (
+                  <a href={`mailto:${config.email}`}>{config.email}</a>
+                )}
+                {socials.map((s) => (
+                  <a key={s.platform} href={s.url} rel="me noopener noreferrer">
+                    {s.platform}
+                    <ArrowUpRight size={13} />
+                  </a>
+                ))}
               </div>
-            </footer>
-          </HideOnConcept>
+            </div>
+            <div className="footer-bottom">
+              <span>
+                © {new Date().getFullYear()} {site.person}
+              </span>
+              <span>{t("Think critically. Build securely.")}</span>
+              <a href="#main">{t("Back to top ↑")}</a>
+            </div>
+          </footer>
         </LocaleProvider>
       </body>
     </html>

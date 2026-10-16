@@ -37,11 +37,11 @@ test("proxy rewrites unprefixed URLs to the cookie language and defaults to Uzbe
 });
 
 test("proxy redirects explicit language prefixes to the canonical unprefixed URL", () => {
-  const response = proxy(request("/en/playground/ctf?x=1"));
+  const response = proxy(request("/en/akademiya/ctf?x=1"));
   assert.equal(response.status, 308);
   assert.equal(
     response.headers.get("location"),
-    "http://localhost:3000/playground/ctf?x=1",
+    "http://localhost:3000/akademiya/ctf?x=1",
   );
   assert.equal(
     proxy(request("/uz")).headers.get("location"),
@@ -56,7 +56,7 @@ test("proxy redirects explicit language prefixes to the canonical unprefixed URL
 
 test("proxy matcher skips the CMS, student area, handlers, internals and files", () => {
   const matcher = new RegExp(`^${config.matcher[0]}$`);
-  for (const path of ["/", "/about", "/playground/ctf", "/resources/exam"])
+  for (const path of ["/", "/about", "/akademiya/ctf", "/resources/exam"])
     assert.ok(matcher.test(path), path);
   for (const path of [
     "/admin",

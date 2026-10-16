@@ -76,8 +76,8 @@ export function LinuxLab() {
   };
   return (
     <div className="linux-lab">
-      <Link className="lx-back" href="/playground">
-        <ArrowLeft size={15} /> {t("Laboratoriyalar", "Playground")}
+      <Link className="lx-back" href="/akademiya">
+        <ArrowLeft size={15} /> {t("Akademiya", "Academy")}
       </Link>
       <header className="lx-hero">
         <div>
@@ -600,7 +600,7 @@ function Workspace({
               aria-relevant="additions"
             >
               <div className="lx-welcome">
-                <strong>CyberValue Linux Lab</strong>
+                <strong>Cybervalue Linux Lab</strong>
                 <p>
                   {t(
                     "Boshlash uchun buyruq kiriting. Yordam: help",

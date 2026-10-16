@@ -31,7 +31,7 @@ export async function createJuniorSession(memberId: string) {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
-    path: "/playground/junior",
+    path: "/junior",
     expires: expiresAt,
   });
 }
@@ -65,5 +65,5 @@ export async function destroyJuniorSession() {
     await db.juniorSession.deleteMany({
       where: { tokenHash: hashSecret(token) },
     });
-  store.delete({ name: COOKIE, path: "/playground/junior" });
+  store.delete({ name: COOKIE, path: "/junior" });
 }

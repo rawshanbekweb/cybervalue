@@ -22,6 +22,8 @@ export type XpInput = {
     total: number;
     createdAt: Date;
   }[];
+  // Completed lessons in the open labs, synced from the browser.
+  labs?: { lab: string; lessons: number[] }[];
 };
 
 export const XP = {
@@ -30,6 +32,7 @@ export const XP = {
   challenge: 100, // a personal lab solved
   // Tests give their best percent (up to 100) and checkpoints 60% of theirs.
   checkpointShare: 0.6,
+  labLesson: 5, // each lesson finished in an open lab
 } as const;
 
 export const RANKS: readonly { xp: number; title: Text }[] = [
@@ -239,6 +242,10 @@ export function standing(input: XpInput, now = Date.now()) {
   for (const percent of best.values()) xp += percent;
   for (const percent of checkpointBest.values())
     xp += Math.round(percent * XP.checkpointShare);
+  const labs = Object.fromEntries(
+    (input.labs ?? []).map((l) => [l.lab, new Set(l.lessons).size]),
+  );
+  for (const count of Object.values(labs)) xp += count * XP.labLesson;
 
   const challenges = input.materials.filter(
     (m) => m.kind === "CHALLENGE" && solved.has(m.id),
@@ -287,6 +294,7 @@ export function standing(input: XpInput, now = Date.now()) {
       ? Math.round([...best.values()].reduce((a, b) => a + b, 0) / best.size)
       : null,
     checkpoints: Object.fromEntries(checkpointBest),
+    labs: labs as Record<string, number>,
     checkpointsPassed: passed,
     badges: STUDENT_BADGES.filter((b) => b.earned(facts)).map((b) => b.id),
     week: times.filter((t) => weekIndex(t) === thisWeek).length,

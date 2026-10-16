@@ -47,7 +47,7 @@ test("the agent card keeps a codename, and the academy has its own sections", as
   page.on("pageerror", (error) => errors.push(error.message));
   const sections = page.getByRole("navigation", { name: "Academy sections" });
   await sections.getByRole("link", { name: "Achievements" }).click();
-  await expect(page).toHaveURL(/\/playground\/junior\/achievements$/);
+  await expect(page).toHaveURL(/\/junior\/achievements$/);
   const card = page.getByRole("region", { name: "Agent ID card" });
   await expect(card).toContainText("New recruit");
   await card.getByRole("button", { name: "Pick a codename" }).click();
@@ -60,7 +60,7 @@ test("the agent card keeps a codename, and the academy has its own sections", as
   await audit(page, "achievements");
 
   await sections.getByRole("link", { name: "Cipher Room" }).click();
-  await expect(page).toHaveURL(/\/playground\/junior\/ciphers$/);
+  await expect(page).toHaveURL(/\/junior\/ciphers$/);
   await expect(
     page.getByRole("heading", { level: 1, name: /2,600 years of secrets/ }),
   ).toBeVisible();
@@ -76,7 +76,7 @@ test("the agent card keeps a codename, and the academy has its own sections", as
 test("homework has its own page; solved exercises earn XP that survives a reload", async ({
   page,
 }) => {
-  await page.goto("/playground/junior/ciphers#cipher/4");
+  await page.goto("/junior/ciphers#cipher/4");
   await expect(
     page.getByRole("heading", { name: "The Caesar cipher" }),
   ).toBeVisible();
@@ -84,7 +84,7 @@ test("homework has its own page; solved exercises earn XP that survives a reload
   await page.getByLabel("Message", { exact: true }).fill("XIVA");
   await expect(page.locator(".cr-out").first()).toHaveText("ALYD");
   await page.getByRole("link", { name: /Homework: The Caesar cipher/ }).click();
-  await expect(page).toHaveURL(/\/playground\/junior\/homework#cipher\/4$/);
+  await expect(page).toHaveURL(/\/junior\/homework#cipher\/4$/);
   await expect(
     page.getByRole("heading", { level: 3, name: "The Caesar cipher" }),
   ).toBeVisible();
@@ -115,19 +115,19 @@ test("every cipher's workbench runs, and the paint lesson asks questions", async
 }) => {
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await page.goto("/playground/junior/ciphers#cipher/1");
+  await page.goto("/junior/ciphers#cipher/1");
   for (let n = 1; n <= 10; n++) {
-    await page.goto(`/playground/junior/ciphers#cipher/${n}`);
+    await page.goto(`/junior/ciphers#cipher/${n}`);
     await page.reload();
     await expect(page.locator(".cr-bench")).toBeVisible();
   }
   // Frequency analysis cracks the sample by itself.
-  await page.goto("/playground/junior/ciphers#cipher/5");
+  await page.goto("/junior/ciphers#cipher/5");
   await page.reload();
   await page.getByRole("button", { name: "Crack it" }).click();
   await expect(page.locator(".cr-out")).toContainText("quick brown fox");
 
-  await page.goto("/playground/junior/homework#cipher/10");
+  await page.goto("/junior/homework#cipher/10");
   await page.reload();
   const card = page.locator(".cr-ex").nth(1);
   await card
@@ -141,7 +141,7 @@ test("every cipher's workbench runs, and the paint lesson asks questions", async
 test("a printable homework sheet is built with optional answers", async ({
   page,
 }) => {
-  await page.goto("/playground/junior/homework");
+  await page.goto("/junior/homework");
   const sheet = page.getByRole("region", { name: "Homework sheet" });
   await sheet.getByLabel("Each:").selectOption("2");
   await sheet.getByRole("button", { name: "Make a sheet" }).click();

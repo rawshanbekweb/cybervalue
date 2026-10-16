@@ -31,7 +31,7 @@ export async function WebLessonResource() {
           <h2 id="web-lesson-title">{t("Web qanday ishlaydi?")}</h2>
           <p>
             {t(
-              "Internet va IP manzillardan HTTP, TLS va web xavfsizligigacha — 30 mavzu, bosqichli sxemalar, tekshiruv savollari va o‘qituvchi izohlari.",
+              "Internet va IP manzillardan HTTP, TLS va veb-xavfsizlikkacha — 30 mavzu, bosqichli sxemalar, tekshiruv savollari va o‘qituvchi izohlari.",
             )}
           </p>
           <div className={styles.actions}>
@@ -98,7 +98,7 @@ export async function WebLessonResource() {
             </a>
             <Link
               className="button button-secondary"
-              href="/playground/linux-basics"
+              href="/akademiya/linux-basics"
             >
               <Terminal size={16} aria-hidden="true" /> {t("Open Linux lab")}
             </Link>
