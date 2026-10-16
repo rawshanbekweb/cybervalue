@@ -8,30 +8,41 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { LearningCatalog } from "@/components/learning-catalog";
-import { JuniorGateway } from "@/components/junior-gateway";
 import { MissionGateway } from "@/components/mission-gateway";
 import { StudioGateway } from "@/components/studio-gateway";
 import { CtfGateway } from "@/components/ctf-gateway";
 import { DefendGateway } from "@/components/defend-gateway";
 import { getLearningTracks } from "@/lib/learning";
 import { metadata as buildMetadata } from "@/lib/seo";
+import { getSiteConfig, requireSection } from "@/lib/site-config-server";
+import type { SectionId } from "@/lib/site-config";
 import "@/components/learning.css";
 
 export const generateMetadata = () =>
   buildMetadata(
-    "Playground",
-    "Practice Linux, HTML and web application security through interactive lessons, searchable learning tracks and browser-saved progress.",
+    "Cybervalue Academy",
+    "Hands-on labs in the browser: networks, Linux, HTML and web security, with checkpoint tests, CTF investigations and a student portal.",
     "/playground",
   );
 
 export default async function PlaygroundPage() {
+  await requireSection("academy");
   const t = await getTranslator();
-  const tracks = getLearningTracks();
+  const { sections } = await getSiteConfig();
+  const tracks = getLearningTracks().filter(
+    (track) => sections[track.id as SectionId] !== false,
+  );
+  const gateways = [
+    { id: "ctf", node: <CtfGateway key="ctf" /> },
+    { id: "missions", node: <MissionGateway key="missions" /> },
+    { id: "studio", node: <StudioGateway key="studio" /> },
+    { id: "defend", node: <DefendGateway key="defend" /> },
+  ].filter((g) => sections[g.id as SectionId]);
   return (
     <div className="container page-content">
       <header className="page-header learning-header">
         <span className="eyebrow">
-          <span className="status-dot" /> {t("THE INTERACTIVE WORKSPACE")}
+          <span className="status-dot" /> {t("CYBERVALUE ACADEMY")}
         </span>
         <h1>
           {t("Learn it. Build it.")}
@@ -40,7 +51,7 @@ export default async function PlaygroundPage() {
         </h1>
         <p>
           {t(
-            "A place to experiment, make mistakes and understand the result. Learn Linux in a virtual terminal, build with HTML or explore web application security.",
+            "Pick a lab, work through short lessons and prove what you learned with a checkpoint test. Signed-in students see every result on their own page.",
           )}
         </p>
         <div className="learning-highlights">
@@ -60,19 +71,22 @@ export default async function PlaygroundPage() {
           </span>
         </div>
       </header>
-      <JuniorGateway />
-      <div className="gateway-grid">
-        <CtfGateway />
-        <MissionGateway />
-        <StudioGateway />
-        <DefendGateway />
-      </div>
-      <section aria-labelledby="tracks-title">
-        <h2 id="tracks-title" className="learning-section-title">
-          {t("Choose your learning track")}
-        </h2>
-        <LearningCatalog tracks={tracks} />
-      </section>
+      {tracks.length > 0 && (
+        <section aria-labelledby="tracks-title">
+          <h2 id="tracks-title" className="learning-section-title">
+            {t("Choose your learning track")}
+          </h2>
+          <LearningCatalog tracks={tracks} />
+        </section>
+      )}
+      {gateways.length > 0 && (
+        <section aria-labelledby="practice-title">
+          <h2 id="practice-title" className="learning-section-title">
+            {t("Investigations and projects")}
+          </h2>
+          <div className="gateway-grid">{gateways.map((g) => g.node)}</div>
+        </section>
+      )}
       <section className="learning-assessment">
         <span className="learn-icon">
           <ClipboardCheck size={25} />
@@ -100,7 +114,7 @@ export default async function PlaygroundPage() {
           <summary>{t("Where should I start?")}</summary>
           <p>
             {t(
-              "New to cybersecurity? Start with Cybervalue Academy Junior: six short missions, no coding. Then pick a track: HTML foundations if you want to build websites, or the security track once you understand basic page structure. It begins with architecture and works toward HTTP, identity, and vulnerabilities.",
+              "School students start with Cybervalue Academy Junior. Everyone else: start with the IP addressing or Linux lab, then HTML foundations, then the web security track. Each lab ends with a checkpoint test.",
             )}
           </p>
         </details>

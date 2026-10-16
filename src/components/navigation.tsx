@@ -2,13 +2,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useSyncExternalStore } from "react";
-import { Menu, X, ArrowUpRight, GraduationCap } from "lucide-react";
+import { Menu, X, GraduationCap } from "lucide-react";
 import { useTranslator } from "./locale-provider";
 
 export function Navigation({
   items,
+  studentArea = true,
 }: {
   items: { href: string; label: string }[];
+  studentArea?: boolean;
 }) {
   const path = usePathname();
   const t = useTranslator();
@@ -21,8 +23,8 @@ export function Navigation({
     () => true,
     () => false,
   );
-  // The most specific entry wins, so /playground/junior highlights "Start here"
-  // and not "Playground" as well.
+  // The most specific entry wins, so /playground/junior highlights "Academy
+  // Junior" and not "Academy" as well.
   const matches = (href: string) =>
     href === "/" ? path === "/" : path === href || path.startsWith(`${href}/`);
   const current = (hydrated ? items : [])
@@ -65,22 +67,17 @@ export function Navigation({
             </Link>
           );
         })}
-        <Link
-          className="nav-contact"
-          href="/about#connect"
-          onClick={() => setOpen(false)}
-        >
-          {t("Let’s connect")} <ArrowUpRight size={14} />
-        </Link>
         {/* Signed-out visitors land on the student sign-in page. */}
-        <Link
-          className="nav-student"
-          href="/student"
-          onClick={() => setOpen(false)}
-        >
-          <GraduationCap size={16} aria-hidden="true" />
-          {t("Student portal")}
-        </Link>
+        {studentArea && (
+          <Link
+            className="nav-student"
+            href="/student"
+            onClick={() => setOpen(false)}
+          >
+            <GraduationCap size={16} aria-hidden="true" />
+            {t("Student portal")}
+          </Link>
+        )}
       </nav>
     </>
   );

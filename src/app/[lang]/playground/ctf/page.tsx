@@ -1,3 +1,4 @@
+import { requireSection } from "@/lib/site-config-server";
 import { SignalCTF } from "@/components/playground/ctf/SignalCTF";
 import { metadata } from "@/lib/seo";
 
@@ -8,6 +9,7 @@ export const generateMetadata = () =>
     "/playground/ctf",
   );
 
-export default function CTFPage() {
+export default async function CTFPage() {
+  await requireSection("academy", "ctf");
   return <SignalCTF />;
 }

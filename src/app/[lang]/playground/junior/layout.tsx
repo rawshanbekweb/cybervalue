@@ -1,3 +1,4 @@
+import { requireSection } from "@/lib/site-config-server";
 import { getJuniorMember } from "@/lib/junior/session";
 import { restoreJuniorProgress } from "@/lib/junior/progress";
 import { JuniorStoreProvider } from "@/components/playground/junior/store";
@@ -6,6 +7,7 @@ import { JuniorStoreProvider } from "@/components/playground/junior/store";
 export default async function JuniorLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  await requireSection("junior");
   const member = await getJuniorMember();
   if (!member) return children;
   return (

@@ -1,3 +1,4 @@
+import { requireSection } from "@/lib/site-config-server";
 import { DefendLab } from "@/components/playground/defend/DefendLab";
 import { metadata } from "@/lib/seo";
 
@@ -8,6 +9,7 @@ export const generateMetadata = () =>
     "/playground/defend",
   );
 
-export default function DefendPage() {
+export default async function DefendPage() {
+  await requireSection("academy", "defend");
   return <DefendLab />;
 }

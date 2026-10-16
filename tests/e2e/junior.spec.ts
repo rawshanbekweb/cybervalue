@@ -21,9 +21,9 @@ test.use({
   },
 });
 
-test("the Playground leads to the academy's sign-in page", async ({ page }) => {
-  await page.goto("/playground");
-  await page.getByRole("link", { name: /Enter the academy/ }).click();
+test("the home page leads to Junior's sign-in page", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("link", { name: /Enter Junior/ }).click();
   await expect(page).toHaveURL(/\/playground\/junior$/);
   await expect(
     page.getByRole("heading", { name: "Welcome to the academy.", level: 1 }),
@@ -166,16 +166,25 @@ test("Uzbek is the default language", async ({ browser }) => {
   await context.close();
 });
 
-test("the home page leads a newcomer to Junior and shows every practice card", async ({
+test("the home page shows the two directions with one way into each", async ({
   page,
 }) => {
   await page.goto("/");
+  const junior = page.getByRole("region", {
+    name: "Cybervalue Academy Junior",
+  });
+  const academy = page.getByRole("region", { name: "Cybervalue Academy" });
   await expect(
-    page.getByRole("link", { name: /Start your first mission/ }).first(),
+    junior.getByRole("link", { name: /Enter Junior/ }),
   ).toHaveAttribute("href", "/playground/junior");
   await expect(
-    page.getByRole("heading", { name: "Cybervalue Academy Junior" }),
-  ).toBeVisible();
+    academy.getByRole("link", { name: /Open the labs/ }),
+  ).toHaveAttribute("href", "/playground");
+  await expect(
+    academy.getByRole("link", { name: "Student portal" }),
+  ).toHaveAttribute("href", "/student");
+  // The practice gateways moved to the Academy page.
+  await page.goto("/playground");
   await expect(
     page.getByRole("heading", {
       name: "Write the code. Then let a bot attack it.",
@@ -188,9 +197,11 @@ test("the main navigation marks only the most specific section as current", asyn
 }) => {
   const nav = page.getByRole("navigation", { name: "Main navigation" });
   await page.goto("/playground/junior");
-  await expect(nav.locator('[aria-current="page"]')).toHaveText("Start here");
+  await expect(nav.locator('[aria-current="page"]')).toHaveText(
+    "Academy Junior",
+  );
   await page.goto("/playground/ctf");
-  await expect(nav.locator('[aria-current="page"]')).toHaveText("Playground");
+  await expect(nav.locator('[aria-current="page"]')).toHaveText("Academy");
   await page.goto("/");
   await expect(nav.locator('[aria-current="page"]')).toHaveCount(0);
 });

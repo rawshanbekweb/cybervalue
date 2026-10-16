@@ -86,15 +86,6 @@ export function contentUrl(entry: { kind: string; slug: string }) {
 }
 // The wordmark links home, so the list starts with the newcomer's way in.
 // Nine entries do not fit beside the student button below 1280px.
-export const navigation = [
-  { href: "/playground/junior", label: "Start here" },
-  ...Object.entries(collections).map(([key, value]) => ({
-    href: `/${key}`,
-    label: value.title,
-  })),
-  { href: "/playground", label: "Playground" },
-  { href: "/about", label: "About" },
-];
 export const configuredSocials = [
   { platform: "GitHub", url: env.GITHUB_URL },
   { platform: "LinkedIn", url: env.LINKEDIN_URL },

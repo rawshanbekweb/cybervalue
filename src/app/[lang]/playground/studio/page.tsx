@@ -1,3 +1,4 @@
+import { requireSection } from "@/lib/site-config-server";
 import { ProjectStudio } from "@/components/playground/studio/ProjectStudio";
 import { metadata } from "@/lib/seo";
 
@@ -8,6 +9,7 @@ export const generateMetadata = () =>
     "/playground/studio",
   );
 
-export default function StudioPage() {
+export default async function StudioPage() {
+  await requireSection("academy", "studio");
   return <ProjectStudio />;
 }

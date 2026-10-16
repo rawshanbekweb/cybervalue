@@ -1,3 +1,4 @@
+import { requireSection } from "@/lib/site-config-server";
 import Link from "next/link";
 import { getAdminTranslator } from "@/lib/i18n/server";
 import { requireStudent } from "@/lib/student/session";
@@ -7,6 +8,7 @@ import { studentLogoutAction } from "../actions";
 export default async function StudentPortalLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  await requireSection("studentArea");
   const t = await getAdminTranslator();
   const student = await requireStudent();
   return (

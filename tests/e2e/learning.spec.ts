@@ -112,7 +112,7 @@ test("catalog resumes valid progress and tolerates damaged storage", async ({
 });
 
 test("empty search can be cleared", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/playground");
   await page
     .getByRole("searchbox", { name: "Search tracks and lessons" })
     .fill("zz-no-such-lesson");

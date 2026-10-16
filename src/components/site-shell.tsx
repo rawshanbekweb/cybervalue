@@ -4,7 +4,9 @@ import { ArrowUpRight } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { HideOnConcept } from "@/components/hide-on-concept";
 import { LocaleProvider } from "@/components/locale-provider";
-import { site, navigation } from "@/lib/site";
+import { site } from "@/lib/site";
+import { getSiteConfig } from "@/lib/site-config-server";
+import { pick } from "@/lib/site-config";
 import { getSocials } from "@/lib/content";
 import { createTranslator, type Locale } from "@/lib/i18n";
 
@@ -25,8 +27,19 @@ export async function SiteShell({
   locale,
   children,
 }: Readonly<{ locale: Locale; children: React.ReactNode }>) {
-  const socials = await getSocials();
+  const [socials, config] = await Promise.all([getSocials(), getSiteConfig()]);
   const t = createTranslator(locale);
+  const open = config.sections;
+  // Two directions up front; the author's portfolio lives under About.
+  const navigation = [
+    ...(open.junior
+      ? [{ href: "/playground/junior", label: "Academy Junior" }]
+      : []),
+    ...(open.academy ? [{ href: "/playground", label: "Academy" }] : []),
+    { href: "/about", label: "About" },
+  ];
+  const announcement =
+    config.announcement.enabled && pick(config.announcement.text, locale);
   return (
     <html
       lang={locale}
@@ -38,7 +51,22 @@ export async function SiteShell({
           <a href="#main" className="skip-link">
             {t("Skip to content")}
           </a>
-          <SiteHeader items={navigation} />
+          {announcement && (
+            <HideOnConcept>
+              <div className="site-announcement" role="note">
+                <span className="status-dot" aria-hidden="true" />
+                {config.announcement.href ? (
+                  <a href={config.announcement.href}>
+                    {announcement}
+                    <ArrowUpRight size={14} aria-hidden="true" />
+                  </a>
+                ) : (
+                  <span>{announcement}</span>
+                )}
+              </div>
+            </HideOnConcept>
+          )}
+          <SiteHeader items={navigation} studentArea={open.studentArea} />
           <main id="main">{children}</main>
           <HideOnConcept>
             <footer className="site-footer container">
@@ -51,8 +79,19 @@ export async function SiteShell({
                   <p>{t("Curiosity. Practice. Evidence.")}</p>
                 </div>
                 <div className="footer-links">
-                  <Link href="/activity">{t("Activity")}</Link>
+                  {open.portfolio && (
+                    <>
+                      <Link href="/work">{t("Work")}</Link>
+                      <Link href="/research">{t("Research")}</Link>
+                      <Link href="/labs">{t("Labs")}</Link>
+                      <Link href="/ctf">CTF</Link>
+                      <Link href="/resources">{t("Resources")}</Link>
+                    </>
+                  )}
                   <Link href="/search">{t("Search the archive")}</Link>
+                  {config.email && (
+                    <a href={`mailto:${config.email}`}>{config.email}</a>
+                  )}
                   {socials.map((s) => (
                     <a
                       key={s.platform}

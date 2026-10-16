@@ -1,3 +1,4 @@
+import { requireSection } from "@/lib/site-config-server";
 import { MissionControl } from "@/components/playground/missions/MissionControl";
 import { metadata } from "@/lib/seo";
 
@@ -8,6 +9,7 @@ export const generateMetadata = () =>
     "/playground/missions",
   );
 
-export default function MissionsPage() {
+export default async function MissionsPage() {
+  await requireSection("academy", "missions");
   return <MissionControl />;
 }

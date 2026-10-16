@@ -127,9 +127,9 @@ test("responsive layouts and keyboard navigation", async ({ page }) => {
       await menu.click();
       await page
         .getByRole("navigation", { name: "Main navigation" })
-        .getByRole("link", { name: "Labs", exact: true })
+        .getByRole("link", { name: "Academy", exact: true })
         .click();
-      await expect(page.getByRole("heading", { level: 1 })).toHaveText("Labs.");
+      await expect(page).toHaveURL(/\/playground$/);
       await expect(menu).toHaveAttribute("aria-expanded", "false");
     }
   }
