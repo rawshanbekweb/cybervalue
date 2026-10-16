@@ -36,6 +36,8 @@ ARP requests and replies, Ethernet MACs, IP addresses and TTL at each hop,
 including the key fact that a packet for the internet carries the router's
 MAC but the final IP.
 
+Two **checkpoint tests** at the end of the lab (lessons 1–6 and 7–12) are generated per attempt and graded on the server; see `docs/students.md`.
+
 A separate **subnet calculator** accepts any address with a dotted mask or
 `/prefix` and shows the block, both bit strips and every derived address.
 

@@ -229,5 +229,22 @@
   "Defender": "Himoyachi",
   "Cyber agent": "Kiber-agent",
   "Cipher master": "Shifr ustasi",
-  "Chief agent": "Bosh agent"
+  "Chief agent": "Bosh agent",
+  "Lab checkpoints": "Lab nazoratlari",
+  "This week": "Shu hafta",
+  "{weeks}-week streak": "{weeks} hafta ketma-ket",
+  "Your rank": "Unvoningiz",
+  "Progress to the next rank": "Keyingi unvongacha",
+  "Top rank reached": "Eng yuqori unvonga erishdingiz",
+  "Weekly goal reached": "Haftalik maqsad bajarildi",
+  "{done} of {goal} actions this week": "shu hafta {goal} tadan {done} ta harakat",
+  "Achievements": "Yutuqlar",
+  "XP comes from finished materials, test scores, solved labs and lab checkpoints.": "XP tugatilgan materiallar, test natijalari, yechilgan lablar va lab nazoratlaridan keladi.",
+  "Group {group} ranking": "{group} guruhi reytingi",
+  "Group ranking": "Guruh reytingi",
+  "you": "siz",
+  "Your classmates have not started yet.": "Guruhdoshlaringiz hali boshlamagan.",
+  "The ranking appears once your teacher puts you in a group.": "O‘qituvchingiz sizni guruhga qo‘shgach, reyting paydo bo‘ladi.",
+  "Not taken": "Topshirilmagan",
+  "Passed · {percent}%": "O‘tdi · {percent}%"
 }

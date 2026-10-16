@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getAdminTranslator } from "@/lib/i18n/server";
+import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
+import { loadStandings } from "@/lib/student/standing";
+import { CHECKPOINT_META } from "@/lib/checkpoints/meta";
 import { requireAdmin } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { ConfirmButton } from "@/components/admin/confirm-button";
@@ -57,6 +59,16 @@ export default async function AdminStudentPage({
     },
   });
   if (!student) notFound();
+  const locale = await getAdminLocale();
+  const [standings, checkpoints] = await Promise.all([
+    loadStandings(db, [student]),
+    db.studentCheckpoint.findMany({
+      where: { studentId: student.id },
+      orderBy: { createdAt: "desc" },
+      take: 30,
+    }),
+  ]);
+  const standing = standings.get(student.id)!;
   return (
     <div className="admin-page">
       <div className="admin-page-header">
@@ -73,6 +85,79 @@ export default async function AdminStudentPage({
           </p>
         </div>
       </div>
+      <div className="admin-cards">
+        <div className="admin-card">
+          <span className="eyebrow">{t("Rank")}</span>
+          <strong>{standing.xp} XP</strong>
+          <span className="muted">{standing.rank.title[locale]}</span>
+        </div>
+        <div className="admin-card">
+          <span className="eyebrow">{t("Completed")}</span>
+          <strong>
+            {standing.done}/{standing.available}
+          </strong>
+          <span className="muted">
+            {standing.average === null
+              ? t("No tests yet")
+              : t("test average {percent}%", { percent: standing.average })}
+          </span>
+        </div>
+        <div className="admin-card">
+          <span className="eyebrow">{t("This week")}</span>
+          <strong>{standing.week}</strong>
+          <span className="muted">
+            {t("{weeks}-week streak", { weeks: standing.streakWeeks })}
+          </span>
+        </div>
+        <div className="admin-card">
+          <span className="eyebrow">{t("Badges")}</span>
+          <strong>{standing.badges.length}</strong>
+          <span className="muted">
+            {standing.lastActive
+              ? `${t("Last activity")}: ${standing.lastActive.toISOString().slice(0, 10)}`
+              : t("No activity yet")}
+          </span>
+        </div>
+      </div>
+      <h2>{t("Lab checkpoints")}</h2>
+      {checkpoints.length === 0 ? (
+        <p className="muted">{t("No lab checkpoints yet")}</p>
+      ) : (
+        <div className="admin-table-wrap">
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th scope="col">{t("Checkpoint")}</th>
+                <th scope="col">{t("Score")}</th>
+                <th scope="col">{t("Date")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {checkpoints.map((c) => {
+                const meta = CHECKPOINT_META.find((m) => m.id === c.checkpoint);
+                const percent = Math.round((c.score / c.total) * 100);
+                return (
+                  <tr key={c.id}>
+                    <td>{meta ? meta.title[locale] : c.checkpoint}</td>
+                    <td>
+                      <span
+                        className={`admin-chip ${meta && percent >= meta.pass ? "ok" : "warn"}`}
+                      >
+                        {percent}%
+                      </span>{" "}
+                      {c.score}/{c.total}
+                    </td>
+                    <td>
+                      {c.createdAt.toISOString().slice(0, 16).replace("T", " ")}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+      <h2>{t("Details")}</h2>
       <StudentEditForm
         student={{
           id: student.id,

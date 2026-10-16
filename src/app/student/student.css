@@ -1092,3 +1092,221 @@ body.student-root {
     color: #5a2fd6;
   }
 }
+
+/* Rank, XP and the weekly goal under the greeting. */
+.student-standing {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
+  gap: 18px;
+  max-width: 640px;
+  margin-top: 26px;
+  padding: 16px 18px;
+  border: 1px solid #1f1f1f;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 100% 0, #2ee6a614, transparent 50%), #0b0b0d;
+}
+.student-standing .student-quiet {
+  margin: 6px 0 0;
+  font-size: 13px;
+}
+.student-standing .student-field-label {
+  margin: 0 0 4px;
+  font-size: 11px;
+}
+.student-standing-rank {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.student-standing-rank strong {
+  display: block;
+  font-size: 18px;
+  font-weight: 500;
+}
+.student-standing-rank span:last-child {
+  color: var(--accent-text);
+  font-size: 14px;
+}
+.student-standing-next {
+  align-self: center;
+}
+.student-ring {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border: 1px solid #666375;
+  border-radius: 50%;
+  background: #2ee6a60d;
+  color: var(--accent-text);
+}
+.student-meter {
+  height: 6px;
+  border-radius: 9999px;
+  background: #1f1e24;
+  overflow: hidden;
+}
+.student-meter span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+}
+.student-week-dots {
+  display: flex;
+  gap: 6px;
+}
+.student-week-dots span {
+  width: 22px;
+  height: 6px;
+  border-radius: 9999px;
+  background: #26252c;
+}
+.student-week-dots span.on {
+  background: #2ee6a6;
+}
+
+/* Achievements: badges, group ranking and lab checkpoints. */
+.student-ach-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+  gap: 16px;
+}
+.student-panel {
+  padding: 18px;
+  border: 1px solid #1f1f1f;
+  border-radius: 18px;
+  background: #0a0a0a;
+}
+.student-panel h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px;
+  font-size: 16px;
+  font-weight: 500;
+}
+.student-panel h3 .student-quiet {
+  margin: 0;
+  font-size: 13px;
+}
+.student-panel-sub {
+  margin-top: 22px !important;
+}
+.student-badges {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 165px), 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.student-badges li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border-radius: 12px;
+  color: var(--color-ash-gray);
+}
+.student-badges li:not(.on) .student-ring {
+  border-color: #333;
+  color: var(--color-ash-gray);
+}
+.student-badges li.on {
+  color: var(--text);
+  background: #2ee6a60a;
+}
+.student-badges li.on .student-ring {
+  border-color: #2ee6a6;
+  color: #2ee6a6;
+}
+.student-badges strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+}
+.student-badges small {
+  color: var(--color-ash-gray);
+  font-size: 12px;
+}
+.student-ranking {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.student-ranking li {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+.student-ranking li.me {
+  background: #8052ff1f;
+}
+.student-ranking-place {
+  color: var(--color-ash-gray);
+  font-family: var(--font-mono, monospace);
+}
+.student-ranking-rank {
+  color: var(--color-ash-gray);
+  font-size: 12px;
+}
+.student-ranking-xp {
+  color: var(--accent-text);
+}
+.student-checkpoints {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.student-checkpoints a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid #1f1f1f;
+  border-radius: 12px;
+}
+.student-checkpoints a:hover {
+  border-color: #3a3a3a;
+}
+.student-checkpoints strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+}
+.student-checkpoints small {
+  color: var(--color-ash-gray);
+  font-size: 12px;
+}
+.student-pill {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  border: 1px solid #333;
+  border-radius: 9999px;
+  color: var(--color-ash-gray);
+  font-size: 12px;
+}
+.student-pill.on {
+  border-color: #2ee6a666;
+  color: #2ee6a6;
+}
+@media (max-width: 560px) {
+  .student-ranking li {
+    grid-template-columns: 24px minmax(0, 1fr) auto;
+  }
+  .student-ranking-rank {
+    display: none;
+  }
+}

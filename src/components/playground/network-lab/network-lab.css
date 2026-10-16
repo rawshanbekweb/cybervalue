@@ -2090,3 +2090,7 @@ i.nl-wf-http,
     font-size: 10px;
   }
 }
+
+.nl-tool + .nl-tool {
+  margin-top: 8px;
+}

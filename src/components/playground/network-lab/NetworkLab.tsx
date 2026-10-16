@@ -8,6 +8,7 @@ import {
   BookOpen,
   Calculator,
   Check,
+  ClipboardCheck,
   Lightbulb,
   Network,
   Shuffle,
@@ -35,6 +36,7 @@ import { ClassifyWidget, IpconfigWidget } from "./addresses";
 import { BitsWidget, CompareWidget, MaskWidget, RangeWidget } from "./basics";
 import { SubnetCalculator } from "./calculator";
 import { NetworkWidget } from "./simulator";
+import { Checkpoints } from "../checkpoint/Checkpoints";
 import "./network-lab.css";
 
 export function NetworkLab() {
@@ -139,6 +141,11 @@ export function NetworkLab() {
             {t("Subnet kalkulyator", "Subnet calculator")}
             <ArrowRight size={15} />
           </button>
+          <a className="nl-tool" href="#checkpoints">
+            <ClipboardCheck size={17} />
+            {t("Nazorat testlari", "Checkpoints")}
+            <ArrowRight size={15} />
+          </a>
         </aside>
         {calculator ? (
           <SubnetCalculator />
@@ -152,6 +159,7 @@ export function NetworkLab() {
           />
         )}
       </div>
+      <Checkpoints ids={["network-1", "network-2"]} />
     </div>
   );
 }

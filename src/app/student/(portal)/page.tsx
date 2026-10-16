@@ -1,6 +1,13 @@
 import Link from "next/link";
 import { ArrowUpRight, Award, Check } from "lucide-react";
-import { getAdminTranslator } from "@/lib/i18n/server";
+import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
+import { loadStandings } from "@/lib/student/standing";
+import { publicName } from "@/lib/student/xp";
+import {
+  AchievementsSection,
+  StandingCard,
+  type RankingEntry,
+} from "@/components/student/standing-panel";
 import { requireStudent } from "@/lib/student/session";
 import {
   isEntranceExam,
@@ -102,19 +109,52 @@ function MaterialItem({
 
 export default async function StudentHomePage() {
   const t = await getAdminTranslator();
+  const locale = await getAdminLocale();
   const student = await requireStudent();
-  const [{ materials, done, tests }, certificates, saved] = await Promise.all([
-    studentOverview(student),
-    getDb()?.studentCertificate.findMany({
-      where: { studentId: student.id, revokedAt: null },
-      orderBy: { issuedAt: "desc" },
-      select: { code: true, title: true },
-    }) ?? [],
-    getDb()?.student.findUnique({
-      where: { id: student.id },
-      select: { portrait: true },
-    }),
-  ]);
+  const db = getDb();
+  // Classmates for the ranking: active students of the same group.
+  const classmates =
+    db && student.group
+      ? await db.student.findMany({
+          where: { group: student.group, active: true },
+          select: { id: true, name: true, group: true, level: true },
+          take: 200,
+        })
+      : [
+          {
+            id: student.id,
+            name: student.name,
+            group: student.group,
+            level: student.level,
+          },
+        ];
+  const [{ materials, done, tests }, certificates, saved, standings] =
+    await Promise.all([
+      studentOverview(student),
+      getDb()?.studentCertificate.findMany({
+        where: { studentId: student.id, revokedAt: null },
+        orderBy: { issuedAt: "desc" },
+        select: { code: true, title: true },
+      }) ?? [],
+      getDb()?.student.findUnique({
+        where: { id: student.id },
+        select: { portrait: true },
+      }),
+      db ? loadStandings(db, classmates) : new Map(),
+    ]);
+  const standing = standings.get(student.id);
+  const ordered = classmates
+    .map((c) => ({ ...c, xp: standings.get(c.id)?.xp ?? 0 }))
+    .sort((a, b) => b.xp - a.xp || a.name.localeCompare(b.name));
+  const ranking: RankingEntry[] = ordered
+    .map((c, i) => ({
+      place: i + 1,
+      name: publicName(c.name),
+      xp: c.xp,
+      rank: standings.get(c.id)!.rank.title,
+      me: c.id === student.id,
+    }))
+    .filter((row, i) => i < 10 || row.me);
   const finished = materials.filter((m) => done.has(m.id)).length;
   const portrait = isPortraitData(saved?.portrait) ? saved.portrait : null;
   const entrance = materials.filter((m) => isEntranceExam(m.slug));
@@ -131,6 +171,15 @@ export default async function StudentHomePage() {
     ),
   })).filter((s) => s.items.length > 0 || s.kind === "LAB");
   const jumps = [
+    ...(standing
+      ? [
+          {
+            id: "achievements",
+            label: "Achievements",
+            count: standing.badges.length,
+          },
+        ]
+      : []),
     ...(certificates.length
       ? [
           {
@@ -202,6 +251,9 @@ export default async function StudentHomePage() {
               />
             </div>
           )}
+          {standing && (
+            <StandingCard standing={standing} t={t} locale={locale} />
+          )}
         </div>
         <div className="student-portrait">
           {portrait ? (
@@ -241,6 +293,16 @@ export default async function StudentHomePage() {
           </a>
         ))}
       </nav>
+
+      {standing && (
+        <AchievementsSection
+          standing={standing}
+          ranking={ranking}
+          group={student.group}
+          t={t}
+          locale={locale}
+        />
+      )}
 
       {certificates.length > 0 && (
         <section

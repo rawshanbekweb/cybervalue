@@ -9,10 +9,11 @@ import { getSocials } from "@/lib/content";
 import { createTranslator, type Locale } from "@/lib/i18n";
 
 // Design.MD names Inter as the PPNeueMontreal substitute; latin-ext covers
-// Uzbek letters and cyrillic covers the Russian-script fallbacks.
+// Uzbek letters and cyrillic covers the Russian-script fallbacks. Without a
+// weight list Inter loads as one variable file per subset, which is smaller
+// than four static weights and also renders in-between weights (450, 550).
 const inter = Inter({
   subsets: ["latin", "latin-ext", "cyrillic"],
-  weight: ["300", "400", "500", "600"],
   variable: "--font-inter",
   display: "swap",
 });

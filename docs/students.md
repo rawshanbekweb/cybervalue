@@ -156,3 +156,21 @@ Each row also shows completed/available and an average score: the mean of test b
 ## Data
 
 The Prisma models are `Student`, `StudentSession`, `StudentMaterial`, `StudentSubmission`, `StudentProgress`, `StudentQuizStart` (an open timed attempt) and `StudentCertificate`; the migrations are `20261010090000_student_portal`, `20261011090000_student_challenges`, `20261012090000_student_explanations` `20261013090000_timed_quizzes`, `20261013100000_student_levels`, `20261013110000_student_certificates` and `20261014090000_more_quiz_attempts` (which raises tests limited to one or two attempts to three). Admin actions on students, materials and reviews are recorded in the audit log.
+
+## Lab checkpoints
+
+The IP addressing and Linux labs end with **checkpoint tests** (`src/lib/checkpoints/`): `network-1` (lessons 1–6, 12 questions), `network-2` (lessons 7–12, 10 questions) and `linux-1` (10 questions from the lesson quizzes). Pass mark: 70%.
+
+- Every attempt gets fresh questions from a random seed. Address arithmetic is generated with the lab's own `ip.ts`/`practice.ts` code; concept questions come from fixed pools.
+- `POST /student/api/checkpoint` with `{action: "start", id}` returns the questions **without answers** and a signed attempt token (HMAC with `AUTH_SECRET`, valid 2 hours, bound to the signed-in student). `{action: "submit", token, answers}` rebuilds the questions from the seed and grades them on the server; the right answers and explanations are returned only then.
+- Anyone can take a checkpoint. For a signed-in student (the route sits under `/student`, so the `cv_student` cookie reaches it) the result is stored in `StudentCheckpoint`; a seed can be graded only once per student.
+
+## XP, ranks, badges and the group ranking
+
+`src/lib/student/xp.ts` turns what a student has done into XP: lesson or lab completed 20, practice handed in 30, test best percent (up to 100), personal lab solved 100, checkpoint best percent × 0.6. Ranks run from Trainee (0) to Expert (3200). Twelve badges reward first steps, tests, flags, checkpoints, a three-week streak and finishing everything. Weeks start on Monday, Tashkent time; the weekly goal is three actions.
+
+The student page shows the rank card, badges, the group ranking (first name and initial only, active students of the same group) and the lab checkpoints with their best scores.
+
+## Class panel
+
+**Admin → Class** (`/admin/class`) shows a group at a glance: students active this week, completion, test average, checkpoint pass rate, Academy Junior members of the same group, activity per day over two weeks, and a **Needs attention** list (no activity, inactive for over a week, far behind the class average, tests below 50%). The table lists every student's rank, XP, completion, test average, checkpoints and activity; **Weekly report (CSV)** exports the same. Each student's admin page also shows their rank, weekly activity and checkpoint attempts. The migration is `20261017090000_student_checkpoints`.
