@@ -14,6 +14,7 @@ import {
 import { formatAccessCode } from "@/lib/student/format";
 import type { MaterialFormValues as MaterialDefaults } from "@/lib/student/admin";
 import { LEVEL_LABEL, LEVELS } from "@/lib/student/levels";
+import { QuizBuilder } from "./quiz-builder";
 
 function downloadCodes(rows: { name: string; group: string; code: string }[]) {
   const lines = rows.map(
@@ -471,29 +472,7 @@ function MaterialFields({
         />
       </div>
       {kind === "QUIZ" && (
-        <>
-          <div className="admin-field">
-            <label htmlFor="quizText">{t("Questions")}</label>
-            <textarea
-              id="quizText"
-              name="quizText"
-              className="admin-textarea student-quiz-source"
-              rows={14}
-              maxLength={60000}
-              required
-              aria-describedby="quiz-help"
-              defaultValue={defaults.quizText}
-              placeholder={
-                "? HTTPS odatda qaysi portdan foydalanadi?\n- 80\n+ 443\n- 22\n> 443 — HTTPS uchun standart port."
-              }
-            />
-            <p id="quiz-help" className="muted">
-              {t(
-                "Start a question with ?, each option with -, and the one correct option with +. Under the options, > lines explain the answer in simple words. Leave a blank line between questions. Answers are checked on the server and never sent to the browser.",
-              )}
-            </p>
-          </div>
-        </>
+        <QuizBuilder text={defaults.quizText} json={defaults.quizJson} />
       )}
       {kind === "CHALLENGE" && (
         <>

@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import type { Text } from "@/lib/network/ip";
 import { CHECKPOINT_META } from "@/lib/checkpoints/meta";
-import { LAB_PROGRESS, type LabId } from "@/lib/lab-progress";
+import { LAB_META, LAB_PROGRESS } from "@/lib/lab-progress";
 import {
   STUDENT_BADGES,
   WEEKLY_GOAL,
@@ -42,28 +42,7 @@ const ICONS: Record<BadgeIcon, LucideIcon> = {
   crown: Crown,
 };
 
-const LABS: { id: LabId; title: Text; href: string }[] = [
-  {
-    id: "network",
-    title: { uz: "IP manzillash laboratoriyasi", en: "IP addressing lab" },
-    href: "/akademiya/network-basics",
-  },
-  {
-    id: "linux",
-    title: { uz: "Linux asoslari laboratoriyasi", en: "Linux foundations lab" },
-    href: "/akademiya/linux-basics",
-  },
-  {
-    id: "html",
-    title: { uz: "HTML asoslari", en: "HTML Basics" },
-    href: "/akademiya/html-basics",
-  },
-  {
-    id: "security",
-    title: { uz: "Veb-xavfsizlik laboratoriyasi", en: "Web Security Lab" },
-    href: "/akademiya/web-security-lab",
-  },
-];
+const LABS = LAB_META;
 
 export type RankingEntry = {
   place: number;

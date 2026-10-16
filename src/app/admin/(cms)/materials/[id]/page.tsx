@@ -8,6 +8,8 @@ import { ConfirmButton } from "@/components/admin/confirm-button";
 import { MaterialForm } from "@/components/admin/student-forms";
 import { SubmissionList } from "@/components/admin/submission-list";
 import { ChallengeResults } from "@/components/admin/challenge-results";
+import { QuestionStats } from "@/components/admin/question-stats";
+import { questionStats } from "@/lib/student/quiz-stats";
 import { deleteMaterialAction } from "../actions";
 
 export default async function EditMaterialPage({
@@ -37,6 +39,13 @@ export default async function EditMaterialPage({
   });
   if (!material) notFound();
   const quiz = quizSchema.safeParse(material.quiz);
+  const analysis =
+    material.kind === "QUIZ" && quiz.success
+      ? questionStats(
+          quiz.data,
+          material.submissions.map((s) => s.answers),
+        )
+      : null;
   const scores = material.submissions
     .filter((s) => s.score !== null && s.maxScore)
     .map((s) => s.score! / s.maxScore!);
@@ -106,6 +115,12 @@ export default async function EditMaterialPage({
             material={material}
             attempts={material.submissions}
           />
+        </>
+      )}
+      {analysis && (
+        <>
+          <h2>{t("Question analysis")}</h2>
+          <QuestionStats {...analysis} t={t} />
         </>
       )}
       {(material.kind === "PRACTICE" || material.kind === "QUIZ") && (

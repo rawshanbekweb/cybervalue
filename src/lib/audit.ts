@@ -40,7 +40,9 @@ export type AuditAction =
   | "junior.update"
   | "junior.code_reset"
   | "junior.progress_reset"
-  | "junior.delete";
+  | "junior.delete"
+  | "assignment.create"
+  | "assignment.delete";
 
 const RETENTION_MS = 180 * 86_400_000;
 

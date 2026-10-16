@@ -7,6 +7,7 @@ import { CHECKPOINT_META } from "@/lib/checkpoints/meta";
 import { REASON_TEXT } from "@/lib/student/class";
 import { classGroups, loadClass } from "@/lib/student/class-data";
 import { dayIndex } from "@/lib/student/xp";
+import { formatDue, targetName } from "@/lib/student/assignments";
 
 const DAY = 86_400_000;
 
@@ -31,7 +32,7 @@ export default async function AdminClassPage({
   const requested = typeof query.group === "string" ? query.group : "";
   const group = groups.includes(requested) ? requested : "";
   const now = new Date().getTime();
-  const [{ rows, classCompletion }, juniors] = await Promise.all([
+  const [{ rows, classCompletion, assignments }, juniors] = await Promise.all([
     loadClass(db, group, now),
     db.juniorMember.findMany({
       where: { active: true, ...(group ? { group } : {}) },
@@ -208,6 +209,70 @@ export default async function AdminClassPage({
             </li>
           ))}
         </ul>
+      )}
+
+      <div className="admin-section-head">
+        <h2>{t("Assignments")}</h2>
+        <Link
+          href={`/admin/assignments${group ? `?group=${encodeURIComponent(group)}` : ""}`}
+        >
+          {t("Set an assignment")}
+        </Link>
+      </div>
+      {assignments.length === 0 ? (
+        <p className="muted">{t("No assignments in the last 30 days.")}</p>
+      ) : (
+        <div className="admin-table-wrap">
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th scope="col">{t("Assignment")}</th>
+                <th scope="col">{t("Deadline")}</th>
+                <th scope="col">{t("Done")}</th>
+                <th scope="col">{t("Missed")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[...assignments].reverse().map((a) => {
+                const done = a.students.filter(
+                  (s) => s.status === "done" || s.status === "late",
+                ).length;
+                const missed = a.students.filter((s) => s.status === "missed");
+                return (
+                  <tr key={a.id}>
+                    <td>
+                      {a.title}
+                      <span className="admin-cell-detail">
+                        {[
+                          !group && (a.group || t("Every student")),
+                          targetName(a, locale, t),
+                        ]
+                          .filter(Boolean)
+                          .join(" · ")}
+                      </span>
+                    </td>
+                    <td>{formatDue(a.dueAt, locale)}</td>
+                    <td>
+                      {done}/{a.students.length}
+                    </td>
+                    <td>
+                      {missed.length === 0
+                        ? "—"
+                        : missed.map((s, i) => (
+                            <span key={s.id}>
+                              {i > 0 && ", "}
+                              <Link href={`/admin/students/${s.id}`}>
+                                {s.name}
+                              </Link>
+                            </span>
+                          ))}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       )}
 
       <h2>{t("Students")}</h2>

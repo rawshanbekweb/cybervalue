@@ -158,6 +158,65 @@ test("materials validate kind-specific fields and normalize groups", () => {
   assert.ok("error" in checkMaterial({ ...base, title: " " }));
 });
 
+test("the visual editor's questions are cleaned and validated", () => {
+  const base = {
+    slug: "builder-test",
+    kind: "QUIZ",
+    title: "Built test",
+    summary: "",
+    body: "",
+    quizText: "",
+    maxAttempts: 1,
+    groups: "",
+    position: 0,
+    published: true,
+  };
+  const json = (questions: unknown) =>
+    checkMaterial({ ...base, quizJson: JSON.stringify(questions) });
+  // Blank options are dropped and the answer follows its option.
+  const ok = json([
+    {
+      prompt: " Default HTTPS port? ",
+      options: ["", "80", " ", "443"],
+      answer: 3,
+      explain: " TLS ",
+    },
+    { prompt: "Line one\n- not an option", options: ["a", "b"], answer: 0 },
+  ]);
+  assert.ok("data" in ok);
+  assert.deepEqual(ok.data.quiz, [
+    {
+      prompt: "Default HTTPS port?",
+      options: ["80", "443"],
+      answer: 1,
+      explain: "TLS",
+    },
+    { prompt: "Line one\n- not an option", options: ["a", "b"], answer: 0 },
+  ]);
+  // The editor wins over leftover text.
+  const both = checkMaterial({
+    ...base,
+    quizText: QUIZ_TEXT,
+    quizJson: JSON.stringify([{ prompt: "Q", options: ["a", "b"], answer: 1 }]),
+  });
+  assert.ok("data" in both);
+  assert.equal(both.data.quiz?.length, 1);
+
+  const second = json([
+    { prompt: "Q1", options: ["a", "b"], answer: 0 },
+    { prompt: "Q2", options: ["a", ""], answer: 0 },
+  ]);
+  assert.ok("error" in second);
+  assert.deepEqual(second.values, { number: 2 });
+  // The correct option was left blank.
+  assert.ok(
+    "error" in json([{ prompt: "Q", options: ["", "a", "b"], answer: 0 }]),
+  );
+  assert.ok("error" in json([{ prompt: " ", options: ["a", "b"], answer: 0 }]));
+  assert.ok("error" in json([]));
+  assert.ok("error" in checkMaterial({ ...base, quizJson: "{not json" }));
+});
+
 const ARTIFACT = `log start {{name}}
 token={{decoy}}
 payload={{flag:base64}}

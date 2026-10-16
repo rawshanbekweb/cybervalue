@@ -37,6 +37,8 @@ In **Admin → Student materials**, create materials of four kinds:
 
 ### Writing a test
 
+**Admin → Student materials → New test** opens the visual editor: one card per question with its options, a radio button for the correct one and an optional explanation. Questions can be moved, duplicated and deleted; empty options are dropped. The editor submits the questions as JSON (`quizJson`, checked by `parseQuizJson` in `src/lib/student/admin.ts`). The **Text** switch shows the same questions in the plain format below, for pasting a prepared test:
+
 ```text
 ? HTTPS odatda qaysi portdan foydalanadi?
 - 80
@@ -164,6 +166,16 @@ The IP addressing and Linux labs end with **checkpoint tests** (`src/lib/checkpo
 - Every attempt gets fresh questions from a random seed. Address arithmetic is generated with the lab's own `ip.ts`/`practice.ts` code; concept questions come from fixed pools.
 - `POST /student/api/checkpoint` with `{action: "start", id}` returns the questions **without answers** and a signed attempt token (HMAC keyed from `AUTH_SECRET`, or from `DATABASE_URL` when it is unset; valid 2 hours, bound to the signed-in student). `{action: "submit", token, answers}` rebuilds the questions from the seed and grades them on the server; the right answers and explanations are returned only then.
 - Anyone can take a checkpoint. For a signed-in student (the route sits under `/student`, so the `cv_student` cookie reaches it) the result is stored in `StudentCheckpoint`; a seed can be graded only once per student.
+
+### Question analysis
+
+A test's admin page shows, for every question, the share of attempts that got it wrong, the wrong option picked most often and how many left it blank, with the three hardest questions on top (`src/lib/student/quiz-stats.ts`). Attempts saved before the number of questions changed are left out.
+
+## Assignments
+
+**Admin → Assignments** (`/admin/assignments`) sets work for one group (or every student) with a deadline in Tashkent time. The target is a student material, a lab checkpoint or every lesson of an open lab, stored as `material:<id>`, `checkpoint:<id>` or `lab:<id>` in `StudentAssignment` (migration `20261019090000_student_assignments`). Nothing is marked by hand: a material counts once finished or handed in, a checkpoint once passed, a lab once all its lessons are saved. A status is _done_, _done late_, _still open_ or _missed_.
+
+Students see their assignments at the top of their page, open work due within a week and missed work first. The class panel lists the last 30 days of assignments with who missed them, and a missed deadline puts a student on the **Needs attention** list.
 
 ## XP, ranks, badges and the group ranking
 
