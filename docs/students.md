@@ -161,7 +161,7 @@ The Prisma models are `Student`, `StudentSession`, `StudentMaterial`, `StudentSu
 
 ## Lab checkpoints
 
-The IP addressing and Linux labs end with **checkpoint tests** (`src/lib/checkpoints/`): `network-1` (lessons 1–6, 12 questions), `network-2` (lessons 7–12, 10 questions) and `linux-1` (10 questions from the lesson quizzes). Pass mark: 70%.
+The IP addressing and Linux labs end with **checkpoint tests** (`src/lib/checkpoints/`): `network-1` (lessons 1–6, 12 questions), `network-2` (lessons 7–12, 10 questions) and `linux-1` (10 questions from the lesson quizzes), `html-1` (10 of 14 HTML Basics questions, `pools.ts`) and `security-1` (12 from the Web Security Lab's final quiz plus six questions on status codes, methods, SQLi, IDOR, cookies and XSS). Pass mark: 70%.
 
 - Every attempt gets fresh questions from a random seed. Address arithmetic is generated with the lab's own `ip.ts`/`practice.ts` code; concept questions come from fixed pools.
 - `POST /student/api/checkpoint` with `{action: "start", id}` returns the questions **without answers** and a signed attempt token (HMAC keyed from `AUTH_SECRET`, or from `DATABASE_URL` when it is unset; valid 2 hours, bound to the signed-in student). `{action: "submit", token, answers}` rebuilds the questions from the seed and grades them on the server; the right answers and explanations are returned only then.
@@ -182,6 +182,12 @@ Students see their assignments at the top of their page, open work due within a 
 `src/lib/student/xp.ts` turns what a student has done into XP: lesson or lab completed 20, practice handed in 30, test best percent (up to 100), personal lab solved 100, checkpoint best percent × 0.6, each finished lesson in an open lab 5. Ranks run from Trainee (0) to Expert (3200). Twelve badges reward first steps, tests, flags, checkpoints, a three-week streak and finishing everything. Weeks start on Monday, Tashkent time; the weekly goal is three actions.
 
 The student page shows the rank card, badges, the group ranking (first name and initial only, active students of the same group) and the lab checkpoints with their best scores.
+
+### Hero of the week and the week's CTF
+
+`weeklyXp()` in `xp.ts` counts the XP a student earned since Monday (Tashkent): materials, test improvements, personal labs and checkpoints recorded this week. Lab lessons have no dates and Junior bonus XP is not earned in a week, so neither counts. The student page shows the group's top three for the week, the student's own weekly XP and last week's hero; the class panel shows the hero of the week, and the weekly CSV has an "XP this week" column.
+
+The newest personal lab published in the last two weeks is featured as **This week's CTF** at the top of the Labs section, with how many classmates have solved it.
 
 ## Class panel
 

@@ -13,6 +13,7 @@ import network from "./network.json";
 import student from "./student.json";
 import junior from "./junior.json";
 import defend from "./defend.json";
+import labsUi from "./labs-ui.json";
 
 const messages = {
   ...common,
@@ -30,6 +31,7 @@ const messages = {
   ...student,
   ...junior,
   ...defend,
+  ...labsUi,
 };
 
 export const locales = ["uz", "en"] as const;

@@ -40,12 +40,12 @@ export function ClassifyWidget({
             <li key={address}>
               <code>{address}</code>
               <select
-                aria-label={t(`${address} turi`, `Kind of ${address}`)}
+                aria-label={t("Kind of {address}", { address })}
                 value={answers[address] ?? ""}
                 onChange={(e) => choose(address, e.target.value)}
               >
                 <option value="" disabled>
-                  {t("Tanlang…", "Choose…")}
+                  {t("Choose…")}
                 </option>
                 {KINDS.map((kind) => (
                   <option key={kind} value={kind}>
@@ -59,13 +59,13 @@ export function ClassifyWidget({
                   <Check
                     size={16}
                     className="nl-mark-ok"
-                    aria-label={t("to‘g‘ri", "correct")}
+                    aria-label={t("correct")}
                   />
                 ) : (
                   <X
                     size={16}
                     className="nl-mark-bad"
-                    aria-label={t("noto‘g‘ri", "wrong")}
+                    aria-label={t("wrong")}
                   />
                 ))}
             </li>
@@ -98,7 +98,7 @@ export function IpconfigWidget({
         {output}
       </pre>
       <fieldset className="nl-quiz">
-        <legend>{t("Sababi nima?", "What is the cause?")}</legend>
+        <legend>{t("What is the cause?")}</legend>
         {options.map((option, i) => (
           <label key={i}>
             <input

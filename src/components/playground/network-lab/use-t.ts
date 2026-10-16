@@ -1,14 +1,17 @@
 "use client";
 
-import { useLocale } from "@/components/locale-provider";
+import { useLocale, useTranslator } from "@/components/locale-provider";
 import type { Text } from "@/lib/network/ip";
 
-// Inline bilingual copy, as in the Linux lab: t("uz", "en") or text({ uz, en }).
+// The labs' copy: t("English", values) from the shared dictionary, like the
+// rest of the site, and text({ uz, en }) for lesson data that carries both
+// languages itself.
 export function useT() {
   const locale = useLocale() as "uz" | "en";
+  const t = useTranslator();
   return {
     locale,
-    t: (uz: string, en: string) => (locale === "uz" ? uz : en),
+    t,
     text: (value: Text) => value[locale],
   };
 }

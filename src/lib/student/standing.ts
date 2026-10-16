@@ -1,7 +1,7 @@
 import "server-only";
 import type { PrismaClient } from "@/generated/prisma/client";
 import { visibleAtLevel } from "./levels";
-import { standing, type Standing } from "./xp";
+import { standing, weeklyXp, type WeeklyStanding } from "./xp";
 
 type Who = { id: string; group: string; level: string; bonusXp?: number };
 
@@ -54,28 +54,28 @@ export async function loadStandings(
         select: { studentId: true, lab: true, lessons: true },
       }),
     ]);
-  const result = new Map<string, Standing>();
+  const result = new Map<string, WeeklyStanding>();
   for (const student of students) {
     const mine = <T extends { studentId: string }>(rows: T[]) =>
       rows.filter((row) => row.studentId === student.id);
-    result.set(
-      student.id,
-      standing(
-        {
-          materials: materials.filter(
-            (m) =>
-              (m.groups.length === 0 || m.groups.includes(student.group)) &&
-              visibleAtLevel(m.levels, student.level),
-          ),
-          progress: mine(progress),
-          submissions: mine(submissions),
-          checkpoints: mine(checkpoints),
-          labs: mine(labs),
-          bonus: student.bonusXp,
-        },
-        now,
+    const input = {
+      materials: materials.filter(
+        (m) =>
+          (m.groups.length === 0 || m.groups.includes(student.group)) &&
+          visibleAtLevel(m.levels, student.level),
       ),
-    );
+      progress: mine(progress),
+      submissions: mine(submissions),
+      checkpoints: mine(checkpoints),
+      labs: mine(labs),
+      bonus: student.bonusXp,
+    };
+    const weekly = weeklyXp(input, now);
+    result.set(student.id, {
+      ...standing(input, now),
+      weekXp: weekly.week,
+      lastWeekXp: weekly.lastWeek,
+    });
   }
   return result;
 }

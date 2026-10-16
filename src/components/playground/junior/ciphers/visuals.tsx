@@ -81,20 +81,20 @@ function Mode({
 }) {
   const { t } = useT();
   return (
-    <div className="cr-mode" role="group" aria-label={t("Rejim", "Mode")}>
+    <div className="cr-mode" role="group" aria-label={t("Mode")}>
       <button
         type="button"
         aria-pressed={!decrypt}
         onClick={() => onChange(false)}
       >
-        {t("Shifrlash", "Encrypt")}
+        {t("Encrypt")}
       </button>
       <button
         type="button"
         aria-pressed={decrypt}
         onClick={() => onChange(true)}
       >
-        {t("Ochish", "Decrypt")}
+        {t("Decrypt")}
       </button>
     </div>
   );
@@ -167,11 +167,7 @@ function AtbashBench() {
   const used = new Set(lettersOnly(text));
   return (
     <div className="cr-bench">
-      <div
-        className="cr-mirror"
-        role="group"
-        aria-label={t("Atbash jadvali", "Atbash table")}
-      >
+      <div className="cr-mirror" role="group" aria-label={t("Atbash table")}>
         {ABC.map((letter, i) => {
           const pair = ABC[25 - i];
           const on = focus === i || used.has(letter);
@@ -190,15 +186,8 @@ function AtbashBench() {
           );
         })}
       </div>
-      <TextField
-        label={t("Xabar", "Message")}
-        value={text}
-        onChange={setText}
-      />
-      <Output
-        label={t("Atbash natijasi", "Atbash result")}
-        value={atbash(text)}
-      />
+      <TextField label={t("Message")} value={text} onChange={setText} />
+      <Output label={t("Atbash result")} value={atbash(text)} />
     </div>
   );
 }
@@ -220,30 +209,18 @@ function ScytaleBench() {
     <div className="cr-bench">
       <Mode decrypt={decrypt} onChange={setDecrypt} />
       <TextField
-        label={
-          decrypt
-            ? t("Tasmadagi harflar", "Letters on the strip")
-            : t("Xabar", "Message")
-        }
+        label={decrypt ? t("Letters on the strip") : t("Message")}
         value={text}
         onChange={setText}
       />
       <Slider
-        label={t(
-          "Qatorlar soni (tayoqcha yo‘g‘onligi):",
-          "Lines around the rod (its thickness):",
-        )}
+        label={t("Lines around the rod (its thickness):")}
         value={rows}
         min={2}
         max={6}
         onChange={setRows}
       />
-      <p className="jr-label">
-        {t(
-          "Tayoqcha (qatorma-qator yoziladi)",
-          "The rod (written line by line)",
-        )}
-      </p>
+      <p className="jr-label">{t("The rod (written line by line)")}</p>
       <div className="cr-rod" aria-hidden="true">
         {grid.map((line, row) => (
           <div key={row} className="cr-rod-line">
@@ -261,10 +238,7 @@ function ScytaleBench() {
         ))}
       </div>
       <p className="jr-label">
-        {t(
-          "Yechilgan tasma (ustunma-ustun o‘qiladi)",
-          "The unwound strip (read column by column)",
-        )}
+        {t("The unwound strip (read column by column)")}
       </p>
       <div className="cr-strip" aria-hidden="true">
         {strip.map((cell, i) => (
@@ -279,11 +253,7 @@ function ScytaleBench() {
         ))}
       </div>
       <Output
-        label={
-          decrypt
-            ? t("Ochilgan xabar", "Decrypted message")
-            : t("Shifr (tasma)", "Ciphertext (the strip)")
-        }
+        label={decrypt ? t("Decrypted message") : t("Ciphertext (the strip)")}
         value={decrypt ? plain : strip.map((cell) => cell.letter).join("")}
       />
     </div>
@@ -341,12 +311,10 @@ function PolybiusBench() {
         }}
       />
       <table className="cr-square">
-        <caption className="visually-hidden">
-          {t("Polibiy kvadrati", "Polybius square")}
-        </caption>
+        <caption className="visually-hidden">{t("Polybius square")}</caption>
         <thead>
           <tr>
-            <th scope="col" aria-label={t("Qator / ustun", "Row / column")} />
+            <th scope="col" aria-label={t("Row / column")} />
             {[1, 2, 3, 4, 5].map((n) => (
               <th
                 key={n}
@@ -384,7 +352,7 @@ function PolybiusBench() {
         </tbody>
       </table>
       <TextField
-        label={decrypt ? t("Raqamlar", "Digits") : t("Xabar", "Message")}
+        label={decrypt ? t("Digits") : t("Message")}
         value={text}
         onChange={(value) => {
           setText(value);
@@ -392,11 +360,7 @@ function PolybiusBench() {
         }}
       />
       <Output
-        label={
-          decrypt
-            ? t("Ochilgan xabar", "Decrypted message")
-            : t("Raqamlar", "Digits")
-        }
+        label={decrypt ? t("Decrypted message") : t("Digits")}
         value={decrypt ? plain : polybiusEncrypt(text)}
       />
       <div className="jr-actions">
@@ -406,7 +370,7 @@ function PolybiusBench() {
           onClick={show}
           disabled={!plain}
         >
-          <Play size={15} aria-hidden="true" /> {t("Ko‘rsatish", "Show me")}
+          <Play size={15} aria-hidden="true" /> {t("Show me")}
         </button>
         <button
           type="button"
@@ -414,7 +378,7 @@ function PolybiusBench() {
           onClick={knock}
           disabled={!plain}
         >
-          <Volume2 size={15} aria-hidden="true" /> {t("Taqillatish", "Knock")}
+          <Volume2 size={15} aria-hidden="true" /> {t("Knock")}
         </button>
       </div>
     </div>
@@ -453,10 +417,9 @@ function CaesarBench() {
         className="cr-wheel"
         viewBox="0 0 300 300"
         role="img"
-        aria-label={t(
-          `Sezar g‘ildiragi: A harfi ${caesar("A", shift)} ga aylanadi`,
-          `Caesar wheel: A becomes ${caesar("A", shift)}`,
-        )}
+        aria-label={t("Caesar wheel: A becomes {caesar}", {
+          caesar: caesar("A", shift),
+        })}
       >
         <circle cx="150" cy="150" r="142" className="cr-wheel-outer" />
         <circle cx="150" cy="150" r="106" className="cr-wheel-inner" />
@@ -473,27 +436,23 @@ function CaesarBench() {
           {shift}
         </text>
         <text x="150" y="168" textAnchor="middle" className="cr-wheel-label">
-          {t("kalit", "key")}
+          {t("key")}
         </text>
       </svg>
       <Slider
-        label={t("Siljish (kalit):", "Shift (key):")}
+        label={t("Shift (key):")}
         value={shift}
         min={0}
         max={25}
         onChange={setShift}
       />
       <TextField
-        label={decrypt ? t("Shifr", "Ciphertext") : t("Xabar", "Message")}
+        label={decrypt ? t("Ciphertext") : t("Message")}
         value={text}
         onChange={setText}
       />
       <Output
-        label={
-          decrypt
-            ? t("Ochilgan xabar", "Decrypted message")
-            : t("Shifr", "Ciphertext")
-        }
+        label={decrypt ? t("Decrypted message") : t("Ciphertext")}
         value={caesar(text, decrypt ? -shift : shift)}
       />
     </div>
@@ -531,7 +490,7 @@ function FrequencyBench() {
     <div className="cr-bench">
       <div className="cr-field">
         <label htmlFor={textId} className="jr-label">
-          {t("Shifrlangan matn", "Ciphertext")}
+          {t("Ciphertext")}
         </label>
         <textarea
           id={textId}
@@ -542,20 +501,20 @@ function FrequencyBench() {
           spellCheck={false}
         />
       </div>
-      <div className="cr-mode" role="group" aria-label={t("Til", "Language")}>
+      <div className="cr-mode" role="group" aria-label={t("Language")}>
         <button
           type="button"
           aria-pressed={language === "uz"}
           onClick={() => setLanguage("uz")}
         >
-          {t("O‘zbek tili", "Uzbek")}
+          {t("Uzbek")}
         </button>
         <button
           type="button"
           aria-pressed={language === "en"}
           onClick={() => setLanguage("en")}
         >
-          {t("Ingliz tili", "English")}
+          {t("English")}
         </button>
       </div>
       <figure className="cr-chart">
@@ -579,17 +538,13 @@ function FrequencyBench() {
           })}
         </div>
         <figcaption>
-          <span className="cr-key-seen" />{" "}
-          {t("Shifrdagi harflar", "Letters in the ciphertext")}{" "}
+          <span className="cr-key-seen" /> {t("Letters in the ciphertext")}{" "}
           <span className="cr-key-want" />{" "}
-          {t(
-            `Tildagi odatiy chastota (${shift} ga surilgan)`,
-            `Usual frequency in the language (shifted by ${shift})`,
-          )}
+          {t("Usual frequency in the language (shifted by {shift})", { shift })}
         </figcaption>
       </figure>
       <Slider
-        label={t("Siljishni sinang:", "Try a shift:")}
+        label={t("Try a shift:")}
         value={shift}
         min={0}
         max={25}
@@ -600,13 +555,9 @@ function FrequencyBench() {
         className="button button-secondary"
         onClick={() => setShift(crackCaesar(text, language))}
       >
-        <Wand2 size={15} aria-hidden="true" />{" "}
-        {t("Avtomatik buzish", "Crack it")}
+        <Wand2 size={15} aria-hidden="true" /> {t("Crack it")}
       </button>
-      <Output
-        label={t("Ochilgan matn", "Decrypted text")}
-        value={caesar(text, -shift)}
-      />
+      <Output label={t("Decrypted text")} value={caesar(text, -shift)} />
     </div>
   );
 }
@@ -694,11 +645,7 @@ function PigpenKey() {
     </div>
   );
   return (
-    <div
-      className="cr-pkeys"
-      role="group"
-      aria-label={t("Masonlar shifri kaliti", "Pigpen key")}
-    >
+    <div className="cr-pkeys" role="group" aria-label={t("Pigpen key")}>
       {grid("ABCDEFGHI", false)}
       {grid("JKLMNOPQR", true)}
       {cross("STUV", false)}
@@ -713,13 +660,9 @@ function PigpenBench() {
   return (
     <div className="cr-bench">
       <PigpenKey />
-      <TextField
-        label={t("Xabar", "Message")}
-        value={text}
-        onChange={setText}
-      />
+      <TextField label={t("Message")} value={text} onChange={setText} />
       <div className="cr-field">
-        <p className="jr-label">{t("Belgilarda", "In symbols")}</p>
+        <p className="jr-label">{t("In symbols")}</p>
         <div className="jr-code cr-glyph-out">
           <PigpenText text={text.toUpperCase().slice(0, 40)} />
         </div>
@@ -742,26 +685,20 @@ function VigenereBench() {
       <Mode decrypt={decrypt} onChange={setDecrypt} />
       <div className="cr-two">
         <TextField
-          label={decrypt ? t("Shifr", "Ciphertext") : t("Xabar", "Message")}
+          label={decrypt ? t("Ciphertext") : t("Message")}
           value={text}
           onChange={setText}
         />
-        <TextField
-          label={t("Kalit so‘z", "Key word")}
-          value={key}
-          onChange={setKey}
-        />
+        <TextField label={t("Key word")} value={key} onChange={setKey} />
       </div>
       {keyLetters && letters.length > 0 && (
         <div
           className="cr-vtable"
           role="table"
-          aria-label={t("Harfma-harf hisob", "Letter-by-letter working")}
+          aria-label={t("Letter-by-letter working")}
         >
           <div role="row">
-            <span role="rowheader">
-              {decrypt ? t("Shifr", "Cipher") : t("Xabar", "Message")}
-            </span>
+            <span role="rowheader">{decrypt ? t("Cipher") : t("Message")}</span>
             {letters.map((letter, i) => (
               <span role="cell" key={i}>
                 {letter}
@@ -771,7 +708,7 @@ function VigenereBench() {
           </div>
           <div role="row" className="cr-vkey">
             <span role="rowheader">
-              {decrypt ? "−" : "+"} {t("Kalit", "Key")}
+              {decrypt ? "−" : "+"} {t("Key")}
             </span>
             {letters.map((_, i) => {
               const k = keyLetters[i % keyLetters.length];
@@ -803,16 +740,11 @@ function VigenereBench() {
       )}
       <p className="jr-note">
         {t(
-          "Raqamlar 25 dan oshsa, 26 ni ayiring (alifbo aylanaga o‘xshaydi): Z dan keyin yana A keladi.",
           "If a number goes past 25, subtract 26 (the alphabet wraps around): after Z comes A again.",
         )}
       </p>
       <Output
-        label={
-          decrypt
-            ? t("Ochilgan xabar", "Decrypted message")
-            : t("Shifr", "Ciphertext")
-        }
+        label={decrypt ? t("Decrypted message") : t("Ciphertext")}
         value={vigenere(text, key, decrypt)}
       />
     </div>
@@ -913,14 +845,10 @@ function MorseBench() {
       <div className="cr-morse-top">
         <span className={lamp ? "cr-lamp on" : "cr-lamp"} aria-hidden="true" />
         <div className="cr-grow">
-          <TextField
-            label={t("Xabar", "Message")}
-            value={text}
-            onChange={setText}
-          />
+          <TextField label={t("Message")} value={text} onChange={setText} />
         </div>
       </div>
-      <Output label={t("Morze kodi", "Morse code")} value={encoded} />
+      <Output label={t("Morse code")} value={encoded} />
       <div className="jr-actions">
         {playing ? (
           <button
@@ -928,7 +856,7 @@ function MorseBench() {
             className="button button-secondary"
             onClick={stop}
           >
-            <Pause size={15} aria-hidden="true" /> {t("To‘xtatish", "Stop")}
+            <Pause size={15} aria-hidden="true" /> {t("Stop")}
           </button>
         ) : (
           <button
@@ -937,14 +865,13 @@ function MorseBench() {
             onClick={play}
             disabled={!encoded}
           >
-            <Volume2 size={15} aria-hidden="true" /> {t("Eshitish", "Listen")}
+            <Volume2 size={15} aria-hidden="true" /> {t("Listen")}
           </button>
         )}
       </div>
-      <p className="jr-sub">{t("Telegraf kaliti", "Telegraph key")}</p>
+      <p className="jr-sub">{t("Telegraph key")}</p>
       <p className="jr-note">
         {t(
-          "Tugmani qisqa bosing — nuqta, uzoqroq bosib turing — tire. Harflar orasida biroz kuting.",
           "Tap the key for a dot, hold it a little longer for a dash. Pause between letters.",
         )}
       </p>
@@ -965,7 +892,7 @@ function MorseBench() {
             if (event.key === " " || event.key === "Enter") up();
           }}
         >
-          {t("Bosing", "Press")}
+          {t("Press")}
         </button>
         <button
           type="button"
@@ -975,22 +902,19 @@ function MorseBench() {
             lastRelease.current = 0;
           }}
         >
-          {t("Tozalash", "Clear")}
+          {t("Clear")}
         </button>
       </div>
       <Output
-        label={t("Siz yuborgan kod", "Your code")}
+        label={t("Your code")}
         value={code ? `${code}  →  ${morseDecode(code)}` : ""}
       />
       <TextField
-        label={t(
-          "Kodni oching (masalan: ... --- ...)",
-          "Decode Morse (e.g. ... --- ...)",
-        )}
+        label={t("Decode Morse (e.g. ... --- ...)")}
         value={decodeInput}
         onChange={setDecodeInput}
       />
-      <Output label={t("Matn", "Text")} value={morseDecode(decodeInput)} />
+      <Output label={t("Text")} value={morseDecode(decodeInput)} />
     </div>
   );
 }
@@ -1028,7 +952,7 @@ function PaintBench() {
     <div
       className="cr-picker"
       role="radiogroup"
-      aria-label={t(`${who}ning maxfiy rangi`, `${who}’s secret colour`)}
+      aria-label={t("{who}’s secret colour", { who })}
     >
       {SECRETS.map((secret, i) => (
         <button
@@ -1049,57 +973,32 @@ function PaintBench() {
         <div className="cr-dh-col">
           <p className="jr-sub">Ali</p>
           {picker("Ali", ali, setAli)}
-          <Swatch rgb={a} label={t("1. Maxfiy rang", "1. Secret colour")} />
-          <Swatch
-            rgb={aliMix}
-            label={t("2. Ochiq + sir → yuboradi", "2. Public + secret → sends")}
-          />
-          <Swatch
-            rgb={shared}
-            label={t(
-              "4. Valining aralashmasi + o‘z siri",
-              "4. Vali’s mix + own secret",
-            )}
-          />
+          <Swatch rgb={a} label={t("1. Secret colour")} />
+          <Swatch rgb={aliMix} label={t("2. Public + secret → sends")} />
+          <Swatch rgb={shared} label={t("4. Vali’s mix + own secret")} />
         </div>
         <div className="cr-dh-col cr-dh-mid">
-          <p className="jr-sub">
-            {t("Ochiq kanal (Eva ko‘radi)", "Public channel (Eve sees)")}
-          </p>
-          <Swatch rgb={PUBLIC} label={t("Ochiq rang", "Public colour")} />
-          <Swatch rgb={aliMix} label={t("Alidan →", "From Ali →")} />
-          <Swatch rgb={valiMix} label={t("← Validan", "← From Vali")} />
-          <Swatch
-            rgb={eve}
-            label={t("Evaning urinishi — mos emas", "Eve’s attempt — no match")}
-          />
+          <p className="jr-sub">{t("Public channel (Eve sees)")}</p>
+          <Swatch rgb={PUBLIC} label={t("Public colour")} />
+          <Swatch rgb={aliMix} label={t("From Ali →")} />
+          <Swatch rgb={valiMix} label={t("← From Vali")} />
+          <Swatch rgb={eve} label={t("Eve’s attempt — no match")} />
         </div>
         <div className="cr-dh-col">
           <p className="jr-sub">Vali</p>
           {picker("Vali", vali, setVali)}
-          <Swatch rgb={b} label={t("1. Maxfiy rang", "1. Secret colour")} />
-          <Swatch
-            rgb={valiMix}
-            label={t("2. Ochiq + sir → yuboradi", "2. Public + secret → sends")}
-          />
-          <Swatch
-            rgb={shared}
-            label={t(
-              "4. Alining aralashmasi + o‘z siri",
-              "4. Ali’s mix + own secret",
-            )}
-          />
+          <Swatch rgb={b} label={t("1. Secret colour")} />
+          <Swatch rgb={valiMix} label={t("2. Public + secret → sends")} />
+          <Swatch rgb={shared} label={t("4. Ali’s mix + own secret")} />
         </div>
       </div>
       <p className="jr-verdict jr-ok">
         {t(
-          "Ali va Valida bir xil rang chiqdi — bu ularning umumiy kaliti. Eva ikkala aralashmani qo‘shsa ham, boshqa rang oladi.",
           "Ali and Vali end up with the same colour — their shared key. Even mixing both mixtures, Eve gets a different one.",
         )}
       </p>
       <p className="jr-note">
         {t(
-          "Haqiqiy kompyuterlarda bo‘yoq o‘rniga juda katta sonlar bilan matematika ishlatiladi: uni bir tomonga hisoblash oson, teskarisiga — deyarli imkonsiz.",
           "Real computers use maths with huge numbers instead of paint: easy to compute one way, practically impossible to undo.",
         )}
       </p>

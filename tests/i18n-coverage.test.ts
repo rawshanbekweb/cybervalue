@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { createTranslator } from "../src/lib/i18n";
 import { STUDIO_PROJECTS } from "../src/lib/studio/projects";
 import { checkProject } from "../src/lib/studio/checks";
@@ -223,4 +223,36 @@ test("every Build & Defend scenario, case, hint and interface string is translat
     /metadata\(\s*"([^"]*)",\s*"([^"]*)"/.exec(page) ?? [];
   texts.push(title, description);
   assertTranslated("uz", texts, "Build & Defend");
+});
+
+test('every t("…") string in the interactive labs has Uzbek in the shared dictionary', () => {
+  // Terms the Uzbek copy keeps in English.
+  const same = new Set([
+    "Mask",
+    "Wildcard",
+    "Printer",
+    "Public IP",
+    "Server",
+    "Flag",
+  ]);
+  const dirs = [
+    "src/components/playground/network-lab",
+    "src/components/playground/linux-lab",
+    "src/components/playground/junior",
+    "src/components/playground/junior/ciphers",
+    "src/components/playground/checkpoint",
+  ];
+  const texts: string[] = [];
+  for (const dir of dirs)
+    for (const file of readdirSync(dir).filter((f) => f.endsWith(".tsx"))) {
+      const source = readFileSync(`${dir}/${file}`, "utf8");
+      for (const match of source.matchAll(/\bt\(\s*"((?:[^"\\]|\\.)*)"/g))
+        texts.push(JSON.parse(`"${match[1]}"`));
+    }
+  assert.ok(texts.length > 400);
+  assertTranslated(
+    "uz",
+    texts.filter((text) => !same.has(text)),
+    "Interactive labs",
+  );
 });

@@ -308,9 +308,50 @@ export function standing(input: XpInput, now = Date.now()) {
 }
 
 export type Standing = ReturnType<typeof standing>;
+export type WeeklyStanding = Standing & { weekXp: number; lastWeekXp: number };
 
 /** First name and initial, as shown to classmates. */
 export function publicName(name: string) {
   const [first, second] = name.trim().split(/\s+/);
   return second ? `${first} ${second[0]}.` : first;
+}
+
+// Monday 00:00 in Tashkent of the week `time` falls in.
+export const weekStart = (time: number) =>
+  weekIndex(time) * 7 * DAY + 4 * DAY - TASHKENT;
+
+// XP from materials, tests, personal labs and checkpoints recorded before
+// `until`. Lab lessons have no dates and the Junior bonus is not earned in a
+// week, so both are left out.
+function earnedBefore(input: XpInput, until: number) {
+  const before = (date: Date) => date.getTime() < until;
+  return standing({
+    materials: input.materials,
+    progress: input.progress.filter((p) => before(p.completedAt)),
+    submissions: input.submissions.filter((s) => before(s.createdAt)),
+    checkpoints: input.checkpoints.filter((c) => before(c.createdAt)),
+  }).xp;
+}
+
+/** XP earned this week and last week, for the "Hero of the week". */
+export function weeklyXp(input: XpInput, now = Date.now()) {
+  const thisWeek = weekStart(now);
+  const lastWeek = thisWeek - 7 * DAY;
+  const total = earnedBefore(input, Infinity);
+  const beforeThis = earnedBefore(input, thisWeek);
+  return {
+    week: total - beforeThis,
+    lastWeek: beforeThis - earnedBefore(input, lastWeek),
+  };
+}
+
+/** The top of a week: highest XP first, ties by name, zero scores left out. */
+export function heroes<T extends { name: string; xp: number }>(
+  rows: T[],
+  limit = 3,
+) {
+  return rows
+    .filter((r) => r.xp > 0)
+    .sort((a, b) => b.xp - a.xp || a.name.localeCompare(b.name))
+    .slice(0, limit);
 }

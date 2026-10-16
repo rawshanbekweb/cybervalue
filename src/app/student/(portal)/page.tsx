@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight, Award, Check } from "lucide-react";
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
 import { loadStandings } from "@/lib/student/standing";
-import { publicName } from "@/lib/student/xp";
+import { heroes, publicName } from "@/lib/student/xp";
 import {
   AchievementsSection,
   StandingCard,
@@ -53,7 +53,7 @@ const EXAMS = [
     href: "#achievements",
     title: "Lab checkpoints",
     summary:
-      "Short tests at the end of the IP addressing and Linux labs. Your best score shows under Achievements.",
+      "Short tests at the end of the IP addressing, Linux, HTML and Web Security labs. Your best score shows under Achievements.",
   },
   {
     href: "/akademiya/html-basics/assessment",
@@ -216,6 +216,35 @@ export default async function StudentHomePage() {
     bot && secret
       ? deepLink(bot.username, signLink(secret, "s", student.id))
       : null;
+  // The week's race inside the group: XP earned since Monday.
+  const weekRows = classmates.map((c) => ({
+    name: publicName(c.name),
+    me: c.id === student.id,
+    xp: standings.get(c.id)?.weekXp ?? 0,
+    last: standings.get(c.id)?.lastWeekXp ?? 0,
+  }));
+  const weekHeroes = heroes(weekRows);
+  const lastHero =
+    heroes(
+      weekRows.map((r) => ({ ...r, xp: r.last })),
+      1,
+    )[0] ?? null;
+  // This week's CTF: the newest personal lab published in the last two weeks.
+  const weekly = materials
+    .filter(
+      (m) =>
+        m.kind === "CHALLENGE" && now - m.createdAt.getTime() < 14 * 86_400_000,
+    )
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0];
+  const weeklySolved =
+    weekly && db
+      ? await db.studentProgress.count({
+          where: {
+            materialId: weekly.id,
+            studentId: { in: classmates.map((c) => c.id) },
+          },
+        })
+      : 0;
   const finished = materials.filter((m) => done.has(m.id)).length;
   const portrait = isPortraitData(saved?.portrait) ? saved.portrait : null;
   const entrance = materials.filter((m) => isEntranceExam(m.slug));
@@ -392,6 +421,8 @@ export default async function StudentHomePage() {
           standing={standing}
           ranking={ranking}
           group={student.group}
+          heroes={student.group ? weekHeroes : []}
+          lastHero={student.group ? lastHero : null}
           t={t}
           locale={locale}
         />
@@ -506,6 +537,24 @@ export default async function StudentHomePage() {
                 </li>
               ))}
             </ul>
+          )}
+          {section.kind === "LAB" && weekly && (
+            <Link
+              href={`/student/m/${weekly.slug}`}
+              className="student-weekly-ctf"
+            >
+              <span className="student-label">{t("This week’s CTF")}</span>
+              <span className="student-item-title">{weekly.title}</span>
+              <span className="student-item-summary">
+                {done.has(weekly.id)
+                  ? t("Solved. Well done.")
+                  : weeklySolved > 0
+                    ? t("{count} in your group already solved it.", {
+                        count: weeklySolved,
+                      })
+                    : t("Nobody in your group has solved it yet. Be first.")}
+              </span>
+            </Link>
           )}
           {section.kind === "LAB" && (
             <div className="student-open-labs">

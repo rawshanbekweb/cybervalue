@@ -51,6 +51,7 @@ export async function studentOverview(
         title: true,
         summary: true,
         maxAttempts: true,
+        createdAt: true,
       },
     }),
     db.studentProgress.findMany({

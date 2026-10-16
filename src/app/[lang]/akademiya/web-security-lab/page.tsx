@@ -1,3 +1,4 @@
+import { Checkpoints } from "@/components/playground/checkpoint/Checkpoints";
 import { ProgressSync } from "@/components/playground/ProgressSync";
 import { requireSection } from "@/lib/site-config-server";
 import { SecurityLab } from "@/components/playground/security-lab/SecurityLab";
@@ -20,6 +21,9 @@ export default async function WebSecurityLabPage() {
       </div>
       <ProgressSync lab="security" />
       <SecurityLab />
+      <div className="container">
+        <Checkpoints ids={["security-1"]} />
+      </div>
     </>
   );
 }

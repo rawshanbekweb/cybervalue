@@ -55,27 +55,25 @@ export function Checkpoints({ ids }: { ids: string[] }) {
     <section id="checkpoints" className="cp-section" aria-labelledby="cp-title">
       <header className="cp-head">
         <span className="eyebrow">
-          <span className="status-dot" /> {t("NAZORAT TESTLARI", "CHECKPOINTS")}
+          <span className="status-dot" /> {t("CHECKPOINTS")}
         </span>
         <h2 id="cp-title">
-          {t("O‘rgandingizmi?", "Got it?")}{" "}
-          <span>{t("Tekshirib ko‘ring.", "Prove it.")}</span>
+          {t("Got it?")} <span>{t("Prove it.")}</span>
         </h2>
         <p>
           {status?.signedIn
             ? t(
-                `${status.name}, natijangiz o‘quvchi kabinetingizga va o‘qituvchingizga yuboriladi.`,
-                `${status.name}, your result goes to your student page and your teacher.`,
+                "{name}, your result goes to your student page and your teacher.",
+                { name: status.name ?? "" },
               )
             : t(
-                "Har safar yangi savollar. Natijani saqlash uchun avval o‘quvchi kabinetiga kiring.",
                 "Fresh questions every time. Sign in to the student area first to save your result.",
               )}
           {status && !status.signedIn && (
             <>
               {" "}
               <Link href="/student/login" className="cp-link">
-                {t("Kabinetga kirish", "Student sign-in")}
+                {t("Student sign-in")}
               </Link>
             </>
           )}
@@ -127,12 +125,7 @@ function CheckpointCard({
       setAttempt(data);
       setAnswers(data.questions.map(() => null));
     } catch {
-      setError(
-        t(
-          "Testni ochib bo‘lmadi. Birozdan keyin qayta urining.",
-          "The checkpoint could not start. Try again shortly.",
-        ),
-      );
+      setError(t("The checkpoint could not start. Try again shortly."));
     } finally {
       setBusy(false);
     }
@@ -151,12 +144,8 @@ function CheckpointCard({
       if (!ok)
         throw new Error(
           status === 409
-            ? t(
-                "Bu savollar allaqachon baholangan.",
-                "These questions were already graded.",
-              )
+            ? t("These questions were already graded.")
             : t(
-                "Vaqt tugadi yoki xato yuz berdi. Testni qayta boshlang.",
                 "Time ran out or something failed. Start the checkpoint again.",
               ),
         );
@@ -179,7 +168,7 @@ function CheckpointCard({
         <div>
           <h3 id={`cp-${meta.id}`}>{text(meta.title)}</h3>
           <p>
-            {text(meta.covers)} · {t("o‘tish", "pass")} {meta.pass}%
+            {text(meta.covers)} · {t("pass")} {meta.pass}%
           </p>
         </div>
         {best && (
@@ -189,8 +178,8 @@ function CheckpointCard({
             {best.percent >= meta.pass && (
               <Trophy size={13} aria-hidden="true" />
             )}
-            {t("Eng yaxshi", "Best")} {best.percent}% · {best.attempts}{" "}
-            {t("urinish", best.attempts === 1 ? "try" : "tries")}
+            {t("Best")} {best.percent}% · {best.attempts}{" "}
+            {text({ uz: "urinish", en: best.attempts === 1 ? "try" : "tries" })}
           </span>
         )}
       </div>
@@ -202,9 +191,7 @@ function CheckpointCard({
           onClick={start}
           disabled={busy}
         >
-          {busy
-            ? t("Tayyorlanmoqda…", "Preparing…")
-            : t("Testni boshlash", "Take the test")}
+          {busy ? t("Preparing…") : t("Take the test")}
         </button>
       )}
 
@@ -229,11 +216,7 @@ function CheckpointCard({
                         <span
                           className="cp-mark"
                           role="img"
-                          aria-label={
-                            right
-                              ? t("To‘g‘ri", "Correct")
-                              : t("Noto‘g‘ri", "Wrong")
-                          }
+                          aria-label={right ? t("Correct") : t("Wrong")}
                         >
                           {right ? <Check size={15} /> : <X size={15} />}
                         </span>
@@ -269,17 +252,14 @@ function CheckpointCard({
           {!result ? (
             <div className="cp-actions">
               <span>
-                {answered}/{attempt.questions.length}{" "}
-                {t("javob berildi", "answered")}
+                {answered}/{attempt.questions.length} {t("answered")}
               </span>
               <button
                 type="submit"
                 className="button button-primary"
                 disabled={busy}
               >
-                {busy
-                  ? t("Tekshirilmoqda…", "Checking…")
-                  : t("Topshirish", "Submit")}
+                {busy ? t("Checking…") : t("Submit")}
               </button>
             </div>
           ) : (
@@ -292,12 +272,12 @@ function CheckpointCard({
               </strong>
               <span>
                 {result.passed
-                  ? t("Nazorat topshirildi!", "Checkpoint passed!")
+                  ? t("Checkpoint passed!")
                   : t(
-                      `O‘tish uchun ${meta.pass}% kerak. Darslarni takrorlab, qayta urining.`,
-                      `You need ${meta.pass}% to pass. Review the lessons and try again.`,
+                      "You need {pass}% to pass. Review the lessons and try again.",
+                      { pass: meta.pass },
                     )}
-                {result.saved && ` ${t("Natija saqlandi.", "Result saved.")}`}
+                {result.saved && ` ${t("Result saved.")}`}
               </span>
               {result.certificates?.map((title) => (
                 <Link
@@ -305,7 +285,7 @@ function CheckpointCard({
                   href="/student#certificates"
                   className="cp-award"
                 >
-                  {t(`Yangi sertifikat: ${title}`, `New certificate: ${title}`)}
+                  {t("New certificate: {title}", { title })}
                 </Link>
               ))}
               <button
@@ -314,7 +294,7 @@ function CheckpointCard({
                 onClick={start}
               >
                 <RotateCcw size={14} aria-hidden="true" />{" "}
-                {t("Yangi savollar bilan", "Try new questions")}
+                {t("Try new questions")}
               </button>
             </div>
           )}

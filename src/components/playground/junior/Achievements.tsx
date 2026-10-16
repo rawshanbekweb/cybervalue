@@ -27,11 +27,10 @@ export function Achievements({
     <div className="jr-achievements">
       <header className="jr-hero jr-page-head">
         <span className="eyebrow">
-          <span className="status-dot" /> {t("YUTUQLAR", "ACHIEVEMENTS")}
+          <span className="status-dot" /> {t("ACHIEVEMENTS")}
         </span>
         <h1>
-          {t("Har bir qadam.", "Every step.")}{" "}
-          <span>{t("Hisobga olinadi.", "Counts.")}</span>
+          {t("Every step.")} <span>{t("Counts.")}</span>
         </h1>
       </header>
       <div className="jr-ach-grid">
@@ -41,9 +40,7 @@ export function Achievements({
             <span className="jr-ring jr-ring-sm" aria-hidden="true">
               <Users size={15} />
             </span>
-            {group
-              ? t(`${group} guruhi reytingi`, `${group} group ranking`)
-              : t("Guruh reytingi", "Group ranking")}
+            {group ? t("{group} group ranking", { group }) : t("Group ranking")}
           </h2>
           {ranking.length ? (
             <ol>
@@ -52,7 +49,7 @@ export function Achievements({
                   <span className="jr-ranking-place">{row.place}</span>
                   <span className="jr-ranking-name">
                     {row.name}
-                    {row.me && <small> · {t("siz", "you")}</small>}
+                    {row.me && <small> · {t("you")}</small>}
                   </span>
                   <span className="jr-ranking-rank">{text(row.rank)}</span>
                   <span className="jr-ranking-xp">{row.xp} XP</span>
@@ -62,21 +59,14 @@ export function Achievements({
           ) : (
             <p className="jr-note">
               {group
-                ? t(
-                    "Guruhingizda hali hech kim XP to‘plamagan. Birinchi bo‘ling!",
-                    "No one in your group has earned XP yet. Be the first!",
-                  )
+                ? t("No one in your group has earned XP yet. Be the first!")
                 : t(
-                    "O‘qituvchingiz sizni guruhga qo‘shgach, reyting paydo bo‘ladi.",
                     "The ranking appears once your teacher puts you in a group.",
                   )}
             </p>
           )}
           <p className="jr-ranking-note">
-            {t(
-              "Reytingda faqat taxallus (yoki ism) va XP ko‘rinadi.",
-              "Only codenames (or first names) and XP are shown.",
-            )}
+            {t("Only codenames (or first names) and XP are shown.")}
           </p>
         </section>
       </div>

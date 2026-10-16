@@ -1,13 +1,17 @@
 "use client";
+import { useEffect } from "react";
+import { reportClientError } from "@/lib/errors/report";
 import { useTranslator } from "@/components/locale-provider";
 import Link from "next/link";
 export default function ErrorPage({
+  error,
   reset,
 }: {
   error: Error & { digest?: string };
   reset: () => void;
 }) {
   const t = useTranslator();
+  useEffect(() => reportClientError(error), [error]);
   return (
     <div className="container error-page">
       <span className="eyebrow">{t("Something interrupted the request")}</span>

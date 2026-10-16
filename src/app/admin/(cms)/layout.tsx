@@ -38,6 +38,8 @@ export default async function AdminCmsLayout({
           <Link href="/admin/files">{t("File library")}</Link>
           <Link href="/admin/portrait">{t("Home page portrait")}</Link>
           <p className="admin-nav-group">{t("Security")}</p>
+          <Link href="/admin/status">{t("System status")}</Link>
+          <Link href="/admin/errors">{t("Errors")}</Link>
           <Link href="/admin/audit">{t("Audit log")}</Link>
           <Link href="/admin/account">{t("Account settings")}</Link>
         </nav>

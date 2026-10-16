@@ -7,6 +7,9 @@ import {
   weekIndex,
   XP,
   type XpInput,
+  heroes,
+  weekStart,
+  weeklyXp,
 } from "../src/lib/student/xp";
 import { attention, classCsv } from "../src/lib/student/class";
 
@@ -137,7 +140,14 @@ test("ranks, public names and attention reasons", () => {
   assert.deepEqual(attention(old, 0.2, now), ["inactive", "low-tests"]);
 
   const csv = classCsv(
-    [{ name: "=cmd", group: "7-A", standing: old, reasons: ["inactive"] }],
+    [
+      {
+        name: "=cmd",
+        group: "7-A",
+        standing: { ...old, weekXp: 0, lastWeekXp: 0 },
+        reasons: ["inactive"],
+      },
+    ],
     (s) => s,
     "en",
   );
@@ -145,4 +155,51 @@ test("ranks, public names and attention reasons", () => {
   assert.equal(lines.length, 2);
   assert.ok(lines[1].startsWith(`"'=cmd","7-A","Trainee","20"`));
   assert.ok(lines[1].includes('"Inactive for over a week"'));
+});
+
+test("weekly XP counts only what was earned since Monday", () => {
+  // Wednesday 22 Oct 2026, noon in Tashkent.
+  const now = Date.UTC(2026, 9, 22, 7);
+  const day = (iso: string) => new Date(iso);
+  const input = {
+    materials: [
+      { id: "l1", slug: "l1", kind: "LESSON" as const },
+      { id: "l2", slug: "l2", kind: "LESSON" as const },
+      { id: "q1", slug: "q1", kind: "QUIZ" as const },
+    ],
+    progress: [
+      // Last week (Thursday) and this week (Monday 00:30 Tashkent).
+      { materialId: "l1", completedAt: day("2026-10-16T08:00:00Z") },
+      { materialId: "l2", completedAt: day("2026-10-18T19:30:00Z") },
+    ],
+    submissions: [
+      {
+        materialId: "q1",
+        score: 5,
+        maxScore: 10,
+        createdAt: day("2026-10-17T08:00:00Z"),
+      },
+      // A better score this week adds only the improvement.
+      {
+        materialId: "q1",
+        score: 8,
+        maxScore: 10,
+        createdAt: day("2026-10-21T08:00:00Z"),
+      },
+    ],
+    checkpoints: [],
+    labs: [{ lab: "html", lessons: [1, 2, 3] }],
+    bonus: 300,
+  };
+  assert.equal(weekStart(now), Date.UTC(2026, 9, 18, 19));
+  assert.deepEqual(weeklyXp(input, now), { week: 20 + 30, lastWeek: 20 + 50 });
+  assert.deepEqual(
+    heroes([
+      { name: "B", xp: 50 },
+      { name: "A", xp: 50 },
+      { name: "C", xp: 0 },
+      { name: "D", xp: 70 },
+    ]).map((h) => h.name),
+    ["D", "A", "B"],
+  );
 });

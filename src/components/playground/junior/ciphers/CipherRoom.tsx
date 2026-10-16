@@ -55,25 +55,19 @@ export function CipherRoom() {
     <div className="cipher-room">
       <header className="jr-hero jr-page-head">
         <span className="eyebrow">
-          <span className="status-dot" />{" "}
-          {t("SHIFRLAR XONASI · 10 TA SHIFR", "CIPHER ROOM · 10 CIPHERS")}
+          <span className="status-dot" /> {t("CIPHER ROOM · 10 CIPHERS")}
         </span>
         <h1>
-          {t("2600 yillik sirlar.", "2,600 years of secrets.")}{" "}
-          <span>{t("O‘z qo‘lingiz bilan.", "In your own hands.")}</span>
+          {t("2,600 years of secrets.")} <span>{t("In your own hands.")}</span>
         </h1>
         <p>
           {t(
-            "Sparta tayoqchasidan tortib brauzeringizdagi qulfgacha. Shifrni tanlang, tarixini o‘qing va qanday ishlashini sinab ko‘ring. Mashqlar «Uy vazifalari» bo‘limida.",
             "From a Spartan rod to the padlock in your browser. Pick a cipher, read its story and try how it works. Exercises are in the Homework section.",
           )}
         </p>
       </header>
 
-      <nav
-        className="cr-timeline"
-        aria-label={t("Shifrlar tarixi", "Cipher timeline")}
-      >
+      <nav className="cr-timeline" aria-label={t("Cipher timeline")}>
         <ol ref={timeline}>
           {CIPHERS.map((item) => {
             const count = progress[item.id]?.length ?? 0;
@@ -115,10 +109,9 @@ export function CipherRoom() {
             <span
               className="cr-stars"
               role="img"
-              aria-label={t(
-                `Qiyinlik: ${cipher.level} / 3`,
-                `Difficulty: ${cipher.level} of 3`,
-              )}
+              aria-label={t("Difficulty: {level} of 3", {
+                level: cipher.level,
+              })}
             >
               {[1, 2, 3].map((n) => (
                 <Star
@@ -137,8 +130,7 @@ export function CipherRoom() {
         <div className="cr-grid">
           <section className="cr-story" aria-labelledby="cr-story-title">
             <h3 id="cr-story-title">
-              <BookOpen size={16} aria-hidden="true" />{" "}
-              {t("Tarixi", "The story")}
+              <BookOpen size={16} aria-hidden="true" /> {t("The story")}
             </h3>
             {cipher.story.map((paragraph, i) => (
               <p key={i}>{text(paragraph)}</p>
@@ -149,7 +141,7 @@ export function CipherRoom() {
             <div className="cr-fact">
               <Lightbulb size={16} aria-hidden="true" />
               <p>
-                <strong>{t("Qiziq fakt: ", "Fun fact: ")}</strong>
+                <strong>{t("Fun fact: ")}</strong>
                 {text(cipher.fact)}
               </p>
             </div>
@@ -158,7 +150,7 @@ export function CipherRoom() {
           <section className="cr-lab" aria-labelledby="cr-lab-title">
             <h3 id="cr-lab-title">
               <FlaskConical size={16} aria-hidden="true" />{" "}
-              {t("Qanday ishlaydi — sinab ko‘ring", "How it works — try it")}
+              {t("How it works — try it")}
             </h3>
             <p className="jr-lead">{text(cipher.how)}</p>
             <Bench />
@@ -174,14 +166,13 @@ export function CipherRoom() {
           </span>
           <span>
             <strong>
-              {t("Uy vazifasi", "Homework")}:{" "}
-              {text(cipher.title).split(" — ")[0]}
+              {t("Homework")}: {text(cipher.title).split(" — ")[0]}
             </strong>
             <small>
-              {t(
-                `${solved.length} / ${cipher.exercises.length} mashq bajarilgan · har biri 15 XP`,
-                `${solved.length} of ${cipher.exercises.length} exercises solved · 15 XP each`,
-              )}
+              {t("{length} of {length2} exercises solved · 15 XP each", {
+                length: solved.length,
+                length2: cipher.exercises.length,
+              })}
             </small>
           </span>
           <ArrowRight size={18} aria-hidden="true" />

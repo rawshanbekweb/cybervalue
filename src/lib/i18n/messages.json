@@ -383,5 +383,11 @@
   "TESTS AND EXAMS": "TESTLAR VA IMTIHONLAR",
   "Every test in one place.": "Barcha testlar bir joyda.",
   "Your teacher’s tests, lab checkpoints, the HTML exam and the resources exam are all listed in the student portal, with your scores.": "O‘qituvchi testlari, lab nazoratlari, HTML sinovi va resurslar imtihoni — hammasi natijalaringiz bilan o‘quvchi kabinetida.",
-  "Open the student portal": "O‘quvchi kabinetini ochish"
+  "Open the student portal": "O‘quvchi kabinetini ochish",
+  "Offline": "Oflayn",
+  "This page is not saved on this device yet.": "Bu sahifa hali ushbu qurilmada saqlanmagan.",
+  "No connection.": "Internet yo‘q.",
+  "Your labs still work.": "Laboratoriyalaringiz ishlashda davom etadi.",
+  "This page is not saved on this device yet. Pages and labs you have opened before open without internet, and lesson progress is kept in this browser until you are back online.": "Bu sahifa hali ushbu qurilmada saqlanmagan. Avval ochilgan sahifa va laboratoriyalar internetsiz ham ochiladi, dars natijalari esa internet qaytguncha shu brauzerda saqlanadi.",
+  "Open the Academy": "Akademiyani ochish"
 }

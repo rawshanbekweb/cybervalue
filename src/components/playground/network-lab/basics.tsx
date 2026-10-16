@@ -45,13 +45,13 @@ export function BitsWidget({
         ))}
       </p>
       <p className="nl-caption">
-        {t("Maqsad:", "Target:")} <code>{target}</code>
+        {t("Target:")} <code>{target}</code>
       </p>
       <div className="nl-octets">
         {values.map((value, o) => (
           <div className="nl-octet" key={o}>
             <span className="nl-octet-label">
-              {t("Oktet", "Octet")} {o + 1} = <strong>{value}</strong>
+              {t("Octet")} {o + 1} = <strong>{value}</strong>
             </span>
             <div className="nl-bits">
               {WEIGHTS.map((weight) => {
@@ -61,7 +61,7 @@ export function BitsWidget({
                     key={weight}
                     className={on ? "on" : ""}
                     aria-pressed={on}
-                    aria-label={`${t("Oktet", "Octet")} ${o + 1}, ${weight}`}
+                    aria-label={`${t("Octet")} ${o + 1}, ${weight}`}
                     onClick={() =>
                       update(values.map((v, i) => (i === o ? v ^ weight : v)))
                     }
@@ -76,7 +76,7 @@ export function BitsWidget({
         ))}
       </div>
       <button className="nl-ghost" onClick={() => update([0, 0, 0, 0])}>
-        <RotateCcw size={14} /> {t("Tozalash", "Clear")}
+        <RotateCcw size={14} /> {t("Clear")}
       </button>
     </div>
   );
@@ -113,8 +113,8 @@ export function Legend() {
   const { t } = useT();
   return (
     <p className="nl-legend">
-      <span className="net">{t("tarmoq qismi", "network part")}</span>
-      <span className="host">{t("host qismi", "host part")}</span>
+      <span className="net">{t("network part")}</span>
+      <span className="host">{t("host part")}</span>
     </p>
   );
 }
@@ -139,12 +139,12 @@ export function MaskWidget({
     <div className="nl-card">
       <p className="nl-goal">
         {t(
-          `Xonada ${hosts} ta qurilma bor. Hammasi sig‘adigan eng kichik tarmoq qaysi?`,
-          `The room has ${hosts} devices. What is the smallest network that fits them all?`,
+          "The room has {hosts} devices. What is the smallest network that fits them all?",
+          { hosts },
         )}
       </p>
       <label htmlFor={sliderId} className="nl-slider-label">
-        {t("Mask uzunligi", "Mask length")} <strong>/{prefix}</strong>
+        {t("Mask length")} <strong>/{prefix}</strong>
       </label>
       <input
         id={sliderId}
@@ -158,11 +158,11 @@ export function MaskWidget({
           onSolved(next === prefixForHosts(hosts));
         }}
       />
-      <p className="nl-row-label">{t("Mask", "Mask")}</p>
+      <p className="nl-row-label">{t("Mask")}</p>
       <BitStrip
         ip={s.mask}
         prefix={prefix}
-        label={`${t("Mask", "Mask")} ${formatIp(s.mask)}`}
+        label={`${t("Mask")} ${formatIp(s.mask)}`}
       />
       <p className="nl-row-label">
         IP <code>{ip}</code>
@@ -171,19 +171,19 @@ export function MaskWidget({
       <Legend />
       <dl className="nl-facts">
         <div>
-          <dt>{t("Mask", "Mask")}</dt>
+          <dt>{t("Mask")}</dt>
           <dd>{formatIp(s.mask)}</dd>
         </div>
         <div>
-          <dt>{t("Host bitlari", "Host bits")}</dt>
+          <dt>{t("Host bits")}</dt>
           <dd>{32 - prefix}</dd>
         </div>
         <div>
-          <dt>{t("Qurilmalar uchun joy", "Room for devices")}</dt>
+          <dt>{t("Room for devices")}</dt>
           <dd>{s.hosts.toLocaleString("en-US")}</dd>
         </div>
         <div>
-          <dt>{t("Tarmoq", "Network")}</dt>
+          <dt>{t("Network")}</dt>
           <dd>
             {formatIp(s.network)}/{prefix}
           </dd>
@@ -191,14 +191,14 @@ export function MaskWidget({
       </dl>
       <p className={fits ? "nl-pass" : "nl-fail"} aria-live="polite">
         {fits
-          ? t(
-              `${hosts} ta kompyuter sig‘adi (${s.hosts} ta joy).`,
-              `${hosts} computers fit (${s.hosts} places).`,
-            )
-          : t(
-              `${hosts} ta kompyuter sig‘maydi: atigi ${s.hosts} ta joy.`,
-              `${hosts} computers do not fit: only ${s.hosts} places.`,
-            )}
+          ? t("{hosts} computers fit ({hosts2} places).", {
+              hosts,
+              hosts2: s.hosts,
+            })
+          : t("{hosts} computers do not fit: only {hosts2} places.", {
+              hosts,
+              hosts2: s.hosts,
+            })}
       </p>
     </div>
   );
@@ -217,9 +217,9 @@ export function RangeBar({ ip, prefix }: { ip: number; prefix: number }) {
   return (
     <div className="nl-range">
       <div className="nl-range-bar">
-        <span className="edge">{t("tarmoq", "network")}</span>
+        <span className="edge">{t("network")}</span>
         <span className="hosts">
-          {t("hostlar", "hosts")} · {s.hosts.toLocaleString("en-US")}
+          {t("hosts")} · {s.hosts.toLocaleString("en-US")}
         </span>
         <span className="edge">broadcast</span>
         <i style={{ left: `${position}%` }} aria-hidden="true" />
@@ -248,15 +248,15 @@ export function SubnetFacts({ ip, prefix }: { ip: number; prefix: number }) {
   const { t, text } = useT();
   const s = subnet(ip, prefix);
   const rows: [string, string][] = [
-    [t("Manzil", "Address"), `${formatIp(ip)}/${prefix}`],
-    [t("Mask", "Mask"), formatIp(s.mask)],
-    [t("Wildcard", "Wildcard"), formatIp(s.wildcard)],
-    [t("Tarmoq manzili", "Network address"), formatIp(s.network)],
-    [t("Birinchi host", "First host"), formatIp(s.firstHost)],
-    [t("Oxirgi host", "Last host"), formatIp(s.lastHost)],
+    [t("Address"), `${formatIp(ip)}/${prefix}`],
+    [t("Mask"), formatIp(s.mask)],
+    [t("Wildcard"), formatIp(s.wildcard)],
+    [t("Network address"), formatIp(s.network)],
+    [t("First host"), formatIp(s.firstHost)],
+    [t("Last host"), formatIp(s.lastHost)],
     ["Broadcast", formatIp(s.broadcast)],
-    [t("Hostlar soni", "Usable hosts"), s.hosts.toLocaleString("en-US")],
-    [t("Turi", "Kind"), text(KIND_LABEL[classify(ip)])],
+    [t("Usable hosts"), s.hosts.toLocaleString("en-US")],
+    [t("Kind"), text(KIND_LABEL[classify(ip)])],
   ];
   return (
     <dl className="nl-facts nl-facts-wide">
@@ -304,7 +304,7 @@ export function RangeWidget({
   return (
     <div className="nl-card">
       <label className="nl-field">
-        <span>{t("Misol manzil (CIDR)", "Example address (CIDR)")}</span>
+        <span>{t("Example address (CIDR)")}</span>
         <input
           value={example}
           onChange={(e) => setExample(e.target.value)}
@@ -324,18 +324,15 @@ export function RangeWidget({
         </>
       ) : (
         <p className="nl-fail">
-          {t(
-            "Manzilni 192.168.1.77/26 ko‘rinishida yozing.",
-            "Write the address like 192.168.1.77/26.",
-          )}
+          {t("Write the address like 192.168.1.77/26.")}
         </p>
       )}
       <fieldset className="nl-answers">
         <legend>
-          {t("Javobingiz:", "Your answer:")} <code>{cidr}</code>
+          {t("Your answer:")} <code>{cidr}</code>
         </legend>
         <label className="nl-field">
-          <span>{t("Tarmoq manzili", "Network address")}</span>
+          <span>{t("Network address")}</span>
           <input
             value={answers.network}
             onChange={(e) => set("network", e.target.value)}
@@ -353,7 +350,7 @@ export function RangeWidget({
           />
         </label>
         <label className="nl-field">
-          <span>{t("Hostlar soni", "Usable hosts")}</span>
+          <span>{t("Usable hosts")}</span>
           <input
             inputMode="numeric"
             value={answers.hosts}
@@ -398,11 +395,11 @@ export function CompareWidget({
   };
   const rows: [string, number][] = [
     [`PC ${pc}`, own],
-    [`${t("Mask", "Mask")} /${prefix}`, mask],
-    [`= ${t("tarmoq", "network")}`, (own & mask) >>> 0],
+    [`${t("Mask")} /${prefix}`, mask],
+    [`= ${t("network")}`, (own & mask) >>> 0],
     [selected, other],
-    [`${t("Mask", "Mask")} /${prefix}`, mask],
-    [`= ${t("tarmoq", "network")}`, (other & mask) >>> 0],
+    [`${t("Mask")} /${prefix}`, mask],
+    [`= ${t("network")}`, (other & mask) >>> 0],
   ];
   return (
     <div className="nl-card">
@@ -417,21 +414,17 @@ export function CompareWidget({
       </div>
       <p className={same ? "nl-pass" : "nl-fail"} aria-live="polite">
         {same
-          ? t(
-              "Tarmoq manzillari teng → bir tarmoqda, paket to‘g‘ridan-to‘g‘ri boradi.",
-              "The network addresses match → same network, direct delivery.",
-            )
+          ? t("The network addresses match → same network, direct delivery.")
           : t(
-              "Tarmoq manzillari farq qiladi → boshqa tarmoq, paket gateway orqali boradi.",
               "The network addresses differ → another network, the packet goes through the gateway.",
             )}
       </p>
       <fieldset className="nl-devices">
         <legend>
-          {t(
-            `${pc}/${prefix} bilan bir tarmoqdagilarni belgilang`,
-            `Tick the devices on the same network as ${pc}/${prefix}`,
-          )}
+          {t("Tick the devices on the same network as {pc}/{prefix}", {
+            pc,
+            prefix,
+          })}
         </legend>
         {devices.map((device) => (
           <div key={device} className={device === selected ? "active" : ""}>
@@ -444,7 +437,7 @@ export function CompareWidget({
               <code>{device}</code>
             </label>
             <button className="nl-ghost" onClick={() => setSelected(device)}>
-              {t("AND ni ko‘rish", "Show AND")}
+              {t("Show AND")}
             </button>
           </div>
         ))}
