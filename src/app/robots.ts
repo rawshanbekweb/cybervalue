@@ -1,8 +1,11 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/lib/site";
-export default function robots(): MetadataRoute.Robots {
+import { siteIndexable } from "@/lib/site-config-server";
+
+export const revalidate = 300;
+export default async function robots(): Promise<MetadataRoute.Robots> {
   return {
-    rules: site.indexable
+    rules: (await siteIndexable())
       ? {
           userAgent: "*",
           allow: "/",

@@ -3,6 +3,7 @@ import { Fingerprint } from "lucide-react";
 import { metadata } from "@/lib/seo";
 import { site } from "@/lib/site";
 import { getSocials } from "@/lib/content";
+import { getSiteConfig } from "@/lib/site-config-server";
 import { ArrowLink, JsonLd } from "@/components/ui";
 
 export const revalidate = 60;
@@ -14,7 +15,7 @@ export const generateMetadata = () =>
   );
 export default async function About() {
   const t = await getTranslator();
-  const socials = await getSocials();
+  const [socials, config] = await Promise.all([getSocials(), getSiteConfig()]);
   return (
     <div className="container page-content">
       <JsonLd
@@ -67,7 +68,15 @@ export default async function About() {
               "I’m building a professional record that can grow with the work: original research, authorized security experiments, software projects, and lessons from CTF participation.",
             )}
           </p>
-          <ArrowLink href="/work">{t("Explore the work archive")}</ArrowLink>
+          {config.sections.portfolio && (
+            <nav className="about-archive" aria-label={t("The archive")}>
+              <ArrowLink href="/work">{t("Work")}</ArrowLink>
+              <ArrowLink href="/research">{t("Research")}</ArrowLink>
+              <ArrowLink href="/labs">{t("Labs")}</ArrowLink>
+              <ArrowLink href="/ctf">CTF</ArrowLink>
+              <ArrowLink href="/resources">{t("Resources")}</ArrowLink>
+            </nav>
+          )}
         </div>
         <aside className="about-card">
           <Fingerprint size={48} strokeWidth={1.2} />
@@ -81,6 +90,11 @@ export default async function About() {
           </ul>
           <div className="about-connect" id="connect">
             <span className="eyebrow">{t("Around the web")}</span>
+            {config.email && (
+              <p>
+                <a href={`mailto:${config.email}`}>{config.email}</a>
+              </p>
+            )}
             {socials.length ? (
               <div className="social-links" style={{ marginTop: 18 }}>
                 {socials.map((s) => (

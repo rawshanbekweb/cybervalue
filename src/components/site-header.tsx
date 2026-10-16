@@ -9,8 +9,10 @@ import { useTranslator } from "./locale-provider";
 
 export function SiteHeader({
   items,
+  studentArea = true,
 }: {
   items: { href: string; label: string }[];
+  studentArea?: boolean;
 }) {
   const pathname = usePathname();
   const t = useTranslator();
@@ -26,7 +28,7 @@ export function SiteHeader({
           cyber<span>value</span>
           <span className="brand-period">.</span>
         </Link>
-        <Navigation items={items} />
+        <Navigation items={items} studentArea={studentArea} />
         <LanguageSwitcher />
       </div>
     </header>

@@ -1,3 +1,4 @@
+import { requireSection } from "@/lib/site-config-server";
 import { notFound } from "next/navigation";
 import { collections, isCollection } from "@/lib/site";
 import { metadata } from "@/lib/seo";
@@ -29,6 +30,7 @@ export async function generateMetadata({ params, searchParams }: Props) {
   );
 }
 export default async function CollectionPage({ params, searchParams }: Props) {
+  await requireSection("portfolio");
   const t = await getTranslator();
   const { collection } = await params;
   if (!isCollection(collection)) notFound();

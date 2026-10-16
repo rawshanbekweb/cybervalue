@@ -34,6 +34,8 @@ export type AuditAction =
   | "submission.review"
   | "portrait.update"
   | "portrait.reset"
+  | "settings.update"
+  | "users.bulk"
   | "junior.create"
   | "junior.update"
   | "junior.code_reset"

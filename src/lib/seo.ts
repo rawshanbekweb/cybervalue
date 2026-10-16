@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { site } from "./site";
 import { getLocale, getTranslator } from "./i18n/server";
+import { siteIndexable } from "./site-config-server";
 
 export async function metadata(
   title: string,
@@ -17,7 +18,7 @@ export async function metadata(
     title: { absolute: fullTitle },
     description,
     alternates: { canonical: `${site.url}${path === "/" ? "" : path}` },
-    robots: { index: site.indexable && !noindex, follow: true },
+    robots: { index: (await siteIndexable()) && !noindex, follow: true },
     openGraph: {
       type: "website",
       title: fullTitle,

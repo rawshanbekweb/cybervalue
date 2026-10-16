@@ -1,9 +1,10 @@
 import type { MetadataRoute } from "next";
 import { getSitemapEntries } from "@/lib/content";
 import { site, collections, contentUrl } from "@/lib/site";
+import { siteIndexable } from "@/lib/site-config-server";
 export const revalidate = 60;
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  if (!site.indexable) return [];
+  if (!(await siteIndexable())) return [];
   const content = await getSitemapEntries();
   return [
     ...[

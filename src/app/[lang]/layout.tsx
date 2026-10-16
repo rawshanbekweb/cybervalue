@@ -4,6 +4,7 @@ import { SiteShell } from "@/components/site-shell";
 import { site } from "@/lib/site";
 import { isLocale, locales } from "@/lib/i18n";
 import { getTranslator } from "@/lib/i18n/server";
+import { siteIndexable } from "@/lib/site-config-server";
 import "../globals.css";
 
 export const viewport: Viewport = {
@@ -29,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
       template: "%s | CyberValue",
     },
     description: t(site.description),
-    robots: { index: site.indexable, follow: true },
+    robots: { index: await siteIndexable(), follow: true },
   };
 }
 

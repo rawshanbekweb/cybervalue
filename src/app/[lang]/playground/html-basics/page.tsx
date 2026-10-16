@@ -1,3 +1,4 @@
+import { requireSection } from "@/lib/site-config-server";
 import { HtmlBasics } from "@/components/playground/html-basics/HtmlBasics";
 import { metadata as buildMetadata } from "@/lib/seo";
 
@@ -8,6 +9,7 @@ export const generateMetadata = () =>
     "/playground/html-basics",
   );
 
-export default function HtmlBasicsPage() {
+export default async function HtmlBasicsPage() {
+  await requireSection("academy", "html");
   return <HtmlBasics />;
 }

@@ -15,21 +15,26 @@ export default async function AdminCmsLayout({
         <Link href="/admin" className="admin-brand">
           {t("cybervalue admin")}
         </Link>
-        <nav className="admin-nav">
+        <nav className="admin-nav" aria-label={t("Admin sections")}>
           <Link href="/admin">{t("Dashboard")}</Link>
+          <Link href="/admin/settings">{t("Site settings")}</Link>
+          <p className="admin-nav-group">{t("Learning")}</p>
+          <Link href="/admin/class">{t("Class")}</Link>
+          <Link href="/admin/users">{t("All users")}</Link>
+          <Link href="/admin/students">{t("Students")}</Link>
+          <Link href="/admin/junior">Academy Junior</Link>
+          <Link href="/admin/materials">{t("Student materials")}</Link>
+          <Link href="/admin/results">{t("Results")}</Link>
+          <Link href="/admin/assessments">{t("HTML baholash")}</Link>
+          <p className="admin-nav-group">{t("Site content")}</p>
           {Object.entries(collections).map(([key, value]) => (
             <Link key={key} href={`/admin/${key}`}>
-              {value.title}
+              {t(value.title)}
             </Link>
           ))}
           <Link href="/admin/files">{t("File library")}</Link>
           <Link href="/admin/portrait">{t("Home page portrait")}</Link>
-          <Link href="/admin/assessments">{t("HTML baholash")}</Link>
-          <Link href="/admin/students">{t("Students")}</Link>
-          <Link href="/admin/materials">{t("Student materials")}</Link>
-          <Link href="/admin/class">{t("Class")}</Link>
-          <Link href="/admin/results">{t("Results")}</Link>
-          <Link href="/admin/junior">Academy Junior</Link>
+          <p className="admin-nav-group">{t("Security")}</p>
           <Link href="/admin/audit">{t("Audit log")}</Link>
           <Link href="/admin/account">{t("Account settings")}</Link>
         </nav>

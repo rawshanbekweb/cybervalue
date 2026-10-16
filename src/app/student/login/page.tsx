@@ -1,3 +1,4 @@
+import { requireSection } from "@/lib/site-config-server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getAdminTranslator } from "@/lib/i18n/server";
@@ -11,6 +12,7 @@ export async function generateMetadata() {
 }
 
 export default async function StudentLoginPage() {
+  await requireSection("studentArea");
   if (await getStudentSession()) redirect("/student");
   const t = await getAdminTranslator();
   return (

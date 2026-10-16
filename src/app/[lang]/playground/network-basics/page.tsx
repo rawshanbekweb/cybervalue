@@ -1,3 +1,4 @@
+import { requireSection } from "@/lib/site-config-server";
 import { NetworkLab } from "@/components/playground/network-lab/NetworkLab";
 import { metadata } from "@/lib/seo";
 
@@ -8,6 +9,7 @@ export const generateMetadata = () =>
     "/playground/network-basics",
   );
 
-export default function NetworkBasicsPage() {
+export default async function NetworkBasicsPage() {
+  await requireSection("academy", "network");
   return <NetworkLab />;
 }

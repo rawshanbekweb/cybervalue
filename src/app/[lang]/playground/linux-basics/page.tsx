@@ -1,3 +1,4 @@
+import { requireSection } from "@/lib/site-config-server";
 import { LinuxLab } from "@/components/playground/linux-lab/LinuxLab";
 import { metadata } from "@/lib/seo";
 
@@ -8,6 +9,7 @@ export const generateMetadata = () =>
     "/playground/linux-basics",
   );
 
-export default function LinuxBasicsPage() {
+export default async function LinuxBasicsPage() {
+  await requireSection("academy", "linux");
   return <LinuxLab />;
 }

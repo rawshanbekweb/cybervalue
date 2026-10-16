@@ -1,3 +1,4 @@
+import { requireSection } from "@/lib/site-config-server";
 import { notFound } from "next/navigation";
 import { collections, isCollection, contentUrl, site } from "@/lib/site";
 import { getEntry, getRelated } from "@/lib/content";
@@ -50,6 +51,7 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 export default async function EntryPage({ params }: Props) {
+  await requireSection("portfolio");
   const t = await getTranslator();
   const locale = await getLocale();
   const { entry, collection } = await resolve(params);
