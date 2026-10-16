@@ -1,11 +1,18 @@
 "use server";
-import { headers } from "next/headers";
+import { randomBytes } from "node:crypto";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { practiceSubmitted } from "@/lib/telegram/events";
 import { quietly } from "@/lib/telegram/notify";
 import { getDb } from "@/lib/db";
+import { ASSESSMENT_PATH } from "@/lib/html-assessment/contract";
+import {
+  AssessmentError,
+  EXAM_COOKIE,
+  startAccountAttempt,
+} from "@/lib/html-assessment/service";
 import { clientKey } from "@/lib/rate-limit";
 import { limit } from "@/lib/rate-limit-db";
 import {
@@ -314,4 +321,33 @@ export async function removeStudentPortraitAction() {
     data: { portrait: Prisma.DbNull },
   });
   revalidatePath("/student");
+}
+
+export type HtmlExamState = { error?: string } | undefined;
+
+// Starts (or continues here) an HTML exam the teacher gave this account, then
+// opens the exam page with its session cookie: no separate code needed.
+export async function startHtmlExamAction(
+  candidateId: string,
+): Promise<HtmlExamState> {
+  const student = await requireStudent();
+  const db = getDb();
+  if (!db) return { error: "The exam is not available right now." };
+  if (!(await limit(`html-account:${student.id}`, 10, 60_000)))
+    return { error: "Too many tries. Wait a minute and try again." };
+  const token = randomBytes(32).toString("hex");
+  try {
+    await startAccountAttempt(db, candidateId, student.id, token);
+  } catch (error) {
+    if (error instanceof AssessmentError) return { error: error.message };
+    throw error;
+  }
+  (await cookies()).set(EXAM_COOKIE, token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    path: ASSESSMENT_PATH,
+    maxAge: 7 * 86400,
+  });
+  redirect(ASSESSMENT_PATH);
 }

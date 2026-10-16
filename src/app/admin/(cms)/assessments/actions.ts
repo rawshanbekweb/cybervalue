@@ -14,6 +14,8 @@ export type CreateExamState =
       error?: string;
       examId?: string;
       codes?: { studentId: string; name: string; code: string }[];
+      // Candidates who start from their student page.
+      linked?: number;
     }
   | undefined;
 export async function createExamAction(
@@ -27,18 +29,33 @@ export async function createExamAction(
     .object({
       title: z.string().trim().min(3).max(100),
       minutes: z.coerce.number().int().min(15).max(120),
-      roster: z.string().trim().min(3).max(25000),
+      roster: z.string().trim().max(25000),
+      group: z.string().trim().max(40),
     })
     .safeParse({
       title: form.get("title"),
       minutes: form.get("minutes"),
-      roster: form.get("roster"),
+      roster: form.get("roster") ?? "",
+      group: form.get("group") ?? "",
     });
-  if (!parsed.success)
+  if (!parsed.success || (!parsed.data.roster && !parsed.data.group))
     return {
       error:
         "Sinov nomi, 15–120 daqiqalik vaqt va o‘quvchilar ro‘yxatini kiriting.",
     };
+  const db = getDb();
+  if (!db) return { error: "Ma’lumotlar bazasi ulanmagan." };
+  // Students of a group take the exam from their own page; their roster ID
+  // is the account id.
+  const accounts = parsed.data.group
+    ? await db.student.findMany({
+        where: { group: parsed.data.group, active: true },
+        orderBy: { name: "asc" },
+        select: { id: true, name: true },
+      })
+    : [];
+  if (parsed.data.group && !accounts.length)
+    return { error: "Bu guruhda faol o‘quvchi yo‘q." };
   const rows = parsed.data.roster
     .split(/\r?\n/)
     .filter((line) => line.trim())
@@ -48,9 +65,18 @@ export async function createExamAction(
         .map((part) => part.trim());
       return { studentId, name, extra };
     });
+  const all = [
+    ...rows.map((r) => ({ ...r, accountId: null as string | null })),
+    ...accounts.map((a) => ({
+      studentId: a.id,
+      name: a.name,
+      extra: [] as string[],
+      accountId: a.id as string | null,
+    })),
+  ];
   if (
-    !rows.length ||
-    rows.length > 200 ||
+    !all.length ||
+    all.length > 200 ||
     rows.some(
       (r) =>
         !/^[\w.-]{1,40}$/.test(r.studentId) ||
@@ -63,13 +89,12 @@ export async function createExamAction(
       error:
         "Har qatorda ID | Ism Familiya yozing. ID: 1–40 ta lotin harfi, raqam, nuqta, chiziq yoki pastki chiziq. Ko‘pi bilan 200 o‘quvchi.",
     };
-  if (new Set(rows.map((r) => r.studentId.toLowerCase())).size !== rows.length)
+  if (new Set(all.map((r) => r.studentId.toLowerCase())).size !== all.length)
     return { error: "Bir sinovda o‘quvchi ID si takrorlanmasligi kerak." };
-  const db = getDb();
-  if (!db) return { error: "Ma’lumotlar bazasi ulanmagan." };
-  const codes = rows.map(({ studentId, name }) => ({
-    studentId: studentId.toLowerCase(),
+  const codes = all.map(({ studentId, name, accountId }) => ({
+    studentId: accountId ? studentId : studentId.toLowerCase(),
     name,
+    accountId,
     code: newCode(),
   }));
   try {
@@ -80,6 +105,7 @@ export async function createExamAction(
         candidates: {
           create: codes.map((row) => ({
             studentId: row.studentId,
+            accountId: row.accountId,
             name: row.name,
             codeHash: hashCredential(row.code),
             variant: randomInt(3),
@@ -89,7 +115,15 @@ export async function createExamAction(
     });
     revalidatePath("/admin/assessments");
     await audit("assessment.create", session.user.id, exam.title);
-    return { examId: exam.id, codes };
+    return {
+      examId: exam.id,
+      codes: codes.map(({ studentId, name, code }) => ({
+        studentId,
+        name,
+        code,
+      })),
+      linked: accounts.length,
+    };
   } catch {
     return { error: "Sinov yaratilmadi. Qayta urinib ko‘ring." };
   }

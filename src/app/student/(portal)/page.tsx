@@ -11,6 +11,7 @@ import {
 import { requireStudent } from "@/lib/student/session";
 import { studentAssignments } from "@/lib/student/assignment-data";
 import { visibleSince } from "@/lib/student/assignments";
+import { HtmlExamCard } from "@/components/student/html-exam";
 import { AssignmentsSection } from "@/components/student/assignments-panel";
 import { deepLink, telegramConfig } from "@/lib/telegram/api";
 import { signLink } from "@/lib/telegram/link";
@@ -145,7 +146,13 @@ export default async function StudentHomePage() {
     db && student.group
       ? await db.student.findMany({
           where: { group: student.group, active: true },
-          select: { id: true, name: true, group: true, level: true },
+          select: {
+            id: true,
+            name: true,
+            group: true,
+            level: true,
+            bonusXp: true,
+          },
           take: 200,
         })
       : [
@@ -154,6 +161,7 @@ export default async function StudentHomePage() {
             name: student.name,
             group: student.group,
             level: student.level,
+            bonusXp: student.bonusXp,
           },
         ];
   const now = new Date().getTime();
@@ -163,6 +171,7 @@ export default async function StudentHomePage() {
     saved,
     standings,
     assignments,
+    htmlExams,
   ] = await Promise.all([
     studentOverview(student),
     getDb()?.studentCertificate.findMany({
@@ -176,6 +185,17 @@ export default async function StudentHomePage() {
     }),
     db ? loadStandings(db, classmates) : new Map(),
     db ? studentAssignments(db, student, visibleSince(now), now) : [],
+    db
+      ? db.htmlCandidate.findMany({
+          where: {
+            accountId: student.id,
+            OR: [{ exam: { closed: false } }, { submittedAt: { not: null } }],
+          },
+          orderBy: { createdAt: "desc" },
+          take: 10,
+          include: { exam: { select: { title: true, minutes: true } } },
+        })
+      : [],
   ]);
   const standing = standings.get(student.id);
   const ordered = classmates
@@ -447,6 +467,28 @@ export default async function StudentHomePage() {
           </div>
           {section.items.length > 0 && (
             <ul className="student-list">{section.items.map(renderItem)}</ul>
+          )}
+          {section.kind === "QUIZ" && htmlExams.length > 0 && (
+            <ul className="student-list">
+              {htmlExams.map((c) => (
+                <HtmlExamCard
+                  key={c.id}
+                  exam={{
+                    id: c.id,
+                    title: c.exam.title,
+                    minutes: c.exam.minutes,
+                    state:
+                      c.submittedAt ||
+                      (c.deadline && c.deadline.getTime() < now)
+                        ? "done"
+                        : c.startedAt
+                          ? "running"
+                          : "ready",
+                    score: c.submittedAt ? c.autoScore : null,
+                  }}
+                />
+              ))}
+            </ul>
           )}
           {section.kind === "QUIZ" && (
             <ul className="student-list student-exams">

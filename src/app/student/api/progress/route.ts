@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import type { NextRequest } from "next/server";
+import { certificatesEarned } from "@/lib/telegram/events";
 import { getDb } from "@/lib/db";
 import { limit } from "@/lib/rate-limit-db";
 import { clientKey } from "@/lib/rate-limit";
@@ -46,5 +47,8 @@ export async function PUT(request: NextRequest) {
     create: { studentId: student.id, lab: body.lab, lessons },
     update: { lessons },
   });
-  return json({ ok: true, lessons });
+  const certificates = await certificatesEarned(getDb()!, student.id).catch(
+    () => [],
+  );
+  return json({ ok: true, lessons, certificates });
 }

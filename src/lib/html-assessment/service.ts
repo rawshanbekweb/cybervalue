@@ -116,6 +116,54 @@ export async function startAttempt(
   });
 }
 
+/**
+ * Starts, or continues in this browser, the attempt of a candidate linked to a
+ * student-area account. The signed-in account replaces the access code; a
+ * continued attempt moves its session here, so the old tab stops saving.
+ */
+export async function startAccountAttempt(
+  db: PrismaClient,
+  candidateId: string,
+  accountId: string,
+  token: string,
+) {
+  return db.$transaction(async (tx) => {
+    await lock(tx, candidateId);
+    const candidate = await tx.htmlCandidate.findUnique({
+      where: { id: candidateId },
+      include: { exam: true },
+    });
+    if (!candidate || candidate.accountId !== accountId)
+      throw new AssessmentError("Bu sinov sizga berilmagan.", 403);
+    if (candidate.submittedAt)
+      throw new AssessmentError("Bu sinov topshirilgan.", 409);
+    const now = new Date();
+    if (candidate.startedAt) {
+      if (now >= candidate.deadline!) {
+        await finish(tx, candidate, "timeout", candidate.deadline!);
+        throw new AssessmentError("Sinov vaqti tugagan.", 409);
+      }
+      return tx.htmlCandidate.update({
+        where: { id: candidate.id },
+        data: { sessionHash: hashCredential(token) },
+        include: { exam: true },
+      });
+    }
+    if (candidate.exam.closed)
+      throw new AssessmentError("O‘qituvchi bu sinovga kirishni yopgan.", 403);
+    return tx.htmlCandidate.update({
+      where: { id: candidate.id },
+      data: {
+        startedAt: now,
+        deadline: new Date(now.getTime() + candidate.exam.minutes * 60000),
+        sessionHash: hashCredential(token),
+        code: challengeFor(candidate.variant).starter,
+      },
+      include: { exam: true },
+    });
+  });
+}
+
 export async function accessAttempt(
   db: PrismaClient,
   token: string,

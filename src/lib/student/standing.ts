@@ -3,7 +3,7 @@ import type { PrismaClient } from "@/generated/prisma/client";
 import { visibleAtLevel } from "./levels";
 import { standing, type Standing } from "./xp";
 
-type Who = { id: string; group: string; level: string };
+type Who = { id: string; group: string; level: string; bonusXp?: number };
 
 // XP, ranks and activity for many students at once (a whole group for the
 // ranking and the class panel), with each student's own visible materials.
@@ -71,6 +71,7 @@ export async function loadStandings(
           submissions: mine(submissions),
           checkpoints: mine(checkpoints),
           labs: mine(labs),
+          bonus: student.bonusXp,
         },
         now,
       ),

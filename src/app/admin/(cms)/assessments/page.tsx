@@ -16,6 +16,17 @@ export default async function AssessmentsPage() {
         include: { _count: { select: { candidates: true } } },
       })
     : [];
+  // Groups of student-area accounts, who can start without a code.
+  const groups = db
+    ? (
+        await db.student.findMany({
+          where: { active: true, group: { not: "" } },
+          distinct: ["group"],
+          select: { group: true },
+          orderBy: { group: "asc" },
+        })
+      ).map((s) => s.group)
+    : [];
   return (
     <div className="exam-admin">
       <h1>{t("HTML baholash")}</h1>
@@ -24,7 +35,7 @@ export default async function AssessmentsPage() {
           "HTML Basics’ning 12 mavzusi: 30 ball test, 60 ball amaliy ish, 10 ball izoh. Uchta variant, server vaqti va har o‘quvchiga bir martalik kod.",
         )}
       </p>
-      <CreateExamForm />
+      <CreateExamForm groups={groups} />
       <h2>{t("Sinovlar")}</h2>
       {!exams.length && <p>{t("Hali sinov yaratilmagan.")}</p>}
       <ul className="exam-list">

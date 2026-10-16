@@ -7,7 +7,7 @@ import {
   reviewAttemptAction,
 } from "@/app/admin/(cms)/assessments/actions";
 
-export function CreateExamForm() {
+export function CreateExamForm({ groups = [] }: { groups?: string[] }) {
   const t = useTranslator();
   const [state, action, pending] = useActionState(createExamAction, undefined);
   const [title, setTitle] = useState("");
@@ -39,6 +39,14 @@ export function CreateExamForm() {
     return (
       <section className="exam-card">
         <h2>{t("Sinov yaratildi")}</h2>
+        {state.linked ? (
+          <p role="status">
+            {t(
+              "{count} students of the group start the exam from their student page; their codes below are only a fallback.",
+              { count: state.linked },
+            )}
+          </p>
+        ) : null}
         <p>
           {t(
             "Kodlar faqat hozir ko‘rsatiladi. Ro‘yxatni yuklab oling va har bir kodni tegishli o‘quvchiga alohida bering.",
@@ -93,13 +101,26 @@ export function CreateExamForm() {
           required
         />
       </label>
+      {groups.length > 0 && (
+        <label>
+          {t("Student-area group (they start from their own page, no code)")}
+          <select name="group" defaultValue="">
+            <option value="">{t("No group")}</option>
+            {groups.map((g) => (
+              <option key={g} value={g}>
+                {g}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
       <label>
         {t("O‘quvchilar: har qatorda ID | Ism Familiya")}
         <textarea
           name="roster"
           value={roster}
           onChange={(event) => setRoster(event.target.value)}
-          required
+          required={groups.length === 0}
           rows={7}
           maxLength={25000}
           placeholder={"001 | Ali Valiyev\n002 | Madina Karimova"}

@@ -202,3 +202,9 @@ li.bad .cp-mark {
   margin: 14px 0 0;
   color: #ff9a9a;
 }
+
+.cp-award {
+  flex-basis: 100%;
+  color: var(--spark, #ffb829);
+  font-weight: 500;
+}

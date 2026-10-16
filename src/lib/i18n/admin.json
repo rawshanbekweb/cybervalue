@@ -535,5 +535,22 @@
   "The bot is not configured yet.": "Bot hali sozlanmagan.",
   "Connect the bot to this site": "Botni saytga ulash",
   "Send a test message": "Test xabarini yuborish",
-  "Parent": "Ota-ona"
+  "Parent": "Ota-ona",
+  "Moved to the Academy:": "Akademiyaga o‘tkazilgan:",
+  "Academy account created. Give the student this access code for /student/login; it is shown only now.": "Akademiya akkaunti yaratildi. O‘quvchiga /student/login uchun shu kirish kodini bering; u faqat hozir ko‘rsatiladi.",
+  "Open the student page": "O‘quvchi sahifasini ochish",
+  "Move to the Academy": "Akademiyaga o‘tkazish",
+  "Creates a student account with the same name. {xp} Junior XP carry over, the parent report link moves with them, and a finished Junior course becomes a certificate.": "Shu ism bilan o‘quvchi akkaunti yaratiladi. {xp} Junior XP saqlanadi, ota-ona hisoboti havolasi ko‘chadi, tugatilgan Junior kursi esa sertifikatga aylanadi.",
+  "Academy group": "Akademiya guruhi",
+  "Close the Junior account": "Junior akkauntini yopish",
+  "Create the Academy account": "Akademiya akkauntini yaratish",
+  "This member no longer exists.": "Bu a’zo endi mavjud emas.",
+  "This member already has an Academy account.": "Bu a’zoning Akademiya akkaunti allaqachon bor.",
+  "Handed in. Your teacher will check it.": "Topshirildi. O‘qituvchingiz tekshiradi.",
+  "Handed in · {score} of 90 points before review": "Topshirildi · tekshiruvgacha 90 dan {score} ball",
+  "HTML exam · {minutes} minutes, one attempt": "HTML imtihon · {minutes} daqiqa, bitta urinish",
+  "Continue the exam": "Imtihonni davom ettirish",
+  "The exam is not available right now.": "Imtihon hozir mavjud emas.",
+  "{count} students of the group start the exam from their student page; their codes below are only a fallback.": "Guruhdagi {count} nafar o‘quvchi imtihonni o‘z sahifasidan boshlaydi; quyidagi kodlar faqat zaxira uchun.",
+  "Student-area group (they start from their own page, no code)": "O‘quvchilar bo‘limidagi guruh (kodsiz, o‘z sahifasidan boshlaydi)"
 }

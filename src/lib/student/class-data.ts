@@ -25,7 +25,7 @@ export async function loadClass(
   const students = await db.student.findMany({
     where: { active: true, ...(group ? { group } : {}) },
     orderBy: { name: "asc" },
-    select: { id: true, name: true, group: true, level: true },
+    select: { id: true, name: true, group: true, level: true, bonusXp: true },
     take: 500,
   });
   // Assignments due in the last 30 days and still to come.
