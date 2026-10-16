@@ -6,18 +6,20 @@ import type { Standing } from "./xp";
 
 const DAY = 86_400_000;
 
-export type Reason = "inactive" | "never" | "behind" | "low-tests";
+export type Reason = "inactive" | "never" | "missed" | "behind" | "low-tests";
 
 /** Why a student may need the teacher's attention, most urgent first. */
 export function attention(
   standing: Standing,
   classCompletion: number,
   now = Date.now(),
+  missed = 0,
 ): Reason[] {
   const reasons: Reason[] = [];
   if (!standing.lastActive) reasons.push("never");
   else if (now - standing.lastActive.getTime() > 7 * DAY)
     reasons.push("inactive");
+  if (missed > 0) reasons.push("missed");
   const completion = standing.available
     ? standing.done / standing.available
     : 0;
@@ -31,6 +33,7 @@ export function attention(
 export const REASON_TEXT: Record<Reason, string> = {
   never: "No activity yet",
   inactive: "Inactive for over a week",
+  missed: "Missed an assignment deadline",
   behind: "Far behind the class",
   "low-tests": "Test average below 50%",
 };

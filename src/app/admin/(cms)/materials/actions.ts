@@ -45,6 +45,7 @@ export async function saveMaterialAction(
     summary: text(form, "summary"),
     body: text(form, "body"),
     quizText: text(form, "quizText"),
+    quizJson: text(form, "quizJson"),
     artifact: text(form, "artifact"),
     artifactName: text(form, "artifactName"),
     explanation: text(form, "explanation"),

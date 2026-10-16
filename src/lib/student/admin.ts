@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { LEVELS } from "./levels";
 import { slugSchema } from "../validation";
-import { parseQuiz, type Quiz } from "./quiz";
+import { parseQuiz, quizSchema, type Quiz } from "./quiz";
 import {
   artifactNamePattern,
   checkArtifact,
@@ -77,6 +77,8 @@ export type MaterialFormValues = {
   summary: string;
   body: string;
   quizText: string;
+  // Set by the visual question editor; wins over quizText.
+  quizJson?: string;
   artifact: string;
   artifactName: string;
   explanation: string;
@@ -95,6 +97,7 @@ export const materialSchema = z.object({
   summary: z.string().trim().max(400),
   body: z.string().max(60000),
   quizText: z.string().max(60000),
+  quizJson: z.string().max(200000).default(""),
   // Browsers submit textarea lines as CRLF; artifacts keep Unix newlines.
   artifact: z
     .string()
@@ -133,8 +136,58 @@ export const materialSchema = z.object({
 });
 export type MaterialInput = z.infer<typeof materialSchema>;
 
+// Questions from the visual editor. Blank options are dropped first, so an
+// empty row the admin left behind is not an error.
+export function parseQuizJson(
+  json: string,
+): { quiz: Quiz } | { error: string; values?: Record<string, number> } {
+  let raw: unknown;
+  try {
+    raw = JSON.parse(json);
+  } catch {
+    return { error: "Add at least one question." };
+  }
+  if (!Array.isArray(raw) || raw.length === 0)
+    return { error: "Add at least one question." };
+  const cleaned = raw.map((q) => {
+    const item = (q ?? {}) as Record<string, unknown>;
+    const options = Array.isArray(item.options) ? item.options : [];
+    const answer = typeof item.answer === "number" ? item.answer : -1;
+    const kept = options
+      .map((label, index) => ({ label: String(label ?? "").trim(), index }))
+      .filter((o) => o.label);
+    const explain = String(item.explain ?? "").trim();
+    return {
+      prompt: String(item.prompt ?? "").trim(),
+      options: kept.map((o) => o.label),
+      answer: kept.findIndex((o) => o.index === answer),
+      ...(explain ? { explain } : {}),
+    };
+  });
+  const bad = cleaned.findIndex(
+    (q) => !q.prompt || q.options.length < 2 || q.answer < 0,
+  );
+  if (bad >= 0)
+    return {
+      error:
+        "Question {number} needs text, at least two options and one correct answer.",
+      values: { number: bad + 1 },
+    };
+  const parsed = quizSchema.safeParse(cleaned);
+  if (!parsed.success)
+    return {
+      error:
+        "Quiz is too long: up to 60 questions, 8 options each and 2,000 characters per explanation.",
+    };
+  return { quiz: parsed.data };
+}
+
 export type MaterialCheck =
-  | { data: Omit<MaterialInput, "quizText"> & { quiz: Quiz | null } }
+  | {
+      data: Omit<MaterialInput, "quizText" | "quizJson"> & {
+        quiz: Quiz | null;
+      };
+    }
   | { error: string; values?: Record<string, number | string> };
 
 // A quiz must carry a valid question list and a personal lab a valid artifact
@@ -152,7 +205,7 @@ export function checkMaterial(input: unknown): MaterialCheck {
             : "A title is required, and each text field has a length limit.",
     };
   }
-  const { quizText, ...rest } = parsed.data;
+  const { quizText, quizJson, ...rest } = parsed.data;
   const challenge = rest.kind === "CHALLENGE";
   const fields = {
     ...rest,
@@ -176,6 +229,10 @@ export function checkMaterial(input: unknown): MaterialCheck {
       };
   }
   if (fields.kind !== "QUIZ") return { data: { ...fields, quiz: null } };
+  if (quizJson) {
+    const quiz = parseQuizJson(quizJson);
+    return "error" in quiz ? quiz : { data: { ...fields, quiz: quiz.quiz } };
+  }
   const quiz = parseQuiz(quizText);
   if ("error" in quiz) return quiz;
   return { data: { ...fields, quiz: quiz.quiz } };

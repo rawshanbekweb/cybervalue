@@ -2,6 +2,9 @@ import "server-only";
 import type { PrismaClient } from "@/generated/prisma/client";
 import { attention, type ClassRow } from "./class";
 import { loadStandings } from "./standing";
+import { assignmentResults, loadAssignments } from "./assignment-data";
+
+const DAY = 86_400_000;
 
 // Groups from both student accounts and Academy Junior members.
 export async function classGroups(db: PrismaClient) {
@@ -25,7 +28,18 @@ export async function loadClass(
     select: { id: true, name: true, group: true, level: true },
     take: 500,
   });
-  const standings = await loadStandings(db, students, now);
+  // Assignments due in the last 30 days and still to come.
+  const [standings, assignments] = await Promise.all([
+    loadStandings(db, students, now),
+    loadAssignments(db, {
+      ...(group ? { groups: ["", group] } : {}),
+      since: new Date(now - 30 * DAY),
+    }).then((rows) => assignmentResults(db, rows, students, now)),
+  ]);
+  const missed = new Map<string, number>();
+  for (const a of assignments)
+    for (const s of a.students)
+      if (s.status === "missed") missed.set(s.id, (missed.get(s.id) ?? 0) + 1);
   const completions = students.map((s) => {
     const st = standings.get(s.id)!;
     return st.available ? st.done / st.available : 0;
@@ -40,8 +54,8 @@ export async function loadClass(
       name: s.name,
       group: s.group,
       standing,
-      reasons: attention(standing, classCompletion, now),
+      reasons: attention(standing, classCompletion, now, missed.get(s.id)),
     };
   });
-  return { rows, classCompletion };
+  return { rows, classCompletion, assignments };
 }

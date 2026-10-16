@@ -41,9 +41,17 @@ export default async function AdminMaterialsPage() {
             )}
           </p>
         </div>
-        <Link href="/admin/materials/new" className="button button-primary">
-          {t("New material")}
-        </Link>
+        <div className="admin-actions">
+          <Link
+            href="/admin/materials/new?kind=QUIZ"
+            className="button button-secondary"
+          >
+            {t("New test")}
+          </Link>
+          <Link href="/admin/materials/new" className="button button-primary">
+            {t("New material")}
+          </Link>
+        </div>
       </div>
       {materials.length === 0 ? (
         <p className="muted">{t("No materials yet.")}</p>

@@ -111,7 +111,8 @@ test.describe("admin-issued access", () => {
     await page.getByLabel("Title", { exact: true }).fill(`Quiz ${id}`);
     await page.getByLabel("Slug").fill(`e2e-quiz-${id}`);
     await page.getByLabel("Kind").selectOption("QUIZ");
-    await page.getByLabel("Questions").fill("? Two answers\n+ a\n+ b");
+    await page.getByRole("button", { name: "Text", exact: true }).click();
+    await page.getByLabel("Questions as text").fill("? Two answers\n+ a\n+ b");
     await page.getByRole("button", { name: "Save" }).click();
     await expect(page.locator(".admin-error")).toContainText("Question 1");
     await expect(page.getByLabel("Title", { exact: true })).toHaveValue(
@@ -127,8 +128,9 @@ test.describe("admin-issued access", () => {
           body: "Answer both.",
         },
         async (p) => {
+          await p.getByRole("button", { name: "Text", exact: true }).click();
           await p
-            .getByLabel("Questions")
+            .getByLabel("Questions as text")
             .fill(
               "? Default HTTPS port?\n- 80\n+ 443\n\n? Safe password storage?\n+ A slow salted hash\n- Plain text",
             );

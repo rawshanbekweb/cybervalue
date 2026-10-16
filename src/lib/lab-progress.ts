@@ -11,6 +11,34 @@ export const LAB_PROGRESS = {
 
 export type LabId = keyof typeof LAB_PROGRESS;
 
+// Names and pages of the labs, for the student page and assignments.
+export const LAB_META: {
+  id: LabId;
+  title: { uz: string; en: string };
+  href: string;
+}[] = [
+  {
+    id: "network",
+    title: { uz: "IP manzillash laboratoriyasi", en: "IP addressing lab" },
+    href: "/akademiya/network-basics",
+  },
+  {
+    id: "linux",
+    title: { uz: "Linux asoslari laboratoriyasi", en: "Linux foundations lab" },
+    href: "/akademiya/linux-basics",
+  },
+  {
+    id: "html",
+    title: { uz: "HTML asoslari", en: "HTML Basics" },
+    href: "/akademiya/html-basics",
+  },
+  {
+    id: "security",
+    title: { uz: "Veb-xavfsizlik laboratoriyasi", en: "Web Security Lab" },
+    href: "/akademiya/web-security-lab",
+  },
+];
+
 export const isLabId = (value: unknown): value is LabId =>
   typeof value === "string" && Object.hasOwn(LAB_PROGRESS, value);
 

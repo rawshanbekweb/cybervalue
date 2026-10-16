@@ -1302,6 +1302,21 @@ body.student-root {
   border-color: #2ee6a666;
   color: #2ee6a6;
 }
+.student-pill.warn {
+  border-color: #ffb82966;
+  color: var(--color-saffron-spark);
+}
+.student-assignment.is-missed {
+  border-color: #ffb82944;
+}
+.student-assignment.is-open {
+  border-color: #2a2a2a;
+}
+.student-assignment .student-item-status > span:last-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
 @media (max-width: 560px) {
   .student-ranking li {
     grid-template-columns: 24px minmax(0, 1fr) auto;

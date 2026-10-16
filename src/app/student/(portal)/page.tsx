@@ -9,6 +9,9 @@ import {
   type RankingEntry,
 } from "@/components/student/standing-panel";
 import { requireStudent } from "@/lib/student/session";
+import { studentAssignments } from "@/lib/student/assignment-data";
+import { visibleSince } from "@/lib/student/assignments";
+import { AssignmentsSection } from "@/components/student/assignments-panel";
 import {
   isEntranceExam,
   studentOverview,
@@ -150,20 +153,27 @@ export default async function StudentHomePage() {
             level: student.level,
           },
         ];
-  const [{ materials, done, tests }, certificates, saved, standings] =
-    await Promise.all([
-      studentOverview(student),
-      getDb()?.studentCertificate.findMany({
-        where: { studentId: student.id, revokedAt: null },
-        orderBy: { issuedAt: "desc" },
-        select: { code: true, title: true },
-      }) ?? [],
-      getDb()?.student.findUnique({
-        where: { id: student.id },
-        select: { portrait: true },
-      }),
-      db ? loadStandings(db, classmates) : new Map(),
-    ]);
+  const now = new Date().getTime();
+  const [
+    { materials, done, tests },
+    certificates,
+    saved,
+    standings,
+    assignments,
+  ] = await Promise.all([
+    studentOverview(student),
+    getDb()?.studentCertificate.findMany({
+      where: { studentId: student.id, revokedAt: null },
+      orderBy: { issuedAt: "desc" },
+      select: { code: true, title: true },
+    }) ?? [],
+    getDb()?.student.findUnique({
+      where: { id: student.id },
+      select: { portrait: true },
+    }),
+    db ? loadStandings(db, classmates) : new Map(),
+    db ? studentAssignments(db, student, visibleSince(now), now) : [],
+  ]);
   const standing = standings.get(student.id);
   const ordered = classmates
     .map((c) => ({ ...c, xp: standings.get(c.id)?.xp ?? 0 }))
@@ -195,6 +205,15 @@ export default async function StudentHomePage() {
     (s) => s.items.length > 0 || s.kind === "LAB" || s.kind === "QUIZ",
   );
   const jumps = [
+    ...(assignments.length
+      ? [
+          {
+            id: "assignments",
+            label: "Assignments",
+            count: assignments.length,
+          },
+        ]
+      : []),
     ...(standing
       ? [
           {
@@ -320,6 +339,15 @@ export default async function StudentHomePage() {
           </a>
         ))}
       </nav>
+
+      {assignments.length > 0 && (
+        <AssignmentsSection
+          assignments={assignments}
+          now={now}
+          t={t}
+          locale={locale}
+        />
+      )}
 
       {standing && (
         <AchievementsSection

@@ -488,3 +488,19 @@ model StudentLabProgress {
 
   @@id([studentId, lab])
 }
+
+// A task the teacher sets for a group (or "" for every student) with a
+// deadline. `target` names what counts as done: "material:<id>",
+// "checkpoint:<id>" (passed) or "lab:<id>" (every lesson finished).
+model StudentAssignment {
+  id        String   @id @default(cuid())
+  title     String
+  note      String   @default("") @db.Text
+  group     String   @default("")
+  target    String
+  dueAt     DateTime @db.Timestamptz(3)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+  @@index([group, dueAt])
+  @@index([dueAt])
+}
