@@ -54,7 +54,8 @@ export const getStudentSession = cache(async () => {
         OR: [{ expiresAt: null }, { expiresAt: { gt: now } }],
       },
     },
-    include: { student: true },
+    // The portrait is large and only the portal home draws it.
+    include: { student: { omit: { portrait: true } } },
   });
   return session;
 });

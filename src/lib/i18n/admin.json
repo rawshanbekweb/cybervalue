@@ -257,5 +257,12 @@
   "Course title": "Kurs nomi",
   "Not shown": "Ko‘rsatilmaydi",
   "The student can print it from their page. Its QR code opens a public page that confirms the certificate; revoke it to mark it invalid there.": "O‘quvchi uni o‘z sahifasidan chop etadi. QR kod sertifikatni tasdiqlaydigan ochiq sahifani ochadi; bekor qilinsa, o‘sha sahifada yaroqsiz deb ko‘rsatiladi.",
-  "Issue certificate": "Sertifikat berish"
+  "Issue certificate": "Sertifikat berish",
+  "Home page portrait": "Bosh sahifa portreti",
+  "The animated particle portrait beside the home page headline. Upload a photo to replace it; the change reaches the site within a minute.": "Bosh sahifa sarlavhasi yonidagi zarrachalardan yig‘iladigan animatsion portret. Uni almashtirish uchun rasm yuklang; o‘zgarish bir daqiqa ichida saytda ko‘rinadi.",
+  "Uploaded portrait, updated {date}.": "Yuklangan portret, {date} da yangilangan.",
+  "The default portrait is shown.": "Standart portret ko‘rsatilmoqda.",
+  "New photo": "Yangi rasm",
+  "Restore the default portrait": "Standart portretni qaytarish",
+  "The home page portrait is updated.": "Bosh sahifa portreti yangilandi."
 }

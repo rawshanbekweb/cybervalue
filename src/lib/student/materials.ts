@@ -30,7 +30,9 @@ export { isEntranceExam } from "./levels";
 
 export type TestStats = { attempts: number; best: number };
 
-export async function studentOverview(student: Student) {
+export async function studentOverview(
+  student: Pick<Student, "id" | "group" | "level">,
+) {
   const db = getDb();
   if (!db)
     return {
@@ -86,7 +88,10 @@ export async function studentOverview(student: Student) {
   return { materials, done, tests };
 }
 
-export async function materialForStudent(student: Student, slug: string) {
+export async function materialForStudent(
+  student: Pick<Student, "id" | "group" | "level">,
+  slug: string,
+) {
   if (!/^[a-z0-9-]{1,100}$/.test(slug)) return null;
   return (
     (await getDb()?.studentMaterial.findFirst({

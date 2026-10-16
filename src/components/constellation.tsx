@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { isPortraitData, type PortraitData } from "@/lib/portrait-data";
 
 // Design.MD's signature visual: outlined triangular particles in vivid colours
 // that gather from a scatter into the author's portrait (targets from
@@ -9,6 +10,10 @@ import { useEffect, useRef } from "react";
 // reserves for it. The field then breathes and parts around the pointer, or
 // around a tap on touch screens. Purely decorative, so it is aria-hidden and
 // draws a still frame when the visitor prefers reduced motion.
+//
+// The portrait comes from `data` (already on the page), `src` (fetched, e.g.
+// the one an admin uploaded) or the bundled default. The "card" layout centres
+// the bust in its own box, for a student's portrait in their area.
 const ACCENTS = ["#ffb829", "#1fb99a", "#ff5fd2", "#4f8bff"];
 const COLORS = ["#8052ff", "#a68bff", ...ACCENTS];
 const GATHER_MS = 1800;
@@ -20,8 +25,6 @@ const TAP_MS = 700; // how long a tap keeps the particles parted
 const STACKED_MAX = 420;
 const STACKED_SHARE = 0.9;
 const FACE_LIMIT = 520; // portrait y (0–999) where the face ends and the body starts
-
-type PortraitData = { aspect: number; points: number[] };
 
 type Particle = {
   x: number;
@@ -69,8 +72,13 @@ function particle(
   };
 }
 
-function ambient(random: () => number, width: number, height: number) {
-  const count = width < 1100 ? 30 : 90;
+function ambient(
+  random: () => number,
+  width: number,
+  height: number,
+  card = false,
+) {
+  const count = card ? 14 : width < 1100 ? 30 : 90;
   return Array.from({ length: count }, () =>
     particle(random, width, height, {
       x: random() * width,
@@ -88,20 +96,23 @@ function portraitField(
   height: number,
   portrait: PortraitData,
   wide: boolean,
+  card: boolean,
 ): Particle[] {
   const random = seeded(7);
-  // Either way the bust stands on the hero's bottom edge.
-  const h = wide
-    ? Math.min(height * 0.94, (width * 0.4) / portrait.aspect)
-    : Math.min(width * STACKED_SHARE, STACKED_MAX);
+  // Every layout stands the bust on the bottom edge.
+  const h = card
+    ? Math.min(height * 0.96, (width * 0.92) / portrait.aspect)
+    : wide
+      ? Math.min(height * 0.94, (width * 0.4) / portrait.aspect)
+      : Math.min(width * STACKED_SHARE, STACKED_MAX);
   const w = h * portrait.aspect;
-  const left = (wide ? width * 0.77 : width / 2) - w / 2;
+  const left = (wide && !card ? width * 0.77 : width / 2) - w / 2;
   const top = height - h;
-  const particles = ambient(random, width, height);
+  const particles = ambient(random, width, height, card);
   const { points } = portrait;
   // Phones keep every point on the face, which carries the likeness, and
   // every other one on the body to stay light.
-  const thinBody = width < 600;
+  const thinBody = width < 600 && !card;
   for (let i = 0; i < points.length; i += 3) {
     const onFace = points[i + 1] < FACE_LIMIT;
     if (thinBody && !onFace && (i / 3) % 2 === 1) continue;
@@ -112,7 +123,7 @@ function portraitField(
       particle(random, width, height, {
         x: left + (points[i] / 999) * w,
         y: top + (points[i + 1] / 999) * h,
-        size: wide ? 1.3 + random() * 1.3 : 1.1 + random() * 1.1,
+        size: wide || card ? 1.3 + random() * 1.3 : 1.1 + random() * 1.1,
         drift: 0.3 + random() * 0.7,
         twinkle: 0.12,
         // Tone picks the shade so light and shadow survive; a few accents
@@ -131,8 +142,19 @@ function portraitField(
 
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 
-export function Constellation({ className }: { className?: string }) {
+export function Constellation({
+  className,
+  data,
+  src,
+  layout = "hero",
+}: {
+  className?: string;
+  data?: PortraitData;
+  src?: string;
+  layout?: "hero" | "card";
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const card = layout === "card";
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -160,8 +182,8 @@ export function Constellation({ className }: { className?: string }) {
       const { width, height } = canvas.getBoundingClientRect();
       // Until the portrait arrives only the ambient particles drift.
       particles = portrait
-        ? portraitField(width, height, portrait, wide.matches)
-        : ambient(seeded(7), width, height);
+        ? portraitField(width, height, portrait, wide.matches, card)
+        : ambient(seeded(7), width, height, card);
     };
 
     const resize = () => {
@@ -303,9 +325,20 @@ export function Constellation({ className }: { className?: string }) {
     document.documentElement.addEventListener("pointerleave", release);
     resize();
     sync();
-    import("./portrait-points.json").then(({ default: data }) => {
+    const bundled = () =>
+      import("./portrait-points.json").then(({ default: json }) => json);
+    // A missing or malformed upload falls back to the bundled portrait.
+    const load: Promise<PortraitData> = data
+      ? Promise.resolve(data)
+      : src
+        ? fetch(src)
+            .then((response) => (response.ok ? response.json() : null))
+            .then((json: unknown) => (isPortraitData(json) ? json : bundled()))
+            .catch(bundled)
+        : bundled();
+    load.then((loaded) => {
       if (disposed) return;
-      portrait = data;
+      portrait = loaded;
       regather();
     });
     return () => {
@@ -320,7 +353,7 @@ export function Constellation({ className }: { className?: string }) {
       window.removeEventListener("pointerdown", tap);
       document.documentElement.removeEventListener("pointerleave", release);
     };
-  }, []);
+  }, [card, data, src]);
 
   return <canvas ref={canvasRef} className={className} aria-hidden="true" />;
 }

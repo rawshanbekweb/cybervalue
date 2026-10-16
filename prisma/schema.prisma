@@ -264,6 +264,14 @@ model StoredFile {
   @@index([kind, createdAt])
 }
 
+// Site-wide values an admin edits from the CMS, keyed by name. "home-portrait"
+// holds the particle points of the home page portrait.
+model SiteSetting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+}
+
 // Fixed-window counters shared by every instance. `key` is a SHA-256 digest.
 model RateLimitBucket {
   key       String   @id
@@ -302,6 +310,9 @@ model Student {
   progress     StudentProgress[]
   quizStarts   StudentQuizStart[]
   certificates StudentCertificate[]
+  // Particle points from the student's own photo ({ aspect, points }); the
+  // photo itself is never stored.
+  portrait     Json?
 
   @@index([group])
 }

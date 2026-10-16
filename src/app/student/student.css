@@ -744,6 +744,50 @@ body.student-root {
   white-space: pre-line;
 }
 
+/* The student's own animated portrait, or the cloud until they add a photo. */
+.student-portrait {
+  display: grid;
+  justify-items: end;
+  gap: 12px;
+  width: 260px;
+  justify-self: end;
+}
+.student-portrait-canvas {
+  display: block;
+  width: 260px;
+  height: 300px;
+}
+.student-portrait-edit {
+  width: 100%;
+}
+.student-portrait-edit summary {
+  color: var(--color-ash-gray);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  text-align: right;
+  text-transform: uppercase;
+  transition: color 0.15s;
+}
+.student-portrait-edit summary:hover,
+.student-portrait-edit[open] summary {
+  color: var(--color-bone-white);
+}
+.student-portrait-edit .student-form {
+  margin-top: 14px;
+}
+.student-portrait-edit .student-input {
+  padding: 10px;
+  font-size: 14px;
+}
+.student-portrait-hint {
+  margin: 0;
+  color: var(--color-ash-gray);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
 /* Responsive */
 @media (max-width: 960px) {
   .student-nav {
@@ -755,6 +799,13 @@ body.student-root {
   }
   .student-hero-art {
     width: 160px;
+  }
+  .student-portrait,
+  .student-portrait-canvas {
+    width: 220px;
+  }
+  .student-portrait-canvas {
+    height: 254px;
   }
   .student-section {
     padding-top: 36px;
@@ -772,6 +823,14 @@ body.student-root {
   }
   .student-hero-art {
     display: none;
+  }
+  .student-portrait {
+    width: 100%;
+    justify-items: center;
+    justify-self: stretch;
+  }
+  .student-portrait-edit summary {
+    text-align: center;
   }
   .student-question {
     font-size: 20px;
