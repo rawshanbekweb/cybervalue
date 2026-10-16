@@ -186,3 +186,12 @@ The student page shows the rank card, badges, the group ranking (first name and 
 ## Class panel
 
 **Admin → Class** (`/admin/class`) shows a group at a glance: students active this week, completion, test average, checkpoint pass rate, Academy Junior members of the same group, activity per day over two weeks, and a **Needs attention** list (no activity, inactive for over a week, far behind the class average, tests below 50%). The table lists every student's rank, XP, completion, test average, checkpoints and activity; **Weekly report (CSV)** exports the same. Each student's admin page also shows their rank, weekly activity and checkpoint attempts. The migration is `20261017090000_student_checkpoints`.
+
+## Live quiz
+
+**Admin → Live quiz** (`/admin/live`) turns any test into a classroom game. Opening a game snapshots the test's questions into `LiveGame` (migration `20261020090000_live_quiz`) and shows a six-digit code and a QR code on the host screen (`/admin/live/<id>`, with a full-screen button for the projector).
+
+- Students open **/live** on their phones, type the code and a name (unique within the game). No account is needed; the seat token lives in the browser tab and only its SHA-256 hash is stored.
+- The host starts the game and each question runs for 10–60 seconds. Phones poll `POST /api/live/state` every 1.5–2.5 seconds and answer with `POST /api/live/answer`; the right answer never leaves the server before the reveal.
+- A right answer earns 500 points plus up to 500 for speed. The screen reveals by itself when time is up or everyone has answered, then shows how the class voted, the explanation and the top five. The last question leads to a podium and the full ranking.
+- Host commands only move from the state they were read in, so a double click cannot skip a question. Games stay listed with their results until deleted.
