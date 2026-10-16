@@ -60,7 +60,7 @@ test("Junior links to the Cipher Room and keeps the agent's codename", async ({
     page
       .getByRole("navigation", { name: "Cipher timeline" })
       .getByRole("button"),
-  ).toHaveCount(9);
+  ).toHaveCount(10);
   await audit(page, "cipher room");
   expect(errors).toEqual([]);
 });
@@ -71,7 +71,7 @@ test("solving homework earns XP that survives a reload", async ({ page }) => {
     page.getByRole("heading", { name: "The Caesar cipher" }),
   ).toBeVisible();
   // The wheel works the example out: XIVA shifted by 3.
-  await page.getByLabel("Message").fill("XIVA");
+  await page.getByLabel("Message", { exact: true }).fill("XIVA");
   await expect(page.locator(".cr-out").first()).toHaveText("ALYD");
 
   const first = page.locator(".cr-ex").first();
@@ -100,7 +100,7 @@ test("every cipher's workbench runs, and the paint lesson asks questions", async
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/playground/junior/ciphers#cipher/1");
-  for (let n = 1; n <= 9; n++) {
+  for (let n = 1; n <= 10; n++) {
     await page.goto(`/playground/junior/ciphers#cipher/${n}`);
     await page.reload();
     await expect(page.locator(".cr-bench")).toBeVisible();
@@ -111,7 +111,7 @@ test("every cipher's workbench runs, and the paint lesson asks questions", async
   await page.getByRole("button", { name: "Crack it" }).click();
   await expect(page.locator(".cr-out")).toContainText("quick brown fox");
 
-  await page.goto("/playground/junior/ciphers#cipher/9");
+  await page.goto("/playground/junior/ciphers#cipher/10");
   await page.reload();
   const card = page.locator(".cr-ex").nth(1);
   await card

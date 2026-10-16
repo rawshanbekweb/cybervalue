@@ -17,27 +17,44 @@ Six short missions (about 30 minutes in total). Every mission has a goal, a hand
 
 When all six are complete, the page shows next steps: HTML foundations, the Linux lab, the IP addressing lab and the story CTF.
 
+## Story campaign, badges and certificate
+
+- **The Cyber HQ case** (`src/lib/junior/story.ts`): someone tried to break into the Cybervalue cyber HQ. Each finished mission adds a piece of evidence to the case file; with all six, the recruit picks the attacker among three suspects. Solving it is worth 100 XP and is stored under `cybervalue:junior:story:v1`.
+- **Certificate:** with all missions done and the case closed, a printable certificate shows the codename (or a name typed for it), rank, XP and date. Only the certificate prints.
+- **Badges** (`src/lib/junior/badges.ts`): 12 achievements worked out from progress, plus three small events kept under `cybervalue:junior:events:v1` (tapping SOS on the telegraph key, sending a secret message, opening every cipher).
+- **Daily puzzle** (`src/lib/junior/daily.ts`): one encrypted saying or safety tip per day (Tashkent midnight), the same for everyone, with the cipher and key shown. +20 XP each; consecutive days make a streak. Solved days live under `cybervalue:junior:daily:v1`.
+- **Narrator:** “Listen” buttons read mission briefs, the case and cipher stories aloud with the browser’s own speech engine; devices without an Uzbek voice read with another one and say so.
+
+## Secret messages
+
+`/playground/junior/secret` encrypts a message with Caesar, Atbash, Vigenère, Enigma or Morse and makes a link. The ciphertext travels in the link’s `#m=` fragment, which browsers never send to the server; the key is left out unless the sender ticks the box, so the friend has to ask for it. Links are validated on read (`decodeSecret`): unknown ciphers, bad keys, oversized or malformed payloads are rejected and markup is stripped.
+
+## Class ranking
+
+In the student area, “Share my Junior results” sends what the browser stored for Junior. The server re-reads it with the same validators and recomputes the XP (`src/lib/junior/ranking.ts`), so an edited upload can only claim what a real run could earn. The ranking lists the student’s group, showing only codenames (or first name and initial) and XP (`Student.juniorXp`, `juniorCodename`, `juniorSyncedAt`).
+
 ## Agent card and ranks
 
-The Junior page and the Cipher Room show an **agent ID card** (`AgentCard.tsx`): a codename the student picks (or rolls at random), XP and a rank. Each finished mission is worth 100 XP and each solved Cipher Room exercise 15 XP; the ranks run from _New recruit_ to _Chief agent_ (`src/lib/junior/rank.ts`). A new rank is announced once. The card is stored in the browser under `cybervalue:junior:agent:v1` and the codename is sanitised on read.
+The Junior page and the Cipher Room show an **agent ID card** (`AgentCard.tsx`): a codename the student picks (or rolls at random), XP and a rank. Each finished mission is worth 100 XP, each solved Cipher Room exercise 15 XP, each daily puzzle 20 XP and closing the case 100 XP; the ranks run from _New recruit_ to _Chief agent_ (`src/lib/junior/rank.ts`). A new rank is announced once. The card is stored in the browser under `cybervalue:junior:agent:v1` and the codename is sanitised on read.
 
 ## Cipher Room
 
-`/playground/junior/ciphers` is a timeline of nine ciphers, each with a short history, a fun fact, an interactive workbench and homework:
+`/playground/junior/ciphers` is a timeline of ten ciphers, each with a short history, a fun fact, an interactive workbench and homework:
 
-| #   | Cipher                        | Era     | Workbench                                                    |
-| --- | ----------------------------- | ------- | ------------------------------------------------------------ |
-| 1   | Atbash                        | ~600 BC | Mirror alphabet that highlights the letters in use           |
-| 2   | Spartan scytale               | ~400 BC | The rod (lines) and the unwound strip, coloured by column    |
-| 3   | Polybius square               | ~150 BC | 5 × 5 grid that steps through a word; plays it as tap code   |
-| 4   | Caesar                        | ~50 BC  | Rotating cipher wheel                                        |
-| 5   | Al-Kindi’s frequency analysis | ~850 AD | Letter-frequency bars against Uzbek or English; “Crack it”   |
-| 6   | Vigenère                      | 1553    | Letter + key letter = cipher letter, worked out with numbers |
-| 7   | Pigpen                        | 1700s   | The key grids and the message drawn as symbols               |
-| 8   | Morse code (an encoding)      | 1838    | Lamp and beep playback, and a telegraph key to tap your own  |
-| 9   | Public keys (Diffie–Hellman)  | 1976    | Paint mixing: Ali and Vali share a colour Eve cannot make    |
+| #   | Cipher                             | Era       | Workbench                                                    |
+| --- | ---------------------------------- | --------- | ------------------------------------------------------------ |
+| 1   | Atbash                             | ~600 BC   | Mirror alphabet that highlights the letters in use           |
+| 2   | Spartan scytale                    | ~400 BC   | The rod (lines) and the unwound strip, coloured by column    |
+| 3   | Polybius square                    | ~150 BC   | 5 × 5 grid that steps through a word; plays it as tap code   |
+| 4   | Caesar                             | ~50 BC    | Rotating cipher wheel                                        |
+| 5   | Al-Kindi’s frequency analysis      | ~850 AD   | Letter-frequency bars against Uzbek or English; “Crack it”   |
+| 6   | Vigenère                           | 1553      | Letter + key letter = cipher letter, worked out with numbers |
+| 7   | Pigpen                             | 1700s     | The key grids and the message drawn as symbols               |
+| 8   | Morse code (an encoding)           | 1838      | Lamp and beep playback, and a telegraph key to tap your own  |
+| 9   | Enigma (rotors I–III, reflector B) | 1939–1945 | Rotor windows, lampboard, keyboard and the signal’s path     |
+| 10  | Public keys (Diffie–Hellman)       | 1976      | Paint mixing: Ali and Vali share a colour Eve cannot make    |
 
-- **Homework:** 3–6 fixed exercises per cipher (45 in total) count towards XP and are saved under `cybervalue:junior:ciphers:v1` as `{ "<cipher id>": [solved exercise indexes] }`. _New exercise_ adds unlimited generated practice (not counted).
+- **Homework:** 3–6 fixed exercises per cipher (51 in total) count towards XP and are saved under `cybervalue:junior:ciphers:v1` as `{ "<cipher id>": [solved exercise indexes] }`. _New exercise_ adds unlimited generated practice (not counted).
 - **Homework sheet:** teachers and parents pick ciphers and a number per cipher, make a fresh random sheet, print it (only the sheet prints) and can show the answers.
 - Only A–Z are enciphered; answers are compared on letters only, so `o‘`/`g‘` apostrophes, case and spaces do not matter. Uzbek letter frequencies were counted from the site’s Uzbek copy.
 - All content lives in `src/lib/junior/cipher-content.ts` as `{ uz, en }` pairs; answers are computed with the cipher functions in `src/lib/junior/ciphers.ts`, and `tests/junior-ciphers.test.ts` re-solves every exercise and 2,400 generated ones.
