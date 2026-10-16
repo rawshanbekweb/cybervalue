@@ -25,7 +25,6 @@ import {
   portraitFromForm,
   type PortraitFormState,
 } from "@/lib/portrait-upload";
-import { juniorFromSnapshot, MAX_SNAPSHOT } from "@/lib/student/junior";
 
 export type StudentLoginState = { error?: string } | undefined;
 const GENERIC_ERROR = "This access code is not valid or no longer active.";
@@ -311,39 +310,4 @@ export async function removeStudentPortraitAction() {
     data: { portrait: Prisma.DbNull },
   });
   revalidatePath("/student");
-}
-
-export type JuniorSyncState = { error?: string; success?: string } | undefined;
-
-// Shares the student's Junior results (from their browser) with their group's
-// ranking. The XP is recomputed here from the validated progress.
-export async function syncJuniorAction(
-  _state: JuniorSyncState,
-  formData: FormData,
-): Promise<JuniorSyncState> {
-  const student = await requireStudent();
-  if (!(await limit(`student-junior:${student.id}`, 20, 10 * 60_000)))
-    return { error: "Too many attempts. Try again in a few minutes." };
-  const db = getDb();
-  if (!db) return { error: "The learning area is not available right now." };
-  const raw = formData.get("snapshot");
-  if (typeof raw !== "string" || raw.length > MAX_SNAPSHOT)
-    return { error: "Your Junior results could not be read." };
-  let snapshot: unknown;
-  try {
-    snapshot = JSON.parse(raw);
-  } catch {
-    return { error: "Your Junior results could not be read." };
-  }
-  const { xp, codename } = juniorFromSnapshot(snapshot);
-  await db.student.update({
-    where: { id: student.id },
-    data: {
-      juniorXp: xp,
-      juniorCodename: codename,
-      juniorSyncedAt: new Date(),
-    },
-  });
-  revalidatePath("/student");
-  return { success: "Your Junior results are in the ranking." };
 }

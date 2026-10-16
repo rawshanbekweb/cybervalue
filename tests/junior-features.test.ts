@@ -36,7 +36,12 @@ import {
 import { EVIDENCE, SUSPECTS, restoreStory } from "../src/lib/junior/story";
 import { MISSION_IDS } from "../src/lib/junior/content";
 import { CIPHERS } from "../src/lib/junior/cipher-content";
-import { juniorFromSnapshot, rankingName } from "../src/lib/junior/ranking";
+import {
+  rankingName,
+  restoreJuniorProgress,
+  withPart,
+  xpOf,
+} from "../src/lib/junior/progress";
 import { xpFor } from "../src/lib/junior/rank";
 
 test("Enigma matches the historical machine", () => {
@@ -200,46 +205,60 @@ test("badges are earned from progress and sanitised events", () => {
   assert.equal(new Set(BADGES.map((b) => b.id)).size, BADGES.length);
 });
 
-test("shared Junior results are recomputed and capped on the server", () => {
+test("stored Junior progress is validated part by part and the XP recomputed", () => {
   const now = Date.UTC(2026, 9, 20, 12);
   const today = dayIndex(now);
-  const honest = juniorFromSnapshot(
+  const honest = restoreJuniorProgress(
     {
       missions: { password: true, phishing: true },
       ciphers: { caesar: [0, 1, 2] },
-      story: { solved: false },
-      daily: { days: [today - 1, today] },
-      agent: { name: "Kulrang Burgut" },
+      story: false,
+      daily: [today - 1, today],
+      agent: { name: "Kulrang Burgut", rank: 1 },
     },
     now,
   );
-  assert.deepEqual(honest, {
-    xp: xpFor({ missions: 2, exercises: 3, daily: 2, story: false }),
-    codename: "Kulrang Burgut",
-  });
+  assert.equal(
+    xpOf(honest),
+    xpFor({ missions: 2, exercises: 3, daily: 2, story: false }),
+  );
+  assert.deepEqual(honest.agent, { name: "Kulrang Burgut", rank: 1 });
   // Made-up missions, out-of-range exercises and future or ancient days do not count.
-  const forged = juniorFromSnapshot(
+  const forged = restoreJuniorProgress(
     {
       missions: { password: true, hacked: true, phishing: "yes" },
       ciphers: { caesar: [0, 99, 100], fake: [1] },
-      story: { solved: true },
-      daily: { days: [1, 2, 3, today + 1, today + 30] },
+      story: true,
+      daily: [1, 2, 3, today + 1, today + 30],
+      agent: { name: "<x>", rank: 999 },
       xp: 999999,
     },
     now,
   );
-  assert.deepEqual(forged, {
-    xp: xpFor({ missions: 1, exercises: 1, daily: 0, story: true }),
-    codename: "",
-  });
-  assert.equal(juniorFromSnapshot("nonsense", now).xp, 0);
   assert.equal(
-    rankingName({ name: "Aziza Karimova", juniorCodename: "" }),
+    xpOf(forged),
+    xpFor({ missions: 1, exercises: 1, daily: 0, story: true }),
+  );
+  assert.deepEqual(forged.agent, { name: "x", rank: 10 });
+  assert.equal(xpOf(restoreJuniorProgress("nonsense", now)), 0);
+  // One part is replaced at a time; unknown parts are refused.
+  const next = withPart(
+    honest,
+    "missions",
+    { ...honest.missions, cipher: true },
+    now,
+  )!;
+  assert.equal(Object.keys(next.missions).length, 3);
+  assert.deepEqual(next.ciphers, honest.ciphers);
+  assert.equal(withPart(honest, "xp", 5000, now), null);
+  assert.equal(withPart(honest, "__proto__", {}, now), null);
+  assert.equal(
+    rankingName({ name: "Aziza Karimova", codename: "" }),
     "Aziza K.",
   );
-  assert.equal(rankingName({ name: "Aziza", juniorCodename: "" }), "Aziza");
+  assert.equal(rankingName({ name: "Aziza", codename: "" }), "Aziza");
   assert.equal(
-    rankingName({ name: "Aziza Karimova", juniorCodename: "Lochin" }),
+    rankingName({ name: "Aziza Karimova", codename: "Lochin" }),
     "Lochin",
   );
 });

@@ -30,8 +30,8 @@ export const EVIDENCE: Record<MissionId, Text> = {
     en: "The attacker learned an employee’s school and pet’s name from a public post. They watch social media.",
   },
   ctf: {
-    uz: "Sayt kodidagi izohda hujumchi imzo qoldirgan: tulki rasmi 🦊.",
-    en: "In a comment in the site’s code the attacker left a signature: a fox 🦊.",
+    uz: "Sayt kodidagi izohda hujumchi imzo qoldirgan: «grey_fox».",
+    en: "In a comment in the site’s code the attacker left a signature: “grey_fox”.",
   },
   ethics: {
     uz: "Hujumchi hech qanday ruxsatsiz ishlagan va topgan xatosini hech kimga xabar qilmagan.",
@@ -42,7 +42,8 @@ export const EVIDENCE: Record<MissionId, Text> = {
 export type Suspect = {
   id: string;
   name: Text;
-  emoji: string;
+  /** The online handle each suspect signs with. */
+  handle: string;
   facts: Text[];
   culprit: boolean;
   verdict: Text;
@@ -52,7 +53,7 @@ export const SUSPECTS: readonly Suspect[] = [
   {
     id: "owl",
     name: { uz: "Tun Boyqushi", en: "Night Owl" },
-    emoji: "🦉",
+    handle: "night_owl",
     facts: [
       {
         uz: "Rasmiy «bug bounty» dasturlarida qatnashadi",
@@ -80,7 +81,7 @@ export const SUSPECTS: readonly Suspect[] = [
   {
     id: "fox",
     name: { uz: "Kulrang Tulki", en: "Grey Fox" },
-    emoji: "🦊",
+    handle: "grey_fox",
     facts: [
       {
         uz: "Xatlarini .xyz domenidan yuboradi",
@@ -98,14 +99,14 @@ export const SUSPECTS: readonly Suspect[] = [
     ],
     culprit: true,
     verdict: {
-      uz: "Topdingiz! Barcha dalillar mos: mashhur parollar, .xyz xatlar, Sezar shifri, ijtimoiy tarmoqlar, tulki imzosi va ruxsatsiz hujum. Kulrang Tulki fosh qilindi — shtab xavfsiz!",
-      en: "Got it! Every clue fits: common passwords, .xyz emails, the Caesar cipher, social media, the fox signature and no permission. Grey Fox is unmasked — HQ is safe!",
+      uz: "Topdingiz! Barcha dalillar mos: mashhur parollar, .xyz xatlar, Sezar shifri, ijtimoiy tarmoqlar, «grey_fox» imzosi va ruxsatsiz hujum. Kulrang Tulki fosh qilindi — shtab xavfsiz!",
+      en: "Got it! Every clue fits: common passwords, .xyz emails, the Caesar cipher, social media, the “grey_fox” signature and no permission. Grey Fox is unmasked — HQ is safe!",
     },
   },
   {
     id: "dragon",
     name: { uz: "Qizil Ajdar", en: "Red Dragon" },
-    emoji: "🐉",
+    handle: "red_dragon",
     facts: [
       {
         uz: "Faqat murakkab, zamonaviy shifrlarni ishlatadi",
@@ -119,7 +120,7 @@ export const SUSPECTS: readonly Suspect[] = [
         uz: "Xat yubormaydi, to‘g‘ridan-to‘g‘ri serverlarga hujum qiladi",
         en: "Sends no emails, attacks servers directly",
       },
-      { uz: "Imzosi — ajdar", en: "Signs with a dragon" },
+      { uz: "Imzosi — «red_dragon»", en: "Signs as “red_dragon”" },
     ],
     culprit: false,
     verdict: {

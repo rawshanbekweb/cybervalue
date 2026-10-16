@@ -9,7 +9,8 @@ export default async function AdminDashboardPage() {
   const t = await getAdminTranslator();
   await requireAdmin("/admin");
   const db = getDb();
-  const [counts, recent] = db
+  const week = new Date(new Date().getTime() - 7 * 86_400_000);
+  const [counts, recent, academy] = db
     ? await Promise.all([
         db.content.groupBy({ by: ["kind", "status"], _count: true }),
         db.content.findMany({
@@ -24,8 +25,15 @@ export default async function AdminDashboardPage() {
             updatedAt: true,
           },
         }),
+        Promise.all([
+          db.student.count(),
+          db.student.count({ where: { lastLoginAt: { gte: week } } }),
+          db.studentSubmission.count({ where: { createdAt: { gte: week } } }),
+          db.juniorMember.aggregate({ _count: true, _avg: { xp: true } }),
+          db.juniorMember.count({ where: { lastActiveAt: { gte: week } } }),
+        ]),
       ])
-    : [[], []];
+    : [[], [], null];
 
   return (
     <div className="admin-page">
@@ -70,6 +78,40 @@ export default async function AdminDashboardPage() {
           );
         })}
       </div>
+      {academy && (
+        <>
+          <h2>{t("Academy")}</h2>
+          <div className="admin-cards">
+            <Link href="/admin/students" className="admin-card">
+              <span className="eyebrow">{t("Students")}</span>
+              <strong>{academy[0]}</strong>
+              <span className="muted">
+                {t("{active} signed in this week · {submissions} submissions", {
+                  active: academy[1],
+                  submissions: academy[2],
+                })}
+              </span>
+            </Link>
+            <Link href="/admin/results" className="admin-card">
+              <span className="eyebrow">{t("Results")}</span>
+              <strong>{academy[2]}</strong>
+              <span className="muted">
+                {t("submissions in the last 7 days")}
+              </span>
+            </Link>
+            <Link href="/admin/junior" className="admin-card">
+              <span className="eyebrow">Academy Junior</span>
+              <strong>{academy[3]._count}</strong>
+              <span className="muted">
+                {t("{active} active this week · {xp} XP on average", {
+                  active: academy[4],
+                  xp: Math.round(academy[3]._avg.xp ?? 0),
+                })}
+              </span>
+            </Link>
+          </div>
+        </>
+      )}
       <h2>{t("Recently updated")}</h2>
       <table className="admin-table">
         <thead>

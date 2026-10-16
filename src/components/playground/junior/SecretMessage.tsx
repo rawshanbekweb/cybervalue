@@ -328,18 +328,24 @@ export function SecretMessage() {
   );
   const payload = decodeSecret(hash);
   const broken = hash.includes("m=") && !payload;
+  // Inside the academy the frame is already there; a visiting friend gets
+  // the page on its own, with a way into the academy.
+  const { signedIn } = useJuniorState();
   return (
-    <div className="junior container page-content">
-      <Link className="jr-back" href="/playground/junior/ciphers">
-        <ArrowLeft size={15} aria-hidden="true" />{" "}
-        {t("Shifrlar xonasi", "The Cipher Room")}
-      </Link>
-      <header className="jr-hero">
+    <div className={signedIn ? undefined : "junior container page-content"}>
+      {!signedIn && (
+        <Link className="jr-back" href="/playground/junior">
+          <ArrowLeft size={15} aria-hidden="true" /> Cybervalue Academy Junior
+        </Link>
+      )}
+      <header className="jr-hero jr-page-head">
         <span className="eyebrow">
-          <span className="status-dot" />{" "}
-          {t("JUNIOR · MAXFIY POCHTA", "JUNIOR · SECRET MAIL")}
+          <span className="status-dot" /> {t("MAXFIY POCHTA", "SECRET MAIL")}
         </span>
-        <h1>{t("Maxfiy xabar", "Secret message")}</h1>
+        <h1>
+          {t("Maxfiy xabar.", "Secret message.")}{" "}
+          <span>{t("Faqat ikkovingiz uchun.", "For the two of you.")}</span>
+        </h1>
         <p>
           {t(
             "Do‘stingizga faqat siz ikkovingiz o‘qiy oladigan xabar yuboring. Shifrni tanlang, kalitni o‘ylab toping va havolani ulashing.",

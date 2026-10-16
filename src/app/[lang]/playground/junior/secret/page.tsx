@@ -1,4 +1,6 @@
 import { SecretMessage } from "@/components/playground/junior/SecretMessage";
+import { AcademyShell } from "@/components/playground/junior/AcademyShell";
+import { getJuniorMember } from "@/lib/junior/session";
 import { metadata } from "@/lib/seo";
 
 export const generateMetadata = () =>
@@ -8,6 +10,12 @@ export const generateMetadata = () =>
     "/playground/junior/secret",
   );
 
-export default function SecretMessagePage() {
-  return <SecretMessage />;
+// Open to everyone, so a friend without an account can read a secret.
+export default async function SecretMessagePage() {
+  if (!(await getJuniorMember())) return <SecretMessage />;
+  return (
+    <AcademyShell>
+      <SecretMessage />
+    </AcademyShell>
+  );
 }

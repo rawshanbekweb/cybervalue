@@ -17,17 +17,17 @@ export async function JuniorGateway() {
         <h2 id="junior-gateway-title">{t("Cybervalue Academy Junior")}</h2>
         <p>
           {t(
-            "New to cybersecurity? Start here. Six short missions: crack a password, spot a scam, break a cipher and capture your first flag. No coding needed.",
+            "New to cybersecurity? Start here. Missions, a mystery to solve, a cipher room from Caesar to Enigma, homework and ranks. Members sign in with the code from their teacher.",
           )}
         </p>
         <div className="junior-gateway-tags">
           <span>{t("6 short missions")}</span>
-          <span>{t("About 30 minutes")}</span>
-          <span>{t("No account needed")}</span>
+          <span>{t("10 historic ciphers")}</span>
+          <span>{t("Sign in with an access code")}</span>
         </div>
       </div>
       <Link href="/playground/junior" className="button button-primary">
-        {t("Start your first mission")}
+        {t("Enter the academy")}
         <ArrowUpRight size={17} />
       </Link>
     </section>

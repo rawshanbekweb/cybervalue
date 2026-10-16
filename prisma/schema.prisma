@@ -264,6 +264,42 @@ model StoredFile {
   @@index([kind, createdAt])
 }
 
+// Cybervalue Academy Junior members. They sign in with a short access code
+// (only its digest is stored) and their progress is kept here, so teachers
+// can follow it. `progress` holds the validated Junior state; `xp` is
+// recomputed from it on every save for listing and ranking.
+model JuniorMember {
+  id           String          @id @default(cuid())
+  name         String
+  group        String          @default("")
+  note         String          @default("") @db.Text
+  codeHash     String          @unique
+  active       Boolean         @default(true)
+  expiresAt    DateTime?       @db.Timestamptz(3)
+  codename     String          @default("")
+  progress     Json            @default("{}")
+  xp           Int             @default(0)
+  lastLoginAt  DateTime?       @db.Timestamptz(3)
+  lastActiveAt DateTime?       @db.Timestamptz(3)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  sessions     JuniorSession[]
+
+  @@index([group])
+  @@index([xp])
+}
+
+model JuniorSession {
+  id        String       @id @default(cuid())
+  memberId  String
+  tokenHash String       @unique
+  expiresAt DateTime     @db.Timestamptz(3)
+  createdAt DateTime     @default(now())
+  member    JuniorMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@index([memberId])
+}
+
 // Site-wide values an admin edits from the CMS, keyed by name. "home-portrait"
 // holds the particle points of the home page portrait.
 model SiteSetting {
@@ -292,31 +328,27 @@ enum MaterialKind {
 }
 
 model Student {
-  id             String               @id @default(cuid())
-  name           String
-  group          String               @default("")
+  id           String               @id @default(cuid())
+  name         String
+  group        String               @default("")
   // Set by the teacher after the entrance exam: beginner, intermediate or
   // advanced; "" until placed.
-  level          String               @default("")
-  note           String               @default("") @db.Text
-  codeHash       String               @unique
-  active         Boolean              @default(true)
-  expiresAt      DateTime?            @db.Timestamptz(3)
-  lastLoginAt    DateTime?            @db.Timestamptz(3)
-  createdAt      DateTime             @default(now())
-  updatedAt      DateTime             @updatedAt
-  sessions       StudentSession[]
-  submissions    StudentSubmission[]
-  progress       StudentProgress[]
-  quizStarts     StudentQuizStart[]
-  certificates   StudentCertificate[]
+  level        String               @default("")
+  note         String               @default("") @db.Text
+  codeHash     String               @unique
+  active       Boolean              @default(true)
+  expiresAt    DateTime?            @db.Timestamptz(3)
+  lastLoginAt  DateTime?            @db.Timestamptz(3)
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+  sessions     StudentSession[]
+  submissions  StudentSubmission[]
+  progress     StudentProgress[]
+  quizStarts   StudentQuizStart[]
+  certificates StudentCertificate[]
   // Particle points from the student's own photo ({ aspect, points }); the
   // photo itself is never stored.
-  portrait       Json?
-  // Junior results the student chose to share with their group's ranking.
-  juniorXp       Int                  @default(0)
-  juniorCodename String               @default("")
-  juniorSyncedAt DateTime?            @db.Timestamptz(3)
+  portrait     Json?
 
   @@index([group])
 }

@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { enterCode, needsDatabase, signInJunior } from "./junior-member";
 
 // Assertions use the English interface copy.
 test.use({
@@ -20,14 +21,22 @@ test.use({
   },
 });
 
-test("the Playground links to Junior and the page is accessible", async ({
-  page,
-}) => {
+test("the Playground leads to the academy's sign-in page", async ({ page }) => {
   await page.goto("/playground");
-  await page.getByRole("link", { name: /Start your first mission/ }).click();
+  await page.getByRole("link", { name: /Enter the academy/ }).click();
   await expect(page).toHaveURL(/\/playground\/junior$/);
   await expect(
-    page.getByRole("heading", { name: "Cybervalue Academy Junior", level: 1 }),
+    page.getByRole("heading", { name: "Welcome to the academy.", level: 1 }),
+  ).toBeVisible();
+  // Every academy page is behind the code; only the secret page is public.
+  for (const path of ["ciphers", "homework", "achievements"]) {
+    await page.goto(`/playground/junior/${path}`);
+    await expect(page.getByLabel("Access code")).toBeVisible();
+  }
+  await page.getByLabel("Access code").fill("ZZZZ-ZZZZ");
+  await page.getByRole("button", { name: "Enter" }).click();
+  await expect(
+    page.getByText("This access code is not valid or no longer active."),
   ).toBeVisible();
   const results = await new AxeBuilder({ page }).analyze();
   expect(results.violations).toEqual([]);
@@ -36,8 +45,11 @@ test("the Playground links to Junior and the page is accessible", async ({
 test("a student finishes every mission and unlocks the next steps", async ({
   page,
 }) => {
-  await page.goto("/playground/junior");
+  needsDatabase();
+  const member = await signInJunior(page);
   await expect(page.getByText("0 / 6 missions complete")).toBeVisible();
+  const results = await new AxeBuilder({ page }).analyze();
+  expect(results.violations).toEqual([]);
 
   // 1 · Password
   await page.getByLabel("Test password").fill("parol123");
@@ -124,22 +136,29 @@ test("a student finishes every mission and unlocks the next steps", async ({
     "/playground/ctf",
   );
 
-  // Progress survives a reload; damaged storage is ignored.
+  // Progress lives on the server: it survives a reload, signing out and
+  // signing in again from another browser.
+  await expect(page.locator(".jr-topbar")).toContainText("600 XP");
   await page.reload();
   await expect(page.getByText("6 / 6 missions complete")).toBeVisible();
-  await page.evaluate(() =>
-    localStorage.setItem("cybervalue:junior:progress:v1", "not-json"),
-  );
-  await page.reload();
-  await expect(page.getByText("0 / 6 missions complete")).toBeVisible();
+  await page.getByRole("button", { name: "Sign out" }).click();
+  await expect(page.getByLabel("Access code")).toBeVisible();
+  await page.context().clearCookies({ name: "cv_junior" });
+  await enterCode(page, member.code);
+  await expect(page.getByText("6 / 6 missions complete")).toBeVisible();
 });
 
 test("Uzbek is the default language", async ({ browser }) => {
+  needsDatabase();
   const context = await browser.newContext({
     storageState: { cookies: [], origins: [] },
   });
   const page = await context.newPage();
   await page.goto("/playground/junior");
+  await expect(
+    page.getByRole("heading", { name: "Akademiyaga xush kelibsiz.", level: 1 }),
+  ).toBeVisible();
+  await signInJunior(page);
   await expect(page.getByText("0 / 6 missiya bajarildi")).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "Parol ustasi" }),

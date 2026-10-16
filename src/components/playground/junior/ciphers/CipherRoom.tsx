@@ -9,31 +9,22 @@ import {
   Check,
   FlaskConical,
   Lightbulb,
-  Mail,
   NotebookPen,
   Star,
 } from "lucide-react";
 import { useHashLessonId } from "../../useHashLessonId";
 import { useT } from "../../network-lab/use-t";
 import { CIPHERS } from "@/lib/junior/cipher-content";
-import { AgentCard } from "../AgentCard";
-import { DailyPuzzle } from "../campaign";
 import { Narrator } from "../Narrator";
 import { useJuniorState } from "../state";
 import { BENCHES } from "./visuals";
-import { Homework, HomeworkSheet } from "./homework";
 import "../junior.css";
 import "./ciphers.css";
 
 export function CipherRoom() {
   const { t, text } = useT();
   const [id, setId] = useHashLessonId(CIPHERS.length, 1, "cipher");
-  const {
-    ciphers: progress,
-    setCiphers: setRaw,
-    events,
-    addEvent,
-  } = useJuniorState();
+  const { ciphers: progress, events, addEvent } = useJuniorState();
   const timeline = useRef<HTMLOListElement>(null);
   // Keep the chosen stop visible on narrow screens, where the timeline
   // scrolls sideways; the page itself does not move.
@@ -61,47 +52,23 @@ export function CipherRoom() {
       ?.scrollIntoView({ block: "start", behavior: "smooth" });
   };
   return (
-    <div className="junior cipher-room container page-content">
-      <Link className="jr-back" href="/playground/junior">
-        <ArrowLeft size={15} aria-hidden="true" /> Cybervalue Academy Junior
-      </Link>
-      <header className="jr-hero jr-hero-grid">
-        <div>
-          <span className="eyebrow">
-            <span className="status-dot" />{" "}
-            {t("JUNIOR · SHIFRLAR XONASI", "JUNIOR · CIPHER ROOM")}
-          </span>
-          <h1>{t("Shifrlar xonasi", "The Cipher Room")}</h1>
-          <p>
-            {t(
-              "2600 yillik sirlar tarixi: Sparta tayoqchasidan tortib brauzeringizdagi qulfgacha. Har bir shifrni o‘z qo‘lingiz bilan sinab ko‘ring, uning tarixini o‘qing va uy vazifalarini yechib, XP to‘plang.",
-              "2,600 years of secrets: from a Spartan rod to the padlock in your browser. Try every cipher with your own hands, read its story, and solve homework to earn XP.",
-            )}
-          </p>
-        </div>
-        <AgentCard />
+    <div className="cipher-room">
+      <header className="jr-hero jr-page-head">
+        <span className="eyebrow">
+          <span className="status-dot" />{" "}
+          {t("SHIFRLAR XONASI · 10 TA SHIFR", "CIPHER ROOM · 10 CIPHERS")}
+        </span>
+        <h1>
+          {t("2600 yillik sirlar.", "2,600 years of secrets.")}{" "}
+          <span>{t("O‘z qo‘lingiz bilan.", "In your own hands.")}</span>
+        </h1>
+        <p>
+          {t(
+            "Sparta tayoqchasidan tortib brauzeringizdagi qulfgacha. Shifrni tanlang, tarixini o‘qing va qanday ishlashini sinab ko‘ring. Mashqlar «Uy vazifalari» bo‘limida.",
+            "From a Spartan rod to the padlock in your browser. Pick a cipher, read its story and try how it works. Exercises are in the Homework section.",
+          )}
+        </p>
       </header>
-
-      <div className="jr-side">
-        <DailyPuzzle />
-        <Link
-          className="jr-promo cr-secret-promo"
-          href="/playground/junior/secret"
-        >
-          <span className="jr-promo-icon" aria-hidden="true">
-            <Mail size={22} />
-          </span>
-          <span>
-            <strong>
-              {t("Do‘stingizga maxfiy xabar", "Send a friend a secret")}
-            </strong>
-            {t(
-              "Xabarni shifrlang va havolani yuboring. Kalitni esa unga yuzma-yuz ayting — xuddi haqiqiy josuslardek!",
-              "Encrypt a message and send the link. Tell them the key face to face — just like real spies!",
-            )}
-          </span>
-        </Link>
-      </div>
 
       <nav
         className="cr-timeline"
@@ -198,24 +165,27 @@ export function CipherRoom() {
           </section>
         </div>
 
-        <section className="cr-tasks" aria-labelledby="cr-tasks-title">
-          <h3 id="cr-tasks-title">
-            <NotebookPen size={16} aria-hidden="true" />{" "}
-            {t("Uy vazifasi", "Homework")}{" "}
-            <span className="cr-count">
-              {solved.length}/{cipher.exercises.length} · +
-              {t("har biriga 15 XP", "15 XP each")}
-            </span>
-          </h3>
-          <Homework
-            cipher={cipher}
-            solved={solved}
-            onSolved={(index) => {
-              if (solved.includes(index)) return;
-              setRaw({ ...progress, [cipher.id]: [...solved, index] });
-            }}
-          />
-        </section>
+        <Link
+          className="cr-homework-link"
+          href={`/playground/junior/homework#cipher/${cipher.number}`}
+        >
+          <span className="jr-ring" aria-hidden="true">
+            <NotebookPen size={18} />
+          </span>
+          <span>
+            <strong>
+              {t("Uy vazifasi", "Homework")}:{" "}
+              {text(cipher.title).split(" — ")[0]}
+            </strong>
+            <small>
+              {t(
+                `${solved.length} / ${cipher.exercises.length} mashq bajarilgan · har biri 15 XP`,
+                `${solved.length} of ${cipher.exercises.length} exercises solved · 15 XP each`,
+              )}
+            </small>
+          </span>
+          <ArrowRight size={18} aria-hidden="true" />
+        </Link>
 
         <div className="cr-pager">
           {id > 1 ? (
@@ -242,15 +212,6 @@ export function CipherRoom() {
           )}
         </div>
       </article>
-
-      <HomeworkSheet />
-
-      <p className="jr-foot">
-        {t(
-          "Hammasi shu brauzerda ishlaydi: yozganlaringiz hech qayerga yuborilmaydi. Natijalar shu qurilmada saqlanadi.",
-          "Everything runs in this browser: nothing you type is sent anywhere. Your results are saved on this device.",
-        )}
-      </p>
     </div>
   );
 }

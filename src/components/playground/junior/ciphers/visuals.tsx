@@ -341,7 +341,7 @@ function PolybiusBench() {
         }}
       />
       <table className="cr-square">
-        <caption className="sr-only">
+        <caption className="visually-hidden">
           {t("Polibiy kvadrati", "Polybius square")}
         </caption>
         <thead>
@@ -1071,7 +1071,7 @@ function PaintBench() {
           <Swatch rgb={valiMix} label={t("← Validan", "← From Vali")} />
           <Swatch
             rgb={eve}
-            label={t("Evaning urinishi ✗", "Eve’s attempt ✗")}
+            label={t("Evaning urinishi — mos emas", "Eve’s attempt — no match")}
           />
         </div>
         <div className="cr-dh-col">
