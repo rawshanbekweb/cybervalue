@@ -2,6 +2,7 @@ import { timingSafeEqual } from "node:crypto";
 import { getDb } from "@/lib/db";
 import { telegramConfig } from "@/lib/telegram/api";
 import { handleUpdate, webhookSecret } from "@/lib/telegram/webhook";
+import { recordError } from "@/lib/errors/record";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -30,10 +31,23 @@ export async function POST(request: Request) {
   } catch {
     return ok();
   }
-  const result = await handleUpdate(
-    db,
-    update as Parameters<typeof handleUpdate>[1],
-  );
+  let result: Awaited<ReturnType<typeof handleUpdate>>;
+  try {
+    result = await handleUpdate(
+      db,
+      update as Parameters<typeof handleUpdate>[1],
+    );
+  } catch (error) {
+    // Answer anyway, so Telegram does not resend the same update for hours;
+    // the error shows in Admin → Errors.
+    await recordError({
+      source: "server",
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      route: "route /api/telegram/webhook",
+    });
+    return ok();
+  }
   if (!result) return ok();
   return Response.json({
     method: "sendMessage",

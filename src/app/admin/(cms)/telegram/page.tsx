@@ -7,9 +7,10 @@ import {
   ConnectWebhookButton,
   TestMessageButton,
 } from "@/components/admin/telegram-forms";
-import { deepLink, telegramConfig } from "@/lib/telegram/api";
+import { deepLink, telegramConfig, webhookInfo } from "@/lib/telegram/api";
 import { signLink } from "@/lib/telegram/link";
 import { linkSecret } from "@/lib/telegram/webhook";
+import { site } from "@/lib/site";
 import { unlinkChatAction } from "./actions";
 
 const ROLE: Record<string, string> = {
@@ -24,6 +25,8 @@ export default async function AdminTelegramPage() {
   const db = getDb();
   const config = telegramConfig();
   const secret = linkSecret();
+  const delivery = config ? await webhookInfo() : null;
+  const expected = `${site.url.replace(/\/$/, "")}/api/telegram/webhook`;
   const chats = db
     ? await db.telegramChat.findMany({
         orderBy: { createdAt: "desc" },
@@ -118,6 +121,42 @@ export default async function AdminTelegramPage() {
             )}
           </p>
           <ConnectWebhookButton />
+          <ul className="admin-status">
+            <li>
+              <span
+                className={`admin-chip ${delivery?.url === expected ? "ok" : "warn"}`}
+              >
+                {delivery?.url === expected ? t("OK") : t("Check")}
+              </span>
+              <strong>{t("Webhook")}</strong>
+              <span className="muted">
+                {delivery === null
+                  ? t("Telegram did not answer. Check TELEGRAM_BOT_TOKEN.")
+                  : delivery.url
+                    ? delivery.url
+                    : t("Not connected yet. Press the button above.")}
+              </span>
+            </li>
+            {delivery && (
+              <li>
+                <span
+                  className={`admin-chip ${delivery.lastError ? "warn" : "ok"}`}
+                >
+                  {delivery.lastError ? t("Check") : t("OK")}
+                </span>
+                <strong>{t("Delivery")}</strong>
+                <span className="muted">
+                  {delivery.lastError
+                    ? t("Last error from Telegram: {error}", {
+                        error: delivery.lastError,
+                      })
+                    : t("No delivery errors.")}
+                  {delivery.pending > 0 &&
+                    ` · ${t("{count} messages waiting", { count: delivery.pending })}`}
+                </span>
+              </li>
+            )}
+          </ul>
           <h3>{t("Your notifications")}</h3>
           <p className="muted">
             {t(
