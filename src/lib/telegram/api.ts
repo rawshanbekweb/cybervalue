@@ -67,3 +67,32 @@ export async function setWebhook(url: string, secret: string) {
 
 export const deepLink = (username: string, payload: string) =>
   `https://t.me/${username}?start=${payload}`;
+
+export type WebhookInfo = {
+  url: string;
+  pending: number;
+  lastError: string | null;
+  lastErrorAt: Date | null;
+};
+
+/** What Telegram itself reports about delivering updates to the site. */
+export async function webhookInfo(): Promise<WebhookInfo | null> {
+  const response = await call("getWebhookInfo", {});
+  if (!response?.ok) return null;
+  const data = (await response.json().catch(() => null)) as {
+    result?: {
+      url?: string;
+      pending_update_count?: number;
+      last_error_message?: string;
+      last_error_date?: number;
+    };
+  } | null;
+  const r = data?.result;
+  if (!r) return null;
+  return {
+    url: r.url ?? "",
+    pending: r.pending_update_count ?? 0,
+    lastError: r.last_error_message ?? null,
+    lastErrorAt: r.last_error_date ? new Date(r.last_error_date * 1000) : null,
+  };
+}

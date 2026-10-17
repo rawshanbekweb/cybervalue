@@ -593,5 +593,12 @@
   "Backups": "Zaxira nusxalar",
   "Neon keeps the database history and can restore it to any moment inside the plan’s window (Neon console → Branches → Restore). Download a copy of the data here as well, at least once a month, and keep it somewhere safe.": "Neon ma’lumotlar bazasi tarixini saqlaydi va uni tarif oynasi ichidagi istalgan paytga qaytara oladi (Neon console → Branches → Restore). Bundan tashqari, kamida oyiga bir marta shu yerdan nusxa yuklab oling va xavfsiz joyda saqlang.",
   "Download data (JSON)": "Ma’lumotlarni yuklab olish (JSON)",
-  "The file holds students, materials, results, certificates, Junior members and site content. Admin passwords, sessions and uploaded file contents are not included.": "Faylda o‘quvchilar, materiallar, natijalar, sertifikatlar, Junior a’zolari va sayt kontenti bor. Admin parollari, seanslar va yuklangan fayllar mazmuni kiritilmaydi."
+  "The file holds students, materials, results, certificates, Junior members and site content. Admin passwords, sessions and uploaded file contents are not included.": "Faylda o‘quvchilar, materiallar, natijalar, sertifikatlar, Junior a’zolari va sayt kontenti bor. Admin parollari, seanslar va yuklangan fayllar mazmuni kiritilmaydi.",
+  "Webhook": "Webhook",
+  "Telegram did not answer. Check TELEGRAM_BOT_TOKEN.": "Telegram javob bermadi. TELEGRAM_BOT_TOKEN ni tekshiring.",
+  "Not connected yet. Press the button above.": "Hali ulanmagan. Yuqoridagi tugmani bosing.",
+  "Delivery": "Yetkazish",
+  "Last error from Telegram: {error}": "Telegramdan oxirgi xato: {error}",
+  "No delivery errors.": "Yetkazishda xato yo‘q.",
+  "{count} messages waiting": "{count} ta xabar kutmoqda"
 }
