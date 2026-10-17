@@ -53,5 +53,7 @@ export async function POST(request: Request) {
     method: "sendMessage",
     chat_id: result.chatId,
     text: result.reply,
+    parse_mode: "HTML",
+    link_preview_options: { is_disabled: true },
   });
 }

@@ -4,9 +4,11 @@ import { getDb } from "@/lib/db";
 import { formatDate } from "@/components/ui";
 import { ConfirmButton } from "@/components/admin/confirm-button";
 import {
+  BroadcastForm,
   ConnectWebhookButton,
   TestMessageButton,
 } from "@/components/admin/telegram-forms";
+import { BOT_COMMANDS } from "@/lib/telegram/commands";
 import { deepLink, telegramConfig, webhookInfo } from "@/lib/telegram/api";
 import { signLink } from "@/lib/telegram/link";
 import { linkSecret } from "@/lib/telegram/webhook";
@@ -38,6 +40,16 @@ export default async function AdminTelegramPage() {
     chats
       .filter((c) => c.subject.startsWith(prefix))
       .map((c) => c.subject.slice(prefix.length));
+  const groups = db
+    ? (
+        await db.student.findMany({
+          where: { active: true, group: { not: "" } },
+          distinct: ["group"],
+          orderBy: { group: "asc" },
+          select: { group: true },
+        })
+      ).map((s) => s.group)
+    : [];
   const [students, juniors, users] = db
     ? await Promise.all([
         db.student.findMany({
@@ -117,11 +129,11 @@ export default async function AdminTelegramPage() {
           <h2 id="tg-bot">{t("Bot @{name}", { name: config.username })}</h2>
           <p className="muted">
             {t(
-              "Connect once after setting the token, and again if you change the site address.",
+              "Connect once after setting the token, and again if you change the site address. Connecting also refreshes the bot’s command menu.",
             )}
           </p>
           <ConnectWebhookButton />
-          <ul className="admin-status">
+          <ul className="admin-checks">
             <li>
               <span
                 className={`admin-chip ${delivery?.url === expected ? "ok" : "warn"}`}
@@ -174,6 +186,33 @@ export default async function AdminTelegramPage() {
         </section>
       )}
 
+      <section className="admin-panel" aria-labelledby="tg-how">
+        <h2 id="tg-how">{t("How it works")}</h2>
+        <ol className="admin-steps">
+          <li>
+            <strong>{t("You")}:</strong>{" "}
+            {t(
+              "press “Link my Telegram” above and Start in the bot. You get new practice answers and missed deadlines; send /bugun for today’s class summary.",
+            )}
+          </li>
+          <li>
+            <strong>{t("Students")}:</strong>{" "}
+            {t(
+              "on their own page press “Link my Telegram”. They get new assignments and a reminder the day before the deadline; /topshiriqlar and /natija show their tasks and progress.",
+            )}
+          </li>
+          <li>
+            <strong>{t("Parents")}:</strong>{" "}
+            {t(
+              "on a student’s admin page, under Parents, create a report link and send the parent the Telegram link. Every Monday they get the week’s summary; /hisobot shows it any time.",
+            )}
+          </li>
+        </ol>
+        <p className="muted">{t("Anyone can stop the messages with /stop.")}</p>
+      </section>
+
+      {config && <BroadcastForm groups={groups} />}
+
       <div className="admin-cards">
         {(["teacher", "student", "parent"] as const).map((role) => (
           <div key={role} className="admin-card">
@@ -184,29 +223,27 @@ export default async function AdminTelegramPage() {
         ))}
       </div>
 
-      <h2>{t("What is sent")}</h2>
-      <ul className="admin-steps">
-        <li>
-          {t(
-            "Students: a new assignment for their group, and a reminder the day before it is due if it is not done.",
-          )}
-        </li>
-        <li>
-          {t(
-            "Parents: every Monday morning, the week’s summary with a link to the full report.",
-          )}
-        </li>
-        <li>
-          {t(
-            "You: each new practice answer to review, and every morning the deadlines students missed.",
-          )}
-        </li>
-      </ul>
-      <p className="muted">
-        {t(
-          "Students link their Telegram from their own page; parents from the link on the student’s or Junior member’s admin page. Anyone can stop with /stop.",
-        )}
-      </p>
+      <h2>{t("Bot commands")}</h2>
+      <div className="admin-table-wrap">
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th scope="col">{t("Command")}</th>
+              <th scope="col">{t("What it does")}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {BOT_COMMANDS.map((c) => (
+              <tr key={c.command}>
+                <td>
+                  <code>/{c.command}</code>
+                </td>
+                <td>{c.description}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <h2>{t("Linked chats")}</h2>
       {chats.length === 0 ? (

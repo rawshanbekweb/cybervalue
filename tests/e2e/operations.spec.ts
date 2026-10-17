@@ -89,7 +89,7 @@ test.describe("admin operations", () => {
     await expect(
       page.getByRole("heading", { level: 1, name: "System status" }),
     ).toBeVisible();
-    const database = page.locator(".admin-status li", { hasText: "Database" });
+    const database = page.locator(".admin-checks li", { hasText: "Database" });
     await expect(database).toContainText("OK");
     await expect(database).toContainText(/Connected in \d+ ms/);
     await audit(page, "status");
@@ -104,7 +104,7 @@ test.describe("admin operations", () => {
     expect(data.tables.users[0]).not.toHaveProperty("passwordHash");
     await page.reload();
     await expect(
-      page.locator(".admin-status li", { hasText: "Data export" }),
+      page.locator(".admin-checks li", { hasText: "Data export" }),
     ).toContainText("Last downloaded");
   });
 

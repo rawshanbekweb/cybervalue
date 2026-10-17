@@ -61,7 +61,7 @@ export default async function AdminStudentPage({
   });
   if (!student) notFound();
   const locale = await getAdminLocale();
-  const [standings, checkpoints, parentChats] = await Promise.all([
+  const [standings, checkpoints, parentChats, ownChats] = await Promise.all([
     loadStandings(db, [student]),
     db.studentCheckpoint.findMany({
       where: { studentId: student.id },
@@ -71,6 +71,7 @@ export default async function AdminStudentPage({
     db.telegramChat.count({
       where: { subject: `parent:student:${student.id}` },
     }),
+    db.telegramChat.count({ where: { subject: `student:${student.id}` } }),
   ]);
   const standing = standings.get(student.id)!;
   return (
@@ -193,6 +194,14 @@ export default async function AdminStudentPage({
           </ConfirmButton>
         </form>
       </div>
+      <p className="muted">
+        Telegram:{" "}
+        {ownChats
+          ? t("the student gets assignment reminders in Telegram.")
+          : t(
+              "the student has not linked Telegram yet (the button is on their own page).",
+            )}
+      </p>
       <ParentAccess
         kind="student"
         id={student.id}

@@ -2,6 +2,7 @@ import "server-only";
 import type { PrismaClient } from "@/generated/prisma/client";
 import { serverSecret } from "../server-secret";
 import { readLink } from "./link";
+import { helpText, runCommand } from "./commands";
 
 export const webhookSecret = () => {
   const key = serverSecret("telegram-webhook");
@@ -29,9 +30,6 @@ const LINKED: Record<string, string> = {
     "Ulandi. Har dushanba farzandingizning Academy Junior natijalari shu yerga keladi.",
 };
 
-const HELP =
-  "Bu Cybervalue bildirishnomalar boti. Ulash uchun o‘qituvchi bergan yoki saytdagi havolani oching. To‘xtatish: /stop";
-
 /**
  * Handles one update and returns the reply, or null for nothing to say.
  * /start <payload> links the chat; /stop unlinks every subject of the chat.
@@ -53,9 +51,22 @@ export async function handleUpdate(
     };
   }
   const payload = /^\/start\s+(\S+)$/.exec(text)?.[1];
+  if (!payload) {
+    const reply = await runCommand(db, chatId, text);
+    return {
+      chatId,
+      reply: reply ?? (await runCommand(db, chatId, "/yordam"))!,
+    };
+  }
   const secret = linkSecret();
-  const link = payload && secret ? readLink(secret, payload) : null;
-  if (!link) return { chatId, reply: HELP };
+  const link = secret ? readLink(secret, payload) : null;
+  if (!link)
+    return {
+      chatId,
+      reply:
+        "Bu havola noto‘g‘ri yoki eskirgan. Saytdagi havolani qayta oching.\n\n" +
+        helpText([]),
+    };
   const [role] = link.subject.split(":");
   const exists =
     link.kind === "t"

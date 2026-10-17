@@ -664,6 +664,11 @@
   display: flex;
   min-height: 22px;
 }
+.ctf-code-line > span:last-child {
+  min-width: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
 .ctf-line-number {
   display: inline-block;
   color: #7e9470;

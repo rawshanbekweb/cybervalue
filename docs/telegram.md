@@ -31,6 +31,24 @@ People link a chat by opening a deep link `t.me/<bot>?start=<payload>`. The payl
 
 Every message of the daily job is recorded in `NotificationLog`, so a second run sends nothing twice; entries older than 30 days are removed.
 
+## Commands and messages from the teacher
+
+Linked chats can ask the bot directly (replies are in Uzbek, see
+`src/lib/telegram/commands.ts`):
+
+- `/topshiriqlar` — a student's open and missed assignments with links;
+- `/natija` — rank, XP, this week's XP and completion (students, and parents
+  of a student);
+- `/hisobot` — the parent summary with the full report link;
+- `/bugun` — for the teacher: logins in the last 24 hours, answers waiting for
+  review, deadlines that just passed, open site errors;
+- `/yordam` — the commands for this chat's roles; `/stop` unlinks the chat.
+
+Connecting the bot in Admin → Telegram also sets this command menu, so press
+the button again after updating the site. The same page has a form that sends
+the teacher's own message to the linked students and/or parents of one group
+(audit action `telegram.broadcast`).
+
 ## Tests
 
 `tests/telegram.test.ts` covers link signing and message escaping. `tests/e2e/telegram.spec.ts` runs a stand-in Telegram API at `TELEGRAM_API_URL` (set in CI) and checks linking, the assignment message, the parent report, the daily reminder (sent once) and `/stop`.

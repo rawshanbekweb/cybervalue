@@ -150,7 +150,7 @@ export default async function AdminStatusPage() {
           </p>
         </div>
       </div>
-      <ul className="admin-status">
+      <ul className="admin-checks">
         {checks.map((c) => (
           <li key={c.label}>
             <span className={`admin-chip ${c.ok ? "ok" : "warn"}`}>
