@@ -155,7 +155,7 @@ export default async function AdminClassPage({
         </div>
         <div className="admin-card">
           <span className="eyebrow">{t("Hero of the week")}</span>
-          <strong>{hero ? hero.name : "—"}</strong>
+          <strong className="admin-card-name">{hero ? hero.name : "—"}</strong>
           <span className="muted">
             {hero
               ? t("+{xp} XP since Monday", { xp: hero.xp })

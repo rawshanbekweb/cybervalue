@@ -160,7 +160,10 @@ test.describe("Telegram notifications and parent reports", () => {
     // A forged payload is refused with the help text.
     expect(
       (await webhook(page, chats.teacher, "/start s123forged")).text,
-    ).toContain("bildirishnomalar boti");
+    ).toContain("Bu havola noto‘g‘ri");
+    expect((await webhook(page, chats.teacher, "/bugun")).text).toContain(
+      "Tekshiruv kutayotgan javoblar",
+    );
 
     // The student links from their own page.
     const student = await (
@@ -201,6 +204,34 @@ test.describe("Telegram notifications and parent reports", () => {
       ),
     ).toBeTruthy();
 
+    // The student's bot commands read the same data as the site.
+    expect(
+      (await webhook(page, chats.student, "/topshiriqlar")).text,
+    ).toContain(`Lab check ${id}`);
+    expect((await webhook(page, chats.student, "/natija")).text).toContain(
+      "XP",
+    );
+    expect((await webhook(page, chats.student, "/bugun")).text).toContain(
+      "o‘qituvchi uchun",
+    );
+
+    // The teacher writes to the group's students.
+    await page.goto("/admin/telegram");
+    await page.getByLabel("Who receives it").selectOption("students");
+    await page.getByLabel("Group", { exact: true }).selectOption(group);
+    await page
+      .getByLabel("Message", { exact: true })
+      .fill(`Dars ertaga 10:00 da <${id}>`);
+    await page.getByRole("button", { name: "Send", exact: true }).click();
+    await expect(page.getByRole("status")).toHaveText("Sent to 1 of 1 chats.");
+    expect(
+      sent.find(
+        (m) =>
+          m.chat_id === String(chats.student) &&
+          m.text.includes(`Dars ertaga 10:00 da &lt;${id}&gt;`),
+      ),
+    ).toBeTruthy();
+
     // The parent report link and the parent's Telegram link.
     await page.goto(`/admin/students/${studentId}`);
     await page.getByRole("button", { name: "Create report link" }).click();
@@ -216,6 +247,9 @@ test.describe("Telegram notifications and parent reports", () => {
     await expect(
       page.getByText("1 parent chats receive the weekly summary."),
     ).toBeVisible();
+    expect((await webhook(page, chats.parent, "/hisobot")).text).toContain(
+      `Malika ${id}`,
+    );
 
     const parent = await (
       await browser.newContext({ storageState: english })

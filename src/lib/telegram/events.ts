@@ -149,7 +149,7 @@ export async function daily(db: PrismaClient, now = Date.now()) {
   return counts;
 }
 
-async function parentText(
+export async function parentText(
   db: PrismaClient,
   kind: string,
   id: string,

@@ -65,6 +65,14 @@ export async function setWebhook(url: string, secret: string) {
   return { ok: Boolean(data?.ok), description: data?.description ?? "" };
 }
 
+/** The command menu Telegram shows next to the message box. */
+export async function setCommands(
+  commands: { command: string; description: string }[],
+) {
+  const response = await call("setMyCommands", { commands });
+  return Boolean(response?.ok);
+}
+
 export const deepLink = (username: string, payload: string) =>
   `https://t.me/${username}?start=${payload}`;
 

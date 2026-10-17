@@ -2,6 +2,9 @@ import { getAdminTranslator } from "@/lib/i18n/server";
 import Link from "next/link";
 import { requireAdmin } from "@/lib/auth";
 import { collections } from "@/lib/site";
+import { getDb } from "@/lib/db";
+import { adminBadges } from "@/lib/admin/overview";
+import { AdminNav, type AdminNavGroup } from "@/components/admin/admin-nav";
 import { logoutAction } from "../actions";
 
 export default async function AdminCmsLayout({
@@ -9,45 +12,69 @@ export default async function AdminCmsLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   const t = await getAdminTranslator();
   const session = await requireAdmin();
+  const db = getDb();
+  const badges = db
+    ? await adminBadges(db).catch(() => ({ reviews: 0, errors: 0 }))
+    : { reviews: 0, errors: 0 };
+  const groups: AdminNavGroup[] = [
+    {
+      items: [
+        { href: "/admin", label: t("Dashboard") },
+        { href: "/admin/settings", label: t("Site settings") },
+      ],
+    },
+    {
+      title: t("Learning"),
+      items: [
+        { href: "/admin/class", label: t("Class") },
+        { href: "/admin/assignments", label: t("Assignments") },
+        { href: "/admin/live", label: t("Live quiz") },
+        { href: "/admin/telegram", label: "Telegram" },
+        { href: "/admin/users", label: t("All users") },
+        { href: "/admin/students", label: t("Students") },
+        { href: "/admin/junior", label: "Academy Junior" },
+        {
+          href: "/admin/materials",
+          label: t("Student materials"),
+          badge: badges.reviews,
+        },
+        { href: "/admin/results", label: t("Results") },
+        { href: "/admin/assessments", label: t("HTML baholash") },
+      ],
+    },
+    {
+      title: t("Site content"),
+      items: [
+        ...Object.entries(collections).map(([key, value]) => ({
+          href: `/admin/${key}`,
+          label: t(value.title),
+        })),
+        { href: "/admin/files", label: t("File library") },
+        { href: "/admin/portrait", label: t("Home page portrait") },
+      ],
+    },
+    {
+      title: t("Security"),
+      items: [
+        { href: "/admin/status", label: t("System status") },
+        { href: "/admin/errors", label: t("Errors"), badge: badges.errors },
+        { href: "/admin/audit", label: t("Audit log") },
+        { href: "/admin/account", label: t("Account settings") },
+      ],
+    },
+  ];
   return (
     <div className="admin-shell container">
       <aside className="admin-sidebar">
         <Link href="/admin" className="admin-brand">
           {t("cybervalue admin")}
         </Link>
-        <nav className="admin-nav" aria-label={t("Admin sections")}>
-          <Link href="/admin">{t("Dashboard")}</Link>
-          <Link href="/admin/settings">{t("Site settings")}</Link>
-          <p className="admin-nav-group">{t("Learning")}</p>
-          <Link href="/admin/class">{t("Class")}</Link>
-          <Link href="/admin/assignments">{t("Assignments")}</Link>
-          <Link href="/admin/live">{t("Live quiz")}</Link>
-          <Link href="/admin/telegram">Telegram</Link>
-          <Link href="/admin/users">{t("All users")}</Link>
-          <Link href="/admin/students">{t("Students")}</Link>
-          <Link href="/admin/junior">Academy Junior</Link>
-          <Link href="/admin/materials">{t("Student materials")}</Link>
-          <Link href="/admin/results">{t("Results")}</Link>
-          <Link href="/admin/assessments">{t("HTML baholash")}</Link>
-          <p className="admin-nav-group">{t("Site content")}</p>
-          {Object.entries(collections).map(([key, value]) => (
-            <Link key={key} href={`/admin/${key}`}>
-              {t(value.title)}
-            </Link>
-          ))}
-          <Link href="/admin/files">{t("File library")}</Link>
-          <Link href="/admin/portrait">{t("Home page portrait")}</Link>
-          <p className="admin-nav-group">{t("Security")}</p>
-          <Link href="/admin/status">{t("System status")}</Link>
-          <Link href="/admin/errors">{t("Errors")}</Link>
-          <Link href="/admin/audit">{t("Audit log")}</Link>
-          <Link href="/admin/account">{t("Account settings")}</Link>
-        </nav>
+        <AdminNav groups={groups} />
         <div className="admin-sidebar-footer">
           <span className="muted">{session.user.email}</span>
           <form action={logoutAction}>
             <button type="submit" className="button button-secondary">
-              Log out
+              {t("Log out")}
             </button>
           </form>
         </div>
