@@ -2,6 +2,7 @@
 // Run: npx playwright test -c <config> tests/audit (not part of CI).
 import { test, type Page } from "@playwright/test";
 import { Client } from "pg";
+import { createHash, randomBytes, randomUUID } from "node:crypto";
 import { writeFileSync } from "node:fs";
 
 const english = {
@@ -147,6 +148,32 @@ test("overflow audit", async ({ page }) => {
       `SELECT id FROM "LiveGame" ORDER BY "createdAt" DESC LIMIT 1`,
     ),
   };
+  // A student and a Junior member with known codes, so their own pages can
+  // be checked too.
+  const newCode = (length: number) =>
+    [...randomBytes(length)]
+      .map((b) => "0123456789ABCDEFGHJKMNPQRSTVWXYZ"[b & 31])
+      .join("");
+  const hash = (code: string) =>
+    createHash("sha256").update(code).digest("hex");
+  const studentCode = newCode(16);
+  const juniorCode = newCode(8);
+  const studentGroup =
+    (
+      await client.query(
+        `SELECT "group" FROM "Student" WHERE "group" <> '' LIMIT 1`,
+      )
+    ).rows[0]?.group ?? "";
+  await client.query(
+    `INSERT INTO "Student" (id, name, "group", "updatedAt", "codeHash")
+     VALUES ($1, 'Audit Oquvchi Uzunfamiliyaliyev', $2, now(), $3)`,
+    [`audit_${randomUUID()}`, studentGroup, hash(studentCode)],
+  );
+  await client.query(
+    `INSERT INTO "JuniorMember" (id, name, "codeHash", progress, xp, "updatedAt")
+     VALUES ($1, 'Audit Junior', $2, '{}', 0, now())`,
+    [`audit_${randomUUID()}`, hash(juniorCode)],
+  );
   await client.end();
 
   await page.goto("/admin/login");
@@ -209,10 +236,46 @@ test("overflow audit", async ({ page }) => {
     "/resources",
     "/activity",
   ];
+  // Signed-in learner pages, visited by fresh pages that share the cookie.
+  const studentPage = await page.context().browser()!.newPage({
+    storageState: english,
+  });
+  await studentPage.goto("/student/login");
+  await studentPage.locator('input[name="code"]').fill(studentCode);
+  await studentPage.locator('button[type="submit"]').click();
+  await studentPage.waitForURL(/\/student$/, { timeout: 20_000 });
+  const material = await studentPage
+    .locator('a[href^="/student/m/"]')
+    .first()
+    .getAttribute("href")
+    .catch(() => null);
+  const juniorPage = await page.context().browser()!.newPage({
+    storageState: english,
+  });
+  await juniorPage.goto("/junior");
+  await juniorPage.locator('input[name="code"]').fill(juniorCode);
+  await juniorPage.locator('button[type="submit"]').first().click();
+  await juniorPage.locator(".jr-topbar").waitFor({ timeout: 20_000 });
+  const visits: [Page, string][] = [
+    ...[...admin, ...pub].map((path): [Page, string] => [page, path]),
+    ...[
+      "/student",
+      "/student/certificate",
+      ...(material ? [material] : []),
+    ].map((path): [Page, string] => [studentPage, path]),
+    ...[
+      "/junior",
+      "/junior/ciphers",
+      "/junior/homework",
+      "/junior/achievements",
+      "/junior/secret",
+    ].map((path): [Page, string] => [juniorPage, path]),
+  ];
   const report: string[] = [];
   for (const width of [1280, 390]) {
-    await page.setViewportSize({ width, height: 900 });
-    for (const path of [...admin, ...pub]) {
+    for (const p of [page, studentPage, juniorPage])
+      await p.setViewportSize({ width, height: 900 });
+    for (const [page, path] of visits) {
       const response = await page
         .goto(path, { waitUntil: "load", timeout: 30_000 })
         .catch(() => null);
