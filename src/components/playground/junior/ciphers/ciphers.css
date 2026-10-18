@@ -11,7 +11,8 @@
   display: grid;
   grid-template-columns: repeat(10, minmax(100px, 1fr));
   gap: 6px;
-  min-width: 1040px;
+  /* Ten 100px stops and nine 6px gaps. */
+  min-width: 1054px;
   margin: 0;
   padding: 0;
   list-style: none;
