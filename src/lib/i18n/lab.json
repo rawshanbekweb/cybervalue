@@ -3,7 +3,7 @@
   "Starting from the “Open profile” button, trace the data's entire path. See which layer is doing the work at each step.": "“Profilni ochish” tugmasidan boshlab ma’lumotning butun yo‘lini kuzating. Har bir qadamda qaysi qatlam ishlayotganini ko‘ring.",
   "Trace the request path": "So‘rov yo‘lini kuzating",
   "Start the animation. Identify where the data is displayed, where it's checked, and where it's stored.": "Animatsiyani boshlang. Ma’lumot qayerda ko‘rsatilishini, tekshirilishini va saqlanishini aniqlang.",
-  "You'll be able to explain the browser → backend → database → backend → browser flow.": "Browser → backend → database → backend → browser oqimini tushuntira olasiz.",
+  "You'll be able to explain the browser → backend → database → backend → browser flow.": "Brauzer → backend → ma’lumotlar bazasi → backend → brauzer oqimini tushuntira olasiz.",
   "The frontend displays. The backend decides. The database stores.": "Frontend ko‘rsatadi. Backend qaror beradi. Database saqlaydi.",
   "A web application exchanges data between the user and a server. This course teaches that flow through 36 short exercises.": "Web application foydalanuvchi bilan server o‘rtasida ma’lumot almashadi. Ushbu kurs 36 kichik amaliyot orqali shu oqimni o‘rgatadi.",
   "By the end, you'll be able to read a request and response, tell authentication and authorization apart, and explain the root cause of SQLi, XSS, and IDOR.": "Yakunida request va response’ni o‘qiysiz, authentication va authorizationni ajratasiz, SQLi, XSS va IDOR sababini tushuntirasiz.",

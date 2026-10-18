@@ -7,8 +7,8 @@
   --nl-host-bg: #ffb82924;
   --nl-ok: #4fd1a5;
   --nl-bad: #ff8a8a;
-  width: min(1540px, calc(100% - 64px));
-  margin: 32px auto 80px;
+  /* Width comes from .container, so the lab lines up with the site. */
+  margin-block: 32px 80px;
 }
 .network-lab code,
 .network-lab pre {
@@ -859,7 +859,6 @@
 }
 @media (max-width: 860px) {
   .network-lab {
-    width: calc(100% - 32px);
     margin-top: 20px;
   }
   .nl-hero,
@@ -2093,4 +2092,34 @@ i.nl-wf-http,
 
 .nl-tool + .nl-tool {
   margin-top: 8px;
+}
+
+/* Disclosures: a chevron that turns when open, in place of the native
+   triangle. */
+.nl-theory summary,
+.nl-hint summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+}
+.nl-theory summary::-webkit-details-marker,
+.nl-hint summary::-webkit-details-marker {
+  display: none;
+}
+.nl-theory summary::after,
+.nl-hint summary::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  margin-left: auto;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+.nl-theory[open] summary::after,
+.nl-hint[open] summary::after {
+  transform: translateY(2px) rotate(-135deg);
 }

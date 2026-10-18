@@ -75,7 +75,7 @@ export function LinuxLab() {
     setId(next);
   };
   return (
-    <div className="linux-lab">
+    <div className="linux-lab container">
       <Link className="lx-back" href="/akademiya">
         <ArrowLeft size={15} /> {t("Academy")}
       </Link>
@@ -98,7 +98,7 @@ export function LinuxLab() {
         <div className="lx-course-card">
           <div>
             <Terminal size={22} />
-            <strong>LINUX / LAB</strong>
+            <strong>{t("LINUX / LAB")}</strong>
             <span className="lx-live">{t("In your browser")}</span>
           </div>
           <p>

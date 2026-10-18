@@ -6,15 +6,19 @@
 }
 .learn-filters {
   display: flex;
-  flex-wrap: wrap;
   gap: 5px;
+  min-width: 0;
   padding: 4px;
   background: #0f0f11;
   border: 1px solid var(--border);
   border-radius: 7px;
 }
 .learn-filters button {
-  padding: 8px 16px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  /* Same outer height as .learn-search beside it. */
+  min-height: 32px;
+  padding: 6px 16px;
   color: #abaaaf;
   background: transparent;
   border: 1px solid transparent;
@@ -31,6 +35,7 @@
   align-items: center;
   gap: 10px;
   width: 300px;
+  min-height: 42px;
   max-width: 100%;
   padding: 10px 14px;
   border: 1px solid var(--border);
@@ -129,6 +134,7 @@
   letter-spacing: -0.8px;
   line-height: 1.3;
   margin-top: 12px;
+  text-wrap: balance;
 }
 .learn-card > p {
   color: #abaab0;
@@ -205,7 +211,7 @@
 .learn-storage-note {
   color: var(--muted);
   font-size: 11px;
-  margin-top: 19px;
+  margin: 19px 0 56px;
 }
 .learn-matches {
   list-style: none;
@@ -328,8 +334,14 @@
     flex-direction: column;
     gap: 12px;
   }
+  /* One scrollable row of pills rather than a ragged wrap. */
   .learn-filters {
-    align-self: flex-start;
+    align-self: stretch;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .learn-filters::-webkit-scrollbar {
+    display: none;
   }
   .learn-search {
     width: 100%;
@@ -368,4 +380,30 @@
   .learning-assessment {
     padding: 22px;
   }
+}
+
+/* Disclosures: a chevron that turns when open, in place of the native
+   triangle. */
+.learning-faq details summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+}
+.learning-faq details summary::-webkit-details-marker {
+  display: none;
+}
+.learning-faq details summary::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  margin-left: auto;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+.learning-faq details[open] summary::after {
+  transform: translateY(2px) rotate(-135deg);
 }

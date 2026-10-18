@@ -15,7 +15,7 @@ export const generateMetadata = () =>
 export default async function OfflinePage() {
   const t = await getTranslator();
   return (
-    <div className="container page-content">
+    <div className="container page-content offline-page">
       <header className="page-header">
         <span className="eyebrow">{t("Offline")}</span>
         <h1>

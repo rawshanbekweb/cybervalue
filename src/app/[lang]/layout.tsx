@@ -6,6 +6,7 @@ import { isLocale, locales } from "@/lib/i18n";
 import { getTranslator } from "@/lib/i18n/server";
 import { siteIndexable } from "@/lib/site-config-server";
 import "../globals.css";
+import "../public-polish.css";
 
 export const viewport: Viewport = {
   themeColor: "#000000",

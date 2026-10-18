@@ -117,6 +117,8 @@ function Workspace({ project }: { project: StudioProject }) {
     () => buildPreview(deferredHtml, deferredCss),
     [deferredHtml, deferredCss],
   );
+  // A body with no text or media would render as a bare white sheet.
+  const blank = !hasVisibleContent(deferredHtml);
   const results =
     checked?.html === draft.html && checked.css === draft.css
       ? checked.results
@@ -271,12 +273,18 @@ function Workspace({ project }: { project: StudioProject }) {
             </div>
           </div>
           <div className="studio-preview-viewport">
-            <iframe
-              title={t("Project preview")}
-              sandbox=""
-              srcDoc={preview}
-              style={{ width }}
-            />
+            {blank ? (
+              <p className="studio-preview-empty">
+                {t("Your page appears here once the body has some content.")}
+              </p>
+            ) : (
+              <iframe
+                title={t("Project preview")}
+                sandbox=""
+                srcDoc={preview}
+                style={{ width }}
+              />
+            )}
           </div>
           <p className="studio-storage">
             {t(
@@ -357,5 +365,15 @@ function Workspace({ project }: { project: StudioProject }) {
         </section>
       </div>
     </div>
+  );
+}
+
+function hasVisibleContent(html: string) {
+  const body = html
+    .replace(/<!--[\s\S]*?-->/g, "")
+    .replace(/<head[\s\S]*?<\/head>/i, "");
+  return (
+    /<(img|input|select|textarea|button|hr|svg|video|table)\b/i.test(body) ||
+    /\S/.test(body.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, ""))
   );
 }

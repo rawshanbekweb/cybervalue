@@ -285,7 +285,7 @@ export function SignalCTF() {
             </div>
             <p>
               {t("Istalgan ochiq tugundan boshlang.")}
-              <br />
+              <br />{" "}
               {t("To‘rtta kalit yakuniy seyfni ochadi.")}
             </p>
           </div>

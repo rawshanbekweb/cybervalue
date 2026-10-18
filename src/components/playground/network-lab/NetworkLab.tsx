@@ -48,7 +48,7 @@ export function NetworkLab() {
   const done = Object.keys(progress).length;
   const lesson = LESSONS[id - 1];
   return (
-    <div className="network-lab">
+    <div className="network-lab container">
       <Link className="nl-back" href="/akademiya">
         <ArrowLeft size={15} /> {t("Academy")}
       </Link>
@@ -71,7 +71,7 @@ export function NetworkLab() {
         <div className="nl-course-card">
           <div>
             <Network size={22} />
-            <strong>NETWORK / LAB</strong>
+            <strong>{t("NETWORK / LAB")}</strong>
             <span className="nl-live">{t("In your browser")}</span>
           </div>
           <p>
