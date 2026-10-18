@@ -12,6 +12,7 @@ import linux from "./linux.json";
 import network from "./network.json";
 import student from "./student.json";
 import junior from "./junior.json";
+import kids from "./kids.json";
 import defend from "./defend.json";
 import labsUi from "./labs-ui.json";
 
@@ -30,6 +31,7 @@ const messages = {
   ...network,
   ...student,
   ...junior,
+  ...kids,
   ...defend,
   ...labsUi,
 };

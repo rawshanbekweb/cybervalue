@@ -1,6 +1,6 @@
 .directions {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
   gap: 18px;
 }
 .direction {
@@ -12,6 +12,14 @@
   border-radius: var(--radius-card);
   background:
     radial-gradient(circle at 100% 0, #2ee6a614, transparent 46%), #100f13;
+}
+.direction-kids {
+  background:
+    radial-gradient(circle at 100% 0, #ffd43b1f, transparent 50%), #100f13;
+}
+.direction-kids .direction-ring {
+  background: #ffd43b14;
+  color: #ffd43b;
 }
 .direction-academy {
   background:

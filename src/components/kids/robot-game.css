@@ -1,0 +1,93 @@
+.kids-robot {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 100%;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.kids-robot-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 640 / 400;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #2b1d5c;
+  box-shadow:
+    0 0 0 3px rgba(255, 255, 255, 0.12),
+    0 10px 30px rgba(20, 10, 50, 0.35);
+}
+
+.kids-robot-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.kids-robot-canvas:focus-visible {
+  outline: 3px solid #ffd43b;
+  outline-offset: -3px;
+}
+
+.kids-robot-pad {
+  display: none;
+  gap: 12px;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .kids-robot-pad {
+    display: flex;
+  }
+}
+
+.kids-robot-btn {
+  flex: 1 1 0;
+  min-height: 64px;
+  min-width: 48px;
+  border: 0;
+  border-radius: 16px;
+  font: inherit;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #1d2340;
+  background: linear-gradient(180deg, #ffe066 0%, #ffb829 100%);
+  box-shadow: 0 5px 0 #c98a00;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+
+.kids-robot-btn:active,
+.kids-robot-btn[data-pressed="true"] {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #c98a00;
+}
+
+.kids-robot-btn:focus-visible {
+  outline: 3px solid #4da3ff;
+  outline-offset: 3px;
+}
+
+.kids-robot-btn-down {
+  color: #fff;
+  background: linear-gradient(180deg, #7fb8ff 0%, #4d7fff 100%);
+  box-shadow: 0 5px 0 #2f55c4;
+}
+
+.kids-robot-btn-down:active,
+.kids-robot-btn-down[data-pressed="true"] {
+  box-shadow: 0 1px 0 #2f55c4;
+}
+
+.kids-robot-controls {
+  margin: 0;
+  font-size: 0.95rem;
+  text-align: center;
+  opacity: 0.85;
+}

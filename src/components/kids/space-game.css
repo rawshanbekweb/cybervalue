@@ -1,0 +1,94 @@
+.kids-space-game {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+}
+
+.kids-space-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 640 / 400;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #0b1033;
+  box-shadow:
+    0 0 0 3px #2a347a,
+    0 8px 24px rgba(8, 12, 40, 0.35);
+}
+
+.kids-space-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+
+.kids-space-pad {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.kids-space-controls {
+  flex: 1;
+  margin: 0;
+  text-align: center;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  color: inherit;
+  opacity: 0.8;
+}
+
+.kids-space-btn {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 56px;
+  border: 0;
+  border-radius: 16px;
+  background: #4da3ff;
+  color: #ffffff;
+  box-shadow: 0 4px 0 #2a6fc0;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.kids-space-btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #2a6fc0;
+}
+
+.kids-space-btn:focus-visible {
+  outline: 3px solid #ffd43b;
+  outline-offset: 3px;
+}
+
+.kids-space-btn svg {
+  width: 30px;
+  height: 30px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Mouse + keyboard devices steer with the keys; hide the touch pad. */
+@media (hover: hover) and (pointer: fine) {
+  .kids-space-btn {
+    display: none;
+  }
+}

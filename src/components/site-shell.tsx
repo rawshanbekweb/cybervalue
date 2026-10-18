@@ -32,6 +32,7 @@ export async function SiteShell({
   const open = config.sections;
   // Two directions up front; the author's portfolio lives under About.
   const navigation = [
+    ...(open.kids ? [{ href: "/kids", label: "Academy Kids" }] : []),
     ...(open.junior ? [{ href: "/junior", label: "Academy Junior" }] : []),
     ...(open.academy ? [{ href: "/akademiya", label: "Academy" }] : []),
     { href: "/about", label: "About" },

@@ -1,0 +1,608 @@
+/* Academy Kids: the site's dark frame with bigger type, rounder shapes and
+   bright playground colours for 7–10 year olds. */
+.kids {
+  --kids-sun: #ffd43b;
+  --kids-sky: #4da3ff;
+  --kids-mint: #3ddc84;
+  --kids-pink: #ff7ac6;
+  --kids-violet: #a47bff;
+  --kids-panel: #12121a;
+  --kids-line: #2c2b3a;
+  --kids-radius: 18px;
+  padding-block: 28px 80px;
+  font-size: 17px;
+  line-height: 1.55;
+}
+.kids h1,
+.kids h2,
+.kids h3 {
+  text-wrap: balance;
+}
+.kids-back,
+.kids-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  padding: 0;
+  background: none;
+  color: var(--accent-text);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.kids-eyebrow {
+  margin: 0;
+  color: var(--kids-sun);
+  font: 700 13px/1.4 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.kids-muted {
+  color: var(--muted);
+  font-size: 15px;
+}
+.kids-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 10px 22px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--kids-sun);
+  color: #1c1600;
+  font: 800 16px/1 var(--font-sans);
+  cursor: pointer;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
+}
+.kids-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -12px #ffd43baa;
+}
+.kids-button:disabled {
+  background: #3a3729;
+  color: #b6b09a;
+  transform: none;
+  box-shadow: none;
+  cursor: default;
+}
+.kids-button-quiet {
+  background: transparent;
+  color: var(--text);
+  box-shadow: inset 0 0 0 2px var(--kids-line);
+}
+.kids-button-quiet:hover {
+  box-shadow: inset 0 0 0 2px #55536a;
+}
+.kids-button-small {
+  min-height: 40px;
+  padding: 8px 16px;
+  font-size: 14px;
+}
+.kids-button:focus-visible,
+.kids-link:focus-visible,
+.kids-back:focus-visible,
+.kids-game-card:focus-visible {
+  outline: 3px solid var(--kids-sky);
+  outline-offset: 3px;
+}
+
+/* Front door */
+.kids-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 40px;
+  align-items: center;
+  margin: 28px 0 40px;
+}
+.kids-hero h1 {
+  margin: 12px 0 22px;
+  font-size: clamp(34px, 5vw, 56px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  font-weight: 500;
+}
+.kids-hero h1 span {
+  display: block;
+  color: var(--kids-sun);
+}
+.kids-steps {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.kids-steps li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.kids-steps svg {
+  flex-shrink: 0;
+  padding: 7px;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: #ffd43b1a;
+  color: var(--kids-sun);
+}
+.kids-login {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 28px;
+  border: 2px solid var(--kids-line);
+  border-radius: var(--kids-radius);
+  background:
+    radial-gradient(circle at 100% 0, #a47bff22, transparent 55%),
+    var(--kids-panel);
+}
+.kids-login h2 {
+  margin: 0;
+  font-size: 24px;
+}
+.kids-login p {
+  margin: 0;
+  color: var(--muted);
+}
+.kids-login input {
+  min-height: 56px;
+  padding: 10px 16px;
+  border: 2px solid #3c3b4c;
+  border-radius: 14px;
+  background: #0a0a0f;
+  color: var(--text);
+  font: 700 24px/1 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+}
+.kids-login input:focus {
+  border-color: var(--kids-sky);
+  outline: none;
+}
+.kids-error {
+  color: #ff9b8a !important;
+}
+
+/* Game cards */
+.kids-games {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 20px;
+}
+.kids-game-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 26px;
+  border: 2px solid var(--kids-line);
+  border-radius: var(--kids-radius);
+  background: var(--kids-panel);
+  color: var(--text);
+  text-decoration: none;
+  transition:
+    transform 0.2s,
+    border-color 0.2s;
+}
+a.kids-game-card:hover {
+  transform: translateY(-4px);
+}
+.kids-game-card h2 {
+  margin: 4px 0 0;
+  font-size: 26px;
+}
+.kids-game-card p {
+  margin: 0;
+}
+.kids-game-card > svg {
+  padding: 10px;
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+}
+.kids-game-card .kids-button {
+  align-self: flex-start;
+  margin-top: auto;
+}
+.kids-kosmos {
+  background:
+    radial-gradient(circle at 90% 10%, #4da3ff26, transparent 50%),
+    var(--kids-panel);
+}
+.kids-kosmos > svg {
+  background: #4da3ff22;
+  color: var(--kids-sky);
+}
+a.kids-kosmos:hover {
+  border-color: var(--kids-sky);
+}
+.kids-robot {
+  background:
+    radial-gradient(circle at 90% 10%, #3ddc8426, transparent 50%),
+    var(--kids-panel);
+}
+.kids-robot > svg {
+  background: #3ddc8422;
+  color: var(--kids-mint);
+}
+a.kids-robot:hover {
+  border-color: var(--kids-mint);
+}
+
+/* Signed-in start page */
+.kids-lab-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.kids-player {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 18px 32px;
+  align-items: center;
+  margin: 22px 0 28px;
+  padding: 26px;
+  border: 2px solid var(--kids-line);
+  border-radius: var(--kids-radius);
+  background: var(--kids-panel);
+}
+.kids-player h1 {
+  margin: 0 0 6px;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 500;
+}
+.kids-player p {
+  margin: 0;
+}
+.kids-meter {
+  height: 14px;
+  border-radius: 999px;
+  background: #22212d;
+  overflow: hidden;
+}
+.kids-meter span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--kids-sun), var(--kids-pink));
+  transition: width 0.4s;
+}
+.kids-level {
+  display: grid;
+  gap: 8px;
+}
+.kids-ladder {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.kids-ladder li {
+  padding: 6px 12px;
+  border: 2px solid var(--kids-line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+}
+.kids-ladder li.reached {
+  border-color: #ffd43b66;
+  background: #ffd43b14;
+  color: var(--kids-sun);
+}
+
+/* The game lab */
+.kids-level-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #ffd43b14;
+  color: var(--kids-sun);
+  font-size: 15px;
+  font-weight: 700;
+}
+.kids-lab-head {
+  margin: 16px 0 20px;
+}
+.kids-lab-head h1 {
+  margin: 0;
+  font-size: clamp(30px, 4vw, 44px);
+  font-weight: 500;
+}
+.kids-lab-head p {
+  margin: 4px 0 0;
+  color: var(--muted);
+}
+.kids-lab {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  grid-template-areas:
+    "stage code"
+    "missions terminal";
+  gap: 18px;
+  align-items: start;
+}
+.kids-stage {
+  grid-area: stage;
+  min-width: 0;
+}
+.kids-code {
+  grid-area: code;
+}
+.kids-missions {
+  grid-area: missions;
+}
+.kids-terminal {
+  grid-area: terminal;
+}
+.kids-code,
+.kids-missions,
+.kids-terminal {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  padding: 18px;
+  border: 2px solid var(--kids-line);
+  border-radius: var(--kids-radius);
+  background: var(--kids-panel);
+}
+.kids-panel-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.kids-panel-head h2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 19px;
+}
+.kids-panel-head span {
+  color: var(--muted);
+  font-size: 14px;
+}
+.kids-editor {
+  display: flex;
+  border: 2px solid #34334a;
+  border-radius: 14px;
+  background: #08080d;
+  overflow: hidden;
+}
+.kids-editor:focus-within {
+  border-color: var(--kids-sky);
+}
+.kids-gutter {
+  margin: 0;
+  padding: 12px 8px 12px 12px;
+  list-style: none;
+  color: #5f5e75;
+  font: 15px/1.6 var(--font-mono);
+  text-align: right;
+  user-select: none;
+}
+.kids-gutter li.bad {
+  color: #ff7b6b;
+  font-weight: 700;
+}
+.kids-editor textarea {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 12px 12px 6px;
+  border: 0;
+  background: transparent;
+  color: #e9e6ff;
+  font: 15px/1.6 var(--font-mono);
+  resize: vertical;
+  white-space: pre;
+  overflow-x: auto;
+  outline: none;
+  tab-size: 2;
+}
+.kids-problems {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.kids-problems li {
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: #ff6b4a14;
+  color: #ffc2b8;
+  font-size: 15px;
+}
+.kids-problems strong {
+  color: #ff9b8a;
+}
+.kids-code-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.kids-cheer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #3ddc8426, #ffd43b26);
+  color: #c9ffd9;
+  font-weight: 700;
+  animation: kids-pop 0.4s ease-out;
+}
+@keyframes kids-pop {
+  from {
+    transform: scale(0.94);
+    opacity: 0;
+  }
+}
+.kids-mission-now {
+  margin: 0;
+  padding: 16px;
+  border-radius: 14px;
+  background: #ffd43b0f;
+  box-shadow: inset 0 0 0 2px #ffd43b40;
+}
+.kids-mission-now h3 {
+  margin: 4px 0;
+  font-size: 21px;
+}
+.kids-mission-now p {
+  margin: 0 0 8px;
+}
+.kids-all-done {
+  color: var(--kids-sun);
+  font-weight: 700;
+}
+.kids-hint {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #4da3ff14;
+  color: #cfe5ff;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+.kids-hint svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.kids-mission-list {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.kids-mission-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+}
+.kids-mission-mark {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #44435a;
+  border-radius: 50%;
+}
+.kids-mission-list li.done .kids-mission-mark {
+  border-color: var(--kids-mint);
+  background: var(--kids-mint);
+  color: #062312;
+}
+.kids-mission-list li.done > span:nth-child(2) {
+  color: var(--muted);
+}
+.kids-mission-xp {
+  margin-left: auto;
+  color: var(--kids-sun);
+  font: 700 13px/1 var(--font-mono);
+  white-space: nowrap;
+}
+.kids-terminal-log {
+  min-height: 140px;
+  max-height: 220px;
+  padding: 12px;
+  border-radius: 14px;
+  background: #050807;
+  overflow-y: auto;
+  font: 14px/1.6 var(--font-mono);
+}
+.kids-terminal-log p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.kids-term-in {
+  color: #d9d6ee;
+}
+.kids-term-out {
+  color: #8fe7b2;
+}
+.kids-term-ok {
+  color: var(--kids-sun);
+}
+.kids-term-err {
+  color: #ff9b8a;
+}
+.kids-terminal-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.kids-terminal-form > span {
+  color: var(--kids-mint);
+  font: 700 18px/1 var(--font-mono);
+}
+.kids-terminal-form input {
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 2px solid #2a3a30;
+  border-radius: 12px;
+  background: #050807;
+  color: #c8ffd9;
+  font: 15px/1 var(--font-mono);
+}
+.kids-terminal-form input:focus {
+  border-color: var(--kids-mint);
+  outline: none;
+}
+
+@media (max-width: 960px) {
+  .kids-hero,
+  .kids-player {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .kids-lab {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "stage"
+      "code"
+      "missions"
+      "terminal";
+  }
+}
+@media (max-width: 540px) {
+  .kids {
+    font-size: 16px;
+  }
+  .kids-login,
+  .kids-player,
+  .kids-game-card {
+    padding: 20px;
+  }
+  .kids-code,
+  .kids-missions,
+  .kids-terminal {
+    padding: 14px;
+  }
+}

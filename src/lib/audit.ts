@@ -47,6 +47,11 @@ export type AuditAction =
   | "telegram.webhook"
   | "telegram.unlink"
   | "telegram.broadcast"
+  | "kids.create"
+  | "kids.update"
+  | "kids.code_reset"
+  | "kids.progress_reset"
+  | "kids.delete"
   | "junior.promote"
   | "data.export";
 
