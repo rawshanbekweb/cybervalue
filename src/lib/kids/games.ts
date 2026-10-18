@@ -95,7 +95,8 @@ export const GAMES: Record<GameId, Game> = {
       },
     },
     watch: ["ochko", "hayotlar", "vaqt"],
-    starter: `// Kosmik kema sozlamalari. Qiymatni o'zgartiring va "Ishga tushirish"ni bosing!
+    starter: `// Kosmik kema sozlamalari.
+// Sonni o'zgartiring va "Ishga tushirish"ni bosing!
 tezlik = 5
 hayotlar = 3
 kema_rangi = "ko'k"
@@ -310,7 +311,8 @@ ko'rinmas = yo'q
       },
     },
     watch: ["ochko", "hayotlar", "vaqt"],
-    starter: `// Robot sozlamalari. Qiymatni o'zgartiring va "Ishga tushirish"ni bosing!
+    starter: `// Robot sozlamalari.
+// Sonni o'zgartiring va "Ishga tushirish"ni bosing!
 sakrash_kuchi = 8
 tortishish = 10
 yugurish_tezligi = 5

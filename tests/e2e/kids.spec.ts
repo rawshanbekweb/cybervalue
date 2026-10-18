@@ -47,7 +47,11 @@ async function createKid(name: string) {
     await client.query(
       `INSERT INTO "KidsMember" (id, name, "codeHash", "updatedAt")
        VALUES ($1, $2, $3, now())`,
-      [`e2e_${randomUUID()}`, name, createHash("sha256").update(code).digest("hex")],
+      [
+        `e2e_${randomUUID()}`,
+        name,
+        createHash("sha256").update(code).digest("hex"),
+      ],
     );
   } finally {
     await client.end();
@@ -70,7 +74,7 @@ test.describe("Academy Kids", () => {
     await audit(page, "kids front door");
     await page.getByLabel("Access code").fill("WRONG123");
     await page.getByRole("button", { name: "Let's play" }).click();
-    await expect(page.getByRole("alert")).toContainText("not valid");
+    await expect(page.locator(".kids-error")).toContainText("not valid");
     await page.getByLabel("Access code").fill(code);
     await page.getByRole("button", { name: "Let's play" }).click();
     await expect(
@@ -102,12 +106,12 @@ test.describe("Academy Kids", () => {
 
     // The mission and the code survive a reload: they are on the account.
     await page.reload();
-    await expect(
-      page.getByRole("textbox", { name: "Game code" }),
-    ).toHaveValue(/tezlik = 12/);
-    await expect(
-      page.locator(".kids-mission-list li.done"),
-    ).toContainText("Turbo engine");
+    await expect(page.getByRole("textbox", { name: "Game code" })).toHaveValue(
+      /tezlik = 12/,
+    );
+    await expect(page.locator(".kids-mission-list li.done")).toContainText(
+      "Turbo engine",
+    );
     await page.goto("/kids");
     await expect(page.getByText("1 of 8 missions")).toBeVisible();
   });
@@ -125,11 +129,13 @@ test.describe("Academy Kids", () => {
       .click();
     const name = `Sardor ${Date.now().toString(36)}`;
     await page.getByLabel(/One child per line/).fill(`${name} | 3-A`);
-    await page.getByRole("button", { name: "Create children and codes" }).click();
+    await page
+      .getByRole("button", { name: "Create children and codes" })
+      .click();
     const code = await page.locator("code.student-code").first().innerText();
     expect(code).toMatch(/^[0-9A-Z]{4}-[0-9A-Z]{4}$/);
     await audit(page, "admin kids codes");
-    await page.getByRole("link", { name }).click();
+    await page.getByRole("link", { name }).first().click();
     await expect(page.getByRole("heading", { level: 1, name })).toBeVisible();
     await expect(page.getByText("Best score: 0").first()).toBeVisible();
     await audit(page, "admin kid page");
