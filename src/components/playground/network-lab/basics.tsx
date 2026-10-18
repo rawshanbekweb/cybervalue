@@ -403,7 +403,13 @@ export function CompareWidget({
   ];
   return (
     <div className="nl-card">
-      <div className="nl-and">
+      {/* Scrolls sideways on narrow screens, so it must take keyboard focus. */}
+      <div
+        className="nl-and"
+        tabIndex={0}
+        role="group"
+        aria-label={t("Network calculation")}
+      >
         {rows.map(([label, value], i) => (
           <div key={i} className={i % 3 === 2 ? "result" : ""}>
             <span>{label}</span>

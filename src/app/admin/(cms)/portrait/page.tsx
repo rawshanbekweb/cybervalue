@@ -1,4 +1,4 @@
-import { getAdminTranslator } from "@/lib/i18n/server";
+import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
 import { requireAdmin } from "@/lib/auth";
 import { getHomePortrait } from "@/lib/home-portrait";
 import { Constellation } from "@/components/constellation";
@@ -8,6 +8,7 @@ import { resetHomePortraitAction, saveHomePortraitAction } from "./actions";
 
 export default async function HomePortraitPage() {
   const t = await getAdminTranslator();
+  const locale = await getAdminLocale();
   await requireAdmin("/admin/portrait");
   const custom = await getHomePortrait();
   return (
@@ -28,7 +29,7 @@ export default async function HomePortraitPage() {
           <p>
             {custom
               ? t("Uploaded portrait, updated {date}.", {
-                  date: formatDate(custom.updatedAt),
+                  date: formatDate(custom.updatedAt, locale),
                 })
               : t("The default portrait is shown.")}
           </p>

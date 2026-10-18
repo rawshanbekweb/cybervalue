@@ -11,7 +11,8 @@
   display: grid;
   grid-template-columns: repeat(10, minmax(100px, 1fr));
   gap: 6px;
-  min-width: 1040px;
+  /* Ten 100px stops and nine 6px gaps. */
+  min-width: 1054px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -798,6 +799,13 @@
   align-items: center;
   gap: 8px;
   font-size: 14px;
+}
+/* A long task (a quiz question) wraps beside its number instead of
+   dropping onto its own line and leaving the number alone. */
+.cr-ex-head strong {
+  flex: 1 1 12ch;
+  min-width: 0;
+  line-height: 1.45;
 }
 .cr-ex-num {
   display: inline-grid;

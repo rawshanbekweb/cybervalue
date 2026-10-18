@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getAdminTranslator } from "@/lib/i18n/server";
+import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
 import { requireAdmin } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { formatDate } from "@/components/ui";
@@ -7,6 +7,7 @@ import { CreateStudentsForm } from "@/components/admin/student-forms";
 
 export default async function AdminStudentsPage() {
   const t = await getAdminTranslator();
+  const locale = await getAdminLocale();
   await requireAdmin("/admin/students");
   const db = getDb();
   const [students, materials] = db
@@ -55,7 +56,7 @@ export default async function AdminStudentsPage() {
               <tr>
                 <th scope="col">{t("Name")}</th>
                 <th scope="col">{t("Group")}</th>
-                <th scope="col">Status</th>
+                <th scope="col">{t("Status")}</th>
                 <th scope="col">{t("Completed")}</th>
                 <th scope="col">{t("Submissions")}</th>
                 <th scope="col">{t("Last sign-in")}</th>
@@ -85,7 +86,7 @@ export default async function AdminStudentsPage() {
                     <td>{student._count.submissions}</td>
                     <td>
                       {student.lastLoginAt
-                        ? formatDate(student.lastLoginAt)
+                        ? formatDate(student.lastLoginAt, locale)
                         : t("Never")}
                     </td>
                   </tr>

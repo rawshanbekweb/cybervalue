@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslator } from "@/components/locale-provider";
 
 export type AdminNavItem = { href: string; label: string; badge?: number };
@@ -27,6 +27,11 @@ export function AdminNav({ groups }: { groups: AdminNavGroup[] }) {
         (item.href !== "/admin" && pathname.startsWith(`${item.href}/`)),
     )
     .sort((a, b) => b.href.length - a.href.length)[0];
+  const active = useRef<HTMLAnchorElement>(null);
+  // Keep the current section visible in a sidebar that scrolls.
+  useEffect(() => {
+    active.current?.scrollIntoView({ block: "nearest" });
+  }, [pathname]);
   const attention = all.reduce((sum, item) => sum + (item.badge ?? 0), 0);
   return (
     <>
@@ -54,6 +59,7 @@ export function AdminNav({ groups }: { groups: AdminNavGroup[] }) {
                 key={item.href}
                 href={item.href}
                 aria-current={item === current ? "page" : undefined}
+                ref={item === current ? active : undefined}
               >
                 <span>{item.label}</span>
                 {!!item.badge && (

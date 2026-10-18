@@ -185,7 +185,7 @@ export default async function AdminStudentPage({
         <form action={deleteStudentAction.bind(null, student.id)}>
           <ConfirmButton
             type="submit"
-            className="button button-secondary"
+            className="button button-danger"
             message={t(
               "Delete this student with all answers and progress? This cannot be undone.",
             )}

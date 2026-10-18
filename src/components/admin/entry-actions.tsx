@@ -51,7 +51,7 @@ export function EntryActions({
           type="submit"
           name="operation"
           value="delete"
-          className="button button-secondary"
+          className="button button-danger"
           message={`Permanently delete "${entry.title}"? This cannot be undone.`}
         >
           {t("Delete")}

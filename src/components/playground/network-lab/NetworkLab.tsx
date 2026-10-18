@@ -71,7 +71,7 @@ export function NetworkLab() {
         <div className="nl-course-card">
           <div>
             <Network size={22} />
-            <strong>NETWORK / LAB</strong>
+            <strong>{t("NETWORK / LAB")}</strong>
             <span className="nl-live">{t("In your browser")}</span>
           </div>
           <p>

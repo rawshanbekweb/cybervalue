@@ -8,6 +8,9 @@
   --lab-danger: #e39a7a;
   display: flex;
   min-height: 100vh;
+  /* .container sets the width so the lab lines up with the site grid. */
+  border: 1px solid var(--lab-border);
+  border-radius: 13px;
   background: var(--lab-bg);
   color: var(--lab-text);
   font-family: var(--font-sans);
@@ -28,7 +31,7 @@
 }
 .lab-root button:disabled {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: 0.65;
 }
 .lab-root pre {
   white-space: pre-wrap;
@@ -44,6 +47,12 @@
   display: flex;
   flex-direction: column;
   padding: 28px 20px 20px;
+  border-radius: 13px 0 0 13px;
+  /* Stay in view while the lesson scrolls; the long lesson list scrolls
+     inside .lab-lesson-nav instead of stretching the page. */
+  position: sticky;
+  top: 0;
+  height: 100vh;
 }
 .lab-brand {
   display: flex;
@@ -122,6 +131,7 @@
   padding-right: 6px;
   overflow: auto;
   flex: 1;
+  min-height: 0;
 }
 .lab-nav-group {
   font-size: 9px;
@@ -392,8 +402,10 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  flex-shrink: 0;
 }
 .lab-lesson-controls > span {
+  white-space: nowrap;
   font-size: 10px;
   color: var(--lab-muted);
   margin-right: 8px;
@@ -544,8 +556,28 @@
   color: var(--lab-muted);
 }
 .lab-notes-card summary {
+  display: flex;
+  align-items: center;
   cursor: pointer;
   color: var(--lab-text);
+  list-style: none;
+}
+.lab-notes-card summary::-webkit-details-marker {
+  display: none;
+}
+/* Chevron in place of the native triangle; it turns when open. */
+.lab-notes-card summary::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  margin-left: auto;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.2s;
+}
+.lab-notes-card[open] summary::after {
+  transform: translateY(2px) rotate(-135deg);
 }
 .lab-notes-card textarea {
   margin: 12px 0 9px;
@@ -583,13 +615,16 @@
   gap: 10px;
   white-space: nowrap;
 }
-.lab-secondary-button {
+/* Same specificity as .lab-primary-button so the pair share one size. */
+.lab-root .lab-secondary-button {
   background: var(--lab-bg);
   border: 1px solid var(--lab-border);
   color: var(--lab-text);
-  padding: 9px 12px;
-  border-radius: 5px;
+  padding: 10px 15px;
+  border-radius: 6px;
   font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
 }
 .lab-journey {
   margin-top: 26px;
@@ -605,12 +640,12 @@
   color: var(--lab-text);
 }
 .lab-journey-steps {
-  display: flex;
+  /* Five equal columns with the arrows in narrow tracks between them. */
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr) auto) minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
   margin-top: 19px;
-  gap: 10px;
-  flex-wrap: wrap;
+  gap: 16px;
 }
 .lab-journey-steps button {
   background: none;
@@ -644,6 +679,11 @@
   font-size: 9px;
   color: var(--lab-muted);
   padding: 24px 0 0;
+}
+.lab-page-footer > span:last-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
 }
 .lab-page-footer b {
   color: var(--lab-text);
@@ -1104,6 +1144,81 @@
   }
   .lab-sidebar.open {
     transform: none;
+  }
+  .lab-root {
+    border: 0;
+  }
+  .lab-sidebar {
+    height: auto;
+    border-radius: 0;
+  }
+  .lab-topbar {
+    height: auto;
+    padding: 12px 0;
+  }
+  .lab-breadcrumb {
+    min-width: 0;
+  }
+  /* Only the lesson title: the "Learning lab /" prefix crowds the row. */
+  .lab-breadcrumb > span {
+    display: none;
+  }
+  .lab-quiet-button {
+    white-space: nowrap;
+  }
+  .lab-workspace .lab-content {
+    padding: 20px 0;
+  }
+  .lab-stat-strip > div {
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px 4px;
+    border: 0;
+    text-align: center;
+  }
+  .lab-stat-strip {
+    row-gap: 10px;
+  }
+  .lab-section-heading {
+    align-items: flex-start;
+  }
+  .lab-tabs {
+    flex-wrap: wrap;
+    column-gap: 18px;
+    padding: 0 16px;
+  }
+  .lab-lesson-content {
+    padding: 18px 16px;
+  }
+  .lab-flow-nodes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+  /* In a wrapped grid the arrows would dangle at row ends; order reads
+     left to right and the caption names the current step. */
+  .lab-flow-arrow {
+    display: none;
+  }
+  .lab-lesson-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .lab-right-column {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lab-journey {
+    padding: 20px 16px;
+  }
+  .lab-journey-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .lab-journey-steps i {
+    display: none;
+  }
+  .lab-page-footer {
+    flex-direction: column;
+    gap: 8px;
   }
   .lab-mobile-menu {
     display: block;

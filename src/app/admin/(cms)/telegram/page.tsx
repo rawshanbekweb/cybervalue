@@ -1,4 +1,4 @@
-import { getAdminTranslator } from "@/lib/i18n/server";
+import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
 import { requireAdmin } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { formatDate } from "@/components/ui";
@@ -23,6 +23,7 @@ const ROLE: Record<string, string> = {
 
 export default async function AdminTelegramPage() {
   const t = await getAdminTranslator();
+  const locale = await getAdminLocale();
   const session = await requireAdmin("/admin/telegram");
   const db = getDb();
   const config = telegramConfig();
@@ -177,7 +178,12 @@ export default async function AdminTelegramPage() {
           </p>
           {teacherLink && (
             <p>
-              <a href={teacherLink} target="_blank" rel="noreferrer">
+              <a
+                href={teacherLink}
+                target="_blank"
+                rel="noreferrer"
+                className="button button-primary"
+              >
                 {t("Link my Telegram")}
               </a>
             </p>
@@ -268,7 +274,7 @@ export default async function AdminTelegramPage() {
                   <td>{nameOf(chat.subject)}</td>
                   <td>{t(ROLE[chat.subject.split(":")[0]] ?? "—")}</td>
                   <td>{chat.name || "—"}</td>
-                  <td>{formatDate(chat.createdAt)}</td>
+                  <td>{formatDate(chat.createdAt, locale)}</td>
                   <td>
                     <form action={unlinkChatAction.bind(null, chat.id)}>
                       <ConfirmButton

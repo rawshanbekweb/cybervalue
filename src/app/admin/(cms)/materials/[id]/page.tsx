@@ -97,10 +97,13 @@ export default async function EditMaterialPage({
           published: material.published,
         }}
       />
-      <form action={deleteMaterialAction.bind(null, material.id)}>
+      <form
+        action={deleteMaterialAction.bind(null, material.id)}
+        className="admin-danger-zone"
+      >
         <ConfirmButton
           type="submit"
-          className="button button-secondary"
+          className="button button-danger"
           message={t(
             "Delete this material with all student answers? This cannot be undone.",
           )}

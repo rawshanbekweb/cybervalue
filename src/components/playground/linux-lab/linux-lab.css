@@ -1,6 +1,6 @@
 .linux-lab {
-  width: min(1540px, calc(100% - 64px));
-  margin: 32px auto 80px;
+  /* Width comes from .container, so the lab lines up with the site. */
+  margin-block: 32px 80px;
 }
 .lx-back {
   display: inline-flex;
@@ -671,7 +671,7 @@
   padding: 6px;
 }
 .lx-file-preview button:disabled {
-  opacity: 0.5;
+  opacity: 0.65;
   cursor: not-allowed;
 }
 .lx-file-preview pre {
@@ -809,8 +809,11 @@
 }
 @media (max-width: 760px) {
   .linux-lab {
-    width: calc(100% - 32px);
     margin-top: 24px;
+  }
+  /* On a phone the lesson text leads; the terminal follows it. */
+  .lx-tools {
+    grid-row: auto;
   }
   .lx-hero {
     grid-template-columns: 1fr;
@@ -829,11 +832,14 @@
   .lx-sidebar {
     padding: 12px 10px;
   }
+  /* The lesson strip scrolls sideways; the fade shows there is more, and
+     the end padding lets the last lesson scroll clear of it. */
   .lx-sidebar nav {
     display: flex;
     overflow-x: auto;
     gap: 7px;
-    padding-bottom: 8px;
+    padding: 0 32px 8px 0;
+    mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
   }
   .lx-sidebar nav > div {
     flex: 0 0 180px;
@@ -889,4 +895,38 @@
 
 .lx-sandbox + .lx-sandbox {
   margin-top: 8px;
+}
+
+/* Disclosures: a chevron that turns when open, in place of the native
+   triangle. */
+.lx-theory summary,
+.lx-hint summary,
+.lx-limits summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+}
+.lx-theory summary::-webkit-details-marker,
+.lx-hint summary::-webkit-details-marker,
+.lx-limits summary::-webkit-details-marker {
+  display: none;
+}
+.lx-theory summary::after,
+.lx-hint summary::after,
+.lx-limits summary::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  margin-left: auto;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+.lx-theory[open] summary::after,
+.lx-hint[open] summary::after,
+.lx-limits[open] summary::after {
+  transform: translateY(2px) rotate(-135deg);
 }

@@ -15,14 +15,21 @@
   color: var(--accent-text);
 }
 .cp-head p {
-  max-width: 680px;
+  max-width: 760px;
   color: var(--muted);
   line-height: 1.6;
 }
 .cp-link {
   color: var(--accent-text);
+  font-weight: 500;
+  white-space: nowrap;
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration-color: #a68bff66;
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.15s;
+}
+.cp-link:hover {
+  text-decoration-color: currentColor;
 }
 .cp-list {
   display: grid;
@@ -82,6 +89,13 @@
 }
 .cp-start {
   margin-top: 18px;
+  /* Under the title column: the ring's width plus the head's gap. */
+  margin-left: 56px;
+}
+@media (max-width: 540px) {
+  .cp-start {
+    margin-left: 0;
+  }
 }
 .cp-form ol {
   display: grid;

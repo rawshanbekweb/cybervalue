@@ -132,7 +132,7 @@
 
   "The return address": "Qaytish manzili",
   "Sign-in page": "Kirish sahifasi",
-  "Open redirect": "Open redirect",
+  "Open redirect": "Ochiq yo‘naltirish (open redirect)",
   "After signing in, the site sends people back to the page in ?next=. Phishers love this: a real link to your site that ends on theirs. Return a safe path on this site for every input, and “/” when the input is unusable.": "Tizimga kirgandan keyin sayt odamlarni ?next= dagi sahifaga qaytaradi. Fishingchilar buni yaxshi ko‘radi: saytingizga olib boradigan haqiqiy havola ularning saytida tugaydi. Har qanday kiritma uchun shu saytdagi xavfsiz yo‘lni, kiritma yaroqsiz bo‘lsa “/”ni qaytaring.",
   "Normal paths are kept": "Oddiy yo‘llar saqlanadi",
   "“/dashboard” must lead to /dashboard. Always returning “/” is safe, but it breaks the feature.": "“/dashboard” /dashboard’ga olib borishi kerak. Doim “/” qaytarish xavfsiz, lekin funksiyani buzadi.",

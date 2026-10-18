@@ -15,7 +15,7 @@
 }
 .ctf-root button:disabled {
   cursor: not-allowed;
-  opacity: 0.55;
+  opacity: 0.7;
 }
 .ctf-root :focus-visible {
   outline: 2px solid var(--ctf-yellow);
@@ -314,17 +314,19 @@
   font-size: 14px;
   color: #a0ac95;
 }
+/* Every metric label sits on the same top line as .ctf-eyebrow. */
 .ctf-progress-block {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 16px;
+  justify-content: flex-start;
+  gap: 24px;
 }
 .ctf-progress-block label {
   display: flex;
   justify-content: space-between;
   gap: 8px;
-  font: 9px var(--font-mono);
+  font: 10px/1.7 var(--font-mono);
+  letter-spacing: 1.5px;
   color: var(--ctf-muted);
 }
 .ctf-progress-block label span {
@@ -349,12 +351,14 @@
 }
 .ctf-operator {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 15px;
   color: #becba9;
-  font: 9px var(--font-mono);
+  font: 10px/1.7 var(--font-mono);
+  letter-spacing: 1.5px;
 }
 .ctf-operator strong {
+  letter-spacing: 0;
   font: 13px var(--font-sans);
   color: #e4eadc;
 }

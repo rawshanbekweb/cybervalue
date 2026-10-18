@@ -72,7 +72,7 @@ export function AgentCard() {
             </label>
             <input
               id={inputId}
-              className="jr-input"
+              className="jr-input jr-plain"
               value={draft}
               maxLength={24}
               placeholder={t("Your codename")}
@@ -122,8 +122,9 @@ export function AgentCard() {
         <p className="jr-agent-meta">
           {next
             ? text({
-                uz: `Keyingi unvon «${next.title.uz}» — yana ${next.xp - xp} XP`,
-                en: `Next rank “${next.title.en}” — ${next.xp - xp} XP to go`,
+                // Non-breaking spaces keep "yana 150 XP" on one line.
+                uz: `Keyingi unvon «${next.title.uz}» — yana\u00a0${next.xp - xp}\u00a0XP`,
+                en: `Next rank “${next.title.en}” — ${next.xp - xp}\u00a0XP to go`,
               })
             : t("Top rank! You are a legend.")}
           <br />

@@ -39,7 +39,7 @@ export default async function AccountPage() {
       where: { userId: session.user.id, expiresAt: { gt: new Date() } },
     })) ?? 0;
   return (
-    <div className="admin-page">
+    <div className="admin-page admin-account">
       <h1>{t("Account settings")}</h1>
       <p>
         {session.user.name} · {session.user.email}

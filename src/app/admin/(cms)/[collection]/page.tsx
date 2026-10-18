@@ -1,4 +1,4 @@
-import { getAdminTranslator } from "@/lib/i18n/server";
+import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getDb } from "@/lib/db";
@@ -22,6 +22,7 @@ export default async function AdminCollectionPage({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const t = await getAdminTranslator();
+  const locale = await getAdminLocale();
   const { collection } = await params;
   if (!isCollection(collection)) notFound();
   await requireAdmin(`/admin/${collection}`);
@@ -44,16 +45,18 @@ export default async function AdminCollectionPage({
     <div className="admin-page">
       <div className="admin-page-header">
         <div>
-          <h1>{config.title}</h1>
+          <h1>{t(config.title)}</h1>
           <p className="muted">
-            {result.total} {filtered ? "matching" : "total"} entries
+            {filtered
+              ? t("{count} matching entries", { count: result.total })
+              : t("{count} entries in total", { count: result.total })}
           </p>
         </div>
         <Link
           href={`/admin/${collection}/new`}
           className="button button-primary"
         >
-          {t("New")} {config.singular.toLowerCase()}
+          {t("New {kind}", { kind: t(config.singular).toLowerCase() })}
         </Link>
       </div>
       {!db && (
@@ -69,7 +72,7 @@ export default async function AdminCollectionPage({
       >
         <div className="admin-field admin-search-field">
           <label htmlFor="admin-query">
-            Search {config.title.toLowerCase()}
+            {t("Search {title}", { title: t(config.title).toLowerCase() })}
           </label>
           <input
             id="admin-query"
@@ -86,7 +89,7 @@ export default async function AdminCollectionPage({
           />
         </div>
         <div className="admin-field">
-          <label htmlFor="admin-status">Status</label>
+          <label htmlFor="admin-status">{t("Status")}</label>
           <select
             id="admin-status"
             name="status"
@@ -126,14 +129,14 @@ export default async function AdminCollectionPage({
       </form>
       <div className="admin-table-wrap">
         <table className="admin-table">
-          <caption className="sr-only">{config.title} management</caption>
+          <caption className="sr-only">{t(config.title)}</caption>
           <thead>
             <tr>
               <th scope="col">{t("Title")}</th>
               {config.kind === "RESOURCE" && (
                 <th scope="col">{t("Resource file")}</th>
               )}
-              <th scope="col">Status</th>
+              <th scope="col">{t("Status")}</th>
               <th scope="col">{t("Updated")}</th>
               <th scope="col">{t("Actions")}</th>
             </tr>
@@ -179,11 +182,12 @@ export default async function AdminCollectionPage({
                       entry.publishedAt &&
                       entry.publishedAt > new Date() && (
                         <span className="admin-cell-detail">
-                          {t("Scheduled:")} {formatDate(entry.publishedAt)}
+                          {t("Scheduled:")}{" "}
+                          {formatDate(entry.publishedAt, locale)}
                         </span>
                       )}
                   </td>
-                  <td>{formatDate(entry.updatedAt)}</td>
+                  <td>{formatDate(entry.updatedAt, locale)}</td>
                   <td>
                     <EntryActions collection={collection} entry={entry} />
                   </td>

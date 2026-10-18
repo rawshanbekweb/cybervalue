@@ -101,8 +101,30 @@
   font-size: 13px;
 }
 .studio-hints summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   cursor: pointer;
   color: var(--accent-text);
+  list-style: none;
+}
+.studio-hints summary::-webkit-details-marker {
+  display: none;
+}
+/* Chevron in place of the native triangle; it turns when the hints open. */
+.studio-hints summary::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+.studio-hints[open] summary::after {
+  transform: translateY(2px) rotate(-135deg);
 }
 .studio-brief .studio-back {
   margin: 0;
@@ -201,6 +223,16 @@
   overflow: auto;
   background: #28282b;
   padding: 16px 0;
+}
+.studio-preview-empty {
+  display: grid;
+  place-items: center;
+  min-height: 160px;
+  margin: 0;
+  padding: 24px;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
 }
 .studio-preview-viewport iframe {
   display: block;

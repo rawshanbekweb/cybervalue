@@ -265,7 +265,6 @@
 .mission-save-note {
   font-size: 10px;
   color: var(--muted);
-  padding-inline: 8px;
 }
 .mission-panel-heading {
   display: flex;
@@ -746,7 +745,7 @@
 }
 @media (max-width: 850px) {
   .missions-heading {
-    align-items: flex-start;
+    align-items: stretch;
     flex-direction: column;
     gap: 22px;
   }
@@ -801,9 +800,14 @@
   .mission-panel {
     padding: 18px;
   }
+  /* The mono caption drops under the title instead of squeezing it. */
+  .mission-panel-heading {
+    flex-wrap: wrap;
+    row-gap: 6px;
+  }
   .mission-panel-heading > span {
-    max-width: 80px;
-    font-size: 7px;
+    flex-basis: 100%;
+    text-align: left;
   }
   .mission-request-line {
     display: grid;

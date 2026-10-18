@@ -130,7 +130,7 @@ export function UsersTable({
                 <th scope="col">{t("Group")}</th>
                 <th scope="col">{t("Progress")}</th>
                 <th scope="col">{t("Last activity")}</th>
-                <th scope="col">Status</th>
+                <th scope="col">{t("Status")}</th>
               </tr>
             </thead>
             <tbody>

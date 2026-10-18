@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getAdminTranslator } from "@/lib/i18n/server";
+import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
 import { requireAdmin } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { formatDate } from "@/components/ui";
@@ -14,6 +14,7 @@ const KIND_LABEL = {
 
 export default async function AdminMaterialsPage() {
   const t = await getAdminTranslator();
+  const locale = await getAdminLocale();
   await requireAdmin("/admin/materials");
   const db = getDb();
   const [materials, pending] = db
@@ -64,7 +65,7 @@ export default async function AdminMaterialsPage() {
                 <th scope="col">{t("Title")}</th>
                 <th scope="col">{t("Kind")}</th>
                 <th scope="col">{t("Groups")}</th>
-                <th scope="col">Status</th>
+                <th scope="col">{t("Status")}</th>
                 <th scope="col">{t("Submissions")}</th>
                 <th scope="col">{t("Updated")}</th>
               </tr>
@@ -96,7 +97,7 @@ export default async function AdminMaterialsPage() {
                         </span>
                       )}
                     </td>
-                    <td>{formatDate(m.updatedAt)}</td>
+                    <td>{formatDate(m.updatedAt, locale)}</td>
                   </tr>
                 );
               })}

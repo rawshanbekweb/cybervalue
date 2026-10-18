@@ -76,7 +76,7 @@ export default async function AdminLivePage() {
                 <th scope="col">{t("Test")}</th>
                 <th scope="col">{t("Code")}</th>
                 <th scope="col">{t("Players")}</th>
-                <th scope="col">Status</th>
+                <th scope="col">{t("Status")}</th>
                 <th scope="col">{t("Created")}</th>
                 <th scope="col">
                   <span className="visually-hidden">{t("Actions")}</span>
@@ -97,7 +97,7 @@ export default async function AdminLivePage() {
                     <form action={deleteLiveGameAction.bind(null, game.id)}>
                       <ConfirmButton
                         type="submit"
-                        className="button button-secondary"
+                        className="button button-danger"
                         message={t("Delete this game and its results?")}
                       >
                         {t("Delete")}

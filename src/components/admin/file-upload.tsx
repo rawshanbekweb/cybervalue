@@ -70,13 +70,19 @@ export function FileUpload({
   }
   return (
     <div className="admin-upload">
-      <label htmlFor={id}>
+      {/* The native picker's own text ("No file chosen") cannot be
+          translated, so the input is hidden and its label is the button. */}
+      <label
+        htmlFor={id}
+        className="button button-secondary admin-upload-button"
+      >
         {kind === "IMAGE" ? t("Upload image") : t("Upload resource file")}
       </label>
       <input
         ref={input}
         id={id}
         type="file"
+        className="visually-hidden"
         disabled={disabled || busy}
         accept={
           kind === "IMAGE"

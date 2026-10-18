@@ -72,7 +72,7 @@ export function HtmlBasics() {
   ).length;
 
   return (
-    <div className="htb-root">
+    <div className="htb-root container">
       <aside className="htb-side">
         <h1>{t("HTML Lessons")}</h1>
         <span className="htb-tag">{t("12 SHORT EXERCISES")}</span>

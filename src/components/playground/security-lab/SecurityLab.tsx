@@ -92,7 +92,7 @@ export function SecurityLab() {
   ).length;
 
   return (
-    <div className={`lab-root${present ? " lab-present" : ""}`}>
+    <div className={`lab-root container${present ? " lab-present" : ""}`}>
       <aside className={`lab-sidebar${menuOpen ? " open" : ""}`}>
         <a
           className="lab-brand"

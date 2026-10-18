@@ -1,14 +1,21 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
-  gap: 20px;
-  margin-bottom: 72px;
+  /* Rows are shared with the cards through subgrid; cards space themselves
+     vertically with a margin so the shared rows carry no gap. */
+  gap: 0 20px;
+  margin-bottom: 52px;
 }
 
+/* Each card spans six shared rows (header, eyebrow, title, text, actions,
+   hint), so buttons and hints line up across cards whatever their count. */
 .card {
   position: relative;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-row: span 6;
+  grid-template-rows: subgrid;
+  row-gap: 0;
+  margin-bottom: 20px;
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
   overflow: hidden;
@@ -18,10 +25,15 @@
     transform 0.25s,
     box-shadow 0.25s;
 }
-.card:hover {
-  border-color: #8052ff80;
-  transform: translateY(-3px);
-  box-shadow: 0 24px 50px -30px #8052ff80;
+@media (hover: hover) {
+  .card:hover {
+    border-color: #8052ff80;
+    transform: translateY(-3px);
+    box-shadow: 0 24px 50px -30px #8052ff80;
+  }
+  .card:hover .icon {
+    transform: rotate(-6deg) scale(1.06);
+  }
 }
 
 /* Compact header: what it is on the left, how much of it on the right. */
@@ -49,9 +61,6 @@
   color: var(--accent-text);
   transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
-.card:hover .icon {
-  transform: rotate(-6deg) scale(1.06);
-}
 .tags {
   grid-area: tags;
   display: grid;
@@ -76,9 +85,11 @@
 }
 
 .content {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
+  display: grid;
+  grid-row: span 5;
+  grid-template-rows: subgrid;
+  row-gap: 0;
+  align-items: start;
   padding: 26px 28px 28px;
   min-width: 0;
 }
@@ -98,8 +109,8 @@
 .actions {
   display: flex;
   flex-wrap: wrap;
+  align-content: flex-start;
   gap: 10px;
-  margin-top: auto;
   padding-top: 24px;
 }
 .actions :global(.button) {
@@ -126,8 +137,10 @@
 
 @media (max-width: 540px) {
   .grid {
-    gap: 16px;
-    margin-bottom: 48px;
+    margin-bottom: 32px;
+  }
+  .card {
+    margin-bottom: 16px;
   }
   .preview {
     padding: 20px;

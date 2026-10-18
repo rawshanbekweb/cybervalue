@@ -79,7 +79,7 @@ export async function ChallengeResults({
               <th scope="col">{t("Student")}</th>
               <th scope="col">{t("Variant")}</th>
               <th scope="col">{t("Flag")}</th>
-              <th scope="col">Status</th>
+              <th scope="col">{t("Status")}</th>
               <th scope="col">{t("Warnings")}</th>
               <th scope="col">{t("File")}</th>
             </tr>
