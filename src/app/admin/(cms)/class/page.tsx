@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
-import { requireAdmin } from "@/lib/auth";
+import { requireStaff } from "@/lib/auth";
+import { groupCondition, groupLabel, pickGroup } from "@/lib/staff";
 import { getDb } from "@/lib/db";
 import { formatDate } from "@/components/ui";
 import { CHECKPOINT_META } from "@/lib/checkpoints/meta";
@@ -18,7 +19,7 @@ export default async function AdminClassPage({
 }: PageProps<"/admin/class">) {
   const t = await getAdminTranslator();
   const locale = await getAdminLocale();
-  await requireAdmin("/admin/class");
+  const { scope } = await requireStaff("/admin/class");
   const db = getDb();
   if (!db)
     return (
@@ -30,19 +31,20 @@ export default async function AdminClassPage({
       </div>
     );
   const query = await searchParams;
-  const groups = await classGroups(db);
-  const requested = typeof query.group === "string" ? query.group : "";
-  const group = groups.includes(requested) ? requested : "";
+  const picked = pickGroup(scope, await classGroups(db), query.group);
+  const groups = picked.groups;
+  // One chosen group, or "" for all the groups this person may see.
+  const group = groupLabel(picked.group);
   const now = new Date().getTime();
   const [{ rows, classCompletion, assignments }, juniors, kids] =
     await Promise.all([
-      loadClass(db, group, now),
+      loadClass(db, picked.group, now),
       db.juniorMember.findMany({
-        where: { active: true, ...(group ? { group } : {}) },
+        where: { active: true, ...groupCondition(picked.group) },
         select: { xp: true, lastActiveAt: true },
       }),
       db.kidsMember.findMany({
-        where: { active: true, ...(group ? { group } : {}) },
+        where: { active: true, ...groupCondition(picked.group) },
         select: { xp: true, lastActiveAt: true },
       }),
     ]);

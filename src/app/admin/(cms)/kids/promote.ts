@@ -1,7 +1,7 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { requireAdmin } from "@/lib/auth";
+import { requireMember } from "@/lib/staff-guard";
 import { audit } from "@/lib/audit";
 import { getDb } from "@/lib/db";
 import { hashSecret, newJuniorCode } from "@/lib/junior/codes";
@@ -23,7 +23,7 @@ export async function promoteKidAction(
   _state: PromoteKidState,
   form: FormData,
 ): Promise<PromoteKidState> {
-  const session = await requireAdmin(`/admin/kids/${id}`);
+  const session = await requireMember("kids", id, `/admin/kids/${id}`);
   const group = groupName.safeParse(form.get("group") ?? "");
   if (!group.success)
     return {

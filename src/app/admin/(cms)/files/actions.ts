@@ -1,7 +1,7 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { audit } from "@/lib/audit";
-import { requireAdmin } from "@/lib/auth";
+import { requireOwner } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { lockFileChanges } from "@/lib/stored-files";
 import { limit } from "@/lib/rate-limit-db";
@@ -11,7 +11,7 @@ export async function deleteStoredFileAction(
   _state: { error: string } | undefined,
 ): Promise<{ error: string } | undefined> {
   void _state;
-  const session = await requireAdmin("/admin/files");
+  const session = await requireOwner("/admin/files");
   if (!(await limit(`admin-write:${session.user.id}`, 60, 60_000)))
     return { error: "Too many changes. Try again shortly." };
   const db = getDb();

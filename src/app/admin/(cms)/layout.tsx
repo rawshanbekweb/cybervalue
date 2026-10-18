@@ -1,6 +1,6 @@
 import { getAdminTranslator } from "@/lib/i18n/server";
 import Link from "next/link";
-import { requireAdmin } from "@/lib/auth";
+import { requireAdmin, scopeOf } from "@/lib/auth";
 import { collections } from "@/lib/site";
 import { getDb } from "@/lib/db";
 import { adminBadges } from "@/lib/admin/overview";
@@ -12,9 +12,10 @@ export default async function AdminCmsLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   const t = await getAdminTranslator();
   const session = await requireAdmin();
+  const scope = scopeOf(session);
   const db = getDb();
   const badges = db
-    ? await adminBadges(db).catch(() => ({ reviews: 0, errors: 0 }))
+    ? await adminBadges(db, scope).catch(() => ({ reviews: 0, errors: 0 }))
     : { reviews: 0, errors: 0 };
   const groups: AdminNavGroup[] = [
     {
@@ -30,6 +31,7 @@ export default async function AdminCmsLayout({
         { href: "/admin/assignments", label: t("Assignments") },
         { href: "/admin/live", label: t("Live quiz") },
         { href: "/admin/telegram", label: "Telegram" },
+        { href: "/admin/groups", label: t("Groups") },
         { href: "/admin/users", label: t("All users") },
         { href: "/admin/students", label: t("Students") },
         { href: "/admin/kids", label: "Academy Kids" },
@@ -60,11 +62,35 @@ export default async function AdminCmsLayout({
         { href: "/admin/status", label: t("System status") },
         { href: "/admin/errors", label: t("Errors"), badge: badges.errors },
         { href: "/admin/cleanup", label: t("Clean-up") },
+        { href: "/admin/team", label: t("Team") },
         { href: "/admin/audit", label: t("Audit log") },
         { href: "/admin/account", label: t("Account settings") },
       ],
     },
   ];
+  // Teachers see their own work; the rest belongs to the owner.
+  const TEACHER = new Set([
+    "/admin",
+    "/admin/class",
+    "/admin/assignments",
+    "/admin/live",
+    "/admin/students",
+    "/admin/junior",
+    "/admin/kids",
+    "/admin/groups",
+    "/admin/materials",
+    "/admin/results",
+    "/admin/assessments",
+    "/admin/account",
+  ]);
+  const nav = scope.owner
+    ? groups
+    : groups
+        .map((g) => ({
+          ...g,
+          items: g.items.filter((i) => TEACHER.has(i.href)),
+        }))
+        .filter((g) => g.items.length);
   return (
     <div className="admin-shell container">
       <aside className="admin-sidebar">
@@ -90,9 +116,12 @@ export default async function AdminCmsLayout({
             maxLength={80}
           />
         </form>
-        <AdminNav groups={groups} />
+        <AdminNav groups={nav} />
         <div className="admin-sidebar-footer">
-          <span className="muted">{session.user.email}</span>
+          <span className="muted">
+            {session.user.email}
+            {!scope.owner && ` · ${t("Teacher")}`}
+          </span>
           <form action={logoutAction}>
             <button type="submit" className="button button-secondary">
               {t("Log out")}

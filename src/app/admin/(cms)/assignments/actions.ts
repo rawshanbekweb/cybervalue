@@ -1,7 +1,7 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { audit } from "@/lib/audit";
-import { requireAdmin } from "@/lib/auth";
+import { canSeeGroup, requireStaff } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { limit } from "@/lib/rate-limit-db";
 import { assignmentSchema } from "@/lib/student/assignments";
@@ -20,7 +20,7 @@ export async function createAssignmentAction(
   _state: AssignmentState,
   form: FormData,
 ): Promise<AssignmentState> {
-  const session = await requireAdmin("/admin/assignments");
+  const { session, scope } = await requireStaff("/admin/assignments");
   if (!(await limit(`admin-write:${session.user.id}`, 60, 60_000)))
     return { error: "Too many changes. Try again shortly." };
   const parsed = assignmentSchema.safeParse({
@@ -43,6 +43,9 @@ export async function createAssignmentAction(
               : "A title is required, and each text field has a length limit.",
     };
   }
+  // A teacher sets work for one of their own groups, never for everyone.
+  if (!scope.owner && !canSeeGroup(scope, parsed.data.group))
+    return { error: "Choose one of your groups." };
   const db = getDb();
   if (!db) return { error: "Database is not configured." };
   if (parsed.data.target.startsWith("material:")) {
@@ -61,9 +64,15 @@ export async function createAssignmentAction(
 }
 
 export async function deleteAssignmentAction(id: string) {
-  const session = await requireAdmin("/admin/assignments");
+  const { session, scope } = await requireStaff("/admin/assignments");
   const db = getDb();
   if (!db) return;
+  const assignment = await db.studentAssignment.findUnique({
+    where: { id },
+    select: { group: true },
+  });
+  if (!assignment || !(scope.owner || canSeeGroup(scope, assignment.group)))
+    return;
   const removed = await db.studentAssignment
     .delete({ where: { id } })
     .catch(() => null);

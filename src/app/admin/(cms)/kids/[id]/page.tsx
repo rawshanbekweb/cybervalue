@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
-import { requireAdmin } from "@/lib/auth";
+import { requireMember } from "@/lib/staff-guard";
 import { getDb } from "@/lib/db";
 import { formatDate } from "@/components/ui";
 import { ConfirmButton } from "@/components/admin/confirm-button";
@@ -18,7 +18,7 @@ export default async function AdminKidPage({
   const { id } = await params;
   const t = await getAdminTranslator();
   const locale = await getAdminLocale();
-  await requireAdmin(`/admin/kids/${id}`);
+  await requireMember("kids", id, `/admin/kids/${id}`);
   const member = await getDb()?.kidsMember.findUnique({ where: { id } });
   if (!member) notFound();
   const db = getDb()!;

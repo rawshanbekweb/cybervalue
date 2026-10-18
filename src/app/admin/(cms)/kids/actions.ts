@@ -2,7 +2,12 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { requireAdmin } from "@/lib/auth";
+import { requireStaff } from "@/lib/auth";
+import {
+  mayUseGroup,
+  requireMember,
+  rosterOutsideScope,
+} from "@/lib/staff-guard";
 import { audit } from "@/lib/audit";
 import { getDb } from "@/lib/db";
 import { limit } from "@/lib/rate-limit-db";
@@ -24,7 +29,7 @@ export async function createKidsAction(
   _state: CreateKidsState,
   form: FormData,
 ): Promise<CreateKidsState> {
-  const session = await requireAdmin("/admin/kids");
+  const { session, scope } = await requireStaff("/admin/kids");
   if (!(await limit(`kids-create:${session.user.id}`, 10, 60_000)))
     return { error: "Wait a moment and try again." };
   const raw = form.get("roster");
@@ -32,6 +37,12 @@ export async function createKidsAction(
     return { error: "Check the list and the date." };
   const roster = parseRoster(raw);
   if ("error" in roster) return roster;
+  const outside = rosterOutsideScope(scope, roster.students);
+  if (outside)
+    return {
+      error: "You can only add people to your own groups (not “{group}”).",
+      values: { group: outside },
+    };
   const db = getDb();
   if (!db) return { error: NO_DB };
   const rows = roster.students.map((s) => ({ ...s, code: newJuniorCode() }));
@@ -75,7 +86,7 @@ export async function updateKidAction(
   _state: KidsFormState,
   form: FormData,
 ): Promise<KidsFormState> {
-  const session = await requireAdmin(`/admin/kids/${id}`);
+  const session = await requireMember("kids", id, `/admin/kids/${id}`);
   const parsed = updateSchema.safeParse({
     name: form.get("name"),
     group: form.get("group") ?? "",
@@ -87,6 +98,8 @@ export async function updateKidAction(
       error:
         "Name is required (up to 100 characters); the group allows letters, digits, spaces, dots, dashes and underscores.",
     };
+  if (!(await mayUseGroup(parsed.data.group)))
+    return { error: "You can only move people to your own groups." };
   const db = getDb();
   if (!db) return { error: NO_DB };
   const member = await db.kidsMember.update({
@@ -103,7 +116,7 @@ export async function updateKidAction(
 }
 
 export async function resetKidCodeAction(id: string): Promise<KidsFormState> {
-  const session = await requireAdmin(`/admin/kids/${id}`);
+  const session = await requireMember("kids", id, `/admin/kids/${id}`);
   const db = getDb();
   if (!db) return { error: NO_DB };
   const code = newJuniorCode();
@@ -119,7 +132,7 @@ export async function resetKidCodeAction(id: string): Promise<KidsFormState> {
 }
 
 export async function resetKidProgressAction(id: string) {
-  const session = await requireAdmin(`/admin/kids/${id}`);
+  const session = await requireMember("kids", id, `/admin/kids/${id}`);
   const db = getDb();
   if (!db) return;
   const member = await db.kidsMember.update({
@@ -132,7 +145,7 @@ export async function resetKidProgressAction(id: string) {
 }
 
 export async function deleteKidAction(id: string) {
-  const session = await requireAdmin("/admin/kids");
+  const session = await requireMember("kids", id, "/admin/kids");
   const db = getDb();
   if (!db) return;
   const member = await db.kidsMember

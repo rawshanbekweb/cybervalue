@@ -54,7 +54,7 @@ export async function loginAction(
     parsed.data.password,
     user?.passwordHash ?? DUMMY_HASH,
   );
-  if (!user?.passwordHash || !ok) {
+  if (!user?.passwordHash || !ok || !user.active) {
     await audit("login.failure", user?.id ?? null, parsed.data.email);
     return { error: GENERIC_ERROR };
   }

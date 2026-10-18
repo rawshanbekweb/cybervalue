@@ -1,7 +1,12 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { requireAdmin } from "@/lib/auth";
+import { requireOwner, requireStaff } from "@/lib/auth";
+import {
+  mayUseGroup,
+  requireMember,
+  rosterOutsideScope,
+} from "@/lib/staff-guard";
 import { audit } from "@/lib/audit";
 import { getDb } from "@/lib/db";
 import { limit } from "@/lib/rate-limit-db";
@@ -30,7 +35,7 @@ export async function createStudentsAction(
   _state: CreateStudentsState,
   form: FormData,
 ): Promise<CreateStudentsState> {
-  const session = await requireAdmin("/admin/students");
+  const { session, scope } = await requireStaff("/admin/students");
   if (!(await limit(`student-create:${session.user.id}`, 10, 60_000)))
     return { error: "Wait a moment and try again." };
   const options = rosterOptionsSchema.safeParse({
@@ -40,6 +45,12 @@ export async function createStudentsAction(
   if (!options.success) return { error: "Check the list and the date." };
   const roster = parseRoster(options.data.roster);
   if ("error" in roster) return roster;
+  const outside = rosterOutsideScope(scope, roster.students);
+  if (outside)
+    return {
+      error: "You can only add people to your own groups (not “{group}”).",
+      values: { group: outside },
+    };
   const db = getDb();
   if (!db) return { error: NO_DB };
   const rows = roster.students.map((s) => ({ ...s, code: newAccessCode() }));
@@ -73,7 +84,7 @@ export async function updateStudentAction(
   _state: StudentFormState,
   form: FormData,
 ): Promise<StudentFormState> {
-  const session = await requireAdmin(`/admin/students/${id}`);
+  const session = await requireMember("student", id, `/admin/students/${id}`);
   const parsed = studentUpdateSchema.safeParse({
     name: form.get("name"),
     group: form.get("group") ?? "",
@@ -87,6 +98,8 @@ export async function updateStudentAction(
       error:
         "Name is required (up to 100 characters); the group allows letters, digits, spaces, dots, dashes and underscores.",
     };
+  if (!(await mayUseGroup(parsed.data.group)))
+    return { error: "You can only move people to your own groups." };
   const db = getDb();
   if (!db) return { error: NO_DB };
   const student = await db.student.update({
@@ -106,7 +119,7 @@ export async function updateStudentAction(
 export async function resetStudentCodeAction(
   id: string,
 ): Promise<StudentFormState> {
-  const session = await requireAdmin(`/admin/students/${id}`);
+  const session = await requireMember("student", id, `/admin/students/${id}`);
   const db = getDb();
   if (!db) return { error: NO_DB };
   const code = newAccessCode();
@@ -122,13 +135,13 @@ export async function resetStudentCodeAction(
 }
 
 export async function signOutStudentAction(id: string) {
-  await requireAdmin(`/admin/students/${id}`);
+  await requireMember("student", id, `/admin/students/${id}`);
   await getDb()?.studentSession.deleteMany({ where: { studentId: id } });
   revalidatePath(`/admin/students/${id}`);
 }
 
 export async function deleteStudentAction(id: string) {
-  const session = await requireAdmin("/admin/students");
+  const session = await requireMember("student", id, "/admin/students");
   const db = getDb();
   if (!db) return;
   const student = await db.student.delete({ where: { id } }).catch(() => null);
@@ -140,7 +153,7 @@ export async function deleteStudentAction(id: string) {
 // Issues a certificate with the student's current name. The title and level
 // are copied, so later edits to the student do not change what was issued.
 export async function issueCertificateAction(id: string, form: FormData) {
-  const session = await requireAdmin(`/admin/students/${id}`);
+  const session = await requireMember("student", id, `/admin/students/${id}`);
   const title = String(form.get("title") ?? "").trim();
   const level = String(form.get("level") ?? "");
   if (!title || title.length > 160) return;
@@ -174,9 +187,15 @@ export async function setCertificateRevokedAction(
   certificateId: string,
   revoked: boolean,
 ) {
-  const session = await requireAdmin("/admin/students");
   const db = getDb();
   if (!db) return;
+  const owner = await db.studentCertificate.findUnique({
+    where: { id: certificateId },
+    select: { studentId: true },
+  });
+  const session = owner?.studentId
+    ? await requireMember("student", owner.studentId, "/admin/students")
+    : await requireOwner("/admin/students");
   const certificate = await db.studentCertificate.update({
     where: { id: certificateId },
     data: { revokedAt: revoked ? new Date() : null },

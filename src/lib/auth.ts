@@ -2,7 +2,7 @@ import "server-only";
 import { cache } from "react";
 import { randomBytes, createHash } from "node:crypto";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getDb } from "./db";
 
 export { hashPassword, verifyPassword } from "./password";
@@ -44,6 +44,8 @@ export const getSession = cache(async () => {
     where: { tokenHash: hashToken(token), expiresAt: { gt: new Date() } },
     include: { user: true },
   });
+  // A switched-off staff account loses access on its next request.
+  if (!session?.user.active) return null;
   return session;
 });
 
@@ -68,4 +70,37 @@ export async function destroySession() {
   if (db && token)
     await db.session.deleteMany({ where: { tokenHash: hashToken(token) } });
   cookieStore.delete(SESSION_COOKIE);
+}
+
+export type StaffSession = NonNullable<Awaited<ReturnType<typeof getSession>>>;
+
+/** Who may see what: owners see everything, teachers only their groups. */
+export type Scope = { owner: boolean; groups: string[] };
+
+export function scopeOf(session: StaffSession): Scope {
+  return session.user.role === "teacher"
+    ? { owner: false, groups: session.user.groups }
+    : { owner: true, groups: [] };
+}
+
+/** A Prisma `where` part limiting rows with a `group` field to the scope. */
+export function groupWhere(scope: Scope) {
+  return scope.owner ? {} : { group: { in: scope.groups } };
+}
+
+export function canSeeGroup(scope: Scope, group: string) {
+  return scope.owner || scope.groups.includes(group);
+}
+
+/** For pages and actions only owners may use; teachers get a 404. */
+export async function requireOwner(nextPath?: string) {
+  const session = await requireAdmin(nextPath);
+  if (!scopeOf(session).owner) notFound();
+  return session;
+}
+
+/** requireAdmin plus the session's scope, for pages that list people. */
+export async function requireStaff(nextPath?: string) {
+  const session = await requireAdmin(nextPath);
+  return { session, scope: scopeOf(session) };
 }

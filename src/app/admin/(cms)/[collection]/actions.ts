@@ -2,7 +2,7 @@
 import { revalidatePath } from "next/cache";
 import { audit } from "@/lib/audit";
 import { redirect } from "next/navigation";
-import { requireAdmin } from "@/lib/auth";
+import { requireOwner } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { contentSchema } from "@/lib/validation";
 import { formDataToContentInput } from "@/lib/admin-form";
@@ -54,7 +54,7 @@ export async function saveContentAction(
   _state: FormState,
   formData: FormData,
 ): Promise<FormState> {
-  const session = await requireAdmin(`/admin/${collection}`);
+  const session = await requireOwner(`/admin/${collection}`);
   if (!isCollection(collection)) return { error: "Unknown collection." };
   if (!(await limit(`admin-write:${session.user.id}`, 60, 60_000)))
     return { error: "Too many changes. Slow down and try again shortly." };
@@ -98,7 +98,7 @@ export async function changeContentAction(
   _state: FormState,
   formData: FormData,
 ): Promise<FormState> {
-  const session = await requireAdmin(`/admin/${collection}`);
+  const session = await requireOwner(`/admin/${collection}`);
   if (!isCollection(collection)) return { error: "Unknown collection." };
   if (!(await limit(`admin-write:${session.user.id}`, 60, 60_000)))
     return { error: "Too many changes. Try again shortly." };

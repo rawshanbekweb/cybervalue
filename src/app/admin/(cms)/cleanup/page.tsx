@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { getAdminTranslator } from "@/lib/i18n/server";
-import { requireAdmin } from "@/lib/auth";
+import { requireOwner } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { CLEANUPS, cleanupPreview } from "@/lib/admin/cleanup";
 import { CleanupButton } from "@/components/admin/cleanup-button";
 
 export default async function AdminCleanupPage() {
   const t = await getAdminTranslator();
-  await requireAdmin("/admin/cleanup");
+  await requireOwner("/admin/cleanup");
   const db = getDb();
   const preview = db ? await cleanupPreview(db) : null;
   return (

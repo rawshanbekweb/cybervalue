@@ -2,7 +2,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { audit } from "@/lib/audit";
-import { requireAdmin } from "@/lib/auth";
+import { requireOwner } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { limit } from "@/lib/rate-limit-db";
 
@@ -22,7 +22,7 @@ export async function bulkUsersAction(
   _state: BulkState,
   form: FormData,
 ): Promise<BulkState> {
-  const session = await requireAdmin("/admin/users");
+  const session = await requireOwner("/admin/users");
   if (!(await limit(`admin-write:${session.user.id}`, 60, 60_000)))
     return { error: "Too many changes. Try again shortly." };
   const db = getDb();

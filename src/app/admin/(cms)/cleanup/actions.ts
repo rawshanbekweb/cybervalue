@@ -1,7 +1,7 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { audit } from "@/lib/audit";
-import { requireAdmin } from "@/lib/auth";
+import { requireOwner } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { limit } from "@/lib/rate-limit-db";
 import { isCleanupId, runCleanup } from "@/lib/admin/cleanup";
@@ -11,7 +11,7 @@ export type CleanupState =
   | undefined;
 
 export async function cleanupAction(id: string): Promise<CleanupState> {
-  const session = await requireAdmin("/admin/cleanup");
+  const session = await requireOwner("/admin/cleanup");
   if (!isCleanupId(id)) return { error: "Unknown clean-up." };
   if (!(await limit(`admin-write:${session.user.id}`, 60, 60_000)))
     return { error: "Too many changes. Try again shortly." };

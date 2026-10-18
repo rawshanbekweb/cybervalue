@@ -1,4 +1,5 @@
 import "server-only";
+import { groupCondition, pickGroup, type GroupPick } from "../staff";
 import type { PrismaClient } from "@/generated/prisma/client";
 import { buildResults } from "./results";
 
@@ -12,18 +13,21 @@ export async function studentGroups(db: PrismaClient) {
 }
 
 // An unknown or empty `group` means every student.
-export async function resolveGroup(db: PrismaClient, requested: unknown) {
-  const groups = await studentGroups(db);
-  const value = typeof requested === "string" ? requested : "";
-  return { groups, group: groups.includes(value) ? value : "" };
+export async function resolveGroup(
+  db: PrismaClient,
+  requested: unknown,
+  scope: { owner: boolean; groups: string[] } = { owner: true, groups: [] },
+) {
+  const picked = pickGroup(scope, await studentGroups(db), requested);
+  return { groups: picked.groups, group: picked.group };
 }
 
 // `group` "" means every student. Only published materials are columns, and
 // only those a selected group can see.
-export async function loadResults(db: PrismaClient, group: string) {
+export async function loadResults(db: PrismaClient, group: GroupPick) {
   const [students, allMaterials] = await Promise.all([
     db.student.findMany({
-      where: group ? { group } : {},
+      where: groupCondition(group),
       orderBy: [{ group: "asc" }, { name: "asc" }],
       select: {
         id: true,
@@ -47,8 +51,11 @@ export async function loadResults(db: PrismaClient, group: string) {
       },
     }),
   ]);
-  const materials = group
-    ? allMaterials.filter((m) => !m.groups.length || m.groups.includes(group))
+  const picked = Array.isArray(group) ? group : group ? [group] : [];
+  const materials = picked.length
+    ? allMaterials.filter(
+        (m) => !m.groups.length || m.groups.some((g) => picked.includes(g)),
+      )
     : allMaterials;
   const studentIds = students.map((s) => s.id);
   const materialIds = materials.map((m) => m.id);

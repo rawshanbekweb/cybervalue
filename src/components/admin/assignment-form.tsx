@@ -10,10 +10,13 @@ export type TargetGroup = {
 
 export function AssignmentForm({
   groups,
+  everyone = true,
   targets,
   defaultDue,
 }: {
   groups: string[];
+  /** Owners may set work for every student; teachers only for a group. */
+  everyone?: boolean;
   targets: TargetGroup[];
   defaultDue: string;
 }) {
@@ -46,7 +49,7 @@ export function AssignmentForm({
         <div className="admin-field">
           <label htmlFor="assignment-group">{t("Group")}</label>
           <select id="assignment-group" name="group" className="admin-input">
-            <option value="">{t("Every student")}</option>
+            {everyone && <option value="">{t("Every student")}</option>}
             {groups.map((g) => (
               <option key={g} value={g}>
                 {g}

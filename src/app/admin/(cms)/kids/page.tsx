@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
-import { requireAdmin } from "@/lib/auth";
+import { groupWhere, requireStaff } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { formatDate } from "@/components/ui";
 import { CreateKidsForm } from "@/components/admin/kids-forms";
@@ -14,14 +14,14 @@ export default async function AdminKidsPage({
 }: PageProps<"/admin/kids">) {
   const t = await getAdminTranslator();
   const locale = await getAdminLocale();
-  await requireAdmin("/admin/kids");
+  const { scope } = await requireStaff("/admin/kids");
   const { group: groupParam } = await searchParams;
   const group = typeof groupParam === "string" ? groupParam : "";
   const db = getDb();
   const [members, groups] = db
     ? await Promise.all([
         db.kidsMember.findMany({
-          where: group ? { group } : {},
+          where: { ...groupWhere(scope), ...(group ? { group } : {}) },
           orderBy: [{ xp: "desc" }, { name: "asc" }],
           take: 1000,
           select: {
@@ -35,7 +35,7 @@ export default async function AdminKidsPage({
           },
         }),
         db.kidsMember.findMany({
-          where: { group: { not: "" } },
+          where: { group: { not: "" }, ...groupWhere(scope) },
           distinct: ["group"],
           orderBy: { group: "asc" },
           select: { group: true },

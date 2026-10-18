@@ -1,7 +1,7 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { requireAdmin } from "@/lib/auth";
+import { requireMember } from "@/lib/staff-guard";
 import { audit } from "@/lib/audit";
 import { getDb } from "@/lib/db";
 import { juniorRow } from "@/lib/junior/admin";
@@ -26,7 +26,7 @@ export async function promoteJuniorAction(
   _state: PromoteState,
   form: FormData,
 ): Promise<PromoteState> {
-  const session = await requireAdmin(`/admin/junior/${id}`);
+  const session = await requireMember("junior", id, `/admin/junior/${id}`);
   const group = groupName.safeParse(form.get("group") ?? "");
   if (!group.success)
     return {

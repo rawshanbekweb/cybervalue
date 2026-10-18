@@ -4,7 +4,7 @@ import { getDb } from "@/lib/db";
 import { collections, isCollection } from "@/lib/site";
 import { getAdminEntryBySlug } from "@/lib/content-write";
 import { ContentForm } from "@/components/admin/content-form";
-import { requireAdmin } from "@/lib/auth";
+import { requireOwner } from "@/lib/auth";
 import { availableResourceFiles, storedFileSelect } from "@/lib/stored-files";
 
 export default async function EditContentPage({
@@ -15,7 +15,7 @@ export default async function EditContentPage({
   const t = await getAdminTranslator();
   const { collection, slug } = await params;
   if (!isCollection(collection)) notFound();
-  await requireAdmin(`/admin/${collection}/${slug}`);
+  await requireOwner(`/admin/${collection}/${slug}`);
   const config = collections[collection];
   const db = getDb();
   const entry = db ? await getAdminEntryBySlug(db, config.kind, slug) : null;

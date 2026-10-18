@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
 import { loadStandings } from "@/lib/student/standing";
 import { CHECKPOINT_META } from "@/lib/checkpoints/meta";
-import { requireAdmin } from "@/lib/auth";
+import { requireMember } from "@/lib/staff-guard";
 import { getDb } from "@/lib/db";
 import { ConfirmButton } from "@/components/admin/confirm-button";
 import { SubmissionList } from "@/components/admin/submission-list";
@@ -37,7 +37,7 @@ export default async function AdminStudentPage({
 }: PageProps<"/admin/students/[id]">) {
   const { id } = await params;
   const t = await getAdminTranslator();
-  await requireAdmin(`/admin/students/${id}`);
+  await requireMember("student", id, `/admin/students/${id}`);
   const db = getDb();
   if (!db) notFound();
   const student = await db.student.findUnique({

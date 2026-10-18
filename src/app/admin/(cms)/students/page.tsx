@@ -1,18 +1,23 @@
 import Link from "next/link";
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
-import { requireAdmin } from "@/lib/auth";
+import { groupWhere, requireStaff } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { formatDate } from "@/components/ui";
 import { CreateStudentsForm } from "@/components/admin/student-forms";
 
-export default async function AdminStudentsPage() {
+export default async function AdminStudentsPage({
+  searchParams,
+}: PageProps<"/admin/students">) {
   const t = await getAdminTranslator();
   const locale = await getAdminLocale();
-  await requireAdmin("/admin/students");
+  const { scope } = await requireStaff("/admin/students");
+  const { group: groupParam } = await searchParams;
+  const group = typeof groupParam === "string" ? groupParam : "";
   const db = getDb();
   const [students, materials] = db
     ? await Promise.all([
         db.student.findMany({
+          where: { ...groupWhere(scope), ...(group ? { group } : {}) },
           orderBy: [{ group: "asc" }, { name: "asc" }],
           take: 1000,
           omit: { portrait: true },
@@ -46,7 +51,16 @@ export default async function AdminStudentsPage() {
         </p>
       )}
       <CreateStudentsForm />
-      <h2>{t("All students")}</h2>
+      {group ? (
+        <h2>
+          {t("Group {group}", { group })}{" "}
+          <Link href="/admin/students" className="admin-help">
+            {t("Show all")}
+          </Link>
+        </h2>
+      ) : (
+        <h2>{t("All students")}</h2>
+      )}
       {students.length === 0 ? (
         <p className="muted">{t("No students yet.")}</p>
       ) : (

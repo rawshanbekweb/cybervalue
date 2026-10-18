@@ -1,7 +1,8 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { audit } from "@/lib/audit";
-import { requireAdmin } from "@/lib/auth";
+import { requireAdmin, requireOwner } from "@/lib/auth";
+import { requireMember } from "@/lib/staff-guard";
 import { getDb } from "@/lib/db";
 import { site } from "@/lib/site";
 import { newReportToken } from "@/lib/reports";
@@ -32,7 +33,7 @@ export async function setReportLinkAction(
       : kind === "kids"
         ? `/admin/kids/${id}`
         : `/admin/junior/${id}`;
-  const session = await requireAdmin(page);
+  const session = await requireMember(kind, id, page);
   const db = getDb();
   if (!db) return;
   const data = { reportToken: on ? newReportToken() : null };
@@ -54,7 +55,7 @@ export async function setReportLinkAction(
 }
 
 export async function connectWebhookAction(): Promise<TelegramState> {
-  const session = await requireAdmin("/admin/telegram");
+  const session = await requireOwner("/admin/telegram");
   if (!telegramConfig()) return { error: "The bot is not configured yet." };
   const secret = webhookSecret();
   if (!secret) return { error: "Set AUTH_SECRET or DATABASE_URL first." };
@@ -96,7 +97,7 @@ export async function testTeacherMessageAction(): Promise<TelegramState> {
 }
 
 export async function unlinkChatAction(id: string) {
-  const session = await requireAdmin("/admin/telegram");
+  const session = await requireOwner("/admin/telegram");
   const removed = await getDb()
     ?.telegramChat.delete({ where: { id } })
     .catch(() => null);
@@ -112,7 +113,7 @@ export async function broadcastAction(
   _state: TelegramState,
   form: FormData,
 ): Promise<TelegramState> {
-  const session = await requireAdmin("/admin/telegram");
+  const session = await requireOwner("/admin/telegram");
   const db = getDb();
   if (!db || !telegramConfig())
     return { error: "The bot is not configured yet." };

@@ -2,7 +2,7 @@ import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getDb } from "@/lib/db";
-import { requireAdmin } from "@/lib/auth";
+import { requireOwner } from "@/lib/auth";
 import { collections, isCollection } from "@/lib/site";
 import { getAdminEntries } from "@/lib/content-write";
 import {
@@ -25,7 +25,7 @@ export default async function AdminCollectionPage({
   const locale = await getAdminLocale();
   const { collection } = await params;
   if (!isCollection(collection)) notFound();
-  await requireAdmin(`/admin/${collection}`);
+  await requireOwner(`/admin/${collection}`);
   const config = collections[collection];
   const query = parseAdminQuery(await searchParams);
   const db = getDb();

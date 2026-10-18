@@ -1,5 +1,5 @@
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
-import { requireAdmin } from "@/lib/auth";
+import { requireOwner } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { formatDate } from "@/components/ui";
 import { ConfirmButton } from "@/components/admin/confirm-button";
@@ -24,7 +24,7 @@ const ROLE: Record<string, string> = {
 export default async function AdminTelegramPage() {
   const t = await getAdminTranslator();
   const locale = await getAdminLocale();
-  const session = await requireAdmin("/admin/telegram");
+  const session = await requireOwner("/admin/telegram");
   const db = getDb();
   const config = telegramConfig();
   const secret = linkSecret();

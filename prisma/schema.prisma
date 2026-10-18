@@ -80,6 +80,11 @@ model User {
   totpPendingSecret String?
   totpLastStep      Int?
   recoveryCodes     String[]         @default([])
+  // "owner" runs everything; "teacher" sees only the groups listed below.
+  role              String           @default("owner")
+  groups            String[]         @default([])
+  // A switched-off account cannot sign in.
+  active            Boolean          @default(true)
   content           Content[]
   sessions          Session[]
   loginChallenges   LoginChallenge[]
