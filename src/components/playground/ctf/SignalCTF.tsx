@@ -285,8 +285,7 @@ export function SignalCTF() {
             </div>
             <p>
               {t("Istalgan ochiq tugundan boshlang.")}
-              <br />{" "}
-              {t("To‘rtta kalit yakuniy seyfni ochadi.")}
+              <br /> {t("To‘rtta kalit yakuniy seyfni ochadi.")}
             </p>
           </div>
           <nav className="ctf-nodes" aria-label={t("CTF topshiriqlari")}>

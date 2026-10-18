@@ -31,3 +31,9 @@
     grid-template-columns: 1fr auto;
   }
 }
+
+/* About card: the principle list's last row already has bottom padding, so
+   the "Around the web" divider follows it at the list's own rhythm. */
+.about-card ul + .about-connect {
+  margin-top: 12px;
+}

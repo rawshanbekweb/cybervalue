@@ -98,7 +98,7 @@ export function LinuxLab() {
         <div className="lx-course-card">
           <div>
             <Terminal size={22} />
-            <strong>{t("LINUX / LAB")}</strong>
+            <strong>LINUX / LAB</strong>
             <span className="lx-live">{t("In your browser")}</span>
           </div>
           <p>

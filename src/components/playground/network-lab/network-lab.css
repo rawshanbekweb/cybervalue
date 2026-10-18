@@ -1520,7 +1520,7 @@
   font-size: 13px;
 }
 .nl-frames button:disabled {
-  opacity: 0.45;
+  opacity: 0.65;
   cursor: default;
 }
 .nl-frames-empty {
