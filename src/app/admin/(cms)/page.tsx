@@ -241,7 +241,7 @@ export default async function AdminDashboardPage() {
               <tr>
                 <th>{t("Title")}</th>
                 <th>{t("Kind")}</th>
-                <th>Status</th>
+                <th>{t("Status")}</th>
                 <th>{t("Updated")}</th>
               </tr>
             </thead>

@@ -2016,7 +2016,7 @@ svg {
 }
 .admin-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
   gap: 14px;
 }
 .admin-card {
@@ -3514,4 +3514,219 @@ h2 {
 }
 .admin-content .admin-page-header .muted {
   max-width: 70ch;
+}
+
+/* Admin polish: form controls, tables and buttons behave the same everywhere */
+.admin-textarea {
+  color: var(--text);
+  background: #0a0a0c;
+  border: 1px solid #3c3b41;
+  border-radius: 4px;
+  padding: 10px 12px;
+  font-family: inherit;
+  font-size: 13px;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+.admin-input:focus,
+.admin-textarea:focus {
+  border-color: var(--accent-text);
+  outline: none;
+  box-shadow: 0 0 0 3px #8052ff26;
+}
+input.admin-input,
+select.admin-input {
+  min-height: 42px;
+}
+.admin-filters .button,
+.admin-field-row > .button,
+.admin-bulk .button {
+  min-height: 42px;
+}
+.admin-field-checkbox {
+  display: flex;
+}
+.admin-content input[type="checkbox"],
+.admin-content input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: var(--accent);
+}
+.admin-form p.muted,
+.admin-form .admin-help {
+  font-size: 12px;
+  line-height: 1.5;
+}
+.admin-cards .admin-card .eyebrow {
+  min-height: 2.6em;
+  align-items: flex-start;
+  line-height: 1.3;
+}
+.admin-table th {
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+.admin-checks li {
+  grid-template-columns: 92px 180px minmax(0, 1fr);
+}
+.admin-checks li .admin-chip {
+  justify-self: start;
+}
+.button-danger,
+.admin-content .button.button-danger {
+  border-color: #ff6b4a55;
+  background: transparent;
+  color: #ff9b8a;
+}
+.button-danger:hover,
+.admin-content .button.button-danger:hover {
+  border-color: #ff6b4a;
+  background: #ff6b4a14;
+}
+.admin-danger-zone {
+  margin-top: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.admin-link-button {
+  align-self: flex-start;
+}
+/* Long sidebar: fade the cut edge so it reads as scrollable. */
+.admin-sidebar {
+  scrollbar-width: thin;
+}
+.admin-settings-save {
+  max-width: 720px;
+  justify-content: flex-start;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  margin-top: 8px;
+}
+.admin-split {
+  align-items: stretch;
+}
+@media (max-width: 860px) {
+  .admin-table th,
+  .admin-table td {
+    white-space: nowrap;
+  }
+  /* Scroll shadows: a dark edge shows there is more to the side. */
+  .admin-table {
+    background:
+      linear-gradient(to right, var(--bg) 30%, transparent) left / 32px 100%
+        no-repeat local,
+      linear-gradient(to left, var(--bg) 30%, transparent) right / 32px 100%
+        no-repeat local,
+      radial-gradient(farthest-side at 0 50%, #ffffff26, transparent) left /
+        12px 100% no-repeat scroll,
+      radial-gradient(farthest-side at 100% 50%, #ffffff26, transparent) right /
+        12px 100% no-repeat scroll;
+  }
+  .admin-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.admin-upload {
+  position: relative;
+}
+.admin-upload-button {
+  align-self: flex-start;
+  cursor: pointer;
+}
+.admin-upload:has(input:focus-visible) .admin-upload-button {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 2px;
+}
+.admin-upload:has(input:disabled) .admin-upload-button {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.admin-nowrap {
+  white-space: nowrap;
+}
+.admin-attention-rest {
+  display: grid;
+  gap: 6px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.admin-attention-rest li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  padding: 10px 12px;
+  border: 1px solid #ffb82944;
+  border-radius: 6px;
+  background: #ffb8290a;
+}
+.admin-more > summary,
+.admin-details > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  cursor: pointer;
+  color: var(--accent-text);
+  font-size: 13px;
+  font-weight: 600;
+}
+.admin-more > summary::-webkit-details-marker,
+.admin-details > summary::-webkit-details-marker {
+  display: none;
+}
+.admin-more > summary::before,
+.admin-details > summary::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 0.15s;
+}
+.admin-more[open] > summary::before,
+.admin-details[open] > summary::before {
+  transform: rotate(45deg);
+}
+.admin-details > summary {
+  color: var(--text);
+  font-size: 15px;
+}
+.admin-file-card .admin-image-preview {
+  width: 100%;
+  height: 150px;
+  border: 1px solid var(--border);
+}
+.admin-file-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+  margin-top: auto;
+}
+.admin-file-actions .button,
+.admin-file-actions form,
+.admin-file-actions form .button {
+  width: 100%;
+  min-height: 38px;
+  padding: 8px 10px;
+  font-size: 11px;
+}
+.admin-account .admin-form {
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius, 6px);
+  background: #0d0d0f;
+}
+.admin-account .admin-form h2 {
+  margin-bottom: 2px;
+}
+.admin-form .admin-help + .button,
+.admin-form .admin-help + form,
+.admin-form p + .button {
+  margin-top: 6px;
 }

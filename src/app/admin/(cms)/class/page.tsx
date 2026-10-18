@@ -10,6 +10,8 @@ import { dayIndex, heroes } from "@/lib/student/xp";
 import { formatDue, targetName } from "@/lib/student/assignments";
 
 const DAY = 86_400_000;
+// The rest of a long attention list folds away under "Show more".
+const ATTENTION_SHOWN = 8;
 
 export default async function AdminClassPage({
   searchParams,
@@ -83,6 +85,15 @@ export default async function AdminClassPage({
   ).length;
   const exportHref = `/admin/class/export${group ? `?group=${encodeURIComponent(group)}` : ""}`;
 
+  const attentionItem = (row: (typeof flagged)[number]) => (
+    <li key={row.id}>
+      <Link href={`/admin/students/${row.id}`}>{row.name}</Link>
+      <span className="muted">
+        {row.group && `${row.group} · `}
+        {row.reasons.map((r) => t(REASON_TEXT[r])).join(" · ")}
+      </span>
+    </li>
+  );
   return (
     <div className="admin-page">
       <div className="admin-page-header">
@@ -217,17 +228,23 @@ export default async function AdminClassPage({
       {flagged.length === 0 ? (
         <p className="muted">{t("Everyone is on track.")}</p>
       ) : (
-        <ul className="admin-attention">
-          {flagged.map((row) => (
-            <li key={row.id}>
-              <Link href={`/admin/students/${row.id}`}>{row.name}</Link>
-              <span className="muted">
-                {row.group && `${row.group} · `}
-                {row.reasons.map((r) => t(REASON_TEXT[r])).join(" · ")}
-              </span>
-            </li>
-          ))}
-        </ul>
+        <>
+          <ul className="admin-attention">
+            {flagged.slice(0, ATTENTION_SHOWN).map(attentionItem)}
+          </ul>
+          {flagged.length > ATTENTION_SHOWN && (
+            <details className="admin-more">
+              <summary>
+                {t("Show {count} more", {
+                  count: flagged.length - ATTENTION_SHOWN,
+                })}
+              </summary>
+              <ul className="admin-attention-rest">
+                {flagged.slice(ATTENTION_SHOWN).map(attentionItem)}
+              </ul>
+            </details>
+          )}
+        </>
       )}
 
       <div className="admin-section-head">
@@ -372,7 +389,9 @@ export default async function AdminClassPage({
                       )}
                     </td>
                     <td>
-                      {s.lastActive ? formatDate(s.lastActive) : t("Never")}
+                      {s.lastActive
+                        ? formatDate(s.lastActive, locale)
+                        : t("Never")}
                     </td>
                   </tr>
                 ))}

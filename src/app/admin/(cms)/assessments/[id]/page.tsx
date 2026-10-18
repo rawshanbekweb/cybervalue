@@ -83,7 +83,7 @@ export default async function ExamPage({
               <th>{t("Avtomatik /90")}</th>
               <th>{t("Izoh /10")}</th>
               <th>{t("Jami /100")}</th>
-              <th>Tab / Paste</th>
+              <th>{t("Tab / Paste")}</th>
             </tr>
           </thead>
           <tbody>

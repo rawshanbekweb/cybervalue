@@ -76,7 +76,7 @@ export default async function AdminJuniorMemberPage({
                 sessions: member._count.sessions,
               }),
               member.lastLoginAt
-                ? `${t("Last sign-in")}: ${formatDate(member.lastLoginAt)}`
+                ? `${t("Last sign-in")}: ${formatDate(member.lastLoginAt, locale)}`
                 : t("Never signed in"),
             ]
               .filter(Boolean)
@@ -217,7 +217,7 @@ export default async function AdminJuniorMemberPage({
         <form action={deleteJuniorAction.bind(null, member.id)}>
           <ConfirmButton
             type="submit"
-            className="button button-secondary"
+            className="button button-danger"
             message={t(
               "Delete this member with all progress? This cannot be undone.",
             )}

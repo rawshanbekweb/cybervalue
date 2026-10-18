@@ -1,4 +1,4 @@
-import { getAdminTranslator } from "@/lib/i18n/server";
+import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
 import { requireAdmin } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { formatDate } from "@/components/ui";
@@ -12,6 +12,7 @@ export default async function AdminUsersPage({
   searchParams,
 }: PageProps<"/admin/users">) {
   const t = await getAdminTranslator();
+  const locale = await getAdminLocale();
   await requireAdmin("/admin/users");
   const db = getDb();
   const query = await searchParams;
@@ -104,7 +105,7 @@ export default async function AdminUsersPage({
       ]
         .filter(Boolean)
         .join(" · "),
-      lastActive: s.lastLoginAt ? formatDate(s.lastLoginAt) : null,
+      lastActive: s.lastLoginAt ? formatDate(s.lastLoginAt, locale) : null,
     })),
     ...juniors.map((j) => {
       const last = j.lastActiveAt ?? j.lastLoginAt;
@@ -116,7 +117,7 @@ export default async function AdminUsersPage({
         group: j.group,
         status: statusOf(j),
         detail: `${j.xp} XP`,
-        lastActive: last ? formatDate(last) : null,
+        lastActive: last ? formatDate(last, locale) : null,
       };
     }),
   ].sort((a, b) => a.name.localeCompare(b.name));
@@ -175,7 +176,7 @@ export default async function AdminUsersPage({
           </select>
         </div>
         <div className="admin-field">
-          <label htmlFor="users-status">Status</label>
+          <label htmlFor="users-status">{t("Status")}</label>
           <select
             id="users-status"
             name="status"

@@ -32,9 +32,7 @@ export default async function EditContentPage({
 
   return (
     <div className="admin-page">
-      <h1>
-        {t("Edit")} {config.singular.toLowerCase()}
-      </h1>
+      <h1>{t("Edit {kind}", { kind: t(config.singular).toLowerCase() })}</h1>
       <ContentForm
         collection={collection}
         kind={config.kind}

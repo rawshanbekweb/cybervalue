@@ -205,7 +205,7 @@ export default async function AdminJuniorPage({
                 <th scope="col">{t("Case")}</th>
                 <th scope="col">{t("Daily · streak")}</th>
                 <th scope="col">{t("Last activity")}</th>
-                <th scope="col">Status</th>
+                <th scope="col">{t("Status")}</th>
               </tr>
             </thead>
             <tbody>
@@ -245,7 +245,7 @@ export default async function AdminJuniorPage({
                   </td>
                   <td>
                     {row.lastActiveAt
-                      ? formatDate(row.lastActiveAt)
+                      ? formatDate(row.lastActiveAt, locale)
                       : t("Never")}
                   </td>
                   <td>

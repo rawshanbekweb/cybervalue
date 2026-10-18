@@ -19,10 +19,12 @@ function DeleteFile({ file }: { file: StoredFileInfo }) {
       <ConfirmButton
         type="submit"
         disabled={pending}
-        message={`Delete unused file "${file.name}" permanently?`}
-        className="button button-secondary"
+        message={t("Delete unused file “{name}” permanently?", {
+          name: file.name,
+        })}
+        className="button button-danger"
       >
-        {pending ? "Deleting…" : t("Delete file")}
+        {pending ? t("Deleting…") : t("Delete file")}
       </ConfirmButton>
       {state?.error && (
         <p role="alert" className="admin-error">
@@ -68,16 +70,18 @@ export function FileLibrary({ files }: { files: StoredFileInfo[] }) {
             )}
             <strong>{file.name}</strong>
             <span className="muted">
-              {file.kind === "IMAGE" ? t("Image") : "Resource"} ·{" "}
+              {file.kind === "IMAGE" ? t("Image") : t("Resource")} ·{" "}
               {(file.size / 1024).toFixed(1)} KB
             </span>
-            <a
-              className="button button-secondary"
-              href={`/admin/file?path=${encodeURIComponent(file.path)}`}
-            >
-              {t("View file")}
-            </a>
-            <DeleteFile file={file} />
+            <div className="admin-file-actions">
+              <a
+                className="button button-secondary"
+                href={`/admin/file?path=${encodeURIComponent(file.path)}`}
+              >
+                {t("View file")}
+              </a>
+              <DeleteFile file={file} />
+            </div>
           </article>
         ))}
       </div>

@@ -250,15 +250,18 @@
   justify-self: start;
 }
 .live-podium {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  align-items: end;
+  /* Centred, so a game with one or two players still looks balanced. */
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
   gap: 12px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 .live-podium li {
+  flex: 0 1 220px;
+  min-width: 0;
   display: grid;
   justify-items: center;
   gap: 6px;

@@ -27,9 +27,7 @@ export default async function NewContentPage({
     })) ?? [];
   return (
     <div className="admin-page">
-      <h1>
-        {t("New")} {config.singular.toLowerCase()}
-      </h1>
+      <h1>{t("New {kind}", { kind: t(config.singular).toLowerCase() })}</h1>
       <ContentForm
         collection={collection}
         kind={config.kind}

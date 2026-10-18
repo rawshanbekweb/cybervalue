@@ -131,7 +131,7 @@ export default async function AdminAssignmentsPage({
           <form action={deleteAssignmentAction.bind(null, a.id)}>
             <ConfirmButton
               type="submit"
-              className="button button-secondary"
+              className="button button-danger"
               message={t("Delete this assignment?")}
             >
               {t("Delete")}

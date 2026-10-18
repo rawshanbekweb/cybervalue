@@ -42,7 +42,10 @@ export default async function AdminErrorsPage({
         )}
       </div>
       <p>
-        <Link href={all ? "/admin/errors" : "/admin/errors?show=all"}>
+        <Link
+          href={all ? "/admin/errors" : "/admin/errors?show=all"}
+          className="button button-secondary"
+        >
           {all ? t("Show open errors only") : t("Show resolved errors too")}
         </Link>
       </p>

@@ -31,7 +31,13 @@ body:has(.exam-working) .site-footer {
   font-size: 17px;
 }
 .exam-admin h1 {
-  font-size: 32px;
+  /* Same scale as the rest of the admin. */
+  font-size: 26px;
+  font-weight: 500;
+}
+.exam-admin h2 {
+  font-size: 18px;
+  font-weight: 500;
 }
 .exam-card ol {
   list-style: decimal;
@@ -114,6 +120,7 @@ body:has(.exam-working) .site-footer {
   font-weight: 600;
 }
 .exam-form input:not([type="checkbox"]),
+.exam-form select,
 .exam-form textarea {
   width: 100%;
   border: 1px solid var(--border);
