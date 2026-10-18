@@ -1,0 +1,113 @@
+.kids-snake {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.kids-snake-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 640 / 400;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #a6d46c;
+  box-shadow:
+    0 0 0 4px #4f8a2f,
+    0 10px 28px rgba(30, 60, 20, 0.35);
+}
+
+.kids-snake-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.kids-snake-canvas:focus-visible {
+  outline: 3px solid #ffd43b;
+  outline-offset: -3px;
+}
+
+/* Touch pad: a cross of four arrows, only on touch devices. */
+.kids-snake-pad {
+  display: none;
+  grid-template-columns: repeat(3, 64px);
+  grid-template-rows: repeat(2, 56px);
+  grid-template-areas:
+    ". up ."
+    "left down right";
+  gap: 8px;
+  justify-content: center;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .kids-snake-pad {
+    display: grid;
+  }
+}
+
+.kids-snake-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  min-height: 48px;
+  border: 0;
+  border-radius: 16px;
+  color: #ffffff;
+  background: linear-gradient(180deg, #6fd36f 0%, #3fae4f 100%);
+  box-shadow: 0 5px 0 #2b7a37;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+
+.kids-snake-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #2b7a37;
+}
+
+.kids-snake-btn:focus-visible {
+  outline: 3px solid #ffd43b;
+  outline-offset: 3px;
+}
+
+.kids-snake-btn svg {
+  width: 30px;
+  height: 30px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.kids-snake-btn-up {
+  grid-area: up;
+}
+
+.kids-snake-btn-down {
+  grid-area: down;
+}
+
+.kids-snake-btn-left {
+  grid-area: left;
+}
+
+.kids-snake-btn-right {
+  grid-area: right;
+}
+
+.kids-snake-controls {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  text-align: center;
+  opacity: 0.85;
+}

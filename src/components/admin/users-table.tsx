@@ -9,7 +9,7 @@ import {
 
 export type UserRow = {
   key: string;
-  kind: "student" | "junior";
+  kind: "student" | "junior" | "kids";
   href: string;
   name: string;
   group: string;
@@ -18,8 +18,8 @@ export type UserRow = {
   lastActive: string | null;
 };
 
-// Students and Academy Junior members in one list, with bulk actions on the
-// selected rows.
+// Students, Academy Junior and Academy Kids members in one list, with bulk
+// actions on the selected rows.
 export function UsersTable({
   rows,
   empty,
@@ -30,6 +30,7 @@ export function UsersTable({
   const t = useTranslator();
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [action, setAction] = useState("group");
+  const [confirm, setConfirm] = useState("");
   const [state, formAction, pending] = useActionState<BulkState, FormData>(
     bulkUsersAction,
     undefined,
@@ -45,13 +46,16 @@ export function UsersTable({
     <form
       action={formAction}
       onSubmit={(event) => {
-        if (
-          action === "block" &&
-          !window.confirm(
-            t("Block the selected users? They are signed out at once."),
-          )
-        )
-          event.preventDefault();
+        const question =
+          action === "block"
+            ? t("Block the selected users? They are signed out at once.")
+            : action === "delete"
+              ? t(
+                  "Delete {count} users for good? Their answers, progress and certificates are removed and cannot be restored.",
+                  { count: selected.size },
+                )
+              : null;
+        if (question && !window.confirm(question)) event.preventDefault();
       }}
     >
       <div className="admin-bulk" role="group" aria-label={t("Bulk actions")}>
@@ -72,7 +76,25 @@ export function UsersTable({
           <option value="activate">{t("Allow access")}</option>
           <option value="block">{t("Block access")}</option>
           <option value="signout">{t("Sign out everywhere")}</option>
+          <option value="delete">{t("Delete permanently")}</option>
         </select>
+        {action === "delete" && (
+          <>
+            <label className="visually-hidden" htmlFor="bulk-confirm">
+              {t("Type DELETE to confirm")}
+            </label>
+            <input
+              id="bulk-confirm"
+              name="confirm"
+              className="admin-input"
+              placeholder={t("Type DELETE to confirm")}
+              autoComplete="off"
+              value={confirm}
+              onChange={(event) => setConfirm(event.target.value)}
+              maxLength={10}
+            />
+          </>
+        )}
         {action === "group" && (
           <>
             <label className="visually-hidden" htmlFor="bulk-group">
@@ -89,10 +111,14 @@ export function UsersTable({
         )}
         <button
           type="submit"
-          className="button button-secondary"
-          disabled={pending || selected.size === 0}
+          className={`button ${action === "delete" ? "button-danger" : "button-secondary"}`}
+          disabled={
+            pending ||
+            selected.size === 0 ||
+            (action === "delete" && confirm !== "DELETE")
+          }
         >
-          {t("Apply")}
+          {action === "delete" ? t("Delete") : t("Apply")}
         </button>
         {state?.error && (
           <span className="admin-error" role="alert">
@@ -148,10 +174,12 @@ export function UsersTable({
                     <Link href={row.href}>{row.name}</Link>
                   </td>
                   <td>
-                    <span
-                      className={`admin-chip ${row.kind === "junior" ? "ok" : ""}`}
-                    >
-                      {row.kind === "junior" ? "Junior" : t("Student")}
+                    <span className={`admin-chip admin-kind-${row.kind}`}>
+                      {row.kind === "junior"
+                        ? "Junior"
+                        : row.kind === "kids"
+                          ? "Kids"
+                          : t("Student")}
                     </span>
                   </td>
                   <td>{row.group || "—"}</td>

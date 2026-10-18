@@ -27,8 +27,8 @@ export const MAX_CODE = 4000;
 
 export const emptyKidsProgress = (): KidsProgress => ({
   done: [],
-  best: { kosmos: 0, robot: 0 },
-  code: { kosmos: "", robot: "" },
+  best: { kosmos: 0, robot: 0, ilon: 0 },
+  code: { kosmos: "", robot: "", ilon: "" },
 });
 
 export function restoreKidsProgress(raw: unknown): KidsProgress {
@@ -65,10 +65,13 @@ export const LEVELS: { xp: number; title: Text }[] = [
   { xp: 0, title: { uz: "Yangi xaker", en: "New hacker" } },
   { xp: 40, title: { uz: "Kod izlovchi", en: "Code seeker" } },
   { xp: 100, title: { uz: "Chit ustasi", en: "Cheat master" } },
-  { xp: 180, title: { uz: "O‘yin xakeri", en: "Game hacker" } },
-  { xp: 260, title: { uz: "Bosh xaker", en: "Chief hacker" } },
+  { xp: 200, title: { uz: "O‘yin xakeri", en: "Game hacker" } },
+  { xp: 360, title: { uz: "Bosh xaker", en: "Chief hacker" } },
   { xp: MAX_XP, title: { uz: "Afsonaviy xaker", en: "Legendary hacker" } },
 ];
+
+/** XP for the "Game hacker" certificate: the fourth level. */
+export const CERTIFICATE_XP = 200;
 
 export function kidsLevel(xp: number) {
   let index = 0;

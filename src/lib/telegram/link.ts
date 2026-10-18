@@ -8,6 +8,7 @@ export const LINK_KINDS = {
   s: "student",
   p: "parent:student",
   j: "parent:junior",
+  k: "parent:kids",
 } as const;
 export type LinkKind = keyof typeof LINK_KINDS;
 
@@ -26,7 +27,7 @@ export function signLink(secret: string, kind: LinkKind, id: string) {
 export function readLink(secret: string, payload: unknown) {
   if (
     typeof payload !== "string" ||
-    !/^[tspj][A-Za-z0-9_-]{2,63}$/.test(payload)
+    !/^[tspjk][A-Za-z0-9_-]{2,63}$/.test(payload)
   )
     return null;
   if (payload.length < SIG + 3) return null;

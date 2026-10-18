@@ -4,7 +4,7 @@ import { LAB_META, LAB_PROGRESS } from "@/lib/lab-progress";
 import { formatDue, STATUS_TEXT, targetName } from "@/lib/student/assignments";
 import { isLevel, LEVEL_LABEL } from "@/lib/student/levels";
 import { WEEKLY_GOAL } from "@/lib/student/xp";
-import type { JuniorReport, StudentReport } from "@/lib/reports";
+import type { JuniorReport, KidsReport, StudentReport } from "@/lib/reports";
 import { ReportPrint } from "./print";
 
 type T = (source: string, values?: Record<string, string | number>) => string;
@@ -45,7 +45,7 @@ export function ReportView({
   t,
   locale,
 }: {
-  report: StudentReport | JuniorReport;
+  report: StudentReport | JuniorReport | KidsReport;
   t: T;
   locale: Locale;
 }) {
@@ -56,7 +56,9 @@ export function ReportView({
         <span className="eyebrow">
           {report.kind === "junior"
             ? t("Academy Junior · progress report")
-            : t("Academy · progress report")}
+            : report.kind === "kids"
+              ? t("Academy Kids · progress report")
+              : t("Academy · progress report")}
         </span>
         <h1>
           {report.name}
@@ -79,6 +81,8 @@ export function ReportView({
       </header>
       {report.kind === "student" ? (
         <StudentPart report={report} t={t} locale={locale} />
+      ) : report.kind === "kids" ? (
+        <KidsPart report={report} t={t} locale={locale} />
       ) : (
         <JuniorPart report={report} t={t} locale={locale} />
       )}
@@ -301,5 +305,48 @@ function JuniorPart({
         }
       />
     </section>
+  );
+}
+
+function KidsPart({
+  report,
+  t,
+  locale,
+}: {
+  report: KidsReport;
+  t: T;
+  locale: Locale;
+}) {
+  return (
+    <>
+      <section className="report-cards" aria-label={t("Summary")}>
+        <Card
+          label={t("Hacker level")}
+          value={report.level[locale]}
+          note={`${report.xp} XP`}
+        />
+        <Card
+          label={t("Missions")}
+          value={`${report.missions}/${report.missionTotal}`}
+          note={
+            report.lastActiveAt
+              ? t("last active {date}", {
+                  date: day(report.lastActiveAt, locale),
+                })
+              : t("No activity yet")
+          }
+        />
+      </section>
+      <section className="report-cards" aria-label={t("Games")}>
+        {report.games.map((game) => (
+          <Card
+            key={game.title.en}
+            label={game.title[locale]}
+            value={`${game.done}/${game.total}`}
+            note={t("best score {score}", { score: game.best })}
+          />
+        ))}
+      </section>
+    </>
   );
 }

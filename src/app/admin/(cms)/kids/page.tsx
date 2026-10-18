@@ -74,7 +74,7 @@ export default async function AdminKidsPage({
         <div className="admin-card">
           <span className="eyebrow">{t("Missions")}</span>
           <strong>{ALL_MISSIONS.length}</strong>
-          <span className="muted">{t("in two games")}</span>
+          <span className="muted">{t("in three games")}</span>
         </div>
       </div>
       <CreateKidsForm />

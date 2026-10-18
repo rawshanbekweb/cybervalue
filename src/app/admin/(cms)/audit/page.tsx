@@ -59,6 +59,8 @@ const ACTIONS: Record<string, string> = {
   "kids.code_reset": "Kids access code renewed",
   "kids.progress_reset": "Kids progress reset",
   "kids.delete": "Kids member deleted",
+  "kids.promote": "Kids member moved to Junior",
+  "cleanup.run": "Clean-up run",
 };
 
 export default async function AuditPage({

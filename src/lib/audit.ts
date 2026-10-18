@@ -52,6 +52,8 @@ export type AuditAction =
   | "kids.code_reset"
   | "kids.progress_reset"
   | "kids.delete"
+  | "kids.promote"
+  | "cleanup.run"
   | "junior.promote"
   | "data.export";
 

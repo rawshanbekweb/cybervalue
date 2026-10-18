@@ -8,6 +8,8 @@ import { studentAssignments } from "./student/assignment-data";
 import { visibleSince } from "./student/assignments";
 import { loadStandings } from "./student/standing";
 import { isReportToken } from "./report-token";
+import { ALL_MISSIONS, GAME_IDS, GAMES, missionKey } from "./kids/games";
+import { kidsLevel, restoreKidsProgress } from "./kids/progress";
 
 // Parent reports: a read-only page per learner at /report/<token>. The token
 // is the only key, so it is long, random and can be replaced at any time.
@@ -100,14 +102,45 @@ export async function juniorReport(
   };
 }
 
+export async function kidsReport(db: PrismaClient, token: string) {
+  const member = await db.kidsMember.findUnique({
+    where: { reportToken: token },
+  });
+  if (!member?.active) return null;
+  const progress = restoreKidsProgress(member.progress);
+  return {
+    kind: "kids" as const,
+    name: member.name,
+    group: member.group,
+    xp: member.xp,
+    level: kidsLevel(member.xp).level.title,
+    games: GAME_IDS.map((id) => ({
+      title: GAMES[id].title,
+      done: GAMES[id].missions.filter((m) =>
+        progress.done.includes(missionKey(id, m.id)),
+      ).length,
+      total: GAMES[id].missions.length,
+      best: progress.best[id],
+    })),
+    missions: progress.done.length,
+    missionTotal: ALL_MISSIONS.length,
+    lastActiveAt: member.lastActiveAt,
+  };
+}
+
 export type StudentReport = NonNullable<
   Awaited<ReturnType<typeof studentReport>>
 >;
 export type JuniorReport = NonNullable<
   Awaited<ReturnType<typeof juniorReport>>
 >;
+export type KidsReport = NonNullable<Awaited<ReturnType<typeof kidsReport>>>;
 
 export async function findReport(db: PrismaClient, token: string) {
   if (!isReportToken(token)) return null;
-  return (await studentReport(db, token)) ?? (await juniorReport(db, token));
+  return (
+    (await studentReport(db, token)) ??
+    (await juniorReport(db, token)) ??
+    (await kidsReport(db, token))
+  );
 }

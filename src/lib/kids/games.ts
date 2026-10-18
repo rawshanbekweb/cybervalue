@@ -3,7 +3,7 @@
 // so a mission saved to an account is checked the same way it was shown.
 import { COLORS, parse, type Program, type Schema, type Text } from "./lang";
 
-export type GameId = "kosmos" | "robot";
+export type GameId = "kosmos" | "robot" | "ilon";
 
 export type Cheat = { name: string; effect: Text; seconds: number };
 
@@ -461,6 +461,215 @@ hayotlar = 3
             p.rules.some(
               (r) => r.watch === "ochko" && r.name === "yugurish_tezligi",
             ),
+        },
+      },
+    ],
+  },
+  ilon: {
+    id: "ilon",
+    title: { uz: "Ilon", en: "Snake" },
+    tagline: {
+      uz: "Ilonni boshqaring, olma yeng va o‘sing — lekin o‘zingizga urilmang!",
+      en: "Steer the snake, eat apples and grow — but don't bite yourself!",
+    },
+    schema: {
+      tezlik: {
+        kind: "number",
+        default: 5,
+        min: 1,
+        max: 15,
+        label: { uz: "Ilon tezligi", en: "Snake speed" },
+      },
+      uzunlik: {
+        kind: "number",
+        default: 3,
+        min: 1,
+        max: 20,
+        label: { uz: "Boshlang‘ich uzunlik", en: "Starting length" },
+      },
+      ilon_rangi: {
+        kind: "color",
+        default: "yashil",
+        label: { uz: "Ilon rangi", en: "Snake colour" },
+      },
+      olma_ochkosi: {
+        kind: "number",
+        default: 10,
+        min: 1,
+        max: 100,
+        label: { uz: "Bir olma necha ochko", en: "Points per apple" },
+      },
+      olmalar_soni: {
+        kind: "number",
+        default: 1,
+        min: 1,
+        max: 5,
+        label: { uz: "Bir vaqtda nechta olma", en: "Apples at once" },
+      },
+      devordan_otish: {
+        kind: "bool",
+        default: false,
+        label: {
+          uz: "Devordan o‘tib, narigi tomondan chiqish",
+          en: "Go through walls and come out the other side",
+        },
+      },
+      hayotlar: {
+        kind: "number",
+        default: 1,
+        min: 1,
+        max: 99,
+        label: { uz: "Hayotlar soni", en: "Lives" },
+      },
+    },
+    watch: ["ochko", "hayotlar", "vaqt"],
+    starter: `// Ilon sozlamalari.
+// Sonni o'zgartiring va "Ishga tushirish"ni bosing!
+tezlik = 5
+uzunlik = 3
+ilon_rangi = "yashil"
+olma_ochkosi = 10
+olmalar_soni = 1
+devordan_otish = yo'q
+hayotlar = 1
+`,
+    cheats: [
+      {
+        name: "oltin_olma",
+        effect: {
+          uz: "Olmalar oltinga aylanadi: 5 baravar ochko",
+          en: "Apples turn gold: 5× points",
+        },
+        seconds: 8,
+      },
+      {
+        name: "sekin",
+        effect: { uz: "Ilon sekinlashadi", en: "The snake slows down" },
+        seconds: 6,
+      },
+      {
+        name: "arvoh",
+        effect: {
+          uz: "Ilon o‘zidan va devordan o‘tib ketadi",
+          en: "The snake passes through itself and walls",
+        },
+        seconds: 8,
+      },
+      {
+        name: "qisqartir",
+        effect: { uz: "Ilon ikki baravar qisqaradi", en: "The snake halves" },
+        seconds: 0,
+      },
+    ],
+    missions: [
+      {
+        id: "tez",
+        title: { uz: "Chaqqon ilon", en: "Quick snake" },
+        task: {
+          uz: "Ilonni tezlashtiring: tezlik kamida 9.",
+          en: "Speed the snake up: speed at least 9.",
+        },
+        hint: { uz: "tezlik = 9", en: "tezlik = 9" },
+        xp: 20,
+        check: { kind: "code", test: (p) => Number(p.values.tezlik) >= 9 },
+      },
+      {
+        id: "uzun",
+        title: { uz: "Uzun ilon", en: "Long snake" },
+        task: {
+          uz: "Ilon boshidanoq uzun bo‘lsin: uzunlik kamida 10.",
+          en: "Start with a long snake: length at least 10.",
+        },
+        hint: { uz: "uzunlik = 12", en: "uzunlik = 12" },
+        xp: 20,
+        check: { kind: "code", test: (p) => Number(p.values.uzunlik) >= 10 },
+      },
+      {
+        id: "rang",
+        title: { uz: "Rangli ilon", en: "Colourful snake" },
+        task: {
+          uz: "Ilon rangini o‘zgartiring.",
+          en: "Change the snake's colour.",
+        },
+        hint: {
+          uz: `Masalan: ilon_rangi = "binafsha"`,
+          en: `For example: ilon_rangi = "binafsha"`,
+        },
+        xp: 20,
+        check: { kind: "code", test: changedColor("ilon_rangi", "yashil") },
+      },
+      {
+        id: "devor",
+        title: { uz: "Sehrli devorlar", en: "Magic walls" },
+        task: {
+          uz: "Ilon devordan o‘tib, narigi tomondan chiqsin.",
+          en: "Let the snake go through a wall and come out the other side.",
+        },
+        hint: { uz: "devordan_otish = ha", en: "devordan_otish = ha" },
+        xp: 20,
+        check: {
+          kind: "code",
+          test: (p) => p.values.devordan_otish === true,
+        },
+      },
+      {
+        id: "bog",
+        title: { uz: "Olma bog‘i", en: "Apple orchard" },
+        task: {
+          uz: "Maydonda bir vaqtda kamida 3 ta olma bo‘lsin.",
+          en: "Have at least 3 apples on the field at once.",
+        },
+        hint: { uz: "olmalar_soni = 3", en: "olmalar_soni = 3" },
+        xp: 20,
+        check: {
+          kind: "code",
+          test: (p) => Number(p.values.olmalar_soni) >= 3,
+        },
+      },
+      {
+        id: "arvoh",
+        title: { uz: "Arvoh ilon", en: "Ghost snake" },
+        task: {
+          uz: "O‘yin paytida terminal orqali ilonni arvohga aylantiring.",
+          en: "While playing, turn the snake into a ghost from the terminal.",
+        },
+        hint: {
+          uz: "Terminalga arvoh() deb yozing. Barcha buyruqlar: yordam()",
+          en: "Type arvoh() in the terminal. All commands: yordam()",
+        },
+        xp: 25,
+        check: { kind: "cheat", cheat: "arvoh" },
+      },
+      {
+        id: "ochko",
+        title: { uz: "150 ochko", en: "150 points" },
+        task: {
+          uz: "Bitta o‘yinda 150 ochko to‘plang.",
+          en: "Score 150 points in one game.",
+        },
+        hint: {
+          uz: "olma_ochkosi ni oshiring yoki oltin_olma() ni sinab ko‘ring.",
+          en: "Raise olma_ochkosi or try oltin_olma().",
+        },
+        xp: 25,
+        check: { kind: "score", score: 150 },
+      },
+      {
+        id: "agar",
+        title: { uz: "Oltin ilon", en: "Golden snake" },
+        task: {
+          uz: "Qoida yozing: ochko 50 dan oshsa, ilon oltin rangga kirsin.",
+          en: "Write a rule: when the score is over 50, the snake turns gold.",
+        },
+        hint: {
+          uz: `Yangi qator: agar ochko > 50 bo'lsa ilon_rangi = "oltin"`,
+          en: `New line: agar ochko > 50 bo'lsa ilon_rangi = "oltin"`,
+        },
+        xp: 30,
+        check: {
+          kind: "code",
+          test: (p) =>
+            p.rules.some((r) => r.watch === "ochko" && r.name === "ilon_rangi"),
         },
       },
     ],

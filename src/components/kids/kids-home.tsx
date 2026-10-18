@@ -6,6 +6,7 @@ import { useActionState, useId } from "react";
 import {
   ArrowLeft,
   ArrowRight,
+  Award,
   Bot,
   Code2,
   LogOut,
@@ -13,14 +14,19 @@ import {
   Sparkles,
   Terminal,
   Trophy,
+  Worm,
 } from "lucide-react";
 import { useT } from "../playground/network-lab/use-t";
 import { GAME_IDS, GAMES, missionKey, type GameId } from "@/lib/kids/games";
-import { kidsLevel, LEVELS } from "@/lib/kids/progress";
+import { CERTIFICATE_XP, kidsLevel, LEVELS } from "@/lib/kids/progress";
 import { kidsLoginAction, kidsLogoutAction } from "@/app/[lang]/kids/actions";
 import "./kids.css";
 
-const ICONS: Record<GameId, typeof Rocket> = { kosmos: Rocket, robot: Bot };
+const ICONS: Record<GameId, typeof Rocket> = {
+  kosmos: Rocket,
+  robot: Bot,
+  ilon: Worm,
+};
 
 const STEPS = [
   {
@@ -128,11 +134,15 @@ export function KidsHub({
   xp,
   done,
   best,
+  group,
+  ranking,
 }: {
   name: string;
   xp: number;
   done: string[];
   best: Record<GameId, number>;
+  group: string;
+  ranking: { name: string; xp: number; me: boolean }[];
 }) {
   const { t, text } = useT();
   const level = kidsLevel(xp);
@@ -223,6 +233,48 @@ export function KidsHub({
           );
         })}
       </section>
+      <div className="kids-extras">
+        {ranking.length > 0 && (
+          <section className="kids-ranking" aria-labelledby="kids-ranking">
+            <h2 id="kids-ranking">
+              <Trophy size={20} aria-hidden="true" />{" "}
+              {t("Top hackers of group {group}", { group })}
+            </h2>
+            <ol>
+              {ranking.map((row, i) => (
+                <li key={i} className={row.me ? "me" : ""}>
+                  <span className="kids-ranking-place">{i + 1}</span>
+                  <span>
+                    {row.name}
+                    {row.me && ` (${t("you")})`}
+                  </span>
+                  <span className="kids-mission-xp">{row.xp} XP</span>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
+        <section className="kids-cert-card" aria-labelledby="kids-cert">
+          <h2 id="kids-cert">
+            <Award size={20} aria-hidden="true" /> {t("Certificate")}
+          </h2>
+          {xp >= CERTIFICATE_XP ? (
+            <>
+              <p>{t("You earned the “Game hacker” certificate!")}</p>
+              <Link className="kids-button" href="/kids/sertifikat">
+                {t("Open my certificate")}
+              </Link>
+            </>
+          ) : (
+            <p>
+              {t(
+                "Reach {xp} XP to earn the “Game hacker” certificate. {left} XP to go!",
+                { xp: CERTIFICATE_XP, left: CERTIFICATE_XP - xp },
+              )}
+            </p>
+          )}
+        </section>
+      </div>
     </div>
   );
 }
