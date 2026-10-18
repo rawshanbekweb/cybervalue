@@ -135,6 +135,18 @@ test("upload, publish, protect referenced files, unpublish and remove unused fil
   expect((await request.get(`/downloads/${slug}`)).status()).toBe(404);
   await row.getByRole("button", { name: "Delete", exact: true }).click();
   await expect(row).toHaveCount(0);
+  // The deleted entry waits in the trash, which keeps its files.
+  await page.goto(`/admin/files?q=${encodeURIComponent(prefix)}`);
+  await resourceCard.getByRole("button", { name: "Delete file" }).click();
+  await expect(resourceCard.getByRole("alert")).toContainText(
+    "entry in the trash",
+  );
+  await page.goto("/admin/trash?kind=content");
+  const trashed = page.getByRole("row", {
+    name: /Upload integration resource/,
+  });
+  await trashed.getByRole("button", { name: /for good$/ }).click();
+  await expect(trashed).toHaveCount(0);
   await page.goto(`/admin/files?q=${encodeURIComponent(prefix)}`);
   await resourceCard.getByRole("button", { name: "Delete file" }).click();
   await expect(resourceCard).toHaveCount(0);

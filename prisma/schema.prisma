@@ -654,3 +654,20 @@ model KidsSession {
 
   @@index([memberId])
 }
+
+// Deleted items are kept here for 30 days so they can be restored. `data` is a
+// snapshot of the row and everything that was deleted with it; `files` lists
+// uploads it uses, which stay protected while the item is in the trash.
+model TrashItem {
+  id          String   @id @default(cuid())
+  kind        String
+  label       String
+  group       String   @default("")
+  data        Json
+  files       String[] @default([])
+  deletedById String?
+  deletedAt   DateTime @default(now()) @db.Timestamptz(3)
+
+  @@index([deletedAt])
+  @@index([group])
+}

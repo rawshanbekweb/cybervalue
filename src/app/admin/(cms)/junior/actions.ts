@@ -9,6 +9,7 @@ import {
 } from "@/lib/staff-guard";
 import { audit } from "@/lib/audit";
 import { getDb } from "@/lib/db";
+import { trashPeople } from "@/lib/trash";
 import { limit } from "@/lib/rate-limit-db";
 import { parseRoster, rosterOptionsSchema } from "@/lib/student/admin";
 import { hashSecret, newJuniorCode } from "@/lib/junior/codes";
@@ -150,10 +151,13 @@ export async function deleteJuniorAction(id: string) {
   const session = await requireMember("junior", id, "/admin/junior");
   const db = getDb();
   if (!db) return;
-  const member = await db.juniorMember
-    .delete({ where: { id } })
-    .catch(() => null);
-  if (member) await audit("junior.delete", session.user.id, member.name);
+  const member = await db.juniorMember.findUnique({
+    where: { id },
+    select: { name: true },
+  });
+  if (member && (await trashPeople(db, { junior: [id] }, session.user.id)))
+    await audit("junior.delete", session.user.id, member.name);
+  revalidatePath("/admin/trash");
   revalidatePath("/admin/junior");
   redirect("/admin/junior");
 }

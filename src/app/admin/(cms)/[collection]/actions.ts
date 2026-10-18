@@ -112,7 +112,7 @@ export async function changeContentAction(
     const kind = collections[collection].kind;
     const entry =
       operation === "delete"
-        ? await deleteContent(db, id, kind)
+        ? await deleteContent(db, id, kind, session.user.id)
         : await setContentStatus(db, id, status.data!, kind);
     revalidateCollection(collection, entry.slug);
     await audit(

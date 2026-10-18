@@ -13,6 +13,7 @@ import {
   publicationStatusSchema,
 } from "./admin-query";
 import { lockFileChanges, resourceFileInfo } from "./stored-files";
+import { trashContent } from "./trash";
 
 export class ContentWriteError extends Error {}
 
@@ -256,10 +257,14 @@ export async function setContentStatus(
   });
 }
 
+/** Moves an entry to the trash, where it can be restored for 30 days. */
 export async function deleteContent(
   db: PrismaClient,
   id: string,
   kind: ContentKind,
+  actorId: string,
 ) {
-  return db.content.delete({ where: { id, kind } });
+  const entry = await trashContent(db, { id, kind }, actorId);
+  if (!entry) throw new ContentWriteError("This entry no longer exists.");
+  return entry;
 }

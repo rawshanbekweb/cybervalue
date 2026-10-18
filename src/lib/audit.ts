@@ -60,6 +60,9 @@ export type AuditAction =
   | "staff.delete"
   | "group.rename"
   | "group.teachers"
+  | "trash.restore"
+  | "trash.purge"
+  | "trash.empty"
   | "junior.promote"
   | "data.export";
 

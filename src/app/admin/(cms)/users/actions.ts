@@ -4,6 +4,7 @@ import { z } from "zod";
 import { audit } from "@/lib/audit";
 import { requireOwner } from "@/lib/auth";
 import { getDb } from "@/lib/db";
+import { trashPeople } from "@/lib/trash";
 import { limit } from "@/lib/rate-limit-db";
 
 export type BulkState =
@@ -76,29 +77,17 @@ export async function bulkUsersAction(
         db.kidsSession.deleteMany({ where: { memberId: { in: kids } } }),
       ]);
       break;
-    // Permanent: answers, progress, sessions and parent chats go with them.
+    // To the trash with answers, progress and parent chats; restorable for
+    // 30 days.
     case "delete":
       if (form.get("confirm") !== "DELETE")
         return { error: "Type DELETE to confirm." };
-      await db.$transaction([
-        db.telegramChat.deleteMany({
-          where: {
-            subject: {
-              in: [
-                ...students.flatMap((id) => [
-                  `student:${id}`,
-                  `parent:student:${id}`,
-                ]),
-                ...juniors.map((id) => `parent:junior:${id}`),
-                ...kids.map((id) => `parent:kids:${id}`),
-              ],
-            },
-          },
-        }),
-        db.student.deleteMany({ where: s }),
-        db.juniorMember.deleteMany({ where: j }),
-        db.kidsMember.deleteMany({ where: k }),
-      ]);
+      await trashPeople(
+        db,
+        { students, junior: juniors, kids },
+        session.user.id,
+      );
+      revalidatePath("/admin/trash");
       break;
     default:
       return { error: "Choose an action." };

@@ -17,7 +17,7 @@ export default async function AdminCleanupPage() {
           <h1>{t("Clean-up")}</h1>
           <p className="muted">
             {t(
-              "Remove what is no longer needed. Each step shows how much it deletes first; deleted data cannot be restored, so download a backup on the System status page before a big clean-up.",
+              "Remove what is no longer needed. Each step shows how much it deletes first. Accounts go to the trash for 30 days; everything else is deleted for good, so download a backup on the System status page before a big clean-up.",
             )}
           </p>
         </div>
@@ -65,7 +65,7 @@ export default async function AdminCleanupPage() {
               <li>
                 <Link href="/admin/users">{t("Delete chosen users")}</Link>
                 <span className="muted">
-                  {t("Filter, tick the rows and choose “Delete permanently”.")}
+                  {t("Filter, tick the rows and choose “Move to trash”.")}
                 </span>
               </li>
               <li>

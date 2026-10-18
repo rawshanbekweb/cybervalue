@@ -76,7 +76,7 @@ export function UsersTable({
           <option value="activate">{t("Allow access")}</option>
           <option value="block">{t("Block access")}</option>
           <option value="signout">{t("Sign out everywhere")}</option>
-          <option value="delete">{t("Delete permanently")}</option>
+          <option value="delete">{t("Move to trash")}</option>
         </select>
         {action === "delete" && (
           <>

@@ -121,7 +121,9 @@ export default async function AdminKidPage({
             <ConfirmButton
               type="submit"
               className="button button-danger"
-              message={t("Delete this child with all progress?")}
+              message={t(
+                "Move this child with all progress to the trash? You can restore them for 30 days.",
+              )}
             >
               {t("Delete child")}
             </ConfirmButton>

@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import { audit } from "@/lib/audit";
 import { canSeeGroup, requireStaff } from "@/lib/auth";
 import { getDb } from "@/lib/db";
+import { trashAssignment } from "@/lib/trash";
 import { limit } from "@/lib/rate-limit-db";
 import { assignmentSchema } from "@/lib/student/assignments";
 import { assignmentCreated } from "@/lib/telegram/events";
@@ -73,9 +74,8 @@ export async function deleteAssignmentAction(id: string) {
   });
   if (!assignment || !(scope.owner || canSeeGroup(scope, assignment.group)))
     return;
-  const removed = await db.studentAssignment
-    .delete({ where: { id } })
-    .catch(() => null);
+  const removed = await trashAssignment(db, id, session.user.id);
+  revalidatePath("/admin/trash");
   if (removed) await audit("assignment.delete", session.user.id, removed.title);
   revalidatePath("/admin/assignments");
   revalidatePath("/admin/class");

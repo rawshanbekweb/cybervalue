@@ -6,6 +6,7 @@ import { Prisma } from "@/generated/prisma/client";
 import { requireAdmin } from "@/lib/auth";
 import { audit } from "@/lib/audit";
 import { getDb } from "@/lib/db";
+import { trashMaterial } from "@/lib/trash";
 import {
   checkMaterial,
   MATERIAL_KIND_VALUES,
@@ -104,9 +105,8 @@ export async function deleteMaterialAction(id: string) {
   const session = await requireAdmin("/admin/materials");
   const db = getDb();
   if (!db) return;
-  const material = await db.studentMaterial
-    .delete({ where: { id } })
-    .catch(() => null);
+  const material = await trashMaterial(db, id, session.user.id);
+  revalidatePath("/admin/trash");
   if (material) await audit("material.delete", session.user.id, material.slug);
   revalidatePath("/admin/materials");
   revalidatePath("/student", "layout");
