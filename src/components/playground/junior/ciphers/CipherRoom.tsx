@@ -21,6 +21,15 @@ import { BENCHES } from "./visuals";
 import "../junior.css";
 import "./ciphers.css";
 
+// Dates like "Mil. avv. ~600-yil" break at spaces, never at the hyphen.
+const noBreakHyphen = (value: string) => value.replace(/-/g, "\u2011");
+// Letter pairs like "A — Z" stay together on one line.
+const keepPairs = (value: string) =>
+  value.replace(
+    /(^|[\s(«“])(\p{Lu}) — (\p{Lu})(?=[\s,.;:)»”]|$)/gu,
+    "$1$2\u00a0—\u00a0$3",
+  );
+
 export function CipherRoom() {
   const { t, text } = useT();
   const [id, setId] = useHashLessonId(CIPHERS.length, 1, "cipher");
@@ -80,7 +89,9 @@ export function CipherRoom() {
                   aria-current={item.number === id ? "step" : undefined}
                   onClick={() => open(item.number)}
                 >
-                  <span className="cr-when">{text(item.when)}</span>
+                  <span className="cr-when">
+                    {noBreakHyphen(text(item.when))}
+                  </span>
                   <span className="cr-dot" aria-hidden="true">
                     {full ? <Check size={12} /> : item.number}
                   </span>
@@ -124,7 +135,7 @@ export function CipherRoom() {
             </span>
           </span>
           <h2 id="cr-cipher-title">{text(cipher.title)}</h2>
-          <p className="jr-hook">{text(cipher.tagline)}</p>
+          <p className="jr-hook">{keepPairs(text(cipher.tagline))}</p>
         </header>
 
         <div className="cr-grid">
@@ -152,7 +163,7 @@ export function CipherRoom() {
               <FlaskConical size={16} aria-hidden="true" />{" "}
               {t("How it works — try it")}
             </h3>
-            <p className="jr-lead">{text(cipher.how)}</p>
+            <p className="jr-lead">{keepPairs(text(cipher.how))}</p>
             <Bench />
           </section>
         </div>
@@ -172,7 +183,14 @@ export function CipherRoom() {
               {t("{length} of {length2} exercises solved · 15 XP each", {
                 length: solved.length,
                 length2: cipher.exercises.length,
-              })}
+              })
+                .split(" · ")
+                .map((part, i) => (
+                  <span key={i}>
+                    {i > 0 && " · "}
+                    <span className="jr-nowrap">{part}</span>
+                  </span>
+                ))}
             </small>
           </span>
           <ArrowRight size={18} aria-hidden="true" />

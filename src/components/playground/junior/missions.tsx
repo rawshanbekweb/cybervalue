@@ -171,7 +171,7 @@ export function PasswordMission({ done, onComplete }: PanelProps) {
       </label>
       <input
         id={id}
-        className="jr-input"
+        className="jr-input jr-plain"
         value={value}
         onChange={(event) => setValue(event.target.value)}
         autoComplete="off"
@@ -343,7 +343,7 @@ export function CipherMission({ done, onComplete }: PanelProps) {
       <div className="jr-row">
         <input
           id={answerId}
-          className="jr-input"
+          className="jr-input jr-plain"
           value={answer}
           onChange={(event) => {
             setAnswer(event.target.value);

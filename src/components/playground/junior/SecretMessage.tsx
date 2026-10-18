@@ -80,7 +80,7 @@ function Compose() {
         </label>
         <textarea
           id={ids.message}
-          className="jr-input cr-area"
+          className="jr-input jr-plain cr-area"
           rows={3}
           maxLength={MAX_SECRET}
           value={message}
@@ -157,7 +157,7 @@ function Compose() {
         </label>
         <input
           id={ids.hint}
-          className="jr-input"
+          className="jr-input jr-plain"
           value={hint}
           maxLength={80}
           placeholder={t("e.g. the key is our class number")}

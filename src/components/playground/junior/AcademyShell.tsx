@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CloudOff, LogOut } from "lucide-react";
@@ -34,6 +35,35 @@ export function AcademyShell({ children }: { children: React.ReactNode }) {
   const { t, text } = useT();
   const pathname = usePathname();
   const { member, agent, rank, xp, unsaved } = useJuniorState();
+  const tabs = useRef<HTMLElement>(null);
+  // On a phone the tabs scroll sideways: bring the open section into view
+  // and fade the edges that have more tabs behind them.
+  useEffect(() => {
+    const nav = tabs.current;
+    if (!nav) return;
+    const active = nav.querySelector<HTMLElement>('[aria-current="page"]');
+    if (active)
+      nav.scrollLeft =
+        active.offsetLeft - (nav.clientWidth - active.offsetWidth) / 2;
+    const update = () => {
+      const max = nav.scrollWidth - nav.clientWidth;
+      const fade = [
+        nav.scrollLeft > 4 ? "start" : "",
+        nav.scrollLeft < max - 4 ? "end" : "",
+      ]
+        .filter(Boolean)
+        .join(" ");
+      if (fade) nav.dataset.fade = fade;
+      else delete nav.dataset.fade;
+    };
+    update();
+    nav.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      nav.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [pathname]);
   const current = (href: string) =>
     href === "/junior"
       ? /\/junior\/?$/.test(pathname)
@@ -57,7 +87,7 @@ export function AcademyShell({ children }: { children: React.ReactNode }) {
           </form>
         </div>
       </header>
-      <nav className="jr-tabs" aria-label={t("Academy sections")}>
+      <nav ref={tabs} className="jr-tabs" aria-label={t("Academy sections")}>
         {SECTIONS.map((section) => (
           <Link
             key={section.href}

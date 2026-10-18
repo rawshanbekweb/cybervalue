@@ -1,14 +1,27 @@
 .junior {
   padding-top: 28px;
 }
-.jr-mission,
-.jr-finish,
+/* Long prose keeps a readable measure inside the full-width cards. */
+.jr-hook,
+.jr-lead,
+.jr-case-head p,
 .jr-foot {
-  max-width: 920px;
+  max-width: 78ch;
 }
-.junior .button:disabled {
-  opacity: 0.45;
+/* Disabled buttons stay readable: flat, desaturated, no hover. */
+.junior .button:disabled,
+.junior .button:disabled:hover {
+  border-color: #ffffff1f;
+  background: #1a1920;
+  box-shadow: none;
+  color: #9d9ca6;
   cursor: not-allowed;
+}
+.junior .button-primary:disabled,
+.junior .button-primary:disabled:hover {
+  border-color: #8052ff40;
+  background: #241e38;
+  color: #aea6cc;
 }
 .jr-panel > .button,
 .jr-actions .button {
@@ -83,8 +96,12 @@
   font-size: 13px;
   cursor: pointer;
 }
-.jr-tab:hover {
-  border-color: var(--accent);
+/* Only the open mission gets the violet ring; hover is a neutral cue and
+   is skipped on touch screens, where it would stick after a tap. */
+@media (hover: hover) {
+  .jr-tab:not(.on):hover {
+    border-color: #ffffff5c;
+  }
 }
 .jr-tab.on {
   border-color: var(--accent);
@@ -177,6 +194,12 @@
   color: #fff;
   font: 15px var(--font-mono);
 }
+/* Words, names and answers use the UI font; cipher text stays mono. */
+.jr-input.jr-plain,
+.jr-input.cr-plain,
+.jr-input::placeholder {
+  font-family: var(--font-sans);
+}
 .jr-input:focus-visible,
 .jr-range:focus-visible {
   outline: 2px solid var(--accent-text);
@@ -218,7 +241,7 @@
   background: #4ade80;
 }
 .jr-result {
-  font: 600 15px/1.6 var(--font-mono);
+  font: 600 15px/1.6 var(--font-sans);
   color: #fff;
 }
 .jr-tips {
@@ -545,11 +568,29 @@
   color: #fff;
 }
 .jr-tabs {
+  position: relative;
   display: flex;
   gap: 4px;
   margin: 14px 0 6px;
   overflow-x: auto;
+  scroll-padding-inline: 24px;
   scrollbar-width: none;
+}
+/* Edge fades (set by AcademyShell) hint that more tabs scroll into view. */
+.jr-tabs[data-fade="end"] {
+  mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent);
+}
+.jr-tabs[data-fade="start"] {
+  mask-image: linear-gradient(90deg, transparent, #000 40px);
+}
+.jr-tabs[data-fade="start end"] {
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 40px,
+    #000 calc(100% - 40px),
+    transparent
+  );
 }
 .jr-tabs a {
   flex-shrink: 0;
@@ -1000,6 +1041,49 @@
   .jr-mission {
     padding: 18px;
   }
+  /* Case file on a phone: the icon sits beside the title, the story and
+     the evidence rows use the full width. */
+  .jr-case {
+    padding: 18px;
+  }
+  .jr-case-head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0 10px;
+  }
+  .jr-case-head > div {
+    display: contents;
+  }
+  .jr-case-head > svg {
+    margin-top: 0;
+  }
+  .jr-case-head h2 {
+    margin: 0;
+  }
+  .jr-case-head > div > :not(h2) {
+    grid-column: 1 / -1;
+  }
+  .jr-case-head p {
+    margin-top: 10px;
+  }
+  .jr-evidence li {
+    display: block;
+  }
+  .jr-evidence-num {
+    display: inline-grid;
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    vertical-align: -5px;
+  }
+  .jr-badges ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .jr-badges li {
+    padding: 12px;
+  }
   .jr-meta {
     flex-direction: column;
   }
@@ -1033,7 +1117,6 @@
   background: #0b0b0d;
 }
 .jr-case {
-  max-width: 920px;
   margin-top: 26px;
   border-color: #ff6b6b55;
   background:
@@ -1082,6 +1165,7 @@
   color: #8f8e96;
   font-size: 13px;
   line-height: 1.6;
+  text-wrap: pretty;
 }
 .jr-evidence li.found {
   border-style: solid;
@@ -1196,6 +1280,7 @@
 .jr-badges ul {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  align-items: stretch;
   gap: 10px;
   margin: 12px 0 0;
   padding: 0;
@@ -1255,7 +1340,6 @@
 
 /* Certificate */
 .jr-certwrap {
-  max-width: 920px;
   margin-top: 26px;
   border-color: #4ade8066;
 }
@@ -1369,4 +1453,7 @@
   .jr-cert {
     margin: 40px 20px;
   }
+}
+.jr-nowrap {
+  white-space: nowrap;
 }

@@ -190,7 +190,7 @@ export function Certificate() {
         </label>
         <input
           id={inputId}
-          className="jr-input jr-cert-input"
+          className="jr-input jr-plain jr-cert-input"
           value={shown}
           maxLength={40}
           onChange={(event) => setName(event.target.value)}
@@ -350,7 +350,7 @@ export function DailyPuzzle() {
           <div className="jr-row">
             <input
               id={inputId}
-              className="jr-input"
+              className="jr-input jr-plain"
               value={answer}
               onChange={(event) => {
                 setAnswer(event.target.value);

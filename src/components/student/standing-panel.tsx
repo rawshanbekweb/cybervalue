@@ -93,7 +93,7 @@ export function StandingCard({
             ? t("{xp} XP to {rank}", {
                 xp: standing.next.xp - standing.xp,
                 rank: standing.next.title[locale],
-              })
+              }).replace(/(\d) XP/, "$1\u00a0XP") // keep "150 XP" on one line
             : t("Top rank reached")}
         </p>
       </div>
@@ -274,7 +274,14 @@ export function AchievementsSection({
                     <span>
                       <strong>{c.title[locale]}</strong>
                       <small>
-                        {c.lab[locale]} · {c.covers[locale]}
+                        {c.lab[locale]}
+                        {/* Ranges such as "1–6-darslar" stay on one line. */}
+                        {c.covers[locale].split(" · ").map((part) => (
+                          <span key={part}>
+                            {" · "}
+                            <span className="student-nowrap">{part}</span>
+                          </span>
+                        ))}
                       </small>
                     </span>
                     <span className={`student-pill ${passed ? "on" : ""}`}>

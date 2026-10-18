@@ -324,5 +324,9 @@
   "+{xp} XP since Monday": "Dushanbadan beri +{xp} XP",
   "No XP earned this week yet": "Bu hafta hali XP olinmagan",
   "last week: {name}": "o‘tgan hafta: {name}",
-  "XP this week": "Bu haftagi XP"
+  "XP this week": "Bu haftagi XP",
+  "404 · Student area": "404 · O‘quvchi bo‘limi",
+  "This page is not here.": "Bu sahifa topilmadi.",
+  "The link may be incomplete or out of date. Your materials, tests and certificates are on the student area home page.": "Havola to‘liq emas yoki eskirgan bo‘lishi mumkin. Materiallaringiz, testlar va sertifikatlaringiz o‘quvchi bo‘limining bosh sahifasida.",
+  "Back to the student area": "O‘quvchi bo‘limiga qaytish"
 }

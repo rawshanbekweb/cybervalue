@@ -73,7 +73,7 @@ body.student-root {
 .student-page {
   max-width: var(--page-max-width);
   margin: 0 auto;
-  padding: 0 24px 120px;
+  padding: 0 24px 72px;
 }
 .student-nav {
   display: flex;
@@ -184,7 +184,7 @@ body.student-root {
 }
 .student-display {
   font-size: clamp(48px, 8.4vw, 113px);
-  line-height: 0.95;
+  line-height: 1.05;
   letter-spacing: -0.04em;
 }
 .student-title {
@@ -470,12 +470,18 @@ body.student-root {
 .student-item-summary {
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
   overflow: hidden;
   color: var(--color-ash-gray);
   font-size: 14px;
   line-height: 1.45;
+}
+/* The exam cards explain how each test works: show the whole text. */
+.student-exams .student-item-summary {
+  display: block;
+  -webkit-line-clamp: none;
+  line-clamp: none;
 }
 .student-item-status {
   display: flex;
@@ -813,7 +819,7 @@ body.student-root {
 }
 @media (max-width: 520px) {
   .student-page {
-    padding: 0 16px 96px;
+    padding: 0 16px 64px;
   }
   .student-nav-name {
     display: none;
@@ -1175,6 +1181,8 @@ body.student-root {
   gap: 16px;
 }
 .student-panel {
+  /* The ranking column is much taller; do not stretch the badges card. */
+  align-self: start;
   padding: 18px;
   border: 1px solid #1f1f1f;
   border-radius: 18px;
@@ -1229,8 +1237,10 @@ body.student-root {
   font-weight: 500;
 }
 .student-badges small {
+  display: block;
   color: var(--color-ash-gray);
   font-size: 12px;
+  line-height: 1.45;
 }
 .student-ranking,
 .student-heroes {
@@ -1293,6 +1303,9 @@ body.student-root {
   color: var(--color-ash-gray);
   font-size: 12px;
 }
+.student-nowrap {
+  white-space: nowrap;
+}
 .student-pill {
   flex-shrink: 0;
   padding: 4px 10px;
@@ -1336,7 +1349,7 @@ body.student-root {
 }
 
 .student-telegram {
-  margin: -8px 0 24px;
+  margin: 18px 0 0;
   font-size: 14px;
 }
 .student-telegram a {
@@ -1373,4 +1386,7 @@ body.student-root {
 }
 .student-heroes {
   margin-bottom: 6px;
+}
+.student-not-found-actions {
+  margin: 28px 0 0;
 }

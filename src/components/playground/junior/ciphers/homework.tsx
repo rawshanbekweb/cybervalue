@@ -90,7 +90,7 @@ export function ExerciseCard({
           </label>
           <input
             id={inputId}
-            className="jr-input"
+            className="jr-input jr-plain"
             value={answer}
             placeholder={t("Your answer")}
             onChange={(event) => {
