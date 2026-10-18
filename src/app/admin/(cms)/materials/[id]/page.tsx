@@ -105,7 +105,7 @@ export default async function EditMaterialPage({
           type="submit"
           className="button button-danger"
           message={t(
-            "Delete this material with all student answers? This cannot be undone.",
+            "Move this material with all student answers to the trash? You can restore it for 30 days.",
           )}
         >
           {t("Delete material")}

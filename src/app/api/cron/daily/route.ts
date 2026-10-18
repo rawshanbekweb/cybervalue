@@ -3,6 +3,7 @@ import { getDb } from "@/lib/db";
 import { telegramConfig } from "@/lib/telegram/api";
 import { daily } from "@/lib/telegram/events";
 import { markCronRun } from "@/lib/system";
+import { purgeExpiredTrash } from "@/lib/trash";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -31,6 +32,7 @@ export async function GET(request: Request) {
   await db.errorEvent.deleteMany({
     where: { resolvedAt: { lt: new Date(Date.now() - 90 * 86_400_000) } },
   });
+  await purgeExpiredTrash(db);
   await markCronRun(db);
   if (!telegramConfig())
     return Response.json({ skipped: "telegram not configured" }, { headers });

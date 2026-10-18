@@ -187,7 +187,7 @@ export default async function AdminStudentPage({
             type="submit"
             className="button button-danger"
             message={t(
-              "Delete this student with all answers and progress? This cannot be undone.",
+              "Move this student with all answers and progress to the trash? You can restore them for 30 days.",
             )}
           >
             {t("Delete student")}

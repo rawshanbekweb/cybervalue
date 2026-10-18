@@ -67,6 +67,9 @@ const ACTIONS: Record<string, string> = {
   "staff.delete": "Team member deleted",
   "group.rename": "Group renamed",
   "group.teachers": "Group teachers changed",
+  "trash.restore": "Restored from the trash",
+  "trash.purge": "Deleted from the trash",
+  "trash.empty": "Trash emptied",
 };
 
 export default async function AuditPage({

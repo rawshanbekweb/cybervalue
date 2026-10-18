@@ -62,6 +62,7 @@ export default async function AdminCmsLayout({
         { href: "/admin/status", label: t("System status") },
         { href: "/admin/errors", label: t("Errors"), badge: badges.errors },
         { href: "/admin/cleanup", label: t("Clean-up") },
+        { href: "/admin/trash", label: t("Trash") },
         { href: "/admin/team", label: t("Team") },
         { href: "/admin/audit", label: t("Audit log") },
         { href: "/admin/account", label: t("Account settings") },
@@ -81,6 +82,7 @@ export default async function AdminCmsLayout({
     "/admin/materials",
     "/admin/results",
     "/admin/assessments",
+    "/admin/trash",
     "/admin/account",
   ]);
   const nav = scope.owner

@@ -17,7 +17,7 @@ export async function cleanupAction(id: string): Promise<CleanupState> {
     return { error: "Too many changes. Try again shortly." };
   const db = getDb();
   if (!db) return { error: "Database is not configured." };
-  const count = await runCleanup(db, id);
+  const count = await runCleanup(db, id, session.user.id);
   await audit("cleanup.run", session.user.id, `${id}: ${count}`);
   revalidatePath("/admin", "layout");
   return { success: "Deleted {count} items.", values: { count } };

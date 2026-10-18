@@ -30,14 +30,17 @@ export async function deleteStoredFileAction(
       const images = await tx.contentImage.count({
         where: { path: file.path },
       });
-      if (resources || images) return false;
+      const trashed = await tx.trashItem.count({
+        where: { files: { has: file.path } },
+      });
+      if (resources || images || trashed) return false;
       await tx.storedFile.delete({ where: { id } });
       return file;
     });
     if (deleted === false)
       return {
         error:
-          "This file is attached to content. Remove its references and save those entries before deleting it.",
+          "This file is attached to content, or to an entry in the trash. Remove its references (or empty the trash) before deleting it.",
       };
     if (deleted) await audit("file.delete", session.user.id, deleted.name);
     revalidatePath("/admin/files");

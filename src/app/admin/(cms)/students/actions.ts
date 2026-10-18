@@ -9,6 +9,7 @@ import {
 } from "@/lib/staff-guard";
 import { audit } from "@/lib/audit";
 import { getDb } from "@/lib/db";
+import { trashPeople } from "@/lib/trash";
 import { limit } from "@/lib/rate-limit-db";
 import { hashSecret, newAccessCode } from "@/lib/student/access";
 import { newCertificateCode } from "@/lib/student/certificate";
@@ -144,8 +145,13 @@ export async function deleteStudentAction(id: string) {
   const session = await requireMember("student", id, "/admin/students");
   const db = getDb();
   if (!db) return;
-  const student = await db.student.delete({ where: { id } }).catch(() => null);
-  if (student) await audit("student.delete", session.user.id, student.name);
+  const student = await db.student.findUnique({
+    where: { id },
+    select: { name: true },
+  });
+  if (student && (await trashPeople(db, { students: [id] }, session.user.id)))
+    await audit("student.delete", session.user.id, student.name);
+  revalidatePath("/admin/trash");
   revalidatePath("/admin/students");
   redirect("/admin/students");
 }

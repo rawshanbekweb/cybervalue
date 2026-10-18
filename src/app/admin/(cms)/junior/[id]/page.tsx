@@ -219,7 +219,7 @@ export default async function AdminJuniorMemberPage({
             type="submit"
             className="button button-danger"
             message={t(
-              "Delete this member with all progress? This cannot be undone.",
+              "Move this member with all progress to the trash? You can restore them for 30 days.",
             )}
           >
             {t("Delete member")}

@@ -1,5 +1,6 @@
 import "server-only";
 import type { PrismaClient } from "@/generated/prisma/client";
+import { trashPeople } from "@/lib/trash";
 
 const DAY = 86_400_000;
 
@@ -27,20 +28,21 @@ export const CLEANUPS: Cleanup[] = [
     id: "never",
     title: "Accounts that never signed in",
     detail:
-      "Students, Junior and Kids members created more than 30 days ago whose code was never used.",
+      "Students, Junior and Kids members created more than 30 days ago whose code was never used. They go to the trash first.",
     people: true,
   },
   {
     id: "inactive",
     title: "Accounts inactive for 6 months",
     detail:
-      "No sign-in and no activity for 180 days. Their answers and progress are deleted too.",
+      "No sign-in and no activity for 180 days. They go to the trash with their answers and progress.",
     people: true,
   },
   {
     id: "blocked",
     title: "Blocked accounts",
-    detail: "Accounts whose access you turned off, with all their progress.",
+    detail:
+      "Accounts whose access you turned off. They go to the trash with all their progress.",
     people: true,
   },
   {
@@ -159,6 +161,7 @@ export async function cleanupPreview(db: PrismaClient, now = Date.now()) {
 export async function runCleanup(
   db: PrismaClient,
   id: CleanupId,
+  actorId: string | null = null,
   now = Date.now(),
 ) {
   const cleanup = CLEANUPS.find((c) => c.id === id)!;
@@ -169,26 +172,16 @@ export async function runCleanup(
       db.juniorMember.findMany({ where: f.member, select: { id: true } }),
       db.kidsMember.findMany({ where: f.member, select: { id: true } }),
     ]);
-    const s = students.map((r) => r.id);
-    const j = juniors.map((r) => r.id);
-    const k = kids.map((r) => r.id);
-    await db.$transaction([
-      db.telegramChat.deleteMany({
-        where: {
-          subject: {
-            in: [
-              ...s.flatMap((x) => [`student:${x}`, `parent:student:${x}`]),
-              ...j.map((x) => `parent:junior:${x}`),
-              ...k.map((x) => `parent:kids:${x}`),
-            ],
-          },
-        },
-      }),
-      db.student.deleteMany({ where: { id: { in: s } } }),
-      db.juniorMember.deleteMany({ where: { id: { in: j } } }),
-      db.kidsMember.deleteMany({ where: { id: { in: k } } }),
-    ]);
-    return s.length + j.length + k.length;
+    // People go to the trash, so a clean-up can be undone for 30 days.
+    return trashPeople(
+      db,
+      {
+        students: students.map((r) => r.id),
+        junior: juniors.map((r) => r.id),
+        kids: kids.map((r) => r.id),
+      },
+      actorId,
+    );
   }
   if (id === "live")
     return (await db.liveGame.deleteMany({ where: liveFilter(now) })).count;

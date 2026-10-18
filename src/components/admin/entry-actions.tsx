@@ -52,7 +52,7 @@ export function EntryActions({
           name="operation"
           value="delete"
           className="button button-danger"
-          message={`Permanently delete "${entry.title}"? This cannot be undone.`}
+          message={`Move "${entry.title}" to the trash? You can restore it for 30 days.`}
         >
           {t("Delete")}
         </ConfirmButton>

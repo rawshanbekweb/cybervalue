@@ -27,7 +27,7 @@ export function CleanupButton({
       onSubmit={(event) => {
         const question = people
           ? t(
-              "Delete {count} accounts for good with all their answers and progress? This cannot be undone.",
+              "Move {count} accounts with all their answers and progress to the trash? You can restore them for 30 days.",
               { count },
             )
           : t("Delete {count} items for good?", { count });
