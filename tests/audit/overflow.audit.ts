@@ -247,7 +247,7 @@ test("overflow audit", async ({ page }) => {
   const material = await studentPage
     .locator('a[href^="/student/m/"]')
     .first()
-    .getAttribute("href")
+    .getAttribute("href", { timeout: 3000 })
     .catch(() => null);
   const juniorPage = await page.context().browser()!.newPage({
     storageState: english,
