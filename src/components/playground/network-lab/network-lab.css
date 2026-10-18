@@ -7,8 +7,9 @@
   --nl-host-bg: #ffb82924;
   --nl-ok: #4fd1a5;
   --nl-bad: #ff8a8a;
-  /* Width comes from .container, so the lab lines up with the site. */
-  margin-block: 32px 80px;
+  /* Wide for the diagrams, but on the site's 40px edge. */
+  width: min(1540px, calc(100% - 80px));
+  margin: 32px auto 80px;
 }
 .network-lab code,
 .network-lab pre {
@@ -859,6 +860,7 @@
 }
 @media (max-width: 860px) {
   .network-lab {
+    width: calc(100% - 32px);
     margin-top: 20px;
   }
   .nl-hero,

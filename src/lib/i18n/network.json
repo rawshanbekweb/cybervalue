@@ -30,5 +30,6 @@
   "Opening a site: DNS → TCP → TLS → HTTP": "Sayt ochilganda nima bo‘ladi: DNS → TCP → TLS → HTTP",
   "How the web works": "Veb qanday ishlaydi",
   "HTTP requests and responses: send your own": "HTTP so‘rov va javob: o‘zingiz yuboring",
-  "Learn IP addresses, masks and gateways, then see DHCP, DNS and NAT at work in a network simulator, with checkpoint tests.": "IP manzil, mask va gateway’ni o‘rganing, so‘ng DHCP, DNS va NAT’ni tarmoq simulyatorida ko‘ring va nazorat testlarini topshiring."
+  "Learn IP addresses, masks and gateways, then see DHCP, DNS and NAT at work in a network simulator, with checkpoint tests.": "IP manzil, mask va gateway’ni o‘rganing, so‘ng DHCP, DNS va NAT’ni tarmoq simulyatorida ko‘ring va nazorat testlarini topshiring.",
+  "Network calculation": "Tarmoq hisobi"
 }
