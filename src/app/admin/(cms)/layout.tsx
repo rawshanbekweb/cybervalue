@@ -32,6 +32,7 @@ export default async function AdminCmsLayout({
         { href: "/admin/telegram", label: "Telegram" },
         { href: "/admin/users", label: t("All users") },
         { href: "/admin/students", label: t("Students") },
+        { href: "/admin/kids", label: "Academy Kids" },
         { href: "/admin/junior", label: "Academy Junior" },
         {
           href: "/admin/materials",

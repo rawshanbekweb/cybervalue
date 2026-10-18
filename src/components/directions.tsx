@@ -3,6 +3,7 @@ import {
   ArrowUpRight,
   Check,
   FlaskConical,
+  Gamepad2,
   GraduationCap,
   type LucideIcon,
 } from "lucide-react";
@@ -11,7 +12,7 @@ import type { SiteConfig } from "@/lib/site-config";
 import "./directions.css";
 
 type Direction = {
-  id: "junior" | "academy";
+  id: "kids" | "junior" | "academy";
   icon: LucideIcon;
   eyebrow: string;
   title: string;
@@ -22,7 +23,7 @@ type Direction = {
   extra?: { href: string; label: string };
 };
 
-// The site's two directions, side by side: who each is for, what is inside
+// The site's directions, youngest first, side by side: who each is for, what is inside
 // and one clear way in. Shown on the home page; sections an admin switched
 // off are left out.
 export function Directions({
@@ -36,9 +37,25 @@ export function Directions({
 }) {
   const directions: Direction[] = [
     {
+      id: "kids",
+      icon: Gamepad2,
+      eyebrow: t("FOR CHILDREN · AGES 7–10"),
+      title: t("Cybervalue Academy Kids"),
+      lead: t(
+        "Change the code of a game and watch it obey: the first taste of hacking.",
+      ),
+      points: [
+        t("Two games: Space escape and Robot jump"),
+        t("Game code in simple Uzbek words"),
+        t("A secret terminal with cheat codes"),
+      ],
+      href: "/kids",
+      action: t("Enter Kids"),
+    },
+    {
       id: "junior",
       icon: GraduationCap,
-      eyebrow: t("FOR SCHOOL STUDENTS · AGES 10–14"),
+      eyebrow: t("FOR SCHOOL STUDENTS · AGES 11–14"),
       title: t("Cybervalue Academy Junior"),
       lead: t(
         "The first step into cybersecurity. No experience and no coding needed.",

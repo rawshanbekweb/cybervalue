@@ -3730,3 +3730,12 @@ select.admin-input {
 .admin-form p + .button {
   margin-top: 6px;
 }
+.admin-code-block {
+  margin: 8px 0 0;
+  padding: 12px;
+  border-radius: 6px;
+  background: #0a0a0c;
+  font: 12px/1.6 var(--font-mono);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

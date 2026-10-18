@@ -54,6 +54,11 @@ const ACTIONS: Record<string, string> = {
   "telegram.unlink": "Telegram chat unlinked",
   "telegram.broadcast": "Telegram message sent",
   "data.export": "Data exported",
+  "kids.create": "Kids members added",
+  "kids.update": "Kids member edited",
+  "kids.code_reset": "Kids access code renewed",
+  "kids.progress_reset": "Kids progress reset",
+  "kids.delete": "Kids member deleted",
 };
 
 export default async function AuditPage({

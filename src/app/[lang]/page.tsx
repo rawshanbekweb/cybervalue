@@ -75,7 +75,7 @@ export default async function Home() {
             <p>
               {lead ||
                 t(
-                  "Two paths, one goal: understand how systems work and how to protect them. Pick the one that fits you.",
+                  "Three paths, one goal: understand how systems work and how to protect them. Pick the one that fits your age.",
                 )}
             </p>
             <div className="cv-hero-actions">
@@ -101,12 +101,13 @@ export default async function Home() {
             <div>
               <span className="eyebrow">{t("CHOOSE YOUR PATH")}</span>
               <h2 id="paths-title">
-                {t("Two directions.")} <span>{t("One way of learning.")}</span>
+                {t("From the first game to real labs.")}{" "}
+                <span>{t("One way of learning.")}</span>
               </h2>
             </div>
             <p>
               {t(
-                "Each path starts from zero and grows with you. Your teacher gives you an access code for Junior or the student portal.",
+                "Each path starts from zero and grows with you: Kids, then Junior, then the Academy. Your teacher gives you an access code.",
               )}
             </p>
           </div>

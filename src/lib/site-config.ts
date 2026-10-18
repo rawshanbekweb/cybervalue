@@ -7,7 +7,8 @@
 export type Bilingual = { uz: string; en: string };
 
 export const SECTIONS = [
-  // The two directions.
+  // The directions, youngest first.
+  { id: "kids", group: "main", label: "Academy Kids", href: "/kids" },
   {
     id: "junior",
     group: "main",

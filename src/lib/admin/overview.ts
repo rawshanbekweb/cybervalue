@@ -32,6 +32,8 @@ export async function adminOverview(db: PrismaClient, now = Date.now()) {
     juniorsActive,
     telegram,
     live,
+    kids,
+    kidsActive,
   ] = await Promise.all([
     adminBadges(db),
     db.studentSubmission.findMany({
@@ -68,6 +70,10 @@ export async function adminOverview(db: PrismaClient, now = Date.now()) {
     }),
     db.telegramChat.count(),
     db.liveGame.count({ where: { state: { not: "finished" } } }),
+    db.kidsMember.count({ where: { active: true } }),
+    db.kidsMember.count({
+      where: { active: true, lastActiveAt: { gte: week } },
+    }),
   ]);
   return {
     ...badges,
@@ -83,5 +89,7 @@ export async function adminOverview(db: PrismaClient, now = Date.now()) {
     juniorsActive,
     telegram,
     live,
+    kids,
+    kidsActive,
   };
 }

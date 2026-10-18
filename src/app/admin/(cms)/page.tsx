@@ -186,6 +186,15 @@ export default async function AdminDashboardPage() {
                 {t("submissions in the last 7 days")}
               </span>
             </Link>
+            <Link href="/admin/kids" className="admin-card">
+              <span className="eyebrow">Academy Kids</span>
+              <strong>{overview.kids}</strong>
+              <span className="muted">
+                {t("{active} active this week", {
+                  active: overview.kidsActive,
+                })}
+              </span>
+            </Link>
             <Link href="/admin/junior" className="admin-card">
               <span className="eyebrow">Academy Junior</span>
               <strong>{overview.juniors}</strong>
