@@ -19,6 +19,7 @@ import { saveKidsAction } from "@/app/[lang]/kids/actions";
 import type { GameApi } from "./game-types";
 import { SpaceGame } from "./space-game";
 import { RobotGame } from "./robot-game";
+import { SnakeGame } from "./snake-game";
 import "./kids.css";
 
 type Line = { kind: "in" | "out" | "ok" | "err"; text: string };
@@ -175,9 +176,16 @@ export function GameLab({
     controls:
       gameId === "kosmos"
         ? t("Move with ← → arrows or A and D")
-        : t("Jump with Space, ↑ or a tap"),
+        : gameId === "robot"
+          ? t("Jump with Space, ↑ or a tap")
+          : t("Steer with the arrows, WASD or a swipe"),
   };
-  const Game = gameId === "kosmos" ? SpaceGame : RobotGame;
+  const Game =
+    gameId === "kosmos"
+      ? SpaceGame
+      : gameId === "robot"
+        ? RobotGame
+        : SnakeGame;
   const lineCount = draft.split("\n").length;
   const badLines = new Set(draftProblems.map((p) => p.line));
 

@@ -22,18 +22,24 @@ export type TelegramState =
 // Turns a learner's parent report link on (a new token, which also replaces
 // an old one) or off.
 export async function setReportLinkAction(
-  kind: "student" | "junior",
+  kind: "student" | "junior" | "kids",
   id: string,
   on: boolean,
 ) {
-  const session = await requireAdmin(
-    kind === "student" ? `/admin/students/${id}` : `/admin/junior/${id}`,
-  );
+  const page =
+    kind === "student"
+      ? `/admin/students/${id}`
+      : kind === "kids"
+        ? `/admin/kids/${id}`
+        : `/admin/junior/${id}`;
+  const session = await requireAdmin(page);
   const db = getDb();
   if (!db) return;
   const data = { reportToken: on ? newReportToken() : null };
   if (kind === "student")
     await db.student.update({ where: { id }, data }).catch(() => null);
+  else if (kind === "kids")
+    await db.kidsMember.update({ where: { id }, data }).catch(() => null);
   else await db.juniorMember.update({ where: { id }, data }).catch(() => null);
   if (!on)
     await db.telegramChat.deleteMany({
@@ -44,9 +50,7 @@ export async function setReportLinkAction(
     session.user.id,
     `${kind}:${id}:${on ? "on" : "off"}`,
   );
-  revalidatePath(
-    kind === "student" ? `/admin/students/${id}` : `/admin/junior/${id}`,
-  );
+  revalidatePath(page);
 }
 
 export async function connectWebhookAction(): Promise<TelegramState> {

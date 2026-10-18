@@ -51,7 +51,7 @@ export default async function AdminTelegramPage() {
         })
       ).map((s) => s.group)
     : [];
-  const [students, juniors, users] = db
+  const [students, juniors, users, kids] = db
     ? await Promise.all([
         db.student.findMany({
           where: {
@@ -67,13 +67,18 @@ export default async function AdminTelegramPage() {
           where: { id: { in: ids("teacher:") } },
           select: { id: true, email: true },
         }),
+        db.kidsMember.findMany({
+          where: { id: { in: ids("parent:kids:") } },
+          select: { id: true, name: true },
+        }),
       ])
-    : [[], [], []];
+    : [[], [], [], []];
   const nameOf = (subject: string) => {
     const id = subject.split(":").at(-1)!;
     return (
       students.find((s) => s.id === id)?.name ??
       juniors.find((j) => j.id === id)?.name ??
+      kids.find((k) => k.id === id)?.name ??
       users.find((u) => u.id === id)?.email ??
       "—"
     );

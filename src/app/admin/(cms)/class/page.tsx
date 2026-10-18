@@ -34,13 +34,18 @@ export default async function AdminClassPage({
   const requested = typeof query.group === "string" ? query.group : "";
   const group = groups.includes(requested) ? requested : "";
   const now = new Date().getTime();
-  const [{ rows, classCompletion, assignments }, juniors] = await Promise.all([
-    loadClass(db, group, now),
-    db.juniorMember.findMany({
-      where: { active: true, ...(group ? { group } : {}) },
-      select: { xp: true, lastActiveAt: true },
-    }),
-  ]);
+  const [{ rows, classCompletion, assignments }, juniors, kids] =
+    await Promise.all([
+      loadClass(db, group, now),
+      db.juniorMember.findMany({
+        where: { active: true, ...(group ? { group } : {}) },
+        select: { xp: true, lastActiveAt: true },
+      }),
+      db.kidsMember.findMany({
+        where: { active: true, ...(group ? { group } : {}) },
+        select: { xp: true, lastActiveAt: true },
+      }),
+    ]);
   const week = now - 7 * DAY;
   const active = rows.filter(
     (r) => r.standing.lastActive && r.standing.lastActive.getTime() >= week,
@@ -82,6 +87,9 @@ export default async function AdminClassPage({
     );
   const juniorActive = juniors.filter(
     (j) => j.lastActiveAt && j.lastActiveAt.getTime() >= week,
+  ).length;
+  const kidsActive = kids.filter(
+    (k) => k.lastActiveAt && k.lastActiveAt.getTime() >= week,
   ).length;
   const exportHref = `/admin/class/export${group ? `?group=${encodeURIComponent(group)}` : ""}`;
 
@@ -188,6 +196,21 @@ export default async function AdminClassPage({
             })}
           </span>
         </Link>
+        {kids.length > 0 && (
+          <Link
+            href={`/admin/kids${group ? `?group=${encodeURIComponent(group)}` : ""}`}
+            className="admin-card"
+          >
+            <span className="eyebrow">Academy Kids</span>
+            <strong>{kids.length}</strong>
+            <span className="muted">
+              {t("{active} active this week · {xp} XP on average", {
+                active: kidsActive,
+                xp: avg(kids.map((k) => k.xp)) ?? 0,
+              })}
+            </span>
+          </Link>
+        )}
       </div>
 
       <h2>{t("Activity, last 14 days")}</h2>

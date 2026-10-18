@@ -6,6 +6,8 @@ import { getDb } from "@/lib/db";
 import { formatDate } from "@/components/ui";
 import { ConfirmButton } from "@/components/admin/confirm-button";
 import { KidEditForm, ResetKidCodeForm } from "@/components/admin/kids-forms";
+import { ParentAccess } from "@/components/admin/parent-access";
+import { PromoteKidForm } from "@/components/admin/promote-kid";
 import { GAME_IDS, GAMES, missionKey } from "@/lib/kids/games";
 import { kidsLevel, restoreKidsProgress } from "@/lib/kids/progress";
 import { deleteKidAction, resetKidProgressAction } from "../actions";
@@ -19,6 +21,16 @@ export default async function AdminKidPage({
   await requireAdmin(`/admin/kids/${id}`);
   const member = await getDb()?.kidsMember.findUnique({ where: { id } });
   if (!member) notFound();
+  const db = getDb()!;
+  const [parentChats, promoted] = await Promise.all([
+    db.telegramChat.count({ where: { subject: `parent:kids:${member.id}` } }),
+    member.juniorId
+      ? db.juniorMember.findUnique({
+          where: { id: member.juniorId },
+          select: { id: true, name: true },
+        })
+      : null,
+  ]);
   const progress = restoreKidsProgress(member.progress);
   const level = kidsLevel(member.xp);
   return (
@@ -72,6 +84,19 @@ export default async function AdminKidPage({
           </section>
         ))}
       </div>
+      <ParentAccess
+        kind="kids"
+        id={member.id}
+        token={member.reportToken}
+        chats={parentChats}
+        t={t}
+      />
+      <PromoteKidForm
+        id={member.id}
+        group={member.group}
+        xp={member.xp}
+        promoted={promoted}
+      />
       <KidEditForm
         id={member.id}
         name={member.name}

@@ -28,6 +28,8 @@ const LINKED: Record<string, string> = {
     "Ulandi. Har dushanba farzandingizning haftalik natijalari shu yerga keladi.",
   "parent:junior":
     "Ulandi. Har dushanba farzandingizning Academy Junior natijalari shu yerga keladi.",
+  "parent:kids":
+    "Ulandi. Har dushanba farzandingizning Academy Kids natijalari shu yerga keladi.",
 };
 
 /**
@@ -77,9 +79,13 @@ export async function handleUpdate(
           ? await db.student.count({
               where: { id: link.id, reportToken: { not: null } },
             })
-          : await db.juniorMember.count({
-              where: { id: link.id, reportToken: { not: null } },
-            });
+          : link.kind === "j"
+            ? await db.juniorMember.count({
+                where: { id: link.id, reportToken: { not: null } },
+              })
+            : await db.kidsMember.count({
+                where: { id: link.id, reportToken: { not: null } },
+              });
   if (!exists)
     return {
       chatId,

@@ -18,7 +18,7 @@ export function ParentAccess({
   chats,
   t,
 }: {
-  kind: "student" | "junior";
+  kind: "student" | "junior" | "kids";
   id: string;
   token: string | null;
   chats: number;
@@ -33,7 +33,11 @@ export function ParentAccess({
     token && config && secret
       ? deepLink(
           config.username,
-          signLink(secret, kind === "student" ? "p" : "j", id),
+          signLink(
+            secret,
+            kind === "student" ? "p" : kind === "kids" ? "k" : "j",
+            id,
+          ),
         )
       : null;
   return (

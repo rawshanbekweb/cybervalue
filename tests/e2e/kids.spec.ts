@@ -113,7 +113,15 @@ test.describe("Academy Kids", () => {
       "Turbo engine",
     );
     await page.goto("/kids");
-    await expect(page.getByText("1 of 8 missions")).toBeVisible();
+    await expect(page.getByText("1 of 8 missions").first()).toBeVisible();
+
+    // The third game opens with its own code.
+    await page.getByRole("link", { name: /Snake/ }).click();
+    await expect(page).toHaveURL(/\/kids\/ilon$/);
+    await expect(page.getByRole("textbox", { name: "Game code" })).toHaveValue(
+      /devordan_otish = yo'q/,
+    );
+    await expect(page.locator("canvas")).toBeVisible();
   });
 
   test("the admin creates children with codes", async ({ page }) => {
@@ -139,5 +147,62 @@ test.describe("Academy Kids", () => {
     await expect(page.getByRole("heading", { level: 1, name })).toBeVisible();
     await expect(page.getByText("Best score: 0").first()).toBeVisible();
     await audit(page, "admin kid page");
+
+    // A parent report link opens the Kids report.
+    await page.getByRole("button", { name: "Create report link" }).click();
+    const reportUrl = await page.getByLabel("Report link").inputValue();
+    const parent = await page.context().newPage();
+    await parent.goto(new URL(reportUrl).pathname);
+    await expect(
+      parent.getByText("Academy Kids · progress report"),
+    ).toBeVisible();
+    await expect(parent.getByText("Snake")).toBeVisible();
+    await parent.close();
+
+    // Moving on to Academy Junior gives a Junior code.
+    await page
+      .getByRole("button", { name: "Create the Junior account" })
+      .click();
+    await expect(page.getByRole("status")).toContainText(
+      "Junior account created",
+    );
+    await page.reload();
+    await expect(page.getByText("Moved to Academy Junior:")).toBeVisible();
+
+    // The admin search finds the child.
+    await page.goto(`/admin/search?q=${encodeURIComponent(name)}`);
+    await expect(page.getByRole("link", { name }).first()).toBeVisible();
+  });
+
+  test("the admin deletes chosen users and sees the clean-up page", async ({
+    page,
+  }) => {
+    test.skip(!email || !password, "Requires an admin account");
+    const name = `Gone ${Date.now().toString(36)}`;
+    await createKid(name);
+    await page.goto("/admin/login");
+    await page.getByLabel("Email").fill(email!);
+    await page.getByLabel("Password").fill(password!);
+    await page.getByRole("button", { name: "Sign in" }).click();
+    await expect(page).toHaveURL(/\/admin$/);
+    await page.goto(`/admin/users?kind=kids&q=${encodeURIComponent(name)}`);
+    await page.getByRole("checkbox", { name: `Select ${name}` }).check();
+    await page.locator("#bulk-action").selectOption("delete");
+    const confirm = page.getByLabel("Type DELETE to confirm");
+    await confirm.fill("DELETE");
+    page.once("dialog", (dialog) => dialog.accept());
+    await page.getByRole("button", { name: "Delete", exact: true }).click();
+    await expect(page.getByRole("status")).toContainText("1 users updated");
+    await page.goto(`/admin/users?kind=kids&q=${encodeURIComponent(name)}`);
+    await expect(page.getByText("No users match these filters.")).toBeVisible();
+
+    await page.goto("/admin/cleanup");
+    await expect(
+      page.getByRole("heading", { level: 1, name: "Clean-up" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Expired sign-ins" }),
+    ).toBeVisible();
+    await audit(page, "admin clean-up");
   });
 });

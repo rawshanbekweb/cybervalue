@@ -625,6 +625,10 @@ model KidsMember {
   active       Boolean       @default(true)
   progress     Json          @default("{}")
   xp           Int           @default(0)
+  // Opens the read-only progress page for parents: /report/<token>.
+  reportToken  String?       @unique
+  // The Academy Junior member this child moved on to.
+  juniorId     String?       @unique
   lastLoginAt  DateTime?     @db.Timestamptz(3)
   lastActiveAt DateTime?     @db.Timestamptz(3)
   createdAt    DateTime      @default(now())

@@ -107,6 +107,21 @@ export function parentJuniorText(a: {
   ].join("\n");
 }
 
+export function parentKidsText(a: {
+  name: string;
+  level: string;
+  xp: number;
+  missions: string;
+  url: string;
+}) {
+  return [
+    `<b>${e(a.name)}: Academy Kids haftalik hisoboti</b>`,
+    `Daraja: ${e(a.level)} · ${a.xp} XP`,
+    `Bajarilgan o‘yin topshiriqlari: ${a.missions}`,
+    link(a.url, "To‘liq hisobot"),
+  ].join("\n");
+}
+
 export function certificateText(a: { title: string; url: string }) {
   return [
     `<b>Tabriklaymiz!</b> Siz “${e(a.title)}” sertifikatini oldingiz.`,

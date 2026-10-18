@@ -2,7 +2,12 @@ import "server-only";
 import type { PrismaClient } from "@/generated/prisma/client";
 import { createTranslator } from "../i18n";
 import { site } from "../site";
-import { reportPath, studentReport, juniorReport } from "../reports";
+import {
+  kidsReport,
+  reportPath,
+  studentReport,
+  juniorReport,
+} from "../reports";
 import { assignmentResults, loadAssignments } from "../student/assignment-data";
 import { formatDue, targetHref, targetName } from "../student/assignments";
 import { WEEKLY_GOAL, weekIndex } from "../student/xp";
@@ -10,6 +15,7 @@ import {
   missedText,
   newAssignmentText,
   parentJuniorText,
+  parentKidsText,
   parentStudentText,
   certificateText,
   practiceText,
@@ -155,16 +161,13 @@ export async function parentText(
   id: string,
   now: number,
 ) {
+  const select = { reportToken: true };
   const token = (
     kind === "student"
-      ? await db.student.findUnique({
-          where: { id },
-          select: { reportToken: true },
-        })
-      : await db.juniorMember.findUnique({
-          where: { id },
-          select: { reportToken: true },
-        })
+      ? await db.student.findUnique({ where: { id }, select })
+      : kind === "kids"
+        ? await db.kidsMember.findUnique({ where: { id }, select })
+        : await db.juniorMember.findUnique({ where: { id }, select })
   )?.reportToken;
   if (!token) return null;
   const link = absolute(reportPath(token));
@@ -184,6 +187,17 @@ export async function parentText(
       available: s.available,
       average: s.average,
       missed: report.assignments.filter((a) => a.status === "missed").length,
+      url: link,
+    });
+  }
+  if (kind === "kids") {
+    const report = await kidsReport(db, token);
+    if (!report) return null;
+    return parentKidsText({
+      name: report.name,
+      level: report.level.uz,
+      xp: report.xp,
+      missions: `${report.missions}/${report.missionTotal}`,
       url: link,
     });
   }

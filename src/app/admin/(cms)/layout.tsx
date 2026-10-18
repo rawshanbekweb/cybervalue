@@ -59,6 +59,7 @@ export default async function AdminCmsLayout({
       items: [
         { href: "/admin/status", label: t("System status") },
         { href: "/admin/errors", label: t("Errors"), badge: badges.errors },
+        { href: "/admin/cleanup", label: t("Clean-up") },
         { href: "/admin/audit", label: t("Audit log") },
         { href: "/admin/account", label: t("Account settings") },
       ],
@@ -70,6 +71,25 @@ export default async function AdminCmsLayout({
         <Link href="/admin" className="admin-brand">
           {t("cybervalue admin")}
         </Link>
+        <form
+          method="get"
+          action="/admin/search"
+          role="search"
+          className="admin-sidebar-search"
+        >
+          <label htmlFor="admin-global-search" className="visually-hidden">
+            {t("Search the admin")}
+          </label>
+          <input
+            id="admin-global-search"
+            name="q"
+            type="search"
+            className="admin-input"
+            placeholder={t("Search people, materials…")}
+            minLength={2}
+            maxLength={80}
+          />
+        </form>
         <AdminNav groups={groups} />
         <div className="admin-sidebar-footer">
           <span className="muted">{session.user.email}</span>

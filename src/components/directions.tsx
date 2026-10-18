@@ -45,7 +45,7 @@ export function Directions({
         "Change the code of a game and watch it obey: the first taste of hacking.",
       ),
       points: [
-        t("Two games: Space escape and Robot jump"),
+        t("Three games: Space escape, Robot jump and Snake"),
         t("Game code in simple Uzbek words"),
         t("A secret terminal with cheat codes"),
       ],

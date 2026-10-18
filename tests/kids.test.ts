@@ -112,6 +112,12 @@ test("every code mission passes with its solution and not without", () => {
     "robot:rang": 'robot_rangi = "yashil"',
     "robot:muz": "dushman_tezligi = 0",
     "robot:agar": "agar ochko > 30 bo'lsa yugurish_tezligi = 9",
+    "ilon:tez": "tezlik = 9",
+    "ilon:uzun": "uzunlik = 12",
+    "ilon:rang": 'ilon_rangi = "binafsha"',
+    "ilon:devor": "devordan_otish = ha",
+    "ilon:bog": "olmalar_soni = 3",
+    "ilon:agar": `agar ochko > 50 bo'lsa ilon_rangi = "oltin"`,
   };
   for (const game of Object.values(GAMES))
     for (const mission of game.missions) {
@@ -171,10 +177,14 @@ test("stored progress is cleaned and XP comes from finished missions", () => {
     code: { kosmos: "tezlik = 9", robot: 7 },
   });
   assert.deepEqual(progress.done, ["kosmos:turbo", "robot:agar"]);
-  assert.deepEqual(progress.best, { kosmos: 99, robot: 0 });
-  assert.deepEqual(progress.code, { kosmos: "tezlik = 9", robot: "" });
+  assert.deepEqual(progress.best, { kosmos: 99, robot: 0, ilon: 0 });
+  assert.deepEqual(progress.code, {
+    kosmos: "tezlik = 9",
+    robot: "",
+    ilon: "",
+  });
   assert.equal(kidsXp(progress), 20 + 30);
   assert.equal(kidsLevel(0).level.title.uz, "Yangi xaker");
   assert.equal(kidsLevel(MAX_XP).next, null);
-  assert.equal(MAX_XP, 360);
+  assert.equal(MAX_XP, 540);
 });

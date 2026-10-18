@@ -5,8 +5,12 @@ import { formatDate } from "@/components/ui";
 import { UsersTable, type UserRow } from "@/components/admin/users-table";
 import { LEVEL_LABEL, isLevel } from "@/lib/student/levels";
 
-const KINDS = ["all", "student", "junior"] as const;
-const STATUSES = ["all", "active", "blocked"] as const;
+const KINDS = ["all", "student", "junior", "kids"] as const;
+const STATUSES = ["all", "active", "blocked", "never", "inactive"] as const;
+const DAY = 86_400_000;
+// "Inactive" means nothing at all for this long: candidates for clean-up.
+const INACTIVE_DAYS = 60;
+const since = () => new Date(Date.now() - INACTIVE_DAYS * DAY);
 
 export default async function AdminUsersPage({
   searchParams,
@@ -20,14 +24,43 @@ export default async function AdminUsersPage({
   const kind = KINDS.find((k) => k === query.kind) ?? "all";
   const status = STATUSES.find((s) => s === query.status) ?? "all";
   const group = typeof query.group === "string" ? query.group : "";
-  const where = {
+  const cutoff = since();
+  const base = {
     ...(q ? { name: { contains: q, mode: "insensitive" as const } } : {}),
     ...(group ? { group } : {}),
-    ...(status === "all" ? {} : { active: status === "active" }),
+    ...(status === "active" || status === "blocked"
+      ? { active: status === "active" }
+      : {}),
   };
-  const [students, juniors, groupRows] = db
+  // Students only record sign-ins; members also record activity.
+  const where = {
+    ...base,
+    ...(status === "never" ? { lastLoginAt: null } : {}),
+    ...(status === "inactive"
+      ? {
+          createdAt: { lt: cutoff },
+          OR: [{ lastLoginAt: null }, { lastLoginAt: { lt: cutoff } }],
+        }
+      : {}),
+  };
+  const memberWhere = {
+    ...base,
+    ...(status === "never" ? { lastLoginAt: null } : {}),
+    ...(status === "inactive"
+      ? {
+          createdAt: { lt: cutoff },
+          AND: [
+            { OR: [{ lastLoginAt: null }, { lastLoginAt: { lt: cutoff } }] },
+            {
+              OR: [{ lastActiveAt: null }, { lastActiveAt: { lt: cutoff } }],
+            },
+          ],
+        }
+      : {}),
+  };
+  const [students, juniors, kidsRows, groupRows] = db
     ? await Promise.all([
-        kind === "junior"
+        kind === "junior" || kind === "kids"
           ? []
           : db.student.findMany({
               where,
@@ -44,10 +77,10 @@ export default async function AdminUsersPage({
                 _count: { select: { progress: true, submissions: true } },
               },
             }),
-        kind === "student"
+        kind === "student" || kind === "kids"
           ? []
           : db.juniorMember.findMany({
-              where,
+              where: memberWhere,
               orderBy: { name: "asc" },
               take: 1000,
               select: {
@@ -61,15 +94,35 @@ export default async function AdminUsersPage({
                 lastLoginAt: true,
               },
             }),
+        kind === "student" || kind === "junior"
+          ? []
+          : db.kidsMember.findMany({
+              where: memberWhere,
+              orderBy: { name: "asc" },
+              take: 1000,
+              select: {
+                id: true,
+                name: true,
+                group: true,
+                active: true,
+                xp: true,
+                lastActiveAt: true,
+                lastLoginAt: true,
+              },
+            }),
         Promise.all([
           db.student.findMany({ distinct: ["group"], select: { group: true } }),
           db.juniorMember.findMany({
             distinct: ["group"],
             select: { group: true },
           }),
+          db.kidsMember.findMany({
+            distinct: ["group"],
+            select: { group: true },
+          }),
         ]),
       ])
-    : [[], [], [[], []]];
+    : [[], [], [], [[], [], []]];
   const groups = [
     ...new Set(
       groupRows
@@ -120,6 +173,19 @@ export default async function AdminUsersPage({
         lastActive: last ? formatDate(last, locale) : null,
       };
     }),
+    ...kidsRows.map((k) => {
+      const last = k.lastActiveAt ?? k.lastLoginAt;
+      return {
+        key: `k:${k.id}`,
+        kind: "kids" as const,
+        href: `/admin/kids/${k.id}`,
+        name: k.name,
+        group: k.group,
+        status: k.active ? ("active" as const) : ("blocked" as const),
+        detail: `${k.xp} XP`,
+        lastActive: last ? formatDate(last, locale) : null,
+      };
+    }),
   ].sort((a, b) => a.name.localeCompare(b.name));
 
   return (
@@ -129,8 +195,12 @@ export default async function AdminUsersPage({
           <h1>{t("All users")}</h1>
           <p className="muted">
             {t(
-              "{students} students and {juniors} Academy Junior members. Select rows to move them to a group, allow or block access, or sign them out.",
-              { students: students.length, juniors: juniors.length },
+              "{students} students, {juniors} Academy Junior and {kids} Academy Kids members. Select rows to move them to a group, allow or block access, sign them out or delete them.",
+              {
+                students: students.length,
+                juniors: juniors.length,
+                kids: kidsRows.length,
+              },
             )}
           </p>
         </div>
@@ -157,6 +227,7 @@ export default async function AdminUsersPage({
             <option value="all">{t("Everyone")}</option>
             <option value="student">{t("Students")}</option>
             <option value="junior">Academy Junior</option>
+            <option value="kids">Academy Kids</option>
           </select>
         </div>
         <div className="admin-field">
@@ -186,6 +257,10 @@ export default async function AdminUsersPage({
             <option value="all">{t("Any status")}</option>
             <option value="active">{t("Access allowed")}</option>
             <option value="blocked">{t("Blocked")}</option>
+            <option value="never">{t("Never signed in")}</option>
+            <option value="inactive">
+              {t("Inactive for {days} days", { days: INACTIVE_DAYS })}
+            </option>
           </select>
         </div>
         <button type="submit" className="button button-secondary">
