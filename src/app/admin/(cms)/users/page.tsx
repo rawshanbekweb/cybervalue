@@ -1,5 +1,5 @@
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
-import { requireAdmin } from "@/lib/auth";
+import { requireOwner } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { formatDate } from "@/components/ui";
 import { UsersTable, type UserRow } from "@/components/admin/users-table";
@@ -17,7 +17,7 @@ export default async function AdminUsersPage({
 }: PageProps<"/admin/users">) {
   const t = await getAdminTranslator();
   const locale = await getAdminLocale();
-  await requireAdmin("/admin/users");
+  await requireOwner("/admin/users");
   const db = getDb();
   const query = await searchParams;
   const q = typeof query.q === "string" ? query.q.trim().slice(0, 80) : "";

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
-import { requireAdmin } from "@/lib/auth";
+import { requireOwner } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { site } from "@/lib/site";
 import { siteIndexable } from "@/lib/site-config-server";
@@ -15,7 +15,7 @@ type Check = { label: string; ok: boolean; note: string };
 export default async function AdminStatusPage() {
   const t = await getAdminTranslator();
   const locale = await getAdminLocale();
-  await requireAdmin("/admin/status");
+  await requireOwner("/admin/status");
   const db = getDb();
   const now = new Date().getTime();
   let database: {

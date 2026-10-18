@@ -1,6 +1,7 @@
 "use server";
 import { revalidatePath } from "next/cache";
-import { requireAdmin } from "@/lib/auth";
+import { requireStaff } from "@/lib/auth";
+import { requireMember } from "@/lib/staff-guard";
 import { audit } from "@/lib/audit";
 import { getDb } from "@/lib/db";
 import { isLevel } from "@/lib/student/levels";
@@ -9,7 +10,7 @@ import { loadResults, resolveGroup } from "@/lib/student/results-data";
 // Places one student at a level ("" clears it). The level decides which
 // level-restricted materials the student sees from their next page load.
 export async function setStudentLevelAction(studentId: string, level: string) {
-  const session = await requireAdmin("/admin/results");
+  const session = await requireMember("student", studentId, "/admin/results");
   if (level !== "" && !isLevel(level)) return;
   const db = getDb();
   if (!db) return;
@@ -26,10 +27,10 @@ export async function setStudentLevelAction(studentId: string, level: string) {
 // Confirms the suggestion for every student of the selected group who has
 // none yet; a level the teacher already set is never overwritten.
 export async function applySuggestedLevelsAction(form: FormData) {
-  const session = await requireAdmin("/admin/results");
+  const { session, scope } = await requireStaff("/admin/results");
   const db = getDb();
   if (!db) return;
-  const { group } = await resolveGroup(db, form.get("group"));
+  const { group } = await resolveGroup(db, form.get("group"), scope);
   const { rows } = await loadResults(db, group);
   const pending = rows.filter((r) => !r.student.level && r.suggested);
   for (const row of pending) {

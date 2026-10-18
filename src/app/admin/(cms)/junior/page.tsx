@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
-import { requireAdmin } from "@/lib/auth";
+import { groupWhere, requireStaff } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { formatDate } from "@/components/ui";
 import { CreateJuniorsForm } from "@/components/admin/junior-forms";
@@ -15,13 +15,14 @@ export default async function AdminJuniorPage({
 }: PageProps<"/admin/junior">) {
   const t = await getAdminTranslator();
   const locale = await getAdminLocale();
-  await requireAdmin("/admin/junior");
+  const { scope } = await requireStaff("/admin/junior");
   const query = await searchParams;
   const group = typeof query.group === "string" ? query.group : "";
   const sort = SORTS.find((s) => s === query.sort) ?? "xp";
   const db = getDb();
   const members = db
     ? await db.juniorMember.findMany({
+        where: groupWhere(scope),
         orderBy: [{ group: "asc" }, { name: "asc" }],
         take: 2000,
         select: {

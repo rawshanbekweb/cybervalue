@@ -1,4 +1,5 @@
-import { getSession } from "@/lib/auth";
+import { getSession, scopeOf } from "@/lib/auth";
+import { groupLabel } from "@/lib/staff";
 import { getDb } from "@/lib/db";
 import { createTranslator, localeCookie, resolveLocale } from "@/lib/i18n";
 import { loadResults, resolveGroup } from "@/lib/student/results-data";
@@ -9,15 +10,17 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
   const headers = { "Cache-Control": "no-store", "X-Robots-Tag": "noindex" };
-  if (!(await getSession()))
-    return new Response("Unauthorized", { status: 401, headers });
+  const session = await getSession();
+  if (!session) return new Response("Unauthorized", { status: 401, headers });
   const db = getDb();
   if (!db) return new Response("Unavailable", { status: 503, headers });
-  const { group } = await resolveGroup(
+  const picked = await resolveGroup(
     db,
     request.nextUrl.searchParams.get("group"),
+    scopeOf(session),
   );
-  const results = await loadResults(db, group);
+  const group = groupLabel(picked.group);
+  const results = await loadResults(db, picked.group);
   const t = createTranslator(
     resolveLocale(request.cookies.get(localeCookie)?.value),
   );

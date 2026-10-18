@@ -1,4 +1,4 @@
-import { getSession } from "@/lib/auth";
+import { getSession, scopeOf } from "@/lib/auth";
 import { audit } from "@/lib/audit";
 import { getDb } from "@/lib/db";
 import { exportData, markExport } from "@/lib/system";
@@ -11,6 +11,9 @@ export async function GET() {
   const headers = { "Cache-Control": "no-store", "X-Robots-Tag": "noindex" };
   const session = await getSession();
   if (!session) return new Response("Unauthorized", { status: 401, headers });
+  // The full export holds every account, so only owners may take it.
+  if (!scopeOf(session).owner)
+    return new Response("Forbidden", { status: 403, headers });
   const db = getDb();
   if (!db) return new Response("Unavailable", { status: 503, headers });
   const data = await exportData(db);

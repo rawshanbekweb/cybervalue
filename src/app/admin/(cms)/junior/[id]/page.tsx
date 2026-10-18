@@ -3,7 +3,7 @@ import { PromoteJuniorForm } from "@/components/admin/promote-junior";
 import { ParentAccess } from "@/components/admin/parent-access";
 import { notFound } from "next/navigation";
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
-import { requireAdmin } from "@/lib/auth";
+import { requireMember } from "@/lib/staff-guard";
 import { getDb } from "@/lib/db";
 import { formatDate } from "@/components/ui";
 import { ConfirmButton } from "@/components/admin/confirm-button";
@@ -34,7 +34,7 @@ export default async function AdminJuniorMemberPage({
   const { id } = await params;
   const t = await getAdminTranslator();
   const locale = await getAdminLocale();
-  await requireAdmin(`/admin/junior/${id}`);
+  await requireMember("junior", id, `/admin/junior/${id}`);
   const db = getDb();
   if (!db) notFound();
   const member = await db.juniorMember.findUnique({

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
-import { requireAdmin } from "@/lib/auth";
+import { requireOwner } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { formatDue } from "@/lib/student/assignments";
 
@@ -61,6 +61,12 @@ const ACTIONS: Record<string, string> = {
   "kids.delete": "Kids member deleted",
   "kids.promote": "Kids member moved to Junior",
   "cleanup.run": "Clean-up run",
+  "staff.create": "Team member added",
+  "staff.update": "Team member changed",
+  "staff.password_reset": "Team member password reset",
+  "staff.delete": "Team member deleted",
+  "group.rename": "Group renamed",
+  "group.teachers": "Group teachers changed",
 };
 
 export default async function AuditPage({
@@ -68,7 +74,7 @@ export default async function AuditPage({
 }: PageProps<"/admin/audit">) {
   const t = await getAdminTranslator();
   const locale = await getAdminLocale();
-  await requireAdmin("/admin/audit");
+  await requireOwner("/admin/audit");
   const { page: pageParam } = await searchParams;
   const page = Math.max(1, Math.min(100, Number(pageParam) || 1));
   const db = getDb();

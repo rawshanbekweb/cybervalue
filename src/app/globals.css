@@ -3782,3 +3782,23 @@ select.admin-input {
   transform: none;
   box-shadow: none;
 }
+.admin-notice {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent, currentColor);
+  border-radius: 8px;
+}
+.admin-team-row > summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  align-items: baseline;
+}
+.admin-team {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}

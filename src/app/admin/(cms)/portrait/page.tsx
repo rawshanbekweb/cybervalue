@@ -1,5 +1,5 @@
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
-import { requireAdmin } from "@/lib/auth";
+import { requireOwner } from "@/lib/auth";
 import { getHomePortrait } from "@/lib/home-portrait";
 import { Constellation } from "@/components/constellation";
 import { formatDate } from "@/components/ui";
@@ -9,7 +9,7 @@ import { resetHomePortraitAction, saveHomePortraitAction } from "./actions";
 export default async function HomePortraitPage() {
   const t = await getAdminTranslator();
   const locale = await getAdminLocale();
-  await requireAdmin("/admin/portrait");
+  await requireOwner("/admin/portrait");
   const custom = await getHomePortrait();
   return (
     <div className="admin-page">

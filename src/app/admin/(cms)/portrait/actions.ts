@@ -1,7 +1,7 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { audit } from "@/lib/audit";
-import { requireAdmin } from "@/lib/auth";
+import { requireOwner } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { HOME_PORTRAIT_KEY } from "@/lib/home-portrait";
 import { limit } from "@/lib/rate-limit-db";
@@ -20,7 +20,7 @@ export async function saveHomePortraitAction(
   _state: PortraitFormState,
   formData: FormData,
 ): Promise<PortraitFormState> {
-  const session = await requireAdmin("/admin/portrait");
+  const session = await requireOwner("/admin/portrait");
   if (!(await limit(`admin-write:${session.user.id}`, 60, 60_000)))
     return { error: "Too many changes. Try again shortly." };
   const db = getDb();
@@ -38,7 +38,7 @@ export async function saveHomePortraitAction(
 }
 
 export async function resetHomePortraitAction() {
-  const session = await requireAdmin("/admin/portrait");
+  const session = await requireOwner("/admin/portrait");
   if (!(await limit(`admin-write:${session.user.id}`, 60, 60_000))) return;
   await getDb()?.siteSetting.deleteMany({ where: { key: HOME_PORTRAIT_KEY } });
   await audit("portrait.reset", session.user.id, "home");

@@ -1,7 +1,7 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { audit } from "@/lib/audit";
-import { requireAdmin } from "@/lib/auth";
+import { requireOwner } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { limit } from "@/lib/rate-limit-db";
 import { parseSiteConfig, SECTIONS } from "@/lib/site-config";
@@ -16,7 +16,7 @@ export async function saveSettingsAction(
   _state: SettingsState,
   form: FormData,
 ): Promise<SettingsState> {
-  const session = await requireAdmin("/admin/settings");
+  const session = await requireOwner("/admin/settings");
   if (!(await limit(`admin-write:${session.user.id}`, 60, 60_000)))
     return { error: "Too many changes. Try again shortly." };
   const db = getDb();

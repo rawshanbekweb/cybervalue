@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
-import { requireAdmin } from "@/lib/auth";
+import { requireStaff } from "@/lib/auth";
+import { groupCondition, groupLabel, pickGroup } from "@/lib/staff";
 import { getDb } from "@/lib/db";
 import { ConfirmButton } from "@/components/admin/confirm-button";
 import {
@@ -37,7 +38,7 @@ export default async function AdminAssignmentsPage({
 }: PageProps<"/admin/assignments">) {
   const t = await getAdminTranslator();
   const locale = await getAdminLocale();
-  await requireAdmin("/admin/assignments");
+  const { scope } = await requireStaff("/admin/assignments");
   const db = getDb();
   if (!db)
     return (
@@ -50,13 +51,17 @@ export default async function AdminAssignmentsPage({
     );
   const query = await searchParams;
   const now = new Date().getTime();
-  const groups = await classGroups(db);
-  const requested = typeof query.group === "string" ? query.group : "";
-  const group = groups.includes(requested) ? requested : "";
+  const picked = pickGroup(scope, await classGroups(db), query.group);
+  const groups = picked.groups;
+  const group = groupLabel(picked.group);
   const showPast = query.past === "1";
   const [assignments, materials, students] = await Promise.all([
     loadAssignments(db, {
-      ...(group ? { groups: ["", group] } : {}),
+      ...(Array.isArray(picked.group)
+        ? { groups: picked.group }
+        : group
+          ? { groups: ["", group] }
+          : {}),
       ...(showPast ? {} : { since: new Date(now - 30 * DAY) }),
     }),
     db.studentMaterial.findMany({
@@ -65,7 +70,7 @@ export default async function AdminAssignmentsPage({
       select: { id: true, title: true, kind: true },
     }),
     db.student.findMany({
-      where: { active: true, ...(group ? { group } : {}) },
+      where: { active: true, ...groupCondition(picked.group) },
       orderBy: { name: "asc" },
       select: { id: true, name: true, group: true },
       take: 1000,
@@ -194,6 +199,7 @@ export default async function AdminAssignmentsPage({
 
       <AssignmentForm
         groups={groups}
+        everyone={scope.owner}
         targets={targets}
         defaultDue={localInput(friday)}
       />

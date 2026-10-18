@@ -1,6 +1,6 @@
 import { getAdminTranslator } from "@/lib/i18n/server";
 import Link from "next/link";
-import { requireAdmin } from "@/lib/auth";
+import { requireOwner } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { storedFileSelect } from "@/lib/stored-files";
 import { parseAdminQuery } from "@/lib/admin-query";
@@ -13,7 +13,7 @@ export default async function FilesPage({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const t = await getAdminTranslator();
-  await requireAdmin("/admin/files");
+  await requireOwner("/admin/files");
   const db = getDb();
   if (!db) return <p className="admin-error">{t("Storage is unavailable.")}</p>;
   const params = await searchParams;

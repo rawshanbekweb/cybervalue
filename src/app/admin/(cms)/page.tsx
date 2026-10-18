@@ -3,18 +3,18 @@ import Link from "next/link";
 import { getDb } from "@/lib/db";
 import { collections, collectionFor } from "@/lib/site";
 import { formatDate } from "@/components/ui";
-import { requireAdmin } from "@/lib/auth";
+import { requireStaff } from "@/lib/auth";
 import { adminOverview } from "@/lib/admin/overview";
 import { formatDue } from "@/lib/student/assignments";
 
 export default async function AdminDashboardPage() {
   const t = await getAdminTranslator();
   const locale = await getAdminLocale();
-  await requireAdmin("/admin");
+  const { scope } = await requireStaff("/admin");
   const db = getDb();
   const [overview, counts, recent] = db
     ? await Promise.all([
-        adminOverview(db),
+        adminOverview(db, scope),
         db.content.groupBy({ by: ["kind", "status"], _count: true }),
         db.content.findMany({
           orderBy: { updatedAt: "desc" },
@@ -89,12 +89,14 @@ export default async function AdminDashboardPage() {
         <Link href="/admin/students" className="button button-secondary">
           {t("Add students")}
         </Link>
-        <Link
-          href="/admin/telegram#broadcast"
-          className="button button-secondary"
-        >
-          {t("Telegram message")}
-        </Link>
+        {scope.owner && (
+          <Link
+            href="/admin/telegram#broadcast"
+            className="button button-secondary"
+          >
+            {t("Telegram message")}
+          </Link>
+        )}
       </nav>
 
       {overview && (
@@ -205,81 +207,85 @@ export default async function AdminDashboardPage() {
                 })}
               </span>
             </Link>
-            <Link href="/admin/telegram" className="admin-card">
-              <span className="eyebrow">Telegram</span>
-              <strong>{overview.telegram}</strong>
-              <span className="muted">{t("linked chats")}</span>
-            </Link>
+            {scope.owner && (
+              <Link href="/admin/telegram" className="admin-card">
+                <span className="eyebrow">Telegram</span>
+                <strong>{overview.telegram}</strong>
+                <span className="muted">{t("linked chats")}</span>
+              </Link>
+            )}
           </div>
         </>
       )}
 
-      <details className="admin-details">
-        <summary>{t("Site content")}</summary>
-        <div className="admin-cards">
-          {Object.entries(collections).map(([key, value]) => {
-            const of = (status?: string) =>
-              counts
-                .filter(
-                  (c) =>
-                    c.kind === value.kind && (!status || c.status === status),
-                )
-                .reduce((sum, c) => sum + c._count, 0);
-            return (
-              <Link key={key} href={`/admin/${key}`} className="admin-card">
-                <span className="eyebrow">{t(value.title)}</span>
-                <strong>{of()}</strong>
-                <span className="muted">
-                  {t(
-                    "{published} published · {drafts} drafts · {archived} archived",
-                    {
-                      published: of("PUBLISHED"),
-                      drafts: of("DRAFT"),
-                      archived: of("ARCHIVED"),
-                    },
-                  )}
-                </span>
-              </Link>
-            );
-          })}
-        </div>
-        <h3>{t("Recently updated")}</h3>
-        <div className="admin-table-wrap">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>{t("Title")}</th>
-                <th>{t("Kind")}</th>
-                <th>{t("Status")}</th>
-                <th>{t("Updated")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recent.map((entry) => (
-                <tr key={entry.id}>
-                  <td>
-                    <Link
-                      href={`/admin/${collectionFor(entry.kind)}/${entry.slug}`}
-                    >
-                      {entry.title}
-                    </Link>
-                  </td>
-                  <td>{entry.kind}</td>
-                  <td>{entry.status}</td>
-                  <td>{formatDate(entry.updatedAt, locale)}</td>
-                </tr>
-              ))}
-              {recent.length === 0 && (
+      {scope.owner && (
+        <details className="admin-details">
+          <summary>{t("Site content")}</summary>
+          <div className="admin-cards">
+            {Object.entries(collections).map(([key, value]) => {
+              const of = (status?: string) =>
+                counts
+                  .filter(
+                    (c) =>
+                      c.kind === value.kind && (!status || c.status === status),
+                  )
+                  .reduce((sum, c) => sum + c._count, 0);
+              return (
+                <Link key={key} href={`/admin/${key}`} className="admin-card">
+                  <span className="eyebrow">{t(value.title)}</span>
+                  <strong>{of()}</strong>
+                  <span className="muted">
+                    {t(
+                      "{published} published · {drafts} drafts · {archived} archived",
+                      {
+                        published: of("PUBLISHED"),
+                        drafts: of("DRAFT"),
+                        archived: of("ARCHIVED"),
+                      },
+                    )}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+          <h3>{t("Recently updated")}</h3>
+          <div className="admin-table-wrap">
+            <table className="admin-table">
+              <thead>
                 <tr>
-                  <td colSpan={4} className="muted">
-                    {t("Nothing yet.")}
-                  </td>
+                  <th>{t("Title")}</th>
+                  <th>{t("Kind")}</th>
+                  <th>{t("Status")}</th>
+                  <th>{t("Updated")}</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </details>
+              </thead>
+              <tbody>
+                {recent.map((entry) => (
+                  <tr key={entry.id}>
+                    <td>
+                      <Link
+                        href={`/admin/${collectionFor(entry.kind)}/${entry.slug}`}
+                      >
+                        {entry.title}
+                      </Link>
+                    </td>
+                    <td>{entry.kind}</td>
+                    <td>{entry.status}</td>
+                    <td>{formatDate(entry.updatedAt, locale)}</td>
+                  </tr>
+                ))}
+                {recent.length === 0 && (
+                  <tr>
+                    <td colSpan={4} className="muted">
+                      {t("Nothing yet.")}
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </details>
+      )}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { getSession } from "@/lib/auth";
+import { getSession, groupWhere, scopeOf } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { createTranslator, localeCookie, resolveLocale } from "@/lib/i18n";
 import { juniorCsv, juniorRow } from "@/lib/junior/admin";
@@ -8,13 +8,13 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
   const headers = { "Cache-Control": "no-store", "X-Robots-Tag": "noindex" };
-  if (!(await getSession()))
-    return new Response("Unauthorized", { status: 401, headers });
+  const session = await getSession();
+  if (!session) return new Response("Unauthorized", { status: 401, headers });
   const db = getDb();
   if (!db) return new Response("Unavailable", { status: 503, headers });
   const group = request.nextUrl.searchParams.get("group") ?? "";
   const members = await db.juniorMember.findMany({
-    where: group ? { group } : undefined,
+    where: { ...groupWhere(scopeOf(session)), ...(group ? { group } : {}) },
     orderBy: [{ group: "asc" }, { xp: "desc" }, { name: "asc" }],
     take: 5000,
   });

@@ -1,7 +1,12 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { requireAdmin } from "@/lib/auth";
+import { requireStaff } from "@/lib/auth";
+import {
+  mayUseGroup,
+  requireMember,
+  rosterOutsideScope,
+} from "@/lib/staff-guard";
 import { audit } from "@/lib/audit";
 import { getDb } from "@/lib/db";
 import { limit } from "@/lib/rate-limit-db";
@@ -25,7 +30,7 @@ export async function createJuniorsAction(
   _state: CreateJuniorsState,
   form: FormData,
 ): Promise<CreateJuniorsState> {
-  const session = await requireAdmin("/admin/junior");
+  const { session, scope } = await requireStaff("/admin/junior");
   if (!(await limit(`junior-create:${session.user.id}`, 10, 60_000)))
     return { error: "Wait a moment and try again." };
   const options = rosterOptionsSchema.safeParse({
@@ -35,6 +40,12 @@ export async function createJuniorsAction(
   if (!options.success) return { error: "Check the list and the date." };
   const roster = parseRoster(options.data.roster);
   if ("error" in roster) return roster;
+  const outside = rosterOutsideScope(scope, roster.students);
+  if (outside)
+    return {
+      error: "You can only add people to your own groups (not “{group}”).",
+      values: { group: outside },
+    };
   const db = getDb();
   if (!db) return { error: NO_DB };
   const rows = roster.students.map((s) => ({ ...s, code: newJuniorCode() }));
@@ -68,7 +79,7 @@ export async function updateJuniorAction(
   _state: JuniorFormState,
   form: FormData,
 ): Promise<JuniorFormState> {
-  const session = await requireAdmin(`/admin/junior/${id}`);
+  const session = await requireMember("junior", id, `/admin/junior/${id}`);
   const parsed = juniorUpdateSchema.safeParse({
     name: form.get("name"),
     group: form.get("group") ?? "",
@@ -81,6 +92,8 @@ export async function updateJuniorAction(
       error:
         "Name is required (up to 100 characters); the group allows letters, digits, spaces, dots, dashes and underscores.",
     };
+  if (!(await mayUseGroup(parsed.data.group)))
+    return { error: "You can only move people to your own groups." };
   const db = getDb();
   if (!db) return { error: NO_DB };
   const member = await db.juniorMember.update({
@@ -99,7 +112,7 @@ export async function updateJuniorAction(
 export async function resetJuniorCodeAction(
   id: string,
 ): Promise<JuniorFormState> {
-  const session = await requireAdmin(`/admin/junior/${id}`);
+  const session = await requireMember("junior", id, `/admin/junior/${id}`);
   const db = getDb();
   if (!db) return { error: NO_DB };
   const code = newJuniorCode();
@@ -115,13 +128,13 @@ export async function resetJuniorCodeAction(
 }
 
 export async function signOutJuniorAction(id: string) {
-  await requireAdmin(`/admin/junior/${id}`);
+  await requireMember("junior", id, `/admin/junior/${id}`);
   await getDb()?.juniorSession.deleteMany({ where: { memberId: id } });
   revalidatePath(`/admin/junior/${id}`);
 }
 
 export async function resetJuniorProgressAction(id: string) {
-  const session = await requireAdmin(`/admin/junior/${id}`);
+  const session = await requireMember("junior", id, `/admin/junior/${id}`);
   const db = getDb();
   if (!db) return;
   const member = await db.juniorMember.update({
@@ -134,7 +147,7 @@ export async function resetJuniorProgressAction(id: string) {
 }
 
 export async function deleteJuniorAction(id: string) {
-  const session = await requireAdmin("/admin/junior");
+  const session = await requireMember("junior", id, "/admin/junior");
   const db = getDb();
   if (!db) return;
   const member = await db.juniorMember

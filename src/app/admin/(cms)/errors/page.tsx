@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
-import { requireAdmin } from "@/lib/auth";
+import { requireOwner } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { formatDue } from "@/lib/student/assignments";
 import { resolveAllErrorsAction, resolveErrorAction } from "./actions";
@@ -10,7 +10,7 @@ export default async function AdminErrorsPage({
 }: PageProps<"/admin/errors">) {
   const t = await getAdminTranslator();
   const locale = await getAdminLocale();
-  await requireAdmin("/admin/errors");
+  await requireOwner("/admin/errors");
   const { show } = await searchParams;
   const all = show === "all";
   const db = getDb();

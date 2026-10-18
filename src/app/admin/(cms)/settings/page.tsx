@@ -1,5 +1,5 @@
 import { getAdminTranslator } from "@/lib/i18n/server";
-import { requireAdmin } from "@/lib/auth";
+import { requireOwner } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { env } from "@/lib/env";
 import { getSiteConfig } from "@/lib/site-config-server";
@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminSettingsPage() {
   const t = await getAdminTranslator();
-  await requireAdmin("/admin/settings");
+  await requireOwner("/admin/settings");
   const db = getDb();
   const [config, links] = await Promise.all([
     getSiteConfig(),

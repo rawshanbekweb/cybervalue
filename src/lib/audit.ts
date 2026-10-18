@@ -54,6 +54,12 @@ export type AuditAction =
   | "kids.delete"
   | "kids.promote"
   | "cleanup.run"
+  | "staff.create"
+  | "staff.update"
+  | "staff.password_reset"
+  | "staff.delete"
+  | "group.rename"
+  | "group.teachers"
   | "junior.promote"
   | "data.export";
 

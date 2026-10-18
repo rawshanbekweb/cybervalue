@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getAdminTranslator } from "@/lib/i18n/server";
-import { requireAdmin } from "@/lib/auth";
+import { groupWhere, requireStaff } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { collectionFor } from "@/lib/site";
 
@@ -12,7 +12,7 @@ export default async function AdminSearchPage({
   searchParams,
 }: PageProps<"/admin/search">) {
   const t = await getAdminTranslator();
-  await requireAdmin("/admin/search");
+  const { scope } = await requireStaff("/admin/search");
   const { q: raw } = await searchParams;
   const q = typeof raw === "string" ? raw.trim().slice(0, 80) : "";
   const db = getDb();
@@ -22,17 +22,26 @@ export default async function AdminSearchPage({
     const [students, juniors, kids, materials, assignments, games, content] =
       await Promise.all([
         db.student.findMany({
-          where: { OR: [{ name: contains }, { group: contains }] },
+          where: {
+            OR: [{ name: contains }, { group: contains }],
+            ...groupWhere(scope),
+          },
           take: 20,
           select: { id: true, name: true, group: true, active: true },
         }),
         db.juniorMember.findMany({
-          where: { OR: [{ name: contains }, { group: contains }] },
+          where: {
+            OR: [{ name: contains }, { group: contains }],
+            ...groupWhere(scope),
+          },
           take: 20,
           select: { id: true, name: true, group: true, active: true },
         }),
         db.kidsMember.findMany({
-          where: { OR: [{ name: contains }, { group: contains }] },
+          where: {
+            OR: [{ name: contains }, { group: contains }],
+            ...groupWhere(scope),
+          },
           take: 20,
           select: { id: true, name: true, group: true, active: true },
         }),
@@ -42,7 +51,10 @@ export default async function AdminSearchPage({
           select: { id: true, title: true, kind: true },
         }),
         db.studentAssignment.findMany({
-          where: { OR: [{ title: contains }, { group: contains }] },
+          where: {
+            OR: [{ title: contains }, { group: contains }],
+            ...(scope.owner ? {} : { group: { in: ["", ...scope.groups] } }),
+          },
           take: 20,
           select: { id: true, title: true, group: true },
         }),
@@ -52,7 +64,11 @@ export default async function AdminSearchPage({
           select: { id: true, title: true, code: true },
         }),
         db.content.findMany({
-          where: { OR: [{ title: contains }, { slug: contains }] },
+          where: {
+            OR: [{ title: contains }, { slug: contains }],
+            // Site content is the owner's.
+            ...(scope.owner ? {} : { id: "" }),
+          },
           take: 20,
           select: { kind: true, slug: true, title: true, status: true },
         }),

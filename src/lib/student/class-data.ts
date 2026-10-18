@@ -3,6 +3,7 @@ import type { PrismaClient } from "@/generated/prisma/client";
 import { attention, type ClassRow } from "./class";
 import { loadStandings } from "./standing";
 import { assignmentResults, loadAssignments } from "./assignment-data";
+import { groupCondition, type GroupPick } from "../staff";
 
 const DAY = 86_400_000;
 
@@ -19,11 +20,11 @@ export async function classGroups(db: PrismaClient) {
 
 export async function loadClass(
   db: PrismaClient,
-  group: string,
+  group: GroupPick,
   now = Date.now(),
 ) {
   const students = await db.student.findMany({
-    where: { active: true, ...(group ? { group } : {}) },
+    where: { active: true, ...groupCondition(group) },
     orderBy: { name: "asc" },
     select: { id: true, name: true, group: true, level: true, bonusXp: true },
     take: 500,
@@ -32,7 +33,11 @@ export async function loadClass(
   const [standings, assignments] = await Promise.all([
     loadStandings(db, students, now),
     loadAssignments(db, {
-      ...(group ? { groups: ["", group] } : {}),
+      ...(Array.isArray(group)
+        ? { groups: ["", ...group] }
+        : group
+          ? { groups: ["", group] }
+          : {}),
       since: new Date(now - 30 * DAY),
     }).then((rows) => assignmentResults(db, rows, students, now)),
   ]);

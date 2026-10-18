@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getAdminTranslator } from "@/lib/i18n/server";
-import { requireAdmin } from "@/lib/auth";
+import { requireStaff } from "@/lib/auth";
+import { groupLabel } from "@/lib/staff";
 import { getDb } from "@/lib/db";
 import { loadResults, resolveGroup } from "@/lib/student/results-data";
 import { cellText, levelText, type Cell } from "@/lib/student/results";
@@ -26,7 +27,7 @@ export default async function AdminResultsPage({
   searchParams,
 }: PageProps<"/admin/results">) {
   const t = await getAdminTranslator();
-  await requireAdmin("/admin/results");
+  const { scope } = await requireStaff("/admin/results");
   const params = await searchParams;
   const raw = params.group;
   // "" every level, "none" students not placed yet, or one level.
@@ -43,8 +44,10 @@ export default async function AdminResultsPage({
       </div>
     );
   // Unknown groups fall back to everyone rather than an empty table.
-  const { groups, group } = await resolveGroup(db, raw);
-  const results = await loadResults(db, group);
+  const resolved = await resolveGroup(db, raw, scope);
+  const groups = resolved.groups;
+  const group = groupLabel(resolved.group);
+  const results = await loadResults(db, resolved.group);
   const { columns } = results;
   const rows = results.rows.filter(
     (r) =>
