@@ -1,4 +1,4 @@
-import type { Rule, Value } from "@/lib/kids/lang";
+import type { Fired, Live, Rule, Value } from "@/lib/kids/lang";
 
 /** What the game lab can ask a running game to do. */
 export type GameApi = {
@@ -12,6 +12,15 @@ export type GameProps = {
   /** The code's settings (defaults filled in); rules are applied per frame. */
   values: Record<string, Value>;
   rules: Rule[];
+  /**
+   * Runs the code's "qachon" handlers for an event, given the settings in
+   * force and the live score and lives; null when nothing handles it.
+   */
+  fire: (
+    event: string,
+    current: Record<string, Value>,
+    live: Live,
+  ) => Fired | null;
   /** False pauses the game loop (e.g. while the child edits the code). */
   running: boolean;
   onScore: (score: number) => void;

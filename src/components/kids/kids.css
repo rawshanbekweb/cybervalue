@@ -493,6 +493,96 @@ a.kids-robot:hover {
   flex-shrink: 0;
   margin-top: 3px;
 }
+.kids-hint {
+  white-space: pre-wrap;
+}
+.kids-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.kids-dev-chip {
+  background: #3ddc8414;
+  color: var(--kids-mint);
+}
+.kids-stage-group {
+  display: grid;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--kids-line);
+}
+.kids-stage-group.locked .kids-mission-list {
+  opacity: 0.55;
+}
+.kids-stage-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  color: var(--kids-violet);
+}
+.kids-stage-group.locked .kids-stage-title {
+  color: var(--muted);
+}
+.kids-stage-group > .kids-muted {
+  margin: 0;
+  font-size: 14px;
+}
+.kids-lesson,
+.kids-guide {
+  border-radius: 12px;
+  background: #a47bff12;
+  padding: 10px 12px;
+}
+.kids-lesson summary,
+.kids-guide summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  cursor: pointer;
+  font-weight: 700;
+  color: #cbb8ff;
+}
+.kids-lesson p {
+  margin: 8px 0 0;
+  line-height: 1.55;
+}
+.kids-guide {
+  margin-top: 12px;
+}
+.kids-guide h3 {
+  margin: 14px 0 6px;
+  font-size: 15px;
+}
+.kids-guide p {
+  margin: 0 0 8px;
+  line-height: 1.5;
+}
+.kids-guide pre {
+  margin: 0 0 8px;
+  padding: 10px 12px;
+  overflow-x: auto;
+  border-radius: 10px;
+  background: #0a0a10;
+  color: #cfe5ff;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.kids-events {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+}
+.kids-events code {
+  color: var(--kids-mint);
+}
 .kids-mission-list {
   display: grid;
   gap: 6px;

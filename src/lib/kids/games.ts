@@ -1,7 +1,20 @@
-// The two Academy Kids games: what their code can change, the secret
-// terminal commands and the missions. Shared by the browser and the server,
-// so a mission saved to an account is checked the same way it was shown.
-import { COLORS, parse, type Program, type Schema, type Text } from "./lang";
+// The Academy Kids games: what their code can change, the secret terminal
+// commands and the missions. Shared by the browser and the server, so a
+// mission saved to an account is checked the same way it was shown.
+//
+// Every game has three stages, each opened by finishing the one before:
+// 1 settings, 2 rules ("agar"), 3 developer mode, opened by finding the
+// developer password left in the game's files, with event handlers
+// ("qachon").
+import {
+  COLORS,
+  normalize,
+  parse,
+  type Action,
+  type Program,
+  type Schema,
+  type Text,
+} from "./lang";
 
 export type GameId = "kosmos" | "robot" | "ilon";
 
@@ -10,7 +23,10 @@ export type Cheat = { name: string; effect: Text; seconds: number };
 export type Check =
   | { kind: "code"; test: (program: Program) => boolean }
   | { kind: "cheat"; cheat: string }
-  | { kind: "score"; score: number };
+  | { kind: "score"; score: number }
+  | { kind: "login" };
+
+export type Stage = 1 | 2 | 3;
 
 export type Mission = {
   id: string;
@@ -19,6 +35,8 @@ export type Mission = {
   hint: Text;
   xp: number;
   check: Check;
+  /** 1 when left out. */
+  stage?: Stage;
 };
 
 export type Game = {
@@ -30,11 +48,92 @@ export type Game = {
   watch: string[];
   starter: string;
   cheats: Cheat[];
+  /** Events the game reports to "qachon" handlers, with what they mean. */
+  events: Record<string, Text>;
+  /** Files the terminal can list and read; one gives the password away. */
+  files: Record<string, Text>;
+  /** Opens developer mode; normalized like everything a child types. */
+  password: string;
   missions: Mission[];
 };
 
+export const STAGES: { stage: Stage; title: Text; lesson: Text }[] = [
+  {
+    stage: 1,
+    title: { uz: "Sozlamalar", en: "Settings" },
+    lesson: {
+      uz: "Siz o‘yin xotirasidagi sonlarni o‘zgartirdingiz. Haqiqiy xakerlar ham shunday qiladi, shuning uchun jiddiy o‘yinlar muhim narsani serverda qayta tekshiradi. Bizning sayt ham: topshiriqlaringiz serverda tekshiriladi!",
+      en: "You changed numbers in the game's memory. Real hackers do this too, which is why serious games check important things again on the server. So does this site: your missions are checked on the server!",
+    },
+  },
+  {
+    stage: 2,
+    title: { uz: "Qoidalar", en: "Rules" },
+    lesson: {
+      uz: "“agar” bilan kompyuter qaror qabul qiladi. Antivirus ham shunday ishlaydi: agar fayl shubhali bo‘lsa, uni to‘xtatadi. Firewall: agar ulanish begona bo‘lsa, uni yopadi.",
+      en: "With “agar” (if) the computer makes decisions. An antivirus works the same way: if a file looks suspicious, it stops it. A firewall: if a connection is a stranger, it blocks it.",
+    },
+  },
+  {
+    stage: 3,
+    title: { uz: "Dasturchi rejimi", en: "Developer mode" },
+    lesson: {
+      uz: "Parol faylda qolib ketgani uchun siz dasturchi rejimiga kirdingiz. Haqiqiy xakerlar ham aynan shunday xatolarni qidiradi. Parolni hech qachon faylda, kodda yoki qog‘ozda qoldirmang!",
+      en: "You got into developer mode because a password was left in a file. Real hackers look for exactly this kind of mistake. Never leave a password in a file, in code or on paper!",
+    },
+  },
+];
+
+export const stageOf = (m: Mission): Stage => m.stage ?? 1;
+
+/** Whether a stage is open: the first always, the others once every mission of the stage before is done. */
+export function stageOpen(game: Game, stage: Stage, done: Set<string>) {
+  if (stage === 1) return true;
+  return game.missions
+    .filter((m) => stageOf(m) === stage - 1)
+    .every((m) => done.has(missionKey(game.id, m.id)));
+}
+
+/** Developer mode is on once the password mission is done. */
+export const devMode = (game: Game, done: Set<string>) =>
+  game.missions.some(
+    (m) => m.check.kind === "login" && done.has(missionKey(game.id, m.id)),
+  );
+
+/** Whether a typed password opens the game's developer mode. */
+export const passwordOpens = (game: Game, typed: string) =>
+  normalize(typed.trim()).replace(/^"(.*)"$/, "$1") === game.password;
+
 const changedColor = (name: string, from: string) => (p: Program) =>
   p.values[name] !== from;
+
+/** A rule (not an "aks_holda" line) that watches `watch` and sets `name`. */
+const ruleOn = (watch: string, name: string) => (p: Program) =>
+  p.rules.some(
+    (r) =>
+      !r.otherwise && r.name === name && r.when.some((c) => c.watch === watch),
+  );
+
+/** An "agar" block watching `watch` that changes at least two settings. */
+const blockOn = (watch: string) => (p: Program) => {
+  const blocks = new Map<object, Set<string>>();
+  for (const r of p.rules)
+    if (!r.otherwise && r.when.some((c) => c.watch === watch))
+      blocks.set(r.when, (blocks.get(r.when) ?? new Set()).add(r.name));
+  return [...blocks.values()].some((names) => names.size >= 2);
+};
+
+const hasElse = (p: Program) => p.rules.some((r) => r.otherwise);
+const hasAnd = (p: Program) => p.rules.some((r) => r.when.length >= 2);
+
+const handles =
+  (event: string, test: (a: Action) => boolean = () => true) =>
+  (p: Program) =>
+    p.handlers.some((h) => h.event === event && h.actions.some(test));
+
+const addsScore = (a: Action) =>
+  a.kind === "add" && a.name === "ochko" && a.amount > 0;
+const says = (a: Action) => a.kind === "say";
 
 export const GAMES: Record<GameId, Game> = {
   kosmos: {
@@ -133,6 +232,28 @@ ko'rinmas = yo'q
         seconds: 0,
       },
     ],
+    events: {
+      boshlanganda: { uz: "O‘yin boshlanganda", en: "When the game starts" },
+      yulduz_olinsa: {
+        uz: "Kema yulduz olganda",
+        en: "When the ship takes a star",
+      },
+      urilsa: {
+        uz: "Kemaga asteroid urilganda",
+        en: "When an asteroid hits the ship",
+      },
+    },
+    files: {
+      "jurnal.log": {
+        uz: "08:00 Kema ishga tushdi.\n08:01 Dvigatellar tekshirildi.\n08:02 Dasturchi tizimga kirdi.",
+        en: "08:00 Ship started.\n08:01 Engines checked.\n08:02 The developer signed in.",
+      },
+      "eslatma.txt": {
+        uz: "Dasturchi eslatmasi: dasturchi rejimining paroli — orbita7. Hech kimga aytmang!",
+        en: "Developer's note: the developer mode password is orbita7. Don't tell anyone!",
+      },
+    },
+    password: "orbita7",
     missions: [
       {
         id: "turbo",
@@ -231,6 +352,7 @@ ko'rinmas = yo'q
       },
       {
         id: "agar",
+        stage: 2,
         title: { uz: "Oltin kema", en: "Golden ship" },
         task: {
           uz: "Qoida yozing: ochko 50 dan oshsa, kema oltin rangga kirsin.",
@@ -243,9 +365,113 @@ ko'rinmas = yo'q
         xp: 30,
         check: {
           kind: "code",
-          test: (p) =>
-            p.rules.some((r) => r.watch === "ochko" && r.name === "kema_rangi"),
+          test: ruleOn("ochko", "kema_rangi"),
         },
+      },
+      {
+        id: "signal",
+        stage: 2,
+        title: { uz: "Xavf signali", en: "Danger signal" },
+        task: {
+          uz: "Blok yozing: hayotlar 2 dan kam bo‘lsa, kema qizil bo‘lsin va tezlashsin. Blokda ikkita sozlama bo‘lsin.",
+          en: "Write a block: when lives are under 2, the ship turns red and speeds up. Put two settings in the block.",
+        },
+        hint: {
+          uz: `Qatorlarni bo‘sh joy bilan suring:\nagar hayotlar < 2 bo'lsa:\n    kema_rangi = "qizil"\n    tezlik = 12`,
+          en: `Indent the lines with spaces:\nagar hayotlar < 2 bo'lsa:\n    kema_rangi = "qizil"\n    tezlik = 12`,
+        },
+        xp: 30,
+        check: { kind: "code", test: blockOn("hayotlar") },
+      },
+      {
+        id: "aks",
+        stage: 2,
+        title: { uz: "Aks holda", en: "Otherwise" },
+        task: {
+          uz: "Dastlabki 10 soniyada asteroidlar sekin, keyin tez uchsin. “aks_holda:” blokidan foydalaning.",
+          en: "Make asteroids slow for the first 10 seconds and fast after. Use an “aks_holda:” (otherwise) block.",
+        },
+        hint: {
+          uz: `agar vaqt < 10 bo'lsa:\n    asteroid_tezligi = 2\naks_holda:\n    asteroid_tezligi = 6`,
+          en: `agar vaqt < 10 bo'lsa:\n    asteroid_tezligi = 2\naks_holda:\n    asteroid_tezligi = 6`,
+        },
+        xp: 30,
+        check: { kind: "code", test: hasElse },
+      },
+      {
+        id: "va",
+        stage: 2,
+        title: { uz: "Ikki shart", en: "Two conditions" },
+        task: {
+          uz: "Ikki shartli qoida yozing: ochko 100 dan ko‘p va hayotlar 2 dan ko‘p bo‘lsa, yulduz 20 ochko bersin.",
+          en: "Write a rule with two conditions: when the score is over 100 and lives are over 2, a star gives 20 points.",
+        },
+        hint: {
+          uz: `agar ochko > 100 va hayotlar > 2 bo'lsa yulduz_ochkosi = 20`,
+          en: `agar ochko > 100 va hayotlar > 2 bo'lsa yulduz_ochkosi = 20`,
+        },
+        xp: 30,
+        check: { kind: "code", test: hasAnd },
+      },
+      {
+        id: "parol",
+        stage: 3,
+        title: { uz: "Maxfiy parol", en: "Secret password" },
+        task: {
+          uz: 'Dasturchi parolni fayllardan birida qoldirib ketgan. Terminalda fayllar() deb yozing, fayllarni o‘qing va kirish("parol") bilan dasturchi rejimini oching.',
+          en: 'The developer left the password in one of the files. Type fayllar() in the terminal, read the files and open developer mode with kirish("password").',
+        },
+        hint: {
+          uz: `Avval o‘qi("eslatma.txt") deb yozib ko‘ring.`,
+          en: `Try o'qi("eslatma.txt") first.`,
+        },
+        xp: 30,
+        check: { kind: "login" },
+      },
+      {
+        id: "yulduz",
+        stage: 3,
+        title: { uz: "Yulduz bonusi", en: "Star bonus" },
+        task: {
+          uz: "Hodisa yozing: kema yulduz olganda yana 5 ochko qo‘shilsin.",
+          en: "Write an event: when the ship takes a star, add 5 more points.",
+        },
+        hint: {
+          uz: `qachon yulduz_olinsa:\n    ochko += 5`,
+          en: `qachon yulduz_olinsa:\n    ochko += 5`,
+        },
+        xp: 35,
+        check: { kind: "code", test: handles("yulduz_olinsa", addsScore) },
+      },
+      {
+        id: "urilsa",
+        stage: 3,
+        title: { uz: "Ogohlantirish", en: "Warning" },
+        task: {
+          uz: "Asteroid urilganda ekranda xabar chiqsin.",
+          en: "Show a message on screen when an asteroid hits.",
+        },
+        hint: {
+          uz: `qachon urilsa:\n    xabar("Ehtiyot bo'l!")`,
+          en: `qachon urilsa:\n    xabar("Ehtiyot bo'l!")`,
+        },
+        xp: 35,
+        check: { kind: "code", test: handles("urilsa", says) },
+      },
+      {
+        id: "usta",
+        stage: 3,
+        title: { uz: "Kosmos ustasi", en: "Space master" },
+        task: {
+          uz: "Bitta o‘yinda 500 ochko to‘plang.",
+          en: "Score 500 points in one game.",
+        },
+        hint: {
+          uz: `Hodisalar va qoidalarni birga ishlating.`,
+          en: `Use events and rules together.`,
+        },
+        xp: 40,
+        check: { kind: "score", score: 500 },
       },
     ],
   },
@@ -347,6 +573,29 @@ hayotlar = 3
         seconds: 0,
       },
     ],
+    events: {
+      boshlanganda: { uz: "O‘yin boshlanganda", en: "When the game starts" },
+      tanga_olinsa: {
+        uz: "Robot tanga olganda",
+        en: "When the robot takes a coin",
+      },
+      sakraganda: { uz: "Robot sakraganda", en: "When the robot jumps" },
+      urilsa: {
+        uz: "Robot to‘siqqa urilganda",
+        en: "When the robot hits an obstacle",
+      },
+    },
+    files: {
+      "sozlamalar.cfg": {
+        uz: "ekran = katta\novoz = yoqilgan\nrejim = oddiy",
+        en: "screen = large\nsound = on\nmode = normal",
+      },
+      "zaxira.txt": {
+        uz: "Parolni xavfsiz qilish uchun uni teskari yozdim: 0102_tobor",
+        en: "To keep the password safe I wrote it backwards: 0102_tobor",
+      },
+    },
+    password: "robot_2010",
     missions: [
       {
         id: "baland",
@@ -445,6 +694,7 @@ hayotlar = 3
       },
       {
         id: "agar",
+        stage: 2,
         title: { uz: "Tezlashuvchi robot", en: "Speeding robot" },
         task: {
           uz: "Qoida yozing: ochko 30 dan oshsa, robot tezroq yugursin.",
@@ -457,11 +707,116 @@ hayotlar = 3
         xp: 30,
         check: {
           kind: "code",
-          test: (p) =>
-            p.rules.some(
-              (r) => r.watch === "ochko" && r.name === "yugurish_tezligi",
-            ),
+          test: ruleOn("ochko", "yugurish_tezligi"),
         },
+      },
+      {
+        id: "signal",
+        stage: 2,
+        title: { uz: "Xavf signali", en: "Danger signal" },
+        task: {
+          uz: "Blok yozing: hayotlar 2 dan kam bo‘lsa, robot qizil bo‘lsin va dushmanlar sekinlashsin. Blokda ikkita sozlama bo‘lsin.",
+          en: "Write a block: when lives are under 2, the robot turns red and enemies slow down. Put two settings in the block.",
+        },
+        hint: {
+          uz: `agar hayotlar < 2 bo'lsa:\n    robot_rangi = "qizil"\n    dushman_tezligi = 1`,
+          en: `agar hayotlar < 2 bo'lsa:\n    robot_rangi = "qizil"\n    dushman_tezligi = 1`,
+        },
+        xp: 30,
+        check: { kind: "code", test: blockOn("hayotlar") },
+      },
+      {
+        id: "aks",
+        stage: 2,
+        title: { uz: "Aks holda", en: "Otherwise" },
+        task: {
+          uz: "Dastlabki 15 soniyada robot sekin, keyin tez yugursin. “aks_holda:” blokidan foydalaning.",
+          en: "Make the robot run slowly for the first 15 seconds and fast after. Use an “aks_holda:” (otherwise) block.",
+        },
+        hint: {
+          uz: `agar vaqt < 15 bo'lsa:\n    yugurish_tezligi = 4\naks_holda:\n    yugurish_tezligi = 8`,
+          en: `agar vaqt < 15 bo'lsa:\n    yugurish_tezligi = 4\naks_holda:\n    yugurish_tezligi = 8`,
+        },
+        xp: 30,
+        check: { kind: "code", test: hasElse },
+      },
+      {
+        id: "va",
+        stage: 2,
+        title: { uz: "Ikki shart", en: "Two conditions" },
+        task: {
+          uz: "Ikki shartli qoida yozing: ochko 50 dan ko‘p va hayotlar 1 dan ko‘p bo‘lsa, tanga 10 ochko bersin.",
+          en: "Write a rule with two conditions: when the score is over 50 and lives are over 1, a coin gives 10 points.",
+        },
+        hint: {
+          uz: `agar ochko > 50 va hayotlar > 1 bo'lsa tanga_ochkosi = 10`,
+          en: `agar ochko > 50 va hayotlar > 1 bo'lsa tanga_ochkosi = 10`,
+        },
+        xp: 30,
+        check: { kind: "code", test: hasAnd },
+      },
+      {
+        id: "parol",
+        stage: 3,
+        title: { uz: "Maxfiy parol", en: "Secret password" },
+        task: {
+          uz: 'Dasturchi parolni fayllardan birida qoldirib ketgan. Terminalda fayllar() deb yozing, fayllarni o‘qing va kirish("parol") bilan dasturchi rejimini oching.',
+          en: 'The developer left the password in one of the files. Type fayllar() in the terminal, read the files and open developer mode with kirish("password").',
+        },
+        hint: {
+          uz: `zaxira.txt dagi parolni oxiridan boshiga qarab o‘qing.`,
+          en: `Read the password in zaxira.txt from the end to the start.`,
+        },
+        xp: 30,
+        check: { kind: "login" },
+      },
+      {
+        id: "tanga",
+        stage: 3,
+        title: { uz: "Tanga bonusi", en: "Coin bonus" },
+        task: {
+          uz: "Hodisa yozing: robot tanga olganda yana 5 ochko qo‘shilsin.",
+          en: "Write an event: when the robot takes a coin, add 5 more points.",
+        },
+        hint: {
+          uz: `qachon tanga_olinsa:\n    ochko += 5`,
+          en: `qachon tanga_olinsa:\n    ochko += 5`,
+        },
+        xp: 35,
+        check: { kind: "code", test: handles("tanga_olinsa", addsScore) },
+      },
+      {
+        id: "sakrash",
+        stage: 3,
+        title: { uz: "Rangli sakrash", en: "Colourful jump" },
+        task: {
+          uz: "Robot har sakraganda rangini o‘zgartirsin.",
+          en: "Change the robot's colour every time it jumps.",
+        },
+        hint: {
+          uz: `qachon sakraganda:\n    robot_rangi = "pushti"`,
+          en: `qachon sakraganda:\n    robot_rangi = "pushti"`,
+        },
+        xp: 35,
+        check: {
+          kind: "code",
+          test: handles("sakraganda", (a) => a.kind === "set"),
+        },
+      },
+      {
+        id: "usta",
+        stage: 3,
+        title: { uz: "Robot ustasi", en: "Robot master" },
+        task: {
+          uz: "Bitta o‘yinda 400 ochko to‘plang.",
+          en: "Score 400 points in one game.",
+        },
+        hint: {
+          uz: `Hodisalar va qoidalarni birga ishlating.`,
+          en: `Use events and rules together.`,
+        },
+        xp: 40,
+        check: { kind: "score", score: 400 },
       },
     ],
   },
@@ -561,6 +916,25 @@ hayotlar = 1
         seconds: 0,
       },
     ],
+    events: {
+      boshlanganda: { uz: "O‘yin boshlanganda", en: "When the game starts" },
+      olma_yeganda: {
+        uz: "Ilon olma yeganda",
+        en: "When the snake eats an apple",
+      },
+      urilsa: { uz: "Ilon urilganda", en: "When the snake crashes" },
+    },
+    files: {
+      "readme.txt": {
+        uz: "Ilon o‘yini, 1.0 versiya.",
+        en: "Snake game, version 1.0.",
+      },
+      "sir.txt": {
+        uz: "Parolni shifrladim: har bir harfni alifboda bitta oldinga surdim. zbtijm",
+        en: "I encrypted the password: every letter moved one step forward in the alphabet. zbtijm",
+      },
+    },
+    password: "yashil",
     missions: [
       {
         id: "tez",
@@ -656,6 +1030,7 @@ hayotlar = 1
       },
       {
         id: "agar",
+        stage: 2,
         title: { uz: "Oltin ilon", en: "Golden snake" },
         task: {
           uz: "Qoida yozing: ochko 50 dan oshsa, ilon oltin rangga kirsin.",
@@ -668,9 +1043,119 @@ hayotlar = 1
         xp: 30,
         check: {
           kind: "code",
-          test: (p) =>
-            p.rules.some((r) => r.watch === "ochko" && r.name === "ilon_rangi"),
+          test: ruleOn("ochko", "ilon_rangi"),
         },
+      },
+      {
+        id: "signal",
+        stage: 2,
+        title: { uz: "Turbo rejim", en: "Turbo mode" },
+        task: {
+          uz: "Blok yozing: ochko 100 dan oshsa, ilon oltin bo‘lsin va tezlashsin. Blokda ikkita sozlama bo‘lsin.",
+          en: "Write a block: when the score is over 100, the snake turns gold and speeds up. Put two settings in the block.",
+        },
+        hint: {
+          uz: `agar ochko > 100 bo'lsa:\n    ilon_rangi = "oltin"\n    tezlik = 9`,
+          en: `agar ochko > 100 bo'lsa:\n    ilon_rangi = "oltin"\n    tezlik = 9`,
+        },
+        xp: 30,
+        check: { kind: "code", test: blockOn("ochko") },
+      },
+      {
+        id: "aks",
+        stage: 2,
+        title: { uz: "Aks holda", en: "Otherwise" },
+        task: {
+          uz: "Dastlabki 20 soniyada ilon sekin, keyin tez yursin. “aks_holda:” blokidan foydalaning.",
+          en: "Make the snake slow for the first 20 seconds and fast after. Use an “aks_holda:” (otherwise) block.",
+        },
+        hint: {
+          uz: `agar vaqt < 20 bo'lsa:\n    tezlik = 4\naks_holda:\n    tezlik = 8`,
+          en: `agar vaqt < 20 bo'lsa:\n    tezlik = 4\naks_holda:\n    tezlik = 8`,
+        },
+        xp: 30,
+        check: { kind: "code", test: hasElse },
+      },
+      {
+        id: "va",
+        stage: 2,
+        title: { uz: "Ikki shart", en: "Two conditions" },
+        task: {
+          uz: "Ikki shartli qoida yozing: ochko 50 dan ko‘p va vaqt 60 dan kam bo‘lsa, olma 20 ochko bersin.",
+          en: "Write a rule with two conditions: when the score is over 50 and the time is under 60, an apple gives 20 points.",
+        },
+        hint: {
+          uz: `agar ochko > 50 va vaqt < 60 bo'lsa olma_ochkosi = 20`,
+          en: `agar ochko > 50 va vaqt < 60 bo'lsa olma_ochkosi = 20`,
+        },
+        xp: 30,
+        check: { kind: "code", test: hasAnd },
+      },
+      {
+        id: "parol",
+        stage: 3,
+        title: { uz: "Maxfiy parol", en: "Secret password" },
+        task: {
+          uz: 'Dasturchi parolni fayllardan birida qoldirib ketgan. Terminalda fayllar() deb yozing, fayllarni o‘qing va kirish("parol") bilan dasturchi rejimini oching.',
+          en: 'The developer left the password in one of the files. Type fayllar() in the terminal, read the files and open developer mode with kirish("password").',
+        },
+        hint: {
+          uz: `sir.txt dagi har bir harfni alifboda bitta orqaga qaytaring: z → y, b → a …`,
+          en: `Move every letter in sir.txt one step back in the alphabet: z → y, b → a …`,
+        },
+        xp: 30,
+        check: { kind: "login" },
+      },
+      {
+        id: "klassik",
+        stage: 3,
+        title: { uz: "Klassik ilon", en: "Classic snake" },
+        task: {
+          uz: "Haqiqiy “Ilon” o‘yinidagidek: har bir olmadan keyin ilon tezlashsin.",
+          en: "Like the real Snake game: the snake speeds up after every apple.",
+        },
+        hint: {
+          uz: `qachon olma_yeganda:\n    tezlik += 1`,
+          en: `qachon olma_yeganda:\n    tezlik += 1`,
+        },
+        xp: 35,
+        check: {
+          kind: "code",
+          test: handles(
+            "olma_yeganda",
+            (a) => a.kind === "add" && a.name === "tezlik" && a.amount > 0,
+          ),
+        },
+      },
+      {
+        id: "urilsa",
+        stage: 3,
+        title: { uz: "Ogohlantirish", en: "Warning" },
+        task: {
+          uz: "Ilon urilganda ekranda xabar chiqsin.",
+          en: "Show a message on screen when the snake crashes.",
+        },
+        hint: {
+          uz: `qachon urilsa:\n    xabar("Voy!")`,
+          en: `qachon urilsa:\n    xabar("Voy!")`,
+        },
+        xp: 35,
+        check: { kind: "code", test: handles("urilsa", says) },
+      },
+      {
+        id: "usta",
+        stage: 3,
+        title: { uz: "Ilon ustasi", en: "Snake master" },
+        task: {
+          uz: "Bitta o‘yinda 400 ochko to‘plang.",
+          en: "Score 400 points in one game.",
+        },
+        hint: {
+          uz: `Hodisalar va qoidalarni birga ishlating.`,
+          en: `Use events and rules together.`,
+        },
+        xp: 40,
+        check: { kind: "score", score: 400 },
       },
     ],
   },
@@ -680,9 +1165,17 @@ export const GAME_IDS = Object.keys(GAMES) as GameId[];
 export const isGameId = (id: unknown): id is GameId =>
   typeof id === "string" && id in GAMES;
 
-/** Reads code for a game, with that game's schema and watchable values. */
-export const compile = (game: Game, code: string) =>
-  parse(code, game.schema, game.watch);
+/**
+ * Reads code for a game, with that game's schema and watchable values;
+ * "qachon" handlers only in developer mode.
+ */
+export const compile = (game: Game, code: string, dev = false) =>
+  parse(
+    code,
+    game.schema,
+    game.watch,
+    dev ? { events: Object.keys(game.events) } : {},
+  );
 
 /** Every mission's key as stored in progress: "kosmos:turbo". */
 export const missionKey = (game: GameId, mission: string) =>

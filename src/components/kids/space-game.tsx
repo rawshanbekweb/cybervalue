@@ -413,11 +413,28 @@ function createEngine(
     return { x: rand(0, W), y: rand(0, H), size: 0.6 + layer * 0.6, layer };
   });
 
+  // Settings changed by "qachon" handlers during this round.
+  let overrides: Record<string, Value> = {};
+  let started = false;
+  const live = () => ({ ochko: score, hayotlar: lives, vaqt });
   const current = (): Settings => {
     const p = getProps();
     return readSettings(
-      effective(p.values, p.rules, { ochko: score, hayotlar: lives, vaqt }),
+      effective({ ...p.values, ...overrides }, p.rules, live()),
     );
+  };
+  const emit = (event: string) => {
+    const p = getProps();
+    const fired = p.fire(
+      event,
+      effective({ ...p.values, ...overrides }, p.rules, live()),
+      { ochko: score, hayotlar: lives },
+    );
+    if (!fired) return;
+    score = fired.ochko;
+    lives = fired.hayotlar;
+    overrides = { ...overrides, ...fired.set };
+    if (fired.say) banner = { text: fired.say, life: 2.2 };
   };
 
   const burst = (
@@ -455,6 +472,8 @@ function createEngine(
   const restart = () => {
     const p = getProps();
     phase = "play";
+    overrides = {};
+    started = false;
     score = 0;
     lives = Math.round(num(p.values.hayotlar, 3, 1, 99));
     vaqt = 0;
@@ -510,6 +529,10 @@ function createEngine(
     floaters = floaters.filter((f) => f.life > 0);
 
     if (phase !== "play") return;
+    if (!started) {
+      started = true;
+      emit("boshlanganda");
+    }
 
     vaqt += dt;
     invuln = Math.max(0, invuln - dt);
@@ -580,6 +603,7 @@ function createEngine(
         lives -= 1;
         invuln = 1;
         burst(a.x, a.y, ["#ff9233", "#ffd43b", a.color], 24, 180);
+        emit("urilsa");
         if (lives <= 0) {
           lives = 0;
           gameOver();
@@ -609,6 +633,7 @@ function createEngine(
           life: 0.9,
         });
         burst(s.x, s.y, ["#ffd43b", "#fff3b0", "#ffffff"], 10, 110);
+        emit("yulduz_olinsa");
         return false;
       }
       return true;

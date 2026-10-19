@@ -39,18 +39,19 @@ async function audit(page: Page, label: string) {
   ).toEqual([]);
 }
 
-async function createKid(name: string) {
+async function createKid(name: string, done: string[] = []) {
   const code = [...randomBytes(8)].map((b) => ALPHABET[b & 31]).join("");
   const client = new Client({ connectionString: process.env.DATABASE_URL });
   await client.connect();
   try {
     await client.query(
-      `INSERT INTO "KidsMember" (id, name, "codeHash", "updatedAt")
-       VALUES ($1, $2, $3, now())`,
+      `INSERT INTO "KidsMember" (id, name, "codeHash", progress, "updatedAt")
+       VALUES ($1, $2, $3, $4, now())`,
       [
         `e2e_${randomUUID()}`,
         name,
         createHash("sha256").update(code).digest("hex"),
+        JSON.stringify({ done }),
       ],
     );
   } finally {
@@ -113,7 +114,7 @@ test.describe("Academy Kids", () => {
       "Turbo engine",
     );
     await page.goto("/kids");
-    await expect(page.getByText("1 of 8 missions").first()).toBeVisible();
+    await expect(page.getByText("1 of 15 missions").first()).toBeVisible();
 
     // The third game opens with its own code.
     await page.getByRole("link", { name: /Snake/ }).click();
@@ -122,6 +123,73 @@ test.describe("Academy Kids", () => {
       /devordan_otish = yo'q/,
     );
     await expect(page.locator("canvas")).toBeVisible();
+  });
+
+  test("finding the leaked password opens developer mode and events", async ({
+    page,
+  }) => {
+    const name = `Bobur ${Date.now().toString(36)}`;
+    const stages12 = [
+      "turbo",
+      "hayot",
+      "rang",
+      "sekin",
+      "korinmas",
+      "terminal",
+      "ochko",
+      "agar",
+      "signal",
+      "aks",
+      "va",
+    ].map((id) => `kosmos:${id}`);
+    const code = await createKid(name, stages12);
+    await page.goto("/kids/kosmos");
+    await page.getByLabel("Access code").fill(code);
+    await page.getByRole("button", { name: "Let's play" }).click();
+    await expect(
+      page.getByRole("heading", { level: 3, name: "Secret password" }),
+    ).toBeVisible();
+    const editor = page.getByRole("textbox", { name: "Game code" });
+    // Events are locked until developer mode is on.
+    await editor.fill("qachon yulduz_olinsa:\n    ochko += 5");
+    await expect(page.locator(".kids-problems")).toContainText(
+      "developer mode",
+    );
+
+    const terminal = page.getByRole("textbox", { name: "Terminal command" });
+    const log = page.getByRole("log");
+    for (const line of ["fayllar()", 'o\'qi("eslatma.txt")', 'kirish("1234")'])
+      await terminal.fill(line).then(() => terminal.press("Enter"));
+    await expect(log).toContainText("eslatma.txt");
+    await expect(log).toContainText("orbita7");
+    await expect(log).toContainText("Access denied");
+    await terminal.fill('kirish("orbita7")');
+    await terminal.press("Enter");
+    await expect(log).toContainText("Access granted");
+    await expect(page.locator(".kids-dev-chip")).toBeVisible();
+    await expect(page.locator(".kids-problems")).toHaveCount(0);
+
+    await page.getByRole("button", { name: "Run", exact: true }).click();
+    await expect(page.locator(".kids-cheer")).toContainText("Star bonus");
+    await page.getByText("Code guide").click();
+    await expect(page.locator(".kids-events")).toContainText("yulduz_olinsa");
+    await audit(page, "kids developer mode");
+
+    // Enter after a line ending in ":" indents the next line.
+    await editor.fill("");
+    await editor.pressSequentially("qachon urilsa:");
+    await editor.press("Enter");
+    await editor.pressSequentially('xabar("Ehtiyot!")');
+    await expect(editor).toHaveValue('qachon urilsa:\n    xabar("Ehtiyot!")');
+    await page.getByRole("button", { name: "Run", exact: true }).click();
+    await expect(page.locator(".kids-cheer")).toContainText("Warning");
+
+    // Both are saved on the account.
+    await page.reload();
+    await expect(page.locator(".kids-dev-chip")).toBeVisible();
+    await expect(
+      page.locator(".kids-mission-list li.done", { hasText: "Star bonus" }),
+    ).toBeVisible();
   });
 
   test("the admin creates children with codes", async ({ page }) => {

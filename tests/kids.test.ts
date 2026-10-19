@@ -1,7 +1,14 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { effective, normalize, parse } from "../src/lib/kids/lang";
-import { compile, GAMES, MAX_XP } from "../src/lib/kids/games";
+import { effective, fire, normalize, parse } from "../src/lib/kids/lang";
+import {
+  compile,
+  GAMES,
+  MAX_XP,
+  missionKey,
+  passwordOpens,
+  stageOf,
+} from "../src/lib/kids/games";
 import {
   applyKidsUpdate,
   emptyKidsProgress,
@@ -118,13 +125,28 @@ test("every code mission passes with its solution and not without", () => {
     "ilon:devor": "devordan_otish = ha",
     "ilon:bog": "olmalar_soni = 3",
     "ilon:agar": `agar ochko > 50 bo'lsa ilon_rangi = "oltin"`,
+    "kosmos:signal": `agar hayotlar < 2 bo'lsa:\n    kema_rangi = "qizil"\n    tezlik = 12`,
+    "kosmos:aks": `agar vaqt < 10 bo'lsa:\n    asteroid_tezligi = 2\naks_holda:\n    asteroid_tezligi = 6`,
+    "kosmos:va": "agar ochko > 100 va hayotlar > 2 bo'lsa yulduz_ochkosi = 20",
+    "kosmos:yulduz": "qachon yulduz_olinsa:\n    ochko += 5",
+    "kosmos:urilsa": `qachon urilsa:\n    xabar("Ehtiyot bo'l!")`,
+    "robot:signal": `agar hayotlar < 2 bo'lsa:\n  robot_rangi = "qizil"\n  dushman_tezligi = 1`,
+    "robot:aks": `agar vaqt < 15 bo'lsa:\n\tyugurish_tezligi = 4\naks_holda:\n\tyugurish_tezligi = 8`,
+    "robot:va": "agar ochko > 50 va hayotlar > 1 bo'lsa tanga_ochkosi = 10",
+    "robot:tanga": "qachon tanga_olinsa:\n    ochko += 5",
+    "robot:sakrash": `qachon sakraganda:\n    robot_rangi = "pushti"`,
+    "ilon:signal": `agar ochko > 100 bo'lsa:\n    ilon_rangi = "oltin"\n    tezlik = 9`,
+    "ilon:aks": `agar vaqt < 20 bo'lsa:\n    tezlik = 4\naks_holda:\n    tezlik = 8`,
+    "ilon:va": "agar ochko > 50 va vaqt < 60 bo'lsa olma_ochkosi = 20",
+    "ilon:klassik": "qachon olma_yeganda:\n    tezlik += 1",
+    "ilon:urilsa": `qachon urilsa:\n    xabar("Voy!")`,
   };
   for (const game of Object.values(GAMES))
     for (const mission of game.missions) {
       if (mission.check.kind !== "code") continue;
       const key = `${game.id}:${mission.id}`;
       const code = `${game.starter}\n${solutions[key]}`;
-      assert.deepEqual(compile(game, code).problems, [], key);
+      assert.deepEqual(compile(game, code, true).problems, [], key);
       assert.ok(missionPassed(game.id, mission.id, { code }), key);
       assert.ok(
         !missionPassed(game.id, mission.id, { code: game.starter }),
@@ -186,5 +208,201 @@ test("stored progress is cleaned and XP comes from finished missions", () => {
   assert.equal(kidsXp(progress), 20 + 30);
   assert.equal(kidsLevel(0).level.title.uz, "Yangi xaker");
   assert.equal(kidsLevel(MAX_XP).next, null);
-  assert.equal(MAX_XP, 540);
+  assert.equal(MAX_XP, 1230);
+});
+
+test("blocks, “va” and “aks_holda” apply as a group", () => {
+  const program = compile(
+    kosmos,
+    `agar hayotlar < 2 va vaqt > 10 bo'lsa:
+    kema_rangi = "qizil"
+    tezlik = 12
+aks_holda:
+    kema_rangi = "yashil"
+tezlik = 7`,
+  );
+  assert.deepEqual(program.problems, []);
+  assert.equal(program.values.tezlik, 7);
+  assert.equal(program.rules.length, 3);
+  const calm = effective(program.values, program.rules, {
+    hayotlar: 3,
+    vaqt: 20,
+  });
+  assert.equal(calm.kema_rangi, "yashil");
+  assert.equal(calm.tezlik, 7);
+  const danger = effective(program.values, program.rules, {
+    hayotlar: 1,
+    vaqt: 20,
+  });
+  assert.equal(danger.kema_rangi, "qizil");
+  assert.equal(danger.tezlik, 12);
+  // Both conditions must hold.
+  const early = effective(program.values, program.rules, {
+    hayotlar: 1,
+    vaqt: 5,
+  });
+  assert.equal(early.kema_rangi, "yashil");
+});
+
+test("misplaced blocks and lines get clear messages", () => {
+  const program = compile(
+    kosmos,
+    `aks_holda:
+    tezlik = 2
+  tezlik = 3
+agar ochko > 5 bo'lsa:
+    salom
+agar ochko ~ 5 bo'lsa tezlik = 2`,
+  );
+  const byLine = Object.fromEntries(
+    program.problems.map((p) => [p.line, p.message.uz]),
+  );
+  assert.match(byLine[1], /aks_holda/);
+  assert.match(byLine[3], /surilgan/);
+  assert.match(byLine[5], /Blok ichida/);
+  assert.match(byLine[6], /Shartni tushunmadim/);
+  assert.equal(program.rules.length, 0);
+});
+
+test("events need developer mode and run their actions within limits", () => {
+  const code = `qachon yulduz_olinsa:
+    ochko += 5
+    tezlik += 10
+    hayotlar -= 9
+    xabar("Zo'r!")
+qachon urilsa:
+    kema_rangi = "oltin"`;
+  const locked = compile(kosmos, code);
+  assert.equal(locked.handlers.length, 0);
+  assert.match(locked.problems[0].message.uz, /dasturchi rejimida/);
+  const program = compile(kosmos, code, true);
+  assert.deepEqual(program.problems, []);
+  assert.equal(program.handlers.length, 2);
+  const star = fire(
+    program.handlers,
+    kosmos.schema,
+    "yulduz_olinsa",
+    program.values,
+    { ochko: 10, hayotlar: 3 },
+  );
+  assert.deepEqual(star, {
+    ochko: 15,
+    hayotlar: 0,
+    set: { tezlik: 15 },
+    say: "Zo'r!",
+  });
+  // Number settings stay inside their range.
+  const again = fire(
+    program.handlers,
+    kosmos.schema,
+    "yulduz_olinsa",
+    { ...program.values, tezlik: 15 },
+    { ochko: 0, hayotlar: 3 },
+  );
+  assert.equal(again?.set.tezlik, 20);
+  assert.deepEqual(
+    fire(program.handlers, kosmos.schema, "urilsa", program.values, {
+      ochko: 0,
+      hayotlar: 1,
+    })?.set,
+    { kema_rangi: "oltin" },
+  );
+  assert.equal(
+    fire(program.handlers, kosmos.schema, "boshlanganda", program.values, {
+      ochko: 0,
+      hayotlar: 1,
+    }),
+    null,
+  );
+  const typo = compile(kosmos, "qachon yulduz_olinsaa:\n    ochko += 1", true);
+  assert.match(typo.problems[0].message.uz, /Balki “yulduz_olinsa”/);
+  const colour = compile(kosmos, "qachon urilsa:\n    kema_rangi += 1", true);
+  assert.match(colour.problems[0].message.uz, /son emas/);
+});
+
+test("every game's files give its password away, and only that opens it", () => {
+  for (const game of Object.values(GAMES)) {
+    assert.ok(passwordOpens(game, game.password), game.id);
+    assert.ok(passwordOpens(game, ` "${game.password.toUpperCase()}" `));
+    assert.ok(!passwordOpens(game, "parol"), game.id);
+    // Every game has a login mission and three stages.
+    assert.deepEqual(
+      [...new Set(game.missions.map(stageOf))],
+      [1, 2, 3],
+      game.id,
+    );
+    assert.equal(
+      game.missions.filter((m) => m.check.kind === "login").length,
+      1,
+    );
+  }
+  // The clues, decoded the way the hints say.
+  assert.match(GAMES.kosmos.files["eslatma.txt"].uz, /orbita7/);
+  const reversed = /: (\S+)$/.exec(GAMES.robot.files["zaxira.txt"].uz)![1];
+  assert.equal([...reversed].reverse().join(""), GAMES.robot.password);
+  const shifted = /(\S+)$/.exec(GAMES.ilon.files["sir.txt"].uz)![1];
+  assert.equal(
+    String.fromCharCode(...[...shifted].map((c) => c.charCodeAt(0) - 1)),
+    GAMES.ilon.password,
+  );
+});
+
+test("a stage only opens once the stage before it is finished", () => {
+  const start = emptyKidsProgress();
+  // A stage 2 mission with good evidence is still refused at the start.
+  assert.equal(
+    applyKidsUpdate(start, {
+      game: "kosmos",
+      mission: "agar",
+      code: `agar ochko > 50 bo'lsa kema_rangi = "oltin"`,
+    }),
+    null,
+  );
+  const stage1 = {
+    ...start,
+    done: kosmos.missions
+      .filter((m) => stageOf(m) === 1)
+      .map((m) => missionKey("kosmos", m.id)),
+  };
+  const ruled = applyKidsUpdate(stage1, {
+    game: "kosmos",
+    mission: "agar",
+    code: `agar ochko > 50 bo'lsa kema_rangi = "oltin"`,
+  });
+  assert.ok(ruled?.done.includes("kosmos:agar"));
+  // The password mission needs stage 2 finished and the right password.
+  const stage2 = {
+    ...start,
+    done: kosmos.missions
+      .filter((m) => stageOf(m) <= 2)
+      .map((m) => missionKey("kosmos", m.id)),
+  };
+  assert.equal(
+    applyKidsUpdate(stage1, {
+      game: "kosmos",
+      mission: "parol",
+      password: "orbita7",
+    }),
+    null,
+  );
+  assert.equal(
+    applyKidsUpdate(stage2, {
+      game: "kosmos",
+      mission: "parol",
+      password: "yulduz",
+    }),
+    null,
+  );
+  const dev = applyKidsUpdate(stage2, {
+    game: "kosmos",
+    mission: "parol",
+    password: "orbita7",
+  });
+  assert.ok(dev?.done.includes("kosmos:parol"));
+  const handled = applyKidsUpdate(dev!, {
+    game: "kosmos",
+    mission: "yulduz",
+    code: "qachon yulduz_olinsa:\n    ochko += 5",
+  });
+  assert.ok(handled?.done.includes("kosmos:yulduz"));
 });

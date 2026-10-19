@@ -8,6 +8,9 @@ import {
   isGameId,
   MAX_XP,
   missionKey,
+  passwordOpens,
+  stageOf,
+  stageOpen,
   type GameId,
 } from "./games";
 import type { Text } from "./lang";
@@ -67,6 +70,8 @@ export const LEVELS: { xp: number; title: Text }[] = [
   { xp: 100, title: { uz: "Chit ustasi", en: "Cheat master" } },
   { xp: 200, title: { uz: "O‘yin xakeri", en: "Game hacker" } },
   { xp: 360, title: { uz: "Bosh xaker", en: "Chief hacker" } },
+  { xp: 600, title: { uz: "Kod sehrgari", en: "Code wizard" } },
+  { xp: 900, title: { uz: "Kiber qahramon", en: "Cyber hero" } },
   { xp: MAX_XP, title: { uz: "Afsonaviy xaker", en: "Legendary hacker" } },
 ];
 
@@ -81,7 +86,12 @@ export function kidsLevel(xp: number) {
   return { index, level: LEVELS[index], next: LEVELS[index + 1] ?? null };
 }
 
-export type Proof = { code?: string; cheat?: string; score?: number };
+export type Proof = {
+  code?: string;
+  cheat?: string;
+  score?: number;
+  password?: string;
+};
 
 /** Whether a mission is really complete with the given evidence. */
 export function missionPassed(game: GameId, missionId: string, proof: Proof) {
@@ -92,9 +102,15 @@ export function missionPassed(game: GameId, missionId: string, proof: Proof) {
     return (
       typeof proof.code === "string" &&
       proof.code.length <= MAX_CODE &&
-      check.test(compile(GAMES[game], proof.code))
+      check.test(compile(GAMES[game], proof.code, true))
     );
   if (check.kind === "cheat") return proof.cheat === check.cheat;
+  if (check.kind === "login")
+    return (
+      typeof proof.password === "string" &&
+      proof.password.length <= 80 &&
+      passwordOpens(GAMES[game], proof.password)
+    );
   return (
     typeof proof.score === "number" &&
     proof.score >= check.score &&
@@ -108,6 +124,7 @@ export type KidsUpdate = {
   score?: unknown;
   mission?: unknown;
   cheat?: unknown;
+  password?: unknown;
 };
 
 /** Applies one update from the game lab; null when it is not acceptable. */
@@ -132,7 +149,16 @@ export function applyKidsUpdate(progress: KidsProgress, update: KidsUpdate) {
       code: code ?? undefined,
       score: score ?? undefined,
       cheat: typeof update.cheat === "string" ? update.cheat : undefined,
+      password:
+        typeof update.password === "string" ? update.password : undefined,
     };
+    // A stage opens only once the stage before it is finished.
+    const mission = GAMES[game].missions.find((m) => m.id === update.mission);
+    if (
+      !mission ||
+      !stageOpen(GAMES[game], stageOf(mission), new Set(next.done))
+    )
+      return null;
     if (!missionPassed(game, update.mission, proof)) return null;
     const key = missionKey(game, update.mission);
     if (!next.done.includes(key)) next.done.push(key);
