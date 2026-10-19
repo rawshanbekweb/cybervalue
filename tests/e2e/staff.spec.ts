@@ -58,6 +58,7 @@ test.describe("team and teacher roles", () => {
   const teacherEmail = `teacher-${id}@example.com`;
   const ownStudent = `e2e_${randomUUID()}`;
   const otherStudent = `e2e_${randomUUID()}`;
+  const practice = `e2e_${randomUUID()}`;
   let teacherPassword = "";
 
   test.beforeAll(async () => {
@@ -72,6 +73,18 @@ test.describe("team and teacher roles", () => {
          VALUES ($1, $2, $3, now(), $4)`,
         [sid, name, group, createHash("sha256").update(sid).digest("hex")],
       );
+    // A practice task both pupils answered, for the grading queue.
+    await client.query(
+      `INSERT INTO "StudentMaterial" (id, slug, kind, title, "updatedAt")
+       VALUES ($1, $2, 'PRACTICE', $3, now())`,
+      [practice, `e2e-practice-${id}`, `Scope practice ${id}`],
+    );
+    for (const sid of [ownStudent, otherStudent])
+      await client.query(
+        `INSERT INTO "StudentSubmission" (id, "studentId", "materialId", body)
+         VALUES ($1, $2, $3, $4)`,
+        [randomUUID(), sid, practice, `Answer from ${sid}`],
+      );
     await client.end();
   });
 
@@ -80,6 +93,9 @@ test.describe("team and teacher roles", () => {
     await client.connect();
     await client.query(`DELETE FROM "Student" WHERE id = ANY($1)`, [
       [ownStudent, otherStudent],
+    ]);
+    await client.query(`DELETE FROM "StudentMaterial" WHERE id = $1`, [
+      practice,
     ]);
     await client.query(`DELETE FROM "User" WHERE email = $1`, [teacherEmail]);
     await client.end();
@@ -152,6 +168,19 @@ test.describe("team and teacher roles", () => {
       page.getByRole("row", { name: new RegExp(mine) }),
     ).toBeVisible();
     await expect(page.getByText(other)).toHaveCount(0);
+
+    // Grading and the material's answers hold the own group only.
+    for (const path of [
+      `/admin/grading?material=${practice}`,
+      `/admin/materials/${practice}`,
+    ]) {
+      await page.goto(path);
+      await expect(page.getByText(`Answer from ${ownStudent}`)).toBeVisible();
+      await expect(page.getByText(`Answer from ${otherStudent}`)).toHaveCount(
+        0,
+      );
+    }
+    await audit(page, "grading queue");
   });
 
   test("a switched-off teacher cannot sign in", async ({ page, browser }) => {

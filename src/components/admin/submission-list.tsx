@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { getAdminTranslator } from "@/lib/i18n/server";
+import { quizSchema } from "@/lib/student/quiz";
+import { answerReview } from "@/lib/student/quiz-stats";
 import { ReviewForm } from "./student-forms";
 
 type Row = {
@@ -8,6 +10,9 @@ type Row = {
   href: string;
   kind: string;
   body: string;
+  answers?: unknown;
+  /** The material's questions, to show a quiz attempt answer by answer. */
+  quiz?: unknown;
   score: number | null;
   maxScore: number | null;
   feedback: string;
@@ -18,9 +23,9 @@ type Row = {
 const stamp = (date: Date) =>
   date.toISOString().slice(0, 16).replace("T", " ") + " UTC";
 
-// Shared by a student's page (heading = material) and a material's page
-// (heading = student). Quiz attempts show the server score; practice answers
-// carry a review form.
+// Shared by a student's page (heading = material), a material's page
+// (heading = student) and the grading queue. Quiz attempts show the server
+// score and each answer; practice answers carry a review form.
 export async function SubmissionList({ submissions }: { submissions: Row[] }) {
   const t = await getAdminTranslator();
   if (!submissions.length) return <p className="muted">{t("Nothing yet.")}</p>;
@@ -35,12 +40,7 @@ export async function SubmissionList({ submissions }: { submissions: Row[] }) {
             <span className="muted">{stamp(s.createdAt)}</span>
           </p>
           {s.kind === "QUIZ" ? (
-            <p>
-              {t("Test result: {score} of {total}", {
-                score: s.score ?? 0,
-                total: s.maxScore ?? 0,
-              })}
-            </p>
+            <QuizAttempt row={s} t={t} />
           ) : (
             <>
               <pre className="student-submission-body">{s.body}</pre>
@@ -53,5 +53,43 @@ export async function SubmissionList({ submissions }: { submissions: Row[] }) {
         </li>
       ))}
     </ol>
+  );
+}
+
+function QuizAttempt({
+  row,
+  t,
+}: {
+  row: Row;
+  t: (key: string, values?: Record<string, string | number>) => string;
+}) {
+  const quiz = quizSchema.safeParse(row.quiz);
+  const review = quiz.success ? answerReview(quiz.data, row.answers) : null;
+  return (
+    <>
+      <p>
+        {t("Test result: {score} of {total}", {
+          score: row.score ?? 0,
+          total: row.maxScore ?? 0,
+        })}
+      </p>
+      {review && (
+        <details className="admin-answers">
+          <summary>{t("Answers question by question")}</summary>
+          <ol>
+            {review.map((item, i) => (
+              <li key={i} className={item.right ? "ok" : "wrong"}>
+                <strong>{item.prompt}</strong>
+                <span>
+                  {item.right ? "✓" : "✗"} {item.chosen ?? t("No answer")}
+                  {!item.right &&
+                    ` · ${t("Right answer: {answer}", { answer: item.answer })}`}
+                </span>
+              </li>
+            ))}
+          </ol>
+        </details>
+      )}
+    </>
   );
 }

@@ -849,5 +849,13 @@
   "Cipher level": "Shifr darajasi",
   "What the member has learned": "A’zo nimalarni o‘rgandi",
   "Nothing finished yet. Skills appear here after each mission stage and cipher level.": "Hali hech narsa tugallanmagan. Ko‘nikmalar har bir missiya bosqichi va shifr darajasidan keyin shu yerda paydo bo‘ladi.",
-  "Level {n}": "{n}-daraja"
+  "Level {n}": "{n}-daraja",
+  "Grading": "Tekshirish",
+  "Practice answers from your groups waiting for a score and feedback, oldest first. Students see your feedback on the material’s page.": "Guruhlaringizdan baho va izoh kutayotgan amaliy javoblar, eng eskisi birinchi. O‘quvchilar izohingizni material sahifasida ko‘radi.",
+  "oldest sent {date}": "eng eskisi {date} da yuborilgan",
+  "Nothing waits.": "Hech narsa kutmayapti.",
+  "Material": "Material",
+  "waiting {days} days": "{days} kundan beri kutmoqda",
+  "Answers question by question": "Javoblar savolma-savol",
+  "Right answer: {answer}": "To‘g‘ri javob: {answer}"
 }

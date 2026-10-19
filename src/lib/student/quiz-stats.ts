@@ -67,3 +67,35 @@ export const hardest = (stats: QuestionStat[], limit = 3) =>
     .filter((s) => s.attempts > 0 && s.wrongPercent > 0)
     .sort((a, b) => b.wrongPercent - a.wrongPercent || a.index - b.index)
     .slice(0, limit);
+
+export type AnswerReview = {
+  prompt: string;
+  /** The option the student picked, or null when left blank. */
+  chosen: string | null;
+  answer: string;
+  right: boolean;
+};
+
+/**
+ * One attempt question by question, for the teacher. Null when the attempt
+ * was saved before the questions were edited and no longer lines up.
+ */
+export function answerReview(
+  quiz: Quiz,
+  answers: unknown,
+): AnswerReview[] | null {
+  if (!Array.isArray(answers) || answers.length !== quiz.length) return null;
+  return quiz.map((q, index) => {
+    const value = answers[index];
+    const chosen =
+      typeof value === "number" && value >= 0 && value < q.options.length
+        ? q.options[value]
+        : null;
+    return {
+      prompt: q.prompt,
+      chosen,
+      answer: q.options[q.answer],
+      right: value === q.answer,
+    };
+  });
+}

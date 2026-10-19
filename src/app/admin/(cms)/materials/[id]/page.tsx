@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getAdminTranslator } from "@/lib/i18n/server";
-import { requireAdmin } from "@/lib/auth";
+import { groupWhere, requireStaff } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { quizSchema, quizToText } from "@/lib/student/quiz";
 import { ConfirmButton } from "@/components/admin/confirm-button";
@@ -19,14 +19,16 @@ export default async function EditMaterialPage({
   const { id } = await params;
   const { created } = await searchParams;
   const t = await getAdminTranslator();
-  await requireAdmin(`/admin/materials/${id}`);
+  const { scope } = await requireStaff(`/admin/materials/${id}`);
   const db = getDb();
   if (!db) notFound();
   const material = await db.studentMaterial.findUnique({
     where: { id },
     include: {
       // Answers still waiting for review come first.
+      // A teacher sees their own groups' answers only.
       submissions: {
+        where: scope.owner ? {} : { student: groupWhere(scope) },
         orderBy: [
           { reviewedAt: { sort: "asc", nulls: "first" } },
           { createdAt: "desc" },
@@ -137,6 +139,7 @@ export default async function EditMaterialPage({
                 : s.student.name,
               href: `/admin/students/${s.student.id}`,
               kind: material.kind,
+              quiz: material.quiz,
             }))}
           />
         </>

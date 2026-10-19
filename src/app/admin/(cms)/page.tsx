@@ -128,7 +128,9 @@ export default async function AdminDashboardPage() {
                 <ul className="admin-list">
                   {overview.reviewList.map((item) => (
                     <li key={item.id}>
-                      <Link href={`/admin/materials/${item.material.id}`}>
+                      <Link
+                        href={`/admin/grading?material=${item.material.id}`}
+                      >
                         {item.material.title}
                       </Link>
                       <span className="muted">

@@ -2659,6 +2659,24 @@ p {
 .student-submissions > li > p:first-child {
   margin-top: 0;
 }
+.admin-answers summary {
+  cursor: pointer;
+}
+.admin-answers ol {
+  display: grid;
+  gap: 8px;
+  margin: 10px 0 0;
+}
+.admin-answers li {
+  display: grid;
+  gap: 2px;
+}
+.admin-answers li.ok span {
+  color: #7ff0a8;
+}
+.admin-answers li.wrong span {
+  color: #ff9b8a;
+}
 .student-submission-body {
   max-height: 320px;
   overflow: auto;
