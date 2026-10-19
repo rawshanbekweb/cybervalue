@@ -215,7 +215,7 @@ export function JuniorAcademy() {
       {!all ? (
         <p className="jr-foot">
           {t(
-            "Finish every mission to unlock your next steps. Your progress is saved in this browser.",
+            "Finish every mission to unlock your next steps. Your progress is saved to your account, so you can carry on from any device.",
           )}
         </p>
       ) : null}

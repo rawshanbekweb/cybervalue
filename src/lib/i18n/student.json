@@ -328,5 +328,11 @@
   "404 · Student area": "404 · O‘quvchi bo‘limi",
   "This page is not here.": "Bu sahifa topilmadi.",
   "The link may be incomplete or out of date. Your materials, tests and certificates are on the student area home page.": "Havola to‘liq emas yoki eskirgan bo‘lishi mumkin. Materiallaringiz, testlar va sertifikatlaringiz o‘quvchi bo‘limining bosh sahifasida.",
-  "Back to the student area": "O‘quvchi bo‘limiga qaytish"
+  "Back to the student area": "O‘quvchi bo‘limiga qaytish",
+  "Lesson {lesson} of {total}": "{total} ta darsdan {lesson}-dars",
+  "A good first lab": "Boshlash uchun yaxshi laboratoriya",
+  "Everything is done for now. Your teacher will add new work soon; meanwhile try the CTF or the project studio.": "Hozircha hammasi bajarildi. O‘qituvchingiz tez orada yangi topshiriq qo‘shadi; shu orada CTF yoki loyiha studiyasini sinab ko‘ring.",
+  "Due {date}": "Muddat: {date}",
+  "From your teacher": "O‘qituvchingizdan",
+  "Your next step": "Keyingi qadamingiz"
 }

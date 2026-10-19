@@ -90,8 +90,15 @@ test.describe("lab progress follows the student", () => {
 
     await second.goto("/student");
     await expect(
-      second.getByRole("link", { name: /IP addressing lab/ }).first(),
+      second
+        .locator("#achievements")
+        .getByRole("link", { name: /IP addressing lab/ })
+        .first(),
     ).toContainText("2/17");
+    // The next-step card picks the started lab up where it stopped.
+    await expect(second.locator(".student-next")).toContainText(
+      "Lesson 3 of 17",
+    );
     await second.context().close();
   });
 });

@@ -1390,3 +1390,78 @@ body.student-root {
 .student-not-found-actions {
   margin: 28px 0 0;
 }
+
+/* The one thing to do next, under the greeting. */
+.student-next {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 16px;
+  align-items: center;
+  max-width: 640px;
+  margin-top: 22px;
+  padding: 16px 18px;
+  border: 1px solid #8052ff66;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 0 0, #8052ff26, transparent 60%), #0b0b0d;
+  color: inherit;
+  text-decoration: none;
+}
+.student-next:hover,
+.student-next:focus-visible {
+  border-color: var(--color-violet-pulse, #8052ff);
+}
+.student-next-eyebrow {
+  grid-column: 1;
+  color: var(--color-saffron-spark, #ffb829);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.student-next-title {
+  grid-column: 1;
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.student-next-meta {
+  grid-column: 1;
+  color: #a0a0a8;
+  font-size: 14px;
+}
+.student-next-action {
+  display: inline-flex;
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  gap: 6px;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: #8052ff;
+  color: #fff;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.student-next.is-done {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  border-color: #2ee6a655;
+  color: #c9c9cf;
+}
+.student-next.is-done p {
+  margin: 0;
+}
+@media (max-width: 480px) {
+  .student-next {
+    grid-template-columns: 1fr;
+  }
+  .student-next-action {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: start;
+    margin-top: 10px;
+  }
+}

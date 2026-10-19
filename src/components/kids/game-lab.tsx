@@ -170,12 +170,12 @@ export function GameLab({
   }
 
   const labels = {
-    start: t("Click or press Space to start"),
+    start: t("Tap, click or press Space to start"),
     over: t("Game over!"),
     paused: t("Paused while you edit the code"),
     controls:
       gameId === "kosmos"
-        ? t("Move with ← → arrows or A and D")
+        ? t("Move with ← → arrows, A and D, or drag your finger")
         : gameId === "robot"
           ? t("Jump with Space, ↑ or a tap")
           : t("Steer with the arrows, WASD or a swipe"),
