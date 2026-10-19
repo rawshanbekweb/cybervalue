@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useActionState, useState } from "react";
 import { useTranslator } from "@/components/locale-provider";
+import { RosterFile } from "@/components/admin/roster-file";
 import {
   createKidsAction,
   resetKidCodeAction,
@@ -105,6 +106,7 @@ export function CreateKidsForm() {
           placeholder={"Lola Karimova | 3-A\nSardor Aliyev | 3-A"}
         />
       </div>
+      <RosterFile onLoad={setRoster} />
       {state?.error && (
         <p className="admin-error" role="alert">
           {t(state.error, state.values)}

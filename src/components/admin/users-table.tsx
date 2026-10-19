@@ -20,12 +20,52 @@ export type UserRow = {
 
 // Students, Academy Junior and Academy Kids members in one list, with bulk
 // actions on the selected rows.
+type SortKey = "name" | "kind" | "group" | "last" | "status";
+
+// Column headers are links, so sorting works without JavaScript and the
+// order stays in the address for sharing and going back.
+function Sortable({
+  id,
+  label,
+  sort,
+  dir,
+  href,
+}: {
+  id: SortKey;
+  label: string;
+  sort: SortKey;
+  dir: "asc" | "desc";
+  href: string;
+}) {
+  return (
+    <th
+      scope="col"
+      aria-sort={
+        sort === id ? (dir === "asc" ? "ascending" : "descending") : undefined
+      }
+    >
+      <Link href={href} className="admin-sort">
+        {label}
+        <span aria-hidden="true">
+          {sort === id ? (dir === "asc" ? " ↑" : " ↓") : " ↕"}
+        </span>
+      </Link>
+    </th>
+  );
+}
+
 export function UsersTable({
   rows,
   empty,
+  sort,
+  dir,
+  sortHref,
 }: {
   rows: UserRow[];
   empty: string;
+  sort: SortKey;
+  dir: "asc" | "desc";
+  sortHref: Record<SortKey, string>;
 }) {
   const t = useTranslator();
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -51,7 +91,7 @@ export function UsersTable({
             ? t("Block the selected users? They are signed out at once.")
             : action === "delete"
               ? t(
-                  "Delete {count} users for good? Their answers, progress and certificates are removed and cannot be restored.",
+                  "Move {count} users with their answers and progress to the trash? You can restore them for 30 days.",
                   { count: selected.size },
                 )
               : null;
@@ -118,7 +158,7 @@ export function UsersTable({
             (action === "delete" && confirm !== "DELETE")
           }
         >
-          {action === "delete" ? t("Delete") : t("Apply")}
+          {action === "delete" ? t("Move to trash") : t("Apply")}
         </button>
         {state?.error && (
           <span className="admin-error" role="alert">
@@ -151,12 +191,42 @@ export function UsersTable({
                     }
                   />
                 </th>
-                <th scope="col">{t("Name")}</th>
-                <th scope="col">{t("Type")}</th>
-                <th scope="col">{t("Group")}</th>
+                <Sortable
+                  id="name"
+                  label={t("Name")}
+                  sort={sort}
+                  dir={dir}
+                  href={sortHref.name}
+                />
+                <Sortable
+                  id="kind"
+                  label={t("Type")}
+                  sort={sort}
+                  dir={dir}
+                  href={sortHref.kind}
+                />
+                <Sortable
+                  id="group"
+                  label={t("Group")}
+                  sort={sort}
+                  dir={dir}
+                  href={sortHref.group}
+                />
                 <th scope="col">{t("Progress")}</th>
-                <th scope="col">{t("Last activity")}</th>
-                <th scope="col">{t("Status")}</th>
+                <Sortable
+                  id="last"
+                  label={t("Last activity")}
+                  sort={sort}
+                  dir={dir}
+                  href={sortHref.last}
+                />
+                <Sortable
+                  id="status"
+                  label={t("Status")}
+                  sort={sort}
+                  dir={dir}
+                  href={sortHref.status}
+                />
               </tr>
             </thead>
             <tbody>

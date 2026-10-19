@@ -788,5 +788,12 @@
   "Site entry": "Sayt yozuvi",
   "Restored from the trash": "Korzinadan tiklandi",
   "Deleted from the trash": "Korzinadan o‘chirildi",
-  "Trash emptied": "Korzina tozalandi"
+  "Trash emptied": "Korzina tozalandi",
+  "{count} users": "{count} ta foydalanuvchi",
+  "Move {count} users with their answers and progress to the trash? You can restore them for 30 days.": "{count} ta foydalanuvchi javoblari va progressi bilan korzinaga o‘tkazilsinmi? 30 kun ichida qayta tiklash mumkin.",
+  "Or load a CSV file (from Excel or Google Sheets)": "Yoki CSV fayl yuklang (Excel yoki Google Sheets’dan)",
+  "The file is too large (up to 512 KB).": "Fayl juda katta (512 KB gacha).",
+  "No names found in this file.": "Bu faylda ismlar topilmadi.",
+  "{count} names loaded. Check the list, then create the codes.": "{count} ta ism yuklandi. Ro‘yxatni tekshiring, so‘ng kodlarni yarating.",
+  "Columns: Name (or First name and Last name) and Group. In Excel use File → Save as → CSV.": "Ustunlar: Ism (yoki Ism va Familiya) hamda Guruh. Excel’da: Fayl → Boshqa nom bilan saqlash → CSV."
 }
