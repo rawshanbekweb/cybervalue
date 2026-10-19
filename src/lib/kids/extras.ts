@@ -33,7 +33,12 @@ export type DailyTask = {
   | { kind: "code"; setting: string }
 );
 
-const SCORE: Record<GameId, number> = { kosmos: 120, robot: 80, ilon: 60 };
+const SCORE: Record<GameId, number> = {
+  kosmos: 120,
+  robot: 80,
+  ilon: 60,
+  qorovul: 100,
+};
 
 function tasksFor(id: GameId): DailyTask[] {
   const game = GAMES[id];
@@ -75,18 +80,27 @@ function tasksFor(id: GameId): DailyTask[] {
   ];
 }
 
+/** A well-mixed 32-bit hash, so neighbouring days land far apart. */
 function hash(text: string) {
-  let h = 7;
-  for (const c of text) h = (h * 31 + c.charCodeAt(0)) >>> 0;
-  return h;
+  let h = 0x811c9dc5;
+  for (const c of text) h = Math.imul(h ^ c.charCodeAt(0), 0x01000193);
+  h ^= h >>> 16;
+  h = Math.imul(h, 0x85ebca6b);
+  h ^= h >>> 13;
+  h = Math.imul(h, 0xc2b2ae35);
+  h ^= h >>> 16;
+  return h >>> 0;
 }
 
-/** Today's task, the same for a whole day, from the games the child has open. */
+/**
+ * Today's task, the same for a whole day: first a game the child has open,
+ * then one of its tasks, so every open game gets its turn.
+ */
 export function dailyTask(day: string, done: Set<string>): DailyTask {
-  const pool = GAME_IDS.filter((id) => gameOpen(GAMES[id], done)).flatMap(
-    tasksFor,
-  );
-  return pool[hash(day) % pool.length];
+  const open = GAME_IDS.filter((id) => gameOpen(GAMES[id], done));
+  const h = hash(day);
+  const tasks = tasksFor(open[h % open.length]);
+  return tasks[(h >>> 8) % tasks.length];
 }
 
 export type DailyProof = { code?: string; cheat?: string; score?: number };

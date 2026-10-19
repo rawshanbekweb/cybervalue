@@ -42,8 +42,14 @@ export const MAX_CODE = 4000;
 
 export const emptyKidsProgress = (): KidsProgress => ({
   done: [],
-  best: { kosmos: 0, robot: 0, ilon: 0 },
-  code: { kosmos: "", robot: "", ilon: "" },
+  best: Object.fromEntries(GAME_IDS.map((id) => [id, 0])) as Record<
+    GameId,
+    number
+  >,
+  code: Object.fromEntries(GAME_IDS.map((id) => [id, ""])) as Record<
+    GameId,
+    string
+  >,
   daily: { last: "", streak: 0, record: 0, count: 0 },
   tour: false,
 });

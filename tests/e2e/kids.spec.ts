@@ -87,8 +87,8 @@ test.describe("Academy Kids", () => {
     await expect(
       page.getByRole("heading", { name: "Task of the day" }),
     ).toBeVisible();
-    await expect(page.locator(".kids-badges li")).toHaveCount(11);
-    await expect(page.locator(".kids-locked")).toHaveCount(2);
+    await expect(page.locator(".kids-badges li")).toHaveCount(12);
+    await expect(page.locator(".kids-locked")).toHaveCount(3);
 
     await page.getByRole("link", { name: /Space escape/ }).click();
     await expect(page).toHaveURL(/\/kids\/kosmos$/);
@@ -212,6 +212,50 @@ test.describe("Academy Kids", () => {
     await expect(
       page.locator(".kids-mission-list li.done", { hasText: "Star bonus" }),
     ).toBeVisible();
+  });
+
+  test("the cyber guard turns defences on with code and catches phishing", async ({
+    page,
+  }) => {
+    const spaceStage1 = [
+      "turbo",
+      "hayot",
+      "rang",
+      "sekin",
+      "korinmas",
+      "terminal",
+      "ochko",
+    ].map((id) => `kosmos:${id}`);
+    const code = await createKid(
+      `Aziz ${Date.now().toString(36)}`,
+      spaceStage1,
+    );
+    await page.goto("/kids/qorovul");
+    await page.getByLabel("Access code").fill(code);
+    await page.getByRole("button", { name: "Let's play" }).click();
+    await page
+      .getByRole("dialog")
+      .getByRole("button", { name: "Skip" })
+      .click();
+    await expect(
+      page.getByRole("heading", { level: 3, name: "Long password" }),
+    ).toBeVisible();
+    await page
+      .getByRole("textbox", { name: "Game code" })
+      .fill(
+        "parol_uzunligi = 14\nikki_bosqichli = ha\nfirewall = ha\nyangilanishlar = ha\nantivirus_kuchi = 9",
+      );
+    await page.getByRole("button", { name: "Run", exact: true }).click();
+    await expect(page.locator(".kids-mission-list li.done")).toHaveCount(5);
+
+    // Start the round, then the radar from the terminal.
+    await page.getByRole("button", { name: "Phishing!" }).click();
+    const terminal = page.getByRole("textbox", { name: "Terminal command" });
+    await terminal.fill("fishing_radar()");
+    await terminal.press("Enter");
+    await expect(page.getByRole("log")).toContainText("Done!");
+    await expect(page.locator(".kids-cheer")).toContainText("Phishing radar");
+    await audit(page, "kids cyber guard");
   });
 
   test("the admin creates children with codes", async ({ page }) => {

@@ -16,7 +16,7 @@ import {
   type Text,
 } from "./lang";
 
-export type GameId = "kosmos" | "robot" | "ilon";
+export type GameId = "kosmos" | "robot" | "ilon" | "qorovul";
 
 export type Cheat = { name: string; effect: Text; seconds: number };
 
@@ -1157,6 +1157,361 @@ hayotlar = 1
         hint: {
           uz: `Hodisalar va qoidalarni birga ishlating.`,
           en: `Use events and rules together.`,
+        },
+        xp: 40,
+        check: { kind: "score", score: 400 },
+      },
+    ],
+  },
+  qorovul: {
+    id: "qorovul",
+    after: "kosmos",
+    title: { uz: "Kiber-qo‘riqchi", en: "Cyber guard" },
+    tagline: {
+      uz: "Serverni hujumlardan himoya qiling va fishing xatlarni ushlang.",
+      en: "Defend the server from attacks and catch the phishing letters.",
+    },
+    schema: {
+      parol_uzunligi: {
+        kind: "number",
+        default: 6,
+        min: 4,
+        max: 20,
+        label: { uz: "Parol uzunligi", en: "Password length" },
+      },
+      ikki_bosqichli: {
+        kind: "bool",
+        default: false,
+        label: {
+          uz: "Ikki bosqichli kirish (SMS kod)",
+          en: "Two-step sign-in (SMS code)",
+        },
+      },
+      firewall: {
+        kind: "bool",
+        default: false,
+        label: {
+          uz: "Firewall (skanerlarni to‘sadi)",
+          en: "Firewall (blocks scanners)",
+        },
+      },
+      yangilanishlar: {
+        kind: "bool",
+        default: false,
+        label: {
+          uz: "Yangilanishlar (eski teshiklarni yopadi)",
+          en: "Updates (close old holes)",
+        },
+      },
+      antivirus_kuchi: {
+        kind: "number",
+        default: 2,
+        min: 1,
+        max: 10,
+        label: { uz: "Antivirus kuchi", en: "Antivirus strength" },
+      },
+      hujum_tezligi: {
+        kind: "number",
+        default: 4,
+        min: 1,
+        max: 10,
+        label: { uz: "Hujumlar tezligi", en: "Attack speed" },
+      },
+      hayotlar: {
+        kind: "number",
+        default: 5,
+        min: 1,
+        max: 99,
+        label: { uz: "Server hayoti", en: "Server lives" },
+      },
+      qalqon_rangi: {
+        kind: "color",
+        default: "ko'k",
+        label: { uz: "Qalqon rangi", en: "Shield colour" },
+      },
+    },
+    watch: ["ochko", "hayotlar", "vaqt"],
+    starter: `// Server himoyasi sozlamalari.
+// Himoyani yoqing va "Ishga tushirish"ni bosing!
+parol_uzunligi = 6
+ikki_bosqichli = yo'q
+firewall = yo'q
+yangilanishlar = yo'q
+antivirus_kuchi = 2
+hujum_tezligi = 4
+hayotlar = 5
+qalqon_rangi = "ko'k"
+`,
+    cheats: [
+      {
+        name: "fishing_radar",
+        effect: {
+          uz: "Fishing xatlar qizil bilan belgilanadi",
+          en: "Phishing letters are marked in red",
+        },
+        seconds: 10,
+      },
+      {
+        name: "honeypot",
+        effect: {
+          uz: "Hujumlar tuzoqqa aldanib boradi",
+          en: "Attacks are lured into a trap",
+        },
+        seconds: 8,
+      },
+      {
+        name: "sekin_internet",
+        effect: { uz: "Hamma narsa sekinlashadi", en: "Everything slows down" },
+        seconds: 6,
+      },
+      {
+        name: "yamoq",
+        effect: {
+          uz: "Ekrandagi hujumlar yo‘q bo‘ladi",
+          en: "Attacks on screen vanish",
+        },
+        seconds: 0,
+      },
+    ],
+    events: {
+      boshlanganda: { uz: "O‘yin boshlanganda", en: "When the game starts" },
+      fishing_ushlandi: {
+        uz: "Fishing xat ushlanganda",
+        en: "When a phishing letter is caught",
+      },
+      hujum_qaytarildi: {
+        uz: "Hujum qaytarilganda",
+        en: "When an attack is stopped",
+      },
+      urilsa: {
+        uz: "Hujum serverga yetib kelganda",
+        en: "When an attack reaches the server",
+      },
+    },
+    files: {
+      "server.log": {
+        uz: "09:00 Server ishga tushdi.\nadmin parolni unutdi, maxfiy savol orqali tikladi.",
+        en: "09:00 Server started.\nadmin forgot the password and reset it with the secret question.",
+      },
+      "maxfiy_savol.txt": {
+        uz: "Savol: Birinchi uy hayvoningizning ismi?\nJavob (u parol ham): momiq",
+        en: "Question: Your first pet's name?\nAnswer (it is the password too): momiq",
+      },
+    },
+    password: "momiq",
+    missions: [
+      {
+        id: "uzun_parol",
+        title: { uz: "Uzun parol", en: "Long password" },
+        task: {
+          uz: "Parol buzarlar o‘ta olmasin: parol uzunligi kamida 12 bo‘lsin.",
+          en: "Stop the password crackers: make the password at least 12 long.",
+        },
+        hint: { uz: "parol_uzunligi = 12", en: "parol_uzunligi = 12" },
+        xp: 20,
+        check: {
+          kind: "code",
+          test: (p) => Number(p.values.parol_uzunligi) >= 12,
+        },
+      },
+      {
+        id: "mfa",
+        title: { uz: "Ikki bosqichli kirish", en: "Two-step sign-in" },
+        task: {
+          uz: "Parol buzilsa ham kira olmasinlar: ikki bosqichli kirishni yoqing.",
+          en: "Even with a cracked password nobody gets in: turn on two-step sign-in.",
+        },
+        hint: { uz: "ikki_bosqichli = ha", en: "ikki_bosqichli = ha" },
+        xp: 20,
+        check: { kind: "code", test: (p) => p.values.ikki_bosqichli === true },
+      },
+      {
+        id: "firewall",
+        title: { uz: "Firewall", en: "Firewall" },
+        task: {
+          uz: "Skanerlar eshiklaringizni qidirmasin: firewall ni yoqing.",
+          en: "Keep scanners away from your doors: turn the firewall on.",
+        },
+        hint: { uz: "firewall = ha", en: "firewall = ha" },
+        xp: 20,
+        check: { kind: "code", test: (p) => p.values.firewall === true },
+      },
+      {
+        id: "yangilash",
+        title: { uz: "Yangilanishlar", en: "Updates" },
+        task: {
+          uz: "Eski teshiklarni yoping: yangilanishlarni yoqing.",
+          en: "Close the old holes: turn updates on.",
+        },
+        hint: { uz: "yangilanishlar = ha", en: "yangilanishlar = ha" },
+        xp: 20,
+        check: { kind: "code", test: (p) => p.values.yangilanishlar === true },
+      },
+      {
+        id: "antivirus",
+        title: { uz: "Kuchli antivirus", en: "Strong antivirus" },
+        task: {
+          uz: "Viruslarni tezroq yo‘q qiling: antivirus kuchi kamida 8.",
+          en: "Destroy viruses faster: antivirus strength at least 8.",
+        },
+        hint: { uz: "antivirus_kuchi = 8", en: "antivirus_kuchi = 8" },
+        xp: 20,
+        check: {
+          kind: "code",
+          test: (p) => Number(p.values.antivirus_kuchi) >= 8,
+        },
+      },
+      {
+        id: "radar",
+        title: { uz: "Fishing radari", en: "Phishing radar" },
+        task: {
+          uz: "O‘yin paytida terminal orqali fishing radarini yoqing.",
+          en: "While playing, switch on the phishing radar from the terminal.",
+        },
+        hint: {
+          uz: "Terminalga fishing_radar() deb yozing. Barcha buyruqlar: yordam()",
+          en: "Type fishing_radar() in the terminal. All commands: yordam()",
+        },
+        xp: 25,
+        check: { kind: "cheat", cheat: "fishing_radar" },
+      },
+      {
+        id: "ochko",
+        title: { uz: "150 ochko", en: "150 points" },
+        task: {
+          uz: "Bitta o‘yinda 150 ochko to‘plang. Fishing xatlarni bosib ushlang!",
+          en: "Score 150 points in one game. Tap the phishing letters to catch them!",
+        },
+        hint: {
+          uz: "Sovg‘a va’da qiladigan, parol yoki kod so‘raydigan xatlar — fishing.",
+          en: "Letters that promise prizes or ask for a password or code are phishing.",
+        },
+        xp: 25,
+        check: { kind: "score", score: 150 },
+      },
+      {
+        id: "agar",
+        stage: 2,
+        title: { uz: "Favqulodda rejim", en: "Emergency mode" },
+        task: {
+          uz: "Qoida yozing: server hayoti 3 dan kam bo‘lsa, antivirus kuchi 10 bo‘lsin.",
+          en: "Write a rule: when the server has under 3 lives, antivirus strength becomes 10.",
+        },
+        hint: {
+          uz: "agar hayotlar < 3 bo'lsa antivirus_kuchi = 10",
+          en: "agar hayotlar < 3 bo'lsa antivirus_kuchi = 10",
+        },
+        xp: 30,
+        check: { kind: "code", test: ruleOn("hayotlar", "antivirus_kuchi") },
+      },
+      {
+        id: "signal",
+        stage: 2,
+        title: { uz: "Qizil signal", en: "Red alert" },
+        task: {
+          uz: "Blok yozing: 30 soniyadan keyin qalqon qizil bo‘lsin va antivirus kuchaysin. Blokda ikkita sozlama bo‘lsin.",
+          en: "Write a block: after 30 seconds the shield turns red and the antivirus gets stronger. Put two settings in the block.",
+        },
+        hint: {
+          uz: `agar vaqt > 30 bo'lsa:\n    qalqon_rangi = "qizil"\n    antivirus_kuchi = 9`,
+          en: `agar vaqt > 30 bo'lsa:\n    qalqon_rangi = "qizil"\n    antivirus_kuchi = 9`,
+        },
+        xp: 30,
+        check: { kind: "code", test: blockOn("vaqt") },
+      },
+      {
+        id: "aks",
+        stage: 2,
+        title: { uz: "Aks holda", en: "Otherwise" },
+        task: {
+          uz: "Ochko 100 dan kam bo‘lsa hujumlar sekin, aks holda tez bo‘lsin. “aks_holda:” blokidan foydalaning.",
+          en: "Keep attacks slow while the score is under 100 and fast after. Use an “aks_holda:” (otherwise) block.",
+        },
+        hint: {
+          uz: `agar ochko < 100 bo'lsa:\n    hujum_tezligi = 3\naks_holda:\n    hujum_tezligi = 7`,
+          en: `agar ochko < 100 bo'lsa:\n    hujum_tezligi = 3\naks_holda:\n    hujum_tezligi = 7`,
+        },
+        xp: 30,
+        check: { kind: "code", test: hasElse },
+      },
+      {
+        id: "va",
+        stage: 2,
+        title: { uz: "Ikki shart", en: "Two conditions" },
+        task: {
+          uz: "Ikki shartli qoida yozing: vaqt 60 dan ko‘p va hayotlar 2 dan ko‘p bo‘lsa, hujumlar tezlashsin.",
+          en: "Write a rule with two conditions: when the time is over 60 and lives are over 2, attacks speed up.",
+        },
+        hint: {
+          uz: "agar vaqt > 60 va hayotlar > 2 bo'lsa hujum_tezligi = 8",
+          en: "agar vaqt > 60 va hayotlar > 2 bo'lsa hujum_tezligi = 8",
+        },
+        xp: 30,
+        check: { kind: "code", test: hasAnd },
+      },
+      {
+        id: "parol",
+        stage: 3,
+        title: { uz: "Maxfiy savol", en: "Secret question" },
+        task: {
+          uz: 'Admin parolini maxfiy savol javobi qilib qo‘ygan. Terminalda fayllar() deb yozing, fayllarni o‘qing va kirish("parol") bilan dasturchi rejimini oching.',
+          en: 'The admin used the secret question\'s answer as the password. Type fayllar() in the terminal, read the files and open developer mode with kirish("password").',
+        },
+        hint: {
+          uz: `Avval o'qi("maxfiy_savol.txt") deb yozib ko‘ring.`,
+          en: `Try o'qi("maxfiy_savol.txt") first.`,
+        },
+        xp: 30,
+        check: { kind: "login" },
+      },
+      {
+        id: "tutqich",
+        stage: 3,
+        title: { uz: "Fishing ovchisi", en: "Phishing hunter" },
+        task: {
+          uz: "Hodisa yozing: fishing xat ushlanganda yana 5 ochko qo‘shilsin.",
+          en: "Write an event: when a phishing letter is caught, add 5 more points.",
+        },
+        hint: {
+          uz: "qachon fishing_ushlandi:\n    ochko += 5",
+          en: "qachon fishing_ushlandi:\n    ochko += 5",
+        },
+        xp: 35,
+        check: { kind: "code", test: handles("fishing_ushlandi", addsScore) },
+      },
+      {
+        id: "tiklash",
+        stage: 3,
+        title: { uz: "Zaxira nusxa", en: "Backup" },
+        task: {
+          uz: "Hujum serverga yetganda zaxiradan tiklanib, hayot qaytsin va xabar chiqsin.",
+          en: "When an attack reaches the server, restore from backup: get a life back and show a message.",
+        },
+        hint: {
+          uz: `qachon urilsa:\n    hayotlar += 1\n    xabar("Zaxiradan tiklandi!")`,
+          en: `qachon urilsa:\n    hayotlar += 1\n    xabar("Zaxiradan tiklandi!")`,
+        },
+        xp: 35,
+        check: {
+          kind: "code",
+          test: (p) =>
+            handles(
+              "urilsa",
+              (a) => a.kind === "add" && a.name === "hayotlar" && a.amount > 0,
+            )(p) && handles("urilsa", says)(p),
+        },
+      },
+      {
+        id: "usta",
+        stage: 3,
+        title: { uz: "Kiber-qo‘riqchi ustasi", en: "Cyber guard master" },
+        task: {
+          uz: "Bitta o‘yinda 400 ochko to‘plang.",
+          en: "Score 400 points in one game.",
+        },
+        hint: {
+          uz: "Hodisalar va qoidalarni birga ishlating.",
+          en: "Use events and rules together.",
         },
         xp: 40,
         check: { kind: "score", score: 400 },

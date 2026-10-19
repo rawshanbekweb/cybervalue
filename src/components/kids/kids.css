@@ -225,6 +225,18 @@ a.kids-game-card:hover {
 a.kids-kosmos:hover {
   border-color: var(--kids-sky);
 }
+.kids-qorovul {
+  background:
+    radial-gradient(circle at 90% 10%, #a47bff26, transparent 50%),
+    var(--kids-panel);
+}
+.kids-qorovul > svg {
+  background: #a47bff22;
+  color: var(--kids-violet);
+}
+a.kids-qorovul:hover {
+  border-color: var(--kids-violet);
+}
 .kids-robot {
   background:
     radial-gradient(circle at 90% 10%, #3ddc8426, transparent 50%),
@@ -970,4 +982,11 @@ a.kids-robot:hover {
   .kids-certificate > svg {
     color: #8a6a00;
   }
+}
+
+.kids-guard-stage {
+  background: #0b0f1d;
+  box-shadow:
+    0 0 0 3px #1f6b46,
+    0 8px 24px rgba(8, 12, 40, 0.35);
 }

@@ -27,7 +27,7 @@ import {
 } from "../src/lib/kids/progress";
 
 const kosmos = GAMES.kosmos;
-const GAME_IDS_ALL = ["kosmos", "robot", "ilon"] as const;
+const GAME_IDS_ALL = ["kosmos", "robot", "ilon", "qorovul"] as const;
 
 test("the starter code of every game parses cleanly to its defaults", () => {
   for (const game of Object.values(GAMES)) {
@@ -149,6 +149,17 @@ test("every code mission passes with its solution and not without", () => {
     "ilon:va": "agar ochko > 50 va vaqt < 60 bo'lsa olma_ochkosi = 20",
     "ilon:klassik": "qachon olma_yeganda:\n    tezlik += 1",
     "ilon:urilsa": `qachon urilsa:\n    xabar("Voy!")`,
+    "qorovul:uzun_parol": "parol_uzunligi = 14",
+    "qorovul:mfa": "ikki_bosqichli = ha",
+    "qorovul:firewall": "firewall = ha",
+    "qorovul:yangilash": "yangilanishlar = ha",
+    "qorovul:antivirus": "antivirus_kuchi = 9",
+    "qorovul:agar": "agar hayotlar < 3 bo'lsa antivirus_kuchi = 10",
+    "qorovul:signal": `agar vaqt > 30 bo'lsa:\n    qalqon_rangi = "qizil"\n    antivirus_kuchi = 9`,
+    "qorovul:aks": `agar ochko < 100 bo'lsa:\n    hujum_tezligi = 3\naks_holda:\n    hujum_tezligi = 7`,
+    "qorovul:va": "agar vaqt > 60 va hayotlar > 2 bo'lsa hujum_tezligi = 8",
+    "qorovul:tutqich": "qachon fishing_ushlandi:\n    ochko += 5",
+    "qorovul:tiklash": `qachon urilsa:\n    hayotlar += 1\n    xabar("Zaxiradan tiklandi!")`,
   };
   for (const game of Object.values(GAMES))
     for (const mission of game.missions) {
@@ -223,16 +234,22 @@ test("stored progress is cleaned and XP comes from finished missions", () => {
     code: { kosmos: "tezlik = 9", robot: 7 },
   });
   assert.deepEqual(progress.done, ["kosmos:turbo", "robot:agar"]);
-  assert.deepEqual(progress.best, { kosmos: 99, robot: 0, ilon: 0 });
+  assert.deepEqual(progress.best, {
+    kosmos: 99,
+    robot: 0,
+    ilon: 0,
+    qorovul: 0,
+  });
   assert.deepEqual(progress.code, {
     kosmos: "tezlik = 9",
     robot: "",
     ilon: "",
+    qorovul: "",
   });
   assert.equal(kidsXp(progress), 20 + 30);
   assert.equal(kidsLevel(0).level.title.uz, "Yangi xaker");
   assert.equal(kidsLevel(MAX_XP).next, null);
-  assert.equal(MAX_XP, 1230);
+  assert.equal(MAX_XP, 1640);
 });
 
 test("blocks, “va” and “aks_holda” apply as a group", () => {
@@ -369,6 +386,7 @@ test("every game's files give its password away, and only that opens it", () => 
     String.fromCharCode(...[...shifted].map((c) => c.charCodeAt(0) - 1)),
     GAMES.ilon.password,
   );
+  assert.match(GAMES.qorovul.files["maxfiy_savol.txt"].uz, /momiq$/);
 });
 
 test("a stage only opens once the stage before it is finished", () => {
@@ -521,13 +539,13 @@ test("badges follow the progress", () => {
   );
   const full = badges({
     done: all,
-    best: { kosmos: 600, robot: 0, ilon: 0 },
+    best: { kosmos: 600, robot: 0, ilon: 0, qorovul: 0 },
     daily: { last: "", streak: 0, record: 7, count: 7 },
   });
   assert.ok(full.every((b) => b.earned));
   const first = badges({
     done: ["kosmos:turbo"],
-    best: { kosmos: 0, robot: 0, ilon: 0 },
+    best: { kosmos: 0, robot: 0, ilon: 0, qorovul: 0 },
     daily: { last: "", streak: 0, record: 0, count: 0 },
   });
   assert.deepEqual(
@@ -544,4 +562,22 @@ test("the tour is remembered once shown", () => {
   assert.equal(shown?.tour, true);
   assert.equal(restoreKidsProgress(shown).tour, true);
   assert.equal(restoreKidsProgress({ tour: "yes" }).tour, false);
+});
+
+test("the cyber guard teaches each defence with its own setting", () => {
+  const guard = GAMES.qorovul;
+  // The starter code leaves every defence off, so the child switches them on.
+  const start = compile(guard, guard.starter).values;
+  assert.equal(start.ikki_bosqichli, false);
+  assert.equal(start.firewall, false);
+  assert.equal(start.yangilanishlar, false);
+  assert.ok(Number(start.parol_uzunligi) < 12);
+  // It opens with the robot game, after the space game's settings stage.
+  assert.equal(guard.after, "kosmos");
+  // Daily tasks can come from it once it is open.
+  const open = new Set(stage1("kosmos"));
+  const days = Array.from({ length: 60 }, (_, i) =>
+    dailyTask(`2026-11-${String((i % 28) + 1).padStart(2, "0")}`, open),
+  );
+  assert.ok(days.some((t) => t.game === "qorovul"));
 });
