@@ -222,7 +222,11 @@ test("stored Junior progress is validated part by part and the XP recomputed", (
     xpOf(honest),
     xpFor({ missions: 2, exercises: 3, daily: 2, story: false }),
   );
-  assert.deepEqual(honest.agent, { name: "Kulrang Burgut", rank: 1 });
+  assert.deepEqual(honest.agent, {
+    name: "Kulrang Burgut",
+    rank: 1,
+    tour: false,
+  });
   // Made-up missions, out-of-range exercises and future or ancient days do not count.
   const forged = restoreJuniorProgress(
     {
@@ -239,7 +243,7 @@ test("stored Junior progress is validated part by part and the XP recomputed", (
     xpOf(forged),
     xpFor({ missions: 1, exercises: 1, daily: 0, story: true }),
   );
-  assert.deepEqual(forged.agent, { name: "x", rank: 10 });
+  assert.deepEqual(forged.agent, { name: "x", rank: 10, tour: false });
   assert.equal(xpOf(restoreJuniorProgress("nonsense", now)), 0);
   // One part is replaced at a time; unknown parts are refused.
   const next = withPart(

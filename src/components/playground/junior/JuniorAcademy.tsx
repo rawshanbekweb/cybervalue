@@ -11,6 +11,7 @@ import {
 } from "@/lib/junior/verify";
 import { CaseFile } from "./campaign";
 import { Narrator } from "./Narrator";
+import { JuniorTour } from "./Tour";
 import { useJuniorState } from "./state";
 import {
   CipherMission,
@@ -123,6 +124,8 @@ export function JuniorAcademy() {
           </span>
         </div>
       </header>
+
+      <JuniorTour />
 
       <nav className="jr-nav" aria-label={t("Missions")}>
         {MISSIONS.map((item) => {

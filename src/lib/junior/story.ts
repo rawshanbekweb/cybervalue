@@ -5,8 +5,6 @@ import type { Text } from "./logic";
 // headquarters. Every finished mission adds one piece of evidence to the case
 // file; with all six, the recruit names the attacker among three suspects.
 
-export const STORY_KEY = "cybervalue:junior:story:v1";
-
 export const STORY_INTRO: Text = {
   uz: "Tungi soat 02:17. Cybervalue kiber-shtabining tizimiga kimdir kirishga urindi. Shtab boshlig‘i sizga topshiriq berdi: oltita missiyani bajaring, har birida bitta dalil toping va hujumchini fosh qiling.",
   en: "02:17 at night. Someone tried to break into the Cybervalue cyber headquarters. The chief has a job for you: finish six missions, find one piece of evidence in each, and unmask the attacker.",

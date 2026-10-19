@@ -1,4 +1,8 @@
 import Link from "next/link";
+import {
+  JuniorLevelCell,
+  JuniorMissionCell,
+} from "@/components/admin/junior-stage";
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
 import { groupWhere, requireStaff } from "@/lib/auth";
 import { getDb } from "@/lib/db";
@@ -202,7 +206,9 @@ export default async function AdminJuniorPage({
                 <th scope="col">{t("Rank")}</th>
                 <th scope="col">XP</th>
                 <th scope="col">{t("Missions")}</th>
+                <th scope="col">{t("Mission stage")}</th>
                 <th scope="col">{t("Exercises")}</th>
+                <th scope="col">{t("Cipher level")}</th>
                 <th scope="col">{t("Case")}</th>
                 <th scope="col">{t("Daily · streak")}</th>
                 <th scope="col">{t("Last activity")}</th>
@@ -227,6 +233,9 @@ export default async function AdminJuniorPage({
                     {row.missions}/{MISSIONS.length}
                   </td>
                   <td>
+                    <JuniorMissionCell stages={row.stages} t={t} />
+                  </td>
+                  <td>
                     <span
                       className="admin-meter"
                       role="img"
@@ -239,6 +248,9 @@ export default async function AdminJuniorPage({
                       />
                     </span>{" "}
                     {row.exercises}/{TOTAL_EXERCISES}
+                  </td>
+                  <td>
+                    <JuniorLevelCell stages={row.stages} t={t} />
                   </td>
                   <td>{row.story ? t("Solved") : "—"}</td>
                   <td>

@@ -26,8 +26,11 @@ export type JuniorProgress = {
   story: boolean;
   events: Events;
   daily: number[];
-  /** The codename and the last rank already celebrated. */
-  agent: { name: string; rank: number };
+  /**
+   * The codename, the last rank already celebrated, and whether the
+   * first-visit tour was shown.
+   */
+  agent: { name: string; rank: number; tour: boolean };
 };
 
 export const PROGRESS_PARTS = [
@@ -66,7 +69,7 @@ function restorePart(part: ProgressPart, raw: unknown, now: number) {
         typeof value.rank === "number" && Number.isInteger(value.rank)
           ? Math.min(Math.max(value.rank, 0), 10)
           : 0;
-      return { name: restoreCodename(value), rank };
+      return { name: restoreCodename(value), rank, tour: value.tour === true };
     }
   }
 }

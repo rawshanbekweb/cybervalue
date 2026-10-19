@@ -13,7 +13,6 @@ import { enigma } from "./enigma";
 // for everyone, with the cipher and its key shown so it can be solved with
 // the Cipher Room's tools. Solving it on consecutive days builds a streak.
 
-export const DAILY_KEY = "cybervalue:junior:daily:v1";
 const DAY = 86_400_000;
 const TASHKENT = 5 * 3_600_000;
 

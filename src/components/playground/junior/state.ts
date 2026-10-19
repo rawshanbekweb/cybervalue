@@ -13,6 +13,7 @@ import {
   restoreJuniorProgress,
   xpOf,
 } from "@/lib/junior/progress";
+import type { JuniorProgress } from "@/lib/junior/progress";
 import { useJuniorStore } from "./store";
 
 const never = () => () => {};
@@ -76,7 +77,8 @@ export function useJuniorState() {
     },
     bestStreak: bestStreak(progress.daily),
     agent: progress.agent,
-    setAgent: (value: { name: string; rank: number }) => set("agent", value),
+    setAgent: (value: JuniorProgress["agent"]) => set("agent", value),
+    finishTour: () => set("agent", { ...progress.agent, tour: true }),
     missionCount: Object.keys(progress.missions).length,
     missionTotal: MISSION_IDS.length,
     exercises: exercisesOf(progress),

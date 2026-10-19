@@ -23,6 +23,11 @@ import { BADGES } from "@/lib/junior/badges";
 import { MISSIONS } from "@/lib/junior/content";
 import { TOTAL_EXERCISES } from "@/lib/junior/cipher-content";
 import { RANKS } from "@/lib/junior/rank";
+import { MISSION_STAGE } from "@/lib/junior/verify";
+import {
+  JuniorLevelCell,
+  JuniorMissionCell,
+} from "@/components/admin/junior-stage";
 
 // The date input shows the Tashkent calendar day the access ends on.
 const toDateInput = (date: Date | null) =>
@@ -130,39 +135,87 @@ export default async function AdminJuniorMemberPage({
         locale={locale}
         t={t}
       />
-      <h2>{t("Missions")}</h2>
-      <ul className="admin-checklist">
-        {MISSIONS.map((mission) => (
-          <li key={mission.id} className={done.has(mission.id) ? "done" : ""}>
-            <span aria-hidden="true">{done.has(mission.id) ? "✓" : "·"}</span>
-            {mission.title[locale]}
-            <span className="visually-hidden">
-              {done.has(mission.id) ? t("Done") : t("Not done")}
-            </span>
-          </li>
-        ))}
-      </ul>
+      <section className="admin-panel" aria-labelledby="junior-skills">
+        <h2 id="junior-skills">{t("What the member has learned")}</h2>
+        {row.stages.skills.length ? (
+          <ul className="admin-kid-skills">
+            {row.stages.skills.map((skill) => (
+              <li key={skill.key}>{skill.text[locale]}</li>
+            ))}
+          </ul>
+        ) : (
+          <p className="muted">
+            {t(
+              "Nothing finished yet. Skills appear here after each mission stage and cipher level.",
+            )}
+          </p>
+        )}
+      </section>
 
-      <h2>{t("Cipher homework")}</h2>
-      <ul className="admin-bars">
-        {row.ciphers.map((cipher) => (
-          <li key={cipher.id}>
-            <span>{cipher.title[locale]}</span>
-            <span
-              className="admin-meter"
-              role="img"
-              aria-label={`${cipher.solved}/${cipher.total}`}
-            >
-              <span
-                style={{ width: `${(cipher.solved / cipher.total) * 100}%` }}
-              />
-            </span>
-            <span className="muted">
-              {cipher.solved}/{cipher.total}
-            </span>
-          </li>
-        ))}
-      </ul>
+      <h2>
+        {t("Missions")} · <JuniorMissionCell stages={row.stages} t={t} />
+      </h2>
+      {row.stages.missionStages.map((stage) => (
+        <div key={stage.stage}>
+          <h3 className="admin-stage-head">
+            {t("Stage {n}", { n: stage.stage })} · {stage.done}/{stage.total}
+            {!stage.open && ` · ${t("Locked")}`}
+          </h3>
+          <ul className="admin-checklist">
+            {MISSIONS.filter((m) => MISSION_STAGE[m.id] === stage.stage).map(
+              (mission) => (
+                <li
+                  key={mission.id}
+                  className={done.has(mission.id) ? "done" : ""}
+                >
+                  <span aria-hidden="true">
+                    {done.has(mission.id) ? "✓" : "·"}
+                  </span>
+                  {mission.title[locale]}
+                  <span className="visually-hidden">
+                    {done.has(mission.id) ? t("Done") : t("Not done")}
+                  </span>
+                </li>
+              ),
+            )}
+          </ul>
+        </div>
+      ))}
+
+      <h2>
+        {t("Cipher homework")} · <JuniorLevelCell stages={row.stages} t={t} />
+      </h2>
+      {row.stages.levels.map((level) => (
+        <div key={level.level}>
+          <h3 className="admin-stage-head">
+            {t("Level {n}", { n: level.level })} · {level.solved}/{level.total}
+            {!level.open && ` · ${t("Locked")}`}
+          </h3>
+          <ul className="admin-bars">
+            {row.ciphers
+              .filter((cipher) => cipher.level === level.level)
+              .map((cipher) => (
+                <li key={cipher.id}>
+                  <span>{cipher.title[locale]}</span>
+                  <span
+                    className="admin-meter"
+                    role="img"
+                    aria-label={`${cipher.solved}/${cipher.total}`}
+                  >
+                    <span
+                      style={{
+                        width: `${(cipher.solved / cipher.total) * 100}%`,
+                      }}
+                    />
+                  </span>
+                  <span className="muted">
+                    {cipher.solved}/{cipher.total}
+                  </span>
+                </li>
+              ))}
+          </ul>
+        </div>
+      ))}
 
       <h2>
         {t("Badges")} ({row.badges.length}/{BADGES.length})

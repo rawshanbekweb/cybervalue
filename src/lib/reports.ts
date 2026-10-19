@@ -100,6 +100,9 @@ export async function juniorReport(
     daily: row.daily,
     streak: row.streak,
     badges: row.badges.length,
+    missionStage: row.stages.missionStage,
+    cipherLevel: row.stages.cipherLevel,
+    skills: row.stages.skills.map((s) => s.text),
     lastActiveAt: row.lastActiveAt,
   };
 }
