@@ -1,6 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { needsDatabase, signInJunior } from "./junior-member";
+import { CIPHERS } from "../../src/lib/junior/cipher-content";
 
 // Assertions use the English interface copy.
 test.use({
@@ -127,6 +128,28 @@ test("every cipher's workbench runs, and the paint lesson asks questions", async
   await page.getByRole("button", { name: "Crack it" }).click();
   await expect(page.locator(".cr-out")).toContainText("quick brown fox");
 
+  // Level-3 homework is locked for a new member, though its bench is open.
+  await page.goto("/junior/homework#cipher/10");
+  await page.reload();
+  await expect(page.locator(".jr-locked")).toContainText("Level 3");
+
+  // With levels 1 and 2 done it opens (keep the English locale cookie).
+  const context = page.context();
+  const locale = (await context.cookies()).filter(
+    (c) => c.name === "cybervalue-locale",
+  );
+  await context.clearCookies();
+  await context.addCookies(locale);
+  await signInJunior(page, {
+    progress: {
+      ciphers: Object.fromEntries(
+        CIPHERS.filter((c) => c.level < 3).map((c) => [
+          c.id,
+          c.exercises.map((_, i) => i),
+        ]),
+      ),
+    },
+  });
   await page.goto("/junior/homework#cipher/10");
   await page.reload();
   const card = page.locator(".cr-ex").nth(1);

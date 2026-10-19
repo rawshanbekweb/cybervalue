@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { Check, FlaskConical } from "lucide-react";
+import { Check, FlaskConical, Lock } from "lucide-react";
 import { useT } from "../network-lab/use-t";
 import { useHashLessonId } from "../useHashLessonId";
 import { CIPHERS } from "@/lib/junior/cipher-content";
+import { cipherLevelOpen, exercisesToOpen } from "@/lib/junior/verify";
 import { DailyPuzzle } from "./campaign";
 import { Homework, HomeworkSheet } from "./ciphers/homework";
 import { useJuniorState } from "./state";
@@ -15,9 +16,10 @@ import "./ciphers/ciphers.css";
 export function HomeworkPage() {
   const { t, text } = useT();
   const [id, setId] = useHashLessonId(CIPHERS.length, 1, "cipher");
-  const { ciphers, setCiphers } = useJuniorState();
+  const { ciphers, solveExercise } = useJuniorState();
   const cipher = CIPHERS[id - 1];
   const solved = ciphers[cipher.id] ?? [];
+  const open = cipherLevelOpen(cipher.level, ciphers);
   return (
     <div className="jr-homework-page">
       <header className="jr-hero jr-page-head">
@@ -42,15 +44,17 @@ export function HomeworkPage() {
           {CIPHERS.map((item) => {
             const count = ciphers[item.id]?.length ?? 0;
             const full = count === item.exercises.length;
+            const closed = !cipherLevelOpen(item.level, ciphers);
             return (
               <button
                 key={item.id}
                 type="button"
                 aria-current={item.number === id ? "true" : undefined}
-                className={full ? "done" : undefined}
+                className={full ? "done" : closed ? "locked" : undefined}
                 onClick={() => setId(item.number)}
               >
                 {full && <Check size={13} aria-hidden="true" />}
+                {closed && <Lock size={13} aria-label={t("Locked")} />}
                 {text(item.title).split(" — ")[0]}
                 <small>
                   {count}/{item.exercises.length}
@@ -69,15 +73,28 @@ export function HomeworkPage() {
             {t("Open the tool and the story")}
           </Link>
         </div>
-        <Homework
-          key={cipher.id}
-          cipher={cipher}
-          solved={solved}
-          onSolved={(index) => {
-            if (!solved.includes(index))
-              setCiphers({ ...ciphers, [cipher.id]: [...solved, index] });
-          }}
-        />
+        {open ? (
+          <Homework
+            key={cipher.id}
+            cipher={cipher}
+            solved={solved}
+            onSolved={(index, answer) =>
+              solveExercise(cipher.id, index, answer)
+            }
+          />
+        ) : (
+          <p className="jr-locked" role="status">
+            <Lock size={16} aria-hidden="true" />{" "}
+            {t(
+              "Level {level} homework opens after {count} more exercises of level {previous}. You can already read this cipher’s story and try its tool.",
+              {
+                level: cipher.level,
+                previous: cipher.level - 1,
+                count: exercisesToOpen(cipher.level, ciphers),
+              },
+            )}
+          </p>
+        )}
       </section>
 
       <HomeworkSheet />

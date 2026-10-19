@@ -4,6 +4,7 @@ import type { Translator } from "@/lib/i18n/core";
 import { useId, useState } from "react";
 import { CheckCircle2, XCircle } from "lucide-react";
 import { useT } from "../network-lab/use-t";
+import type { MissionEvidence } from "@/lib/junior/verify";
 import {
   CIPHER_ANSWER,
   CIPHER_TEXT,
@@ -30,7 +31,11 @@ import {
   type StrengthIssue,
 } from "@/lib/junior/logic";
 
-type PanelProps = { done: boolean; onComplete: () => void };
+type PanelProps = {
+  done: boolean;
+  /** Called with the answers, which the server checks again. */
+  onComplete: (evidence: MissionEvidence) => void;
+};
 
 function Finish({
   ready,
@@ -217,7 +222,11 @@ export function PasswordMission({ done, onComplete }: PanelProps) {
           "Tip: 5 or more random words, or 14+ mixed characters. A different password for every site, and turn on two-step verification where you can.",
         )}
       </p>
-      <Finish ready={strong} done={done} onComplete={onComplete} />
+      <Finish
+        ready={strong}
+        done={done}
+        onComplete={() => onComplete({ mission: "password" })}
+      />
     </div>
   );
 }
@@ -296,7 +305,11 @@ export function PhishingMission({ done, onComplete }: PanelProps) {
             )}
           </>
         )}
-        <Finish ready={passed} done={done} onComplete={onComplete} />
+        <Finish
+          ready={passed}
+          done={done}
+          onComplete={() => onComplete({ mission: "phishing", answers })}
+        />
       </div>
     </div>
   );
@@ -369,7 +382,11 @@ export function CipherMission({ done, onComplete }: PanelProps) {
             : t("Not yet. Move the slider until readable text appears.")}
         </Verdict>
       )}
-      <Finish ready={solved} done={done} onComplete={onComplete} />
+      <Finish
+        ready={solved}
+        done={done}
+        onComplete={() => onComplete({ mission: "cipher", answer })}
+      />
     </div>
   );
 }
@@ -432,7 +449,11 @@ export function FootprintMission({ done, onComplete }: PanelProps) {
               : t("{wrong} item(s) marked wrongly.", { wrong })}
           </p>
         )}
-        <Finish ready={passed} done={done} onComplete={onComplete} />
+        <Finish
+          ready={passed}
+          done={done}
+          onComplete={() => onComplete({ mission: "footprint", marked })}
+        />
       </div>
     </div>
   );
@@ -450,7 +471,7 @@ function FlagCard({
   flag: Flag;
   index: number;
   solved: boolean;
-  onSolve: () => void;
+  onSolve: (value: string) => void;
   children: React.ReactNode;
 }) {
   const { t, text } = useT();
@@ -461,7 +482,7 @@ function FlagCard({
   const submit = () => {
     if (normalizeAnswer(value) === normalizeAnswer(flag.flag)) {
       setWrong(false);
-      onSolve();
+      onSolve(value);
     } else setWrong(true);
   };
   return (
@@ -547,10 +568,11 @@ function Base64Tool() {
 
 export function CtfMission({ done, onComplete }: PanelProps) {
   const { t } = useT();
-  const [solved, setSolved] = useState<Record<string, boolean>>({});
+  // The flags found, sent with the mission so the server can check them.
+  const [solved, setSolved] = useState<Record<string, string>>({});
   const count = CTF_FLAGS.filter((flag) => solved[flag.id]).length;
-  const markSolved = (id: string) =>
-    setSolved((current) => ({ ...current, [id]: true }));
+  const markSolved = (id: string, value: string) =>
+    setSolved((current) => ({ ...current, [id]: value }));
   const clue: Record<string, React.ReactNode> = {
     source: <pre className="jr-code jr-pre">{CTF_PAGE_SOURCE}</pre>,
     base64: <code className="jr-code">{CTF_BASE64}</code>,
@@ -573,7 +595,7 @@ export function CtfMission({ done, onComplete }: PanelProps) {
             flag={flag}
             index={index}
             solved={Boolean(solved[flag.id])}
-            onSolve={() => markSolved(flag.id)}
+            onSolve={(value) => markSolved(flag.id, value)}
           >
             {clue[flag.id]}
             {flag.id === "base64" && <Base64Tool />}
@@ -583,7 +605,7 @@ export function CtfMission({ done, onComplete }: PanelProps) {
       <Finish
         ready={count === CTF_FLAGS.length}
         done={done}
-        onComplete={onComplete}
+        onComplete={() => onComplete({ mission: "ctf", flags: solved })}
       />
     </div>
   );
@@ -638,7 +660,11 @@ export function EthicsMission({ done, onComplete }: PanelProps) {
         >
           {t("Check my answers")}
         </button>
-        <Finish ready={passed} done={done} onComplete={onComplete} />
+        <Finish
+          ready={passed}
+          done={done}
+          onComplete={() => onComplete({ mission: "ethics", answers })}
+        />
       </div>
     </div>
   );

@@ -1,12 +1,10 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { MISSION_IDS } from "@/lib/junior/content";
+import { MISSION_IDS, type MissionId } from "@/lib/junior/content";
+import { bestStreak, type MissionEvidence } from "@/lib/junior/verify";
 import type { Progress } from "@/lib/junior/logic";
-import {
-  TOTAL_EXERCISES,
-  type CipherProgress,
-} from "@/lib/junior/cipher-content";
+import { TOTAL_EXERCISES, type CipherId } from "@/lib/junior/cipher-content";
 import type { Events } from "@/lib/junior/badges";
 import { dayIndex, streak } from "@/lib/junior/daily";
 import { rankFor } from "@/lib/junior/rank";
@@ -45,9 +43,25 @@ export function useJuniorState() {
     member: store?.member ?? null,
     unsaved: store?.unsaved ?? false,
     missions: progress.missions,
-    setMissions: (value: Progress) => set("missions", value),
+    /** A finished mission, with the answers that solve it. */
+    completeMission: (id: MissionId, evidence: MissionEvidence) =>
+      set(
+        "missions",
+        { ...progress.missions, [id]: true },
+        { missions: { [id]: evidence } },
+      ),
+    resetMissions: () => set("missions", {} as Progress),
     ciphers: progress.ciphers,
-    setCiphers: (value: CipherProgress) => set("ciphers", value),
+    /** A solved homework exercise, with its answer. */
+    solveExercise: (cipher: CipherId, index: number, answer: string) => {
+      const solved = progress.ciphers[cipher] ?? [];
+      if (solved.includes(index)) return;
+      set(
+        "ciphers",
+        { ...progress.ciphers, [cipher]: [...solved, index] },
+        { answers: { [cipher]: { [index]: answer } } },
+      );
+    },
     story: progress.story,
     solveStory: () => set("story", true),
     events: progress.events,
@@ -56,9 +70,11 @@ export function useJuniorState() {
     days: progress.daily,
     today,
     streak: today === null ? 0 : streak(progress.daily, today),
-    solveDay: (day: number) => {
-      if (!progress.daily.includes(day)) set("daily", [...progress.daily, day]);
+    solveDay: (day: number, answer: string) => {
+      if (!progress.daily.includes(day))
+        set("daily", [...progress.daily, day], { daily: answer });
     },
+    bestStreak: bestStreak(progress.daily),
     agent: progress.agent,
     setAgent: (value: { name: string; rank: number }) => set("agent", value),
     missionCount: Object.keys(progress.missions).length,

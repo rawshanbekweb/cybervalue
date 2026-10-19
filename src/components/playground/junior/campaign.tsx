@@ -296,11 +296,14 @@ export function Badges() {
 
 export function DailyPuzzle() {
   const { t, text, locale } = useT();
-  const { today, days, streak, solveDay } = useJuniorState();
+  const { today, days, streak, bestStreak, solveDay } = useJuniorState();
   const inputId = useId();
   const [answer, setAnswer] = useState("");
   const [checked, setChecked] = useState(false);
-  if (today === null) return <section className="jr-daily" aria-busy="true" />;
+  // Reserves the card's height until the date is known, so the exercises
+  // below do not jump when it appears.
+  if (today === null)
+    return <section className="jr-daily jr-daily-wait" aria-busy="true" />;
   const puzzle = puzzleFor(today, locale);
   const solved = days.includes(today);
   const ok = sameAnswer(puzzle.format, answer, puzzle.answer);
@@ -313,6 +316,8 @@ export function DailyPuzzle() {
           <span className="jr-daily-streak">
             <Flame size={13} aria-hidden="true" />{" "}
             {t("{streak}-day streak", { streak })}
+            {bestStreak > streak &&
+              ` · ${t("best {best}", { best: bestStreak })}`}
           </span>
         )}
       </h2>
@@ -365,7 +370,7 @@ export function DailyPuzzle() {
               disabled={!answer}
               onClick={() => {
                 setChecked(true);
-                if (ok) solveDay(today);
+                if (ok) solveDay(today, answer);
               }}
             >
               {t("Check the puzzle")}
