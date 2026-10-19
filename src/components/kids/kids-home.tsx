@@ -46,6 +46,7 @@ const ICONS: Record<GameId, typeof Rocket> = {
   ilon: Worm,
   qorovul: ShieldCheck,
   labirint: Route,
+  shifr: KeyRound,
 };
 
 const BADGE_ICONS: Record<string, typeof Rocket> = {

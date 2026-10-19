@@ -39,6 +39,7 @@ const SCORE: Record<GameId, number> = {
   ilon: 60,
   qorovul: 100,
   labirint: 0,
+  shifr: 0,
 };
 
 function tasksFor(id: GameId): DailyTask[] {
@@ -98,9 +99,9 @@ function hash(text: string) {
  * then one of its tasks, so every open game gets its turn.
  */
 export function dailyTask(day: string, done: Set<string>): DailyTask {
-  // Maze levels are their own daily challenge; tasks come from the others.
+  // Puzzle levels are their own challenge; tasks come from the other games.
   const open = GAME_IDS.filter(
-    (id) => !GAMES[id].maze && gameOpen(GAMES[id], done),
+    (id) => !GAMES[id].lab && gameOpen(GAMES[id], done),
   );
   const h = hash(day);
   const tasks = tasksFor(open[h % open.length]);

@@ -6,13 +6,10 @@ import {
   ArrowLeft,
   ArrowUp,
   BookOpen,
-  Check,
   Flag,
   Lightbulb,
-  Lock,
   Play,
   RotateCcw,
-  ShieldCheck,
   Sparkles,
   Star,
 } from "lucide-react";
@@ -20,7 +17,6 @@ import { useT } from "../playground/network-lab/use-t";
 import {
   GAMES,
   missionKey,
-  STAGES,
   stageOf,
   stageOpen,
   type Mission,
@@ -38,6 +34,7 @@ import {
 import { kidsLevel } from "@/lib/kids/progress";
 import { saveKidsAction } from "@/app/[lang]/kids/actions";
 import { CodeEditor } from "./code-editor";
+import { PuzzleLevels } from "./puzzle-levels";
 import "./kids.css";
 
 const game = GAMES.labirint;
@@ -319,69 +316,15 @@ export function MazeLab({
           </details>
         </section>
 
-        <section
-          className="kids-missions kids-maze-levels"
-          aria-labelledby="kids-missions-title"
-        >
-          <div className="kids-panel-head">
-            <h2 id="kids-missions-title">{t("Levels")}</h2>
-            <span>
-              {t("{done} of {total}", {
-                done: missions.filter((m) => m.done).length,
-                total: missions.length,
-              })}
-            </span>
-          </div>
-          {STAGES.map((stage) => {
-            const list = missions.filter((m) => stageOf(m) === stage.stage);
-            const open = stageOpen(game, stage.stage, known);
-            return (
-              <div
-                key={stage.stage}
-                className={`kids-stage-group ${open ? "" : "locked"}`}
-              >
-                <h3 className="kids-stage-title">
-                  {!open && <Lock size={16} aria-hidden="true" />}
-                  {t("Stage {n}: {title}", {
-                    n: stage.stage,
-                    title: text(MAZE_STAGES[stage.stage - 1]),
-                  })}
-                </h3>
-                <ol className="kids-mission-list">
-                  {list.map((m) => (
-                    <li key={m.id} className={m.done ? "done" : ""}>
-                      <span className="kids-mission-mark" aria-hidden="true">
-                        {m.done ? <Check size={14} /> : null}
-                      </span>
-                      <button
-                        type="button"
-                        className="kids-level-button"
-                        aria-pressed={m.id === selected}
-                        disabled={!open}
-                        onClick={() => choose(m.id)}
-                      >
-                        {text(m.title)}
-                      </button>
-                      <span className="kids-mission-xp">+{m.xp} XP</span>
-                      {m.done && (
-                        <span className="visually-hidden">{t("Done")}</span>
-                      )}
-                    </li>
-                  ))}
-                </ol>
-                {list.every((m) => m.done) && (
-                  <details className="kids-lesson">
-                    <summary>
-                      <ShieldCheck size={16} aria-hidden="true" />{" "}
-                      {t("Cyber lesson")}
-                    </summary>
-                    <p>{text(MAZE_LESSONS[stage.stage - 1])}</p>
-                  </details>
-                )}
-              </div>
-            );
-          })}
-        </section>
+        <PuzzleLevels
+          game={game}
+          missions={missions}
+          known={known}
+          selected={selected}
+          onChoose={choose}
+          stages={MAZE_STAGES}
+          lessons={MAZE_LESSONS}
+        />
       </div>
     </div>
   );

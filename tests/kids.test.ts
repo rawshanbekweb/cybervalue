@@ -33,6 +33,7 @@ const GAME_IDS_ALL = [
   "ilon",
   "qorovul",
   "labirint",
+  "shifr",
 ] as const;
 
 test("the starter code of every game parses cleanly to its defaults", () => {
@@ -246,6 +247,7 @@ test("stored progress is cleaned and XP comes from finished missions", () => {
     ilon: 0,
     qorovul: 0,
     labirint: 0,
+    shifr: 0,
   });
   assert.deepEqual(progress.code, {
     kosmos: "tezlik = 9",
@@ -253,11 +255,12 @@ test("stored progress is cleaned and XP comes from finished missions", () => {
     ilon: "",
     qorovul: "",
     labirint: "",
+    shifr: "",
   });
   assert.equal(kidsXp(progress), 20 + 30);
   assert.equal(kidsLevel(0).level.title.uz, "Yangi xaker");
   assert.equal(kidsLevel(MAX_XP).next, null);
-  assert.equal(MAX_XP, 1915);
+  assert.equal(MAX_XP, 2190);
 });
 
 test("blocks, “va” and “aks_holda” apply as a group", () => {
@@ -370,7 +373,7 @@ qachon urilsa:
 });
 
 test("every game's files give its password away, and only that opens it", () => {
-  for (const game of Object.values(GAMES).filter((g) => !g.maze)) {
+  for (const game of Object.values(GAMES).filter((g) => !g.lab)) {
     assert.ok(passwordOpens(game, game.password), game.id);
     assert.ok(passwordOpens(game, ` "${game.password.toUpperCase()}" `));
     assert.ok(!passwordOpens(game, "parol"), game.id);
@@ -547,13 +550,13 @@ test("badges follow the progress", () => {
   );
   const full = badges({
     done: all,
-    best: { kosmos: 600, robot: 0, ilon: 0, qorovul: 0, labirint: 0 },
+    best: { kosmos: 600, robot: 0, ilon: 0, qorovul: 0, labirint: 0, shifr: 0 },
     daily: { last: "", streak: 0, record: 7, count: 7 },
   });
   assert.ok(full.every((b) => b.earned));
   const first = badges({
     done: ["kosmos:turbo"],
-    best: { kosmos: 0, robot: 0, ilon: 0, qorovul: 0, labirint: 0 },
+    best: { kosmos: 0, robot: 0, ilon: 0, qorovul: 0, labirint: 0, shifr: 0 },
     daily: { last: "", streak: 0, record: 0, count: 0 },
   });
   assert.deepEqual(

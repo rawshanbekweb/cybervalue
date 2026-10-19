@@ -17,7 +17,8 @@ import {
 } from "./lang";
 import type { Needs } from "./maze";
 
-export type GameId = "kosmos" | "robot" | "ilon" | "qorovul" | "labirint";
+export type GameId =
+  "kosmos" | "robot" | "ilon" | "qorovul" | "labirint" | "shifr";
 
 export type Cheat = { name: string; effect: Text; seconds: number };
 
@@ -26,7 +27,8 @@ export type Check =
   | { kind: "cheat"; cheat: string }
   | { kind: "score"; score: number }
   | { kind: "login" }
-  | { kind: "maze"; level: string; needs?: Needs; maxLines?: number };
+  | { kind: "maze"; level: string; needs?: Needs; maxLines?: number }
+  | { kind: "cipher"; chest: string };
 
 export type Stage = 1 | 2 | 3;
 
@@ -59,10 +61,11 @@ export type Game = {
   /** The game whose first stage opens this one; none for the first game. */
   after?: GameId;
   /**
-   * A maze game: the code is a program for the robot (src/lib/kids/maze.ts)
-   * and every mission is a level; the settings parts stay empty.
+   * A puzzle game with its own lab: the code is a robot program
+   * (src/lib/kids/maze.ts) or a decoding program (src/lib/kids/cipher.ts),
+   * every mission is a level, and the settings parts stay empty.
    */
-  maze?: true;
+  lab?: "maze" | "cipher";
   missions: Mission[];
 };
 
@@ -1528,7 +1531,7 @@ qalqon_rangi = "ko'k"
   labirint: {
     id: "labirint",
     after: "robot",
-    maze: true,
+    lab: "maze",
     title: { uz: "Labirint", en: "Maze" },
     tagline: {
       uz: "Robotga yo‘lni buyruqlar bilan ko‘rsating: ketma-ketlik, sikl va shart.",
@@ -1699,6 +1702,141 @@ qalqon_rangi = "ko'k"
         },
         xp: 35,
         check: { kind: "maze", level: "l10", needs: { while: true, if: true } },
+      },
+    ],
+  },
+  shifr: {
+    id: "shifr",
+    after: "qorovul",
+    lab: "cipher",
+    title: { uz: "Shifr xazinasi", en: "Cipher treasure" },
+    tagline: {
+      uz: "Shifrlangan xatlarni dastur bilan oching va xazinani toping.",
+      en: "Decode the secret letters with a program and find the treasure.",
+    },
+    schema: {},
+    watch: [],
+    starter: "",
+    cheats: [],
+    events: {},
+    files: {},
+    password: "",
+    missions: [
+      {
+        id: "c1",
+        title: { uz: "Birinchi sandiq", en: "The first chest" },
+        task: {
+          uz: "Har bir harf alifboda 1 ta oldinga surilgan. Ularni orqaga suring!",
+          en: "Every letter was moved 1 step forward in the alphabet. Move them back!",
+        },
+        hint: { uz: `sur(1)`, en: `sur(1)` },
+        xp: 20,
+        check: { kind: "cipher", chest: "c1" },
+      },
+      {
+        id: "c2",
+        title: { uz: "Sezar shifri", en: "Caesar's cipher" },
+        task: {
+          uz: "Yuliy Sezar xatlarini harflarni 3 ga surib yozgan. Ochib ko‘ring.",
+          en: "Julius Caesar wrote his letters with every letter moved 3 places. Open it.",
+        },
+        hint: { uz: `sur(3)`, en: `sur(3)` },
+        xp: 20,
+        check: { kind: "cipher", chest: "c2" },
+      },
+      {
+        id: "c3",
+        title: { uz: "Noma’lum kalit", en: "Unknown key" },
+        task: {
+          uz: "Bu safar necha harfga surilgani noma’lum. sinab_kor() bilan hammasini sinab, o‘qiladiganini toping.",
+          en: "This time nobody knows the shift. Try them all with sinab_kor() and find the readable one.",
+        },
+        hint: { uz: `sinab_kor()\nsur(7)`, en: `sinab_kor()\nsur(7)` },
+        xp: 20,
+        check: { kind: "cipher", chest: "c3" },
+      },
+      {
+        id: "c4",
+        title: { uz: "Ko‘zgu xat", en: "Mirror letter" },
+        task: {
+          uz: "Xat teskari yozilgan.",
+          en: "The letter is written backwards.",
+        },
+        hint: { uz: `teskari()`, en: `teskari()` },
+        xp: 20,
+        check: { kind: "cipher", chest: "c4" },
+      },
+      {
+        id: "c5",
+        stage: 2,
+        title: { uz: "Ikki qulf", en: "Two locks" },
+        task: {
+          uz: "Avval surilgan, keyin teskari yozilgan. Ikki qadamni ham bekor qiling.",
+          en: "First shifted, then reversed. Undo both steps.",
+        },
+        hint: { uz: `teskari()\nsur(4)`, en: `teskari()\nsur(4)` },
+        xp: 30,
+        check: { kind: "cipher", chest: "c5" },
+      },
+      {
+        id: "c6",
+        stage: 2,
+        title: { uz: "Atbash", en: "Atbash" },
+        task: {
+          uz: "Qadimiy shifr: A↔Z, B↔Y kabi almashtirilgan.",
+          en: "An ancient cipher: A swapped with Z, B with Y and so on.",
+        },
+        hint: { uz: `atbash()`, en: `atbash()` },
+        xp: 30,
+        check: { kind: "cipher", chest: "c6" },
+      },
+      {
+        id: "c7",
+        stage: 2,
+        title: { uz: "Qaroqchilar xati", en: "Pirates' letter" },
+        task: {
+          uz: "Avval atbash, keyin 2 ga surilgan. Teskari tartibda oching!",
+          en: "First atbash, then shifted by 2. Undo them in the opposite order!",
+        },
+        hint: { uz: `sur(2)\natbash()`, en: `sur(2)\natbash()` },
+        xp: 30,
+        check: { kind: "cipher", chest: "c7" },
+      },
+      {
+        id: "c8",
+        stage: 3,
+        title: { uz: "Kalitli shifr", en: "Cipher with a key" },
+        task: {
+          uz: "Har bir harf kalit so‘z bilan boshqacha surilgan (Vigenère shifri). Kalit: KOD",
+          en: "Each letter is shifted differently by a key word (the Vigenère cipher). The key: KOD",
+        },
+        hint: { uz: `kalit("KOD")`, en: `kalit("KOD")` },
+        xp: 35,
+        check: { kind: "cipher", chest: "c8" },
+      },
+      {
+        id: "c9",
+        stage: 3,
+        title: { uz: "Orol siri", en: "Island secret" },
+        task: {
+          uz: "Kalit bilan shifrlangan, keyin teskari yozilgan. Kalit: SIR",
+          en: "Encrypted with a key, then reversed. The key: SIR",
+        },
+        hint: { uz: `teskari()\nkalit("SIR")`, en: `teskari()\nkalit("SIR")` },
+        xp: 35,
+        check: { kind: "cipher", chest: "c9" },
+      },
+      {
+        id: "c10",
+        stage: 3,
+        title: { uz: "Oxirgi xazina", en: "The last treasure" },
+        task: {
+          uz: "Kalit — birinchi sandiqdan chiqqan so‘z.",
+          en: "The key is the word from the first chest.",
+        },
+        hint: { uz: `kalit("XAZINA")`, en: `kalit("XAZINA")` },
+        xp: 35,
+        check: { kind: "cipher", chest: "c10" },
       },
     ],
   },
