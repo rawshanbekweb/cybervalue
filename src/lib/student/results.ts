@@ -1,4 +1,4 @@
-import type { Translator } from "../i18n";
+import type { Translator } from "../i18n/core";
 import {
   isEntranceExam,
   isLevel,

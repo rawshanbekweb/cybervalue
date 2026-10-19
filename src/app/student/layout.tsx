@@ -3,6 +3,7 @@ import { LocaleProvider } from "@/components/locale-provider";
 import { createTranslator } from "@/lib/i18n";
 import { getAdminLocale } from "@/lib/i18n/server";
 import "./student.css";
+import { StudentMessages } from "@/components/i18n/student-messages";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -39,7 +40,7 @@ export default async function StudentLayout({
           <a href="#student-main" className="student-skip">
             {t("Skip to content")}
           </a>
-          {children}
+          <StudentMessages>{children}</StudentMessages>
         </LocaleProvider>
       </body>
     </html>

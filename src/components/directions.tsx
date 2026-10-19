@@ -7,7 +7,7 @@ import {
   GraduationCap,
   type LucideIcon,
 } from "lucide-react";
-import type { Translator } from "@/lib/i18n";
+import type { Translator } from "@/lib/i18n/core";
 import type { SiteConfig } from "@/lib/site-config";
 import "./directions.css";
 

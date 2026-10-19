@@ -1,5 +1,5 @@
 "use client";
-import type { Translator } from "@/lib/i18n";
+import type { Translator } from "@/lib/i18n/core";
 
 import { useId, useState } from "react";
 import { CheckCircle2, XCircle } from "lucide-react";

@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { setLocale } from "@/app/locale-actions";
 import { useLocale, useTranslator } from "./locale-provider";
-import { locales } from "@/lib/i18n";
+import { locales } from "@/lib/i18n/core";
 
 export function LanguageSwitcher() {
   const locale = useLocale();

@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { SiteShell } from "@/components/site-shell";
 import { localeCookie, resolveLocale } from "@/lib/i18n";
 import "../globals.css";
+import { AdminMessages } from "@/components/i18n/admin-messages";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -24,7 +25,9 @@ export default async function AdminLayout({
   const locale = resolveLocale((await cookies()).get(localeCookie)?.value);
   return (
     <SiteShell locale={locale}>
-      <div className="admin-root">{children}</div>
+      <AdminMessages>
+        <div className="admin-root">{children}</div>
+      </AdminMessages>
     </SiteShell>
   );
 }

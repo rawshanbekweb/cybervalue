@@ -28,7 +28,7 @@ import {
 } from "@/lib/defend/scenarios";
 import { MAX_CODE_LENGTH } from "@/lib/defend/harness";
 import { useTranslator } from "@/components/locale-provider";
-import type { Translator } from "@/lib/i18n";
+import type { Translator } from "@/lib/i18n/core";
 import { useLocalStorageState } from "../useLocalStorageState";
 import { downloadText } from "../security-lab/storage";
 import { previewDocument, runCase } from "./runner";

@@ -8,7 +8,7 @@ import {
   resetJuniorCodeAction,
   updateJuniorAction,
 } from "@/app/admin/(cms)/junior/actions";
-import { formatJuniorCode } from "@/lib/junior/codes";
+import { formatJuniorCode } from "@/lib/junior/code-format";
 
 function downloadCodes(rows: { name: string; group: string; code: string }[]) {
   const lines = rows.map(
