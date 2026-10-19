@@ -428,5 +428,7 @@
   "Handed in. Your teacher will check it.": "Topshirildi. O‘qituvchingiz tekshiradi.",
   "Handed in · {score} of 90 points before review": "Topshirildi · tekshiruvgacha 90 dan {score} ball",
   "HTML exam · {minutes} minutes, one attempt": "HTML imtihon · {minutes} daqiqa, bitta urinish",
-  "Continue the exam": "Imtihonni davom ettirish"
+  "Continue the exam": "Imtihonni davom ettirish",
+  "This access code is not valid or no longer active.": "Kirish kodi noto‘g‘ri yoki endi faol emas.",
+  "Too many attempts. Try again in a few minutes.": "Urinishlar juda ko‘p. Bir necha daqiqadan so‘ng qayta urinib ko‘ring."
 }

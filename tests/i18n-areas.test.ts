@@ -70,3 +70,23 @@ test("client text is in its area's dictionaries", () => {
   }
   assert.deepEqual(missing, []);
 });
+
+// Server actions return messages that the area's forms pass to t().
+const ACTIONS: Record<string, string> = {
+  "src/app/[lang]/kids/actions.ts": "kids",
+  "src/app/[lang]/junior/actions.ts": "junior",
+  "src/app/student/actions.ts": "student",
+};
+
+test("messages returned by an area's server actions are in its dictionaries", () => {
+  const missing: string[] = [];
+  for (const [file, name] of Object.entries(ACTIONS)) {
+    const source = readFileSync(file, "utf8");
+    for (const match of source.matchAll(/"([A-Z][^"]{8,})"/g)) {
+      const homes = dictionaries.get(match[1]);
+      if (homes && ![...homes].some((h) => AREAS[name].has(h)))
+        missing.push(`${file}: "${match[1]}"`);
+    }
+  }
+  assert.deepEqual(missing, []);
+});
