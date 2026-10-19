@@ -87,8 +87,8 @@ test.describe("Academy Kids", () => {
     await expect(
       page.getByRole("heading", { name: "Task of the day" }),
     ).toBeVisible();
-    await expect(page.locator(".kids-badges li")).toHaveCount(12);
-    await expect(page.locator(".kids-locked")).toHaveCount(3);
+    await expect(page.locator(".kids-badges li")).toHaveCount(13);
+    await expect(page.locator(".kids-locked")).toHaveCount(4);
 
     await page.getByRole("link", { name: /Space escape/ }).click();
     await expect(page).toHaveURL(/\/kids\/kosmos$/);
@@ -256,6 +256,56 @@ test.describe("Academy Kids", () => {
     await expect(page.getByRole("log")).toContainText("Done!");
     await expect(page.locator(".kids-cheer")).toContainText("Phishing radar");
     await audit(page, "kids cyber guard");
+  });
+
+  test("the maze runs the child's program and keeps solved levels", async ({
+    page,
+  }) => {
+    const stage1 = [
+      ...[
+        "turbo",
+        "hayot",
+        "rang",
+        "sekin",
+        "korinmas",
+        "terminal",
+        "ochko",
+      ].map((id) => `kosmos:${id}`),
+      ...["baland", "oy", "ikki", "rang", "muz", "uchish", "ochko"].map(
+        (id) => `robot:${id}`,
+      ),
+    ];
+    const code = await createKid(`Malika ${Date.now().toString(36)}`, stage1);
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/kids/labirint");
+    await page.getByLabel("Access code").fill(code);
+    await page.getByRole("button", { name: "Let's play" }).click();
+    await expect(
+      page.getByRole("heading", { level: 2, name: "Straight ahead" }),
+    ).toBeVisible();
+    const editor = page.getByRole("textbox", { name: "Robot program" });
+    await editor.fill("oldinga(2)");
+    await page.getByRole("button", { name: "Run", exact: true }).click();
+    await expect(page.locator(".kids-maze-result")).toContainText(
+      "ran out before the exit",
+    );
+    await editor.fill("oldinga(4)");
+    await page.getByRole("button", { name: "Run", exact: true }).click();
+    await expect(page.locator(".kids-maze-result")).toContainText("You did it");
+    await expect(page.locator(".kids-mission-list li.done")).toHaveCount(1);
+    await audit(page, "kids maze");
+
+    // Stage 2 levels stay locked; the solved level is on the account.
+    await expect(
+      page.getByRole("button", { name: "Staircase", exact: true }),
+    ).toBeDisabled();
+    await page.reload();
+    await expect(
+      page.locator(".kids-mission-list li.done", { hasText: "Straight ahead" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { level: 2, name: "First turn" }),
+    ).toBeVisible();
   });
 
   test("the admin creates children with codes", async ({ page }) => {

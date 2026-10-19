@@ -18,6 +18,7 @@ import {
   Lock,
   LogOut,
   Rocket,
+  Route,
   ShieldCheck,
   Sparkles,
   Terminal,
@@ -44,6 +45,7 @@ const ICONS: Record<GameId, typeof Rocket> = {
   robot: Bot,
   ilon: Worm,
   qorovul: ShieldCheck,
+  labirint: Route,
 };
 
 const BADGE_ICONS: Record<string, typeof Rocket> = {
