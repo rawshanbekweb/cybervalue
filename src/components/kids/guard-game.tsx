@@ -30,27 +30,28 @@ const isCheat = (name: string): name is CheatName => name in CHEATS;
 type Phase = "start" | "play" | "over";
 type Kind = "parol" | "skaner" | "eski" | "virus";
 
+// Labels and letters are English source text, translated when drawn.
 const KINDS: Record<Kind, { color: string; label: string }> = {
-  parol: { color: "#ff9233", label: "parol buzar" },
-  skaner: { color: "#a47bff", label: "skaner" },
-  eski: { color: "#ff5c5c", label: "eski teshik" },
+  parol: { color: "#ff9233", label: "password cracker" },
+  skaner: { color: "#a47bff", label: "scanner" },
+  eski: { color: "#ff5c5c", label: "old hole" },
   virus: { color: "#3ddc84", label: "virus" },
 };
 
 const PHISHING = [
-  "Siz iPhone yutdingiz! Havolani bosing",
-  "Parolingizni yuboring, yo‘qsa akkaunt yopiladi",
-  "Bepul tangalar! Karta raqamingizni yozing",
-  "Bankdan: SMS kodni bizga ayting",
-  "Tezda bosing: sovg‘angiz kutyapti!",
-  "Admin: login va parolingizni tasdiqlang",
+  "You won an iPhone! Click the link",
+  "Send your password or your account will be closed",
+  "Free coins! Type your card number",
+  "From the bank: tell us the SMS code",
+  "Click quickly: your gift is waiting!",
+  "Admin: confirm your login and password",
 ];
 const REAL = [
-  "Ustoz: ertangi dars soat 9 da",
-  "Onam: tushlikka uyga kel",
-  "Maktab: bayram juma kuni",
-  "Do‘stim: futbolga chiqasanmi?",
-  "Kutubxona: kitobingiz tayyor",
+  "Teacher: tomorrow's lesson is at 9",
+  "Mum: come home for lunch",
+  "School: the celebration is on Friday",
+  "My friend: coming out to play football?",
+  "Library: your book is ready",
 ];
 
 type Bot = { x: number; y: number; kind: Kind; speed: number; wobble: number };
@@ -155,6 +156,7 @@ function createEngine(
   getProps: () => GameProps,
 ): Engine {
   const ctx = canvas.getContext("2d");
+  const t: GameProps["t"] = (source, values) => getProps().t(source, values);
   let phase: Phase = "start";
   let running = getProps().running;
   let raf = 0;
@@ -282,7 +284,7 @@ function createEngine(
     } else {
       score = Math.max(0, score - 5);
       float(letter.x, letter.y - 14, "-5", "#ff5c5c");
-      banner = { text: "Bu haqiqiy xat edi!", life: 1.8 };
+      banner = { text: t("That was a real letter!"), life: 1.8 };
     }
     report();
   };
@@ -336,7 +338,7 @@ function createEngine(
     letterTimer -= dt * slow;
     if (letterTimer <= 0 && letters.length < 3) {
       const phish = Math.random() < 0.6;
-      const text = phish ? pick(PHISHING) : pick(REAL);
+      const text = t(phish ? pick(PHISHING) : pick(REAL));
       if (ctx) ctx.font = `bold 15px ${FONT}`;
       const w = Math.min(340, (ctx?.measureText(text).width ?? 200) + 44);
       letters.push({
@@ -366,7 +368,7 @@ function createEngine(
       }
       if (timers.honeypot <= 0 && dist < SHIELD_R) {
         if (stops(b.kind, s)) repelled(b.x, b.y, s.color);
-        else hurt(`${KINDS[b.kind].label} o‘tib ketdi!`);
+        else hurt(t("{name} got through!", { name: t(KINDS[b.kind].label) }));
         if (phase !== "play") return;
         continue;
       }
@@ -400,7 +402,7 @@ function createEngine(
       l.y += l.speed * slow * dt;
       if (l.y > SERVER.y - 40) {
         letters = letters.filter((x) => x !== l);
-        if (l.phish) hurt("Fishing xat o‘tib ketdi!");
+        if (l.phish) hurt(t("A phishing letter got through!"));
         else {
           score += 5;
           float(l.x, l.y - 10, "+5");
@@ -461,7 +463,7 @@ function createEngine(
     ctx.font = `bold 10px ${FONT}`;
     ctx.textAlign = "center";
     ctx.fillStyle = "#e6e9ff";
-    ctx.fillText(label, 0, 26);
+    ctx.fillText(t(label), 0, 26);
     ctx.restore();
   };
 
@@ -521,10 +523,10 @@ function createEngine(
     }
     // defences in force, bottom left
     const pills: [string, boolean][] = [
-      [`parol: ${s.password}`, s.password >= 12],
-      ["2 bosqichli", s.mfa],
+      [t("password: {length}", { length: s.password }), s.password >= 12],
+      [t("2-step"), s.mfa],
       ["firewall", s.firewall],
-      ["yangilangan", s.updates],
+      [t("updated"), s.updates],
       [`antivirus: ${s.antivirus}`, s.antivirus >= 8],
     ];
     ctx.font = `bold 11px ${FONT}`;
@@ -692,7 +694,10 @@ function createEngine(
     ariaTimer -= dt;
     if (ariaTimer <= 0) {
       ariaTimer = 0.5;
-      const text = `Kiber-qo‘riqchi o‘yini. Ochko: ${score}. Server hayoti: ${lives}. Ekranda ${letters.length} ta xat.`;
+      const text = t(
+        "Cyber Guard game. Score: {score}. Server lives: {lives}. {letters} letters on screen.",
+        { score, lives, letters: letters.length },
+      );
       if (text !== ariaText) {
         ariaText = text;
         canvas.setAttribute("aria-label", text);
@@ -774,7 +779,7 @@ function createEngine(
 }
 
 export function GuardGame(props: GameProps) {
-  const { ref, running, labels } = props;
+  const { ref, running, labels, t } = props;
   const propsRef = useRef(props);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -852,7 +857,7 @@ export function GuardGame(props: GameProps) {
           ref={canvasRef}
           className="kids-space-canvas"
           role="img"
-          aria-label="Kiber-qo‘riqchi o‘yini"
+          aria-label={t("Cyber Guard game")}
         />
       </div>
       <div className="kids-space-pad">
@@ -867,7 +872,7 @@ export function GuardGame(props: GameProps) {
             else engine.markLowest();
           }}
         >
-          {labels.mark ?? "Fishing!"}
+          {labels.mark ?? t("Phishing!")}
         </button>
       </div>
     </div>

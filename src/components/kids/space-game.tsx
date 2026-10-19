@@ -868,7 +868,10 @@ function createEngine(
     ariaTimer -= dt;
     if (ariaTimer > 0) return;
     ariaTimer = 0.5;
-    const text = `Kosmik qochish o‘yini. Ochko: ${score}. Hayotlar: ${lives}.`;
+    const text = getProps().t(
+      "Space escape game. Score: {score}. Lives: {lives}.",
+      { score, lives },
+    );
     if (text !== ariaText) {
       ariaText = text;
       canvas.setAttribute("aria-label", text);
@@ -957,7 +960,7 @@ function createEngine(
 /* ------------------------------------------------------------------ */
 
 export function SpaceGame(props: GameProps) {
-  const { ref, running, labels } = props;
+  const { ref, running, labels, t } = props;
   const propsRef = useRef(props);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -1115,14 +1118,14 @@ export function SpaceGame(props: GameProps) {
           ref={canvasRef}
           className="kids-space-canvas"
           role="img"
-          aria-label="Kosmik qochish o‘yini"
+          aria-label={t("Space escape game")}
         />
       </div>
       <div className="kids-space-pad">
         <button
           type="button"
           className="kids-space-btn"
-          aria-label="Chapga"
+          aria-label={t("Left")}
           {...hold("holdLeft")}
         >
           <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1133,7 +1136,7 @@ export function SpaceGame(props: GameProps) {
         <button
           type="button"
           className="kids-space-btn"
-          aria-label="O‘ngga"
+          aria-label={t("Right")}
           {...hold("holdRight")}
         >
           <svg viewBox="0 0 24 24" aria-hidden="true">

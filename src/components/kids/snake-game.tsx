@@ -72,6 +72,7 @@ type LiveProps = {
   onScore: (score: number) => void;
   onOver: (score: number) => void;
   labels: GameProps["labels"];
+  t: GameProps["t"];
 };
 
 type Settings = {
@@ -1072,9 +1073,10 @@ function createEngine(
           : !p.running
             ? p.labels.paused
             : "";
-    const text = `Ilon o‘yini. Ochko: ${score}. Hayotlar: ${lives}.${
-      status ? ` ${status}` : ""
-    }`;
+    const text = `${p.t("Snake game. Score: {score}. Lives: {lives}.", {
+      score,
+      lives,
+    })}${status ? ` ${status}` : ""}`;
     if (text !== ariaText) {
       ariaText = text;
       ui.setAria(text);
@@ -1184,11 +1186,12 @@ const KEY_DIRS: Record<string, Dir> = {
   KeyD: "right",
 };
 
+// Labels are English source text, translated when rendered.
 const BUTTONS: { dir: Dir; label: string; path: string }[] = [
-  { dir: "up", label: "Yuqoriga", path: "M5 15l7-7 7 7" },
-  { dir: "left", label: "Chapga", path: "M15 5 8 12l7 7" },
-  { dir: "down", label: "Pastga", path: "M5 9l7 7 7-7" },
-  { dir: "right", label: "O‘ngga", path: "m9 5 7 7-7 7" },
+  { dir: "up", label: "Up", path: "M5 15l7-7 7 7" },
+  { dir: "left", label: "Left", path: "M15 5 8 12l7 7" },
+  { dir: "down", label: "Down", path: "M5 9l7 7 7-7" },
+  { dir: "right", label: "Right", path: "m9 5 7 7-7 7" },
 ];
 
 type Swipe = { id: number; x: number; y: number; moved: boolean };
@@ -1201,6 +1204,7 @@ export function SnakeGame({
   onScore,
   onOver,
   labels,
+  t,
   ref,
 }: GameProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -1215,8 +1219,9 @@ export function SnakeGame({
     onScore,
     onOver,
     labels,
+    t,
   });
-  const [aria, setAria] = useState("Ilon o‘yini");
+  const [aria, setAria] = useState<string | null>(null);
 
   useEffect(() => {
     propsRef.current = {
@@ -1227,6 +1232,7 @@ export function SnakeGame({
       onScore,
       onOver,
       labels,
+      t,
     };
     engineRef.current?.redraw();
   });
@@ -1342,7 +1348,7 @@ export function SnakeGame({
           ref={canvasRef}
           className="kids-snake-canvas"
           role="img"
-          aria-label={aria}
+          aria-label={aria ?? t("Snake game")}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
@@ -1358,7 +1364,7 @@ export function SnakeGame({
             key={b.dir}
             type="button"
             className={`kids-snake-btn kids-snake-btn-${b.dir}`}
-            aria-label={b.label}
+            aria-label={t(b.label)}
             onPointerDown={(e) => {
               e.preventDefault();
               engineRef.current?.turn(b.dir);
