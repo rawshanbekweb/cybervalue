@@ -5,7 +5,9 @@ const baseURL = `http://localhost:${port}`;
 export default defineConfig({
   testDir: "./tests/e2e",
   fullyParallel: true,
-  workers: 2,
+  // With a disposable admin account, some tests sign out every session and
+  // change the password; run one at a time then, as CI does.
+  workers: process.env.E2E_ISOLATED_ACCOUNT === "true" ? 1 : 2,
   timeout: 90_000,
   expect: { timeout: 15_000 },
   // On CI a flaky test gets one retry and is reported as flaky, and failures

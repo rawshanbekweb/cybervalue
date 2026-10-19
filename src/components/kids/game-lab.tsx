@@ -418,6 +418,7 @@ export function GameLab({
             onScore={onScore}
             onOver={(score) => save({ score })}
             labels={labels}
+            t={t}
           />
         </section>
 

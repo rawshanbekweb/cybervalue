@@ -61,11 +61,11 @@ test("upload, publish, protect referenced files, unpublish and remove unused fil
   const resourceName = `${prefix}-guide.txt`;
   const imageName = `${prefix}-image.png`;
   const slug = `${prefix}-resource`;
+  // Unique per run, so rows left by an interrupted run never match.
+  const title = `Upload integration resource ${prefix}`;
   await page.goto("/admin/resources/new");
   await page.getByLabel("Slug", { exact: true }).fill(slug);
-  await page
-    .getByLabel("Title", { exact: true })
-    .fill("Upload integration resource");
+  await page.getByLabel("Title", { exact: true }).fill(title);
   await page
     .getByLabel("Summary", { exact: true })
     .fill("A resource description long enough for the validation rules.");
@@ -107,7 +107,7 @@ test("upload, publish, protect referenced files, unpublish and remove unused fil
   ).toBe(401);
   await page.getByRole("button", { name: "Save", exact: true }).click();
   await expect(page).toHaveURL(/\/admin\/resources$/);
-  const row = page.getByRole("row", { name: /Upload integration resource/ });
+  const row = page.getByRole("row", { name: new RegExp(title) });
   await expect(row).toContainText("Available");
   expect((await request.get(`/downloads/${slug}`)).status()).toBe(404);
 
@@ -142,9 +142,7 @@ test("upload, publish, protect referenced files, unpublish and remove unused fil
     "entry in the trash",
   );
   await page.goto("/admin/trash?kind=content");
-  const trashed = page.getByRole("row", {
-    name: /Upload integration resource/,
-  });
+  const trashed = page.getByRole("row", { name: new RegExp(title) });
   await trashed.getByRole("button", { name: /for good$/ }).click();
   await expect(trashed).toHaveCount(0);
   await page.goto(`/admin/files?q=${encodeURIComponent(prefix)}`);

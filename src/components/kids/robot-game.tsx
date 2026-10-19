@@ -52,6 +52,7 @@ type LiveProps = {
   onScore: (score: number) => void;
   onOver: (score: number) => void;
   labels: GameProps["labels"];
+  t: GameProps["t"];
 };
 
 type Settings = {
@@ -1171,9 +1172,10 @@ function createEngine(
             : !p.running
               ? p.labels.paused
               : "";
-      const text = `Robot sakrash. Ochko: ${score}. Hayotlar: ${lives}.${
-        status ? ` ${status}` : ""
-      }`;
+      const text = `${p.t("Robot jump. Score: {score}. Lives: {lives}.", {
+        score,
+        lives,
+      })}${status ? ` ${status}` : ""}`;
       if (text !== ariaText) {
         ariaText = text;
         ui.setAria(text);
@@ -1272,6 +1274,7 @@ export function RobotGame({
   onScore,
   onOver,
   labels,
+  t,
   ref,
 }: GameProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -1285,9 +1288,10 @@ export function RobotGame({
     onScore,
     onOver,
     labels,
+    t,
   });
   const [flying, setFlying] = useState(false);
-  const [aria, setAria] = useState("Robot sakrash");
+  const [aria, setAria] = useState<string | null>(null);
   const [jumpPressed, setJumpPressed] = useState(false);
   const [downPressed, setDownPressed] = useState(false);
 
@@ -1300,6 +1304,7 @@ export function RobotGame({
       onScore,
       onOver,
       labels,
+      t,
     };
     engineRef.current?.redraw();
   });
@@ -1410,7 +1415,7 @@ export function RobotGame({
           ref={canvasRef}
           className="kids-robot-canvas"
           role="img"
-          aria-label={aria}
+          aria-label={aria ?? t("Robot jump")}
           onPointerDown={pressDown}
           onPointerUp={pressUp}
           onPointerCancel={pressUp}
@@ -1421,7 +1426,7 @@ export function RobotGame({
         <button
           type="button"
           className="kids-robot-btn"
-          aria-label="Sakrash"
+          aria-label={t("Jump")}
           data-pressed={jumpPressed}
           onPointerDown={(e) => {
             setJumpPressed(true);
@@ -1441,13 +1446,13 @@ export function RobotGame({
           }}
           onContextMenu={(e) => e.preventDefault()}
         >
-          ⬆ Sakrash
+          ⬆ {t("Jump")}
         </button>
         {flying ? (
           <button
             type="button"
             className="kids-robot-btn kids-robot-btn-down"
-            aria-label="Pastga"
+            aria-label={t("Down")}
             data-pressed={downPressed}
             onPointerDown={(e) => {
               e.preventDefault();
@@ -1465,7 +1470,7 @@ export function RobotGame({
             }}
             onContextMenu={(e) => e.preventDefault()}
           >
-            ⬇ Pastga
+            ⬇ {t("Down")}
           </button>
         ) : null}
       </div>

@@ -25,6 +25,8 @@ export type GameProps = {
   running: boolean;
   onScore: (score: number) => void;
   onOver: (score: number) => void;
+  /** Translates an English source string into the site's language. */
+  t: (source: string, values?: Record<string, string | number>) => string;
   /** Short status lines shown under the game, already translated. */
   labels: {
     start: string;
