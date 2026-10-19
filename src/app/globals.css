@@ -2105,7 +2105,7 @@ svg {
 }
 .admin-status-published {
   background: #29282f;
-  color: #936cff;
+  color: #b8a3ff;
 }
 .admin-status-draft {
   background: #39301b;
@@ -3973,4 +3973,25 @@ select.admin-input {
   .admin-history li {
     grid-template-columns: 1fr;
   }
+}
+
+/* WCAG 2.2 target size: small stand-alone links get at least 24px of
+   height so a finger can hit them on a phone. */
+.footer-links a,
+.footer-bottom a,
+.nl-back,
+.lx-back,
+.defend-back,
+.missions-back,
+.studio-back,
+.jr-back,
+.ctf-topline > a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
+/* Wide tables scroll sideways on a phone; keyboard users can focus them. */
+.admin-table:focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 2px;
 }

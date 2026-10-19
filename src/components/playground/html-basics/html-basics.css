@@ -17,7 +17,7 @@
   margin: 12px 0 20px;
   border: 1px solid var(--accent);
   border-radius: 8px;
-  color: var(--accent);
+  color: var(--accent-text);
   line-height: 1.5;
 }
 .htb-root * {
@@ -102,7 +102,6 @@
 .htb-n {
   font-family: var(--font-mono);
   font-size: 10px;
-  opacity: 0.75;
   min-width: 18px;
 }
 .htb-c {
@@ -145,7 +144,7 @@
   margin-bottom: 18px;
 }
 .htb-task b {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .htb-grid {
   display: grid;
