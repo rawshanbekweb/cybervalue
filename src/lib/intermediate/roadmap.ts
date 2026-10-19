@@ -10,6 +10,8 @@ export type Module = {
   topics: string[];
   /** What the student should be able to do after the module. */
   goal: Text;
+  /** The module's lab, once it is open. */
+  href?: string;
 };
 
 export type Domain = {
@@ -76,6 +78,7 @@ export const DOMAINS: Domain[] = [
     modules: [
       {
         title: { uz: "HTTP chuqurroq", en: "HTTP in depth" },
+        href: "/akademiya/http",
         topics: ["cookies", "sessions", "SOP", "CORS", "security headers"],
         goal: goal(
           "So‘rov va javobni o‘qiy olish, sessiya qanday saqlanishini tushuntirish.",

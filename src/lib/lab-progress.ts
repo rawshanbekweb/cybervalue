@@ -7,6 +7,7 @@ export const LAB_PROGRESS = {
   linux: { key: "cybervalue:linux:progress:v1", total: 16 },
   html: { key: "htmldars:progress:v1", total: 12 },
   security: { key: "sabaq:progress:v1", total: 36 },
+  http: { key: "cybervalue:http:progress:v1", total: 10 },
 } as const;
 
 export type LabId = keyof typeof LAB_PROGRESS;
@@ -36,6 +37,14 @@ export const LAB_META: {
     id: "security",
     title: { uz: "Veb-xavfsizlik laboratoriyasi", en: "Web Security Lab" },
     href: "/akademiya/web-security-lab",
+  },
+  {
+    id: "http",
+    title: {
+      uz: "HTTP chuqurroq (Intermediate)",
+      en: "HTTP in depth (Intermediate)",
+    },
+    href: "/akademiya/http",
   },
 ];
 

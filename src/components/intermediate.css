@@ -66,6 +66,10 @@
   color: var(--muted);
   font-size: 12px;
 }
+.im-status.open {
+  border-color: #2ee6a666;
+  color: #2ee6a6;
+}
 .im-domain h3 {
   margin: 0;
   font-size: 20px;

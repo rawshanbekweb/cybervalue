@@ -3,6 +3,7 @@ import { LAB_PROGRESS } from "@/lib/lab-progress";
 import { LESSONS as LINUX_LESSONS } from "@/lib/linux/curriculum";
 import { LESSONS as NETWORK_LESSONS } from "@/lib/network/curriculum";
 import { HTML_LESSONS } from "@/components/playground/html-basics/lessons.data";
+import { LESSONS as HTTP_LESSONS } from "@/lib/http/curriculum";
 import {
   GROUPS,
   LESSONS,
@@ -71,6 +72,20 @@ export function getLearningTracks() {
       level: "Beginner → intermediate",
       lessons: LESSONS.map(({ id, title }) => ({ id, title })),
       modules: GROUPS.map(({ title }) => title.replace(/^\d+ · /, "")),
+    },
+    {
+      id: "http",
+      title: "HTTP in depth",
+      category: "Intermediate · Web security",
+      description:
+        "Write raw requests to a training server, follow redirects, sign in with cookies, and learn the same-origin policy, CORS and security headers.",
+      href: "/akademiya/http",
+      progressKey: LAB_PROGRESS.http.key,
+      level: "Intermediate",
+      lessons: HTTP_LESSONS.map(({ id, title }) => ({ id, title: title.en })),
+      modules: HTTP_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
     },
   ];
 }

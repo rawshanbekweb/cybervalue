@@ -2,7 +2,7 @@
 // what the student has already done. Pure, so the student page, the ranking
 // and the teacher's class panel all agree, and tests can pin the rules.
 import type { Text } from "../network/ip";
-import { CHECKPOINT_META } from "../checkpoints/meta";
+import { BEGINNER_CHECKPOINTS } from "../checkpoints/meta";
 import { isEntranceExam } from "./levels";
 
 export type XpMaterial = { id: string; slug: string; kind: string };
@@ -160,7 +160,7 @@ export const STUDENT_BADGES: readonly {
       uz: "Barcha lab nazoratlaridan o‘ting",
       en: "Pass every lab checkpoint",
     },
-    earned: (f) => f.checkpointsPassed >= CHECKPOINT_META.length,
+    earned: (f) => f.checkpointsPassed >= BEGINNER_CHECKPOINTS.length,
   },
   {
     id: "streak",
@@ -254,7 +254,8 @@ export function standing(input: XpInput, now = Date.now()) {
     (m) => m.kind === "CHALLENGE" && solved.has(m.id),
   ).length;
   const entrance = input.materials.filter((m) => isEntranceExam(m.slug));
-  const passed = CHECKPOINT_META.filter(
+  // The "every checkpoint" badge counts the beginner labs.
+  const passed = BEGINNER_CHECKPOINTS.filter(
     (c) => (checkpointBest.get(c.id) ?? 0) >= c.pass,
   ).length;
 

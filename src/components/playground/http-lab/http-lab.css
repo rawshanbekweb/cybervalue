@@ -1,0 +1,79 @@
+/* HTTP lab widgets; the layout comes from network-lab.css. */
+.hl-label {
+  display: block;
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.hl-raw {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #0b0b10;
+  color: var(--text);
+  font: 14px/1.6 var(--font-mono);
+  resize: vertical;
+}
+.hl-raw:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.hl-response {
+  margin: 8px 0 0;
+  padding: 12px;
+  overflow-x: auto;
+  border-left: 3px solid var(--border);
+  border-radius: 8px;
+  background: #0b0b10;
+  font: 13px/1.6 var(--font-mono);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.hl-response.status-2xx {
+  border-left-color: #2ee6a6;
+}
+.hl-response.status-3xx {
+  border-left-color: #8ab4ff;
+}
+.hl-response.status-4xx,
+.hl-response.status-5xx {
+  border-left-color: #ff7b6b;
+}
+.hl-history {
+  display: grid;
+  gap: 4px;
+  margin: 12px 0 0;
+  padding-left: 20px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.hl-choice fieldset,
+.hl-flags fieldset {
+  display: grid;
+  gap: 6px;
+  margin: 0 0 14px;
+  padding: 0;
+  border: 0;
+}
+.hl-choice legend,
+.hl-flags legend {
+  margin-bottom: 6px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.hl-option {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  cursor: pointer;
+}
+.hl-option code {
+  font-size: 13px;
+}
+.hl-about {
+  color: var(--muted);
+  font-size: 13px;
+}
