@@ -3053,6 +3053,31 @@ h2 {
   border-color: #ffb82966;
   color: var(--spark);
 }
+.admin-kid-stage {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.admin-chip.stage-2 {
+  border-color: #ffb82966;
+  color: var(--spark);
+}
+.admin-chip.stage-3 {
+  border-color: #b8a3ff66;
+  color: #b8a3ff;
+}
+.admin-kid-skills {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-left: 20px;
+}
+.admin-stage-head {
+  margin: 14px 0 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
 
 /* Assignments */
 .admin-section-head {

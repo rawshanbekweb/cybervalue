@@ -336,6 +336,31 @@ function KidsPart({
               : t("No activity yet")
           }
         />
+        <Card
+          label={t("Badges")}
+          value={`${report.badges}/${report.badgeTotal}`}
+          note={
+            report.streak > 0
+              ? t("daily tasks {days} days in a row", { days: report.streak })
+              : undefined
+          }
+        />
+      </section>
+      <section className="report-section" aria-labelledby="kids-skills">
+        <h2 id="kids-skills">{t("What your child has learned")}</h2>
+        {report.skills.length ? (
+          <ul className="report-list">
+            {report.skills.map((skill) => (
+              <li key={skill.en}>{skill[locale]}</li>
+            ))}
+          </ul>
+        ) : (
+          <p className="report-note">
+            {t(
+              "Every game has three stages; what each finished stage teaches will appear here.",
+            )}
+          </p>
+        )}
       </section>
       <section className="report-cards" aria-label={t("Games")}>
         {report.games.map((game) => (
@@ -343,7 +368,13 @@ function KidsPart({
             key={game.title.en}
             label={game.title[locale]}
             value={`${game.done}/${game.total}`}
-            note={t("best score {score}", { score: game.best })}
+            note={
+              !game.open
+                ? t("not opened yet")
+                : game.stage === null
+                  ? t("all stages finished")
+                  : t("stage {n} of 3", { n: game.stage })
+            }
           />
         ))}
       </section>

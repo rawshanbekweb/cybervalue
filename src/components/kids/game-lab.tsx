@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import {
   useCallback,
   useEffect,
@@ -41,10 +42,6 @@ import { DAILY_XP, dailyPassed, type DailyTask } from "@/lib/kids/extras";
 import { kidsLevel } from "@/lib/kids/progress";
 import { saveKidsAction } from "@/app/[lang]/kids/actions";
 import type { GameApi, GameProps } from "./game-types";
-import { SpaceGame } from "./space-game";
-import { RobotGame } from "./robot-game";
-import { SnakeGame } from "./snake-game";
-import { GuardGame } from "./guard-game";
 import { CodeEditor } from "./code-editor";
 import "./kids.css";
 
@@ -64,14 +61,27 @@ function parseCommand(input: string) {
   };
 }
 
-// The maze has its own lab (maze-lab.tsx).
-const GAME_VIEWS: Partial<
-  Record<GameId, (props: GameProps) => React.ReactNode>
-> = {
-  kosmos: SpaceGame,
-  robot: RobotGame,
-  ilon: SnakeGame,
-  qorovul: GuardGame,
+// Each game's engine is loaded only on its own page; the placeholder keeps
+// the stage's size so nothing jumps when it arrives. The maze and the cipher
+// have their own labs.
+const stage = () => <div className="kids-space-stage" aria-hidden="true" />;
+const GAME_VIEWS: Partial<Record<GameId, React.ComponentType<GameProps>>> = {
+  kosmos: dynamic(() => import("./space-game").then((m) => m.SpaceGame), {
+    ssr: false,
+    loading: stage,
+  }),
+  robot: dynamic(() => import("./robot-game").then((m) => m.RobotGame), {
+    ssr: false,
+    loading: stage,
+  }),
+  ilon: dynamic(() => import("./snake-game").then((m) => m.SnakeGame), {
+    ssr: false,
+    loading: stage,
+  }),
+  qorovul: dynamic(() => import("./guard-game").then((m) => m.GuardGame), {
+    ssr: false,
+    loading: stage,
+  }),
 };
 
 // The first-visit tour: one panel at a time, highlighted on the page.
@@ -353,7 +363,7 @@ export function GameLab({
       )[gameId] ?? "",
     mark: t("Phishing!"),
   };
-  const Game = GAME_VIEWS[gameId] ?? SpaceGame;
+  const Game = GAME_VIEWS[gameId] ?? GAME_VIEWS.kosmos!;
   const badLines = new Set(draftProblems.map((p) => p.line));
 
   return (
