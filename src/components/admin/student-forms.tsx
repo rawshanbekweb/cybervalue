@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useActionState, useState } from "react";
 import { useTranslator } from "@/components/locale-provider";
+import { RosterFile } from "@/components/admin/roster-file";
 import {
   createStudentsAction,
   resetStudentCodeAction,
@@ -116,6 +117,7 @@ export function CreateStudentsForm() {
           placeholder={"Ali Valiyev | 9-A\nMadina Karimova | 9-A"}
         />
       </div>
+      <RosterFile onLoad={setRoster} />
       <div className="admin-field">
         <label htmlFor="expiresAt">{t("Access ends after (optional)")}</label>
         <input

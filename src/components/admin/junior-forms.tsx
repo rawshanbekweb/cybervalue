@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useActionState, useState } from "react";
 import { useTranslator } from "@/components/locale-provider";
+import { RosterFile } from "@/components/admin/roster-file";
 import {
   createJuniorsAction,
   resetJuniorCodeAction,
@@ -109,6 +110,7 @@ export function CreateJuniorsForm() {
           placeholder={"Aziza Karimova | 7-A\nBobur Aliyev | 7-A"}
         />
       </div>
+      <RosterFile onLoad={setRoster} />
       <div className="admin-field">
         <label htmlFor="junior-expires">
           {t("Access ends after (optional)")}

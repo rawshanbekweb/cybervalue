@@ -191,10 +191,16 @@ test.describe("Academy Kids", () => {
     const confirm = page.getByLabel("Type DELETE to confirm");
     await confirm.fill("DELETE");
     page.once("dialog", (dialog) => dialog.accept());
-    await page.getByRole("button", { name: "Delete", exact: true }).click();
+    await page
+      .getByRole("button", { name: "Move to trash", exact: true })
+      .click();
     await expect(page.getByRole("status")).toContainText("1 users updated");
     await page.goto(`/admin/users?kind=kids&q=${encodeURIComponent(name)}`);
     await expect(page.getByText("No users match these filters.")).toBeVisible();
+    await page.goto("/admin/trash?kind=kids");
+    await expect(
+      page.getByRole("row", { name: new RegExp(name) }),
+    ).toBeVisible();
 
     await page.goto("/admin/cleanup");
     await expect(
