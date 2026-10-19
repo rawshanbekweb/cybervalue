@@ -38,6 +38,7 @@ const SCORE: Record<GameId, number> = {
   robot: 80,
   ilon: 60,
   qorovul: 100,
+  labirint: 0,
 };
 
 function tasksFor(id: GameId): DailyTask[] {
@@ -97,7 +98,10 @@ function hash(text: string) {
  * then one of its tasks, so every open game gets its turn.
  */
 export function dailyTask(day: string, done: Set<string>): DailyTask {
-  const open = GAME_IDS.filter((id) => gameOpen(GAMES[id], done));
+  // Maze levels are their own daily challenge; tasks come from the others.
+  const open = GAME_IDS.filter(
+    (id) => !GAMES[id].maze && gameOpen(GAMES[id], done),
+  );
   const h = hash(day);
   const tasks = tasksFor(open[h % open.length]);
   return tasks[(h >>> 8) % tasks.length];
@@ -153,6 +157,12 @@ type Facts = {
   daily: Daily;
 };
 
+/** Games that have a mission of this kind (the maze has no terminal). */
+const withKind = (kind: string) =>
+  GAME_IDS.filter((id) =>
+    GAMES[id].missions.some((m) => m.check.kind === kind),
+  );
+
 const finished = (id: GameId, done: Set<string>) =>
   GAMES[id].missions.every((m) => done.has(missionKey(id, m.id)));
 
@@ -197,7 +207,7 @@ const BADGES: (Badge & { earned: (f: Facts) => boolean })[] = [
       en: "Found the password of every game",
     },
     earned: (f) =>
-      GAME_IDS.every((id) =>
+      withKind("login").every((id) =>
         GAMES[id].missions.some(
           (m) => m.check.kind === "login" && f.done.has(missionKey(id, m.id)),
         ),
@@ -211,7 +221,7 @@ const BADGES: (Badge & { earned: (f: Facts) => boolean })[] = [
       en: "Used a terminal command in every game",
     },
     earned: (f) =>
-      GAME_IDS.every((id) =>
+      withKind("cheat").every((id) =>
         GAMES[id].missions.some(
           (m) => m.check.kind === "cheat" && f.done.has(missionKey(id, m.id)),
         ),

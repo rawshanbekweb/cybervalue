@@ -45,6 +45,7 @@ import { SpaceGame } from "./space-game";
 import { RobotGame } from "./robot-game";
 import { SnakeGame } from "./snake-game";
 import { GuardGame } from "./guard-game";
+import { CodeEditor } from "./code-editor";
 import "./kids.css";
 
 type Line = { kind: "in" | "out" | "ok" | "err"; text: string };
@@ -63,7 +64,10 @@ function parseCommand(input: string) {
   };
 }
 
-const GAME_VIEWS: Record<GameId, (props: GameProps) => React.ReactNode> = {
+// The maze has its own lab (maze-lab.tsx).
+const GAME_VIEWS: Partial<
+  Record<GameId, (props: GameProps) => React.ReactNode>
+> = {
   kosmos: SpaceGame,
   robot: RobotGame,
   ilon: SnakeGame,
@@ -336,18 +340,20 @@ export function GameLab({
     start: t("Tap, click or press Space to start"),
     over: t("Game over!"),
     paused: t("Paused while you edit the code"),
-    controls: {
-      kosmos: t("Move with ← → arrows, A and D, or drag your finger"),
-      robot: t("Jump with Space, ↑ or a tap"),
-      ilon: t("Steer with the arrows, WASD or a swipe"),
-      qorovul: t(
-        "Tap a phishing letter to catch it, or press F for the lowest one. Let real letters through!",
-      ),
-    }[gameId],
+    controls:
+      (
+        {
+          kosmos: t("Move with ← → arrows, A and D, or drag your finger"),
+          robot: t("Jump with Space, ↑ or a tap"),
+          ilon: t("Steer with the arrows, WASD or a swipe"),
+          qorovul: t(
+            "Tap a phishing letter to catch it, or press F for the lowest one. Let real letters through!",
+          ),
+        } as Partial<Record<GameId, string>>
+      )[gameId] ?? "",
     mark: t("Phishing!"),
   };
-  const Game = GAME_VIEWS[gameId];
-  const lineCount = draft.split("\n").length;
+  const Game = GAME_VIEWS[gameId] ?? SpaceGame;
   const badLines = new Set(draftProblems.map((p) => p.line));
 
   return (
@@ -413,51 +419,14 @@ export function GameLab({
             <h2 id="kids-code-title">{t("Game code")}</h2>
             <span>{t("Change a value, then press Run")}</span>
           </div>
-          <div className="kids-editor">
-            <ol className="kids-gutter" aria-hidden="true">
-              {Array.from({ length: lineCount }, (_, i) => (
-                <li key={i} className={badLines.has(i + 1) ? "bad" : ""}>
-                  {i + 1}
-                </li>
-              ))}
-            </ol>
-            <textarea
-              aria-label={t("Game code")}
-              value={draft}
-              spellCheck={false}
-              autoCapitalize="off"
-              autoCorrect="off"
-              rows={Math.max(lineCount, 9)}
-              onChange={(e) => setDraft(e.target.value.slice(0, 4000))}
-              onFocus={() => setEditing(true)}
-              onKeyDown={(e) => {
-                if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-                  run();
-                  return;
-                }
-                // Enter keeps the indent, and opens one after a line ending
-                // in ":", so blocks are easy to type.
-                if (e.key !== "Enter" || e.shiftKey) return;
-                const area = e.currentTarget;
-                const at = area.selectionStart;
-                const line = area.value.slice(
-                  area.value.lastIndexOf("\n", at - 1) + 1,
-                  at,
-                );
-                const indent =
-                  (/^[ \t]*/.exec(line)?.[0] ?? "") +
-                  (/:\s*$/.test(line) ? "    " : "");
-                if (!indent) return;
-                e.preventDefault();
-                const value = `${area.value.slice(0, at)}\n${indent}${area.value.slice(area.selectionEnd)}`;
-                setDraft(value.slice(0, 4000));
-                const caret = at + 1 + indent.length;
-                requestAnimationFrame(() =>
-                  area.setSelectionRange(caret, caret),
-                );
-              }}
-            />
-          </div>
+          <CodeEditor
+            label={t("Game code")}
+            value={draft}
+            onChange={setDraft}
+            onRun={run}
+            onFocus={() => setEditing(true)}
+            bad={badLines}
+          />
           {draftProblems.length > 0 && (
             <ul className="kids-problems" role="status">
               {draftProblems.slice(0, 4).map((p) => (

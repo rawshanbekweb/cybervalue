@@ -27,7 +27,13 @@ import {
 } from "../src/lib/kids/progress";
 
 const kosmos = GAMES.kosmos;
-const GAME_IDS_ALL = ["kosmos", "robot", "ilon", "qorovul"] as const;
+const GAME_IDS_ALL = [
+  "kosmos",
+  "robot",
+  "ilon",
+  "qorovul",
+  "labirint",
+] as const;
 
 test("the starter code of every game parses cleanly to its defaults", () => {
   for (const game of Object.values(GAMES)) {
@@ -239,17 +245,19 @@ test("stored progress is cleaned and XP comes from finished missions", () => {
     robot: 0,
     ilon: 0,
     qorovul: 0,
+    labirint: 0,
   });
   assert.deepEqual(progress.code, {
     kosmos: "tezlik = 9",
     robot: "",
     ilon: "",
     qorovul: "",
+    labirint: "",
   });
   assert.equal(kidsXp(progress), 20 + 30);
   assert.equal(kidsLevel(0).level.title.uz, "Yangi xaker");
   assert.equal(kidsLevel(MAX_XP).next, null);
-  assert.equal(MAX_XP, 1640);
+  assert.equal(MAX_XP, 1915);
 });
 
 test("blocks, “va” and “aks_holda” apply as a group", () => {
@@ -362,7 +370,7 @@ qachon urilsa:
 });
 
 test("every game's files give its password away, and only that opens it", () => {
-  for (const game of Object.values(GAMES)) {
+  for (const game of Object.values(GAMES).filter((g) => !g.maze)) {
     assert.ok(passwordOpens(game, game.password), game.id);
     assert.ok(passwordOpens(game, ` "${game.password.toUpperCase()}" `));
     assert.ok(!passwordOpens(game, "parol"), game.id);
@@ -539,13 +547,13 @@ test("badges follow the progress", () => {
   );
   const full = badges({
     done: all,
-    best: { kosmos: 600, robot: 0, ilon: 0, qorovul: 0 },
+    best: { kosmos: 600, robot: 0, ilon: 0, qorovul: 0, labirint: 0 },
     daily: { last: "", streak: 0, record: 7, count: 7 },
   });
   assert.ok(full.every((b) => b.earned));
   const first = badges({
     done: ["kosmos:turbo"],
-    best: { kosmos: 0, robot: 0, ilon: 0, qorovul: 0 },
+    best: { kosmos: 0, robot: 0, ilon: 0, qorovul: 0, labirint: 0 },
     daily: { last: "", streak: 0, record: 0, count: 0 },
   });
   assert.deepEqual(
@@ -580,4 +588,24 @@ test("the cyber guard teaches each defence with its own setting", () => {
     dailyTask(`2026-11-${String((i % 28) + 1).padStart(2, "0")}`, open),
   );
   assert.ok(days.some((t) => t.game === "qorovul"));
+});
+
+test("maze levels are proven by running the program on the server", () => {
+  const maze = GAMES.labirint;
+  for (const m of maze.missions) {
+    assert.equal(m.check.kind, "maze", m.id);
+    // The hint is a working solution; an empty program is not.
+    assert.ok(missionPassed("labirint", m.id, { code: m.hint.uz }), m.id);
+    assert.ok(!missionPassed("labirint", m.id, { code: "" }), m.id);
+  }
+  // A loop level refuses a solution without a loop.
+  assert.ok(
+    !missionPassed("labirint", "l7", {
+      code: "oldinga(4)\nongga()\noldinga(4)\nongga()\noldinga(4)",
+    }),
+  );
+  // It opens after the robot game's settings stage.
+  assert.equal(maze.after, "robot");
+  assert.ok(!gameOpen(maze, new Set(stage1("kosmos"))));
+  assert.ok(gameOpen(maze, new Set([...stage1("kosmos"), ...stage1("robot")])));
 });

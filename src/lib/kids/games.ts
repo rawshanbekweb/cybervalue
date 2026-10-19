@@ -15,8 +15,9 @@ import {
   type Schema,
   type Text,
 } from "./lang";
+import type { Needs } from "./maze";
 
-export type GameId = "kosmos" | "robot" | "ilon" | "qorovul";
+export type GameId = "kosmos" | "robot" | "ilon" | "qorovul" | "labirint";
 
 export type Cheat = { name: string; effect: Text; seconds: number };
 
@@ -24,7 +25,8 @@ export type Check =
   | { kind: "code"; test: (program: Program) => boolean }
   | { kind: "cheat"; cheat: string }
   | { kind: "score"; score: number }
-  | { kind: "login" };
+  | { kind: "login" }
+  | { kind: "maze"; level: string; needs?: Needs; maxLines?: number };
 
 export type Stage = 1 | 2 | 3;
 
@@ -56,6 +58,11 @@ export type Game = {
   password: string;
   /** The game whose first stage opens this one; none for the first game. */
   after?: GameId;
+  /**
+   * A maze game: the code is a program for the robot (src/lib/kids/maze.ts)
+   * and every mission is a level; the settings parts stay empty.
+   */
+  maze?: true;
   missions: Mission[];
 };
 
@@ -1515,6 +1522,183 @@ qalqon_rangi = "ko'k"
         },
         xp: 40,
         check: { kind: "score", score: 400 },
+      },
+    ],
+  },
+  labirint: {
+    id: "labirint",
+    after: "robot",
+    maze: true,
+    title: { uz: "Labirint", en: "Maze" },
+    tagline: {
+      uz: "Robotga yo‘lni buyruqlar bilan ko‘rsating: ketma-ketlik, sikl va shart.",
+      en: "Show the robot the way with commands: sequences, loops and conditions.",
+    },
+    schema: {},
+    watch: [],
+    starter: "",
+    cheats: [],
+    events: {},
+    files: {},
+    password: "",
+    missions: [
+      {
+        id: "l1",
+        title: { uz: "To‘g‘ri yo‘l", en: "Straight ahead" },
+        task: {
+          uz: "Robotni chiqishgacha olib boring.",
+          en: "Take the robot to the exit.",
+        },
+        hint: { uz: `oldinga(4)`, en: `oldinga(4)` },
+        xp: 20,
+        check: { kind: "maze", level: "l1" },
+      },
+      {
+        id: "l2",
+        title: { uz: "Birinchi burilish", en: "First turn" },
+        task: {
+          uz: "Yo‘l o‘ngga buriladi. ongga() bilan buriling.",
+          en: "The path turns right. Turn with ongga().",
+        },
+        hint: {
+          uz: `oldinga(2)\nongga()\noldinga(3)`,
+          en: `oldinga(2)\nongga()\noldinga(3)`,
+        },
+        xp: 20,
+        check: { kind: "maze", level: "l2" },
+      },
+      {
+        id: "l3",
+        title: { uz: "Ilon yo‘l", en: "Zigzag" },
+        task: {
+          uz: "Yulduzni ham olib, chiqishga yeting. chapga() ham kerak bo‘ladi.",
+          en: "Reach the exit and take the star on the way. You will need chapga() too.",
+        },
+        hint: {
+          uz: `oldinga()\nongga()\noldinga(2)\nchapga()\noldinga(3)`,
+          en: `oldinga()\nongga()\noldinga(2)\nchapga()\noldinga(3)`,
+        },
+        xp: 20,
+        check: { kind: "maze", level: "l3" },
+      },
+      {
+        id: "l4",
+        title: { uz: "Ikki marta chapga", en: "Two left turns" },
+        task: {
+          uz: "Chiqish tepada. Buyruqlar ketma-ketligini o‘zingiz tuzing.",
+          en: "The exit is at the top. Work out the sequence yourself.",
+        },
+        hint: {
+          uz: `oldinga(3)\nchapga()\noldinga(2)\nchapga()\noldinga(3)`,
+          en: `oldinga(3)\nchapga()\noldinga(2)\nchapga()\noldinga(3)`,
+        },
+        xp: 20,
+        check: { kind: "maze", level: "l4" },
+      },
+      {
+        id: "l5",
+        stage: 2,
+        title: { uz: "Zinapoya", en: "Staircase" },
+        task: {
+          uz: "Bir xil qadamlar takrorlanadi. takrorla bilan 5 qatordan qisqa kod yozing.",
+          en: "The same steps repeat. Use takrorla and write it in 5 lines or fewer.",
+        },
+        hint: {
+          uz: `takrorla 5:\n    oldinga()\n    chapga()\n    oldinga()\n    ongga()`,
+          en: `takrorla 5:\n    oldinga()\n    chapga()\n    oldinga()\n    ongga()`,
+        },
+        xp: 30,
+        check: {
+          kind: "maze",
+          level: "l5",
+          needs: { loop: true },
+          maxLines: 5,
+        },
+      },
+      {
+        id: "l6",
+        stage: 2,
+        title: { uz: "Katta zinapoya", en: "Big staircase" },
+        task: {
+          uz: "Endi har bir qadam 2 katak. Yana takrorla bilan, 5 qatorda.",
+          en: "Now each step is 2 squares. Again with takrorla, in 5 lines.",
+        },
+        hint: {
+          uz: `takrorla 3:\n    oldinga(2)\n    ongga()\n    oldinga(2)\n    chapga()`,
+          en: `takrorla 3:\n    oldinga(2)\n    ongga()\n    oldinga(2)\n    chapga()`,
+        },
+        xp: 30,
+        check: {
+          kind: "maze",
+          level: "l6",
+          needs: { loop: true },
+          maxLines: 5,
+        },
+      },
+      {
+        id: "l7",
+        stage: 2,
+        title: { uz: "Uch tomon", en: "Three sides" },
+        task: {
+          uz: "Uch marta bir xil: oldinga va burilish. Faqat 3 qator!",
+          en: "The same three times: forward and a turn. Only 3 lines!",
+        },
+        hint: {
+          uz: `takrorla 3:\n    oldinga(4)\n    ongga()`,
+          en: `takrorla 3:\n    oldinga(4)\n    ongga()`,
+        },
+        xp: 30,
+        check: {
+          kind: "maze",
+          level: "l7",
+          needs: { loop: true },
+          maxLines: 3,
+        },
+      },
+      {
+        id: "l8",
+        stage: 3,
+        title: { uz: "Aqlli robot", en: "Smart robot" },
+        task: {
+          uz: "Robot o‘zi qaror qilsin: toki chiqishga yetmaguncha, oldinda devor bo‘lsa o‘ngga burilsin, aks holda yursin.",
+          en: "Let the robot decide: until it reaches the exit, turn right at a wall, otherwise walk.",
+        },
+        hint: {
+          uz: `toki chiqishda_emas:\n    agar oldinda_devor bo'lsa:\n        ongga()\n    aks_holda:\n        oldinga()`,
+          en: `toki chiqishda_emas:\n    agar oldinda_devor bo'lsa:\n        ongga()\n    aks_holda:\n        oldinga()`,
+        },
+        xp: 35,
+        check: { kind: "maze", level: "l8", needs: { while: true, if: true } },
+      },
+      {
+        id: "l9",
+        stage: 3,
+        title: { uz: "Ko‘zgu", en: "Mirror" },
+        task: {
+          uz: "Xuddi shu labirint, lekin teskari. Qaysi tomonga burilish kerak?",
+          en: "The same maze, mirrored. Which way should it turn?",
+        },
+        hint: {
+          uz: `toki chiqishda_emas:\n    agar oldinda_devor bo'lsa:\n        chapga()\n    aks_holda:\n        oldinga()`,
+          en: `toki chiqishda_emas:\n    agar oldinda_devor bo'lsa:\n        chapga()\n    aks_holda:\n        oldinga()`,
+        },
+        xp: 35,
+        check: { kind: "maze", level: "l9", needs: { while: true, if: true } },
+      },
+      {
+        id: "l10",
+        stage: 3,
+        title: { uz: "Chap qo‘l qoidasi", en: "Left-hand rule" },
+        task: {
+          uz: "Haqiqiy labirint! Chap qo‘lingizni devorga qo‘yib yuring: chapda yo‘l bo‘lsa chapga, bo‘lmasa oldinga, u ham bo‘lmasa o‘ngga.",
+          en: "A real maze! Walk with your left hand on the wall: left if you can, else forward, else right.",
+        },
+        hint: {
+          uz: `toki chiqishda_emas:\n    agar chapda_yo'l bo'lsa:\n        chapga()\n        oldinga()\n    aks_holda:\n        agar oldinda_yo'l bo'lsa:\n            oldinga()\n        aks_holda:\n            ongga()`,
+          en: `toki chiqishda_emas:\n    agar chapda_yo'l bo'lsa:\n        chapga()\n        oldinga()\n    aks_holda:\n        agar oldinda_yo'l bo'lsa:\n            oldinga()\n        aks_holda:\n            ongga()`,
+        },
+        xp: 35,
+        check: { kind: "maze", level: "l10", needs: { while: true, if: true } },
       },
     ],
   },

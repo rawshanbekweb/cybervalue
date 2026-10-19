@@ -172,5 +172,20 @@
   "Type yordam() to see secret commands. Somewhere in the game's files a password is hidden…": "Maxfiy buyruqlarni ko‘rish uchun yordam() deb yozing. O‘yin fayllarining birida parol yashiringan…",
   "Badges": "Nishonlar",
   "Tap a phishing letter to catch it, or press F for the lowest one. Let real letters through!": "Fishing xatni bosib ushlang yoki eng pastdagisi uchun F tugmasini bosing. Haqiqiy xatlarni o‘tkazib yuboring!",
-  "Phishing!": "Fishing!"
+  "Phishing!": "Fishing!",
+  "You did it! The robot reached the exit.": "Uddaladingiz! Robot chiqishga yetdi.",
+  "The exit is reached, but the code must use takrorla and fit in {lines} lines.": "Chiqishga yetdingiz, lekin kodda takrorla bo‘lishi va u {lines} qatordan oshmasligi kerak.",
+  "The exit is reached, but this level wants toki and agar: let the robot decide by itself.": "Chiqishga yetdingiz, lekin bu darajada toki va agar kerak: robot o‘zi qaror qilsin.",
+  "Bump! The robot hit a wall. Look at the highlighted line.": "Tars! Robot devorga urildi. Belgilangan qatorga qarang.",
+  "The program runs too long. Is the loop ever going to stop?": "Dastur juda uzoq ishlayapti. Sikl qachondir to‘xtaydimi?",
+  "The commands ran out before the exit.": "Buyruqlar chiqishga yetmasdan tugab qoldi.",
+  "Maze, {rows} rows by {columns} columns. The robot is at column {x}, row {y}.": "Labirint, {rows} qator va {columns} ustun. Robot {x}-ustun, {y}-qatorda.",
+  "Robot program": "Robot dasturi",
+  "Write the commands, then press Run": "Buyruqlarni yozing va “Ishga tushirish”ni bosing",
+  "Back to start": "Boshiga qaytish",
+  "Loops": "Sikllar",
+  "Conditions": "Shartlar",
+  "Conditions: {names}": "Shartlar: {names}",
+  "Commands": "Buyruqlar",
+  "Levels": "Darajalar"
 }
