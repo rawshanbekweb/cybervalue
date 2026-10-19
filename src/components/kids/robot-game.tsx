@@ -47,6 +47,7 @@ type Banner = { text: string; life: number };
 type LiveProps = {
   values: Record<string, Value>;
   rules: Rule[];
+  fire: GameProps["fire"];
   running: boolean;
   onScore: (score: number) => void;
   onOver: (score: number) => void;
@@ -517,9 +518,33 @@ function createEngine(
     return { ochko: score, hayotlar: lives, vaqt: Math.floor(time) };
   }
 
+  // Settings changed by "qachon" handlers during this round.
+  let overrides: Record<string, Value> = {};
+  let started = false;
+
   function refreshSettings() {
     const p = getProps();
-    settings = readSettings(effective(p.values, p.rules, runtime()));
+    settings = readSettings(
+      effective({ ...p.values, ...overrides }, p.rules, runtime()),
+    );
+  }
+
+  function emit(event: string) {
+    const p = getProps();
+    const fired = p.fire(
+      event,
+      effective({ ...p.values, ...overrides }, p.rules, runtime()),
+      { ochko: score, hayotlar: lives },
+    );
+    if (!fired) return;
+    score = fired.ochko;
+    lives = fired.hayotlar;
+    overrides = { ...overrides, ...fired.set };
+    refreshSettings();
+    if (fired.say) {
+      banners.push({ text: fired.say, life: 2.2 });
+      banners = banners.slice(-3);
+    }
   }
 
   function reportScore() {
@@ -539,6 +564,8 @@ function createEngine(
     lives = Math.round(num(start.hayotlar, 3, 1, 99));
     score = 0;
     time = 0;
+    overrides = {};
+    started = false;
     world = 0;
     h = 0;
     vy = 0;
@@ -577,6 +604,7 @@ function createEngine(
     if (jumps >= maxJumps) return;
     jumps += 1;
     vy = jumpPx(settings.jump) * (jumps === 2 ? 0.9 : 1);
+    emit("sakraganda");
     puff(ROBOT_X, GROUND - h, "#ffffff", 6);
   }
 
@@ -650,6 +678,7 @@ function createEngine(
     invuln = 1.1;
     shake = 0.3;
     puff(ROBOT_X, GROUND - h - 28, "#ff5c5c", 12);
+    emit("urilsa");
     if (lives <= 0) {
       phase = "over";
       overAt = clock;
@@ -661,6 +690,10 @@ function createEngine(
   }
 
   function update(dt: number) {
+    if (!started) {
+      started = true;
+      emit("boshlanganda");
+    }
     time += dt;
     refreshSettings();
     const s = settings;
@@ -775,6 +808,7 @@ function createEngine(
           text: `+${s.coinPoints}`,
           life: 0.9,
         });
+        emit("tanga_olinsa");
       }
     }
 
@@ -1233,6 +1267,7 @@ function createEngine(
 export function RobotGame({
   values,
   rules,
+  fire,
   running,
   onScore,
   onOver,
@@ -1245,6 +1280,7 @@ export function RobotGame({
   const propsRef = useRef<LiveProps>({
     values,
     rules,
+    fire,
     running,
     onScore,
     onOver,
@@ -1256,7 +1292,7 @@ export function RobotGame({
   const [downPressed, setDownPressed] = useState(false);
 
   useEffect(() => {
-    propsRef.current = { values, rules, running, onScore, onOver, labels };
+    propsRef.current = { values, rules, fire, running, onScore, onOver, labels };
     engineRef.current?.redraw();
   });
 

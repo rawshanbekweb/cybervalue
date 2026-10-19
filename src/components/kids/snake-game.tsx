@@ -67,6 +67,7 @@ type Banner = { text: string; life: number };
 type LiveProps = {
   values: Record<string, Value>;
   rules: Rule[];
+  fire: GameProps["fire"];
   running: boolean;
   onScore: (score: number) => void;
   onOver: (score: number) => void;
@@ -310,9 +311,33 @@ function createEngine(
     return { ochko: score, hayotlar: lives, vaqt: Math.floor(time) };
   }
 
+  // Settings changed by "qachon" handlers during this round.
+  let overrides: Record<string, Value> = {};
+  let started = false;
+
   function refreshSettings() {
     const p = getProps();
-    settings = readSettings(effective(p.values, p.rules, runtime()));
+    settings = readSettings(
+      effective({ ...p.values, ...overrides }, p.rules, runtime()),
+    );
+  }
+
+  function emit(event: string) {
+    const p = getProps();
+    const fired = p.fire(
+      event,
+      effective({ ...p.values, ...overrides }, p.rules, runtime()),
+      { ochko: score, hayotlar: lives },
+    );
+    if (!fired) return;
+    score = fired.ochko;
+    lives = fired.hayotlar;
+    overrides = { ...overrides, ...fired.set };
+    refreshSettings();
+    if (fired.say) {
+      banners.push({ text: fired.say, life: 2.2 });
+      banners = banners.slice(-3);
+    }
   }
 
   function reportScore() {
@@ -389,6 +414,8 @@ function createEngine(
     lives = Math.round(num(start.hayotlar, 1, 1, 99));
     score = 0;
     time = 0;
+    overrides = {};
+    started = false;
     grow = 0;
     gold = 0;
     slow = 0;
@@ -464,6 +491,7 @@ function createEngine(
         150,
       );
     lives = Math.max(0, lives - 1);
+    emit("urilsa");
     acc = 0;
     queue = [];
     if (lives <= 0) {
@@ -526,6 +554,7 @@ function createEngine(
       const golden = gold > 0;
       const points = settings.points * (golden ? 5 : 1);
       score += points;
+      emit("olma_yeganda");
       const ax = center(nx);
       const ay = center(ny);
       burst(
@@ -559,6 +588,10 @@ function createEngine(
   }
 
   function update(dt: number) {
+    if (!started) {
+      started = true;
+      emit("boshlanganda");
+    }
     time += dt;
     refreshSettings();
     syncApples();
@@ -1163,6 +1196,7 @@ type Swipe = { id: number; x: number; y: number; moved: boolean };
 export function SnakeGame({
   values,
   rules,
+  fire,
   running,
   onScore,
   onOver,
@@ -1176,6 +1210,7 @@ export function SnakeGame({
   const propsRef = useRef<LiveProps>({
     values,
     rules,
+    fire,
     running,
     onScore,
     onOver,
@@ -1184,7 +1219,7 @@ export function SnakeGame({
   const [aria, setAria] = useState("Ilon o‘yini");
 
   useEffect(() => {
-    propsRef.current = { values, rules, running, onScore, onOver, labels };
+    propsRef.current = { values, rules, fire, running, onScore, onOver, labels };
     engineRef.current?.redraw();
   });
 
