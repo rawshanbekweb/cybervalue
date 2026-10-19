@@ -104,7 +104,7 @@ export default async function AuditPage({
         <p>{t("No events recorded yet.")}</p>
       ) : (
         <div className="admin-table-wrap">
-          <table className="admin-table admin-audit-table">
+          <table className="admin-table admin-audit-table" tabIndex={0}>
             <thead>
               <tr>
                 <th scope="col">{t("Time")}</th>

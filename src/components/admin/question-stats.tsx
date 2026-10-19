@@ -45,7 +45,7 @@ export function QuestionStats({
         </ul>
       )}
       <div className="admin-table-wrap">
-        <table className="admin-table admin-question-stats">
+        <table className="admin-table admin-question-stats" tabIndex={0}>
           <thead>
             <tr>
               <th scope="col">#</th>

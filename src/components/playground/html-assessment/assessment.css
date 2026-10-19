@@ -464,3 +464,9 @@ body:has(.exam-working) .site-footer {
     font-size: 12px;
   }
 }
+
+/* Holds the page's height while the attempt loads, so the footer does not
+   jump down when the exam appears. */
+.exam-loading {
+  min-height: 100vh;
+}

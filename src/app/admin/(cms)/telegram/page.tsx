@@ -236,7 +236,7 @@ export default async function AdminTelegramPage() {
 
       <h2>{t("Bot commands")}</h2>
       <div className="admin-table-wrap">
-        <table className="admin-table">
+        <table className="admin-table" tabIndex={0}>
           <thead>
             <tr>
               <th scope="col">{t("Command")}</th>
@@ -261,7 +261,7 @@ export default async function AdminTelegramPage() {
         <p className="muted">{t("No chats linked yet.")}</p>
       ) : (
         <div className="admin-table-wrap">
-          <table className="admin-table">
+          <table className="admin-table" tabIndex={0}>
             <thead>
               <tr>
                 <th scope="col">{t("For")}</th>

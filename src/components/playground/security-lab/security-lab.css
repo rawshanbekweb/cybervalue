@@ -5,6 +5,9 @@
   --lab-muted: var(--muted);
   --lab-text: var(--text);
   --lab-accent: var(--accent);
+  /* The accent is too dark for text on this background; text uses the
+     lighter step. */
+  --lab-accent-text: var(--accent-text);
   --lab-danger: #e39a7a;
   display: flex;
   min-height: 100vh;
@@ -171,7 +174,7 @@
 }
 .lab-nav-check {
   margin-left: auto;
-  color: var(--lab-accent);
+  color: var(--lab-accent-text);
 }
 .lab-sidebar-bottom {
   border-top: 1px solid var(--lab-border);
@@ -185,7 +188,7 @@
 }
 .lab-progress-caption strong {
   font-family: var(--font-mono);
-  color: var(--lab-accent);
+  color: var(--lab-accent-text);
   font-size: 10px;
 }
 .lab-progress-track {
@@ -323,7 +326,7 @@
   letter-spacing: 1.6px;
   margin: 0 0 12px;
   display: block;
-  color: var(--lab-accent);
+  color: var(--lab-accent-text);
 }
 .lab-hero h1 {
   font-size: clamp(24px, 2.6vw, 38px);
@@ -334,7 +337,7 @@
   color: var(--lab-text);
 }
 .lab-hero h1 span {
-  color: var(--lab-accent);
+  color: var(--lab-accent-text);
 }
 .lab-hero-description {
   font-size: 12px;
@@ -378,7 +381,7 @@
   font-weight: 600;
 }
 .lab-stat-icon {
-  color: var(--lab-accent);
+  color: var(--lab-accent-text);
   font-size: 16px;
 }
 .lab-section-heading {
@@ -389,7 +392,7 @@
   margin-bottom: 14px;
 }
 .lab-teal {
-  color: var(--lab-accent);
+  color: var(--lab-accent-text);
 }
 .lab-section-heading h2 {
   font-size: 20px;
@@ -441,7 +444,7 @@
   position: relative;
 }
 .lab-tab.active {
-  color: var(--lab-accent);
+  color: var(--lab-accent-text);
   font-weight: 600;
 }
 .lab-tab.active::after {
@@ -474,7 +477,7 @@
   border: 1px solid var(--lab-border);
   background: color-mix(in srgb, var(--lab-accent) 10%, transparent);
   padding: 4px 7px;
-  color: var(--lab-accent);
+  color: var(--lab-accent-text);
   border-radius: 4px;
   font-family: var(--font-mono);
 }
@@ -532,7 +535,7 @@
 .lab-principle-card > span {
   float: left;
   font-size: 18px;
-  color: var(--lab-accent);
+  color: var(--lab-accent-text);
   margin-right: 9px;
 }
 .lab-principle-card h3 {
@@ -660,7 +663,7 @@
   font-size: 8px;
   display: block;
   margin-bottom: 6px;
-  color: var(--lab-accent);
+  color: var(--lab-accent-text);
 }
 .lab-journey-steps small {
   display: block;
@@ -734,7 +737,7 @@
   border-radius: 4px;
   padding: 3px 7px;
   background: color-mix(in srgb, var(--lab-accent) 20%, transparent);
-  color: var(--lab-accent);
+  color: var(--lab-accent-text);
   font-family: var(--font-mono);
   font-size: 9px;
 }
@@ -771,7 +774,7 @@
   padding: 2px;
 }
 .lab-response-tabs button.active {
-  color: var(--lab-accent);
+  color: var(--lab-accent-text);
 }
 .lab-field {
   display: flex;
@@ -851,7 +854,7 @@
 }
 .lab-feedback {
   min-height: 26px;
-  color: var(--lab-accent);
+  color: var(--lab-accent-text);
   font-size: 11px;
   line-height: 1.8;
 }
@@ -884,7 +887,7 @@
 }
 .lab-flow-symbol {
   display: block;
-  color: var(--lab-accent);
+  color: var(--lab-accent-text);
   font-size: 21px;
   margin-bottom: 7px;
 }
@@ -918,7 +921,7 @@
 }
 .lab-step-counter {
   font: 9px var(--font-mono);
-  color: var(--lab-accent);
+  color: var(--lab-accent-text);
   text-align: center;
   display: block;
   margin-bottom: 8px;
@@ -1036,7 +1039,7 @@
   border-bottom: 1px solid var(--lab-border);
 }
 .lab-mini-table th {
-  color: var(--lab-accent);
+  color: var(--lab-accent-text);
   font-size: 9px;
   background: var(--lab-bg);
   font-weight: 500;
@@ -1077,7 +1080,7 @@
 }
 .lab-assessment-score {
   font-size: 25px;
-  color: var(--lab-accent);
+  color: var(--lab-accent-text);
   font-weight: 600;
   margin: 10px 0;
 }
