@@ -1,5 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { CIPHERS } from "../../src/lib/junior/cipher-content";
 import { createJunior, enterCode } from "./junior-member";
 
 // Assertions use the English interface copy.
@@ -111,7 +112,7 @@ test.describe("Academy Junior administration", () => {
 
     await row.getByRole("link", { name }).click();
     await expect(page.getByRole("heading", { level: 1, name })).toBeVisible();
-    await expect(page.locator(".admin-bars")).toContainText("1/6");
+    await expect(page.locator(".admin-bars").first()).toContainText("1/6");
     await audit(page, "junior member");
 
     // A new code closes the member's session and the old code stops working.
@@ -137,5 +138,51 @@ test.describe("Academy Junior administration", () => {
     await expect(page).toHaveURL(/\/admin\/junior$/);
     await expect(page.getByText(name)).toHaveCount(0);
     await member.context().close();
+  });
+
+  test("teachers and parents see the stage, the level and the skills", async ({
+    page,
+  }) => {
+    const name = `Bobur ${Date.now().toString(36)}`;
+    await createJunior({
+      name,
+      progress: {
+        missions: { password: true, phishing: true },
+        ciphers: Object.fromEntries(
+          CIPHERS.filter((c) => c.level === 1).map((c) => [
+            c.id,
+            c.exercises.map((_, i) => i),
+          ]),
+        ),
+      },
+    });
+    await page.goto("/admin/login");
+    await page.getByLabel("Email").fill(email!);
+    await page.getByLabel("Password").fill(password!);
+    await page.getByRole("button", { name: "Sign in" }).click();
+    await expect(page).toHaveURL(/\/admin$/);
+    await page.goto("/admin/junior");
+    const row = page.getByRole("row", { name: new RegExp(name) });
+    await expect(row.getByRole("cell").nth(5)).toContainText("Stage 2");
+    await expect(row.getByRole("cell").nth(7)).toContainText("Level 2");
+    await row.getByRole("link", { name }).click();
+    await expect(
+      page.getByRole("heading", { name: "What the member has learned" }),
+    ).toBeVisible();
+    await expect(
+      page.getByText("Builds a strong password and spots a phishing message"),
+    ).toBeVisible();
+    await audit(page, "junior member stages");
+
+    await page.getByRole("button", { name: "Create report link" }).click();
+    const reportUrl = await page.getByLabel("Report link").inputValue();
+    await page.goto(new URL(reportUrl).pathname);
+    await expect(
+      page.getByRole("heading", { name: "What your child has learned" }),
+    ).toBeVisible();
+    await expect(page.getByText(/Works classic ciphers/)).toBeVisible();
+    await expect(page.getByText("stage 2 of 3")).toBeVisible();
+    await expect(page.getByText("level 2 of 3")).toBeVisible();
+    await audit(page, "junior parent report");
   });
 });

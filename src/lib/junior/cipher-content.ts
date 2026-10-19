@@ -1129,8 +1129,6 @@ export const GENERATED: readonly CipherId[] = CIPHER_IDS.filter(
   (id) => id !== "publickey",
 );
 
-export const CIPHER_PROGRESS_KEY = "cybervalue:junior:ciphers:v1";
-
 export type CipherProgress = Partial<Record<CipherId, number[]>>;
 
 // Browser storage is untrusted: keep known ciphers and valid exercise indexes.

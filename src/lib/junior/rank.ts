@@ -1,7 +1,7 @@
 import type { Text } from "./logic";
 
 // Junior's agent card: missions and solved cipher exercises earn XP, and XP
-// earns a rank. It is a motivation aid only, stored in the browser.
+// earns a rank. It is a motivation aid only, worked out from saved progress.
 
 export const MISSION_XP = 100;
 export const EXERCISE_XP = 15;
@@ -45,8 +45,6 @@ export function rankFor(xp: number) {
     progress: next ? (xp - RANKS[index].xp) / (next.xp - RANKS[index].xp) : 1,
   };
 }
-
-export const AGENT_KEY = "cybervalue:junior:agent:v1";
 
 const ADJECTIVES: Text[] = [
   { uz: "Tezkor", en: "Swift" },

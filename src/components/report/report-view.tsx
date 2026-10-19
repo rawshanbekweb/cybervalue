@@ -277,34 +277,65 @@ function JuniorPart({
   locale: Locale;
 }) {
   return (
-    <section className="report-cards" aria-label={t("Summary")}>
-      <Card
-        label={t("Rank")}
-        value={report.rank.title[locale]}
-        note={`${report.xp} XP`}
-      />
-      <Card
-        label={t("Missions")}
-        value={`${report.missions}/${report.missionTotal}`}
-        note={report.story ? t("Cyber HQ case solved") : undefined}
-      />
-      <Card
-        label={t("Exercises")}
-        value={`${report.exercises}/${report.exerciseTotal}`}
-        note={t("{count} badges", { count: report.badges })}
-      />
-      <Card
-        label={t("Daily puzzles")}
-        value={report.daily}
-        note={
-          report.lastActiveAt
-            ? t("last active {date}", {
-                date: day(report.lastActiveAt, locale),
-              })
-            : t("No activity yet")
-        }
-      />
-    </section>
+    <>
+      <section className="report-cards" aria-label={t("Summary")}>
+        <Card
+          label={t("Rank")}
+          value={report.rank.title[locale]}
+          note={`${report.xp} XP`}
+        />
+        <Card
+          label={t("Missions")}
+          value={`${report.missions}/${report.missionTotal}`}
+          note={
+            report.missionStage === null
+              ? report.story
+                ? t("Cyber HQ case solved")
+                : t("all stages finished")
+              : t("stage {n} of 3", { n: report.missionStage })
+          }
+        />
+        <Card
+          label={t("Exercises")}
+          value={`${report.exercises}/${report.exerciseTotal}`}
+          note={
+            report.cipherLevel === null
+              ? t("all levels passed")
+              : t("level {n} of 3", { n: report.cipherLevel })
+          }
+        />
+        <Card
+          label={t("Daily puzzles")}
+          value={report.daily}
+          note={
+            report.lastActiveAt
+              ? t("last active {date}", {
+                  date: day(report.lastActiveAt, locale),
+                })
+              : t("No activity yet")
+          }
+        />
+      </section>
+      <section className="report-section" aria-labelledby="junior-skills">
+        <h2 id="junior-skills">{t("What your child has learned")}</h2>
+        {report.skills.length ? (
+          <ul className="report-list">
+            {report.skills.map((skill) => (
+              <li key={skill.en}>{skill[locale]}</li>
+            ))}
+          </ul>
+        ) : (
+          <p className="report-note">
+            {t(
+              "Missions open in three stages and cipher homework in three levels; what each finished one teaches will appear here.",
+            )}
+          </p>
+        )}
+        <p className="report-note">
+          {t("{count} badges", { count: report.badges })}
+        </p>
+      </section>
+    </>
   );
 }
 

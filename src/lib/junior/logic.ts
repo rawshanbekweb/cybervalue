@@ -1,9 +1,8 @@
-// Pure helpers for Cybervalue Academy Junior. Everything runs in the browser:
-// nothing typed into a mission is sent anywhere or stored.
+// Pure helpers for Cybervalue Academy Junior, used in the browser and by the
+// server's checks (./verify.ts). A password typed into the password mission
+// never leaves the browser.
 
 export type Text = { uz: string; en: string };
-
-export const PROGRESS_KEY = "cybervalue:junior:progress:v1";
 
 // A fast offline attack on a leaked, weakly hashed password list.
 export const GUESSES_PER_SECOND = 1e10;

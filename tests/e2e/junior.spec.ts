@@ -51,6 +51,19 @@ test("a student finishes every mission and unlocks the next steps", async ({
   const results = await new AxeBuilder({ page }).analyze();
   expect(results.violations).toEqual([]);
 
+  // The first-visit tour walks through four steps once, then stays away.
+  const tour = page.locator(".jr-tour");
+  await expect(tour).toContainText("Missions in three steps");
+  for (let step = 0; step < 3; step++)
+    await tour.getByRole("button", { name: "Next" }).click();
+  await expect(tour).toContainText("Your agent card");
+  await tour.getByRole("button", { name: "Start" }).click();
+  await expect(tour).toHaveCount(0);
+  await page.waitForLoadState("networkidle");
+  await page.reload();
+  await expect(page.getByText("0 / 6 missions complete")).toBeVisible();
+  await expect(tour).toHaveCount(0);
+
   // 1 · Password
   await page.getByLabel("Test password").fill("parol123");
   await expect(page.getByText("Time to crack: instantly")).toBeVisible();

@@ -5,6 +5,7 @@ import { MISSIONS } from "./content";
 import { dayIndex, streak } from "./daily";
 import { exercisesOf, restoreJuniorProgress, xpOf } from "./progress";
 import { rankFor } from "./rank";
+import { juniorStages } from "./summary";
 import { toCsv } from "../student/results";
 
 // What a teacher sees about one member, worked out from their saved progress.
@@ -38,9 +39,11 @@ export function summarizeMember(raw: unknown, now = Date.now()) {
     daily: progress.daily.length,
     streak: days,
     badges,
+    stages: juniorStages(progress.missions, progress.ciphers),
     ciphers: CIPHERS.map((cipher) => ({
       id: cipher.id,
       title: cipher.title,
+      level: cipher.level,
       solved: progress.ciphers[cipher.id]?.length ?? 0,
       total: cipher.exercises.length,
     })),

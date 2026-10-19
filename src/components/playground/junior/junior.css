@@ -1488,3 +1488,28 @@
     margin-top: 10px;
   }
 }
+.jr-tour {
+  margin: 0 0 20px;
+  padding: 20px 22px;
+  border: 1px solid var(--accent-text);
+  border-radius: 12px;
+  background: #ffffff0a;
+}
+.jr-tour h2 {
+  margin: 4px 0 8px;
+  font-size: 20px;
+}
+.jr-tour p {
+  margin: 0 0 14px;
+  color: #c2c1ca;
+  line-height: 1.6;
+}
+.jr-tour-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+.jr-tour-actions .jr-linkbtn {
+  align-self: center;
+}

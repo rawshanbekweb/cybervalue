@@ -841,5 +841,13 @@
   "all stages finished": "barcha bosqichlar tugatildi",
   "stage {n} of 3": "3 tadan {n}-bosqich",
   "Locked": "Yopiq",
-  "in {count} games": "{count} ta o‘yinda"
+  "in {count} games": "{count} ta o‘yinda",
+  "all levels passed": "barcha darajalar o‘tilgan",
+  "level {n} of 3": "3 tadan {n}-daraja",
+  "Missions open in three stages and cipher homework in three levels; what each finished one teaches will appear here.": "Missiyalar uch bosqichda, shifr uy vazifalari uch darajada ochiladi; har biri tugaganda nimani o‘rgatgani shu yerda paydo bo‘ladi.",
+  "Mission stage": "Missiya bosqichi",
+  "Cipher level": "Shifr darajasi",
+  "What the member has learned": "A’zo nimalarni o‘rgandi",
+  "Nothing finished yet. Skills appear here after each mission stage and cipher level.": "Hali hech narsa tugallanmagan. Ko‘nikmalar har bir missiya bosqichi va shifr darajasidan keyin shu yerda paydo bo‘ladi.",
+  "Level {n}": "{n}-daraja"
 }

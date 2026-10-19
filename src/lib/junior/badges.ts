@@ -4,9 +4,7 @@ import { RANKS } from "./rank";
 
 // Achievement badges for Junior. Most are worked out from progress the page
 // already has; a few need small events (tapping SOS, sending a secret,
-// opening every cipher), kept in the browser next to the rest.
-
-export const EVENTS_KEY = "cybervalue:junior:events:v1";
+// opening every cipher), saved with the rest of the member's progress.
 
 export type Events = { sos?: true; secret?: true; visited?: string[] };
 
