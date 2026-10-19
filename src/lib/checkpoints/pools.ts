@@ -327,3 +327,214 @@ export const SECURITY_EXTRA: PoolItem[] = [
     },
   },
 ];
+
+// Academy Intermediate · HTTP in depth.
+export const HTTP_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "HTTP/1.1 so‘rovida qaysi sarlavha majburiy?",
+      en: "Which header is required in an HTTP/1.1 request?",
+    },
+    right: same("Host"),
+    wrong: [same("Cookie"), same("User-Agent"), same("Content-Type")],
+    explain: {
+      uz: "Bitta serverda ko‘p sayt bo‘lishi mumkin; Host qaysi biri kerakligini aytadi.",
+      en: "One server can hold many sites; Host says which one is meant.",
+    },
+  },
+  {
+    ask: {
+      uz: "Javob “HTTP/1.1 301 Moved Permanently”. Yangi manzil qayerda yoziladi?",
+      en: "The response is “HTTP/1.1 301 Moved Permanently”. Where is the new address?",
+    },
+    right: same("Location"),
+    wrong: [same("Referer"), same("Origin"), same("Host")],
+    explain: {
+      uz: "Location sarlavhasi brauzerga qayerga o‘tishni aytadi.",
+      en: "The Location header tells the browser where to go.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kirgan, lekin huquqi yo‘q foydalanuvchiga qaysi kod qaytariladi?",
+      en: "Which code goes to a signed-in user who lacks the rights?",
+    },
+    right: same("403 Forbidden"),
+    wrong: [same("401 Unauthorized"), same("404 Not Found"), same("200 OK")],
+    explain: {
+      uz: "401 — kimligi noma’lum, 403 — kimligi ma’lum, lekin ruxsat yo‘q.",
+      en: "401: identity unknown; 403: known, but not allowed.",
+    },
+  },
+  {
+    ask: {
+      uz: "Server foydalanuvchini keyingi so‘rovlarda qanday taniydi?",
+      en: "How does the server recognise the user on later requests?",
+    },
+    right: {
+      uz: "Brauzer Cookie sarlavhasida sessiya identifikatorini yuboradi",
+      en: "The browser sends the session id in a Cookie header",
+    },
+    wrong: [
+      { uz: "IP manzilga qarab", en: "By the IP address" },
+      { uz: "HTTP o‘zi eslab qoladi", en: "HTTP remembers by itself" },
+      { uz: "User-Agent sarlavhasiga qarab", en: "By the User-Agent header" },
+    ],
+    explain: {
+      uz: "HTTP xotirasiz; holat cookie’dagi sessiya identifikatori orqali saqlanadi.",
+      en: "HTTP is stateless; state lives in the session id inside a cookie.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi cookie bayrog‘i JavaScript’ga cookie’ni o‘qishga ruxsat bermaydi?",
+      en: "Which cookie flag stops JavaScript from reading the cookie?",
+    },
+    right: same("HttpOnly"),
+    wrong: [same("Secure"), same("SameSite=Lax"), same("Path=/")],
+    explain: {
+      uz: "HttpOnly XSS bo‘lganda ham sessiyani o‘g‘irlashni qiyinlashtiradi.",
+      en: "HttpOnly makes stealing the session hard even with XSS.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi bayroq cookie’ni faqat HTTPS orqali yuborishni ta’minlaydi?",
+      en: "Which flag makes the cookie travel over HTTPS only?",
+    },
+    right: same("Secure"),
+    wrong: [same("HttpOnly"), same("Domain"), same("Max-Age")],
+    explain: {
+      uz: "Secure bo‘lmasa, cookie shifrlanmagan tarmoqda ochiq ketishi mumkin.",
+      en: "Without Secure the cookie may cross an unencrypted network in the clear.",
+    },
+  },
+  {
+    ask: {
+      uz: "SameSite=Lax qaysi hujumga qarshi yordam beradi?",
+      en: "Which attack does SameSite=Lax help against?",
+    },
+    right: same("CSRF"),
+    wrong: [same("SQL injection"), same("Brute force"), same("DNS spoofing")],
+    explain: {
+      uz: "Boshqa saytdan kelgan so‘rovlarga cookie qo‘shilmaydi, shuning uchun soxta so‘rov sizning nomingizdan ishlamaydi.",
+      en: "Cookies are left off requests from other sites, so a forged request does not act as you.",
+    },
+  },
+  {
+    ask: {
+      uz: "https://shop.uz bilan qaysi manzil bir xil manbaga ega?",
+      en: "Which address has the same origin as https://shop.uz?",
+    },
+    right: same("https://shop.uz/profil?tab=2"),
+    wrong: [
+      same("http://shop.uz/"),
+      same("https://api.shop.uz/"),
+      same("https://shop.uz:8443/"),
+    ],
+    explain: {
+      uz: "Manba = sxema + host + port; yo‘l va parametrlar hisobga kirmaydi.",
+      en: "Origin = scheme + host + port; the path and query don’t count.",
+    },
+  },
+  {
+    ask: {
+      uz: "CORS nimani himoya qiladi?",
+      en: "What does CORS protect?",
+    },
+    right: {
+      uz: "Brauzerdagi foydalanuvchi ma’lumotini boshqa saytlarning o‘qishidan",
+      en: "The user’s data in the browser from being read by other sites",
+    },
+    wrong: [
+      {
+        uz: "Serverni har qanday so‘rovdan",
+        en: "The server from any request",
+      },
+      { uz: "Parollarni shifrlaydi", en: "It encrypts passwords" },
+      { uz: "Saytni DDoS’dan", en: "The site from DDoS" },
+    ],
+    explain: {
+      uz: "curl kabi vositalar CORS’ga bo‘ysunmaydi; server o‘zi tekshirishi shart.",
+      en: "Tools like curl ignore CORS; the server must check by itself.",
+    },
+  },
+  {
+    ask: {
+      uz: "Brauzer murakkab kross-manba so‘rovdan oldin qaysi metod bilan ruxsat so‘raydi?",
+      en: "With which method does a browser ask before a complex cross-origin request?",
+    },
+    right: same("OPTIONS"),
+    wrong: [same("HEAD"), same("GET"), same("TRACE")],
+    explain: {
+      uz: "Bu “oldindan so‘rov” (preflight) deyiladi.",
+      en: "It is called a preflight request.",
+    },
+  },
+  {
+    ask: {
+      uz: "Cookie bilan ishlaydigan API uchun qaysi CORS sozlamasi xavfli?",
+      en: "Which CORS setting is risky for an API that uses cookies?",
+    },
+    right: same("Access-Control-Allow-Origin: * (or reflecting any Origin)"),
+    wrong: [
+      same("Access-Control-Allow-Origin: https://app.example.uz"),
+      same("Vary: Origin"),
+      same("No CORS headers at all"),
+    ],
+    explain: {
+      uz: "Har qanday manbaga ruxsat berish begona saytga foydalanuvchi ma’lumotini o‘qish imkonini beradi.",
+      en: "Allowing any origin lets a foreign site read the user’s data.",
+    },
+  },
+  {
+    ask: {
+      uz: "Sahifani boshqa saytga ramka ichiga qo‘yishni (clickjacking) qaysi sarlavha taqiqlaydi?",
+      en: "Which header stops other sites framing the page (clickjacking)?",
+    },
+    right: same("X-Frame-Options: DENY"),
+    wrong: [
+      same("X-Powered-By: Express"),
+      same("Cache-Control: no-store"),
+      same("Server: nginx"),
+    ],
+    explain: {
+      uz: "Zamonaviy usul — CSP’dagi frame-ancestors; X-Frame-Options ham keng qo‘llanadi.",
+      en: "The modern way is CSP frame-ancestors; X-Frame-Options is still widely used.",
+    },
+  },
+  {
+    ask: {
+      uz: "Content-Security-Policy asosan qaysi hujumning ta’sirini kamaytiradi?",
+      en: "Content-Security-Policy mainly limits the damage of which attack?",
+    },
+    right: same("XSS"),
+    wrong: [same("CSRF"), same("Brute force"), same("Clickjacking only")],
+    explain: {
+      uz: "CSP qaysi skriptlar ishlashi mumkinligini belgilaydi.",
+      en: "CSP decides which scripts may run.",
+    },
+  },
+  {
+    ask: {
+      uz: "Server admin huquqini Referer sarlavhasiga qarab beradi. Bu nega xato?",
+      en: "A server grants admin rights based on the Referer header. Why is that wrong?",
+    },
+    right: {
+      uz: "Barcha sarlavhalarni foydalanuvchi o‘zi yozishi mumkin",
+      en: "The user can write every header themselves",
+    },
+    wrong: [
+      { uz: "Referer har doim bo‘sh keladi", en: "Referer is always empty" },
+      {
+        uz: "Referer faqat HTTPS’da ishlaydi",
+        en: "Referer only works over HTTPS",
+      },
+      { uz: "Xato emas, bu xavfsiz", en: "It is not wrong; it is safe" },
+    ],
+    explain: {
+      uz: "Huquq faqat server tomonidagi sessiya va ruxsatlar bilan tekshiriladi.",
+      en: "Rights are checked only against the server-side session and permissions.",
+    },
+  },
+];

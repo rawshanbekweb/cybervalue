@@ -48,6 +48,12 @@ export const SECTIONS = [
     href: "/akademiya/web-security-lab",
   },
   {
+    id: "http",
+    group: "lab",
+    label: "HTTP in depth (Intermediate)",
+    href: "/akademiya/http",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

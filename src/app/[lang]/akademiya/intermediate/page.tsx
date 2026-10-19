@@ -104,7 +104,13 @@ export default async function IntermediatePage() {
               >
                 <div className="im-domain-head">
                   <span className="im-tag">{domain.short}</span>
-                  <span className="im-status">{t("Planned")}</span>
+                  <span
+                    className={`im-status ${domain.modules.some((m) => m.href) ? "open" : ""}`}
+                  >
+                    {domain.modules.some((m) => m.href)
+                      ? t("Open now")
+                      : t("Planned")}
+                  </span>
                 </div>
                 <h3 id={`im-${domain.id}`}>{domain.title[locale]}</h3>
                 <p>{domain.summary[locale]}</p>
@@ -116,14 +122,20 @@ export default async function IntermediatePage() {
                       .join(", ")}
                   </p>
                 )}
-                <details>
+                <details open={domain.modules.some((m) => m.href)}>
                   <summary>
                     {t("{count} modules", { count: domain.modules.length })}
                   </summary>
                   <ol className="im-modules">
                     {domain.modules.map((m) => (
                       <li key={m.title.en}>
-                        <strong>{m.title[locale]}</strong>
+                        <strong>
+                          {m.href ? (
+                            <Link href={m.href}>{m.title[locale]} →</Link>
+                          ) : (
+                            m.title[locale]
+                          )}
+                        </strong>
                         <span className="im-topics">
                           {m.topics.join(" · ")}
                         </span>

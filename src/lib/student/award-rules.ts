@@ -1,6 +1,6 @@
 // Certificates the site issues by itself once a student meets the rule. The
 // rule id is stored with the certificate, so each one is issued only once.
-import { CHECKPOINT_META } from "../checkpoints/meta";
+import { BEGINNER_CHECKPOINTS, CHECKPOINT_META } from "../checkpoints/meta";
 import { LAB_PROGRESS, type LabId } from "../lab-progress";
 
 export type AwardFacts = {
@@ -51,7 +51,13 @@ export const AWARD_RULES: readonly AwardRule[] = [
   {
     id: "checkpoints-all",
     title: "Barcha laboratoriya nazoratlari",
-    earned: (f) => CHECKPOINT_META.every((c) => passed(f, c.id)),
+    // The beginner labs; Intermediate modules have their own awards.
+    earned: (f) => BEGINNER_CHECKPOINTS.every((c) => passed(f, c.id)),
+  },
+  {
+    id: "lab-http",
+    title: "HTTP chuqurroq (Intermediate)",
+    earned: (f) => finished(f, "http") && passed(f, "http-1"),
   },
 ];
 

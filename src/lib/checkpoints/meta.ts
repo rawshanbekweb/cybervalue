@@ -10,6 +10,8 @@ export type CheckpointMeta = {
   href: string;
   // Percent needed to pass.
   pass: number;
+  /** Set for checkpoints of the Intermediate level. */
+  level?: "intermediate";
 };
 
 export const CHECKPOINT_META: readonly CheckpointMeta[] = [
@@ -74,7 +76,25 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/akademiya/web-security-lab#checkpoints",
     pass: 70,
   },
+  {
+    id: "http-1",
+    level: "intermediate",
+    lab: { uz: "HTTP chuqurroq", en: "HTTP in depth" },
+    title: {
+      uz: "Nazorat: HTTP, cookie, CORS va sarlavhalar",
+      en: "Checkpoint: HTTP, cookies, CORS and headers",
+    },
+    covers: {
+      uz: "1–10-darslar · 12 savol",
+      en: "Lessons 1–10 · 12 questions",
+    },
+    href: "/akademiya/http#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>
   CHECKPOINT_META.find((c) => c.id === id) ?? null;
+
+/** The beginner-level checkpoints, which the "every checkpoint" awards count. */
+export const BEGINNER_CHECKPOINTS = CHECKPOINT_META.filter((c) => !c.level);

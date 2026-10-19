@@ -83,7 +83,7 @@ test("everything finished", () => {
   assert.deepEqual(
     nextStep({
       ...base,
-      labs: { network: 17, linux: 16, html: 12, security: 36 },
+      labs: { network: 17, linux: 16, html: 12, security: 36, http: 10 },
     }),
     { kind: "done" },
   );
