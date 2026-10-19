@@ -1,10 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useMemo, useRef, useState, useTransition } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 import {
   ArrowLeft,
+  ArrowRight,
   BookOpen,
+  CalendarDays,
   Check,
   Lightbulb,
   Lock,
@@ -28,6 +37,7 @@ import {
   type GameId,
 } from "@/lib/kids/games";
 import { fire, normalize, suggest } from "@/lib/kids/lang";
+import { DAILY_XP, dailyPassed, type DailyTask } from "@/lib/kids/extras";
 import { kidsLevel } from "@/lib/kids/progress";
 import { saveKidsAction } from "@/app/[lang]/kids/actions";
 import type { GameApi } from "./game-types";
@@ -52,6 +62,26 @@ function parseCommand(input: string) {
   };
 }
 
+// The first-visit tour: one panel at a time, highlighted on the page.
+const TOUR = [
+  {
+    title: "This is the game",
+    body: "Play it with the keys, the mouse or your finger. Everything it does comes from its code.",
+  },
+  {
+    title: "This is the game's code",
+    body: "Change a number, for example tezlik = 12, and press Run. The game obeys at once!",
+  },
+  {
+    title: "These are your missions",
+    body: "Do them one by one. Each stage opens the next one: settings, rules, then developer mode.",
+  },
+  {
+    title: "The secret terminal",
+    body: "Type yordam() to see secret commands. Somewhere in the game's files a password is hidden…",
+  },
+];
+
 // The game hacking lab: the game on one side, its code on the other, a secret
 // terminal underneath and the missions that guide the child through it.
 export function GameLab({
@@ -59,11 +89,17 @@ export function GameLab({
   initialCode,
   initialDone,
   initialXp,
+  daily,
+  tour,
 }: {
   gameId: GameId;
   initialCode: string;
   initialDone: string[];
   initialXp: number;
+  /** Today's task when it is in this game and not done yet. */
+  daily: DailyTask | null;
+  /** Whether to show the first-visit tour. */
+  tour: boolean;
 }) {
   const { t, text } = useT();
   const game = GAMES[gameId];
@@ -80,6 +116,9 @@ export function GameLab({
     { kind: "out", text: t("Secret terminal. Type yordam() for the list.") },
   ]);
   const [, startSaving] = useTransition();
+  const dailyDone = useRef(false);
+  const [dailyState, setDailyState] = useState<"open" | "done">("open");
+  const [tourStep, setTourStep] = useState(tour ? 0 : -1);
   const known = useMemo(() => new Set(done), [done]);
   const dev = devMode(game, known);
   const program = useMemo(() => compile(game, code, dev), [game, code, dev]);
@@ -119,6 +158,8 @@ export function GameLab({
     mission?: string;
     cheat?: string;
     password?: string;
+    daily?: boolean;
+    tour?: boolean;
   }) {
     startSaving(async () => {
       const result = await saveKidsAction({ game: gameId, ...update });
@@ -143,6 +184,32 @@ export function GameLab({
     save({ ...proof, mission: missionId });
   }
 
+  // Today's task, once per day; the server checks the same evidence.
+  function checkDaily(proof: {
+    code?: string;
+    score?: number;
+    cheat?: string;
+  }) {
+    if (!daily || dailyDone.current || !dailyPassed(daily, proof)) return;
+    dailyDone.current = true;
+    setDailyState("done");
+    setXp((value) => value + DAILY_XP);
+    save({ ...proof, daily: true });
+  }
+
+  // Brings the highlighted panel into view on small screens.
+  useEffect(() => {
+    if (tourStep > 0)
+      document
+        .querySelector(".kids-spot")
+        ?.scrollIntoView({ block: "start", behavior: "smooth" });
+  }, [tourStep]);
+
+  function endTour() {
+    setTourStep(-1);
+    save({ tour: true });
+  }
+
   function run() {
     setCode(draft);
     setEditing(false);
@@ -156,6 +223,7 @@ export function GameLab({
     );
     if (passed.length) passed.forEach((m) => complete(m.id, { code: draft }));
     else save({ code: draft });
+    checkDaily({ code: draft });
   }
 
   function reset() {
@@ -173,6 +241,7 @@ export function GameLab({
         !known.has(missionKey(gameId, m.id))
       )
         complete(m.id, { score });
+    checkDaily({ score });
   }
 
   function terminal(event: React.FormEvent) {
@@ -235,6 +304,7 @@ export function GameLab({
         for (const m of game.missions)
           if (m.check.kind === "cheat" && m.check.cheat === name)
             complete(m.id, { cheat: name });
+      if (ok) checkDaily({ cheat: name });
     } else {
       const close = suggest(name, [
         ...game.cheats.map((c) => c.name),
@@ -296,9 +366,27 @@ export function GameLab({
         <h1>{text(game.title)}</h1>
         <p>{text(game.tagline)}</p>
       </header>
+      {daily && (
+        <p
+          className={`kids-daily-strip ${dailyState === "done" ? "done" : ""}`}
+          role="status"
+        >
+          <CalendarDays size={18} aria-hidden="true" />
+          {dailyState === "done" ? (
+            <span>{t("Task of the day done! +{xp} XP", { xp: DAILY_XP })}</span>
+          ) : (
+            <span>
+              <strong>{t("Task of the day")}:</strong> {text(daily.title)}
+            </span>
+          )}
+        </p>
+      )}
 
       <div className="kids-lab">
-        <section className="kids-stage" aria-label={t("Game")}>
+        <section
+          className={`kids-stage${tourStep === 0 ? " kids-spot" : ""}`}
+          aria-label={t("Game")}
+        >
           <Game
             ref={api}
             values={program.values}
@@ -311,7 +399,10 @@ export function GameLab({
           />
         </section>
 
-        <section className="kids-code" aria-labelledby="kids-code-title">
+        <section
+          className={`kids-code${tourStep === 1 ? " kids-spot" : ""}`}
+          aria-labelledby="kids-code-title"
+        >
           <div className="kids-panel-head">
             <h2 id="kids-code-title">{t("Game code")}</h2>
             <span>{t("Change a value, then press Run")}</span>
@@ -437,7 +528,7 @@ export function GameLab({
         </section>
 
         <section
-          className="kids-missions"
+          className={`kids-missions${tourStep === 2 ? " kids-spot" : ""}`}
           aria-labelledby="kids-missions-title"
         >
           <div className="kids-panel-head">
@@ -540,7 +631,7 @@ export function GameLab({
         </section>
 
         <section
-          className="kids-terminal"
+          className={`kids-terminal${tourStep === 3 ? " kids-spot" : ""}`}
           aria-labelledby="kids-terminal-title"
         >
           <div className="kids-panel-head">
@@ -578,6 +669,49 @@ export function GameLab({
           </form>
         </section>
       </div>
+      {tourStep >= 0 && (
+        <div
+          className="kids-tour"
+          role="dialog"
+          aria-labelledby="kids-tour-title"
+        >
+          <p className="kids-eyebrow">
+            {t("Step {n} of {total}", { n: tourStep + 1, total: TOUR.length })}
+          </p>
+          <h2 id="kids-tour-title">{t(TOUR[tourStep].title)}</h2>
+          <p>{t(TOUR[tourStep].body)}</p>
+          <div className="kids-code-actions">
+            {tourStep < TOUR.length - 1 ? (
+              <button
+                type="button"
+                className="kids-button"
+                autoFocus
+                onClick={() => setTourStep(tourStep + 1)}
+              >
+                {t("Next")} <ArrowRight size={18} aria-hidden="true" />
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="kids-button"
+                autoFocus
+                onClick={endTour}
+              >
+                {t("Let's hack!")} <Sparkles size={18} aria-hidden="true" />
+              </button>
+            )}
+            {tourStep < TOUR.length - 1 && (
+              <button
+                type="button"
+                className="kids-button kids-button-quiet"
+                onClick={endTour}
+              >
+                {t("Skip")}
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

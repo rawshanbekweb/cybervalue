@@ -18,6 +18,7 @@ import {
   applyKidsUpdate,
   kidsXp,
   restoreKidsProgress,
+  type KidsProgress,
   type KidsUpdate,
 } from "@/lib/kids/progress";
 
@@ -62,7 +63,12 @@ export async function kidsLogoutAction() {
   redirect("/kids");
 }
 
-export type KidsSaveResult = { ok: boolean; xp?: number; done?: string[] };
+export type KidsSaveResult = {
+  ok: boolean;
+  xp?: number;
+  done?: string[];
+  daily?: KidsProgress["daily"];
+};
 
 // Saves code, a best score or a finished mission. A mission only counts when
 // the evidence passes the same check the game showed.
@@ -87,5 +93,5 @@ export async function saveKidsAction(
     },
   });
   await recordActivity(db, "kids", member.id);
-  return { ok: true, xp, done: next.done };
+  return { ok: true, xp, done: next.done, daily: next.daily };
 }

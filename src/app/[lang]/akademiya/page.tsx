@@ -5,6 +5,7 @@ import {
   BookOpen,
   ClipboardCheck,
   Code2,
+  Layers,
   ShieldCheck,
 } from "lucide-react";
 import { LearningCatalog } from "@/components/learning-catalog";
@@ -87,6 +88,27 @@ export default async function PlaygroundPage() {
           <div className="gateway-grid">{gateways.map((g) => g.node)}</div>
         </section>
       )}
+      <section className="learning-assessment">
+        <span className="learn-icon">
+          <Layers size={25} />
+        </span>
+        <div>
+          <span className="eyebrow">ACADEMY INTERMEDIATE</span>
+          <h2>{t("The next level is on its way.")}</h2>
+          <p>
+            {t(
+              "See the Intermediate roadmap: web application security, cryptography, network security, forensics, steganography, OSINT and more.",
+            )}
+          </p>
+        </div>
+        <Link
+          className="button button-secondary"
+          href="/akademiya/intermediate"
+        >
+          {t("Open the roadmap")}
+          <ArrowRight size={16} />
+        </Link>
+      </section>
       <section className="learning-assessment">
         <span className="learn-icon">
           <ClipboardCheck size={25} />

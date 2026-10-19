@@ -6,9 +6,17 @@ import {
   GAMES,
   MAX_XP,
   missionKey,
+  gameOpen,
   passwordOpens,
   stageOf,
 } from "../src/lib/kids/games";
+import {
+  badges,
+  currentStreak,
+  DAILY_XP,
+  dailyPassed,
+  dailyTask,
+} from "../src/lib/kids/extras";
 import {
   applyKidsUpdate,
   emptyKidsProgress,
@@ -19,6 +27,7 @@ import {
 } from "../src/lib/kids/progress";
 
 const kosmos = GAMES.kosmos;
+const GAME_IDS_ALL = ["kosmos", "robot", "ilon"] as const;
 
 test("the starter code of every game parses cleanly to its defaults", () => {
   for (const game of Object.values(GAMES)) {
@@ -183,8 +192,23 @@ test("the server only records missions the evidence proves", () => {
   });
   assert.equal(scored?.best.kosmos, 240);
   assert.equal(applyKidsUpdate(start, { game: "tetris", code: "x = 1" }), null);
-  assert.ok(
+  // The robot game opens once the space game's settings stage is done.
+  assert.equal(
     applyKidsUpdate(start, {
+      game: "robot",
+      mission: "uchish",
+      cheat: "uchish",
+    }),
+    null,
+  );
+  const spaceDone = {
+    ...start,
+    done: kosmos.missions
+      .filter((m) => stageOf(m) === 1)
+      .map((m) => missionKey("kosmos", m.id)),
+  };
+  assert.ok(
+    applyKidsUpdate(spaceDone, {
       game: "robot",
       mission: "uchish",
       cheat: "uchish",
@@ -405,4 +429,119 @@ test("a stage only opens once the stage before it is finished", () => {
     code: "qachon yulduz_olinsa:\n    ochko += 5",
   });
   assert.ok(handled?.done.includes("kosmos:yulduz"));
+});
+
+const stage1 = (game: "kosmos" | "robot" | "ilon") =>
+  GAMES[game].missions
+    .filter((m) => stageOf(m) === 1)
+    .map((m) => missionKey(game, m.id));
+
+test("games open one after another, and a started game stays open", () => {
+  const none = new Set<string>();
+  assert.ok(gameOpen(GAMES.kosmos, none));
+  assert.ok(!gameOpen(GAMES.robot, none));
+  assert.ok(!gameOpen(GAMES.ilon, none));
+  const space = new Set(stage1("kosmos"));
+  assert.ok(gameOpen(GAMES.robot, space));
+  assert.ok(!gameOpen(GAMES.ilon, space));
+  assert.ok(gameOpen(GAMES.ilon, new Set([...space, ...stage1("robot")])));
+  // Children who already played before the order existed keep their game.
+  assert.ok(gameOpen(GAMES.ilon, new Set(["ilon:tez"])));
+});
+
+test("the daily task is fixed for a day, proven on the server and builds a streak", () => {
+  const done = new Set<string>();
+  const task = dailyTask("2026-10-19", done);
+  assert.deepEqual(dailyTask("2026-10-19", done), task);
+  // Only open games are picked.
+  for (const day of ["2026-10-01", "2026-10-02", "2026-10-03", "2026-10-04"])
+    assert.equal(dailyTask(day, done).game, "kosmos");
+  const proofFor = (t: typeof task) =>
+    t.kind === "score"
+      ? { score: t.score }
+      : t.kind === "cheat"
+        ? { cheat: t.cheat }
+        : {
+            code: `${GAMES[t.game].starter}\n${t.setting} = ${
+              (GAMES[t.game].schema[t.setting] as { min: number }).min + 1
+            }`,
+          };
+  assert.ok(dailyPassed(task, proofFor(task)));
+  assert.ok(!dailyPassed(task, {}));
+
+  let progress = emptyKidsProgress();
+  for (const [i, day] of ["2026-10-17", "2026-10-18", "2026-10-19"].entries()) {
+    const t = dailyTask(day, new Set(progress.done));
+    assert.equal(
+      applyKidsUpdate(progress, { game: t.game, daily: true }, day),
+      null,
+    );
+    progress = applyKidsUpdate(
+      progress,
+      { game: t.game, daily: true, ...proofFor(t) },
+      day,
+    )!;
+    assert.equal(progress.daily.streak, i + 1);
+  }
+  // Doing it twice on one day counts once.
+  const t = dailyTask("2026-10-19", new Set());
+  const again = applyKidsUpdate(
+    progress,
+    { game: t.game, daily: true, ...proofFor(t) },
+    "2026-10-19",
+  )!;
+  assert.equal(again.daily.count, 3);
+  assert.equal(kidsXp(again), 3 * DAILY_XP);
+  assert.equal(currentStreak(again.daily, "2026-10-20"), 3);
+  assert.equal(currentStreak(again.daily, "2026-10-21"), 0);
+  // A missed day starts the streak again but keeps the record.
+  const t22 = dailyTask("2026-10-22", new Set());
+  const later = applyKidsUpdate(
+    again,
+    { game: t22.game, daily: true, ...proofFor(t22) },
+    "2026-10-22",
+  )!;
+  assert.deepEqual(later.daily, {
+    last: "2026-10-22",
+    streak: 1,
+    record: 3,
+    count: 4,
+  });
+  const restored = restoreKidsProgress(JSON.parse(JSON.stringify(later)));
+  assert.deepEqual(restored.daily, later.daily);
+  const earned = badges(restored)
+    .filter((b) => b.earned)
+    .map((b) => b.id);
+  assert.deepEqual(earned, ["streak3"]);
+});
+
+test("badges follow the progress", () => {
+  const all = GAME_IDS_ALL.flatMap((id) =>
+    GAMES[id].missions.map((m) => missionKey(id, m.id)),
+  );
+  const full = badges({
+    done: all,
+    best: { kosmos: 600, robot: 0, ilon: 0 },
+    daily: { last: "", streak: 0, record: 7, count: 7 },
+  });
+  assert.ok(full.every((b) => b.earned));
+  const first = badges({
+    done: ["kosmos:turbo"],
+    best: { kosmos: 0, robot: 0, ilon: 0 },
+    daily: { last: "", streak: 0, record: 0, count: 0 },
+  });
+  assert.deepEqual(
+    first.filter((b) => b.earned).map((b) => b.id),
+    ["first"],
+  );
+});
+
+test("the tour is remembered once shown", () => {
+  const shown = applyKidsUpdate(emptyKidsProgress(), {
+    game: "kosmos",
+    tour: true,
+  });
+  assert.equal(shown?.tour, true);
+  assert.equal(restoreKidsProgress(shown).tour, true);
+  assert.equal(restoreKidsProgress({ tour: "yes" }).tour, false);
 });

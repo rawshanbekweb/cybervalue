@@ -54,6 +54,8 @@ export type Game = {
   files: Record<string, Text>;
   /** Opens developer mode; normalized like everything a child types. */
   password: string;
+  /** The game whose first stage opens this one; none for the first game. */
+  after?: GameId;
   missions: Mission[];
 };
 
@@ -477,6 +479,7 @@ ko'rinmas = yo'q
   },
   robot: {
     id: "robot",
+    after: "kosmos",
     title: { uz: "Robot sakrash", en: "Robot jump" },
     tagline: {
       uz: "Robot yuguradi: to‘siqlardan sakrang, tanga yig‘ing.",
@@ -822,6 +825,7 @@ hayotlar = 3
   },
   ilon: {
     id: "ilon",
+    after: "robot",
     title: { uz: "Ilon", en: "Snake" },
     tagline: {
       uz: "Ilonni boshqaring, olma yeng va o‘sing — lekin o‘zingizga urilmang!",
@@ -1180,6 +1184,18 @@ export const compile = (game: Game, code: string, dev = false) =>
 /** Every mission's key as stored in progress: "kosmos:turbo". */
 export const missionKey = (game: GameId, mission: string) =>
   `${game}:${mission}`;
+
+/**
+ * Whether a child may play a game: the first game always; the next once the
+ * settings stage of the game before is finished, or once they have already
+ * finished something in it.
+ */
+export function gameOpen(game: Game, done: Set<string>) {
+  if (!game.after) return true;
+  if (game.missions.some((m) => done.has(missionKey(game.id, m.id))))
+    return true;
+  return stageOpen(GAMES[game.after], 2, done);
+}
 
 export const ALL_MISSIONS = GAME_IDS.flatMap((id) =>
   GAMES[id].missions.map((m) => ({ game: id, mission: m })),

@@ -3,6 +3,7 @@ import { getKidsMember } from "@/lib/kids/session";
 import { getDb } from "@/lib/db";
 import { restoreKidsProgress } from "@/lib/kids/progress";
 import { metadata } from "@/lib/seo";
+import { badges, currentStreak, dailyTask, kidsToday } from "@/lib/kids/extras";
 
 export const generateMetadata = () =>
   metadata(
@@ -24,8 +25,21 @@ export default async function KidsPage() {
         select: { id: true, name: true, xp: true },
       })) ?? [])
     : [];
+  const today = kidsToday();
+  const task = dailyTask(today, new Set(progress.done));
   return (
     <KidsHub
+      daily={{
+        task,
+        done: progress.daily.last === today,
+        streak: currentStreak(progress.daily, today),
+      }}
+      badges={badges(progress).map(({ id, title, about, earned }) => ({
+        id,
+        title,
+        about,
+        earned,
+      }))}
       name={member.name}
       xp={member.xp}
       done={progress.done}

@@ -631,5 +631,21 @@
   "(not written)": "(yozilmagan)",
   "(no notes)": "(qayd yo‘q)",
   "Headers": "Sarlavhalar",
-  "Body": "Tana"
+  "Body": "Tana",
+  "The next level.": "Keyingi daraja.",
+  "The Intermediate roadmap.": "Intermediate yo‘l xaritasi.",
+  "After the beginner labs comes the second level. It is split into cybersecurity domains, each with its own modules. Domains open phase by phase; this page shows the whole plan.": "Boshlang‘ich labdan keyin ikkinchi daraja keladi. U kiberxavfsizlik yo‘nalishlariga bo‘lingan, har birining o‘z modullari bor. Yo‘nalishlar bosqichma-bosqich ochiladi; bu sahifada butun reja ko‘rsatilgan.",
+  "{count} domains": "{count} ta yo‘nalish",
+  "{count} modules": "{count} ta modul",
+  "{count} career paths": "{count} ta kasbiy yo‘l",
+  "How the Intermediate level works": "Intermediate darajasi qanday ishlaydi",
+  "Every module has short lessons, a hands-on lab in an isolated browser sandbox and a checkpoint test.": "Har bir modulda qisqa darslar, brauzerdagi izolyatsiyalangan amaliy lab va nazorat testi bo‘ladi.",
+  "Practice happens only on the academy's own training systems. Testing anything you do not own or have written permission for is against the law.": "Amaliyot faqat akademiyaning o‘quv tizimlarida o‘tkaziladi. Sizga tegishli bo‘lmagan yoki yozma ruxsat olinmagan tizimni sinash qonunga zid.",
+  "Each domain lists the beginner labs to finish first, so you always know where to start.": "Har bir yo‘nalishda avval qaysi boshlang‘ich lablarni tugatish kerakligi yozilgan, shuning uchun qayerdan boshlashni doim bilasiz.",
+  "Planned": "Rejada",
+  "Start after:": "Avval tugating:",
+  "Career paths": "Kasbiy yo‘llar",
+  "The next level is on its way.": "Keyingi daraja tayyorlanmoqda.",
+  "See the Intermediate roadmap: web application security, cryptography, network security, forensics, steganography, OSINT and more.": "Intermediate yo‘l xaritasini ko‘ring: veb-ilovalar xavfsizligi, kriptografiya, tarmoq xavfsizligi, kriminalistika, steganografiya, OSINT va boshqalar.",
+  "Open the roadmap": "Yo‘l xaritasini ochish"
 }

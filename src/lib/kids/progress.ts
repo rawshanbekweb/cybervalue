@@ -7,6 +7,7 @@ import {
   GAMES,
   isGameId,
   MAX_XP,
+  gameOpen,
   missionKey,
   passwordOpens,
   stageOf,
@@ -14,6 +15,14 @@ import {
   type GameId,
 } from "./games";
 import type { Text } from "./lang";
+import { tashkentDay } from "../admin/activity";
+import {
+  DAILY_XP,
+  dailyPassed,
+  dailyTask,
+  nextDaily,
+  type Daily,
+} from "./extras";
 
 export type KidsProgress = {
   /** Finished missions as "game:mission". */
@@ -22,6 +31,9 @@ export type KidsProgress = {
   best: Record<GameId, number>;
   /** The last code the child ran per game, so they carry on where they were. */
   code: Record<GameId, string>;
+  daily: Daily;
+  /** Whether the first-visit tour of the game lab was shown. */
+  tour: boolean;
 };
 
 const KEYS = new Set(ALL_MISSIONS.map((m) => missionKey(m.game, m.mission.id)));
@@ -32,7 +44,14 @@ export const emptyKidsProgress = (): KidsProgress => ({
   done: [],
   best: { kosmos: 0, robot: 0, ilon: 0 },
   code: { kosmos: "", robot: "", ilon: "" },
+  daily: { last: "", streak: 0, record: 0, count: 0 },
+  tour: false,
 });
+
+const count = (value: unknown, max: number) =>
+  typeof value === "number" && Number.isFinite(value)
+    ? Math.min(Math.max(Math.floor(value), 0), max)
+    : 0;
 
 export function restoreKidsProgress(raw: unknown): KidsProgress {
   const value =
@@ -55,13 +74,25 @@ export function restoreKidsProgress(raw: unknown): KidsProgress {
     if (typeof code[id] === "string")
       progress.code[id] = (code[id] as string).slice(0, MAX_CODE);
   }
+  const daily = (value.daily ?? {}) as Record<string, unknown>;
+  if (typeof daily.last === "string" && /^\d{4}-\d{2}-\d{2}$/.test(daily.last))
+    progress.daily = {
+      last: daily.last,
+      streak: count(daily.streak, 10_000),
+      record: count(daily.record, 10_000),
+      count: count(daily.count, 10_000),
+    };
+  progress.tour = value.tour === true;
   return progress;
 }
 
 export function kidsXp(progress: KidsProgress) {
-  return ALL_MISSIONS.filter((m) =>
-    progress.done.includes(missionKey(m.game, m.mission.id)),
-  ).reduce((sum, m) => sum + m.mission.xp, 0);
+  return (
+    ALL_MISSIONS.filter((m) =>
+      progress.done.includes(missionKey(m.game, m.mission.id)),
+    ).reduce((sum, m) => sum + m.mission.xp, 0) +
+    progress.daily.count * DAILY_XP
+  );
 }
 
 export const LEVELS: { xp: number; title: Text }[] = [
@@ -125,16 +156,26 @@ export type KidsUpdate = {
   mission?: unknown;
   cheat?: unknown;
   password?: unknown;
+  /** True when the evidence is for today's daily task. */
+  daily?: unknown;
+  tour?: unknown;
 };
 
 /** Applies one update from the game lab; null when it is not acceptable. */
-export function applyKidsUpdate(progress: KidsProgress, update: KidsUpdate) {
+export function applyKidsUpdate(
+  progress: KidsProgress,
+  update: KidsUpdate,
+  today = tashkentDay(Date.now()),
+) {
   if (!isGameId(update.game)) return null;
   const game = update.game;
+  if (!gameOpen(GAMES[game], new Set(progress.done))) return null;
   const next: KidsProgress = {
     done: [...progress.done],
     best: { ...progress.best },
     code: { ...progress.code },
+    daily: { ...progress.daily },
+    tour: progress.tour || update.tour === true,
   };
   const code =
     typeof update.code === "string" ? update.code.slice(0, MAX_CODE) : null;
@@ -144,6 +185,16 @@ export function applyKidsUpdate(progress: KidsProgress, update: KidsUpdate) {
       : null;
   if (code !== null) next.code[game] = code;
   if (score !== null) next.best[game] = Math.max(next.best[game], score);
+  if (update.daily === true && next.daily.last !== today) {
+    const task = dailyTask(today, new Set(next.done));
+    const proof = {
+      code: code ?? undefined,
+      score: score ?? undefined,
+      cheat: typeof update.cheat === "string" ? update.cheat : undefined,
+    };
+    if (task.game !== game || !dailyPassed(task, proof)) return null;
+    next.daily = nextDaily(next.daily, today);
+  }
   if (typeof update.mission === "string") {
     const proof: Proof = {
       code: code ?? undefined,
