@@ -18,6 +18,7 @@ import {
   Lock,
   LogOut,
   Rocket,
+  ShieldCheck,
   Sparkles,
   Terminal,
   Trophy,
@@ -42,6 +43,7 @@ const ICONS: Record<GameId, typeof Rocket> = {
   kosmos: Rocket,
   robot: Bot,
   ilon: Worm,
+  qorovul: ShieldCheck,
 };
 
 const BADGE_ICONS: Record<string, typeof Rocket> = {

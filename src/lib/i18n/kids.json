@@ -170,5 +170,7 @@
   "Do them one by one. Each stage opens the next one: settings, rules, then developer mode.": "Ularni birma-bir bajaring. Har bir bosqich keyingisini ochadi: sozlamalar, qoidalar, keyin dasturchi rejimi.",
   "The secret terminal": "Maxfiy terminal",
   "Type yordam() to see secret commands. Somewhere in the game's files a password is hidden…": "Maxfiy buyruqlarni ko‘rish uchun yordam() deb yozing. O‘yin fayllarining birida parol yashiringan…",
-  "Badges": "Nishonlar"
+  "Badges": "Nishonlar",
+  "Tap a phishing letter to catch it, or press F for the lowest one. Let real letters through!": "Fishing xatni bosib ushlang yoki eng pastdagisi uchun F tugmasini bosing. Haqiqiy xatlarni o‘tkazib yuboring!",
+  "Phishing!": "Fishing!"
 }

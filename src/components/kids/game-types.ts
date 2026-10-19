@@ -31,6 +31,8 @@ export type GameProps = {
     over: string;
     paused: string;
     controls: string;
+    /** The guard game's button that marks the lowest letter as phishing. */
+    mark?: string;
   };
   ref?: React.Ref<GameApi>;
 };

@@ -40,10 +40,11 @@ import { fire, normalize, suggest } from "@/lib/kids/lang";
 import { DAILY_XP, dailyPassed, type DailyTask } from "@/lib/kids/extras";
 import { kidsLevel } from "@/lib/kids/progress";
 import { saveKidsAction } from "@/app/[lang]/kids/actions";
-import type { GameApi } from "./game-types";
+import type { GameApi, GameProps } from "./game-types";
 import { SpaceGame } from "./space-game";
 import { RobotGame } from "./robot-game";
 import { SnakeGame } from "./snake-game";
+import { GuardGame } from "./guard-game";
 import "./kids.css";
 
 type Line = { kind: "in" | "out" | "ok" | "err"; text: string };
@@ -61,6 +62,13 @@ function parseCommand(input: string) {
       .trim(),
   };
 }
+
+const GAME_VIEWS: Record<GameId, (props: GameProps) => React.ReactNode> = {
+  kosmos: SpaceGame,
+  robot: RobotGame,
+  ilon: SnakeGame,
+  qorovul: GuardGame,
+};
 
 // The first-visit tour: one panel at a time, highlighted on the page.
 const TOUR = [
@@ -328,19 +336,17 @@ export function GameLab({
     start: t("Tap, click or press Space to start"),
     over: t("Game over!"),
     paused: t("Paused while you edit the code"),
-    controls:
-      gameId === "kosmos"
-        ? t("Move with ← → arrows, A and D, or drag your finger")
-        : gameId === "robot"
-          ? t("Jump with Space, ↑ or a tap")
-          : t("Steer with the arrows, WASD or a swipe"),
+    controls: {
+      kosmos: t("Move with ← → arrows, A and D, or drag your finger"),
+      robot: t("Jump with Space, ↑ or a tap"),
+      ilon: t("Steer with the arrows, WASD or a swipe"),
+      qorovul: t(
+        "Tap a phishing letter to catch it, or press F for the lowest one. Let real letters through!",
+      ),
+    }[gameId],
+    mark: t("Phishing!"),
   };
-  const Game =
-    gameId === "kosmos"
-      ? SpaceGame
-      : gameId === "robot"
-        ? RobotGame
-        : SnakeGame;
+  const Game = GAME_VIEWS[gameId];
   const lineCount = draft.split("\n").length;
   const badLines = new Set(draftProblems.map((p) => p.line));
 
