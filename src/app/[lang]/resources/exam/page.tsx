@@ -1,6 +1,7 @@
 import { ResourceExam } from "@/components/resource-exam/ResourceExam";
 import { metadata as buildMetadata } from "@/lib/seo";
 import { EXAM_PATH } from "@/lib/resource-exam/content";
+import { LabMessages } from "@/components/i18n/lab-messages";
 
 export const generateMetadata = () =>
   buildMetadata(
@@ -10,5 +11,9 @@ export const generateMetadata = () =>
     true,
   );
 export default function ResourceExamPage() {
-  return <ResourceExam />;
+  return (
+    <LabMessages>
+      <ResourceExam />
+    </LabMessages>
+  );
 }

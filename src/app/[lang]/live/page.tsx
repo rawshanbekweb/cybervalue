@@ -1,6 +1,7 @@
 import { getTranslator } from "@/lib/i18n/server";
 import { metadata } from "@/lib/seo";
 import { LivePlayer } from "@/components/live/live-player";
+import { LiveMessages } from "@/components/i18n/live-messages";
 
 export const generateMetadata = () =>
   metadata(
@@ -22,7 +23,9 @@ export default async function LivePage() {
           <span>{t("Play along with your class.")}</span>
         </h1>
       </header>
-      <LivePlayer />
+      <LiveMessages>
+        <LivePlayer />
+      </LiveMessages>
     </div>
   );
 }

@@ -8,7 +8,7 @@ import {
   type Outcome,
   type Policy,
 } from "./engine";
-import { createTranslator, type Translator } from "../i18n";
+import { plainTranslator, type Translator } from "../i18n/core";
 import { translateStep } from "./i18n";
 
 const requestSchema = z.object({
@@ -147,7 +147,7 @@ export function evaluateSession(mission: Mission, session: Session) {
 export function missionReport(
   mission: Mission,
   session: Session,
-  t: Translator = createTranslator("en"),
+  t: Translator = plainTranslator,
 ): string {
   const result = evaluateSession(mission, session);
   const hypothesis = mission.hypotheses[session.hypothesis];

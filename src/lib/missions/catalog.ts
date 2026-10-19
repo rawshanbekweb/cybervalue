@@ -1,5 +1,5 @@
 import { fixture, type MissionId, type Policy } from "./engine";
-import { createTranslator, type Translator } from "../i18n";
+import { plainTranslator, type Translator } from "../i18n/core";
 
 export type Control = {
   key: string;
@@ -184,7 +184,7 @@ export const MISSIONS: Mission[] = [
 export function missionFiles(
   id: MissionId,
   variant: number,
-  t: Translator = createTranslator("en"),
+  t: Translator = plainTranslator,
 ) {
   const f = fixture(variant);
   if (id === "invoice")

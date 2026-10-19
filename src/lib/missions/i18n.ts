@@ -1,4 +1,4 @@
-import type { Translator } from "../i18n";
+import type { Translator } from "../i18n/core";
 
 // Traces and expectations are stored in English in browser history, so
 // variable lines are matched back to their message templates at render time.

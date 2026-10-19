@@ -16,5 +16,4 @@ export function isJuniorCode(code: string) {
   return code.length === LENGTH && [...code].every((c) => ALPHABET.includes(c));
 }
 
-export const formatJuniorCode = (code: string) =>
-  `${code.slice(0, 4)}-${code.slice(4)}`;
+export { formatJuniorCode } from "./code-format";

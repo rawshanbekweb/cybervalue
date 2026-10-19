@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useActionState } from "react";
 import { useTranslator } from "@/components/locale-provider";
 import { promoteKidAction } from "@/app/admin/(cms)/kids/promote";
-import { formatJuniorCode } from "@/lib/junior/codes";
+import { formatJuniorCode } from "@/lib/junior/code-format";
 
 export function PromoteKidForm({
   id,
