@@ -671,3 +671,16 @@ model TrashItem {
   @@index([deletedAt])
   @@index([group])
 }
+
+// One row per learner per day they were active (Tashkent date), so the
+// analytics page can draw history for Academy Junior and Kids, whose saved
+// progress keeps no dates. Students' history comes from their answers.
+model ActivityDay {
+  kind     String
+  memberId String
+  day      DateTime @db.Date
+  events   Int      @default(1)
+
+  @@id([kind, memberId, day])
+  @@index([day])
+}

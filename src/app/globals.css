@@ -3814,3 +3814,163 @@ select.admin-input {
 .admin-sort span {
   color: var(--muted);
 }
+
+/* Analytics charts. One hue (the accent); the heat ramp's steps were checked
+   for monotone lightness and contrast against the card surface. */
+.admin-chart-title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 18px;
+  font-size: 14px;
+}
+.admin-chart-title .muted {
+  font-size: 12px;
+}
+.admin-chart-bars .admin-activity-bar {
+  max-width: 24px;
+  margin: 0 auto;
+}
+.admin-activity-bar.is-current {
+  background: color-mix(in srgb, var(--accent) 55%, #0d0d0f);
+}
+.admin-activity-bar:focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 2px;
+}
+.admin-activity-bar:focus-visible::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #16151b;
+  color: var(--text);
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1;
+}
+.admin-chart-value {
+  position: absolute;
+  bottom: calc(100% + 2px);
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--muted);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.admin-activity-bar:hover .admin-chart-value,
+.admin-activity-bar:focus-visible .admin-chart-value {
+  visibility: hidden;
+}
+.admin-charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 14px;
+}
+.admin-stat strong {
+  font-variant-numeric: tabular-nums;
+}
+.admin-heat {
+  margin: 0 0 12px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #0d0d0f;
+}
+.admin-heat-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 14px);
+  grid-template-rows: repeat(7, 14px);
+  grid-auto-flow: column;
+  gap: 3px;
+  overflow-x: auto;
+}
+.admin-heat-cell {
+  position: relative;
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  background: #1c1b22;
+}
+.admin-heat-cell.level-1 {
+  background: #4a3896;
+}
+.admin-heat-cell.level-2 {
+  background: #6a4fd6;
+}
+.admin-heat-cell.level-3 {
+  background: #9474ff;
+}
+.admin-heat-cell.level-4 {
+  background: #cbbaff;
+}
+.admin-heat-grid .admin-heat-cell:hover,
+.admin-heat-grid .admin-heat-cell:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 1px;
+}
+.admin-heat-legend {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.admin-heat-legend span:first-child {
+  margin-right: 4px;
+}
+.admin-heat-legend span:last-child {
+  margin-left: 4px;
+}
+.admin-inline-meter {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.admin-inline-meter-track {
+  display: inline-block;
+  width: 72px;
+  height: 6px;
+  border-radius: 3px;
+  background: #24203a;
+  overflow: hidden;
+}
+.admin-inline-meter-track span {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+  background: var(--accent);
+}
+.admin-history {
+  display: grid;
+  gap: 0;
+  padding: 0;
+  list-style: none;
+}
+.admin-history li {
+  display: grid;
+  grid-template-columns: 9.5em 1fr;
+  gap: 4px 14px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+.admin-history time {
+  color: var(--muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 560px) {
+  .admin-history li {
+    grid-template-columns: 1fr;
+  }
+}

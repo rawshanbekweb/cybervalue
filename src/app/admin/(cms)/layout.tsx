@@ -28,6 +28,7 @@ export default async function AdminCmsLayout({
       title: t("Learning"),
       items: [
         { href: "/admin/class", label: t("Class") },
+        { href: "/admin/analytics", label: t("Analytics") },
         { href: "/admin/assignments", label: t("Assignments") },
         { href: "/admin/live", label: t("Live quiz") },
         { href: "/admin/telegram", label: "Telegram" },
@@ -73,6 +74,7 @@ export default async function AdminCmsLayout({
   const TEACHER = new Set([
     "/admin",
     "/admin/class",
+    "/admin/analytics",
     "/admin/assignments",
     "/admin/live",
     "/admin/students",
