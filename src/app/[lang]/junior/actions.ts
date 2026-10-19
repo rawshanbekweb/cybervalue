@@ -13,7 +13,11 @@ import {
   destroyJuniorSession,
   getJuniorMember,
 } from "@/lib/junior/session";
-import { restoreJuniorProgress, withPart, xpOf } from "@/lib/junior/progress";
+import {
+  applyJuniorPart,
+  restoreJuniorProgress,
+  xpOf,
+} from "@/lib/junior/progress";
 
 export type JuniorLoginState = { error?: string } | undefined;
 const GENERIC_ERROR = "This access code is not valid or no longer active.";
@@ -65,18 +69,26 @@ export async function juniorLogoutAction() {
 export type SaveResult = { ok: boolean; xp?: number };
 
 // Saves one part of the member's progress. It is validated against what a
-// real run can produce, and the XP is recomputed here.
+// real run can produce: a new mission, exercise or daily puzzle needs the
+// answers that solve it (see lib/junior/verify.ts). The XP is recomputed here.
 export async function saveJuniorPartAction(
   part: string,
   value: unknown,
+  proof?: unknown,
 ): Promise<SaveResult> {
   const member = await getJuniorMember();
   const db = getDb();
   if (!member || !db) return { ok: false };
   if (!(await limit(`junior-save:${member.id}`, 240, 60_000)))
     return { ok: false };
-  if (JSON.stringify(value ?? null).length > 20_000) return { ok: false };
-  const next = withPart(restoreJuniorProgress(member.progress), part, value);
+  if (JSON.stringify([value ?? null, proof ?? null]).length > 20_000)
+    return { ok: false };
+  const next = applyJuniorPart(
+    restoreJuniorProgress(member.progress),
+    part,
+    value,
+    proof,
+  );
   if (!next) return { ok: false };
   const xp = xpOf(next);
   await db.juniorMember.update({

@@ -121,6 +121,25 @@
   background: #4ade80;
   color: #04140a;
 }
+.jr-tab.locked {
+  color: #9a99a3;
+  border-style: dashed;
+}
+.jr-locked {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 14px 0;
+  padding: 14px 16px;
+  border: 1px dashed #ffffff33;
+  border-radius: 12px;
+  color: #c2c1ca;
+  line-height: 1.6;
+}
+.jr-locked svg {
+  flex-shrink: 0;
+  margin-top: 4px;
+}
 .jr-mission {
   padding: 28px;
   border: 1px solid #ffffff1f;
@@ -891,6 +910,10 @@
   color: #8f8e96;
   font: 11px var(--font-mono);
 }
+.jr-hw-pick button.locked {
+  border-style: dashed;
+  color: #9a99a3;
+}
 .jr-hw-pick button.done {
   border-color: #4ade8055;
   color: #7ff0a8;
@@ -1212,6 +1235,9 @@
   flex-direction: column;
   gap: 10px;
   border-color: #ffb82955;
+}
+.jr-daily-wait {
+  min-height: 300px;
 }
 .jr-daily h2 svg {
   color: #ffb829;

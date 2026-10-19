@@ -1,9 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Award, Check, Compass } from "lucide-react";
+import { ArrowRight, Award, Check, Compass, Lock } from "lucide-react";
 import { useT } from "../network-lab/use-t";
 import { MISSIONS, type MissionId } from "@/lib/junior/content";
+import {
+  MISSION_STAGE,
+  missionStageOpen,
+  type MissionEvidence,
+} from "@/lib/junior/verify";
 import { CaseFile } from "./campaign";
 import { Narrator } from "./Narrator";
 import { useJuniorState } from "./state";
@@ -20,7 +25,10 @@ import "./junior.css";
 
 const PANELS: Record<
   MissionId,
-  (props: { done: boolean; onComplete: () => void }) => React.ReactNode
+  (props: {
+    done: boolean;
+    onComplete: (evidence: MissionEvidence) => void;
+  }) => React.ReactNode
 > = {
   password: PasswordMission,
   phishing: PhishingMission,
@@ -73,7 +81,8 @@ export function JuniorAcademy() {
   const [id, setId] = useHashLessonId(MISSIONS.length, 1, "mission");
   const {
     missions: progress,
-    setMissions: setProgress,
+    completeMission,
+    resetMissions,
     missionCount: count,
   } = useJuniorState();
   const all = count === MISSIONS.length;
@@ -85,8 +94,9 @@ export function JuniorAcademy() {
       .getElementById("jr-mission")
       ?.scrollIntoView({ block: "start", behavior: "smooth" });
   };
-  const complete = (missionId: MissionId) =>
-    setProgress({ ...progress, [missionId]: true });
+  const locked = (missionId: MissionId) =>
+    !missionStageOpen(MISSION_STAGE[missionId], progress);
+  const missionLocked = locked(mission.id);
   return (
     <>
       <header className="jr-hero jr-page-head">
@@ -117,17 +127,20 @@ export function JuniorAcademy() {
       <nav className="jr-nav" aria-label={t("Missions")}>
         {MISSIONS.map((item) => {
           const finished = Boolean(progress[item.id]);
+          const closed = locked(item.id);
           return (
             <button
               key={item.id}
               type="button"
-              className={`jr-tab${item.number === id ? " on" : ""}${finished ? " done" : ""}`}
+              className={`jr-tab${item.number === id ? " on" : ""}${finished ? " done" : ""}${closed ? " locked" : ""}`}
               aria-current={item.number === id ? "step" : undefined}
               onClick={() => open(item.number)}
             >
               <span className="jr-num">
                 {finished ? (
                   <Check size={14} aria-hidden="true" />
+                ) : closed ? (
+                  <Lock size={13} aria-hidden="true" />
                 ) : (
                   item.number
                 )}
@@ -136,6 +149,9 @@ export function JuniorAcademy() {
                 {text(item.title)}
                 {finished && (
                   <span className="visually-hidden"> {t("(complete)")}</span>
+                )}
+                {closed && (
+                  <span className="visually-hidden"> {t("(locked)")}</span>
                 )}
               </span>
             </button>
@@ -166,10 +182,19 @@ export function JuniorAcademy() {
             text={`${text(mission.title)}. ${text(mission.hook)} ${t("Goal:")} ${text(mission.goal)}`}
           />
         </header>
-        <Panel
-          done={Boolean(progress[mission.id])}
-          onComplete={() => complete(mission.id)}
-        />
+        {missionLocked ? (
+          <p className="jr-locked" role="status">
+            <Lock size={16} aria-hidden="true" />{" "}
+            {t(
+              "This mission opens when you finish both missions of the step before. Missions go in three steps: basics, reading clues, thinking like a pro.",
+            )}
+          </p>
+        ) : (
+          <Panel
+            done={Boolean(progress[mission.id])}
+            onComplete={(evidence) => completeMission(mission.id, evidence)}
+          />
+        )}
         {id < MISSIONS.length && (
           <button
             type="button"
@@ -203,11 +228,7 @@ export function JuniorAcademy() {
               </li>
             ))}
           </ul>
-          <button
-            type="button"
-            className="jr-linkbtn"
-            onClick={() => setProgress({})}
-          >
+          <button type="button" className="jr-linkbtn" onClick={resetMissions}>
             {t("Restart the missions")}
           </button>
         </section>

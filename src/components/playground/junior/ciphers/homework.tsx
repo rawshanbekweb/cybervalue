@@ -34,7 +34,7 @@ export function ExerciseCard({
   exercise: Exercise;
   number: string;
   solved: boolean;
-  onSolved?: () => void;
+  onSolved?: (answer: string) => void;
 }) {
   const { t, text } = useT();
   const inputId = useId();
@@ -44,7 +44,7 @@ export function ExerciseCard({
   const ok = sameAnswer(exercise.format, answer, exercise.answer);
   const check = () => {
     setChecked(true);
-    if (ok) onSolved?.();
+    if (ok) onSolved?.(answer);
   };
   return (
     <li className={solved ? "cr-ex solved" : "cr-ex"}>
@@ -156,7 +156,7 @@ export function Homework({
 }: {
   cipher: Cipher;
   solved: number[];
-  onSolved: (index: number) => void;
+  onSolved: (index: number, answer: string) => void;
 }) {
   const { t, locale } = useT();
   const [extra, setExtra] = useState<Exercise[]>([]);
@@ -170,7 +170,7 @@ export function Homework({
             exercise={exercise}
             number={String(i + 1)}
             solved={solved.includes(i)}
-            onSolved={() => onSolved(i)}
+            onSolved={(answer) => onSolved(i, answer)}
           />
         ))}
         {extra.map((exercise, i) => (

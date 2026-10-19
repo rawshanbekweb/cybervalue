@@ -5,6 +5,16 @@ import { restoreStory } from "./story";
 import { restoreEvents, type Events } from "./badges";
 import { dayIndex, restoreDaily } from "./daily";
 import { restoreCodename, xpFor } from "./rank";
+import { CIPHERS, type CipherId } from "./cipher-content";
+import {
+  cipherLevelOpen,
+  dailyPassed,
+  exercisePassed,
+  MISSION_STAGE,
+  missionPassed,
+  missionStageOpen,
+} from "./verify";
+import type { MissionId } from "./content";
 
 // A Junior member's whole state, as stored on their account. Every part is
 // re-validated whenever it is read or written, so neither a stale browser nor
@@ -87,6 +97,79 @@ export function withPart(
     [part]: restorePart(part as ProgressPart, value, now),
   };
 }
+
+/** What the browser sends with a step it claims: see ./verify.ts. */
+export type JuniorProof = {
+  missions?: Record<string, unknown>;
+  answers?: Record<string, Record<string, unknown>>;
+  daily?: unknown;
+};
+
+const proofRecord = (value: unknown) =>
+  value && typeof value === "object" && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : {};
+
+/**
+ * Saves one part, like withPart, but a new step is only accepted with
+ * evidence that solves it and when its stage is open. Taking steps back (a
+ * restart) needs nothing. Null when something claimed is not proven.
+ */
+export function applyJuniorPart(
+  progress: JuniorProgress,
+  part: string,
+  value: unknown,
+  rawProof: unknown,
+  now = Date.now(),
+): JuniorProgress | null {
+  const next = withPart(progress, part, value, now);
+  if (!next) return null;
+  const proof = proofRecord(rawProof) as JuniorProof;
+  if (part === "missions") {
+    const added = (Object.keys(next.missions) as MissionId[]).filter(
+      (id) => !progress.missions[id],
+    );
+    const evidence = proofRecord(proof.missions);
+    for (const id of added)
+      if (
+        !missionStageOpen(MISSION_STAGE[id], progress.missions) ||
+        !missionPassed(id, evidence[id])
+      )
+        return null;
+    // The case is closed only with every mission done; a restart reopens it.
+    next.story = next.story && MISSIONS_ALL(next.missions);
+  }
+  if (part === "ciphers") {
+    const answers = proofRecord(proof.answers);
+    for (const cipher of CIPHERS) {
+      const before = new Set(progress.ciphers[cipher.id] ?? []);
+      const added = (next.ciphers[cipher.id] ?? []).filter(
+        (i) => !before.has(i),
+      );
+      if (!added.length) continue;
+      if (!cipherLevelOpen(cipher.level, progress.ciphers)) return null;
+      const given = proofRecord(answers[cipher.id]);
+      for (const index of added)
+        if (!exercisePassed(cipher.id as CipherId, index, given[index]))
+          return null;
+    }
+  }
+  if (part === "daily") {
+    const today = dayIndex(now);
+    const added = next.daily.filter((day) => !progress.daily.includes(day));
+    // Only today's puzzle can be solved, and only with its answer.
+    if (added.some((day) => day !== today)) return null;
+    if (added.length && !dailyPassed(today, proof.daily)) return null;
+    // Solved days are never taken back.
+    next.daily = [...new Set([...progress.daily, ...next.daily])];
+  }
+  if (part === "story" && next.story && !MISSIONS_ALL(next.missions))
+    return null;
+  return next;
+}
+
+const MISSIONS_ALL = (missions: Progress) =>
+  MISSION_IDS.every((id) => missions[id]);
 
 export function exercisesOf(progress: JuniorProgress) {
   return Object.values(progress.ciphers).reduce(
