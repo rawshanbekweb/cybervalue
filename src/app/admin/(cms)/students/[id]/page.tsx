@@ -6,6 +6,8 @@ import { loadStandings } from "@/lib/student/standing";
 import { CHECKPOINT_META } from "@/lib/checkpoints/meta";
 import { requireMember } from "@/lib/staff-guard";
 import { getDb } from "@/lib/db";
+import { studentHistory } from "@/lib/admin/analytics";
+import { ActivityHistory } from "@/components/admin/activity-history";
 import { ConfirmButton } from "@/components/admin/confirm-button";
 import { SubmissionList } from "@/components/admin/submission-list";
 import {
@@ -61,18 +63,20 @@ export default async function AdminStudentPage({
   });
   if (!student) notFound();
   const locale = await getAdminLocale();
-  const [standings, checkpoints, parentChats, ownChats] = await Promise.all([
-    loadStandings(db, [student]),
-    db.studentCheckpoint.findMany({
-      where: { studentId: student.id },
-      orderBy: { createdAt: "desc" },
-      take: 30,
-    }),
-    db.telegramChat.count({
-      where: { subject: `parent:student:${student.id}` },
-    }),
-    db.telegramChat.count({ where: { subject: `student:${student.id}` } }),
-  ]);
+  const [standings, checkpoints, parentChats, ownChats, history] =
+    await Promise.all([
+      loadStandings(db, [student]),
+      db.studentCheckpoint.findMany({
+        where: { studentId: student.id },
+        orderBy: { createdAt: "desc" },
+        take: 30,
+      }),
+      db.telegramChat.count({
+        where: { subject: `parent:student:${student.id}` },
+      }),
+      db.telegramChat.count({ where: { subject: `student:${student.id}` } }),
+      studentHistory(db, student.id, locale),
+    ]);
   const standing = standings.get(student.id)!;
   return (
     <div className="admin-page">
@@ -124,6 +128,13 @@ export default async function AdminStudentPage({
           </span>
         </div>
       </div>
+      <ActivityHistory
+        days={history.days}
+        from={history.from}
+        items={history.items}
+        locale={locale}
+        t={t}
+      />
       <h2>{t("Lab checkpoints")}</h2>
       {checkpoints.length === 0 ? (
         <p className="muted">{t("No lab checkpoints yet")}</p>

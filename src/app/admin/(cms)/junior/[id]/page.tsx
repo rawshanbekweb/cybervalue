@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
 import { requireMember } from "@/lib/staff-guard";
 import { getDb } from "@/lib/db";
+import { memberDays } from "@/lib/admin/analytics";
+import { DayHeat } from "@/components/admin/charts";
 import { formatDate } from "@/components/ui";
 import { ConfirmButton } from "@/components/admin/confirm-button";
 import {
@@ -46,7 +48,7 @@ export default async function AdminJuniorMemberPage({
     },
   });
   if (!member) notFound();
-  const [parentChats, promoted] = await Promise.all([
+  const [parentChats, promoted, activity] = await Promise.all([
     db.telegramChat.count({
       where: { subject: `parent:junior:${member.id}` },
     }),
@@ -54,6 +56,7 @@ export default async function AdminJuniorMemberPage({
       where: { juniorId: member.id },
       select: { id: true, name: true },
     }),
+    memberDays(db, "junior", member.id),
   ]);
   const row = juniorRow(member);
   const next = RANKS[row.rankIndex + 1];
@@ -120,6 +123,13 @@ export default async function AdminJuniorMemberPage({
         </div>
       </div>
 
+      <DayHeat
+        title={t("Active days")}
+        days={activity.days}
+        from={activity.from}
+        locale={locale}
+        t={t}
+      />
       <h2>{t("Missions")}</h2>
       <ul className="admin-checklist">
         {MISSIONS.map((mission) => (

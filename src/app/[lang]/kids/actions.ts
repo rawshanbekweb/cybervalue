@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { Prisma } from "@/generated/prisma/client";
 import { getDb } from "@/lib/db";
+import { recordActivity } from "@/lib/admin/analytics";
 import { clientKey } from "@/lib/rate-limit";
 import { limit } from "@/lib/rate-limit-db";
 import { normalizeAccessCode } from "@/lib/student/access";
@@ -85,5 +86,6 @@ export async function saveKidsAction(
       lastActiveAt: new Date(),
     },
   });
+  await recordActivity(db, "kids", member.id);
   return { ok: true, xp, done: next.done };
 }

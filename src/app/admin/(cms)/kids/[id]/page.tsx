@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
 import { requireMember } from "@/lib/staff-guard";
 import { getDb } from "@/lib/db";
+import { memberDays } from "@/lib/admin/analytics";
+import { DayHeat } from "@/components/admin/charts";
 import { formatDate } from "@/components/ui";
 import { ConfirmButton } from "@/components/admin/confirm-button";
 import { KidEditForm, ResetKidCodeForm } from "@/components/admin/kids-forms";
@@ -22,7 +24,7 @@ export default async function AdminKidPage({
   const member = await getDb()?.kidsMember.findUnique({ where: { id } });
   if (!member) notFound();
   const db = getDb()!;
-  const [parentChats, promoted] = await Promise.all([
+  const [parentChats, promoted, activity] = await Promise.all([
     db.telegramChat.count({ where: { subject: `parent:kids:${member.id}` } }),
     member.juniorId
       ? db.juniorMember.findUnique({
@@ -30,6 +32,7 @@ export default async function AdminKidPage({
           select: { id: true, name: true },
         })
       : null,
+    memberDays(db, "kids", member.id),
   ]);
   const progress = restoreKidsProgress(member.progress);
   const level = kidsLevel(member.xp);
@@ -49,6 +52,13 @@ export default async function AdminKidPage({
           </p>
         </div>
       </div>
+      <DayHeat
+        title={t("Active days")}
+        days={activity.days}
+        from={activity.from}
+        locale={locale}
+        t={t}
+      />
       <div className="admin-split">
         {GAME_IDS.map((gameId) => (
           <section
