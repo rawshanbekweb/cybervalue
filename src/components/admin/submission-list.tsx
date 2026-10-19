@@ -16,6 +16,7 @@ type Row = {
   score: number | null;
   maxScore: number | null;
   feedback: string;
+  returned: boolean;
   reviewedAt: Date | null;
   createdAt: Date;
 };
@@ -44,10 +45,19 @@ export async function SubmissionList({ submissions }: { submissions: Row[] }) {
           ) : (
             <>
               <pre className="student-submission-body">{s.body}</pre>
-              {!s.reviewedAt && (
+              {!s.reviewedAt ? (
                 <p className="admin-warn">{t("Waiting for review")}</p>
+              ) : (
+                s.returned && (
+                  <p className="admin-warn">{t("Returned for rework")}</p>
+                )
               )}
-              <ReviewForm id={s.id} score={s.score} feedback={s.feedback} />
+              <ReviewForm
+                id={s.id}
+                score={s.score}
+                feedback={s.feedback}
+                returned={s.returned}
+              />
             </>
           )}
         </li>

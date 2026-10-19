@@ -611,12 +611,17 @@ export function ReviewForm({
   id,
   score,
   feedback,
+  returned,
 }: {
   id: string;
   score: number | null;
   feedback: string;
+  returned: boolean;
 }) {
   const t = useTranslator();
+  // Kept in state so a refused save does not untick it; a returned answer
+  // needs a comment saying what to improve.
+  const [back, setBack] = useState(returned);
   const [state, action, pending] = useActionState(
     reviewSubmissionAction.bind(null, id),
     undefined,
@@ -648,7 +653,20 @@ export function ReviewForm({
           maxLength={5000}
           className="admin-textarea"
           defaultValue={feedback}
+          required={back}
         />
+      </div>
+      <div className="admin-field-checkbox">
+        <input
+          id={`returned-${id}`}
+          name="returned"
+          type="checkbox"
+          checked={back}
+          onChange={(event) => setBack(event.target.checked)}
+        />
+        <label htmlFor={`returned-${id}`}>
+          {t("Return for rework: the student improves it and hands in again")}
+        </label>
       </div>
       {state?.error && (
         <p className="admin-error" role="alert">

@@ -174,7 +174,7 @@ export default async function StudentHomePage() {
         ];
   const now = new Date().getTime();
   const [
-    { materials, done, tests },
+    { materials, done, tests, returned },
     certificates,
     saved,
     standings,
@@ -339,7 +339,9 @@ export default async function StudentHomePage() {
       status={
         item.kind === "QUIZ"
           ? testStatus(t, item, tests.get(item.id))
-          : undefined
+          : returned.has(item.id)
+            ? t("Returned for rework")
+            : undefined
       }
       doneLabel={t("Done")}
     />

@@ -128,13 +128,17 @@ export async function reviewSubmissionAction(
         z.coerce.number().int().min(0).max(100),
       ]),
       feedback: z.string().trim().max(5000),
+      returned: z.boolean(),
     })
     .safeParse({
       score: form.get("score") ?? "",
       feedback: form.get("feedback") ?? "",
+      returned: form.get("returned") === "on",
     });
   if (!parsed.success)
     return { error: "Score: a whole number 0–100, or leave it empty." };
+  if (parsed.data.returned && !parsed.data.feedback)
+    return { error: "Write what to improve before returning the answer." };
   const db = getDb();
   if (!db) return { error: NO_DB };
   // Quiz and personal-lab scores come from the server and are never
@@ -157,6 +161,7 @@ export async function reviewSubmissionAction(
       score: parsed.data.score,
       maxScore: parsed.data.score === null ? null : 100,
       feedback: parsed.data.feedback,
+      returned: parsed.data.returned,
       reviewedAt: new Date(),
     },
   });

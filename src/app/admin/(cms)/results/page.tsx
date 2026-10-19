@@ -19,7 +19,9 @@ const KIND_LABEL = {
 const tone = (cell: Cell) =>
   cell.state === "none" || cell.state === "hidden"
     ? "results-empty"
-    : cell.state === "waiting" || cell.state === "trying"
+    : cell.state === "waiting" ||
+        cell.state === "trying" ||
+        cell.state === "returned"
       ? "results-pending"
       : "results-ok";
 

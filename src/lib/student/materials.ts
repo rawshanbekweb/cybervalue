@@ -39,6 +39,7 @@ export async function studentOverview(
       materials: [],
       done: new Set<string>(),
       tests: new Map<string, TestStats>(),
+      returned: new Set<string>(),
     };
   const [materials, progress, submissions] = await Promise.all([
     db.studentMaterial.findMany({
@@ -63,15 +64,30 @@ export async function studentOverview(
         studentId: student.id,
         material: { kind: { not: "CHALLENGE" } },
       },
-      select: { materialId: true, score: true, maxScore: true },
+      orderBy: { createdAt: "desc" },
+      select: {
+        materialId: true,
+        score: true,
+        maxScore: true,
+        returned: true,
+      },
     }),
   ]);
   // Handing in a practice or quiz counts as finishing it; a personal lab only
-  // counts once solved, which records progress.
-  const done = new Set([
-    ...progress.map((p) => p.materialId),
-    ...submissions.map((s) => s.materialId),
-  ]);
+  // counts once solved, which records progress. A practice whose latest
+  // answer came back for rework is open again.
+  const latest = new Map<string, boolean>();
+  for (const s of submissions)
+    if (!latest.has(s.materialId)) latest.set(s.materialId, s.returned);
+  const returned = new Set(
+    [...latest].filter(([, back]) => back).map(([id]) => id),
+  );
+  const done = new Set(
+    [
+      ...progress.map((p) => p.materialId),
+      ...submissions.map((s) => s.materialId),
+    ].filter((id) => !returned.has(id)),
+  );
   // Graded attempts per test, for the attempt counter and best score.
   const quizzes = new Set(
     materials.filter((m) => m.kind === "QUIZ").map((m) => m.id),
@@ -86,7 +102,7 @@ export async function studentOverview(
       best: Math.max(stats?.best ?? 0, percent),
     });
   }
-  return { materials, done, tests };
+  return { materials, done, tests, returned };
 }
 
 export async function materialForStudent(
