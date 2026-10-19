@@ -187,5 +187,20 @@
   "Conditions": "Shartlar",
   "Conditions: {names}": "Shartlar: {names}",
   "Commands": "Buyruqlar",
-  "Levels": "Darajalar"
+  "Levels": "Darajalar",
+  "Locked": "Yopiq",
+  "Treasure map": "Xazina xaritasi",
+  "Encrypted letter": "Shifrlangan xat",
+  "After each step": "Har bir qadamdan keyin",
+  "Every shift": "Barcha siljishlar",
+  "It reads! Press “Open the chest”.": "O‘qilyapti! “Sandiqni ochish”ni bosing.",
+  "Not yet: the result is not the clue. Check every step.": "Hali emas: natija kerakli so‘z emas. Har bir qadamni tekshiring.",
+  "Result: {text}": "Natija: {text}",
+  "Decoding program": "Deshifrlash dasturi",
+  "One step per line; the result changes as you type": "Har qatorda bitta qadam; natija yozish bilan birga o‘zgaradi",
+  "Open the chest": "Sandiqni ochish",
+  "shift letters back": "harflarni orqaga surish",
+  "reverse the text": "matnni teskari qilish",
+  "undo a key cipher": "kalitli shifrni ochish",
+  "try every shift": "hamma siljishni sinash"
 }

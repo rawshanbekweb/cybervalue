@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { GameLab } from "@/components/kids/game-lab";
 import { MazeLab } from "@/components/kids/maze-lab";
+import { CipherLab } from "@/components/kids/cipher-lab";
 import { KidsLogin } from "@/components/kids/kids-home";
 import { gameOpen, GAMES, isGameId } from "@/lib/kids/games";
 import { dailyTask, kidsToday } from "@/lib/kids/extras";
@@ -31,8 +32,10 @@ export default async function KidsGamePage({
   const progress = restoreKidsProgress(member.progress);
   const done = new Set(progress.done);
   if (!gameOpen(GAMES[game], done)) return <GameLocked gameId={game} />;
-  if (GAMES[game].maze)
+  if (GAMES[game].lab === "maze")
     return <MazeLab initialDone={progress.done} initialXp={member.xp} />;
+  if (GAMES[game].lab === "cipher")
+    return <CipherLab initialDone={progress.done} initialXp={member.xp} />;
   const today = kidsToday();
   const task = dailyTask(today, done);
   return (

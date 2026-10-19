@@ -17,6 +17,7 @@ import {
 import type { Text } from "./lang";
 import { tashkentDay } from "../admin/activity";
 import { LEVELS as MAZE_LEVELS, mazeSolved } from "./maze";
+import { CHESTS, cipherSolved } from "./cipher";
 import {
   DAILY_XP,
   dailyPassed,
@@ -148,6 +149,12 @@ export function missionPassed(game: GameId, missionId: string, proof: Proof) {
       typeof proof.code === "string" &&
       proof.code.length <= MAX_CODE &&
       mazeSolved(proof.code, MAZE_LEVELS[check.level], check)
+    );
+  if (check.kind === "cipher")
+    return (
+      typeof proof.code === "string" &&
+      proof.code.length <= MAX_CODE &&
+      cipherSolved(proof.code, CHESTS[check.chest])
     );
   if (check.kind === "login")
     return (

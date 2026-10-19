@@ -87,8 +87,8 @@ test.describe("Academy Kids", () => {
     await expect(
       page.getByRole("heading", { name: "Task of the day" }),
     ).toBeVisible();
-    await expect(page.locator(".kids-badges li")).toHaveCount(13);
-    await expect(page.locator(".kids-locked")).toHaveCount(4);
+    await expect(page.locator(".kids-badges li")).toHaveCount(14);
+    await expect(page.locator(".kids-locked")).toHaveCount(5);
 
     await page.getByRole("link", { name: /Space escape/ }).click();
     await expect(page).toHaveURL(/\/kids\/kosmos$/);
@@ -306,6 +306,47 @@ test.describe("Academy Kids", () => {
     await expect(
       page.getByRole("heading", { level: 2, name: "First turn" }),
     ).toBeVisible();
+  });
+
+  test("the cipher chest opens when the decoding program reads the clue", async ({
+    page,
+  }) => {
+    const stage1 = [
+      ...[
+        "turbo",
+        "hayot",
+        "rang",
+        "sekin",
+        "korinmas",
+        "terminal",
+        "ochko",
+      ].map((id) => `kosmos:${id}`),
+      ...[
+        "uzun_parol",
+        "mfa",
+        "firewall",
+        "yangilash",
+        "antivirus",
+        "radar",
+        "ochko",
+      ].map((id) => `qorovul:${id}`),
+    ];
+    const code = await createKid(`Jasur ${Date.now().toString(36)}`, stage1);
+    await page.goto("/kids/shifr");
+    await page.getByLabel("Access code").fill(code);
+    await page.getByRole("button", { name: "Let's play" }).click();
+    await expect(page.locator(".kids-cipher-text")).toHaveText("YBAJOB");
+    const editor = page.getByRole("textbox", { name: "Decoding program" });
+    await editor.fill("sur(2)");
+    await expect(page.locator(".kids-cipher-steps")).toContainText("WZYHMZ");
+    await page.getByRole("button", { name: "Open the chest" }).click();
+    await expect(page.locator(".kids-maze-result")).toContainText("Not yet");
+    await editor.fill("sur(1)");
+    await expect(page.locator(".kids-maze-result")).toContainText("It reads!");
+    await page.getByRole("button", { name: "Open the chest" }).click();
+    await expect(page.locator(".kids-mission-list li.done")).toHaveCount(1);
+    await expect(page.locator(".kids-chests li.done")).toHaveCount(1);
+    await audit(page, "kids cipher");
   });
 
   test("the admin creates children with codes", async ({ page }) => {
