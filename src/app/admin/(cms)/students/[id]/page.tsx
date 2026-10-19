@@ -56,7 +56,9 @@ export default async function AdminStudentPage({
         orderBy: { createdAt: "desc" },
         take: 200,
         include: {
-          material: { select: { title: true, kind: true, id: true } },
+          material: {
+            select: { title: true, kind: true, id: true, quiz: true },
+          },
         },
       },
     },
@@ -310,6 +312,7 @@ export default async function AdminStudentPage({
           heading: s.material.title,
           href: `/admin/materials/${s.material.id}`,
           kind: s.material.kind,
+          quiz: s.material.quiz,
         }))}
       />
     </div>

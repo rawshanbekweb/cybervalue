@@ -215,12 +215,22 @@ test.describe("admin-issued access", () => {
     ).toBeVisible();
     await expect(student.getByText("Waiting for review")).toBeVisible();
 
-    // The teacher reviews the practice answer.
-    await page.goto(urls[2]);
+    // The teacher sees each test answer and finds the practice answer in
+    // the grading queue.
+    await page.goto(urls[1]);
+    await page.getByText("Answers question by question").click();
+    await expect(page.locator(".admin-answers li.ok")).toHaveCount(2);
+    const practiceId = new URL(urls[2]).pathname.split("/").pop();
+    await page.goto(`/admin/grading?material=${practiceId}`);
+    await expect(
+      page.getByText("The form trusted a hidden price field."),
+    ).toBeVisible();
+    await audit(page, "grading queue");
     await page.getByLabel("Score (0–100)").fill("90");
     await page.getByLabel("Feedback for the student").fill("Good reasoning.");
     await page.getByRole("button", { name: "Save review" }).click();
-    await expect(page.getByText("Review saved.")).toBeVisible();
+    // A reviewed answer leaves the queue.
+    await expect(page.getByText("No answers to review.")).toBeVisible();
     await student.reload();
     await expect(student.getByText("Reviewed · 90 points")).toBeVisible();
     await expect(student.getByText("Good reasoning.")).toBeVisible();

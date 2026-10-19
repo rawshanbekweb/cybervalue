@@ -3,7 +3,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { Prisma } from "@/generated/prisma/client";
-import { requireAdmin } from "@/lib/auth";
+import { canSeeGroup, requireAdmin, requireStaff } from "@/lib/auth";
 import { audit } from "@/lib/audit";
 import { getDb } from "@/lib/db";
 import { trashMaterial } from "@/lib/trash";
@@ -120,7 +120,7 @@ export async function reviewSubmissionAction(
   _state: ReviewState,
   form: FormData,
 ): Promise<ReviewState> {
-  const session = await requireAdmin("/admin/materials");
+  const { session, scope } = await requireStaff("/admin/materials");
   const parsed = z
     .object({
       score: z.union([
@@ -141,9 +141,15 @@ export async function reviewSubmissionAction(
   // overwritten here.
   const submission = await db.studentSubmission.findUnique({
     where: { id },
-    include: { material: { select: { id: true, slug: true, kind: true } } },
+    include: {
+      material: { select: { id: true, slug: true, kind: true } },
+      student: { select: { group: true } },
+    },
   });
   if (submission?.material.kind !== "PRACTICE")
+    return { error: "Only practice answers can be reviewed." };
+  // A teacher reviews their own groups' answers only.
+  if (!canSeeGroup(scope, submission.student.group))
     return { error: "Only practice answers can be reviewed." };
   await db.studentSubmission.update({
     where: { id },
@@ -157,6 +163,7 @@ export async function reviewSubmissionAction(
   await audit("submission.review", session.user.id, submission.material.slug);
   revalidatePath(`/admin/materials/${submission.material.id}`);
   revalidatePath(`/admin/students/${submission.studentId}`);
+  revalidatePath("/admin/grading");
   revalidatePath("/student", "layout");
   return { success: "Review saved." };
 }

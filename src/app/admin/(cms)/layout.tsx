@@ -37,9 +37,10 @@ export default async function AdminCmsLayout({
         { href: "/admin/students", label: t("Students") },
         { href: "/admin/kids", label: "Academy Kids" },
         { href: "/admin/junior", label: "Academy Junior" },
+        { href: "/admin/materials", label: t("Student materials") },
         {
-          href: "/admin/materials",
-          label: t("Student materials"),
+          href: "/admin/grading",
+          label: t("Grading"),
           badge: badges.reviews,
         },
         { href: "/admin/results", label: t("Results") },

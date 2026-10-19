@@ -1,6 +1,10 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { hardest, questionStats } from "../src/lib/student/quiz-stats";
+import {
+  answerReview,
+  hardest,
+  questionStats,
+} from "../src/lib/student/quiz-stats";
 
 const quiz = [
   { prompt: "Default HTTPS port?", options: ["80", "443", "22"], answer: 1 },
@@ -36,4 +40,19 @@ test("no attempts means no percentages and no hardest list", () => {
   assert.equal(stats[0].wrongPercent, 0);
   assert.equal(stats[0].trap, null);
   assert.deepEqual(hardest(stats), []);
+});
+
+test("one attempt reads back question by question", () => {
+  assert.deepEqual(answerReview(quiz, [1, null]), [
+    {
+      prompt: "Default HTTPS port?",
+      chosen: "443",
+      answer: "443",
+      right: true,
+    },
+    { prompt: "Gateway?", chosen: null, answer: "Router", right: false },
+  ]);
+  // Saved before the questions changed: nothing lines up.
+  assert.equal(answerReview(quiz, [1]), null);
+  assert.equal(answerReview(quiz, null), null);
 });
