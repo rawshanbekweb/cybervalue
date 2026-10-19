@@ -1219,7 +1219,15 @@ export function SnakeGame({
   const [aria, setAria] = useState("Ilon o‘yini");
 
   useEffect(() => {
-    propsRef.current = { values, rules, fire, running, onScore, onOver, labels };
+    propsRef.current = {
+      values,
+      rules,
+      fire,
+      running,
+      onScore,
+      onOver,
+      labels,
+    };
     engineRef.current?.redraw();
   });
 

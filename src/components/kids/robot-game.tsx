@@ -1292,7 +1292,15 @@ export function RobotGame({
   const [downPressed, setDownPressed] = useState(false);
 
   useEffect(() => {
-    propsRef.current = { values, rules, fire, running, onScore, onOver, labels };
+    propsRef.current = {
+      values,
+      rules,
+      fire,
+      running,
+      onScore,
+      onOver,
+      labels,
+    };
     engineRef.current?.redraw();
   });
 
