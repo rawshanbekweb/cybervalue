@@ -83,8 +83,24 @@ test.describe("Academy Kids", () => {
     ).toBeVisible();
     await audit(page, "kids hub");
 
+    // Today's task, badges, and the later games still locked.
+    await expect(
+      page.getByRole("heading", { name: "Task of the day" }),
+    ).toBeVisible();
+    await expect(page.locator(".kids-badges li")).toHaveCount(11);
+    await expect(page.locator(".kids-locked")).toHaveCount(2);
+
     await page.getByRole("link", { name: /Space escape/ }).click();
     await expect(page).toHaveURL(/\/kids\/kosmos$/);
+    // The first visit opens a short tour, highlighting each panel.
+    const tour = page.getByRole("dialog");
+    await expect(tour).toContainText("This is the game");
+    await expect(page.locator(".kids-stage.kids-spot")).toBeVisible();
+    await tour.getByRole("button", { name: "Next" }).click();
+    await expect(page.locator(".kids-code.kids-spot")).toBeVisible();
+    await audit(page, "kids tour");
+    await tour.getByRole("button", { name: "Skip" }).click();
+    await expect(tour).toHaveCount(0);
     await expect(
       page.getByRole("heading", { level: 3, name: "Turbo engine" }),
     ).toBeVisible();
@@ -113,16 +129,18 @@ test.describe("Academy Kids", () => {
     await expect(page.locator(".kids-mission-list li.done")).toContainText(
       "Turbo engine",
     );
+    // The tour is shown once.
+    await expect(page.getByRole("dialog")).toHaveCount(0);
     await page.goto("/kids");
     await expect(page.getByText("1 of 15 missions").first()).toBeVisible();
+    await expect(
+      page.locator(".kids-badges li.earned", { hasText: "First hack" }),
+    ).toBeVisible();
 
-    // The third game opens with its own code.
-    await page.getByRole("link", { name: /Snake/ }).click();
-    await expect(page).toHaveURL(/\/kids\/ilon$/);
-    await expect(page.getByRole("textbox", { name: "Game code" })).toHaveValue(
-      /devordan_otish = yo'q/,
-    );
-    await expect(page.locator("canvas")).toBeVisible();
+    // A locked game says what opens it.
+    await page.goto("/kids/ilon");
+    await expect(page.locator(".kids-locked-page")).toContainText("Robot jump");
+    await expect(page.locator("canvas")).toHaveCount(0);
   });
 
   test("finding the leaked password opens developer mode and events", async ({
@@ -146,6 +164,10 @@ test.describe("Academy Kids", () => {
     await page.goto("/kids/kosmos");
     await page.getByLabel("Access code").fill(code);
     await page.getByRole("button", { name: "Let's play" }).click();
+    await page
+      .getByRole("dialog")
+      .getByRole("button", { name: "Skip" })
+      .click();
     await expect(
       page.getByRole("heading", { level: 3, name: "Secret password" }),
     ).toBeVisible();

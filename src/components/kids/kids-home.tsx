@@ -8,16 +8,32 @@ import {
   ArrowRight,
   Award,
   Bot,
+  CalendarCheck,
+  CalendarDays,
   Code2,
+  Crown,
+  Flame,
+  GitBranch,
+  KeyRound,
+  Lock,
   LogOut,
   Rocket,
   Sparkles,
   Terminal,
   Trophy,
+  Unlock,
   Worm,
 } from "lucide-react";
 import { useT } from "../playground/network-lab/use-t";
-import { GAME_IDS, GAMES, missionKey, type GameId } from "@/lib/kids/games";
+import {
+  GAME_IDS,
+  gameOpen,
+  GAMES,
+  missionKey,
+  type GameId,
+} from "@/lib/kids/games";
+import type { Text } from "@/lib/kids/lang";
+import { DAILY_XP, type BadgeId, type DailyTask } from "@/lib/kids/extras";
 import { CERTIFICATE_XP, kidsLevel, LEVELS } from "@/lib/kids/progress";
 import { kidsLoginAction, kidsLogoutAction } from "@/app/[lang]/kids/actions";
 import "./kids.css";
@@ -26,6 +42,17 @@ const ICONS: Record<GameId, typeof Rocket> = {
   kosmos: Rocket,
   robot: Bot,
   ilon: Worm,
+};
+
+const BADGE_ICONS: Record<string, typeof Rocket> = {
+  first: Sparkles,
+  rules: GitBranch,
+  developer: Unlock,
+  passwords: KeyRound,
+  terminal: Terminal,
+  record: Trophy,
+  streak3: Flame,
+  streak7: CalendarCheck,
 };
 
 const STEPS = [
@@ -136,12 +163,16 @@ export function KidsHub({
   best,
   group,
   ranking,
+  daily,
+  badges,
 }: {
   name: string;
   xp: number;
   done: string[];
   best: Record<GameId, number>;
   group: string;
+  daily: { task: DailyTask; done: boolean; streak: number };
+  badges: { id: BadgeId; title: Text; about: Text; earned: boolean }[];
   ranking: { name: string; xp: number; me: boolean }[];
 }) {
   const { t, text } = useT();
@@ -194,6 +225,29 @@ export function KidsHub({
           ))}
         </ol>
       </section>
+      <section
+        className={`kids-daily ${daily.done ? "done" : ""}`}
+        aria-labelledby="kids-daily"
+      >
+        <CalendarDays size={28} aria-hidden="true" />
+        <div>
+          <h2 id="kids-daily">{t("Task of the day")}</h2>
+          <p>
+            {daily.done
+              ? t("Done for today! Come back tomorrow for a new task.")
+              : text(daily.task.title)}
+          </p>
+          <p className="kids-muted">
+            <Flame size={16} aria-hidden="true" />{" "}
+            {t("Streak: {days} days", { days: daily.streak })} · +{DAILY_XP} XP
+          </p>
+        </div>
+        {!daily.done && (
+          <Link className="kids-button" href={`/kids/${daily.task.game}`}>
+            {t("Do it")} <ArrowRight size={18} aria-hidden="true" />
+          </Link>
+        )}
+      </section>
       <section className="kids-games" aria-label={t("Games")}>
         {GAME_IDS.map((gameId) => {
           const game = GAMES[gameId];
@@ -201,6 +255,19 @@ export function KidsHub({
           const finished = game.missions.filter((m) =>
             done.includes(missionKey(gameId, m.id)),
           ).length;
+          if (!gameOpen(game, new Set(done)))
+            return (
+              <div key={gameId} className="kids-game-card kids-locked">
+                <Lock size={34} aria-hidden="true" />
+                <h2>{text(game.title)}</h2>
+                <p>{text(game.tagline)}</p>
+                <p className="kids-muted">
+                  {t("Opens when you finish the settings stage of “{game}”.", {
+                    game: text(GAMES[game.after!].title),
+                  })}
+                </p>
+              </div>
+            );
           return (
             <Link
               key={gameId}
@@ -232,6 +299,38 @@ export function KidsHub({
             </Link>
           );
         })}
+      </section>
+      <section className="kids-badges" aria-labelledby="kids-badges">
+        <h2 id="kids-badges">
+          <Award size={20} aria-hidden="true" /> {t("Badges")}{" "}
+          <span className="kids-muted">
+            {t("{done} of {total}", {
+              done: badges.filter((b) => b.earned).length,
+              total: badges.length,
+            })}
+          </span>
+        </h2>
+        <ul>
+          {badges.map((b) => {
+            const Icon = b.id.startsWith("master:")
+              ? Crown
+              : (BADGE_ICONS[b.id] ?? Award);
+            return (
+              <li key={b.id} className={b.earned ? "earned" : ""}>
+                <span className="kids-badge-icon" aria-hidden="true">
+                  {b.earned ? <Icon size={22} /> : <Lock size={18} />}
+                </span>
+                <span className="kids-badge-text">
+                  <strong>{text(b.title)}</strong>
+                  <span className="kids-muted">{text(b.about)}</span>
+                </span>
+                <span className="visually-hidden">
+                  {b.earned ? t("Earned") : t("Not earned yet")}
+                </span>
+              </li>
+            );
+          })}
+        </ul>
       </section>
       <div className="kids-extras">
         {ranking.length > 0 && (
@@ -275,6 +374,32 @@ export function KidsHub({
           )}
         </section>
       </div>
+    </div>
+  );
+}
+
+// A game that is not open yet, opened by its address.
+export function GameLocked({ gameId }: { gameId: GameId }) {
+  const { t, text } = useT();
+  const game = GAMES[gameId];
+  return (
+    <div className="kids container">
+      <Link className="kids-back" href="/kids">
+        <ArrowLeft size={16} aria-hidden="true" /> {t("All games")}
+      </Link>
+      <section className="kids-cert-card kids-locked-page">
+        <Lock size={34} aria-hidden="true" />
+        <h1>{text(game.title)}</h1>
+        <p>
+          {t("Opens when you finish the settings stage of “{game}”.", {
+            game: text(GAMES[game.after!].title),
+          })}
+        </p>
+        <Link className="kids-button" href={`/kids/${game.after}`}>
+          {text(GAMES[game.after!].title)}{" "}
+          <ArrowRight size={18} aria-hidden="true" />
+        </Link>
+      </section>
     </div>
   );
 }
