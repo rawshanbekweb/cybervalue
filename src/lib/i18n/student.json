@@ -335,5 +335,10 @@
   "Due {date}": "Muddat: {date}",
   "From your teacher": "O‘qituvchingizdan",
   "Your next step": "Keyingi qadamingiz",
-  "The exam is not available right now.": "Imtihon hozir mavjud emas."
+  "The exam is not available right now.": "Imtihon hozir mavjud emas.",
+  "Returned for rework": "Qayta ishlashga qaytarildi",
+  "Your teacher asked you to improve this answer. Read the comment below and hand in a new version.": "O‘qituvchingiz bu javobni yaxshilashni so‘radi. Quyidagi izohni o‘qing va yangi variantini topshiring.",
+  "Returned": "Qaytarildi",
+  "Return for rework: the student improves it and hands in again": "Qayta ishlashga qaytarish: o‘quvchi yaxshilab, qaytadan topshiradi",
+  "Write what to improve before returning the answer.": "Javobni qaytarishdan oldin nimani yaxshilash kerakligini yozing."
 }

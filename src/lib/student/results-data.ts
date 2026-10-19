@@ -69,6 +69,7 @@ export async function loadResults(db: PrismaClient, group: GroupPick) {
         score: true,
         maxScore: true,
         reviewedAt: true,
+        returned: true,
       },
     }),
     db.studentProgress.findMany({

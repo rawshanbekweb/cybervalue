@@ -34,6 +34,7 @@ export type ResultSubmission = {
   score: number | null;
   maxScore: number | null;
   reviewedAt: Date | null;
+  returned?: boolean;
 };
 export type ResultProgress = { studentId: string; materialId: string };
 
@@ -43,6 +44,7 @@ export type Cell =
   | { state: "done" }
   | { state: "waiting"; count: number }
   | { state: "reviewed"; score: number | null }
+  | { state: "returned" }
   | { state: "scored"; percent: number; attempts: number }
   | { state: "solved"; attempts: number }
   | { state: "trying"; attempts: number };
@@ -83,6 +85,7 @@ function cellFor(
       if (reviewed.length < tries.length)
         return { state: "waiting", count: tries.length - reviewed.length };
       // The latest review counts; tries arrive newest first.
+      if (reviewed[0].returned) return { state: "returned" };
       return { state: "reviewed", score: reviewed[0].score };
     }
     case "QUIZ": {
@@ -191,6 +194,8 @@ export function cellText(cell: Cell, t: Translator) {
       return t("To review ({count})", { count: cell.count });
     case "reviewed":
       return cell.score === null ? "✓" : `${cell.score}`;
+    case "returned":
+      return t("Returned");
     case "scored":
       return `${cell.percent}% (${cell.attempts})`;
     case "solved":

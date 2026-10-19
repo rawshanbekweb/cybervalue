@@ -101,6 +101,25 @@ test("the results matrix mirrors what each student completed", () => {
   );
 });
 
+test("an answer returned for rework is open again until a new one comes", () => {
+  const returned = { ...sub("a", "practice", 40, 100, true), returned: true };
+  const build = (submissions: ReturnType<typeof sub>[]) =>
+    buildResults({
+      students: [student("a", "A")],
+      materials: [material("practice", "PRACTICE")],
+      submissions,
+      progress: [],
+    }).rows[0];
+  const back = build([returned]);
+  assert.deepEqual(back.cells, [{ state: "returned" }]);
+  assert.equal(back.completed, 0);
+  assert.equal(back.average, null);
+  // The improved answer, newest first, waits for review again.
+  assert.deepEqual(build([sub("a", "practice", null, null), returned]).cells, [
+    { state: "waiting", count: 1 },
+  ]);
+});
+
 test("cells read clearly in both languages", () => {
   const uz = createTranslator("uz");
   assert.equal(cellText({ state: "done" }, uz), "✓");

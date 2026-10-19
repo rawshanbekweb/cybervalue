@@ -429,6 +429,8 @@ model StudentSubmission {
   score      Int?
   maxScore   Int?
   feedback   String          @default("") @db.Text
+  // The teacher asked for a better answer; the student hands in a new one.
+  returned   Boolean         @default(false)
   reviewedAt DateTime?       @db.Timestamptz(3)
   createdAt  DateTime        @default(now()) @db.Timestamptz(3)
 

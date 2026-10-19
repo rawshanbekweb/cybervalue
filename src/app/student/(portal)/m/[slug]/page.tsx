@@ -159,6 +159,13 @@ export default async function StudentMaterialPage({
           <h2 id="practice-title" className="student-heading-sm">
             {t("Your answer")}
           </h2>
+          {submissions[0]?.returned && (
+            <p className="student-returned" role="status">
+              {t(
+                "Your teacher asked you to improve this answer. Read the comment below and hand in a new version.",
+              )}
+            </p>
+          )}
           <PracticeForm slug={material.slug} />
           {submissions.length > 0 && (
             <>
@@ -169,11 +176,13 @@ export default async function StudentMaterialPage({
                     <p className="student-meta">
                       {date.format(s.createdAt)}
                       {" · "}
-                      {s.reviewedAt
-                        ? s.score !== null
-                          ? t("Reviewed · {score} points", { score: s.score })
-                          : t("Reviewed")
-                        : t("Waiting for review")}
+                      {s.reviewedAt && s.returned
+                        ? t("Returned for rework")
+                        : s.reviewedAt
+                          ? s.score !== null
+                            ? t("Reviewed · {score} points", { score: s.score })
+                            : t("Reviewed")
+                          : t("Waiting for review")}
                     </p>
                     <pre className="student-answer">{s.body}</pre>
                     {s.feedback && (

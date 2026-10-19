@@ -857,5 +857,9 @@
   "Material": "Material",
   "waiting {days} days": "{days} kundan beri kutmoqda",
   "Answers question by question": "Javoblar savolma-savol",
-  "Right answer: {answer}": "To‘g‘ri javob: {answer}"
+  "Right answer: {answer}": "To‘g‘ri javob: {answer}",
+  "Returned for rework": "Qayta ishlashga qaytarildi",
+  "Returned": "Qaytarildi",
+  "Return for rework: the student improves it and hands in again": "Qayta ishlashga qaytarish: o‘quvchi yaxshilab, qaytadan topshiradi",
+  "Write what to improve before returning the answer.": "Javobni qaytarishdan oldin nimani yaxshilash kerakligini yozing."
 }

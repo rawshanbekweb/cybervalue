@@ -22,7 +22,9 @@ export default async function GradingPage({
     typeof params[key] === "string" ? (params[key] as string) : "";
   const group = pick("group");
   const material = pick("material");
-  const reviewed = pick("show") === "reviewed";
+  const show = pick("show");
+  const returned = show === "returned";
+  const reviewed = show === "reviewed" || returned;
   const db = getDb();
   const people = {
     ...groupWhere(scope),
@@ -31,6 +33,7 @@ export default async function GradingPage({
   const where = {
     material: { kind: "PRACTICE" as const },
     reviewedAt: reviewed ? { not: null } : null,
+    ...(returned ? { returned: true } : {}),
     student: people,
     ...(material ? { materialId: material } : {}),
   };
@@ -46,7 +49,7 @@ export default async function GradingPage({
           },
         }),
         db.studentSubmission.count({
-          where: { ...where, reviewedAt: null },
+          where: { ...where, reviewedAt: null, returned: undefined },
         }),
         db.studentMaterial.findMany({
           where: { kind: "PRACTICE" },
@@ -159,10 +162,11 @@ export default async function GradingPage({
             id="grading-show"
             name="show"
             className="admin-input"
-            defaultValue={reviewed ? "reviewed" : ""}
+            defaultValue={reviewed ? show : ""}
           >
             <option value="">{t("Waiting for review")}</option>
             <option value="reviewed">{t("Reviewed")}</option>
+            <option value="returned">{t("Returned for rework")}</option>
           </select>
         </div>
         <button type="submit" className="button button-secondary">

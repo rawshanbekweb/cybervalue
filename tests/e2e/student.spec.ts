@@ -226,6 +226,35 @@ test.describe("admin-issued access", () => {
       page.getByText("The form trusted a hidden price field."),
     ).toBeVisible();
     await audit(page, "grading queue");
+
+    // Returning it needs a comment; the student then hands in a better one.
+    await page.getByLabel(/Return for rework/).check();
+    const feedback = page.getByLabel("Feedback for the student");
+    await page.getByRole("button", { name: "Save review" }).click();
+    expect(
+      await feedback.evaluate(
+        (el) => (el as HTMLTextAreaElement).validity.valueMissing,
+      ),
+    ).toBe(true);
+    await feedback.fill("Say how the server should check the price.");
+    await page.getByRole("button", { name: "Save review" }).click();
+    await expect(page.getByText("No answers to review.")).toBeVisible();
+    await student.reload();
+    await expect(
+      student.getByText(/Your teacher asked you to improve this answer/),
+    ).toBeVisible();
+    await expect(student.getByText("Returned for rework")).toBeVisible();
+    await student
+      .getByLabel("Write your solution, findings or a link to your work")
+      .fill("The server must recompute the price from its own catalogue.");
+    await student.getByRole("button", { name: "Submit" }).click();
+    await expect(
+      student.getByText("Submitted. Your teacher will review it."),
+    ).toBeVisible();
+    await page.reload();
+    await expect(
+      page.getByText("The server must recompute the price"),
+    ).toBeVisible();
     await page.getByLabel("Score (0–100)").fill("90");
     await page.getByLabel("Feedback for the student").fill("Good reasoning.");
     await page.getByRole("button", { name: "Save review" }).click();
