@@ -178,7 +178,14 @@ test.describe("admin-issued access", () => {
     ).toBeVisible();
     await audit(student, "student home");
 
-    await student.getByRole("link", { name: `Private lesson ${id}` }).click();
+    // The first unfinished material is offered as the next step.
+    await expect(student.locator(".student-next")).toContainText(
+      `Private lesson ${id}`,
+    );
+    await student
+      .locator("#lessons")
+      .getByRole("link", { name: `Private lesson ${id}` })
+      .click();
     await expect(
       student.getByRole("heading", { name: "Secret notes" }),
     ).toBeVisible();

@@ -23,6 +23,14 @@ import {
 } from "@/lib/student/materials";
 import { isLevel, LEVEL_LABEL } from "@/lib/student/levels";
 import { getDb } from "@/lib/db";
+import { nextStep } from "@/lib/student/next-step";
+import { NextStepCard } from "@/components/student/next-step";
+import {
+  isLabId,
+  LAB_PROGRESS,
+  lessonList,
+  type LabId,
+} from "@/lib/lab-progress";
 import { formatCertificateCode } from "@/lib/student/certificate";
 import { Constellation } from "@/components/student/constellation";
 import { Constellation as ParticlePortrait } from "@/components/constellation";
@@ -172,6 +180,7 @@ export default async function StudentHomePage() {
     standings,
     assignments,
     htmlExams,
+    labRows,
   ] = await Promise.all([
     studentOverview(student),
     getDb()?.studentCertificate.findMany({
@@ -194,6 +203,12 @@ export default async function StudentHomePage() {
           orderBy: { createdAt: "desc" },
           take: 10,
           include: { exam: { select: { title: true, minutes: true } } },
+        })
+      : [],
+    db
+      ? db.studentLabProgress.findMany({
+          where: { studentId: student.id },
+          select: { lab: true, lessons: true },
         })
       : [],
   ]);
@@ -249,6 +264,20 @@ export default async function StudentHomePage() {
   const portrait = isPortraitData(saved?.portrait) ? saved.portrait : null;
   const entrance = materials.filter((m) => isEntranceExam(m.slug));
   const entranceDone = entrance.filter((m) => done.has(m.id)).length;
+  const next = nextStep({
+    assignments,
+    entrance,
+    materials: materials.filter((m) => !isEntranceExam(m.slug)),
+    done,
+    labs: Object.fromEntries(
+      labRows
+        .filter((r) => isLabId(r.lab))
+        .map((r) => [
+          r.lab,
+          lessonList(r.lessons, LAB_PROGRESS[r.lab as LabId].total).length,
+        ]),
+    ),
+  });
   // Personal labs sit with the other labs; the entrance exam has its own
   // section. Empty sections are left out, except Labs with the open labs.
   const sections = SECTIONS.map((section) => ({
@@ -272,15 +301,6 @@ export default async function StudentHomePage() {
           },
         ]
       : []),
-    ...(standing
-      ? [
-          {
-            id: "achievements",
-            label: "Achievements",
-            count: standing.badges.length,
-          },
-        ]
-      : []),
     ...(certificates.length
       ? [
           {
@@ -301,6 +321,15 @@ export default async function StudentHomePage() {
         (s.kind === "LAB" ? OPEN_LABS.length : 0) +
         (s.kind === "QUIZ" ? EXAMS.length : 0),
     })),
+    ...(standing
+      ? [
+          {
+            id: "achievements",
+            label: "Achievements",
+            count: standing.badges.length,
+          },
+        ]
+      : []),
   ];
   const renderItem = (item: Item) => (
     <MaterialItem
@@ -355,6 +384,7 @@ export default async function StudentHomePage() {
               />
             </div>
           )}
+          <NextStepCard step={next} t={t} locale={locale} />
           {standing && (
             <StandingCard standing={standing} t={t} locale={locale} />
           )}
@@ -411,18 +441,6 @@ export default async function StudentHomePage() {
         <AssignmentsSection
           assignments={assignments}
           now={now}
-          t={t}
-          locale={locale}
-        />
-      )}
-
-      {standing && (
-        <AchievementsSection
-          standing={standing}
-          ranking={ranking}
-          group={student.group}
-          heroes={student.group ? weekHeroes : []}
-          lastHero={student.group ? lastHero : null}
           t={t}
           locale={locale}
         />
@@ -575,6 +593,18 @@ export default async function StudentHomePage() {
           )}
         </section>
       ))}
+
+      {standing && (
+        <AchievementsSection
+          standing={standing}
+          ranking={ranking}
+          group={student.group}
+          heroes={student.group ? weekHeroes : []}
+          lastHero={student.group ? lastHero : null}
+          t={t}
+          locale={locale}
+        />
+      )}
     </>
   );
 }

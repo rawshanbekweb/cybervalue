@@ -31,6 +31,8 @@
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
+  /* Big enough for a child's finger. */
+  min-height: 44px;
 }
 .kids-eyebrow {
   margin: 0;

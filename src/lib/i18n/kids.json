@@ -127,5 +127,7 @@
   "This child no longer exists.": "Bu bola endi mavjud emas.",
   "This child already has a Junior account.": "Bu bolada allaqachon Junior akkaunti bor.",
   "Kids member moved to Junior": "Kids a’zosi Junior’ga o‘tkazildi",
-  "Clean-up run": "Tozalash bajarildi"
+  "Clean-up run": "Tozalash bajarildi",
+  "Tap, click or press Space to start": "Boshlash uchun ekranga bosing yoki Space tugmasini bosing",
+  "Move with ← → arrows, A and D, or drag your finger": "← → strelkalari, A va D bilan yoki barmog‘ingizni surib boshqaring"
 }
