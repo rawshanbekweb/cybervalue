@@ -8,8 +8,10 @@ import { studentAssignments } from "./student/assignment-data";
 import { visibleSince } from "./student/assignments";
 import { loadStandings } from "./student/standing";
 import { isReportToken } from "./report-token";
-import { ALL_MISSIONS, GAME_IDS, GAMES, missionKey } from "./kids/games";
+import { ALL_MISSIONS, GAMES } from "./kids/games";
 import { kidsLevel, restoreKidsProgress } from "./kids/progress";
+import { kidSummary } from "./kids/summary";
+import { kidsToday } from "./kids/extras";
 
 // Parent reports: a read-only page per learner at /report/<token>. The token
 // is the only key, so it is long, random and can be replaced at any time.
@@ -108,20 +110,25 @@ export async function kidsReport(db: PrismaClient, token: string) {
   });
   if (!member?.active) return null;
   const progress = restoreKidsProgress(member.progress);
+  const summary = kidSummary(progress, kidsToday());
   return {
     kind: "kids" as const,
     name: member.name,
     group: member.group,
     xp: member.xp,
     level: kidsLevel(member.xp).level.title,
-    games: GAME_IDS.map((id) => ({
-      title: GAMES[id].title,
-      done: GAMES[id].missions.filter((m) =>
-        progress.done.includes(missionKey(id, m.id)),
-      ).length,
-      total: GAMES[id].missions.length,
-      best: progress.best[id],
+    games: summary.games.map((g) => ({
+      title: GAMES[g.id].title,
+      open: g.open,
+      stage: g.stage,
+      done: g.done,
+      total: g.total,
+      best: g.best,
     })),
+    skills: summary.skills.map((s) => s.text),
+    badges: summary.badges.length,
+    badgeTotal: summary.badgeTotal,
+    streak: summary.streak,
     missions: progress.done.length,
     missionTotal: ALL_MISSIONS.length,
     lastActiveAt: member.lastActiveAt,

@@ -4,8 +4,11 @@ import { groupWhere, requireStaff } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { formatDate } from "@/components/ui";
 import { CreateKidsForm } from "@/components/admin/kids-forms";
-import { ALL_MISSIONS } from "@/lib/kids/games";
+import { ALL_MISSIONS, GAME_IDS, GAMES } from "@/lib/kids/games";
+import { kidsToday } from "@/lib/kids/extras";
 import { kidsLevel, restoreKidsProgress } from "@/lib/kids/progress";
+import { kidSummary } from "@/lib/kids/summary";
+import { KidStageCell } from "@/components/admin/kid-stage";
 
 const weekAgo = () => Date.now() - 7 * 86_400_000;
 
@@ -43,6 +46,7 @@ export default async function AdminKidsPage({
       ])
     : [[], []];
   const week = weekAgo();
+  const today = kidsToday();
   const active = members.filter(
     (m) => m.lastActiveAt && m.lastActiveAt.getTime() >= week,
   ).length;
@@ -53,7 +57,7 @@ export default async function AdminKidsPage({
           <h1>Academy Kids</h1>
           <p className="muted">
             {t(
-              "Children aged 7–10 change the code of two games and complete missions. Create codes here; children enter them at /kids.",
+              "Children aged 7–10 hack games with code, solve mazes and ciphers, and climb three stages in every game. Create codes here; children enter them at /kids.",
             )}
           </p>
         </div>
@@ -74,7 +78,9 @@ export default async function AdminKidsPage({
         <div className="admin-card">
           <span className="eyebrow">{t("Missions")}</span>
           <strong>{ALL_MISSIONS.length}</strong>
-          <span className="muted">{t("in three games")}</span>
+          <span className="muted">
+            {t("in {count} games", { count: GAME_IDS.length })}
+          </span>
         </div>
       </div>
       <CreateKidsForm />
@@ -111,12 +117,20 @@ export default async function AdminKidsPage({
                 <th scope="col">{t("Level")}</th>
                 <th scope="col">XP</th>
                 <th scope="col">{t("Missions")}</th>
+                {Object.values(GAMES).map((g) => (
+                  <th scope="col" key={g.id}>
+                    {g.title[locale]}
+                  </th>
+                ))}
+                <th scope="col">{t("Streak")}</th>
                 <th scope="col">{t("Last activity")}</th>
               </tr>
             </thead>
             <tbody>
               {members.map((m) => {
-                const done = restoreKidsProgress(m.progress).done.length;
+                const progress = restoreKidsProgress(m.progress);
+                const done = progress.done.length;
+                const summary = kidSummary(progress, today);
                 return (
                   <tr key={m.id}>
                     <td>
@@ -132,6 +146,16 @@ export default async function AdminKidsPage({
                     <td>{m.xp}</td>
                     <td>
                       {done}/{ALL_MISSIONS.length}
+                    </td>
+                    {summary.games.map((g) => (
+                      <td key={g.id}>
+                        <KidStageCell game={g} t={t} />
+                      </td>
+                    ))}
+                    <td>
+                      {summary.streak > 0
+                        ? t("{days} days", { days: summary.streak })
+                        : "—"}
                     </td>
                     <td>
                       {m.lastActiveAt

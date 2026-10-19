@@ -371,6 +371,7 @@ test.describe("Academy Kids", () => {
     await page.getByRole("link", { name }).first().click();
     await expect(page.getByRole("heading", { level: 1, name })).toBeVisible();
     await expect(page.getByText("Best score: 0").first()).toBeVisible();
+    await expect(page.getByText("No stage finished yet")).toBeVisible();
     await audit(page, "admin kid page");
 
     // A parent report link opens the Kids report.
@@ -397,6 +398,51 @@ test.describe("Academy Kids", () => {
     // The admin search finds the child.
     await page.goto(`/admin/search?q=${encodeURIComponent(name)}`);
     await expect(page.getByRole("link", { name }).first()).toBeVisible();
+  });
+
+  test("the teacher sees stages and skills, the parent what was learned", async ({
+    page,
+  }) => {
+    test.skip(!email || !password, "Requires an admin account");
+    const name = `Nodira ${Date.now().toString(36)}`;
+    await createKid(
+      name,
+      ["turbo", "hayot", "rang", "sekin", "korinmas", "terminal", "ochko"].map(
+        (id) => `kosmos:${id}`,
+      ),
+    );
+    await page.goto("/admin/login");
+    await page.getByLabel("Email").fill(email!);
+    await page.getByLabel("Password").fill(password!);
+    await page.getByRole("button", { name: "Sign in" }).click();
+    await expect(page).toHaveURL(/\/admin$/);
+    await page.goto("/admin/kids");
+    const row = page.getByRole("row", { name: new RegExp(name) });
+    // Space escape is on stage 2; the robot game is open; the maze is not.
+    await expect(row.getByRole("cell").nth(5)).toContainText("Stage 2");
+    await expect(row.getByRole("cell").nth(6)).toContainText("Stage 1");
+    await expect(row.getByRole("cell").nth(9)).toContainText("Locked");
+    await audit(page, "admin kids stages");
+    await row.getByRole("link", { name }).click();
+    await expect(
+      page.getByRole("heading", { name: "What the child has learned" }),
+    ).toBeVisible();
+    await expect(
+      page.getByText("Changes game settings with code"),
+    ).toBeVisible();
+
+    await page.getByRole("button", { name: "Create report link" }).click();
+    const reportUrl = await page.getByLabel("Report link").inputValue();
+    await page.goto(new URL(reportUrl).pathname);
+    await expect(
+      page.getByRole("heading", { name: "What your child has learned" }),
+    ).toBeVisible();
+    await expect(
+      page.getByText("Changes game settings with code"),
+    ).toBeVisible();
+    await expect(page.getByText("stage 2 of 3")).toBeVisible();
+    await expect(page.getByText("not opened yet").first()).toBeVisible();
+    await audit(page, "kids parent report");
   });
 
   test("the admin deletes chosen users and sees the clean-up page", async ({

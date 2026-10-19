@@ -827,5 +827,19 @@
   "More": "Ko‘p",
   "Answer sent": "Javob yuborildi",
   "Checkpoint attempt": "Nazorat urinishi",
-  "Lab progress saved": "Laboratoriya progressi saqlandi"
+  "Lab progress saved": "Laboratoriya progressi saqlandi",
+  "Children aged 7–10 hack games with code, solve mazes and ciphers, and climb three stages in every game. Create codes here; children enter them at /kids.": "7–10 yoshli bolalar o‘yinlarni kod bilan “xaklaydi”, labirint va shifrlarni yechadi, har bir o‘yinda uch bosqichdan o‘tadi. Kodlarni shu yerda yarating, bolalar ularni /kids sahifasida kiritadi.",
+  "{days} days": "{days} kun",
+  "What the child has learned": "Bola nimalarni o‘rgandi",
+  "No stage finished yet. Skills appear here stage by stage.": "Hali birorta bosqich tugatilmagan. Ko‘nikmalar bosqichma-bosqich shu yerda paydo bo‘ladi.",
+  "Daily tasks: {count} done · streak {streak} · best {record}": "Kun topshiriqlari: {count} ta bajarilgan · ketma-ket {streak} · eng yaxshi {record}",
+  "Stage {n}": "{n}-bosqich",
+  "daily tasks {days} days in a row": "kun topshirig‘i {days} kun ketma-ket",
+  "What your child has learned": "Farzandingiz nimalarni o‘rgandi",
+  "Every game has three stages; what each finished stage teaches will appear here.": "Har bir o‘yinda uch bosqich bor. Tugatilgan bosqichlar nimani o‘rgatgani shu yerda paydo bo‘ladi.",
+  "not opened yet": "hali ochilmagan",
+  "all stages finished": "barcha bosqichlar tugatildi",
+  "stage {n} of 3": "3 tadan {n}-bosqich",
+  "Locked": "Yopiq",
+  "in {count} games": "{count} ta o‘yinda"
 }
