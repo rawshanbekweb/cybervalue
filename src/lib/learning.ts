@@ -95,7 +95,7 @@ export function getLearningTracks() {
     {
       id: "https",
       title: "HTTPS and TLS",
-      category: "Networking",
+      category: "Web foundations",
       description:
         "See what the padlock protects: eavesdropping on café Wi-Fi, encryption keys, the TLS handshake, certificates and the chain of trust, in animated lessons.",
       href: "/akademiya/https",
