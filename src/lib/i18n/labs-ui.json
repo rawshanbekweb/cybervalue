@@ -538,5 +538,15 @@
   "List": "Ro‘yxat",
   "Turn {n} of {total}": "{total} aylanishdan {n}-si",
   "Output appears here.": "Natija shu yerda chiqadi.",
-  "for example: auth.log": "masalan: auth.log"
+  "for example: auth.log": "masalan: auth.log",
+  "How remote connection works.": "Masofaviy ulanish qanday ishlaydi.",
+  "Watch an encrypted SSH session being built, connect to a practice server, accept its host key, then switch from a password to a key pair.": "Shifrlangan SSH sessiyasi qanday qurilishini kuzating, mashq serveriga ulaning, uning kalitini qabul qiling, so‘ng paroldan kalit juftligiga o‘ting.",
+  "SSH / REMOTE": "SSH / MASOFAVIY",
+  "Laptop": "Noutbuk",
+  "encrypted": "shifrlangan",
+  "Connected to server.uz — commands now run on the server.": "server.uz ga ulandingiz — buyruqlar endi serverda bajariladi.",
+  "The server is waiting for your answer.": "Server javobingizni kutyapti.",
+  "Not connected. Commands run on your laptop.": "Ulanmagan. Buyruqlar noutbukingizda bajariladi.",
+  "Type a command and press Enter. Try: ssh ali@server.uz": "Buyruq yozib, Enter ni bosing. Masalan: ssh ali@server.uz",
+  "Remote access with SSH.": "SSH bilan masofaviy ulanish."
 }

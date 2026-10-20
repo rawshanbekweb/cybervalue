@@ -7,6 +7,7 @@ import { LESSONS as HTTP_LESSONS } from "@/lib/http/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
 import { LESSONS as BASH_LESSONS } from "@/lib/bash-basics/curriculum";
+import { LESSONS as SSH_LESSONS } from "@/lib/ssh-basics/curriculum";
 import {
   GROUPS,
   LESSONS,
@@ -118,6 +119,20 @@ export function getLearningTracks() {
       level: "Beginner",
       lessons: BASH_LESSONS.map(({ id, title }) => ({ id, title: title.en })),
       modules: BASH_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "ssh",
+      title: "SSH: remote access",
+      category: "Linux & terminal",
+      description:
+        "How remote connection works: an encrypted SSH session step by step, a practice server, host keys, and switching from passwords to key pairs.",
+      href: "/akademiya/ssh",
+      progressKey: LAB_PROGRESS.ssh.key,
+      level: "Beginner",
+      lessons: SSH_LESSONS.map(({ id, title }) => ({ id, title: title.en })),
+      modules: SSH_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

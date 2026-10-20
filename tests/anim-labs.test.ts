@@ -9,6 +9,8 @@ import { LESSONS as HTTP_BASICS } from "../src/lib/http-basics/curriculum";
 import { LESSONS as HTTPS } from "../src/lib/https-basics/curriculum";
 import { LESSONS as BASH, type Log } from "../src/lib/bash-basics/curriculum";
 import { emptyState, run } from "../src/lib/bash-basics/interp";
+import { LESSONS as SSH } from "../src/lib/ssh-basics/curriculum";
+import { PASSWORD, startSim, step, type Sim } from "../src/lib/ssh-basics/sim";
 import {
   INTERCEPTED,
   SECRET,
@@ -29,6 +31,7 @@ const LABS: Record<string, Lesson<{ type: string }>[]> = {
   "http-basics": HTTP_BASICS,
   https: HTTPS,
   bash: BASH,
+  ssh: SSH,
 };
 
 const filled = (value: { uz: string; en: string }) =>
@@ -176,5 +179,63 @@ test("bash: every terminal and script goal can be met", () => {
     8,
     (s) => s.replace("for USER in root ali", "for USER in root admin ali"),
     ["auth.log"],
+  );
+});
+
+test("ssh: the practice client walks every lesson's goals", () => {
+  const play = (inputs: string[]) =>
+    inputs.reduce<{ sim: Sim; out: string[] }>(
+      (acc, input) => {
+        const r = step(acc.sim, input);
+        return { sim: r.sim, out: [...acc.out, ...r.lines.map((l) => l.text)] };
+      },
+      { sim: startSim(), out: [] },
+    );
+  const goals = (id: number, sim: Sim) => {
+    const widget = SSH[id - 1].widget;
+    assert.equal(widget.type, "ssh");
+    if (widget.type !== "ssh") return;
+    for (const goal of widget.goals)
+      assert.ok(goal.check(sim), `#${id} ${goal.label.en}`);
+  };
+  const first = play([
+    "ssh ali@server.uz",
+    "yes",
+    "wrong",
+    PASSWORD,
+    "hostname",
+    "exit",
+  ]);
+  assert.ok(first.out.includes("Permission denied, please try again."));
+  assert.ok(first.out.includes("web-1"));
+  goals(3, first.sim);
+
+  const keys = play([
+    "ssh-keygen -t ed25519",
+    "ssh-copy-id ali@server.uz",
+    "yes",
+    PASSWORD,
+    "ssh ali@server.uz",
+    "whoami",
+  ]);
+  assert.ok(keys.out.includes("ali"));
+  goals(5, keys.sim);
+
+  // Refusing the host key stops the connection; unknown hosts do not resolve.
+  const no = play(["ssh ali@server.uz", "no"]);
+  assert.equal(no.sim.mode.kind, "local");
+  assert.ok(no.out.includes("Host key verification failed."));
+  assert.match(
+    play(["ssh ali@evil.example"]).out.at(-1) ?? "",
+    /Could not resolve/,
+  );
+  assert.match(
+    play(["ssh -p 2222 ali@server.uz"]).out.at(-1) ?? "",
+    /Connection refused/,
+  );
+  // Three wrong passwords end the attempt.
+  assert.equal(
+    play(["ssh ali@server.uz", "yes", "a", "b", "c"]).sim.mode.kind,
+    "local",
   );
 });

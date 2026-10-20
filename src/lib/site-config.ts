@@ -66,6 +66,12 @@ export const SECTIONS = [
     href: "/akademiya/bash",
   },
   {
+    id: "ssh",
+    group: "lab",
+    label: "SSH (animated)",
+    href: "/akademiya/ssh",
+  },
+  {
     id: "http",
     group: "lab",
     label: "HTTP in depth (Intermediate)",
