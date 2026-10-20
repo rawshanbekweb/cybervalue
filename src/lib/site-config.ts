@@ -48,6 +48,12 @@ export const SECTIONS = [
     href: "/akademiya/web-security-lab",
   },
   {
+    id: "httpbasics",
+    group: "lab",
+    label: "HTTP basics (animated)",
+    href: "/akademiya/http-basics",
+  },
+  {
     id: "http",
     group: "lab",
     label: "HTTP in depth (Intermediate)",

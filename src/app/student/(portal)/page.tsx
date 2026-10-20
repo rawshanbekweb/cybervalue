@@ -82,6 +82,7 @@ const OPEN_LABS = [
   { href: "/akademiya/web-security-lab", title: "Web Security Lab" },
   { href: "/akademiya/linux-basics", title: "Linux foundations lab" },
   { href: "/akademiya/network-basics", title: "IP addressing lab" },
+  { href: "/akademiya/http-basics", title: "HTTP basics" },
   { href: "/akademiya/ctf", title: "00:17 CTF investigation" },
   { href: "/akademiya/missions", title: "Investigation missions" },
   { href: "/akademiya/html-basics", title: "HTML Basics" },

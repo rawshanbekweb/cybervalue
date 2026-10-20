@@ -8,6 +8,7 @@ export const LAB_PROGRESS = {
   html: { key: "htmldars:progress:v1", total: 12 },
   security: { key: "sabaq:progress:v1", total: 36 },
   http: { key: "cybervalue:http:progress:v1", total: 10 },
+  httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
 } as const;
 
 export type LabId = keyof typeof LAB_PROGRESS;
@@ -37,6 +38,11 @@ export const LAB_META: {
     id: "security",
     title: { uz: "Veb-xavfsizlik laboratoriyasi", en: "Web Security Lab" },
     href: "/akademiya/web-security-lab",
+  },
+  {
+    id: "httpbasics",
+    title: { uz: "HTTP asoslari", en: "HTTP basics" },
+    href: "/akademiya/http-basics",
   },
   {
     id: "http",
