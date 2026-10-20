@@ -1,0 +1,197 @@
+/* Bash basics lab widgets; layout and shared widgets come from
+   network-lab.css and anim-lab.css. */
+.bb-screen {
+  max-height: 280px;
+  min-height: 90px;
+  overflow: auto;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #07070a;
+  color: #e6e6e6;
+  font: 13px/1.65 var(--font-mono);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.bb-entry + .bb-entry {
+  margin-top: 6px;
+}
+.bb-prompt {
+  color: #2ee6a6;
+}
+.bb-error {
+  color: #ff7b6b;
+}
+.bb-dim {
+  margin: 0;
+  color: var(--muted);
+}
+.bb-input,
+.bb-run {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  font: 13px var(--font-mono);
+}
+.bb-input input,
+.bb-run input {
+  flex: 1;
+  min-width: 140px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #0b0b10;
+  color: var(--text);
+  font: 14px var(--font-mono);
+}
+.bb-input input:focus-visible,
+.bb-run input:focus-visible,
+.bb-editor:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.bb-shelf {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px dashed #ffffff26;
+  border-radius: 10px;
+}
+.bb-shelf-title {
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.bb-box {
+  display: inline-grid;
+  overflow: hidden;
+  border: 1px solid #8052ff80;
+  border-radius: 8px;
+  background: #15141c;
+  text-align: center;
+}
+.bb-box-name {
+  padding: 2px 10px;
+  background: #8052ff33;
+  color: #c9b8ff;
+  font: 600 11px var(--font-mono);
+}
+.bb-box code {
+  padding: 4px 10px;
+  font-size: 13px;
+}
+.bb-flash {
+  animation: bb-flash 0.7s ease-out both;
+}
+@keyframes bb-flash {
+  from {
+    transform: translateY(-8px) scale(1.06);
+    border-color: #f5c84c;
+    box-shadow: 0 0 0 4px #f5c84c33;
+  }
+}
+.bb-goals {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.bb-goals li {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--muted);
+  line-height: 1.4;
+}
+.bb-goals li.met {
+  color: #2ee6a6;
+}
+.bb-goal-mark {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  font-size: 11px;
+}
+.bb-goals li.met .bb-goal-mark {
+  animation: al-appear 0.35s ease-out both;
+}
+.bb-file {
+  justify-self: start;
+  padding: 4px 12px;
+  border: 1px solid var(--border);
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+  background: #15141c;
+  color: var(--muted);
+  font: 12px var(--font-mono);
+  margin-bottom: -14px;
+}
+.bb-editor {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 0 10px 10px 10px;
+  background: #0b0b10;
+  color: var(--text);
+  font: 14px/1.6 var(--font-mono);
+  resize: vertical;
+  tab-size: 2;
+}
+.bb-output {
+  min-height: 70px;
+}
+.bb-loop-code {
+  font-size: 14px;
+}
+.bb-loop-line {
+  display: inline-block;
+  padding: 0 4px;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+.bb-loop-line.on {
+  background: #8052ff40;
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+.bb-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.bb-chip {
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font: 13px var(--font-mono);
+  transition:
+    border-color 0.3s,
+    transform 0.3s,
+    opacity 0.3s;
+}
+.bb-chip.on {
+  border-color: var(--accent);
+  background: #8052ff26;
+  transform: translateY(-3px);
+}
+.bb-chip.used {
+  opacity: 0.55;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bb-flash,
+  .bb-goals li.met .bb-goal-mark {
+    animation: none;
+  }
+  .bb-loop-line,
+  .bb-chip {
+    transition: none;
+  }
+}

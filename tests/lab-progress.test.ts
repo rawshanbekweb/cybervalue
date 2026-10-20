@@ -7,6 +7,8 @@ import { LESSONS as SECURITY } from "../src/components/playground/security-lab/l
 import { LESSONS as HTTP } from "../src/lib/http/curriculum";
 import { LESSONS as HTTP_BASICS } from "../src/lib/http-basics/curriculum";
 import { LESSONS as HTTPS } from "../src/lib/https-basics/curriculum";
+import { LESSONS as BASH } from "../src/lib/bash-basics/curriculum";
+import { LESSONS as SSH } from "../src/lib/ssh-basics/curriculum";
 import {
   isLabId,
   LAB_PROGRESS,
@@ -22,6 +24,8 @@ test("lab progress totals match the lessons", () => {
   assert.equal(LAB_PROGRESS.http.total, HTTP.length);
   assert.equal(LAB_PROGRESS.httpbasics.total, HTTP_BASICS.length);
   assert.equal(LAB_PROGRESS.https.total, HTTPS.length);
+  assert.equal(LAB_PROGRESS.bash.total, BASH.length);
+  assert.equal(LAB_PROGRESS.ssh.total, SSH.length);
   assert.equal(isLabId("toString"), false);
   assert.equal(isLabId("network"), true);
 });

@@ -91,6 +91,8 @@ test("everything finished", () => {
         http: 10,
         httpbasics: 9,
         https: 9,
+        bash: 9,
+        ssh: 8,
       },
     }),
     { kind: "done" },
