@@ -5,6 +5,7 @@ import { LESSONS as NETWORK_LESSONS } from "@/lib/network/curriculum";
 import { HTML_LESSONS } from "@/components/playground/html-basics/lessons.data";
 import { LESSONS as HTTP_LESSONS } from "@/lib/http/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
+import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
 import {
   GROUPS,
   LESSONS,
@@ -88,6 +89,20 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: HTTP_BASICS_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "https",
+      title: "HTTPS and TLS",
+      category: "Web foundations",
+      description:
+        "See what the padlock protects: eavesdropping on café Wi-Fi, encryption keys, the TLS handshake, certificates and the chain of trust, in animated lessons.",
+      href: "/akademiya/https",
+      progressKey: LAB_PROGRESS.https.key,
+      level: "Beginner",
+      lessons: HTTPS_LESSONS.map(({ id, title }) => ({ id, title: title.en })),
+      modules: HTTPS_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

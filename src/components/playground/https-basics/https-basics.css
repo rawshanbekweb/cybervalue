@@ -1,0 +1,176 @@
+/* HTTPS and TLS lab widgets; shared pieces come from anim-lab.css and
+   http-basics.css. */
+.hs-label {
+  display: block;
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.hs-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.hs-switch legend {
+  margin-bottom: 6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.hs-switch label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font: 13px var(--font-mono);
+  cursor: pointer;
+}
+.hs-switch label.on {
+  border-color: var(--accent);
+  background: #8052ff26;
+}
+.hs-switch label {
+  position: relative;
+}
+.hs-switch input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.hs-switch label:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.hs-lane {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 42px;
+}
+.hs-spy {
+  color: #ff9b8a;
+}
+.hs-track {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 30px;
+  border-top: 1px dashed #ffffff26;
+}
+.hs-track .al-packet {
+  top: -14px;
+}
+.hs-plain {
+  border-color: #ff7b6b66;
+  color: #ffb4a8;
+}
+.hs-cipher {
+  color: #f5c84c;
+}
+.hs-open {
+  border-color: #2ee6a666;
+  color: #2ee6a6;
+}
+.hs-slider {
+  display: grid;
+  gap: 6px;
+}
+.hs-slider input {
+  width: 100%;
+  accent-color: var(--accent);
+}
+.hs-try {
+  display: grid;
+  gap: 8px;
+}
+.hs-try summary {
+  cursor: pointer;
+  color: var(--accent-text);
+}
+.hs-try label {
+  display: grid;
+  gap: 4px;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.hs-try input {
+  min-width: 0;
+  padding: 7px 9px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #15141c;
+  color: var(--text);
+  font: 14px var(--font-mono);
+}
+.hs-chain {
+  gap: 0;
+}
+.hs-link-wrap {
+  display: grid;
+  justify-items: center;
+}
+.hs-link {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #15141c;
+  transition:
+    border-color 0.3s,
+    box-shadow 0.3s;
+}
+.hs-link.next {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px #8052ff26;
+}
+.hs-link.ok {
+  border-color: #2ee6a666;
+}
+.hs-link .nl-primary,
+.hs-link .nl-ghost {
+  justify-self: start;
+}
+.hs-link-kind {
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.hs-link-note {
+  margin: 0;
+  color: #2ee6a6;
+  line-height: 1.5;
+}
+.hs-arrow {
+  display: grid;
+  place-items: center;
+  height: 30px;
+  color: var(--muted);
+  transition: color 0.3s;
+}
+.hs-arrow.ok {
+  color: #2ee6a6;
+}
+.hs-secure {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 12px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hs-link,
+  .hs-arrow {
+    transition: none;
+  }
+}
