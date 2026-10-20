@@ -6,6 +6,13 @@ import {
   type Lesson,
 } from "../src/lib/anim-lab/types";
 import { LESSONS as HTTP_BASICS } from "../src/lib/http-basics/curriculum";
+import { LESSONS as HTTPS } from "../src/lib/https-basics/curriculum";
+import {
+  INTERCEPTED,
+  SECRET,
+  shift,
+  unshift,
+} from "../src/lib/https-basics/cipher";
 import {
   answer,
   family,
@@ -18,6 +25,7 @@ import {
 // languages filled in, and each shared widget internally consistent.
 const LABS: Record<string, Lesson<{ type: string }>[]> = {
   "http-basics": HTTP_BASICS,
+  https: HTTPS,
 };
 
 const filled = (value: { uz: string; en: string }) =>
@@ -92,4 +100,11 @@ test("http-basics: the practice server reaches every family of codes", () => {
   const paths = new Set(panel.rows.map((r) => r.path));
   for (const q of panel.questions)
     for (const option of q.options) assert.ok(paths.has(option.en), option.en);
+});
+
+test("https: the toy cipher locks and unlocks with the same key", () => {
+  assert.equal(shift("Abc xyz!", 3), "Def abc!");
+  assert.equal(unshift(shift("salom dunyo", 11), 11), "salom dunyo");
+  assert.equal(unshift(INTERCEPTED, SECRET.key), SECRET.plain);
+  assert.notEqual(INTERCEPTED, SECRET.plain);
 });

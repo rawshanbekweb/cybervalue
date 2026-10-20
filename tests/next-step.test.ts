@@ -90,6 +90,7 @@ test("everything finished", () => {
         security: 36,
         http: 10,
         httpbasics: 9,
+        https: 9,
       },
     }),
     { kind: "done" },
