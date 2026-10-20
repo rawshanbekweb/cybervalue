@@ -77,7 +77,7 @@ export function getLearningTracks() {
     {
       id: "httpbasics",
       title: "HTTP basics",
-      category: "Networking",
+      category: "Web foundations",
       description:
         "Watch the browser and the server talk: requests and responses, GET and POST, headers and every family of status codes, in animated lessons.",
       href: "/akademiya/http-basics",
