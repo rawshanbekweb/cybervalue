@@ -6,6 +6,7 @@ import { HTML_LESSONS } from "@/components/playground/html-basics/lessons.data";
 import { LESSONS as HTTP_LESSONS } from "@/lib/http/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
+import { LESSONS as BASH_LESSONS } from "@/lib/bash-basics/curriculum";
 import {
   GROUPS,
   LESSONS,
@@ -103,6 +104,20 @@ export function getLearningTracks() {
       level: "Beginner",
       lessons: HTTPS_LESSONS.map(({ id, title }) => ({ id, title: title.en })),
       modules: HTTPS_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "bash",
+      title: "Bash basics",
+      category: "Linux & terminal",
+      description:
+        "Variables, loops and your first scripts in a safe terminal that runs in the browser: watch a loop turn by turn, fix an endless loop and scan a login log.",
+      href: "/akademiya/bash",
+      progressKey: LAB_PROGRESS.bash.key,
+      level: "Beginner",
+      lessons: BASH_LESSONS.map(({ id, title }) => ({ id, title: title.en })),
+      modules: BASH_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

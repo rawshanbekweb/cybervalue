@@ -7,6 +7,8 @@ import {
 } from "../src/lib/anim-lab/types";
 import { LESSONS as HTTP_BASICS } from "../src/lib/http-basics/curriculum";
 import { LESSONS as HTTPS } from "../src/lib/https-basics/curriculum";
+import { LESSONS as BASH, type Log } from "../src/lib/bash-basics/curriculum";
+import { emptyState, run } from "../src/lib/bash-basics/interp";
 import {
   INTERCEPTED,
   SECRET,
@@ -26,6 +28,7 @@ import {
 const LABS: Record<string, Lesson<{ type: string }>[]> = {
   "http-basics": HTTP_BASICS,
   https: HTTPS,
+  bash: BASH,
 };
 
 const filled = (value: { uz: string; en: string }) =>
@@ -107,4 +110,71 @@ test("https: the toy cipher locks and unlocks with the same key", () => {
   assert.equal(unshift(shift("salom dunyo", 11), 11), "salom dunyo");
   assert.equal(unshift(INTERCEPTED, SECRET.key), SECRET.plain);
   assert.notEqual(INTERCEPTED, SECRET.plain);
+});
+
+test("bash: every terminal and script goal can be met", () => {
+  const terminal = (id: number, commands: string[]) => {
+    const lesson = BASH[id - 1].widget;
+    assert.equal(lesson.type, "shell");
+    if (lesson.type !== "shell") return;
+    let log: Log = { state: emptyState(lesson.files), entries: [] };
+    for (const command of commands) {
+      const r = run(command, log.state);
+      log = {
+        state: r.state,
+        entries: [
+          ...log.entries,
+          { command, output: r.output, error: r.error },
+        ],
+      };
+    }
+    for (const goal of lesson.goals)
+      assert.ok(goal.check(log), `#${id} ${goal.label.en}`);
+  };
+  terminal(2, ["NAME=Ali", 'echo "Salom, $NAME"']);
+  terminal(4, ["A=7; B=5", "echo $((A + B))", "echo $((A * B))"]);
+  terminal(6, [
+    "for i in {1..5}; do echo $i; done",
+    "for f in *.log; do echo $f; done",
+  ]);
+
+  const script = (
+    id: number,
+    edit: (source: string) => string,
+    args: string[],
+  ) => {
+    const lesson = BASH[id - 1].widget;
+    assert.equal(lesson.type, "script");
+    if (lesson.type !== "script") return;
+    // The starting script does not meet the goals yet.
+    const before = run(lesson.source, emptyState(lesson.files, []));
+    const command = `bash ${lesson.name}${args.length ? ` ${args.join(" ")}` : ""}`;
+    const unsolved: Log = {
+      state: before.state,
+      entries: [
+        {
+          command: `bash ${lesson.name}`,
+          output: before.output,
+          error: before.error,
+        },
+      ],
+    };
+    assert.ok(
+      !lesson.goals.every((g) => g.check(unsolved)),
+      `#${id} starts unsolved`,
+    );
+    const after = run(edit(lesson.source), emptyState(lesson.files, args));
+    const log: Log = {
+      state: after.state,
+      entries: [{ command, output: after.output, error: after.error }],
+    };
+    for (const goal of lesson.goals)
+      assert.ok(goal.check(log), `#${id} ${goal.label.en}`);
+  };
+  script(7, (s) => s.replace(/  # .*\n/, "  i=$((i - 1))\n"), []);
+  script(
+    8,
+    (s) => s.replace("for USER in root ali", "for USER in root admin ali"),
+    ["auth.log"],
+  );
 });

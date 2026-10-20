@@ -10,6 +10,7 @@ export const LAB_PROGRESS = {
   http: { key: "cybervalue:http:progress:v1", total: 10 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
+  bash: { key: "cybervalue:bash:progress:v1", total: 9 },
 } as const;
 
 export type LabId = keyof typeof LAB_PROGRESS;
@@ -49,6 +50,11 @@ export const LAB_META: {
     id: "https",
     title: { uz: "HTTPS va TLS", en: "HTTPS and TLS" },
     href: "/akademiya/https",
+  },
+  {
+    id: "bash",
+    title: { uz: "Bash asoslari", en: "Bash basics" },
+    href: "/akademiya/bash",
   },
   {
     id: "http",

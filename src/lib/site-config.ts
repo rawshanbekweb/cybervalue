@@ -60,6 +60,12 @@ export const SECTIONS = [
     href: "/akademiya/https",
   },
   {
+    id: "bash",
+    group: "lab",
+    label: "Bash basics (animated)",
+    href: "/akademiya/bash",
+  },
+  {
     id: "http",
     group: "lab",
     label: "HTTP in depth (Intermediate)",

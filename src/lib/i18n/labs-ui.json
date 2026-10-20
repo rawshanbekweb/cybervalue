@@ -521,5 +521,22 @@
   "Signed by": "Imzolagan",
   "Verified": "Tasdiqlandi",
   "Connection is secure: https://bank.uz": "Ulanish xavfsiz: https://bank.uz",
-  "HTTPS / TLS · LAB": "HTTPS / TLS · LABORATORIYA"
+  "HTTPS / TLS · LAB": "HTTPS / TLS · LABORATORIYA",
+  "Run": "Ishga tushirish",
+  "TERMINAL FOUNDATIONS · ANIMATED": "TERMINAL ASOSLARI · ANIMATSION",
+  "Bash basics.": "Bash asoslari.",
+  "Variables, loops and your first scripts.": "O‘zgaruvchilar, sikllar va ilk skriptlaringiz.",
+  "Store values in variables, watch a loop go round one turn at a time, fix an endless loop and write a script that scans a login log.": "Qiymatlarni o‘zgaruvchilarga saqlang, siklning har bir aylanishini kuzating, cheksiz siklni tuzating va kirish jurnalini tekshiradigan skript yozing.",
+  "BASH / SCRIPTS": "BASH / SKRIPTLAR",
+  "Goals": "Maqsadlar",
+  "done": "bajarildi",
+  "Variables": "O‘zgaruvchilar",
+  "No variables yet.": "Hali o‘zgaruvchi yo‘q.",
+  "Type a command and press Enter. Try: ls": "Buyruq yozib, Enter ni bosing. Masalan: ls",
+  "Arguments": "Argumentlar",
+  "Press Run to execute the script.": "Skriptni bajarish uchun “Ishga tushirish”ni bosing.",
+  "List": "Ro‘yxat",
+  "Turn {n} of {total}": "{total} aylanishdan {n}-si",
+  "Output appears here.": "Natija shu yerda chiqadi.",
+  "for example: auth.log": "masalan: auth.log"
 }
