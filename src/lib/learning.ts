@@ -4,6 +4,7 @@ import { LESSONS as LINUX_LESSONS } from "@/lib/linux/curriculum";
 import { LESSONS as NETWORK_LESSONS } from "@/lib/network/curriculum";
 import { HTML_LESSONS } from "@/components/playground/html-basics/lessons.data";
 import { LESSONS as HTTP_LESSONS } from "@/lib/http/curriculum";
+import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import {
   GROUPS,
   LESSONS,
@@ -72,6 +73,23 @@ export function getLearningTracks() {
       level: "Beginner → intermediate",
       lessons: LESSONS.map(({ id, title }) => ({ id, title })),
       modules: GROUPS.map(({ title }) => title.replace(/^\d+ · /, "")),
+    },
+    {
+      id: "httpbasics",
+      title: "HTTP basics",
+      category: "Web foundations",
+      description:
+        "Watch the browser and the server talk: requests and responses, GET and POST, headers and every family of status codes, in animated lessons.",
+      href: "/akademiya/http-basics",
+      progressKey: LAB_PROGRESS.httpbasics.key,
+      level: "Beginner",
+      lessons: HTTP_BASICS_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: HTTP_BASICS_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
     },
     {
       id: "http",

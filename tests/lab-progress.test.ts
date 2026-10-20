@@ -5,6 +5,7 @@ import { LESSONS as NETWORK } from "../src/lib/network/curriculum";
 import { HTML_LESSONS } from "../src/components/playground/html-basics/lessons.data";
 import { LESSONS as SECURITY } from "../src/components/playground/security-lab/lessons.data";
 import { LESSONS as HTTP } from "../src/lib/http/curriculum";
+import { LESSONS as HTTP_BASICS } from "../src/lib/http-basics/curriculum";
 import {
   isLabId,
   LAB_PROGRESS,
@@ -18,6 +19,7 @@ test("lab progress totals match the lessons", () => {
   assert.equal(LAB_PROGRESS.html.total, HTML_LESSONS.length);
   assert.equal(LAB_PROGRESS.security.total, SECURITY.length);
   assert.equal(LAB_PROGRESS.http.total, HTTP.length);
+  assert.equal(LAB_PROGRESS.httpbasics.total, HTTP_BASICS.length);
   assert.equal(isLabId("toString"), false);
   assert.equal(isLabId("network"), true);
 });

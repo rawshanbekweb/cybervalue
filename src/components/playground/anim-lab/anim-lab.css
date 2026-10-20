@@ -1,0 +1,315 @@
+/* Animated beginner labs (HTTP, HTTPS, Bash, SSH). The layout comes from
+   network-lab.css; these are the shared widgets. */
+.al-muted {
+  margin: 0;
+  color: var(--muted);
+}
+.al-counter {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* Message sequence: actors in columns, envelopes flying between them. */
+.al-stage {
+  padding: 14px 8px 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background:
+    radial-gradient(circle at 50% 0, #8052ff1f, transparent 70%), #0b0b10;
+}
+.al-actors {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  gap: 6px;
+  text-align: center;
+}
+.al-actor {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  min-width: 0;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.al-actor-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #15141c;
+  transition:
+    border-color 0.3s,
+    box-shadow 0.3s;
+}
+.al-actor.on .al-actor-icon {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px #8052ff33;
+}
+.al-lane {
+  position: relative;
+  height: 76px;
+}
+.al-lifeline {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px dashed #ffffff26;
+}
+.al-packet {
+  position: absolute;
+  top: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 46%;
+  padding: 5px 10px;
+  border: 1px solid #ffffff33;
+  border-radius: 999px;
+  background: #1d1b27;
+  color: var(--text);
+  font: 12px/1.3 var(--font-mono);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transform: translateX(-50%);
+}
+.al-packet.al-locked {
+  border-color: #f5c84c;
+  color: #f5c84c;
+}
+.al-packet.al-ok {
+  border-color: #2ee6a6;
+  color: #2ee6a6;
+}
+.al-packet.al-error {
+  border-color: #ff7b6b;
+  color: #ff7b6b;
+}
+.al-flying {
+  animation: al-fly var(--dur) ease-in-out both;
+}
+.al-rest {
+  opacity: 0.55;
+}
+@keyframes al-fly {
+  from {
+    left: var(--from);
+  }
+  to {
+    left: var(--to);
+  }
+}
+.al-log {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 22px;
+}
+.al-log li {
+  display: grid;
+  gap: 2px;
+  line-height: 1.5;
+}
+.al-log code {
+  color: #c9b8ff;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.al-log-locked code {
+  color: #f5c84c;
+}
+.al-log-ok code {
+  color: #2ee6a6;
+}
+.al-log-error code {
+  color: #ff7b6b;
+}
+
+/* Anatomy: a message whose parts explain themselves. */
+.al-code {
+  margin: 0;
+  padding: 14px;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #0b0b10;
+  font: 14px/1.9 var(--font-mono);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.al-part {
+  padding: 1px 4px;
+  border: 1px dashed #8052ff99;
+  border-radius: 5px;
+  background: #8052ff1a;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+  animation: al-pulse 2.4s ease-in-out infinite;
+}
+.al-part.seen {
+  border-style: solid;
+  border-color: #2ee6a666;
+  background: #2ee6a614;
+  animation: none;
+}
+.al-part.on {
+  border-color: var(--accent);
+  background: #8052ff40;
+}
+.al-part:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+@keyframes al-pulse {
+  50% {
+    box-shadow: 0 0 0 3px #8052ff33;
+  }
+}
+.al-explain {
+  min-height: 92px;
+  padding: 12px 14px;
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  background: #15141c;
+}
+.al-explain p {
+  margin: 4px 0 0;
+  line-height: 1.6;
+}
+
+/* Sorting deck. */
+.al-deck {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  min-height: 120px;
+}
+.al-card {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(100%, 360px);
+  min-height: 84px;
+  padding: 18px;
+  border: 1px solid #8052ff66;
+  border-radius: 12px;
+  background: linear-gradient(160deg, #1d1b27, #121119);
+  box-shadow: 0 10px 30px #0008;
+  text-align: center;
+  line-height: 1.5;
+}
+.al-card code {
+  font-size: 15px;
+}
+.al-card-count {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.al-drop {
+  animation: al-drop 0.35s ease-out both;
+}
+.al-shake {
+  animation: al-shake 0.4s ease-in-out;
+}
+@keyframes al-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-14px) scale(0.96);
+  }
+}
+@keyframes al-shake {
+  25% {
+    transform: translateX(-8px);
+  }
+  50% {
+    transform: translateX(8px);
+  }
+  75% {
+    transform: translateX(-4px);
+  }
+}
+.al-buckets {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+}
+.al-bucket {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-width: 0;
+}
+.al-bucket .nl-ghost {
+  justify-content: center;
+  width: 100%;
+}
+.al-bucket ul {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--muted);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.al-sort .nl-fail {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+/* Quiz. */
+.al-quiz fieldset {
+  display: grid;
+  gap: 6px;
+  margin: 0 0 14px;
+  padding: 0;
+  border: 0;
+}
+.al-quiz legend {
+  margin-bottom: 6px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.al-option {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  line-height: 1.5;
+  cursor: pointer;
+}
+.al-option input {
+  margin-top: 4px;
+  accent-color: var(--accent);
+}
+
+.al-appear {
+  animation: al-appear 0.35s ease-out both;
+}
+@keyframes al-appear {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .al-flying,
+  .al-part,
+  .al-drop,
+  .al-shake,
+  .al-appear {
+    animation: none;
+  }
+  .al-actor-icon {
+    transition: none;
+  }
+}
