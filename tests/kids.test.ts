@@ -260,7 +260,7 @@ test("stored progress is cleaned and XP comes from finished missions", () => {
   assert.equal(kidsXp(progress), 20 + 30);
   assert.equal(kidsLevel(0).level.title.uz, "Yangi xaker");
   assert.equal(kidsLevel(MAX_XP).next, null);
-  assert.equal(MAX_XP, 2190);
+  assert.equal(MAX_XP, 2400);
 });
 
 test("blocks, “va” and “aks_holda” apply as a group", () => {

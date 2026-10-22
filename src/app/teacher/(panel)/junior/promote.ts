@@ -5,7 +5,7 @@ import { requireMember } from "@/lib/staff-guard";
 import { audit } from "@/lib/audit";
 import { getDb } from "@/lib/db";
 import { juniorRow } from "@/lib/junior/admin";
-import { MISSIONS } from "@/lib/junior/content";
+import { CASE_MISSION_IDS } from "@/lib/junior/content";
 import { hashSecret, newAccessCode } from "@/lib/student/access";
 import { newCertificateCode } from "@/lib/student/certificate";
 
@@ -44,7 +44,9 @@ export async function promoteJuniorAction(
   if (existing) return { error: "This member already has an Academy account." };
   const row = juniorRow(member);
   const code = newAccessCode();
-  const completed = row.story || row.missions === MISSIONS.length;
+  // Junior is complete once the Cyber HQ case's missions are; step 4 is extra.
+  const completed =
+    row.story || CASE_MISSION_IDS.every((id) => row.progress.missions[id]);
   const student = await db.$transaction(async (tx) => {
     const created = await tx.student.create({
       data: {

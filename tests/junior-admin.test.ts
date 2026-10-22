@@ -106,7 +106,7 @@ test("status, group overview and CSV export", () => {
   assert.ok(lines[0].includes('"The Caesar cipher"'));
   // Spreadsheet formulas are neutralised.
   assert.ok(lines[2].startsWith(`"'=HYPERLINK(1)"`));
-  assert.ok(lines[1].includes('"1/6"'));
+  assert.ok(lines[1].includes('"1/8"'));
 });
 
 test("member edits are validated; the date ends at Tashkent midnight", () => {

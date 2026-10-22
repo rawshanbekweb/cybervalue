@@ -9,8 +9,8 @@ import { useJuniorState } from "./state";
 // per member and remembered on their account.
 const STEPS = [
   {
-    title: "Missions in three steps",
-    body: "Six missions teach the basics, reading clues and thinking like a pro. Finish both missions of a step to open the next one.",
+    title: "Missions in four steps",
+    body: "Eight missions teach the basics, reading clues, thinking like a pro and everyday digital life. Finish both missions of a step to open the next one.",
     href: "/junior",
   },
   {

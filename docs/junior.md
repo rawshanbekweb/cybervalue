@@ -29,24 +29,26 @@ Every signed-in page shares `AcademyShell.tsx`: the member's name, rank and XP, 
 
 ## Missions
 
-Six short missions (about 30 minutes in total). Every mission has a goal, a hands-on activity, and feedback that explains _why_ an answer is right.
+Eight short missions (about 40 minutes in total), opened in four steps of two: basics, reading clues, thinking like a pro, and everyday digital life (`MISSION_STAGE` in `src/lib/junior/verify.ts`). Every mission has a goal, a hands-on activity, and feedback that explains _why_ an answer is right.
 
-| #   | Mission                | What the student does                                                             | Completes when                              |
-| --- | ---------------------- | --------------------------------------------------------------------------------- | ------------------------------------------- |
-| 1   | Password master        | Types made-up passwords and sees an estimated time to crack them                  | The estimate reaches 10 years               |
-| 2   | Spot the phish         | Classifies five messages as phishing or safe                                      | At least 4 of 5 are right                   |
-| 3   | The secret cipher      | Moves a slider to break a Caesar cipher and finds the hidden word                 | The hidden word is entered                  |
-| 4   | Digital footprint      | Ticks the risky details in a social media post                                    | Every risky and safe detail is marked right |
-| 5   | Your first CTF         | Finds three flags: an HTML comment, a Base64 text, a reversed text (`CV{...}`)    | All three flags are submitted               |
-| 6   | Ethical hacker’s rules | Decides whether five situations are acceptable (permission, labs, reporting bugs) | All five answers are right                  |
+| #   | Mission                | What the student does                                                                           | Completes when                              |
+| --- | ---------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| 1   | Password master        | Types made-up passwords and sees an estimated time to crack them                                | The estimate reaches 10 years               |
+| 2   | Spot the phish         | Classifies five messages as phishing or safe                                                    | At least 4 of 5 are right                   |
+| 3   | The secret cipher      | Moves a slider to break a Caesar cipher and finds the hidden word                               | The hidden word is entered                  |
+| 4   | Digital footprint      | Ticks the risky details in a social media post                                                  | Every risky and safe detail is marked right |
+| 5   | Your first CTF         | Finds three flags: an HTML comment, a Base64 text, a reversed text (`CV{...}`)                  | All three flags are submitted               |
+| 6   | Ethical hacker’s rules | Decides whether five situations are acceptable (permission, labs, reporting bugs)               | All five answers are right                  |
+| 7   | Permission hunter      | Allows or denies seven permissions asked by a torch app and a maps app                          | Every permission is answered right          |
+| 8   | The Wi-Fi trap         | Decides whether six Wi-Fi moves are safe or risky (evil twin, fake login page, own mobile data) | All six answers are right                   |
 
-When all six are complete, the page shows next steps: HTML foundations, the Linux lab, the IP addressing lab and the story CTF.
+When all eight are complete, the page shows next steps: HTML foundations, the Linux lab, the IP addressing lab and the story CTF.
 
 ## Story campaign, badges and certificate
 
-- **The Cyber HQ case** (`src/lib/junior/story.ts`): someone tried to break into the Cybervalue cyber HQ. Each finished mission adds a piece of evidence to the case file; with all six, the recruit picks the attacker among three suspects. Solving it is worth 100 XP and is saved with the member's progress.
-- **Certificate:** with all missions done and the case closed, a printable certificate shows the codename (or a name typed for it), rank, XP and date. Only the certificate prints.
-- **Badges** (`src/lib/junior/badges.ts`): 12 achievements worked out from progress, plus three small events (tapping SOS on the telegraph key, sending a secret message, opening every cipher).
+- **The Cyber HQ case** (`src/lib/junior/story.ts`): someone tried to break into the Cybervalue cyber HQ. Each of the first six missions (`CASE_MISSION_IDS`) adds a piece of evidence to the case file; with all six, the recruit picks the attacker among three suspects. Step 4 comes after the case: it adds XP and the “Digital defender” badge but never reopens a closed case, and the certificate still needs only the six case missions. Solving it is worth 100 XP and is saved with the member's progress.
+- **Certificate:** with the six case missions done and the case closed, a printable certificate shows the codename (or a name typed for it), rank, XP and date. Only the certificate prints.
+- **Badges** (`src/lib/junior/badges.ts`): 13 achievements worked out from progress, plus three small events (tapping SOS on the telegraph key, sending a secret message, opening every cipher).
 - **Daily puzzle** (`src/lib/junior/daily.ts`): one encrypted saying or safety tip per day (Tashkent midnight), the same for everyone, with the cipher and key shown. +20 XP each; consecutive days make a streak. It sits at the top of the homework page.
 - **Narrator:** “Listen” buttons read mission briefs, the case and cipher stories aloud with the browser’s own speech engine; devices without an Uzbek voice read with another one and say so.
 

@@ -1513,3 +1513,13 @@
 .jr-tour-actions .jr-linkbtn {
   align-self: center;
 }
+
+/* Stage 4: one block of permissions per app. */
+.jr-app + .jr-app {
+  margin-top: 18px;
+}
+.jr-app h3 {
+  margin: 0 0 10px;
+  font-size: 17px;
+  font-weight: 600;
+}

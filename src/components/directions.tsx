@@ -62,7 +62,7 @@ export function Directions({
         "The first step into cybersecurity. No experience and no coding needed.",
       ),
       points: [
-        t("6 missions and a mystery case to solve"),
+        t("8 missions and a mystery case to solve"),
         t("A cipher room from Caesar to Enigma"),
         t("Homework, ranks and a group ranking"),
       ],

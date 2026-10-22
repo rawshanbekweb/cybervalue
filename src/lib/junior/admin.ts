@@ -20,6 +20,7 @@ export function summarizeMember(raw: unknown, now = Date.now()) {
     badge.earned({
       missions,
       missionTotal: MISSIONS.length,
+      done: progress.missions,
       phishing: Boolean(progress.missions.phishing),
       ciphers: progress.ciphers,
       story: progress.story,

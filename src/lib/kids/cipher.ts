@@ -183,6 +183,21 @@ export const CHESTS: Record<string, Chest> = Object.fromEntries(
     chest("c10", "YULDUZLAR OSTIDA QAZING", (t) => vigenere(t, "XAZINA", 1), [
       "kalit",
     ]),
+    chest("c11", "ESKI QUDUQ YONIDA", (t) => shift(reverse(atbash(t)), 5), [
+      "sur",
+      "teskari",
+      "atbash",
+    ]),
+    chest("c12", "BAYROQ MINORADA", (t) => reverse(shift(t, 11)), [
+      "teskari",
+      "sur",
+    ]),
+    chest(
+      "c13",
+      "KAPITAN QAYTDI",
+      (t) => vigenere(vigenere(t, "QUM", 1), "DENGIZ", 1),
+      ["kalit"],
+    ),
   ].map((c) => [c.id, c]),
 );
 

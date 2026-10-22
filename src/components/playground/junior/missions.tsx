@@ -13,6 +13,8 @@ import {
   CTF_PAGE_SOURCE,
   CTF_REVERSED,
   ETHICS,
+  PERMISSIONS,
+  WIFI,
   FOOTPRINT,
   FOOTPRINT_POST,
   PASSWORD_TRIES,
@@ -664,6 +666,139 @@ export function EthicsMission({ done, onComplete }: PanelProps) {
           ready={passed}
           done={done}
           onComplete={() => onComplete({ mission: "ethics", answers })}
+        />
+      </div>
+    </div>
+  );
+}
+
+// 7 · App permissions --------------------------------------------------------
+
+export function PermissionsMission({ done, onComplete }: PanelProps) {
+  const { t, text } = useT();
+  const [answers, setAnswers] = useState<Record<string, boolean>>({});
+  const [checked, setChecked] = useState(false);
+  const wrong = PERMISSIONS.filter(
+    (item) => answers[item.id] !== item.needed,
+  ).length;
+  const passed = checked && wrong === 0;
+  const apps = [...new Set(PERMISSIONS.map((item) => item.app.en))];
+  return (
+    <div className="jr-panel">
+      <p className="jr-lead">
+        {t(
+          "Every app asks for permissions when it is installed. Give each one only what its job really needs.",
+        )}
+      </p>
+      {apps.map((app) => {
+        const items = PERMISSIONS.filter((item) => item.app.en === app);
+        return (
+          <section key={app} className="jr-app" aria-label={text(items[0].app)}>
+            <h3>{text(items[0].app)}</h3>
+            <ol className="jr-cards">
+              {items.map((item) => (
+                <li key={item.id} className="jr-card">
+                  <p>
+                    {t("“{app}” asks for: {permission}", {
+                      app: text(item.app),
+                      permission: text(item.permission),
+                    })}
+                  </p>
+                  <Pick
+                    name={`perm-${item.id}`}
+                    legend={text(item.permission)}
+                    value={answers[item.id]}
+                    options={[t("Allow"), t("Deny")]}
+                    disabled={passed}
+                    onChange={(value) => {
+                      setAnswers((current) => ({
+                        ...current,
+                        [item.id]: value,
+                      }));
+                      setChecked(false);
+                    }}
+                  />
+                  {checked && (
+                    <Verdict ok={answers[item.id] === item.needed}>
+                      {text(item.why)}
+                    </Verdict>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </section>
+        );
+      })}
+      <div className="jr-actions">
+        <button
+          type="button"
+          className="button button-secondary"
+          disabled={Object.keys(answers).length < PERMISSIONS.length}
+          onClick={() => setChecked(true)}
+        >
+          {t("Check my answers")}
+        </button>
+        <Finish
+          ready={passed}
+          done={done}
+          onComplete={() => onComplete({ mission: "permissions", answers })}
+        />
+      </div>
+    </div>
+  );
+}
+
+// 8 · Wi-Fi --------------------------------------------------------------------
+
+export function WifiMission({ done, onComplete }: PanelProps) {
+  const { t, text } = useT();
+  const [answers, setAnswers] = useState<Record<string, boolean>>({});
+  const [checked, setChecked] = useState(false);
+  const wrong = WIFI.filter((item) => answers[item.id] !== item.safe).length;
+  const passed = checked && wrong === 0;
+  return (
+    <div className="jr-panel">
+      <p className="jr-lead">
+        {t(
+          "Public Wi-Fi belongs to someone else. In each situation, is the move safe or risky?",
+        )}
+      </p>
+      <ol className="jr-cards">
+        {WIFI.map((item) => (
+          <li key={item.id} className="jr-card">
+            <p>{text(item.situation)}</p>
+            <Pick
+              name={`wifi-${item.id}`}
+              legend={text(item.situation)}
+              value={answers[item.id]}
+              options={[t("Safe to do"), t("Risky")]}
+              disabled={passed}
+              onChange={(value) => {
+                setAnswers((current) => ({ ...current, [item.id]: value }));
+                setChecked(false);
+              }}
+            />
+            {checked && (
+              <Verdict ok={answers[item.id] === item.safe}>
+                {text(item.why)}
+              </Verdict>
+            )}
+          </li>
+        ))}
+      </ol>
+      <div className="jr-actions">
+        <button
+          type="button"
+          className="button button-secondary"
+          disabled={Object.keys(answers).length < WIFI.length}
+          onClick={() => setChecked(true)}
+        >
+          {t("Check my answers")}
+        </button>
+        <Finish
+          ready={passed}
+          done={done}
+          onComplete={() => onComplete({ mission: "wifi", answers })}
         />
       </div>
     </div>

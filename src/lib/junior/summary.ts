@@ -10,10 +10,12 @@ import {
   levelSolved,
   MISSION_STAGE,
   missionStageOpen,
+  type Level,
   type Stage,
 } from "./verify";
 
-const STAGES: Stage[] = [1, 2, 3];
+const STAGES: Stage[] = [1, 2, 3, 4];
+const LEVELS: Level[] = [1, 2, 3];
 
 /** The skill a finished mission stage stands for. */
 export const MISSION_SKILLS: Record<Stage, Text> = {
@@ -29,10 +31,14 @@ export const MISSION_SKILLS: Record<Stage, Text> = {
     uz: "CTF topshiriqlarini yechadi va etik xaker qoidalarini biladi",
     en: "Solves CTF tasks and knows the ethical hacker’s rules",
   },
+  4: {
+    uz: "Ilova ruxsatlarini tekshiradi va xavfli Wi-Fi tarmoqni taniydi",
+    en: "Checks app permissions and recognises a risky Wi-Fi network",
+  },
 };
 
 /** The skill a passed cipher level stands for. */
-export const LEVEL_SKILLS: Record<Stage, Text> = {
+export const LEVEL_SKILLS: Record<Level, Text> = {
   1: {
     uz: "Klassik shifrlarni (Sezar, Atbash, Morze va boshqalar) qo‘lda ochadi",
     en: "Works classic ciphers (Caesar, Atbash, Morse and more) by hand",
@@ -59,7 +65,7 @@ export function juniorStages(missions: Progress, ciphers: CipherProgress) {
       finished: done === list.length,
     };
   });
-  const levels = STAGES.map((level) => {
+  const levels = LEVELS.map((level) => {
     const total = CIPHERS.filter((c) => c.level === level).reduce(
       (n, c) => n + c.exercises.length,
       0,

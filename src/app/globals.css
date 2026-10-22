@@ -3085,6 +3085,10 @@ h2 {
   border-color: #b8a3ff66;
   color: #b8a3ff;
 }
+.admin-chip.stage-4 {
+  border-color: #74c0fc66;
+  color: #74c0fc;
+}
 .admin-kid-skills {
   display: grid;
   gap: 6px;

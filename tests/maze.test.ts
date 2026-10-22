@@ -21,6 +21,9 @@ const SOLUTIONS: Record<string, string> = {
             oldinga()
         aks_holda:
             ongga()`,
+  l11: "takrorla 2:\n    oldinga(2)\n    ongga()\n    oldinga(2)\n    ongga()\n    oldinga(2)\n    chapga()\n    oldinga(2)\n    chapga()",
+  l12: "toki chiqishda_emas:\n    agar ongda_yo'l bo'lsa:\n        ongga()\n        oldinga()\n    aks_holda:\n        agar oldinda_yo'l bo'lsa:\n            oldinga()\n        aks_holda:\n            chapga()",
+  l13: "toki chiqishda_emas:\n    agar ongda_yo'l bo'lsa:\n        ongga()\n        oldinga()\n    aks_holda:\n        agar oldinda_yo'l bo'lsa:\n            oldinga()\n        aks_holda:\n            chapga()",
 };
 
 test("every level is solved by its solution", () => {

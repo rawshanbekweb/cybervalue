@@ -1,4 +1,4 @@
-import { MISSION_IDS } from "./content";
+import { CASE_MISSION_IDS, MISSION_IDS } from "./content";
 import { restoreProgress, type Progress } from "./logic";
 import { restoreCipherProgress, type CipherProgress } from "./cipher-content";
 import { restoreStory } from "./story";
@@ -139,8 +139,8 @@ export function applyJuniorPart(
         !missionPassed(id, evidence[id])
       )
         return null;
-    // The case is closed only with every mission done; a restart reopens it.
-    next.story = next.story && MISSIONS_ALL(next.missions);
+    // The case is closed only with its missions done; a restart reopens it.
+    next.story = next.story && CASE_DONE(next.missions);
   }
   if (part === "ciphers") {
     const answers = proofRecord(proof.answers);
@@ -166,13 +166,12 @@ export function applyJuniorPart(
     // Solved days are never taken back.
     next.daily = [...new Set([...progress.daily, ...next.daily])];
   }
-  if (part === "story" && next.story && !MISSIONS_ALL(next.missions))
-    return null;
+  if (part === "story" && next.story && !CASE_DONE(next.missions)) return null;
   return next;
 }
 
-const MISSIONS_ALL = (missions: Progress) =>
-  MISSION_IDS.every((id) => missions[id]);
+const CASE_DONE = (missions: Progress) =>
+  CASE_MISSION_IDS.every((id) => missions[id]);
 
 export function exercisesOf(progress: JuniorProgress) {
   return Object.values(progress.ciphers).reduce(

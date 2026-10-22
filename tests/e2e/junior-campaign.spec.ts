@@ -97,7 +97,7 @@ test("a member who finished every mission solves the case and earns a certificat
   ).toContainText("700 XP");
   await expect(
     page.getByRole("region", { name: "Achievements" }),
-  ).toContainText("4/12");
+  ).toContainText("4/13");
   await audit(page, "achievements with a certificate");
 });
 
@@ -174,5 +174,66 @@ test("a secret message travels in the link and opens with the key", async ({
   ).toBeVisible();
   await expect(
     friend.getByRole("heading", { name: "Write a secret message" }),
+  ).toBeVisible();
+});
+
+test("step 4 comes after the case and never reopens it", async ({ page }) => {
+  needsDatabase();
+  await signInJunior(page, {
+    progress: { missions: ALL_MISSIONS, story: { solved: true } },
+  });
+  const caseFile = page.getByRole("region", { name: "The Cyber HQ case" });
+  await expect(caseFile.getByText("Case closed.")).toBeVisible();
+
+  await page.goto("/junior#mission/7");
+  const permissions = [
+    "Allow",
+    "Deny",
+    "Deny",
+    "Deny",
+    "Allow",
+    "Deny",
+    "Deny",
+  ];
+  for (const [index, answer] of permissions.entries())
+    await page
+      .locator(".jr-card")
+      .nth(index)
+      .getByLabel(answer, { exact: true })
+      .check();
+  await page.getByRole("button", { name: "Check my answers" }).click();
+  await page.getByRole("button", { name: "Finish the mission" }).click();
+  await audit(page, "Junior permissions mission");
+
+  await page.goto("/junior#mission/8");
+  const wifi = [
+    "Safe to do",
+    "Risky",
+    "Risky",
+    "Safe to do",
+    "Safe to do",
+    "Risky",
+  ];
+  for (const [index, answer] of wifi.entries())
+    await page
+      .locator(".jr-card")
+      .nth(index)
+      .getByLabel(answer, { exact: true })
+      .check();
+  await page.getByRole("button", { name: "Check my answers" }).click();
+  await page.getByRole("button", { name: "Finish the mission" }).click();
+
+  // Eight missions and the case: 900 XP, and the case is still closed.
+  await expect(page.locator(".jr-topbar")).toContainText("900 XP");
+  await page.reload();
+  await expect(caseFile.getByText("Case closed.")).toBeVisible();
+  await page
+    .getByRole("navigation", { name: "Academy sections" })
+    .getByRole("link", { name: "Achievements" })
+    .click();
+  await expect(
+    page
+      .getByRole("region", { name: "Achievements" })
+      .locator("li.on", { hasText: "Digital defender" }),
   ).toBeVisible();
 });

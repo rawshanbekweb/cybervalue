@@ -19,7 +19,9 @@ import {
   EthicsMission,
   FootprintMission,
   PasswordMission,
+  PermissionsMission,
   PhishingMission,
+  WifiMission,
 } from "./missions";
 import { useHashLessonId } from "../useHashLessonId";
 import "./junior.css";
@@ -37,6 +39,8 @@ const PANELS: Record<
   footprint: FootprintMission,
   ctf: CtfMission,
   ethics: EthicsMission,
+  permissions: PermissionsMission,
+  wifi: WifiMission,
 };
 
 const NEXT_STEPS = [
@@ -105,7 +109,7 @@ export function JuniorAcademy() {
           <span className="status-dot" /> {t("LEVEL 1 · FIRST STEP")}
         </span>
         <h1>
-          {t("Six missions.")} <span>{t("One mystery to solve.")}</span>
+          {t("Eight missions.")} <span>{t("One mystery to solve.")}</span>
         </h1>
         <p>
           {t(
@@ -189,7 +193,7 @@ export function JuniorAcademy() {
           <p className="jr-locked" role="status">
             <Lock size={16} aria-hidden="true" />{" "}
             {t(
-              "This mission opens when you finish both missions of the step before. Missions go in three steps: basics, reading clues, thinking like a pro.",
+              "This mission opens when you finish both missions of the step before. Missions go in four steps: basics, reading clues, thinking like a pro, and everyday digital life.",
             )}
           </p>
         ) : (
