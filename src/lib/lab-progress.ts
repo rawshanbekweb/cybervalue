@@ -8,6 +8,7 @@ export const LAB_PROGRESS = {
   html: { key: "htmldars:progress:v1", total: 12 },
   security: { key: "sabaq:progress:v1", total: 36 },
   http: { key: "cybervalue:http:progress:v1", total: 10 },
+  input: { key: "cybervalue:input:progress:v1", total: 9 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -77,6 +78,15 @@ export const LAB_META: {
       en: "HTTP in depth (Intermediate)",
     },
     href: "/intermediate/http",
+    intermediate: true,
+  },
+  {
+    id: "input",
+    title: {
+      uz: "Kiritilgan ma’lumot xavfi (Intermediate)",
+      en: "Untrusted input (Intermediate)",
+    },
+    href: "/intermediate/input",
     intermediate: true,
   },
 ];

@@ -62,6 +62,7 @@ export function AnimLab<W>({
   badge,
   icon,
   checkpoints = [],
+  back,
   renderWidget,
 }: {
   lessons: Lesson<W>[];
@@ -73,6 +74,8 @@ export function AnimLab<W>({
   badge: string;
   icon: React.ReactNode;
   checkpoints?: string[];
+  /** Where the back link leads; the Academy by default. */
+  back?: { href: string; label: string };
   renderWidget: (widget: W, props: WidgetProps) => React.ReactNode;
 }) {
   const { t, text } = useT();
@@ -83,8 +86,8 @@ export function AnimLab<W>({
   const lesson = lessons[id - 1];
   return (
     <div className="network-lab anim-lab">
-      <Link className="nl-back" href="/akademiya">
-        <ArrowLeft size={15} /> {t("Academy")}
+      <Link className="nl-back" href={back?.href ?? "/akademiya"}>
+        <ArrowLeft size={15} /> {back?.label ?? t("Academy")}
       </Link>
       <header className="nl-hero">
         <div>

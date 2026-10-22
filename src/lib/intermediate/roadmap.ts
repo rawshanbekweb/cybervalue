@@ -92,6 +92,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Kiritilgan ma’lumot xavfi", en: "Untrusted input" },
+        href: "/intermediate/input",
+        lab: "input",
         topics: [
           "injection",
           "parameterized queries",

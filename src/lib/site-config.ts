@@ -90,6 +90,12 @@ export const SECTIONS = [
     href: "/intermediate/http",
   },
   {
+    id: "input",
+    group: "lab",
+    label: "Untrusted input (Intermediate)",
+    href: "/intermediate/input",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

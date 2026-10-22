@@ -538,3 +538,216 @@ export const HTTP_POOL: PoolItem[] = [
     },
   },
 ];
+
+// Academy Intermediate · Untrusted input.
+export const INPUT_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Qaysi qiymatni foydalanuvchi o‘zgartira olmaydi?",
+      en: "Which value can the user not change?",
+    },
+    right: {
+      uz: "Serverdagi sessiyada saqlangan foydalanuvchi ID",
+      en: "The user ID stored in the server-side session",
+    },
+    wrong: [
+      { uz: "Yashirin forma maydoni", en: "A hidden form field" },
+      same("Cookie: role=user"),
+      same("User-Agent"),
+    ],
+    explain: {
+      uz: "So‘rov ichida kelgan hamma narsa mijoz nazoratida; sessiya ma’lumoti serverda qoladi.",
+      en: "Everything inside the request is the client’s; session data stays on the server.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nom maydoniga bitta ' yuborilganda sintaksis xatosi keldi. Bu nimani bildiradi?",
+      en: "Sending a single ' in the name field returns a syntax error. What does it show?",
+    },
+    right: {
+      uz: "Kiritilgan matn SQL so‘rovi ichiga tushyapti",
+      en: "The input lands inside the SQL query",
+    },
+    wrong: [
+      { uz: "Server ishlamayapti", en: "The server is down" },
+      { uz: "Parol noto‘g‘ri", en: "The password is wrong" },
+      { uz: "So‘rov parametrli", en: "The query is parameterized" },
+    ],
+    explain: {
+      uz: "Qo‘shtirnoq so‘rov chegarasini buzdi — ma’lumot kod bilan aralashgan.",
+      en: "The quote broke the query’s boundary — data is mixed with code.",
+    },
+  },
+  {
+    ask: {
+      uz: "SQL’da -- belgisi nima qiladi?",
+      en: "What does -- do in SQL?",
+    },
+    right: {
+      uz: "Satrning qolgan qismini izohga aylantiradi",
+      en: "Turns the rest of the line into a comment",
+    },
+    wrong: [
+      { uz: "Ikki qiymatni ayiradi", en: "Subtracts two values" },
+      { uz: "So‘rovni tezlashtiradi", en: "Speeds the query up" },
+      { uz: "Qatorni o‘chiradi", en: "Deletes a row" },
+    ],
+    explain: {
+      uz: "Shuning uchun inyeksiyada parol tekshiruvi -- bilan “o‘chiriladi”.",
+      en: "That is how an injection “switches off” the password check.",
+    },
+  },
+  {
+    ask: {
+      uz: "SQL inyeksiyasidan eng ishonchli himoya qaysi?",
+      en: "Which is the most reliable defence against SQL injection?",
+    },
+    right: { uz: "Parametrli so‘rovlar", en: "Parameterized queries" },
+    wrong: [
+      { uz: "' belgisini o‘chirish", en: "Deleting the ' character" },
+      { uz: "Brauzerdagi tekshiruv", en: "A check in the browser" },
+      { uz: "Xato xabarlarini yashirish", en: "Hiding error messages" },
+    ],
+    explain: {
+      uz: "Parametrlar qiymatni so‘rov tuzilishidan butunlay ajratadi.",
+      en: "Parameters keep the value completely apart from the query’s structure.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi qismini parametr (?) qilib bo‘lmaydi?",
+      en: "Which part cannot be a parameter (?)?",
+    },
+    right: {
+      uz: "Jadval yoki ustun nomi (ORDER BY ustuni)",
+      en: "A table or column name (the ORDER BY column)",
+    },
+    wrong: [
+      { uz: "Foydalanuvchi nomi", en: "A username" },
+      { uz: "Qidiruv so‘zi", en: "A search term" },
+      { uz: "Mahsulot ID", en: "A product ID" },
+    ],
+    explain: {
+      uz: "Nomlar so‘rov tuzilishining qismi; ular uchun allowlist ishlatiladi.",
+      en: "Names are part of the query’s structure; use an allowlist for them.",
+    },
+  },
+  {
+    ask: {
+      uz: "Fayl yo‘lini qanday tekshirish to‘g‘ri?",
+      en: "What is the right way to check a file path?",
+    },
+    right: {
+      uz: "Yo‘lni to‘liq hal qilib, ruxsat etilgan papka bilan boshlanishini tekshirish",
+      en: "Resolve it fully, then check it starts with the allowed folder",
+    },
+    wrong: [
+      { uz: "“../” ni bir marta o‘chirish", en: "Delete “../” once" },
+      { uz: "Faqat kengaytmani tekshirish", en: "Check only the extension" },
+      { uz: "Nomni katta harflarga o‘tkazish", en: "Upper-case the name" },
+    ],
+    explain: {
+      uz: "Filtrlar aylanib o‘tiladi; faqat hal qilingan yo‘l ishonchli.",
+      en: "Filters get bypassed; only the resolved path is reliable.",
+    },
+  },
+  {
+    ask: {
+      uz: "/srv/files/../app/config.env yo‘li qayerga olib boradi?",
+      en: "Where does /srv/files/../app/config.env lead?",
+    },
+    right: same("/srv/app/config.env"),
+    wrong: [
+      same("/srv/files/app/config.env"),
+      same("/app/config.env"),
+      same("/srv/files/config.env"),
+    ],
+    explain: {
+      uz: ".. bir papka yuqoriga ko‘taradi: /srv/files → /srv.",
+      en: ".. goes one folder up: /srv/files → /srv.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega allowlist blocklistdan yaxshiroq?",
+      en: "Why is an allowlist better than a blocklist?",
+    },
+    right: {
+      uz: "U faqat ma’lum xavfsiz shaklni qabul qiladi, qolganini rad etadi",
+      en: "It accepts only a known safe shape and refuses the rest",
+    },
+    wrong: [
+      { uz: "U tezroq ishlaydi", en: "It runs faster" },
+      { uz: "U kamroq kod talab qiladi", en: "It needs less code" },
+      { uz: "U xatolarni yashiradi", en: "It hides errors" },
+    ],
+    explain: {
+      uz: "Blocklist faqat oldindan o‘ylangan hujumlarni to‘xtatadi.",
+      en: "A blocklist only stops the attacks someone thought of in advance.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi regex “3–16 kichik harf, raqam yoki _” qoidasini to‘liq tekshiradi?",
+      en: "Which regex fully checks “3–16 lowercase letters, digits or _”?",
+    },
+    right: same("^[a-z0-9_]{3,16}$"),
+    wrong: [
+      same("[a-z0-9_]{3,16}"),
+      same("^[a-z0-9_]+"),
+      same("^[a-zA-Z0-9_]{3,16}$"),
+    ],
+    explain: {
+      uz: "^ va $ butun qiymatni tekshirishga majbur qiladi; to‘plamda katta harf yo‘q.",
+      en: "^ and $ force the whole value to be checked; the set has no capitals.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kiritilgan qiymatni qayerda tekshirish shart?",
+      en: "Where must input be validated?",
+    },
+    right: { uz: "Serverda", en: "On the server" },
+    wrong: [
+      { uz: "Faqat brauzerda", en: "Only in the browser" },
+      { uz: "Faqat ma’lumotlar bazasida", en: "Only in the database" },
+      {
+        uz: "Hech qayerda, kodlash yetarli",
+        en: "Nowhere; encoding is enough",
+      },
+    ],
+    explain: {
+      uz: "Brauzerdagi tekshiruvni chetlab o‘tish oson; u faqat qulaylik uchun.",
+      en: "A browser check is easy to skip; it is only a convenience.",
+    },
+  },
+  {
+    ask: {
+      uz: 'Qiymat value="…" atributiga chiqadi. Faqat < va > almashtirildi. Nima xavfli qoldi?',
+      en: 'A value goes into value="…". Only < and > were replaced. What is still dangerous?',
+    },
+    right: { uz: 'Qo‘shtirnoq (")', en: 'The quote (")' },
+    wrong: [
+      { uz: "Probel", en: "A space" },
+      { uz: "Raqamlar", en: "Digits" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Qo‘shtirnoq atributni yopadi va yangi atribut boshlanadi.",
+      en: "A quote closes the attribute and a new one begins.",
+    },
+  },
+  {
+    ask: {
+      uz: "React’da qaysi yo‘l avtomatik kodlashni chetlab o‘tadi?",
+      en: "Which path in React bypasses automatic encoding?",
+    },
+    right: same("dangerouslySetInnerHTML"),
+    wrong: [same("{name}"), same("className"), same("useState")],
+    explain: {
+      uz: "{name} har doim matn sifatida kodlanadi; dangerouslySetInnerHTML esa HTML’ni o‘zgarishsiz qo‘yadi.",
+      en: "{name} is always encoded as text; dangerouslySetInnerHTML inserts HTML unchanged.",
+    },
+  },
+];

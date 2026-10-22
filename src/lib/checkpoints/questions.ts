@@ -24,7 +24,13 @@ import {
 } from "../network/practice";
 import { LESSONS as LINUX_LESSONS } from "../linux/curriculum";
 import { checkpointMeta, type CheckpointMeta } from "./meta";
-import { HTML_POOL, HTTP_POOL, SECURITY_EXTRA, type PoolItem } from "./pools";
+import {
+  HTML_POOL,
+  HTTP_POOL,
+  INPUT_POOL,
+  SECURITY_EXTRA,
+  type PoolItem,
+} from "./pools";
 import { QUIZ as SECURITY_QUIZ } from "../../components/playground/security-lab/lessons.data";
 import { createTranslator } from "../i18n";
 
@@ -617,6 +623,10 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
   "http-1": (r) =>
     shuffle(r, HTTP_POOL)
       .slice(0, 12)
+      .map((item) => fromPool(r, item)),
+  "input-1": (r) =>
+    shuffle(r, INPUT_POOL)
+      .slice(0, 10)
       .map((item) => fromPool(r, item)),
 };
 
