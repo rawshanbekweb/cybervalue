@@ -102,6 +102,8 @@ test.describe("a live game", () => {
     await page.getByLabel("Password").fill(password!);
     await page.getByRole("button", { name: "Sign in" }).click();
     await expect(page).toHaveURL(/\/admin$/);
+    await page.getByRole("link", { name: "Teacher panel" }).first().click();
+    await expect(page).toHaveURL(/\/teacher$/);
     await page
       .getByRole("navigation", { name: "Admin sections" })
       .getByRole("link", { name: "Live quiz" })
@@ -111,7 +113,7 @@ test.describe("a live game", () => {
       .selectOption({ label: `Live test ${id} · 2 questions` });
     await page.getByLabel("Seconds per question").selectOption("30");
     await page.getByRole("button", { name: "Open the game" }).click();
-    await expect(page).toHaveURL(/\/admin\/live\/[^/]+$/);
+    await expect(page).toHaveURL(/\/teacher\/live\/[^/]+$/);
     const code = (
       (await page.locator(".live-code").textContent()) ?? ""
     ).replace(/\D/g, "");

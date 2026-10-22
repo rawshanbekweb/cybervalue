@@ -101,10 +101,7 @@ export default async function PlaygroundPage() {
             )}
           </p>
         </div>
-        <Link
-          className="button button-secondary"
-          href="/akademiya/intermediate"
-        >
+        <Link className="button button-secondary" href="/intermediate">
           {t("Open the roadmap")}
           <ArrowRight size={16} />
         </Link>

@@ -142,7 +142,7 @@ export function getLearningTracks() {
       category: "Intermediate · Web security",
       description:
         "Write raw requests to a training server, follow redirects, sign in with cookies, and learn the same-origin policy, CORS and security headers.",
-      href: "/akademiya/http",
+      href: "/intermediate/http",
       progressKey: LAB_PROGRESS.http.key,
       level: "Intermediate",
       lessons: HTTP_LESSONS.map(({ id, title }) => ({ id, title: title.en })),

@@ -7,6 +7,15 @@ import { getDb } from "../db";
 import { hashSecret } from "./access";
 
 const SESSION_COOKIE = "cv_student";
+// Scoped to the whole site so /intermediate knows the student too. The cookie
+// used to be scoped to /student; a browser may still send that old copy (see
+// moveStudentCookie).
+const COOKIE = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "lax" as const,
+  path: "/",
+};
 // Short enough that a shared classroom computer does not stay signed in for days.
 const SESSION_TTL_MS = 12 * 60 * 60 * 1000;
 
@@ -29,25 +38,28 @@ export async function createStudentSession(studentId: string) {
     }),
   ]);
   (await cookies()).set(SESSION_COOKIE, token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/student",
+    ...COOKIE,
     expires: expiresAt,
   });
 }
+
+const tokensOf = async () =>
+  (await cookies())
+    .getAll(SESSION_COOKIE)
+    .map((c) => c.value)
+    .filter((token) => token.length <= 100);
 
 // A deactivated or expired account loses access on its next request, even
 // with a session that has not timed out yet.
 export const getStudentSession = cache(async () => {
   const db = getDb();
   if (!db) return null;
-  const token = (await cookies()).get(SESSION_COOKIE)?.value;
-  if (!token || token.length > 100) return null;
+  const tokens = await tokensOf();
+  if (!tokens.length) return null;
   const now = new Date();
   const session = await db.studentSession.findFirst({
     where: {
-      tokenHash: hashSecret(token),
+      tokenHash: { in: tokens.map(hashSecret) },
       expiresAt: { gt: now },
       student: {
         active: true,
@@ -66,13 +78,33 @@ export async function requireStudent() {
   return session.student;
 }
 
+/**
+ * Re-issues the signed-in student's cookie for the whole site. Only a Route
+ * Handler or Server Action can set it, so pages outside /student send an old
+ * /student-scoped session through /student/continue.
+ */
+export async function moveStudentCookie() {
+  const session = await getStudentSession();
+  if (!session) return null;
+  const token = (await tokensOf()).find(
+    (value) => hashSecret(value) === session.tokenHash,
+  );
+  if (!token) return null;
+  (await cookies()).set(SESSION_COOKIE, token, {
+    ...COOKIE,
+    expires: session.expiresAt,
+  });
+  return session;
+}
+
+// One instruction per cookie name fits in a response, so an old
+// /student-scoped copy is left to expire; its session row is deleted here.
 export async function destroyStudentSession() {
   const db = getDb();
-  const cookieStore = await cookies();
-  const token = cookieStore.get(SESSION_COOKIE)?.value;
-  if (db && token)
+  const tokens = await tokensOf();
+  if (db && tokens.length)
     await db.studentSession.deleteMany({
-      where: { tokenHash: hashSecret(token) },
+      where: { tokenHash: { in: tokens.map(hashSecret) } },
     });
-  cookieStore.delete({ name: SESSION_COOKIE, path: "/student" });
+  (await cookies()).delete({ name: SESSION_COOKIE, path: "/" });
 }

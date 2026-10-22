@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useActionState } from "react";
 import { useTranslator } from "@/components/locale-provider";
-import { promoteKidAction } from "@/app/admin/(cms)/kids/promote";
+import { promoteKidAction } from "@/app/teacher/(panel)/kids/promote";
 import { formatJuniorCode } from "@/lib/junior/code-format";
 
 export function PromoteKidForm({
@@ -25,7 +25,7 @@ export function PromoteKidForm({
     return (
       <p>
         {t("Moved to Academy Junior:")}{" "}
-        <Link href={`/admin/junior/${promoted.id}`}>{promoted.name}</Link>
+        <Link href={`/teacher/junior/${promoted.id}`}>{promoted.name}</Link>
       </p>
     );
   if (state?.code)
@@ -38,7 +38,7 @@ export function PromoteKidForm({
         </p>
         <code className="student-code">{formatJuniorCode(state.code)}</code>
         <p>
-          <Link href={`/admin/junior/${state.juniorId}`}>
+          <Link href={`/teacher/junior/${state.juniorId}`}>
             {t("Open the Junior page")}
           </Link>
         </p>

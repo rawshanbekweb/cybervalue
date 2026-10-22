@@ -12,7 +12,7 @@ A private learning area at `/student` for students the admin invites. Nothing in
   - issue a new code (the old one stops working);
   - sign the student out everywhere;
   - delete the student together with all answers.
-- Sessions last 12 hours, and the cookie is scoped to `/student`. Sign-in is rate-limited to 40 attempts per client and 400 attempts overall per 5 minutes, which leaves room for a whole classroom behind one address.
+- Sessions last 12 hours, and the cookie is scoped to `/` so [Academy Intermediate](intermediate.md) can read it too. Sign-in is rate-limited to 40 attempts per client and 400 attempts overall per 5 minutes, which leaves room for a whole classroom behind one address.
 
 ## Materials
 
@@ -173,7 +173,7 @@ A test's admin page shows, for every question, the share of attempts that got it
 
 ## Assignments
 
-**Admin → Assignments** (`/admin/assignments`) sets work for one group (or every student) with a deadline in Tashkent time. The target is a student material, a lab checkpoint or every lesson of an open lab, stored as `material:<id>`, `checkpoint:<id>` or `lab:<id>` in `StudentAssignment` (migration `20261019090000_student_assignments`). Nothing is marked by hand: a material counts once finished or handed in, a checkpoint once passed, a lab once all its lessons are saved. A status is _done_, _done late_, _still open_ or _missed_.
+**Admin → Assignments** (`/teacher/assignments`) sets work for one group (or every student) with a deadline in Tashkent time. The target is a student material, a lab checkpoint or every lesson of an open lab, stored as `material:<id>`, `checkpoint:<id>` or `lab:<id>` in `StudentAssignment` (migration `20261019090000_student_assignments`). Nothing is marked by hand: a material counts once finished or handed in, a checkpoint once passed, a lab once all its lessons are saved. A status is _done_, _done late_, _still open_ or _missed_.
 
 Students see their assignments at the top of their page, open work due within a week and missed work first. The class panel lists the last 30 days of assignments with who missed them, and a missed deadline puts a student on the **Needs attention** list.
 
@@ -191,11 +191,11 @@ The newest personal lab published in the last two weeks is featured as **This we
 
 ## Class panel
 
-**Admin → Class** (`/admin/class`) shows a group at a glance: students active this week, completion, test average, checkpoint pass rate, Academy Junior members of the same group, activity per day over two weeks, and a **Needs attention** list (no activity, inactive for over a week, far behind the class average, tests below 50%). The table lists every student's rank, XP, completion, test average, checkpoints and activity; **Weekly report (CSV)** exports the same. Each student's admin page also shows their rank, weekly activity and checkpoint attempts. The migration is `20261017090000_student_checkpoints`.
+**Admin → Class** (`/teacher/class`) shows a group at a glance: students active this week, completion, test average, checkpoint pass rate, Academy Junior members of the same group, activity per day over two weeks, and a **Needs attention** list (no activity, inactive for over a week, far behind the class average, tests below 50%). The table lists every student's rank, XP, completion, test average, checkpoints and activity; **Weekly report (CSV)** exports the same. Each student's admin page also shows their rank, weekly activity and checkpoint attempts. The migration is `20261017090000_student_checkpoints`.
 
 ## Live quiz
 
-**Admin → Live quiz** (`/admin/live`) turns any test into a classroom game. Opening a game snapshots the test's questions into `LiveGame` (migration `20261020090000_live_quiz`) and shows a six-digit code and a QR code on the host screen (`/admin/live/<id>`, with a full-screen button for the projector).
+**Admin → Live quiz** (`/teacher/live`) turns any test into a classroom game. Opening a game snapshots the test's questions into `LiveGame` (migration `20261020090000_live_quiz`) and shows a six-digit code and a QR code on the host screen (`/teacher/live/<id>`, with a full-screen button for the projector).
 
 - Students open **/live** on their phones, type the code and a name (unique within the game). No account is needed; the seat token lives in the browser tab and only its SHA-256 hash is stored.
 - The host starts the game and each question runs for 10–60 seconds. Phones poll `POST /api/live/state` every 1.5–2.5 seconds and answer with `POST /api/live/answer`; the right answer never leaves the server before the reveal.

@@ -4,7 +4,7 @@ A first step into cybersecurity for beginners (aimed at 7th-grade students, 13�
 
 ## Accounts and access codes
 
-- An admin creates members at **Admin → Academy Junior** (`/admin/junior`) from a list (`Full name | group`, one per line), optionally with an end date. Each member gets an 8-symbol code shown as `XXXX-XXXX` (Crockford base32, `src/lib/junior/codes.ts`). Codes are shown once and stored only as SHA-256 digests; a lost code is replaced from the member's page, which also closes their sessions.
+- An admin creates members at **Admin → Academy Junior** (`/teacher/junior`) from a list (`Full name | group`, one per line), optionally with an end date. Each member gets an 8-symbol code shown as `XXXX-XXXX` (Crockford base32, `src/lib/junior/codes.ts`). Codes are shown once and stored only as SHA-256 digests; a lost code is replaced from the member's page, which also closes their sessions.
 - Signing in (`juniorLoginAction`) is rate limited per client (40 per 5 minutes) and globally (400 per 5 minutes) and opens a 24-hour session in the `cv_junior` cookie (path `/junior`, `src/lib/junior/session.ts`). Blocking a member or passing the end date ends access at once.
 - Progress lives on the server in `JuniorMember.progress` (JSON, `src/lib/junior/progress.ts`): missions, cipher exercises, the case, solved daily puzzles, badge events and the agent card. Each part is saved separately (`saveJuniorPartAction`), re-validated with the same restore functions, and the XP is recomputed on the server, so an edited request can only claim what a real run could earn. The client store (`store.tsx`) updates at once and retries failed saves on the next change; a banner shows while something is unsaved.
 - `/junior/secret` stays public so a friend without a code can open a secret link.
@@ -23,8 +23,8 @@ Every signed-in page shares `AcademyShell.tsx`: the member's name, rank and XP, 
 
 ## Admin: control and results
 
-- `/admin/junior`: totals (members, active this week, average XP, groups), a per-group overview, the create form and a table of every member with rank, XP, missions, exercises, the case, daily puzzles and streak, last activity and status. Filter by group, sort by XP, name or activity, and download the same data as CSV (`/admin/junior/export`, formulas neutralised).
-- `/admin/junior/[id]`: the member's missions, per-cipher progress bars and badges; edit name, group, note, end date and access; issue a new code, sign out everywhere, reset progress or delete. Every change is written to the audit log.
+- `/teacher/junior`: totals (members, active this week, average XP, groups), a per-group overview, the create form and a table of every member with rank, XP, missions, exercises, the case, daily puzzles and streak, last activity and status. Filter by group, sort by XP, name or activity, and download the same data as CSV (`/teacher/junior/export`, formulas neutralised).
+- `/teacher/junior/[id]`: the member's missions, per-cipher progress bars and badges; edit name, group, note, end date and access; issue a new code, sign out everywhere, reset progress or delete. Every change is written to the audit log.
 - The admin dashboard shows an academy overview for students and Junior members.
 
 ## Missions

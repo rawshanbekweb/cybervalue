@@ -72,6 +72,7 @@ export async function revokeOtherSessionsAction(
     });
     await audit("sessions.revoke", session.user.id);
     revalidatePath("/admin/account");
+    revalidatePath("/teacher/account");
     return { success: "Other sessions have been signed out." };
   } catch {
     return { error: "Sessions could not be revoked. Try again." };

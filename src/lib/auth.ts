@@ -4,10 +4,23 @@ import { randomBytes, createHash } from "node:crypto";
 import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import { getDb } from "./db";
+import { isStaffPath, roleOf } from "./staff";
+
+export {
+  homeOf,
+  isStaffPath,
+  roleOf,
+  STAFF_ROLES,
+  type StaffRole,
+} from "./staff";
 
 export { hashPassword, verifyPassword } from "./password";
 
 const SESSION_COOKIE = "cv_session";
+// Sessions used to be scoped to /admin; the teacher panel needs the whole
+// site. A response carries one instruction per cookie name, so an old
+// /admin-scoped copy is not deleted here: it stops working when its session
+// row is deleted and expires within SESSION_TTL_MS.
 const SESSION_TTL_MS = 12 * 60 * 60 * 1000;
 
 function hashToken(token: string) {
@@ -29,7 +42,7 @@ export async function createSession(userId: string) {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
-    path: "/admin",
+    path: "/",
     expires: expiresAt,
   });
 }
@@ -37,11 +50,14 @@ export async function createSession(userId: string) {
 export const getSession = cache(async () => {
   const db = getDb();
   if (!db) return null;
-  const cookieStore = await cookies();
-  const token = cookieStore.get(SESSION_COOKIE)?.value;
-  if (!token) return null;
+  // A browser may still hold the old /admin cookie next to the new one.
+  const tokens = (await cookies()).getAll(SESSION_COOKIE).map((c) => c.value);
+  if (!tokens.length) return null;
   const session = await db.session.findFirst({
-    where: { tokenHash: hashToken(token), expiresAt: { gt: new Date() } },
+    where: {
+      tokenHash: { in: tokens.map(hashToken) },
+      expiresAt: { gt: new Date() },
+    },
     include: { user: true },
   });
   // A switched-off staff account loses access on its next request.
@@ -52,8 +68,7 @@ export const getSession = cache(async () => {
 export async function requireAdmin(nextPath?: string) {
   const session = await getSession();
   if (!session) {
-    const safeNext =
-      nextPath && nextPath.startsWith("/admin") ? nextPath : undefined;
+    const safeNext = nextPath && isStaffPath(nextPath) ? nextPath : undefined;
     redirect(
       safeNext
         ? `/admin/login?next=${encodeURIComponent(safeNext)}`
@@ -63,22 +78,47 @@ export async function requireAdmin(nextPath?: string) {
   return session;
 }
 
+/** Re-issues the signed-in session's cookie for the whole site (/teacher too). */
+export async function moveSessionCookie() {
+  const session = await getSession();
+  if (!session) return null;
+  const cookieStore = await cookies();
+  const token = cookieStore
+    .getAll(SESSION_COOKIE)
+    .map((c) => c.value)
+    .find((value) => hashToken(value) === session.tokenHash);
+  if (!token) return null;
+  cookieStore.set(SESSION_COOKIE, token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    expires: session.expiresAt,
+  });
+  return session;
+}
+
 export async function destroySession() {
   const db = getDb();
   const cookieStore = await cookies();
-  const token = cookieStore.get(SESSION_COOKIE)?.value;
-  if (db && token)
-    await db.session.deleteMany({ where: { tokenHash: hashToken(token) } });
-  cookieStore.delete(SESSION_COOKIE);
+  const tokens = cookieStore.getAll(SESSION_COOKIE).map((c) => c.value);
+  if (db && tokens.length)
+    await db.session.deleteMany({
+      where: { tokenHash: { in: tokens.map(hashToken) } },
+    });
+  cookieStore.delete({ name: SESSION_COOKIE, path: "/" });
 }
 
 export type StaffSession = NonNullable<Awaited<ReturnType<typeof getSession>>>;
 
-/** Who may see what: owners see everything, teachers only their groups. */
+/**
+ * Who may see what: `owner` is true for owners and admins, who see every
+ * group; teachers only see theirs.
+ */
 export type Scope = { owner: boolean; groups: string[] };
 
 export function scopeOf(session: StaffSession): Scope {
-  return session.user.role === "teacher"
+  return roleOf(session.user) === "teacher"
     ? { owner: false, groups: session.user.groups }
     : { owner: true, groups: [] };
 }
@@ -92,7 +132,7 @@ export function canSeeGroup(scope: Scope, group: string) {
   return scope.owner || scope.groups.includes(group);
 }
 
-/** For pages and actions only owners may use; teachers get a 404. */
+/** For pages and actions only owners and admins may use; teachers get a 404. */
 export async function requireOwner(nextPath?: string) {
   const session = await requireAdmin(nextPath);
   if (!scopeOf(session).owner) notFound();

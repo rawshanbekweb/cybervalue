@@ -1,7 +1,7 @@
 "use client";
 import { useActionState } from "react";
 import { useTranslator } from "@/components/locale-provider";
-import { createLiveGameAction } from "@/app/admin/(cms)/live/actions";
+import { createLiveGameAction } from "@/app/teacher/(panel)/live/actions";
 
 export function LiveCreateForm({
   tests,

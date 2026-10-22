@@ -56,6 +56,8 @@ test.describe("team and teacher roles", () => {
   const mine = `own-${id}`;
   const other = `other-${id}`;
   const teacherEmail = `teacher-${id}@example.com`;
+  const adminEmail = `admin-${id}@example.com`;
+  let adminPassword = "";
   const ownStudent = `e2e_${randomUUID()}`;
   const otherStudent = `e2e_${randomUUID()}`;
   const practice = `e2e_${randomUUID()}`;
@@ -97,7 +99,9 @@ test.describe("team and teacher roles", () => {
     await client.query(`DELETE FROM "StudentMaterial" WHERE id = $1`, [
       practice,
     ]);
-    await client.query(`DELETE FROM "User" WHERE email = $1`, [teacherEmail]);
+    await client.query(`DELETE FROM "User" WHERE email = ANY($1)`, [
+      [teacherEmail, adminEmail],
+    ]);
     await client.end();
   });
 
@@ -119,7 +123,7 @@ test.describe("team and teacher roles", () => {
     expect(teacherPassword).toHaveLength(16);
     await audit(page, "team page");
 
-    await page.goto("/admin/groups");
+    await page.goto("/teacher/groups");
     const row = page.getByRole("row", { name: new RegExp(mine) });
     await expect(row).toContainText("Test Teacher");
     await audit(page, "groups page");
@@ -127,43 +131,50 @@ test.describe("team and teacher roles", () => {
 
   test("the teacher sees only their group", async ({ page }) => {
     await signIn(page, teacherEmail, teacherPassword);
-    await expect(page).toHaveURL(/\/admin$/);
+    await expect(page).toHaveURL(/\/teacher$/);
     const nav = page.getByRole("navigation", { name: "Admin sections" });
     await expect(
       nav.getByRole("link", { name: "Groups", exact: true }),
     ).toBeVisible();
-    await expect(
-      nav.getByRole("link", { name: "Settings", exact: true }),
-    ).toHaveCount(0);
-    await expect(
-      nav.getByRole("link", { name: "Team", exact: true }),
-    ).toHaveCount(0);
+    for (const name of ["Site settings", "Team", "All users"])
+      await expect(nav.getByRole("link", { name, exact: true })).toHaveCount(0);
+    await expect(page.getByRole("link", { name: "Admin panel" })).toHaveCount(
+      0,
+    );
+    await audit(page, "teacher dashboard");
 
-    await page.goto("/admin/students");
-    await expect(page.getByText(`Own Pupil ${id}`)).toBeVisible();
-    await expect(page.getByText(`Other Pupil ${id}`)).toHaveCount(0);
-
+    // The admin panel is not theirs: every page there leads to /teacher.
     for (const path of [
+      "/admin",
       "/admin/settings",
       "/admin/team",
       "/admin/cleanup",
       "/admin/users",
-      `/admin/students/${otherStudent}`,
     ]) {
-      const response = await page.goto(path);
-      expect(response?.status(), path).toBe(404);
+      await page.goto(path);
+      await expect(page, path).toHaveURL(/\/teacher$/);
     }
-    const own = await page.goto(`/admin/students/${ownStudent}`);
+    // Old links to moved pages still work.
+    await page.goto("/admin/students");
+    await expect(page).toHaveURL(/\/teacher\/students$/);
+
+    await page.goto("/teacher/students");
+    await expect(page.getByText(`Own Pupil ${id}`)).toBeVisible();
+    await expect(page.getByText(`Other Pupil ${id}`)).toHaveCount(0);
+
+    const outside = await page.goto(`/teacher/students/${otherStudent}`);
+    expect(outside?.status()).toBe(404);
+    const own = await page.goto(`/teacher/students/${ownStudent}`);
     expect(own?.status()).toBe(200);
 
-    await page.goto("/admin/students");
+    await page.goto("/teacher/students");
     await page.getByLabel(/One student per line/).fill(`Sneaky Add | ${other}`);
     await page.getByRole("button", { name: /Create/ }).click();
     await expect(page.locator(".admin-error")).toContainText(
       "You can only add people to your own groups",
     );
 
-    await page.goto("/admin/groups");
+    await page.goto("/teacher/groups");
     await expect(
       page.getByRole("row", { name: new RegExp(mine) }),
     ).toBeVisible();
@@ -171,8 +182,8 @@ test.describe("team and teacher roles", () => {
 
     // Grading and the material's answers hold the own group only.
     for (const path of [
-      `/admin/grading?material=${practice}`,
-      `/admin/materials/${practice}`,
+      `/teacher/grading?material=${practice}`,
+      `/teacher/materials/${practice}`,
     ]) {
       await page.goto(path);
       await expect(page.getByText(`Answer from ${ownStudent}`)).toBeVisible();
@@ -181,6 +192,52 @@ test.describe("team and teacher roles", () => {
       );
     }
     await audit(page, "grading queue");
+  });
+
+  test("an admin runs the site but cannot manage owners or admins", async ({
+    page,
+    browser,
+  }) => {
+    await signIn(page, email!, password!);
+    await expect(page).toHaveURL(/\/admin$/);
+    await page.goto("/admin/team");
+    await page.locator("#staff-name").fill("Test Admin");
+    await page.locator("#staff-email").fill(adminEmail);
+    await page.locator("#staff-role").selectOption("admin");
+    await page.getByRole("button", { name: "Create account" }).click();
+    const field = page.getByLabel("One-time password");
+    await expect(field).toBeVisible();
+    adminPassword = await field.inputValue();
+
+    const context = await browser.newContext({ storageState: english });
+    const admin = await context.newPage();
+    await signIn(admin, adminEmail, adminPassword);
+    await expect(admin).toHaveURL(/\/admin$/);
+    const nav = admin.getByRole("navigation", { name: "Admin sections" });
+    await expect(
+      nav.getByRole("link", { name: "Site settings", exact: true }),
+    ).toBeVisible();
+    await audit(admin, "admin dashboard");
+
+    // Teaching is one click away, with every group in sight.
+    await admin.getByRole("link", { name: "Teacher panel" }).first().click();
+    await expect(admin).toHaveURL(/\/teacher$/);
+    await admin.goto("/teacher/students");
+    await expect(admin.getByText(`Own Pupil ${id}`)).toBeVisible();
+    await expect(admin.getByText(`Other Pupil ${id}`)).toBeVisible();
+
+    // Only teachers can be added, and owners are read-only.
+    await admin.goto("/admin/team");
+    await expect(admin.locator("#staff-role option[value=admin]")).toHaveCount(
+      0,
+    );
+    const ownerRow = admin.locator(`details[data-email="${email}"]`);
+    await ownerRow.locator("summary").click();
+    await expect(
+      ownerRow.getByText("Only an owner can manage owners and admins."),
+    ).toBeVisible();
+    await expect(ownerRow.getByRole("button", { name: "Save" })).toHaveCount(0);
+    await context.close();
   });
 
   test("a switched-off teacher cannot sign in", async ({ page, browser }) => {

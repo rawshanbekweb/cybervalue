@@ -49,3 +49,13 @@ export function suggestLevel({
 // of the listed levels.
 export const visibleAtLevel = (levels: string[], level: string) =>
   levels.length === 0 || levels.includes(level);
+
+/** Academy Intermediate labs open to students placed at this level or above. */
+export const opensIntermediate = (level: string) =>
+  level === "intermediate" || level === "advanced";
+
+/** Where a student may be sent after signing in: their area or Intermediate. */
+export const isStudentNext = (path: unknown): path is string =>
+  typeof path === "string" &&
+  /^\/(student|intermediate)(\/|\?|#|$)/.test(path) &&
+  path.length <= 200;

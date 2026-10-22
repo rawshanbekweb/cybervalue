@@ -3,7 +3,7 @@ import { useActionState } from "react";
 import { useTranslator } from "@/components/locale-provider";
 import { studentLoginAction } from "../actions";
 
-export function StudentLoginForm() {
+export function StudentLoginForm({ next }: { next?: string }) {
   const t = useTranslator();
   const [state, action, pending] = useActionState(
     studentLoginAction,
@@ -11,6 +11,7 @@ export function StudentLoginForm() {
   );
   return (
     <form action={action} className="student-login-form">
+      {next && <input type="hidden" name="next" value={next} />}
       <label htmlFor="student-code" className="student-field-label">
         {t("Access code")}
       </label>

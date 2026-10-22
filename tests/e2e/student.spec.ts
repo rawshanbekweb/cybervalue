@@ -76,7 +76,7 @@ test.describe("admin-issued access", () => {
     fields: { title: string; slug: string; kind: string; body: string },
     extra?: (page: Page) => Promise<void>,
   ) {
-    await page.goto("/admin/materials/new");
+    await page.goto("/teacher/materials/new");
     await page.getByLabel("Title", { exact: true }).fill(fields.title);
     await page.getByLabel("Slug").fill(fields.slug);
     await page.getByLabel("Kind").selectOption(fields.kind);
@@ -107,7 +107,7 @@ test.describe("admin-issued access", () => {
       }),
     );
     // An invalid quiz is rejected without losing what was typed.
-    await page.goto("/admin/materials/new");
+    await page.goto("/teacher/materials/new");
     await page.getByLabel("Title", { exact: true }).fill(`Quiz ${id}`);
     await page.getByLabel("Slug").fill(`e2e-quiz-${id}`);
     await page.getByLabel("Kind").selectOption("QUIZ");
@@ -147,7 +147,7 @@ test.describe("admin-issued access", () => {
       }),
     );
 
-    await page.goto("/admin/students");
+    await page.goto("/teacher/students");
     await page
       .getByLabel("One student per line: Full name | group (group is optional)")
       .fill(`Test Student ${id} | ${group}`);
@@ -221,7 +221,7 @@ test.describe("admin-issued access", () => {
     await page.getByText("Answers question by question").click();
     await expect(page.locator(".admin-answers li.ok")).toHaveCount(2);
     const practiceId = new URL(urls[2]).pathname.split("/").pop();
-    await page.goto(`/admin/grading?material=${practiceId}`);
+    await page.goto(`/teacher/grading?material=${practiceId}`);
     await expect(
       page.getByText("The form trusted a hidden price field."),
     ).toBeVisible();
@@ -276,7 +276,7 @@ test.describe("admin-issued access", () => {
       ).toBeVisible();
 
     // Blocking access ends the open session immediately.
-    await page.goto("/admin/students");
+    await page.goto("/teacher/students");
     await page.getByRole("link", { name: `Test Student ${id}` }).click();
     await page
       .getByLabel("Access allowed (turning it off signs the student out)")
@@ -289,11 +289,11 @@ test.describe("admin-issued access", () => {
     // Cleanup.
     page.on("dialog", (dialog) => dialog.accept());
     await page.getByRole("button", { name: "Delete student" }).click();
-    await expect(page).toHaveURL(/\/admin\/students$/);
+    await expect(page).toHaveURL(/\/teacher\/students$/);
     for (const url of urls) {
       await page.goto(url);
       await page.getByRole("button", { name: "Delete material" }).click();
-      await expect(page).toHaveURL(/\/admin\/materials$/);
+      await expect(page).toHaveURL(/\/teacher\/materials$/);
     }
   });
 
@@ -320,7 +320,7 @@ test.describe("admin-issued access", () => {
       },
     );
 
-    await page.goto("/admin/students");
+    await page.goto("/teacher/students");
     await page
       .getByLabel("One student per line: Full name | group (group is optional)")
       .fill(`Lab One ${id} | ${group}\nLab Two ${id} | ${group}`);
@@ -393,7 +393,7 @@ test.describe("admin-issued access", () => {
     await expect(rowTwo).toContainText("1 wrong attempts");
 
     // The class results matrix and its CSV show the same outcome.
-    await page.goto("/admin/results");
+    await page.goto("/teacher/results");
     await page.getByLabel("Group").selectOption(group);
     await page.getByRole("button", { name: "Show" }).click();
     await expect(page).toHaveURL(new RegExp(`group=${group}`));
@@ -421,12 +421,12 @@ test.describe("admin-issued access", () => {
     // Cleanup.
     page.on("dialog", (dialog) => dialog.accept());
     await page.getByRole("button", { name: "Delete material" }).click();
-    await expect(page).toHaveURL(/\/admin\/materials$/);
+    await expect(page).toHaveURL(/\/teacher\/materials$/);
     for (const name of [`Lab One ${id}`, `Lab Two ${id}`]) {
-      await page.goto("/admin/students");
+      await page.goto("/teacher/students");
       await page.getByRole("link", { name }).click();
       await page.getByRole("button", { name: "Delete student" }).click();
-      await expect(page).toHaveURL(/\/admin\/students$/);
+      await expect(page).toHaveURL(/\/teacher\/students$/);
     }
   });
 });

@@ -141,7 +141,7 @@ test("upload, publish, protect referenced files, unpublish and remove unused fil
   await expect(resourceCard.getByRole("alert")).toContainText(
     "entry in the trash",
   );
-  await page.goto("/admin/trash?kind=content");
+  await page.goto("/teacher/trash?kind=content");
   const trashed = page.getByRole("row", { name: new RegExp(title) });
   await trashed.getByRole("button", { name: /for good$/ }).click();
   await expect(trashed).toHaveCount(0);

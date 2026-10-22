@@ -66,7 +66,7 @@ test.describe("Academy Junior administration", () => {
       page.getByRole("link", { name: /Academy Junior/ }).last(),
     ).toBeVisible();
 
-    await page.goto("/admin/junior");
+    await page.goto("/teacher/junior");
     await page.getByLabel(/One member per line/).fill(`${name} | ${group}`);
     await page
       .getByRole("button", { name: "Create members and codes" })
@@ -99,12 +99,12 @@ test.describe("Academy Junior administration", () => {
     await expect(ranking.locator("li.me")).toContainText("15 XP");
 
     // The admin sees the result in the group's table and on the member page.
-    await page.goto(`/admin/junior?group=${group}`);
+    await page.goto(`/teacher/junior?group=${group}`);
     const row = page.getByRole("row", { name: new RegExp(name) });
     await expect(row).toContainText("15");
     await expect(row).toContainText("1/51");
     await audit(page, "junior list");
-    const csv = await page.request.get(`/admin/junior/export?group=${group}`);
+    const csv = await page.request.get(`/teacher/junior/export?group=${group}`);
     expect(csv.headers()["content-type"]).toContain("text/csv");
     const text = await csv.text();
     expect(text).toContain(name);
@@ -135,7 +135,7 @@ test.describe("Academy Junior administration", () => {
 
     page.once("dialog", (dialog) => dialog.accept());
     await page.getByRole("button", { name: "Delete member" }).click();
-    await expect(page).toHaveURL(/\/admin\/junior$/);
+    await expect(page).toHaveURL(/\/teacher\/junior$/);
     await expect(page.getByText(name)).toHaveCount(0);
     await member.context().close();
   });
@@ -161,7 +161,7 @@ test.describe("Academy Junior administration", () => {
     await page.getByLabel("Password").fill(password!);
     await page.getByRole("button", { name: "Sign in" }).click();
     await expect(page).toHaveURL(/\/admin$/);
-    await page.goto("/admin/junior");
+    await page.goto("/teacher/junior");
     const row = page.getByRole("row", { name: new RegExp(name) });
     await expect(row.getByRole("cell").nth(5)).toContainText("Stage 2");
     await expect(row.getByRole("cell").nth(7)).toContainText("Level 2");

@@ -79,7 +79,7 @@ test.describe("teacher tools", () => {
     page,
   }) => {
     await signIn(page);
-    await page.goto("/admin/materials");
+    await page.goto("/teacher/materials");
     await page.getByRole("link", { name: "New test" }).click();
     await expect(
       page.getByRole("heading", { level: 1, name: "New test" }),
@@ -156,6 +156,8 @@ test.describe("teacher tools", () => {
     browser,
   }) => {
     await signIn(page);
+    await page.getByRole("link", { name: "Teacher panel" }).first().click();
+    await expect(page).toHaveURL(/\/teacher$/);
     await page
       .getByRole("navigation", { name: "Admin sections" })
       .getByRole("link", { name: "Assignments" })
@@ -208,7 +210,7 @@ test.describe("teacher tools", () => {
     );
     await student.context().close();
 
-    await page.goto(`/admin/class?group=${group}`);
+    await page.goto(`/teacher/class?group=${group}`);
     await expect(page.locator(".admin-attention")).toContainText(
       "Missed an assignment deadline",
     );

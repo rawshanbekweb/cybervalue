@@ -4,7 +4,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getDb } from "@/lib/db";
 import { hashPassword, verifyPassword } from "@/lib/password";
-import { createSession } from "@/lib/auth";
+import { createSession, homeOf, isStaffPath } from "@/lib/auth";
 import { audit } from "@/lib/audit";
 import {
   claimChallengeAttempt,
@@ -24,8 +24,10 @@ const DUMMY_HASH = hashPassword(randomBytes(32).toString("hex"));
 const GENERIC_ERROR = "Invalid email or password.";
 const RATE_ERROR = "Too many attempts. Try again in a few minutes.";
 
-const safeNext = (next: FormDataEntryValue | null) =>
-  typeof next === "string" && next.startsWith("/admin") ? next : "/admin";
+// Without a valid next path, each role lands on its own panel. A teacher
+// sent to an /admin page is passed on to /teacher by the admin layout.
+const safeNext = (next: FormDataEntryValue | null, user: { role: string }) =>
+  typeof next === "string" && isStaffPath(next) ? next : homeOf(user);
 
 export async function loginAction(
   _state: LoginState,
@@ -67,7 +69,7 @@ export async function loginAction(
   }
   await createSession(user.id);
   await audit("login.success", user.id);
-  redirect(safeNext(formData.get("next")));
+  redirect(safeNext(formData.get("next"), user));
 }
 
 export async function verifyCodeAction(
@@ -98,7 +100,7 @@ export async function verifyCodeAction(
     factor === "recovery" ? "login.recovery_code" : "login.success",
     challenge.userId,
   );
-  redirect(safeNext(formData.get("next")));
+  redirect(safeNext(formData.get("next"), challenge.user));
 }
 
 export async function cancelChallengeAction() {

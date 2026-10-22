@@ -6,7 +6,7 @@ import {
   purgeAction,
   restoreAction,
   type TrashState,
-} from "@/app/admin/(cms)/trash/actions";
+} from "@/app/teacher/(panel)/trash/actions";
 
 export function TrashItemButtons({ id, label }: { id: string; label: string }) {
   const t = useTranslator();

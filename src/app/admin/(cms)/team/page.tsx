@@ -1,5 +1,5 @@
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
-import { requireOwner } from "@/lib/auth";
+import { requireOwner, roleOf } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { formatDate } from "@/components/ui";
 import { listGroups } from "@/lib/admin/groups";
@@ -35,6 +35,8 @@ export default async function TeamPage() {
       ])
     : [[], []];
   const groupNames = groups.map((g) => g.name);
+  const owner = roleOf(session.user) === "owner";
+  const label = { owner: t("Owner"), admin: t("Admin"), teacher: t("Teacher") };
   return (
     <div className="admin-page">
       <div className="admin-page-header">
@@ -42,7 +44,7 @@ export default async function TeamPage() {
           <h1>{t("Team")}</h1>
           <p className="muted">
             {t(
-              "Who can sign in to this admin panel. Teachers work only with the groups you give them.",
+              "Who can sign in. Admins run the site from /admin; teachers work in /teacher with the groups you give them. Only an owner manages owners and admins.",
             )}
           </p>
         </div>
@@ -52,7 +54,7 @@ export default async function TeamPage() {
           {t("Database is not configured.")}
         </p>
       )}
-      <CreateStaffForm groups={groupNames} />
+      <CreateStaffForm groups={groupNames} owner={owner} />
       <div className="admin-team">
         {people.map((person) => (
           <details
@@ -63,9 +65,7 @@ export default async function TeamPage() {
             <summary>
               <strong>{person.name}</strong>
               <span className="muted">{person.email}</span>
-              <span className="admin-chip">
-                {person.role === "teacher" ? t("Teacher") : t("Owner")}
-              </span>
+              <span className="admin-chip">{label[roleOf(person)]}</span>
               {person.role === "teacher" && (
                 <span className="muted">{person.groups.join(", ") || "—"}</span>
               )}
@@ -84,15 +84,22 @@ export default async function TeamPage() {
                   : t("Never signed in")}
               </span>
             </summary>
-            <StaffEditForm
-              id={person.id}
-              name={person.name}
-              role={person.role}
-              groups={person.groups}
-              active={person.active}
-              allGroups={groupNames}
-              self={person.id === session.user.id}
-            />
+            {owner || roleOf(person) === "teacher" ? (
+              <StaffEditForm
+                id={person.id}
+                owner={owner}
+                name={person.name}
+                role={person.role}
+                groups={person.groups}
+                active={person.active}
+                allGroups={groupNames}
+                self={person.id === session.user.id}
+              />
+            ) : (
+              <p className="muted">
+                {t("Only an owner can manage owners and admins.")}
+              </p>
+            )}
           </details>
         ))}
       </div>

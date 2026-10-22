@@ -75,7 +75,7 @@ export default async function AdminCleanupPage() {
                 </span>
               </li>
               <li>
-                <Link href="/admin/materials">{t("Student materials")}</Link>
+                <Link href="/teacher/materials">{t("Student materials")}</Link>
                 <span className="muted">
                   {t("Delete a material from its own page.")}
                 </span>

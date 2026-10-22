@@ -87,7 +87,7 @@ export async function bulkUsersAction(
         { students, junior: juniors, kids },
         session.user.id,
       );
-      revalidatePath("/admin/trash");
+      revalidatePath("/teacher/trash");
       break;
     default:
       return { error: "Choose an action." };
@@ -98,9 +98,9 @@ export async function bulkUsersAction(
     `${action}: ${students.length} students, ${juniors.length} junior, ${kids.length} kids`,
   );
   revalidatePath("/admin/users");
-  revalidatePath("/admin/kids");
-  revalidatePath("/admin/students");
-  revalidatePath("/admin/junior");
+  revalidatePath("/teacher/kids");
+  revalidatePath("/teacher/students");
+  revalidatePath("/teacher/junior");
   return {
     success: "Done: {count} users updated.",
     values: { count: students.length + juniors.length + kids.length },

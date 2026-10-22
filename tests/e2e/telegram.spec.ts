@@ -188,7 +188,7 @@ test.describe("Telegram notifications and parent reports", () => {
     await student.context().close();
 
     // A new assignment for the group reaches the student's chat.
-    await page.goto("/admin/assignments");
+    await page.goto("/teacher/assignments");
     await page.getByLabel("Title", { exact: true }).fill(`Lab check ${id}`);
     await page.getByLabel("Group").first().selectOption(group);
     await page
@@ -233,7 +233,7 @@ test.describe("Telegram notifications and parent reports", () => {
     ).toBeTruthy();
 
     // The parent report link and the parent's Telegram link.
-    await page.goto(`/admin/students/${studentId}`);
+    await page.goto(`/teacher/students/${studentId}`);
     await page.getByRole("button", { name: "Create report link" }).click();
     const reportUrl = await page.getByLabel("Report link").inputValue();
     expect(reportUrl).toMatch(/\/report\/[A-Za-z0-9_-]{24}$/);

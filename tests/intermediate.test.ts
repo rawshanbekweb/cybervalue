@@ -3,9 +3,12 @@ import assert from "node:assert/strict";
 import {
   BEGINNER_LABS,
   DOMAINS,
+  OPEN_MODULES,
   PATHS,
   PHASES,
 } from "../src/lib/intermediate/roadmap";
+import { isStudentNext, opensIntermediate } from "../src/lib/student/levels";
+import { LAB_META, isLabId } from "../src/lib/lab-progress";
 
 test("the Intermediate roadmap is consistent", () => {
   const ids = DOMAINS.map((d) => d.id);
@@ -32,4 +35,36 @@ test("the Intermediate roadmap is consistent", () => {
   // The domains the owner asked for are all there.
   for (const id of ["webappsec", "appsec", "netsec", "crypto", "stego"])
     assert.ok(ids.includes(id), id);
+});
+
+test("open modules live under /intermediate and name a real lab", () => {
+  assert.ok(OPEN_MODULES.length > 0);
+  for (const m of OPEN_MODULES) {
+    assert.match(m.href, /^\/intermediate\//);
+    if (m.lab) {
+      assert.ok(isLabId(m.lab), m.lab);
+      assert.equal(LAB_META.find((l) => l.id === m.lab)?.href, m.href);
+    }
+  }
+});
+
+test("Intermediate opens at the Intermediate and Advanced levels", () => {
+  assert.ok(opensIntermediate("intermediate"));
+  assert.ok(opensIntermediate("advanced"));
+  assert.ok(!opensIntermediate("beginner"));
+  assert.ok(!opensIntermediate(""));
+});
+
+test("a student is sent back only to the student area or Intermediate", () => {
+  for (const ok of ["/student", "/intermediate", "/intermediate/http#lesson/2"])
+    assert.ok(isStudentNext(ok), ok);
+  for (const bad of [
+    "/admin",
+    "//evil.example",
+    "https://x.uz/intermediate",
+    "/intermediates",
+    null,
+    "/intermediate/" + "x".repeat(300),
+  ])
+    assert.ok(!isStudentNext(bad), String(bad));
 });

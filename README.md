@@ -81,7 +81,7 @@ Create the one admin account (there is no self-registration):
 npm run admin:create-user -- --email you@example.com
 ```
 
-You'll be prompted for a password (12–200 characters) on stdin. Alternatively, add `--generate-password` to generate and display a random password once; with no email argument, the existing owner email is preserved. Provisioning revokes old sessions. Log in at `/admin/login`. Use Account settings to change the password, sign out other sessions, or turn on two-factor authentication (requires `AUTH_SECRET`). Security events are listed at `/admin/audit`. If the authenticator is lost, rerun the command with `--reset-2fa`. Sessions last 12 hours; `/admin` is `noindex` and disallowed in `robots.txt`. The CMS supports content editing, resource/image uploads, an uploaded file library and image ordering/descriptions. See [the publishing guide](docs/content.md) and [security tradeoffs](docs/security.md).
+You'll be prompted for a password (12–200 characters) on stdin. Alternatively, add `--generate-password` to generate and display a random password once; with no email argument, the existing owner email is preserved. Provisioning revokes old sessions. Log in at `/admin/login`. Use Account settings to change the password, sign out other sessions, or turn on two-factor authentication (requires `AUTH_SECRET`). Security events are listed at `/admin/audit`. If the authenticator is lost, rerun the command with `--reset-2fa`. Sessions last 12 hours; `/admin` and `/teacher` are `noindex` and disallowed in `robots.txt`. Owners and admins run the site from `/admin`; teachers work in `/teacher` with their own groups. See [staff roles and panels](docs/staff-roles.md). The CMS supports content editing, resource/image uploads, an uploaded file library and image ordering/descriptions. See [the publishing guide](docs/content.md) and [security tradeoffs](docs/security.md).
 
 ## Student area
 
@@ -121,6 +121,8 @@ The [IP addressing lab](docs/network-lab.md) at `/akademiya/network-basics` teac
 
 The hub now includes [three investigation missions](docs/missions.md) at `/akademiya/missions`: invoice authorization, checkout integrity, and webhook replay. Learners edit requests, collect evidence, choose defense policies, and run behavioral regression checks. Completion requires demonstrated outcomes. These browser simulations complement the existing guided lessons and real local API exercises.
 
+The second level, [Academy Intermediate](docs/intermediate.md) at `/intermediate`, has a public roadmap; its labs open to students their teacher has placed at the Intermediate level.
+
 New learners start with [Cybervalue Academy Junior](docs/junior.md) at `/junior`: six short beginner missions (passwords, phishing, ciphers, digital footprint, a first CTF and ethical hacking rules), public and fully in the browser.
 
 Home and `/akademiya` share a searchable catalog of the existing HTML and web security lessons. Track counts and lesson titles come from the course data through `src/lib/learning.ts`; only catalog metadata is passed to the client. Both courses support direct links in the form `#lesson/2`.
@@ -149,6 +151,6 @@ Vercel uchun bosqichma-bosqich o'zbekcha qo'llanma: [Vercel'ga joylash](docs/ver
 
 Owner input still required: real domain, database credentials, verified social links, real projects/research/resources, and confirmation of personal copy. No hosting account or production database is created automatically.
 
-Known limits: the CMS uses one owner account without a multi-user/role model. Browser uploads are capped at 4 MiB each and 250 MiB total, stored in PostgreSQL; use object storage when scaling. Legacy disk downloads support up to 20 MiB. No automatic malware scanning, public uploads, analytics, RSS or external search. Substring search suits a modest archive; activity shows the newest 50 entries. The CSP permits inline Next.js bootstrap scripts. Rate limiting is per process, not distributed. Core Web Vitals require deployed measurements; automated accessibility is not a complete manual WCAG audit.
+Known limits: Browser uploads are capped at 4 MiB each and 250 MiB total, stored in PostgreSQL; use object storage when scaling. Legacy disk downloads support up to 20 MiB. No automatic malware scanning, public uploads, analytics, RSS or external search. Substring search suits a modest archive; activity shows the newest 50 entries. The CSP permits inline Next.js bootstrap scripts. Rate limiting is per process, not distributed. Core Web Vitals require deployed measurements; automated accessibility is not a complete manual WCAG audit.
 
 Implementation references: [Next.js CSP guidance](https://nextjs.org/docs/app/guides/content-security-policy), [Next.js documentation](https://nextjs.org/docs), [Prisma documentation](https://www.prisma.io/docs).

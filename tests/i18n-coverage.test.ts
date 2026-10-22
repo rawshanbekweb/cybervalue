@@ -262,3 +262,33 @@ test('every t("…") string in the interactive labs has Uzbek in the shared dict
     "Interactive labs",
   );
 });
+
+test("every page title and description passed to metadata() has Uzbek", () => {
+  // Names the Uzbek pages keep as they are.
+  const same = new Set([
+    "CTF",
+    "Cybervalue Academy Kids",
+    "Cybervalue Academy Junior",
+    "Academy Intermediate",
+  ]);
+  const texts: string[] = [];
+  for (const file of readdirSync("src/app", {
+    recursive: true,
+    encoding: "utf8",
+  })) {
+    if (!/\.tsx?$/.test(file)) continue;
+    const source = readFileSync(`src/app/${file}`, "utf8");
+    for (const match of source.matchAll(
+      /\bmetadata\(\s*"((?:[^"\\]|\\.)*)",\s*"((?:[^"\\]|\\.)*)"/g,
+    ))
+      texts.push(JSON.parse(`"${match[1]}"`), JSON.parse(`"${match[2]}"`));
+  }
+  assert.ok(texts.length > 40);
+  // Source text may be English or Uzbek; either way the two languages differ.
+  const uz = createTranslator("uz");
+  const en = createTranslator("en");
+  const missing = [...new Set(texts)].filter(
+    (text) => !same.has(text) && uz(text) === en(text),
+  );
+  assert.deepEqual(missing, [], "Page metadata: missing translations");
+});

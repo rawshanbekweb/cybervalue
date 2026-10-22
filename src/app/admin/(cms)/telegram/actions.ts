@@ -29,10 +29,10 @@ export async function setReportLinkAction(
 ) {
   const page =
     kind === "student"
-      ? `/admin/students/${id}`
+      ? `/teacher/students/${id}`
       : kind === "kids"
-        ? `/admin/kids/${id}`
-        : `/admin/junior/${id}`;
+        ? `/teacher/kids/${id}`
+        : `/teacher/junior/${id}`;
   const session = await requireMember(kind, id, page);
   const db = getDb();
   if (!db) return;
