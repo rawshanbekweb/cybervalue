@@ -17,6 +17,12 @@ export const SECTIONS = [
   },
   { id: "academy", group: "main", label: "Academy labs", href: "/akademiya" },
   {
+    id: "intermediate",
+    group: "main",
+    label: "Academy Intermediate",
+    href: "/intermediate",
+  },
+  {
     id: "studentArea",
     group: "main",
     label: "Student portal",
@@ -75,7 +81,7 @@ export const SECTIONS = [
     id: "http",
     group: "lab",
     label: "HTTP in depth (Intermediate)",
-    href: "/akademiya/http",
+    href: "/intermediate/http",
   },
   {
     id: "ctf",

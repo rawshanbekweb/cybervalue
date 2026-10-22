@@ -12,7 +12,7 @@ A private learning area at `/student` for students the admin invites. Nothing in
   - issue a new code (the old one stops working);
   - sign the student out everywhere;
   - delete the student together with all answers.
-- Sessions last 12 hours, and the cookie is scoped to `/student`. Sign-in is rate-limited to 40 attempts per client and 400 attempts overall per 5 minutes, which leaves room for a whole classroom behind one address.
+- Sessions last 12 hours, and the cookie is scoped to `/` so [Academy Intermediate](intermediate.md) can read it too. Sign-in is rate-limited to 40 attempts per client and 400 attempts overall per 5 minutes, which leaves room for a whole classroom behind one address.
 
 ## Materials
 

@@ -68,7 +68,7 @@ export const LAB_META: {
       uz: "HTTP chuqurroq (Intermediate)",
       en: "HTTP in depth (Intermediate)",
     },
-    href: "/akademiya/http",
+    href: "/intermediate/http",
   },
 ];
 

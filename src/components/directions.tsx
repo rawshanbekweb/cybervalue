@@ -5,6 +5,7 @@ import {
   FlaskConical,
   Gamepad2,
   GraduationCap,
+  Layers,
   type LucideIcon,
 } from "lucide-react";
 import type { Translator } from "@/lib/i18n/core";
@@ -12,7 +13,7 @@ import type { SiteConfig } from "@/lib/site-config";
 import "./directions.css";
 
 type Direction = {
-  id: "kids" | "junior" | "academy";
+  id: "kids" | "junior" | "academy" | "intermediate";
   icon: LucideIcon;
   eyebrow: string;
   title: string;
@@ -86,6 +87,22 @@ export function Directions({
       ...(config.sections.studentArea
         ? { extra: { href: "/student", label: t("Student portal") } }
         : {}),
+    },
+    {
+      id: "intermediate",
+      icon: Layers,
+      eyebrow: t("THE SECOND LEVEL · AFTER THE ACADEMY"),
+      title: t("Cybervalue Academy Intermediate"),
+      lead: t(
+        "Security in depth, domain by domain, for students their teacher has placed at the Intermediate level.",
+      ),
+      points: [
+        t("A public roadmap: 12 domains and career paths"),
+        t("Labs on the academy's own training systems"),
+        t("Progress saved to the student's account"),
+      ],
+      href: "/intermediate",
+      action: t("See Intermediate"),
     },
   ];
   const open = directions.filter((d) => config.sections[d.id]);

@@ -6,7 +6,7 @@ test("the Intermediate roadmap lists every domain and its modules", async ({
 }) => {
   await page.goto("/akademiya");
   await page.getByRole("link", { name: /roadmap|xaritasi/i }).click();
-  await expect(page).toHaveURL(/\/akademiya\/intermediate$/);
+  await expect(page).toHaveURL(/\/intermediate$/);
   await expect(page.locator(".im-domain")).toHaveCount(12);
   const web = page.locator("#webappsec");
   await web.locator("summary").click();

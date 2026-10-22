@@ -9,29 +9,34 @@ import {
   PATHS,
   PHASES,
 } from "@/lib/intermediate/roadmap";
+import { intermediateAccess } from "@/lib/intermediate/access";
+import { IntermediateAccessCard } from "@/components/intermediate-access";
 import "@/components/learning.css";
 import "@/components/intermediate.css";
 
 export const generateMetadata = () =>
   metadata(
-    "Academy Intermediate roadmap",
-    "The plan of the second Academy level: web application security, cryptography, network security, forensics, steganography, OSINT and more, module by module.",
-    "/akademiya/intermediate",
+    "Academy Intermediate",
+    "The second Academy level: web application security, cryptography, network security, forensics, steganography, OSINT and more. The roadmap is public; the labs open to students placed at the Intermediate level.",
+    "/intermediate",
   );
 
-// The plan of the Intermediate level. Domains are filled in phase by phase;
-// until then this page shows what each one will teach.
+// Academy Intermediate: the public roadmap of the second level, and the way
+// into its labs. Domains are filled in phase by phase; until then this page
+// shows what each one will teach.
 export default async function IntermediatePage() {
-  await requireSection("academy");
+  await requireSection("intermediate");
   const t = await getTranslator();
   const locale = await getLocale();
+  const access = await intermediateAccess();
+  const first = DOMAINS.flatMap((d) => d.modules).find((m) => m.href);
   const modules = DOMAINS.reduce((n, d) => n + d.modules.length, 0);
   const title = (id: string) =>
     DOMAINS.find((d) => d.id === id)?.title[locale] ?? id;
   return (
     <div className="container page-content">
-      <Link className="text-link" href="/akademiya">
-        <ArrowLeft size={16} aria-hidden="true" /> {t("Academy labs")}
+      <Link className="text-link" href="/">
+        <ArrowLeft size={16} aria-hidden="true" /> {t("Home")}
       </Link>
       <header className="page-header learning-header">
         <span className="eyebrow">
@@ -62,6 +67,20 @@ export default async function IntermediatePage() {
           </span>
         </div>
       </header>
+
+      <IntermediateAccessCard
+        access={access}
+        t={t}
+        path="/intermediate"
+        start={
+          first?.href
+            ? {
+                href: first.href,
+                label: t("Open {lab}", { lab: first.title[locale] }),
+              }
+            : undefined
+        }
+      />
 
       <section className="im-rules" aria-labelledby="im-rules">
         <h2 id="im-rules">{t("How the Intermediate level works")}</h2>

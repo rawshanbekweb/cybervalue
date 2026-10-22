@@ -5,15 +5,24 @@ import { getAdminTranslator } from "@/lib/i18n/server";
 import { getStudentSession } from "@/lib/student/session";
 import { Constellation } from "@/components/student/constellation";
 import { StudentLoginForm } from "./login-form";
+import { isStudentNext } from "@/lib/student/levels";
 
 export async function generateMetadata() {
   const t = await getAdminTranslator();
   return { title: t("Sign in") };
 }
 
-export default async function StudentLoginPage() {
+export default async function StudentLoginPage({
+  searchParams,
+}: PageProps<"/student/login">) {
   await requireSection("studentArea");
-  if (await getStudentSession()) redirect("/student");
+  const asked = (await searchParams).next;
+  const next = isStudentNext(asked) ? asked : undefined;
+  // /student/continue also moves an old /student-only cookie to the site.
+  if (await getStudentSession())
+    redirect(
+      next ? `/student/continue?to=${encodeURIComponent(next)}` : "/student",
+    );
   const t = await getAdminTranslator();
   return (
     <div className="student-page">
@@ -37,7 +46,7 @@ export default async function StudentLoginPage() {
               "Private labs, tests and practice prepared by your teacher. Enter the access code you were given.",
             )}
           </p>
-          <StudentLoginForm />
+          <StudentLoginForm next={next} />
           <p className="student-quiet">
             {t(
               "No code? Ask your teacher. Codes are personal — do not share yours.",

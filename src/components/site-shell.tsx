@@ -30,11 +30,14 @@ export async function SiteShell({
   const [socials, config] = await Promise.all([getSocials(), getSiteConfig()]);
   const t = createTranslator(locale);
   const open = config.sections;
-  // Two directions up front; the author's portfolio lives under About.
+  // The directions up front; the author's portfolio lives under About.
   const navigation = [
     ...(open.kids ? [{ href: "/kids", label: "Academy Kids" }] : []),
     ...(open.junior ? [{ href: "/junior", label: "Academy Junior" }] : []),
     ...(open.academy ? [{ href: "/akademiya", label: "Academy" }] : []),
+    ...(open.intermediate
+      ? [{ href: "/intermediate", label: "Academy Intermediate" }]
+      : []),
     { href: "/about", label: "About" },
   ];
   const announcement =

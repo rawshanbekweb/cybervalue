@@ -40,6 +40,17 @@ const config: NextConfig = {
         permanent: true,
       },
       { source: "/playground", destination: "/akademiya", permanent: true },
+      // Intermediate became its own area.
+      {
+        source: "/akademiya/intermediate",
+        destination: "/intermediate",
+        permanent: true,
+      },
+      {
+        source: "/akademiya/http",
+        destination: "/intermediate/http",
+        permanent: true,
+      },
       // Teaching pages moved from the admin panel to the teacher panel.
       {
         source:

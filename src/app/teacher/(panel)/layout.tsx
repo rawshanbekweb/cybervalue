@@ -47,6 +47,7 @@ export default async function TeacherPanelLayout({
         { href: "/teacher/students", label: t("Students") },
         { href: "/teacher/junior", label: "Academy Junior" },
         { href: "/teacher/kids", label: "Academy Kids" },
+        { href: "/teacher/intermediate", label: "Academy Intermediate" },
       ],
     },
     {

@@ -2,6 +2,8 @@
 // domain lists its modules with key topics and a learning goal. Modules are
 // filled in over time, inside the academy's isolated browser labs.
 
+import type { LabId } from "@/lib/lab-progress";
+
 export type Text = { uz: string; en: string };
 
 export type Module = {
@@ -12,6 +14,8 @@ export type Module = {
   goal: Text;
   /** The module's lab, once it is open. */
   href?: string;
+  /** Its lesson progress key, for the teacher panel. */
+  lab?: LabId;
 };
 
 export type Domain = {
@@ -78,7 +82,8 @@ export const DOMAINS: Domain[] = [
     modules: [
       {
         title: { uz: "HTTP chuqurroq", en: "HTTP in depth" },
-        href: "/akademiya/http",
+        href: "/intermediate/http",
+        lab: "http",
         topics: ["cookies", "sessions", "SOP", "CORS", "security headers"],
         goal: goal(
           "So‘rov va javobni o‘qiy olish, sessiya qanday saqlanishini tushuntirish.",
@@ -761,3 +766,8 @@ export const PATHS: { title: Text; domains: string[] }[] = [
     domains: ["forensics", "stego", "osint", "reverse"],
   },
 ];
+
+/** The modules whose labs are open now. */
+export const OPEN_MODULES = DOMAINS.flatMap((d) => d.modules).filter(
+  (m): m is Module & { href: string } => Boolean(m.href),
+);

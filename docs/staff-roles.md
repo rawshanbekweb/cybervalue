@@ -13,7 +13,8 @@ lands on its own panel.
 
 - **`/teacher`** is the teaching workspace: dashboard, Class, Assignments,
   Student materials, Grading, Results, Live quiz, HTML assessment, Analytics,
-  Groups, Students, Academy Junior, Academy Kids, Trash and Account settings.
+  Groups, Students, Academy Junior, Academy Kids, Academy Intermediate, Trash
+  and Account settings.
   Teachers see only the groups listed on their account; owners and admins see
   every group.
 - **`/admin`** runs the site: the system dashboard, Site settings, content

@@ -26,6 +26,7 @@ import {
   requireStudent,
 } from "@/lib/student/session";
 import { materialForStudent } from "@/lib/student/materials";
+import { isStudentNext } from "@/lib/student/levels";
 import { gradeQuiz, isQuizExpired, quizSchema } from "@/lib/student/quiz";
 import { closeExpiredStart, lockAttempts } from "@/lib/student/quiz-timer";
 import { judgeFlag, normalizeFlag } from "@/lib/student/challenge";
@@ -66,7 +67,8 @@ export async function studentLoginAction(
   });
   if (!student) return { error: GENERIC_ERROR };
   await createStudentSession(student.id);
-  redirect("/student");
+  const next = formData.get("next");
+  redirect(isStudentNext(next) ? next : "/student");
 }
 
 export async function studentLogoutAction() {

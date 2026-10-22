@@ -88,7 +88,7 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
       uz: "1–10-darslar · 12 savol",
       en: "Lessons 1–10 · 12 questions",
     },
-    href: "/akademiya/http#checkpoints",
+    href: "/intermediate/http#checkpoints",
     pass: 70,
   },
 ];

@@ -269,6 +269,7 @@ test("every page title and description passed to metadata() has Uzbek", () => {
     "CTF",
     "Cybervalue Academy Kids",
     "Cybervalue Academy Junior",
+    "Academy Intermediate",
   ]);
   const texts: string[] = [];
   for (const file of readdirSync("src/app", {

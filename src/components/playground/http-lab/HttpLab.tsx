@@ -44,7 +44,7 @@ export function HttpLab() {
   const lesson = LESSONS[id - 1];
   return (
     <div className="network-lab">
-      <Link className="nl-back" href="/akademiya/intermediate">
+      <Link className="nl-back" href="/intermediate">
         <ArrowLeft size={15} /> Academy Intermediate
       </Link>
       <header className="nl-hero">

@@ -21,7 +21,7 @@ import {
   studentOverview,
   type TestStats,
 } from "@/lib/student/materials";
-import { isLevel, LEVEL_LABEL } from "@/lib/student/levels";
+import { isLevel, LEVEL_LABEL, opensIntermediate } from "@/lib/student/levels";
 import { getDb } from "@/lib/db";
 import { nextStep } from "@/lib/student/next-step";
 import { NextStepCard } from "@/components/student/next-step";
@@ -389,6 +389,16 @@ export default async function StudentHomePage() {
                 }}
               />
             </div>
+          )}
+          {opensIntermediate(student.level) && (
+            <p>
+              <Link
+                href="/student/continue?to=/intermediate"
+                className="student-ghost"
+              >
+                {t("Academy Intermediate is open for you")} →
+              </Link>
+            </p>
           )}
           <NextStepCard step={next} t={t} locale={locale} />
           {standing && (

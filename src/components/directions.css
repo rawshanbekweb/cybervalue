@@ -21,6 +21,17 @@
   background: #ffd43b14;
   color: #ffd43b;
 }
+.directions-4 {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+}
+.direction-intermediate {
+  background:
+    radial-gradient(circle at 100% 0, #4dabf71f, transparent 50%), #100f13;
+}
+.direction-intermediate .direction-ring {
+  background: #4dabf714;
+  color: #74c0fc;
+}
 .direction-academy {
   background:
     radial-gradient(circle at 100% 0, #8052ff1f, transparent 50%), #100f13;

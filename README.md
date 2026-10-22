@@ -121,6 +121,8 @@ The [IP addressing lab](docs/network-lab.md) at `/akademiya/network-basics` teac
 
 The hub now includes [three investigation missions](docs/missions.md) at `/akademiya/missions`: invoice authorization, checkout integrity, and webhook replay. Learners edit requests, collect evidence, choose defense policies, and run behavioral regression checks. Completion requires demonstrated outcomes. These browser simulations complement the existing guided lessons and real local API exercises.
 
+The second level, [Academy Intermediate](docs/intermediate.md) at `/intermediate`, has a public roadmap; its labs open to students their teacher has placed at the Intermediate level.
+
 New learners start with [Cybervalue Academy Junior](docs/junior.md) at `/junior`: six short beginner missions (passwords, phishing, ciphers, digital footprint, a first CTF and ethical hacking rules), public and fully in the browser.
 
 Home and `/akademiya` share a searchable catalog of the existing HTML and web security lessons. Track counts and lesson titles come from the course data through `src/lib/learning.ts`; only catalog metadata is passed to the client. Both courses support direct links in the form `#lesson/2`.
