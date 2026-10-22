@@ -548,5 +548,16 @@
   "The server is waiting for your answer.": "Server javobingizni kutyapti.",
   "Not connected. Commands run on your laptop.": "Ulanmagan. Buyruqlar noutbukingizda bajariladi.",
   "Type a command and press Enter. Try: ssh ali@server.uz": "Buyruq yozib, Enter ni bosing. Masalan: ssh ali@server.uz",
-  "Remote access with SSH.": "SSH bilan masofaviy ulanish."
+  "Remote access with SSH.": "SSH bilan masofaviy ulanish.",
+  "HTTP basics · animated lab": "HTTP asoslari · animatsion laboratoriya",
+  "Watch the browser and the server talk: requests and responses, GET and POST, headers and every family of status codes, in animated lessons.": "Brauzer va server suhbatini kuzating: so‘rov va javoblar, GET va POST, sarlavhalar va holat kodlarining barcha oilalari — animatsion darslarda.",
+  "HTTPS and TLS · animated lab": "HTTPS va TLS · animatsion laboratoriya",
+  "See what the padlock protects: eavesdropping on café Wi-Fi, encryption keys, the TLS handshake, certificates and the chain of trust, in animated lessons.": "Qulf belgisi nimani himoya qilishini ko‘ring: kafe Wi-Fi’sida josuslik, shifrlash kalitlari, TLS qo‘l siqishuvi, sertifikatlar va ishonch zanjiri — animatsion darslarda.",
+  "Bash basics · animated lab": "Bash asoslari · animatsion laboratoriya",
+  "Variables, loops and your first scripts in a safe terminal that runs in the browser: watch a loop turn by turn, fix an endless loop and scan a login log.": "Brauzerda ishlaydigan xavfsiz terminalda o‘zgaruvchilar, sikllar va ilk skriptlaringiz: siklni har bir aylanishda kuzating, cheksiz siklni tuzating va kirish jurnalini tekshiring.",
+  "SSH · animated lab": "SSH · animatsion laboratoriya",
+  "How remote connection works: an encrypted SSH session step by step, a practice server, host keys, and switching from passwords to key pairs.": "Masofaviy ulanish qanday ishlaydi: shifrlangan SSH sessiyasi qadam-baqadam, mashq serveri, server kalitlari va paroldan kalit juftligiga o‘tish.",
+  "HTTP in depth · Academy Intermediate": "HTTP chuqurroq · Academy Intermediate",
+  "Academy Intermediate roadmap": "Academy Intermediate yo‘l xaritasi",
+  "The plan of the second Academy level: web application security, cryptography, network security, forensics, steganography, OSINT and more, module by module.": "Akademiya ikkinchi darajasining rejasi: veb-ilovalar xavfsizligi, kriptografiya, tarmoq xavfsizligi, kriminalistika, steganografiya, OSINT va boshqalar — modulma-modul."
 }
