@@ -1,7 +1,7 @@
 "use client";
 import { useActionState } from "react";
 import { useTranslator } from "@/components/locale-provider";
-import { createAssignmentAction } from "@/app/admin/(cms)/assignments/actions";
+import { createAssignmentAction } from "@/app/teacher/(panel)/assignments/actions";
 
 export type TargetGroup = {
   label: string;

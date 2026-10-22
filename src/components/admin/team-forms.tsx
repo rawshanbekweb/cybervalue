@@ -57,7 +57,24 @@ function GroupsField({
   );
 }
 
-export function CreateStaffForm({ groups }: { groups: string[] }) {
+function RoleOptions({ owner }: { owner: boolean }) {
+  const t = useTranslator();
+  return (
+    <>
+      <option value="teacher">{t("Teacher")}</option>
+      {owner && <option value="admin">{t("Admin")}</option>}
+      {owner && <option value="owner">{t("Owner")}</option>}
+    </>
+  );
+}
+
+export function CreateStaffForm({
+  groups,
+  owner,
+}: {
+  groups: string[];
+  owner: boolean;
+}) {
   const t = useTranslator();
   const [state, action, pending] = useActionState(createStaffAction, undefined);
   return (
@@ -94,15 +111,14 @@ export function CreateStaffForm({ groups }: { groups: string[] }) {
             className="admin-input"
             defaultValue="teacher"
           >
-            <option value="teacher">{t("Teacher")}</option>
-            <option value="owner">{t("Owner")}</option>
+            <RoleOptions owner={owner} />
           </select>
         </div>
       </div>
       <GroupsField id="staff-groups" defaultValue="" groups={groups} />
       <p className="muted">
         {t(
-          "A teacher sees only their groups, materials and assignments. An owner sees everything, including settings and clean-up.",
+          "A teacher works in the teacher panel with their groups only. An admin also runs the site: content, settings, users and security. An owner can manage admins too.",
         )}
       </p>
       {state?.error && (
@@ -124,6 +140,7 @@ export function CreateStaffForm({ groups }: { groups: string[] }) {
 
 export function StaffEditForm({
   id,
+  owner,
   name,
   role,
   groups,
@@ -132,6 +149,7 @@ export function StaffEditForm({
   self,
 }: {
   id: string;
+  owner: boolean;
   name: string;
   role: string;
   groups: string[];
@@ -165,8 +183,7 @@ export function StaffEditForm({
               defaultValue={role}
               disabled={self}
             >
-              <option value="teacher">{t("Teacher")}</option>
-              <option value="owner">{t("Owner")}</option>
+              <RoleOptions owner={owner || self} />
             </select>
             {self && <input type="hidden" name="role" value={role} />}
           </div>

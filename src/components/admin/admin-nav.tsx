@@ -24,7 +24,9 @@ export function AdminNav({ groups }: { groups: AdminNavGroup[] }) {
     .filter(
       (item) =>
         pathname === item.href ||
-        (item.href !== "/admin" && pathname.startsWith(`${item.href}/`)),
+        // A panel's home (/admin, /teacher) only matches itself.
+        (item.href.lastIndexOf("/") > 0 &&
+          pathname.startsWith(`${item.href}/`)),
     )
     .sort((a, b) => b.href.length - a.href.length)[0];
   const active = useRef<HTMLAnchorElement>(null);

@@ -4,7 +4,7 @@ import { useTranslator } from "@/components/locale-provider";
 import {
   renameGroupAction,
   setGroupTeachersAction,
-} from "@/app/admin/(cms)/groups/actions";
+} from "@/app/teacher/(panel)/groups/actions";
 
 export function GroupForms({
   group,

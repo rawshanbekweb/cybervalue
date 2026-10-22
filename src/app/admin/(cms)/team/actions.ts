@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { audit } from "@/lib/audit";
 import { hashPassword, requireOwner } from "@/lib/auth";
+import { mayManage, roleOf, STAFF_ROLES } from "@/lib/staff";
 import { getDb } from "@/lib/db";
 import { limit } from "@/lib/rate-limit-db";
 
@@ -45,8 +46,10 @@ function parseGroups(form: FormData) {
 const memberSchema = z.object({
   name: z.string().trim().min(1).max(100),
   email: z.email().trim().toLowerCase().max(200),
-  role: z.enum(["owner", "teacher"]),
+  role: z.enum(STAFF_ROLES),
 });
+
+const OWNER_ONLY = "Only an owner can manage owners and admins.";
 
 export async function createStaffAction(
   _state: TeamState,
@@ -62,6 +65,7 @@ export async function createStaffAction(
   });
   if (!parsed.success)
     return { error: "Enter a name, a valid email and a role." };
+  if (!mayManage(session.user, parsed.data.role)) return { error: OWNER_ONLY };
   const groups = parseGroups(form);
   if (!groups)
     return {
@@ -105,7 +109,10 @@ export async function updateStaffAction(
   if (!db) return { error: NO_DB };
   const target = await db.user.findUnique({ where: { id } });
   if (!target) return { error: "This person no longer exists." };
-  const role = form.get("role") === "teacher" ? "teacher" : "owner";
+  const role = STAFF_ROLES.find((r) => r === form.get("role"));
+  if (!role) return { error: "Choose a role." };
+  if (!mayManage(session.user, roleOf(target), role))
+    return { error: OWNER_ONLY };
   const active = form.get("active") === "on";
   const groups = parseGroups(form);
   if (!groups)
@@ -121,7 +128,7 @@ export async function updateStaffAction(
     target.role === "owner" && target.active && (role !== "owner" || !active);
   if (losesOwner && (await owners(db)) <= 1)
     return { error: "Keep at least one active owner." };
-  if (id === session.user.id && (role !== "owner" || !active))
+  if (id === session.user.id && (role !== roleOf(target) || !active))
     return { error: "You cannot demote or switch off your own account." };
   await db.user.update({
     where: { id },
@@ -137,6 +144,12 @@ export async function resetStaffPasswordAction(id: string): Promise<TeamState> {
   const session = await requireOwner("/admin/team");
   const db = getDb();
   if (!db) return { error: NO_DB };
+  const current = await db.user.findUnique({
+    where: { id },
+    select: { role: true },
+  });
+  if (!current) return { error: "This person no longer exists." };
+  if (!mayManage(session.user, roleOf(current))) return { error: OWNER_ONLY };
   const password = newPassword();
   const target = await db.user
     .update({
@@ -159,6 +172,7 @@ export async function deleteStaffAction(id: string): Promise<TeamState> {
     return { error: "You cannot delete your own account." };
   const target = await db.user.findUnique({ where: { id } });
   if (!target) return { error: "This person no longer exists." };
+  if (!mayManage(session.user, roleOf(target))) return { error: OWNER_ONLY };
   if (target.role === "owner" && target.active && (await owners(db)) <= 1)
     return { error: "Keep at least one active owner." };
   // Their site content stays, credited to you.

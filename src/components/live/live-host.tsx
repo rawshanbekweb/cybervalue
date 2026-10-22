@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { Maximize, Users } from "lucide-react";
 import { useTranslator } from "@/components/locale-provider";
-import { liveCommandAction } from "@/app/admin/(cms)/live/actions";
+import { liveCommandAction } from "@/app/teacher/(panel)/live/actions";
 import type { HostView } from "@/lib/live/data";
 import { LETTERS } from "./letters";
 
@@ -27,7 +27,7 @@ export function LiveHost({
   const revealing = useRef<number | null>(null);
 
   const refresh = useCallback(async () => {
-    const response = await fetch(`/admin/live/${initial.id}/state`, {
+    const response = await fetch(`/teacher/live/${initial.id}/state`, {
       cache: "no-store",
     }).catch(() => null);
     if (!response?.ok) return;
@@ -229,7 +229,7 @@ export function LiveHost({
             ))}
           </ol>
           <Ranking players={view.players} t={t} />
-          <Link href="/admin/live" className="button button-secondary">
+          <Link href="/teacher/live" className="button button-secondary">
             {t("Back to live quizzes")}
           </Link>
         </section>

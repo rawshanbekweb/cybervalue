@@ -22,6 +22,17 @@ test.use({
 const email = process.env.E2E_ADMIN_EMAIL;
 const password = process.env.E2E_ADMIN_PASSWORD;
 
+test("unauthenticated /teacher redirects to the staff login and stays noindex", async ({
+  page,
+}) => {
+  await page.goto("/teacher/students");
+  await expect(page).toHaveURL(/\/admin\/login\?next=%2Fteacher/);
+  const robots = await page
+    .locator('meta[name="robots"]')
+    .getAttribute("content");
+  expect(robots).toContain("noindex");
+});
+
 test("unauthenticated /admin redirects to login and stays noindex", async ({
   page,
 }) => {

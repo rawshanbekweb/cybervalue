@@ -109,7 +109,7 @@ export async function ChallengeResults({
               return (
                 <tr key={student.id}>
                   <td>
-                    <Link href={`/admin/students/${student.id}`}>
+                    <Link href={`/teacher/students/${student.id}`}>
                       {student.name}
                     </Link>
                     {student.group && (
@@ -145,7 +145,7 @@ export async function ChallengeResults({
                   </td>
                   <td>
                     <a
-                      href={`/admin/materials/${material.id}/artifact/${student.id}`}
+                      href={`/teacher/materials/${material.id}/artifact/${student.id}`}
                     >
                       {t("Download")}
                     </a>

@@ -53,7 +53,7 @@ test("messages escape names and titles for Telegram HTML", () => {
         names: Array.from({ length: 17 }, (_, i) => `N${i}`),
       },
     ],
-    "https://x.uz/admin/class",
+    "https://x.uz/teacher/class",
   );
   assert.ok(missed.includes("N14"));
   assert.ok(!missed.includes("N15,"));

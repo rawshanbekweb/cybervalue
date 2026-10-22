@@ -94,7 +94,7 @@ test("the week's hero and the week's CTF show for the group", async ({
   await page.getByLabel("Password").fill(password!);
   await page.getByRole("button", { name: "Sign in" }).click();
   await expect(page).toHaveURL(/\/admin$/);
-  await page.goto(`/admin/class?group=${group}`);
+  await page.goto(`/teacher/class?group=${group}`);
   const card = page.locator(".admin-card", { hasText: "Hero of the week" });
   await expect(card).toContainText("Bobur Karimov");
   await expect(card).toContainText("+120 XP since Monday");

@@ -113,7 +113,7 @@ test.describe("analytics", () => {
     page,
   }) => {
     await signIn(page);
-    await page.goto("/admin/analytics");
+    await page.goto("/teacher/analytics");
     await expect(
       page.getByRole("heading", { level: 1, name: "Analytics" }),
     ).toBeVisible();
@@ -138,7 +138,7 @@ test.describe("analytics", () => {
 
   test("learner pages show their activity history", async ({ page }) => {
     await signIn(page);
-    await page.goto(`/admin/students/${studentId}`);
+    await page.goto(`/teacher/students/${studentId}`);
     const history = page.getByRole("region", { name: "Activity history" });
     await expect(history.getByText("Checkpoint attempt").first()).toBeVisible();
     await expect(history).toContainText("9/12");
@@ -146,7 +146,7 @@ test.describe("analytics", () => {
     await audit(page, "student history");
     await history.screenshot({ path: test.info().outputPath("history.png") });
 
-    await page.goto(`/admin/kids/${kidId}`);
+    await page.goto(`/teacher/kids/${kidId}`);
     await expect(
       page.getByText("1 active days in the last 12 weeks"),
     ).toBeVisible();

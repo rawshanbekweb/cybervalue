@@ -136,14 +136,14 @@ test.describe("trash", () => {
   }) => {
     await signIn(page);
     page.on("dialog", (dialog) => dialog.accept());
-    await page.goto(`/admin/students/${studentId}`);
+    await page.goto(`/teacher/students/${studentId}`);
     await page.getByRole("button", { name: "Delete student" }).click();
-    await expect(page).toHaveURL(/\/admin\/students$/);
+    await expect(page).toHaveURL(/\/teacher\/students$/);
     expect(
       await sql(`SELECT 1 FROM "Student" WHERE id = $1`, [studentId]),
     ).toHaveLength(0);
 
-    await page.goto("/admin/trash");
+    await page.goto("/teacher/trash");
     const row = page.getByRole("row", { name: new RegExp(studentName) });
     await expect(row).toContainText("Student");
     await expect(row).toContainText("trash-g");
@@ -166,7 +166,7 @@ test.describe("trash", () => {
         `parent:student:${studentId}`,
       ]),
     ).toHaveLength(1);
-    const response = await page.goto(`/admin/students/${studentId}`);
+    const response = await page.goto(`/teacher/students/${studentId}`);
     expect(response?.status()).toBe(200);
   });
 
@@ -182,7 +182,7 @@ test.describe("trash", () => {
       .click();
     await expect(page.getByRole("link", { name: contentTitle })).toHaveCount(0);
 
-    await page.goto("/admin/trash?kind=content");
+    await page.goto("/teacher/trash?kind=content");
     const row = page.getByRole("row", { name: new RegExp(contentTitle) });
     await row.getByRole("button", { name: `Restore ${contentTitle}` }).click();
     await expect(row).toHaveCount(0);
@@ -206,7 +206,7 @@ test.describe("trash", () => {
   test("an item deleted for good is gone", async ({ page }) => {
     await signIn(page);
     page.on("dialog", (dialog) => dialog.accept());
-    await page.goto("/admin/assignments");
+    await page.goto("/teacher/assignments");
     await page
       .locator("li.admin-assignment")
       .filter({ hasText: assignmentTitle })
@@ -215,7 +215,7 @@ test.describe("trash", () => {
       .click();
     await expect(page.getByText(assignmentTitle)).toHaveCount(0);
 
-    await page.goto("/admin/trash?kind=assignment");
+    await page.goto("/teacher/trash?kind=assignment");
     const row = page.getByRole("row", { name: new RegExp(assignmentTitle) });
     await row
       .getByRole("button", { name: `Delete ${assignmentTitle} for good` })

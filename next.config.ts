@@ -40,6 +40,13 @@ const config: NextConfig = {
         permanent: true,
       },
       { source: "/playground", destination: "/akademiya", permanent: true },
+      // Teaching pages moved from the admin panel to the teacher panel.
+      {
+        source:
+          "/admin/:section(class|analytics|assignments|live|students|junior|kids|groups|materials|grading|results|assessments|trash|search)/:path*",
+        destination: "/teacher/:section/:path*",
+        permanent: false,
+      },
       {
         source: "/playground/:path*",
         destination: "/akademiya/:path*",

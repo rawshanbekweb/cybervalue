@@ -1,3 +1,30 @@
+/**
+ * Staff roles. "owner" and "admin" run the whole site; only an owner manages
+ * other owners and admins. "teacher" works in /teacher with their own groups.
+ */
+export const STAFF_ROLES = ["owner", "admin", "teacher"] as const;
+export type StaffRole = (typeof STAFF_ROLES)[number];
+
+export const roleOf = (user: { role: string }): StaffRole =>
+  user.role === "teacher" || user.role === "admin" ? user.role : "owner";
+
+/** The panel a person lands on after signing in. */
+export const homeOf = (user: { role: string }) =>
+  roleOf(user) === "teacher" ? "/teacher" : "/admin";
+
+/** Whether a path may be the destination after signing in. */
+export const isStaffPath = (path: string) =>
+  /^\/(admin|teacher)(\/|\?|$)/.test(path);
+
+/** Admins manage teachers; owners manage everyone. */
+export function mayManage(actor: { role: string }, ...roles: StaffRole[]) {
+  const role = roleOf(actor);
+  return (
+    role === "owner" ||
+    (role === "admin" && roles.every((r) => r === "teacher"))
+  );
+}
+
 // Group choices on pages that list people. Owners can pick one group or all
 // of them ("" ); a teacher picks one of their own groups, and "" means all of
 // their groups, never everyone.

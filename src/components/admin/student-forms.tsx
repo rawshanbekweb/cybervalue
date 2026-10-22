@@ -7,11 +7,11 @@ import {
   createStudentsAction,
   resetStudentCodeAction,
   updateStudentAction,
-} from "@/app/admin/(cms)/students/actions";
+} from "@/app/teacher/(panel)/students/actions";
 import {
   reviewSubmissionAction,
   saveMaterialAction,
-} from "@/app/admin/(cms)/materials/actions";
+} from "@/app/teacher/(panel)/materials/actions";
 import { formatAccessCode } from "@/lib/student/format";
 import type { MaterialFormValues as MaterialDefaults } from "@/lib/student/admin";
 import { LEVEL_LABEL, LEVELS } from "@/lib/student/levels";
@@ -67,7 +67,7 @@ export function CreateStudentsForm() {
               {state.codes.map((row) => (
                 <tr key={row.id}>
                   <td>
-                    <Link href={`/admin/students/${row.id}`}>{row.name}</Link>
+                    <Link href={`/teacher/students/${row.id}`}>{row.name}</Link>
                   </td>
                   <td>{row.group || "—"}</td>
                   <td>

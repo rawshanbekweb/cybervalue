@@ -189,7 +189,7 @@ test.describe("saved results", () => {
     await admin.getByLabel("Password").fill(password!);
     await admin.getByRole("button", { name: "Sign in" }).click();
     await expect(admin).toHaveURL(/\/admin$/);
-    await admin.goto(`/admin/class?group=${group}`);
+    await admin.goto(`/teacher/class?group=${group}`);
     await expect(
       admin.getByRole("heading", { level: 1, name: "Class" }),
     ).toBeVisible();
@@ -200,7 +200,7 @@ test.describe("saved results", () => {
       "Classmate One",
     );
     await audit(admin, "class panel");
-    const csv = await admin.request.get(`/admin/class/export?group=${group}`);
+    const csv = await admin.request.get(`/teacher/class/export?group=${group}`);
     expect(await csv.text()).toContain(name);
     await admin.getByRole("link", { name }).first().click();
     await expect(admin.locator(".admin-table").first()).toContainText(

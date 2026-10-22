@@ -7,7 +7,7 @@ import {
   createJuniorsAction,
   resetJuniorCodeAction,
   updateJuniorAction,
-} from "@/app/admin/(cms)/junior/actions";
+} from "@/app/teacher/(panel)/junior/actions";
 import { formatJuniorCode } from "@/lib/junior/code-format";
 
 function downloadCodes(rows: { name: string; group: string; code: string }[]) {
@@ -60,7 +60,7 @@ export function CreateJuniorsForm() {
               {state.codes.map((row) => (
                 <tr key={row.id}>
                   <td>
-                    <Link href={`/admin/junior/${row.id}`}>{row.name}</Link>
+                    <Link href={`/teacher/junior/${row.id}`}>{row.name}</Link>
                   </td>
                   <td>{row.group || "—"}</td>
                   <td>

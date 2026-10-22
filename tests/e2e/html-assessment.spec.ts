@@ -49,7 +49,7 @@ test("assessment entry is accessible and private endpoints reject anonymous writ
     ).status(),
   ).toBe(403);
   expect(
-    (await request.get("/admin/assessments/missing/export")).status(),
+    (await request.get("/teacher/assessments/missing/export")).status(),
   ).toBe(401);
   for (const width of [375, 1280]) {
     await page.setViewportSize({ width, height: 900 });
@@ -103,7 +103,7 @@ test.describe("isolated assessment", () => {
     // The teacher works in the default Uzbek interface, like the pupils.
     await page.getByRole("button", { name: "Tizimga kirish" }).click();
     await expect(page).toHaveURL(/\/admin$/);
-    await page.goto("/admin/assessments");
+    await page.goto("/teacher/assessments");
     await page.getByLabel("Sinov nomi").fill(`${prefix}-class`);
     await page
       .getByLabel("O‘quvchilar:", { exact: false })

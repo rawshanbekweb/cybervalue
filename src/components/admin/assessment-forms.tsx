@@ -5,7 +5,7 @@ import { useActionState, useState } from "react";
 import {
   createExamAction,
   reviewAttemptAction,
-} from "@/app/admin/(cms)/assessments/actions";
+} from "@/app/teacher/(panel)/assessments/actions";
 
 export function CreateExamForm({ groups = [] }: { groups?: string[] }) {
   const t = useTranslator();
@@ -60,7 +60,7 @@ export function CreateExamForm({ groups = [] }: { groups?: string[] }) {
           {t("Kodlarni yuklab olish")}
         </button>
         <p>
-          <Link href={`/admin/assessments/${state.examId}`}>
+          <Link href={`/teacher/assessments/${state.examId}`}>
             {t("Natijalar sahifasiga o‘tish →")}
           </Link>
         </p>

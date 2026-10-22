@@ -356,6 +356,8 @@ test.describe("Academy Kids", () => {
     await page.getByLabel("Password").fill(password!);
     await page.getByRole("button", { name: "Sign in" }).click();
     await expect(page).toHaveURL(/\/admin$/);
+    await page.getByRole("link", { name: "Teacher panel" }).first().click();
+    await expect(page).toHaveURL(/\/teacher$/);
     await page
       .getByRole("navigation", { name: "Admin sections" })
       .getByRole("link", { name: "Academy Kids" })
@@ -396,7 +398,7 @@ test.describe("Academy Kids", () => {
     await expect(page.getByText("Moved to Academy Junior:")).toBeVisible();
 
     // The admin search finds the child.
-    await page.goto(`/admin/search?q=${encodeURIComponent(name)}`);
+    await page.goto(`/teacher/search?q=${encodeURIComponent(name)}`);
     await expect(page.getByRole("link", { name }).first()).toBeVisible();
   });
 
@@ -416,7 +418,7 @@ test.describe("Academy Kids", () => {
     await page.getByLabel("Password").fill(password!);
     await page.getByRole("button", { name: "Sign in" }).click();
     await expect(page).toHaveURL(/\/admin$/);
-    await page.goto("/admin/kids");
+    await page.goto("/teacher/kids");
     const row = page.getByRole("row", { name: new RegExp(name) });
     // Space escape is on stage 2; the robot game is open; the maze is not.
     await expect(row.getByRole("cell").nth(5)).toContainText("Stage 2");
@@ -468,7 +470,7 @@ test.describe("Academy Kids", () => {
     await expect(page.getByRole("status")).toContainText("1 users updated");
     await page.goto(`/admin/users?kind=kids&q=${encodeURIComponent(name)}`);
     await expect(page.getByText("No users match these filters.")).toBeVisible();
-    await page.goto("/admin/trash?kind=kids");
+    await page.goto("/teacher/trash?kind=kids");
     await expect(
       page.getByRole("row", { name: new RegExp(name) }),
     ).toBeVisible();

@@ -138,7 +138,7 @@ test.describe("portraits", () => {
   }) => {
     await adminLogin(page);
     const id = Date.now().toString(36);
-    await page.goto("/admin/students");
+    await page.goto("/teacher/students");
     await page
       .getByLabel("One student per line: Full name | group (group is optional)")
       .fill(`Portrait Student ${id}`);

@@ -7,7 +7,7 @@ import {
   createKidsAction,
   resetKidCodeAction,
   updateKidAction,
-} from "@/app/admin/(cms)/kids/actions";
+} from "@/app/teacher/(panel)/kids/actions";
 import { formatJuniorCode } from "@/lib/junior/code-format";
 
 function downloadCodes(rows: { name: string; group: string; code: string }[]) {
@@ -56,7 +56,7 @@ export function CreateKidsForm() {
               {state.codes.map((row) => (
                 <tr key={row.id}>
                   <td>
-                    <Link href={`/admin/kids/${row.id}`}>{row.name}</Link>
+                    <Link href={`/teacher/kids/${row.id}`}>{row.name}</Link>
                   </td>
                   <td>{row.group || "—"}</td>
                   <td>

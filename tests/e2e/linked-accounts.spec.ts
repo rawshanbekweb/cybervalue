@@ -85,7 +85,7 @@ test.describe("linked accounts", () => {
       },
     });
     await signIn(page);
-    await page.goto(`/admin/junior/${member.id}`);
+    await page.goto(`/teacher/junior/${member.id}`);
     await page.getByLabel("Academy group").fill(`a-${id}`);
     await page
       .getByRole("button", { name: "Create the Academy account" })
@@ -172,7 +172,7 @@ test.describe("linked accounts", () => {
     const group = `h-${id}`;
     const { code } = await newStudent(`Nodir ${id}`, group);
     await signIn(page);
-    await page.goto("/admin/assessments");
+    await page.goto("/teacher/assessments");
     await page.getByLabel("Test name").fill(`HTML ${id}`);
     await page
       .getByLabel(

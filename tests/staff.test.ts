@@ -1,6 +1,14 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { groupCondition, groupLabel, pickGroup } from "../src/lib/staff";
+import {
+  groupCondition,
+  groupLabel,
+  homeOf,
+  isStaffPath,
+  mayManage,
+  pickGroup,
+  roleOf,
+} from "../src/lib/staff";
 
 const owner = { owner: true, groups: [] };
 const teacher = { owner: false, groups: ["3-A", "3-B"] };
@@ -36,4 +44,38 @@ test("turns a pick into a Prisma filter", () => {
 test("labels only single groups", () => {
   assert.equal(groupLabel("3-A"), "3-A");
   assert.equal(groupLabel(["3-A", "3-B"]), "");
+});
+
+test("reads roles, falling back to owner for old rows", () => {
+  assert.equal(roleOf({ role: "teacher" }), "teacher");
+  assert.equal(roleOf({ role: "admin" }), "admin");
+  assert.equal(roleOf({ role: "owner" }), "owner");
+  assert.equal(roleOf({ role: "" }), "owner");
+});
+
+test("sends teachers to /teacher and everyone else to /admin", () => {
+  assert.equal(homeOf({ role: "teacher" }), "/teacher");
+  assert.equal(homeOf({ role: "admin" }), "/admin");
+  assert.equal(homeOf({ role: "owner" }), "/admin");
+});
+
+test("accepts only staff panel paths after signing in", () => {
+  for (const ok of ["/admin", "/admin/team", "/teacher", "/teacher/class?g=A"])
+    assert.ok(isStaffPath(ok), ok);
+  for (const bad of [
+    "/administrator",
+    "/teachers",
+    "//evil.example",
+    "https://x.uz/admin",
+    "/student",
+  ])
+    assert.ok(!isStaffPath(bad), bad);
+});
+
+test("lets admins manage only teachers and owners everyone", () => {
+  assert.ok(mayManage({ role: "owner" }, "admin", "owner"));
+  assert.ok(mayManage({ role: "admin" }, "teacher", "teacher"));
+  assert.ok(!mayManage({ role: "admin" }, "teacher", "admin"));
+  assert.ok(!mayManage({ role: "admin" }, "owner"));
+  assert.ok(!mayManage({ role: "teacher" }, "teacher"));
 });

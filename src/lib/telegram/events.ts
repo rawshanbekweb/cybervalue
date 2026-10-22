@@ -78,7 +78,7 @@ export async function practiceSubmitted(
       student: student.name,
       group: student.group,
       material: material.title,
-      url: absolute(`/admin/materials/${material.id}`),
+      url: absolute(`/teacher/materials/${material.id}`),
     }),
   );
 }
@@ -128,7 +128,7 @@ export async function daily(db: PrismaClient, now = Date.now()) {
     counts.missed += await notify(
       db,
       await teacherSubjects(db),
-      missedText(missed, absolute("/admin/class")),
+      missedText(missed, absolute("/teacher/class")),
       `missed:${missed.map((m) => m.id).join(",")}`.slice(0, 190),
     );
 

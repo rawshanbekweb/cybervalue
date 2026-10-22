@@ -135,7 +135,7 @@ test.describe("users list", () => {
     page,
   }) => {
     await signIn(page);
-    await page.goto("/admin/students");
+    await page.goto("/teacher/students");
     await page.getByLabel(/Or load a CSV file/).setInputFiles({
       name: "sinf.csv",
       mimeType: "text/csv",
