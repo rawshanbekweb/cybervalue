@@ -3,6 +3,7 @@
 // (the nearest deadline), the entrance exam, the teacher's materials, a lab
 // already started, then a new lab.
 import { LAB_META, LAB_PROGRESS, type LabId } from "../lab-progress";
+import { opensIntermediate } from "./levels";
 import { targetHref, type Target } from "./assignments";
 
 export type NextStep =
@@ -38,6 +39,7 @@ export function nextStep({
   materials,
   done,
   labs,
+  level = "",
 }: {
   assignments: Assignment[];
   entrance: Material[];
@@ -45,6 +47,8 @@ export function nextStep({
   done: Set<string>;
   /** Lessons finished per lab. */
   labs: Partial<Record<LabId, number>>;
+  /** The student's level; Intermediate labs are suggested only when open. */
+  level?: string;
 }): NextStep {
   const open = assignments
     .filter((a) => a.status === "open")
@@ -77,12 +81,15 @@ export function nextStep({
     done: labs[id] ?? 0,
     total: LAB_PROGRESS[id].total,
   });
-  const started = LAB_META.find(
+  const reachable = LAB_META.filter(
+    (l) => !l.intermediate || opensIntermediate(level),
+  );
+  const started = reachable.find(
     (l) =>
       (labs[l.id] ?? 0) > 0 && (labs[l.id] ?? 0) < LAB_PROGRESS[l.id].total,
   );
   if (started) return lab(started.id);
-  const fresh = LAB_META.find(
+  const fresh = reachable.find(
     (l) => (labs[l.id] ?? 0) < LAB_PROGRESS[l.id].total,
   );
   return fresh ? lab(fresh.id) : { kind: "done" };

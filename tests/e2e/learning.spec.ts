@@ -22,7 +22,7 @@ test("learning catalog filters lessons and opens the selected HTML exercise", as
   page,
 }) => {
   await page.goto("/akademiya");
-  await expect(page.locator(".learn-card")).toHaveCount(9);
+  await expect(page.locator(".learn-card")).toHaveCount(10);
   await page
     .getByRole("button", { name: "Linux & terminal", exact: true })
     .click();
@@ -32,7 +32,8 @@ test("learning catalog filters lessons and opens the selected HTML exercise", as
     page.getByRole("heading", { name: "Linux foundations lab" }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Security", exact: true }).click();
-  await expect(page.locator(".learn-card")).toHaveCount(1);
+  // The Web Security Lab and Cryptography basics.
+  await expect(page.locator(".learn-card")).toHaveCount(2);
   await expect(
     page.getByRole("heading", { name: "Web application security" }),
   ).toBeVisible();
@@ -121,7 +122,7 @@ test("empty search can be cleared", async ({ page }) => {
     page.getByRole("heading", { name: "No matching tracks" }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Clear filters" }).click();
-  await expect(page.locator(".learn-card")).toHaveCount(9);
+  await expect(page.locator(".learn-card")).toHaveCount(10);
 });
 
 test("learning hub is accessible and fits mobile through desktop", async ({

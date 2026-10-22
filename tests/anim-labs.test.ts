@@ -10,6 +10,7 @@ import { LESSONS as HTTPS } from "../src/lib/https-basics/curriculum";
 import { LESSONS as BASH, type Log } from "../src/lib/bash-basics/curriculum";
 import { emptyState, run } from "../src/lib/bash-basics/interp";
 import { LESSONS as SSH } from "../src/lib/ssh-basics/curriculum";
+import { LESSONS as CRYPTO } from "../src/lib/crypto-basics/curriculum";
 import { PASSWORD, startSim, step, type Sim } from "../src/lib/ssh-basics/sim";
 import {
   INTERCEPTED,
@@ -32,6 +33,7 @@ const LABS: Record<string, Lesson<{ type: string }>[]> = {
   https: HTTPS,
   bash: BASH,
   ssh: SSH,
+  crypto: CRYPTO,
 };
 
 const filled = (value: { uz: string; en: string }) =>

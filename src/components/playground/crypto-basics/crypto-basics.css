@@ -1,0 +1,291 @@
+/* Cryptography lab widgets; shared pieces come from anim-lab.css,
+   http-basics.css and https-basics.css. */
+.cb-card {
+  display: grid;
+  gap: 16px;
+}
+.cb-label {
+  display: block;
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.cb-field {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.cb-field input {
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #0b0b0e;
+  color: inherit;
+  font: 15px var(--font-mono);
+}
+.cb-field input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.cb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 12px;
+}
+.cb-out {
+  min-height: 24px;
+  overflow-wrap: anywhere;
+  color: #f5c84c;
+  font: 14px var(--font-mono);
+}
+.cb-out.ok {
+  color: #2ee6a6;
+}
+
+/* Lesson 1: bytes */
+.cb-chars {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 8px;
+}
+.cb-char {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  min-width: 92px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #0b0b0e;
+  text-align: center;
+}
+.cb-char strong {
+  font-size: 22px;
+  font-weight: 500;
+}
+.cb-byte {
+  display: grid;
+  gap: 1px;
+  padding-top: 4px;
+  border-top: 1px dashed #ffffff1f;
+  font-size: 12px;
+}
+.cb-bin {
+  color: #f5c84c;
+  letter-spacing: 0.04em;
+}
+.cb-choice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.cb-choice legend {
+  margin-bottom: 8px;
+}
+.cb-choice label {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font: 15px var(--font-mono);
+  cursor: pointer;
+}
+.cb-choice label.on {
+  border-color: var(--accent);
+  background: #8052ff26;
+}
+.cb-choice input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.cb-choice label:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Hashes */
+.cb-hash-row {
+  display: grid;
+  gap: 8px;
+}
+.cb-hash {
+  display: block;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #0b0b0e;
+  overflow-wrap: anywhere;
+  color: #c9c9d1;
+  font: 13px/1.6 var(--font-mono);
+}
+.cb-official {
+  border-color: #2ee6a666;
+  color: #2ee6a6;
+}
+.cb-changed {
+  color: #ff9b8a;
+}
+.cb-meter {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+}
+.cb-bar {
+  display: block;
+  height: 8px;
+  border-radius: 999px;
+  background: #ffffff14;
+  overflow: hidden;
+}
+.cb-bar span {
+  display: block;
+  height: 100%;
+  background: #ff9b8a;
+  transition: width 200ms ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cb-bar span {
+    transition: none;
+  }
+}
+.cb-mirrors {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.cb-mirrors li {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.cb-mirrors li.ok {
+  border-color: #2ee6a666;
+}
+.cb-mirrors li.bad {
+  border-color: #ff7b6b66;
+}
+.cb-mirrors button {
+  justify-self: start;
+}
+.cb-short {
+  font: 13px var(--font-mono);
+}
+.cb-leak input {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--accent);
+}
+.cb-attempts {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding-left: 24px;
+  font-size: 13px;
+}
+.cb-attempts li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  color: var(--muted);
+}
+.cb-attempts li.ok {
+  color: #2ee6a6;
+  font-weight: 600;
+}
+
+/* XOR */
+.cb-xor {
+  display: grid;
+  gap: 10px;
+}
+.cb-xor-row {
+  display: grid;
+  grid-template-columns: minmax(120px, 160px) auto auto;
+  align-items: center;
+  gap: 8px 14px;
+}
+.cb-xor-row .cb-label {
+  margin: 0;
+}
+.cb-bits {
+  display: flex;
+  gap: 4px;
+}
+.cb-bit {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #0b0b0e;
+  color: var(--muted);
+  font: 16px var(--font-mono);
+}
+.cb-bit.on {
+  border-color: #f5c84c88;
+  color: #f5c84c;
+}
+button.cb-bit {
+  cursor: pointer;
+}
+button.cb-bit:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+@media (max-width: 560px) {
+  .cb-xor-row {
+    grid-template-columns: 1fr;
+  }
+  .cb-bit {
+    width: 30px;
+  }
+}
+
+/* Key space and signatures */
+.cb-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  gap: 10px;
+  margin: 0;
+}
+.cb-facts div {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.cb-facts dt {
+  color: var(--muted);
+  font-size: 13px;
+}
+.cb-facts dd {
+  margin: 4px 0 0;
+  font-size: 18px;
+}
+.cb-facts dd.ok {
+  color: #2ee6a6;
+}
+.cb-facts dd.bad {
+  color: #ff9b8a;
+}
+.cb-sign-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}

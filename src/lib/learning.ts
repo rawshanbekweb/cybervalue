@@ -7,6 +7,7 @@ import { LESSONS as HTTP_LESSONS } from "@/lib/http/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
 import { LESSONS as BASH_LESSONS } from "@/lib/bash-basics/curriculum";
+import { LESSONS as CRYPTO_LESSONS } from "@/lib/crypto-basics/curriculum";
 import { LESSONS as SSH_LESSONS } from "@/lib/ssh-basics/curriculum";
 import {
   GROUPS,
@@ -105,6 +106,20 @@ export function getLearningTracks() {
       level: "Beginner",
       lessons: HTTPS_LESSONS.map(({ id, title }) => ({ id, title: title.en })),
       modules: HTTPS_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "crypto",
+      title: "Cryptography basics",
+      category: "Security",
+      description:
+        "Encoding, hashing and encryption told apart: forge a Base64 cookie, watch one letter scramble a hash, salt a leaked table, run a dictionary attack, flip XOR bits and sign a message.",
+      href: "/akademiya/crypto",
+      progressKey: LAB_PROGRESS.crypto.key,
+      level: "Beginner",
+      lessons: CRYPTO_LESSONS.map(({ id, title }) => ({ id, title: title.en })),
+      modules: CRYPTO_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

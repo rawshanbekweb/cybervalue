@@ -12,6 +12,7 @@ export const LAB_PROGRESS = {
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
   ssh: { key: "cybervalue:ssh:progress:v1", total: 8 },
+  crypto: { key: "cybervalue:crypto:progress:v1", total: 11 },
 } as const;
 
 export type LabId = keyof typeof LAB_PROGRESS;
@@ -21,6 +22,8 @@ export const LAB_META: {
   id: LabId;
   title: { uz: string; en: string };
   href: string;
+  /** Opens only at the Intermediate level and above. */
+  intermediate?: boolean;
 }[] = [
   {
     id: "network",
@@ -63,12 +66,18 @@ export const LAB_META: {
     href: "/akademiya/ssh",
   },
   {
+    id: "crypto",
+    title: { uz: "Kriptografiya asoslari", en: "Cryptography basics" },
+    href: "/akademiya/crypto",
+  },
+  {
     id: "http",
     title: {
       uz: "HTTP chuqurroq (Intermediate)",
       en: "HTTP in depth (Intermediate)",
     },
     href: "/intermediate/http",
+    intermediate: true,
   },
 ];
 

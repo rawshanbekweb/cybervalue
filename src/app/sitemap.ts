@@ -28,6 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       "/akademiya/https",
       "/akademiya/bash",
       "/akademiya/ssh",
+      "/akademiya/crypto",
       "/lessons/web-asoslari/index.html",
       "/lessons/private-ipv4/index.html",
       ...Object.keys(collections).map((k) => `/${k}`),
