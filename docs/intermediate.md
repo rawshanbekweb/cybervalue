@@ -6,14 +6,38 @@ students placed at the Intermediate or Advanced level, and to staff.
 
 ## Pages
 
-| Path                 | What is there                                                                  |
-| -------------------- | ------------------------------------------------------------------------------ |
-| `/intermediate`      | The roadmap (12 domains in three phases, career paths) and an access card      |
-| `/intermediate/http` | Module 1 of web application security, HTTP in depth (10 lessons, a checkpoint) |
+| Path                  | What is there                                                                  |
+| --------------------- | ------------------------------------------------------------------------------ |
+| `/intermediate`       | The roadmap (12 domains in three phases, career paths) and an access card      |
+| `/intermediate/http`  | Module 1 of web application security, HTTP in depth (10 lessons, a checkpoint) |
+| `/intermediate/input` | Module 2, untrusted input (9 lessons, a checkpoint)                            |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
 Site settings** (`intermediate`); the HTTP lab keeps its own switch (`http`).
+
+The Intermediate pages load the lab dictionaries (`src/app/[lang]/intermediate/layout.tsx`),
+like the Academy, so the labs' interface is translated.
+
+## Module 2: untrusted input
+
+`/intermediate/input` (lab id `input`, checkpoint `input-1`, award
+`lab-input`) runs on a pretend back end in the browser
+(`src/lib/untrusted-input/tools.ts`): a small SQL engine for one login query,
+a file download handler and an HTML template. Nothing reaches a real system.
+
+| Lessons | What the student does                                                                                        |
+| ------- | ------------------------------------------------------------------------------------------------------------ |
+| 1       | Sorts request parts into “attacker controls” and “server only”                                               |
+| 2–4     | Breaks the login query with one quote, signs in without a password, fixes it with parameters                 |
+| 5–6     | Sends a file name that leaves the folder, sees a one-pass “../” filter fail and the resolved-path check hold |
+| 7       | Writes an anchored allowlist regex for usernames                                                             |
+| 8       | Sees why escaping only `<` and `>` is not enough inside an attribute                                         |
+| 9       | Final questions                                                                                              |
+
+The site settings switch is `input`. `tests/untrusted-input.test.ts` checks
+every exercise against the engine; `tests/e2e/input-lab.spec.ts` solves the
+lessons as an Intermediate student.
 
 ## Who gets in
 

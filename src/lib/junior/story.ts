@@ -1,4 +1,4 @@
-import type { MissionId } from "./content";
+import type { CaseMissionId } from "./content";
 import type { Text } from "./logic";
 
 // Junior's story campaign: someone tried to break into the Cybervalue cyber
@@ -10,7 +10,7 @@ export const STORY_INTRO: Text = {
   en: "02:17 at night. Someone tried to break into the Cybervalue cyber headquarters. The chief has a job for you: finish six missions, find one piece of evidence in each, and unmask the attacker.",
 };
 
-export const EVIDENCE: Record<MissionId, Text> = {
+export const EVIDENCE: Record<CaseMissionId, Text> = {
   password: {
     uz: "Kirish jurnalida «qwerty123», «parol123» kabi yuzlab urinish bor. Hujumchi mashhur parollar ro‘yxatini sinagan.",
     en: "The login log shows hundreds of tries like “qwerty123” and “password1”. The attacker used a list of common passwords.",

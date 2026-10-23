@@ -10,17 +10,24 @@ import {
   CIPHER_ANSWER,
   ETHICS,
   FOOTPRINT,
+  PERMISSIONS,
   PHISHING,
   PHISHING_PASS,
+  WIFI,
 } from "./content";
 import { CIPHERS, type CipherId, type CipherProgress } from "./cipher-content";
 import { sameAnswer } from "./ciphers";
 import { puzzleFor } from "./daily";
 import { normalizeAnswer, type Progress } from "./logic";
 
-export type Stage = 1 | 2 | 3;
+export type Stage = 1 | 2 | 3 | 4;
+/** Cipher Room levels, which stop at three. */
+export type Level = 1 | 2 | 3;
 
-/** Missions in pairs: the basics, reading clues, then thinking like a pro. */
+/**
+ * Missions in pairs: the basics, reading clues, thinking like a pro, then
+ * everyday digital life (after the Cyber HQ case).
+ */
 export const MISSION_STAGE: Record<MissionId, Stage> = {
   password: 1,
   phishing: 1,
@@ -28,6 +35,8 @@ export const MISSION_STAGE: Record<MissionId, Stage> = {
   footprint: 2,
   ctf: 3,
   ethics: 3,
+  permissions: 4,
+  wifi: 4,
 };
 
 export type MissionEvidence =
@@ -38,7 +47,9 @@ export type MissionEvidence =
   | { mission: "cipher"; answer: string }
   | { mission: "footprint"; marked: Record<string, boolean> }
   | { mission: "ctf"; flags: Record<string, string> }
-  | { mission: "ethics"; answers: Record<string, boolean> };
+  | { mission: "ethics"; answers: Record<string, boolean> }
+  | { mission: "permissions"; answers: Record<string, boolean> }
+  | { mission: "wifi"; answers: Record<string, boolean> };
 
 const record = (value: unknown) =>
   value && typeof value === "object" && !Array.isArray(value)
@@ -80,6 +91,14 @@ export function missionPassed(id: MissionId, raw: unknown) {
     case "ethics": {
       const answers = record(evidence.answers);
       return ETHICS.every((item) => answers[item.id] === item.allowed);
+    }
+    case "permissions": {
+      const answers = record(evidence.answers);
+      return PERMISSIONS.every((item) => answers[item.id] === item.needed);
+    }
+    case "wifi": {
+      const answers = record(evidence.answers);
+      return WIFI.every((item) => answers[item.id] === item.safe);
     }
   }
 }

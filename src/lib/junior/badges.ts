@@ -1,5 +1,6 @@
-import type { Text } from "./logic";
+import type { Progress, Text } from "./logic";
 import { CIPHERS, type CipherProgress } from "./cipher-content";
+import { CASE_MISSION_IDS, MISSIONS } from "./content";
 import { RANKS } from "./rank";
 
 // Achievement badges for Junior. Most are worked out from progress the page
@@ -31,6 +32,8 @@ export function restoreEvents(raw: unknown): Events {
 export type BadgeState = {
   missions: number;
   missionTotal: number;
+  /** Which missions are finished. */
+  done: Progress;
   phishing: boolean;
   ciphers: CipherProgress;
   story: boolean;
@@ -56,7 +59,8 @@ export type BadgeIcon =
   | "mail"
   | "flame"
   | "key"
-  | "crown";
+  | "crown"
+  | "shield";
 
 export const BADGES: readonly {
   id: string;
@@ -96,8 +100,24 @@ export const BADGES: readonly {
     id: "recruit",
     icon: "cap",
     title: { uz: "Junior bitiruvchisi", en: "Junior graduate" },
-    how: { uz: "Barcha 6 missiyani bajaring", en: "Finish all 6 missions" },
-    earned: (s) => s.missions === s.missionTotal,
+    how: {
+      uz: "Kiber-shtab ishining 6 missiyasini bajaring",
+      en: "Finish the 6 missions of the Cyber HQ case",
+    },
+    earned: (s) => CASE_MISSION_IDS.every((id) => s.done[id]),
+  },
+  {
+    id: "defender",
+    icon: "shield",
+    title: { uz: "Raqamli himoyachi", en: "Digital defender" },
+    how: {
+      uz: "“Kundalik raqamli hayot” bosqichini tugating",
+      en: "Finish the “Everyday digital life” stage",
+    },
+    earned: (s) =>
+      MISSIONS.filter(
+        (m) => !(CASE_MISSION_IDS as readonly string[]).includes(m.id),
+      ).every((m) => s.done[m.id]),
   },
   {
     id: "historian",

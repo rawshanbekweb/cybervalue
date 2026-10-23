@@ -59,6 +59,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "HTTP chuqurroq (Intermediate)",
     earned: (f) => finished(f, "http") && passed(f, "http-1"),
   },
+  {
+    id: "lab-input",
+    title: "Kiritilgan ma’lumot xavfi (Intermediate)",
+    earned: (f) => finished(f, "input") && passed(f, "input-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

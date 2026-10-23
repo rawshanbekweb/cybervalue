@@ -47,13 +47,13 @@ test("a student finishes every mission and unlocks the next steps", async ({
 }) => {
   needsDatabase();
   const member = await signInJunior(page);
-  await expect(page.getByText("0 / 6 missions complete")).toBeVisible();
+  await expect(page.getByText("0 / 8 missions complete")).toBeVisible();
   const results = await new AxeBuilder({ page }).analyze();
   expect(results.violations).toEqual([]);
 
   // The first-visit tour walks through four steps once, then stays away.
   const tour = page.locator(".jr-tour");
-  await expect(tour).toContainText("Missions in three steps");
+  await expect(tour).toContainText("Missions in four steps");
   for (let step = 0; step < 3; step++)
     await tour.getByRole("button", { name: "Next" }).click();
   await expect(tour).toContainText("Your agent card");
@@ -61,7 +61,7 @@ test("a student finishes every mission and unlocks the next steps", async ({
   await expect(tour).toHaveCount(0);
   await page.waitForLoadState("networkidle");
   await page.reload();
-  await expect(page.getByText("0 / 6 missions complete")).toBeVisible();
+  await expect(page.getByText("0 / 8 missions complete")).toBeVisible();
   await expect(tour).toHaveCount(0);
 
   // 1 · Password
@@ -139,8 +139,50 @@ test("a student finishes every mission and unlocks the next steps", async ({
     await ethicsCards.nth(index).getByLabel(answer, { exact: true }).check();
   await page.getByRole("button", { name: "Check my answers" }).click();
   await page.getByRole("button", { name: "Finish the mission" }).click();
+  await expect(page.getByText("6 / 8 missions complete")).toBeVisible();
 
-  await expect(page.getByText("6 / 6 missions complete")).toBeVisible();
+  // 7 · App permissions
+  await page.getByRole("button", { name: /Permission hunter/ }).click();
+  const permissions = [
+    "Allow",
+    "Deny",
+    "Deny",
+    "Deny",
+    "Allow",
+    "Deny",
+    "Deny",
+  ];
+  const permissionCards = page.locator(".jr-card");
+  await permissionCards.nth(1).getByLabel("Allow", { exact: true }).check();
+  // Every permission must be answered before checking.
+  await expect(
+    page.getByRole("button", { name: "Check my answers" }),
+  ).toBeDisabled();
+  for (const [index, answer] of permissions.entries())
+    await permissionCards
+      .nth(index)
+      .getByLabel(answer, { exact: true })
+      .check();
+  await page.getByRole("button", { name: "Check my answers" }).click();
+  await page.getByRole("button", { name: "Finish the mission" }).click();
+
+  // 8 · Wi-Fi
+  await page.getByRole("button", { name: /The Wi-Fi trap/ }).click();
+  const wifi = [
+    "Safe to do",
+    "Risky",
+    "Risky",
+    "Safe to do",
+    "Safe to do",
+    "Risky",
+  ];
+  const wifiCards = page.locator(".jr-card");
+  for (const [index, answer] of wifi.entries())
+    await wifiCards.nth(index).getByLabel(answer, { exact: true }).check();
+  await page.getByRole("button", { name: "Check my answers" }).click();
+  await page.getByRole("button", { name: "Finish the mission" }).click();
+
+  await expect(page.getByText("8 / 8 missions complete")).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "Congratulations, cyber recruit!" }),
   ).toBeVisible();
@@ -151,14 +193,14 @@ test("a student finishes every mission and unlocks the next steps", async ({
 
   // Progress lives on the server: it survives a reload, signing out and
   // signing in again from another browser.
-  await expect(page.locator(".jr-topbar")).toContainText("600 XP");
+  await expect(page.locator(".jr-topbar")).toContainText("800 XP");
   await page.reload();
-  await expect(page.getByText("6 / 6 missions complete")).toBeVisible();
+  await expect(page.getByText("8 / 8 missions complete")).toBeVisible();
   await page.getByRole("button", { name: "Sign out" }).click();
   await expect(page.getByLabel("Access code")).toBeVisible();
   await page.context().clearCookies({ name: "cv_junior" });
   await enterCode(page, member.code);
-  await expect(page.getByText("6 / 6 missions complete")).toBeVisible();
+  await expect(page.getByText("8 / 8 missions complete")).toBeVisible();
 });
 
 test("Uzbek is the default language", async ({ browser }) => {
@@ -172,7 +214,7 @@ test("Uzbek is the default language", async ({ browser }) => {
     page.getByRole("heading", { name: "Akademiyaga xush kelibsiz.", level: 1 }),
   ).toBeVisible();
   await signInJunior(page);
-  await expect(page.getByText("0 / 6 missiya bajarildi")).toBeVisible();
+  await expect(page.getByText("0 / 8 missiya bajarildi")).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "Parol ustasi" }),
   ).toBeVisible();

@@ -1,7 +1,10 @@
 # CyberValue boshlang‘ich kontenti
 
-Ingliz tilidagi 11 ta material: 3 loyiha tavsifi, 2 laboratoriya yo‘riqnomasi,
-3 o‘quv maqolasi va 3 yuklab olinadigan Markdown qo‘llanmasi.
+22 ta material: 3 loyiha tavsifi, 2 laboratoriya yo‘riqnomasi, 3 o‘quv maqolasi
+(inglizcha) va 14 ta yuklab olinadigan Markdown qo‘llanma. Qo‘llanmalarning 11 tasi
+o‘zbekcha: parollar va MFA, fishingni aniqlash, HTTP, subnetting, Bash, OWASP Top 10,
+kiberxavfsizlik lug‘ati, CTF metodikasi, xavfsiz kod, kodlash–hash–shifrlash va
+Linux–tarmoq darsligi. Fayllar `resources/` papkasida.
 
 Loyiha tavsiflari mavjud repozitoriyga asoslangan. Laboratoriya yozuvlari ichki
 o‘quv muhitining ishlashi va mashq tartibini tushuntiradi. CTF ishtiroki, sovrinlar,

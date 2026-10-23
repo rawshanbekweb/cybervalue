@@ -86,6 +86,7 @@ const OPEN_LABS = [
   { href: "/akademiya/https", title: "HTTPS and TLS" },
   { href: "/akademiya/bash", title: "Bash basics" },
   { href: "/akademiya/ssh", title: "SSH: remote access" },
+  { href: "/akademiya/crypto", title: "Cryptography basics" },
   { href: "/akademiya/ctf", title: "00:17 CTF investigation" },
   { href: "/akademiya/missions", title: "Investigation missions" },
   { href: "/akademiya/html-basics", title: "HTML Basics" },
@@ -269,6 +270,7 @@ export default async function StudentHomePage() {
   const entrance = materials.filter((m) => isEntranceExam(m.slug));
   const entranceDone = entrance.filter((m) => done.has(m.id)).length;
   const next = nextStep({
+    level: student.level,
     assignments,
     entrance,
     materials: materials.filter((m) => !isEntranceExam(m.slug)),

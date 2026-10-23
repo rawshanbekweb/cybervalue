@@ -4,9 +4,11 @@ import { LESSONS as LINUX_LESSONS } from "@/lib/linux/curriculum";
 import { LESSONS as NETWORK_LESSONS } from "@/lib/network/curriculum";
 import { HTML_LESSONS } from "@/components/playground/html-basics/lessons.data";
 import { LESSONS as HTTP_LESSONS } from "@/lib/http/curriculum";
+import { LESSONS as INPUT_LESSONS } from "@/lib/untrusted-input/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
 import { LESSONS as BASH_LESSONS } from "@/lib/bash-basics/curriculum";
+import { LESSONS as CRYPTO_LESSONS } from "@/lib/crypto-basics/curriculum";
 import { LESSONS as SSH_LESSONS } from "@/lib/ssh-basics/curriculum";
 import {
   GROUPS,
@@ -109,6 +111,20 @@ export function getLearningTracks() {
       ),
     },
     {
+      id: "crypto",
+      title: "Cryptography basics",
+      category: "Security",
+      description:
+        "Encoding, hashing and encryption told apart: forge a Base64 cookie, watch one letter scramble a hash, salt a leaked table, run a dictionary attack, flip XOR bits and sign a message.",
+      href: "/akademiya/crypto",
+      progressKey: LAB_PROGRESS.crypto.key,
+      level: "Beginner",
+      lessons: CRYPTO_LESSONS.map(({ id, title }) => ({ id, title: title.en })),
+      modules: CRYPTO_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
       id: "bash",
       title: "Bash basics",
       category: "Linux & terminal",
@@ -147,6 +163,20 @@ export function getLearningTracks() {
       level: "Intermediate",
       lessons: HTTP_LESSONS.map(({ id, title }) => ({ id, title: title.en })),
       modules: HTTP_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "input",
+      title: "Untrusted input",
+      category: "Intermediate · Web security",
+      description:
+        "Break a login query with one quote, fix it with parameters, check file paths, write an allowlist and encode output for its context.",
+      href: "/intermediate/input",
+      progressKey: LAB_PROGRESS.input.key,
+      level: "Intermediate",
+      lessons: INPUT_LESSONS.map(({ id, title }) => ({ id, title: title.en })),
+      modules: INPUT_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

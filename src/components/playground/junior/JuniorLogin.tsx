@@ -17,8 +17,8 @@ import "./junior.css";
 const FEATURES = [
   {
     icon: Crosshair,
-    uz: "6 ta missiya va Kiber-shtab ishi",
-    en: "6 missions and the Cyber HQ case",
+    uz: "8 ta missiya va Kiber-shtab ishi",
+    en: "8 missions and the Cyber HQ case",
   },
   {
     icon: KeyRound,

@@ -89,12 +89,38 @@ test("everything finished", () => {
         html: 12,
         security: 36,
         http: 10,
+        input: 9,
         httpbasics: 9,
         https: 9,
         bash: 9,
         ssh: 8,
+        crypto: 11,
       },
+      level: "intermediate",
     }),
     { kind: "done" },
   );
+});
+
+test("Intermediate labs are suggested only to students they are open to", () => {
+  const beginnerLabsDone = {
+    network: 17,
+    linux: 16,
+    html: 12,
+    security: 36,
+    httpbasics: 9,
+    https: 9,
+    bash: 9,
+    ssh: 8,
+    crypto: 11,
+  };
+  assert.deepEqual(nextStep({ ...base, labs: beginnerLabsDone }), {
+    kind: "done",
+  });
+  const next = nextStep({
+    ...base,
+    labs: beginnerLabsDone,
+    level: "intermediate",
+  });
+  assert.equal(next.kind === "lab" && next.lab, "http");
 });

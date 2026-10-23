@@ -34,7 +34,7 @@ import {
   type BadgeState,
 } from "../src/lib/junior/badges";
 import { EVIDENCE, SUSPECTS, restoreStory } from "../src/lib/junior/story";
-import { MISSION_IDS } from "../src/lib/junior/content";
+import { CASE_MISSION_IDS, MISSION_IDS } from "../src/lib/junior/content";
 import { CIPHERS } from "../src/lib/junior/cipher-content";
 import {
   rankingName,
@@ -156,9 +156,10 @@ test("secret links round-trip and reject anything malformed", () => {
   );
 });
 
-test("the story has one culprit and evidence for every mission", () => {
+test("the story has one culprit and evidence for every case mission", () => {
   assert.equal(SUSPECTS.filter((s) => s.culprit).length, 1);
-  for (const id of MISSION_IDS) {
+  assert.ok(CASE_MISSION_IDS.every((id) => MISSION_IDS.includes(id)));
+  for (const id of CASE_MISSION_IDS) {
     assert.ok(EVIDENCE[id].uz && EVIDENCE[id].en, id);
   }
   for (const suspect of SUSPECTS)
@@ -180,7 +181,8 @@ test("badges are earned from progress and sanitised events", () => {
   assert.deepEqual(restoreEvents(null), {});
   const empty: BadgeState = {
     missions: 0,
-    missionTotal: 6,
+    missionTotal: 8,
+    done: {},
     phishing: false,
     ciphers: {},
     story: false,
@@ -190,8 +192,9 @@ test("badges are earned from progress and sanitised events", () => {
   };
   assert.equal(BADGES.filter((b) => b.earned(empty)).length, 0);
   const full: BadgeState = {
-    missions: 6,
-    missionTotal: 6,
+    missions: 8,
+    missionTotal: 8,
+    done: Object.fromEntries(MISSION_IDS.map((id) => [id, true as const])),
     phishing: true,
     ciphers: Object.fromEntries(
       CIPHERS.map((c) => [c.id, c.exercises.map((_, i) => i)]),
@@ -265,4 +268,28 @@ test("stored Junior progress is validated part by part and the XP recomputed", (
     rankingName({ name: "Aziza Karimova", codename: "Lochin" }),
     "Lochin",
   );
+});
+
+test("the case badge needs only the case missions, the defender badge stage 4", () => {
+  const base: BadgeState = {
+    missions: 6,
+    missionTotal: 8,
+    done: Object.fromEntries(CASE_MISSION_IDS.map((id) => [id, true as const])),
+    phishing: true,
+    ciphers: {},
+    story: true,
+    events: {},
+    streak: 0,
+    rank: 0,
+  };
+  const earned = (state: BadgeState) =>
+    BADGES.filter((b) => b.earned(state)).map((b) => b.id);
+  assert.ok(earned(base).includes("recruit"));
+  assert.ok(!earned(base).includes("defender"));
+  const all: BadgeState = {
+    ...base,
+    missions: 8,
+    done: Object.fromEntries(MISSION_IDS.map((id) => [id, true as const])),
+  };
+  assert.ok(earned(all).includes("defender"));
 });

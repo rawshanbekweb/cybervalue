@@ -5,7 +5,9 @@ import {
   CTF_FLAGS,
   ETHICS,
   FOOTPRINT,
+  PERMISSIONS,
   PHISHING,
+  WIFI,
 } from "../src/lib/junior/content";
 import { CIPHERS } from "../src/lib/junior/cipher-content";
 import { dayIndex, puzzleFor } from "../src/lib/junior/daily";
@@ -43,6 +45,14 @@ const EVIDENCE = {
   ethics: {
     mission: "ethics",
     answers: Object.fromEntries(ETHICS.map((e) => [e.id, e.allowed])),
+  },
+  permissions: {
+    mission: "permissions",
+    answers: Object.fromEntries(PERMISSIONS.map((p) => [p.id, p.needed])),
+  },
+  wifi: {
+    mission: "wifi",
+    answers: Object.fromEntries(WIFI.map((w) => [w.id, w.safe])),
   },
 } as const;
 
@@ -198,4 +208,48 @@ test("only today's puzzle counts, with its answer, and the best streak is kept",
   assert.equal(applyJuniorPart(solved, "daily", [], {}, now)!.daily.length, 3);
   assert.equal(bestStreak([1, 2, 3, 7, 8]), 3);
   assert.equal(bestStreak([]), 0);
+});
+
+test("stage 4 opens after the case missions and never reopens a closed case", () => {
+  let p = restoreJuniorProgress(
+    {
+      missions: {
+        password: true,
+        phishing: true,
+        cipher: true,
+        footprint: true,
+        ctf: true,
+        ethics: true,
+      },
+      story: true,
+    },
+    now,
+  );
+  assert.ok(missionStageOpen(4, p.missions));
+  assert.ok(!missionStageOpen(4, { password: true }));
+  // A wrong answer is refused.
+  assert.equal(
+    applyJuniorPart(
+      p,
+      "missions",
+      { ...p.missions, wifi: true },
+      { missions: { wifi: { mission: "wifi", answers: {} } } },
+      now,
+    ),
+    null,
+  );
+  for (const id of ["permissions", "wifi"] as const) {
+    const next = applyJuniorPart(
+      p,
+      "missions",
+      { ...p.missions, [id]: true },
+      { missions: { [id]: EVIDENCE[id] } },
+      now,
+    );
+    assert.ok(next, id);
+    p = next!;
+  }
+  // The case stays closed and both missions add XP.
+  assert.equal(p.story, true);
+  assert.equal(Object.keys(p.missions).length, 8);
 });

@@ -5,7 +5,14 @@ import { base64Encode, caesar, type Text } from "./logic";
 // translation (tests assert both sides are present).
 
 export type MissionId =
-  "password" | "phishing" | "cipher" | "footprint" | "ctf" | "ethics";
+  | "password"
+  | "phishing"
+  | "cipher"
+  | "footprint"
+  | "ctf"
+  | "ethics"
+  | "permissions"
+  | "wifi";
 
 export type Mission = {
   id: MissionId;
@@ -101,9 +108,51 @@ export const MISSIONS: readonly Mission[] = [
       en: "Make the right call in all 5 situations.",
     },
   },
+  {
+    id: "permissions",
+    number: 7,
+    title: { uz: "Ruxsatlar ovchisi", en: "Permission hunter" },
+    minutes: 5,
+    hook: {
+      uz: "Oddiy fonar ilovasi nega kontaktlaringizni so‘raydi?",
+      en: "Why would a simple flashlight app want your contacts?",
+    },
+    goal: {
+      uz: "Ikki ilovaning har bir ruxsatini to‘g‘ri bering yoki rad eting.",
+      en: "Allow or deny every permission of two apps correctly.",
+    },
+  },
+  {
+    id: "wifi",
+    number: 8,
+    title: { uz: "Wi-Fi tuzog‘i", en: "The Wi-Fi trap" },
+    minutes: 5,
+    hook: {
+      uz: "Bepul Wi-Fi qulay — lekin uni kim tarqatayotganini bilasizmi?",
+      en: "Free Wi-Fi is handy — but do you know who is running it?",
+    },
+    goal: {
+      uz: "6 ta vaziyatda xavfsiz va xavfli harakatni ajrating.",
+      en: "Tell the safe move from the risky one in all 6 situations.",
+    },
+  },
 ];
 
 export const MISSION_IDS = MISSIONS.map((mission) => mission.id);
+
+/**
+ * The six missions of the Cyber HQ case. The case and the certificate need
+ * these; later missions add XP and badges but never reopen a closed case.
+ */
+export type CaseMissionId = Exclude<MissionId, "permissions" | "wifi">;
+export const CASE_MISSION_IDS: readonly CaseMissionId[] = [
+  "password",
+  "phishing",
+  "cipher",
+  "footprint",
+  "ctf",
+  "ethics",
+];
 
 // 1 · Passwords --------------------------------------------------------------
 
@@ -464,3 +513,170 @@ export const ETHICS: readonly EthicsCase[] = [
 ];
 
 export const ETHICS_PASS = ETHICS.length;
+
+// 7 · App permissions --------------------------------------------------------
+
+export type PermissionCase = {
+  id: string;
+  app: Text;
+  permission: Text;
+  needed: boolean;
+  why: Text;
+};
+
+export const PERMISSIONS: readonly PermissionCase[] = [
+  {
+    id: "torch-camera",
+    app: { uz: "Fonar Pro", en: "Torch Pro" },
+    permission: { uz: "Kamera (chiroq)", en: "Camera (flash)" },
+    needed: true,
+    why: {
+      uz: "Telefon chirog‘i kamera bilan bog‘langan — fonarga shu kerak.",
+      en: "The phone’s flash belongs to the camera — a torch needs it.",
+    },
+  },
+  {
+    id: "torch-contacts",
+    app: { uz: "Fonar Pro", en: "Torch Pro" },
+    permission: { uz: "Kontaktlar", en: "Contacts" },
+    needed: false,
+    why: {
+      uz: "Chiroq yoqish uchun do‘stlaringiz ro‘yxati kerak emas. Bunday ilova ma’lumotingizni sotishi mumkin.",
+      en: "Switching on a light needs no list of your friends. An app like this may sell your data.",
+    },
+  },
+  {
+    id: "torch-location",
+    app: { uz: "Fonar Pro", en: "Torch Pro" },
+    permission: { uz: "Joylashuv", en: "Location" },
+    needed: false,
+    why: {
+      uz: "Fonar qayerda ekaningizni bilishi shart emas.",
+      en: "A torch has no reason to know where you are.",
+    },
+  },
+  {
+    id: "torch-sms",
+    app: { uz: "Fonar Pro", en: "Torch Pro" },
+    permission: { uz: "SMS o‘qish", en: "Read SMS" },
+    needed: false,
+    why: {
+      uz: "Juda xavfli: SMS orqali bank va akkaunt kodlari keladi.",
+      en: "Very risky: bank and account codes arrive by SMS.",
+    },
+  },
+  {
+    id: "map-location",
+    app: { uz: "Yo‘lchi xarita", en: "Wayfinder Maps" },
+    permission: { uz: "Joylashuv", en: "Location" },
+    needed: true,
+    why: {
+      uz: "Xarita yo‘lni ko‘rsatish uchun qayerda ekaningizni bilishi kerak. Faqat “ilovadan foydalanayotganda” ruxsatini bering.",
+      en: "A map needs your position to show the way. Allow it only “while using the app”.",
+    },
+  },
+  {
+    id: "map-contacts",
+    app: { uz: "Yo‘lchi xarita", en: "Wayfinder Maps" },
+    permission: { uz: "Kontaktlar", en: "Contacts" },
+    needed: false,
+    why: {
+      uz: "Yo‘l topish uchun kontaktlar kerak emas.",
+      en: "Finding the way needs no contacts.",
+    },
+  },
+  {
+    id: "map-microphone",
+    app: { uz: "Yo‘lchi xarita", en: "Wayfinder Maps" },
+    permission: { uz: "Mikrofon (doim)", en: "Microphone (always)" },
+    needed: false,
+    why: {
+      uz: "Mikrofonni doim ochiq qoldirishga hech qanday sabab yo‘q.",
+      en: "There is no reason to keep the microphone on all the time.",
+    },
+  },
+];
+
+// 8 · Wi-Fi --------------------------------------------------------------------
+
+export type WifiCase = {
+  id: string;
+  situation: Text;
+  safe: boolean;
+  why: Text;
+};
+
+export const WIFI: readonly WifiCase[] = [
+  {
+    id: "ask-staff",
+    situation: {
+      uz: "Kafeda Wi-Fi nomi va parolini xodimdan so‘rab, aynan o‘sha tarmoqqa ulanasiz.",
+      en: "In a café you ask the staff for the Wi-Fi name and password and join exactly that network.",
+    },
+    safe: true,
+    why: {
+      uz: "To‘g‘ri: tarmoq nomini ishonchli odamdan bilib oldingiz.",
+      en: "Right: you learned the network’s name from someone you can trust.",
+    },
+  },
+  {
+    id: "twin",
+    situation: {
+      uz: "Ro‘yxatda ikkita “Kafe_WiFi” bor. Signali kuchlirog‘iga o‘ylamasdan ulanasiz.",
+      en: "The list shows two “Cafe_WiFi” networks. You join the stronger one without a second thought.",
+    },
+    safe: false,
+    why: {
+      uz: "Hujumchi xuddi shunday nomli “egizak” tarmoq ochishi mumkin. Shubha bo‘lsa — xodimdan so‘rang.",
+      en: "An attacker can set up an “evil twin” with the same name. If in doubt, ask the staff.",
+    },
+  },
+  {
+    id: "portal",
+    situation: {
+      uz: "Ochiq Wi-Fi’ga ulangach, sahifa “Internet uchun Google parolingizni kiriting” deydi. Kiritasiz.",
+      en: "After joining open Wi-Fi, a page says “Enter your Google password to get online”. You type it.",
+    },
+    safe: false,
+    why: {
+      uz: "Wi-Fi uchun hech qachon email yoki ijtimoiy tarmoq parolingiz kerak bo‘lmaydi. Bu fishing.",
+      en: "Wi-Fi never needs your email or social media password. This is phishing.",
+    },
+  },
+  {
+    id: "router",
+    situation: {
+      uz: "Uydagi routerning standart parolini (admin/admin) ota-onangiz bilan birga o‘zgartirasiz.",
+      en: "With your parents, you change the home router’s default password (admin/admin).",
+    },
+    safe: true,
+    why: {
+      uz: "Standart parollar internetda ochiq yozilgan. Uni almashtirish — birinchi himoya.",
+      en: "Default passwords are listed openly online. Changing it is the first line of defence.",
+    },
+  },
+  {
+    id: "hotspot",
+    situation: {
+      uz: "Aeroportda internet-do‘kondan xarid qilishingiz kerak. Ochiq Wi-Fi o‘rniga o‘z telefoningiz internetidan foydalanasiz.",
+      en: "At the airport you need to buy something online. You use your own phone’s mobile data instead of open Wi-Fi.",
+    },
+    safe: true,
+    why: {
+      uz: "O‘z mobil internetingiz begona tarmoqdan xavfsizroq — ayniqsa to‘lov uchun.",
+      en: "Your own mobile data is safer than a stranger’s network — especially for payments.",
+    },
+  },
+  {
+    id: "warning",
+    situation: {
+      uz: "Brauzer “Ulanish xavfsiz emas” deb ogohlantiradi, lekin siz “Baribir davom etish”ni bosasiz.",
+      en: "The browser warns “Your connection is not private”, but you click “Proceed anyway”.",
+    },
+    safe: false,
+    why: {
+      uz: "Bu ogohlantirish kimdir ulanishni o‘rtadan ushlayotganini bildirishi mumkin. To‘xtang.",
+      en: "This warning can mean someone is intercepting the connection. Stop.",
+    },
+  },
+];

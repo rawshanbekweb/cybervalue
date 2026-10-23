@@ -35,8 +35,12 @@ function entryFrom(seed: Seed, updatedAt = new Date(TRANSLATED_AT - 1000)) {
   } as unknown as Entry;
 }
 
-test("every seeded entry has an Uzbek title, summary and body that differ from the source", () => {
-  for (const seed of seeds) {
+// Entries written in Uzbek (o‘ and g‘ use the ‘ letter) need no Uzbek translation.
+const authoredInUzbek = (seed: Seed) =>
+  /[og]‘/i.test(`${seed.title} ${seed.summary} ${seed.body}`);
+
+test("every English seeded entry has an Uzbek title, summary and body that differ from the source", () => {
+  for (const seed of seeds.filter((s) => !authoredInUzbek(s))) {
     const uz = localizeEntry(entryFrom(seed), "uz");
     // The Uzbek-titled Linux guide keeps its authored title.
     if (seed.slug !== "linux-va-tarmoq-qollanma")

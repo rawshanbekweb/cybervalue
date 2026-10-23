@@ -12,6 +12,12 @@
   background: #0f0f11;
   border: 1px solid var(--border);
   border-radius: 7px;
+  /* One scrollable row of pills rather than a ragged wrap. */
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.learn-filters::-webkit-scrollbar {
+  display: none;
 }
 .learn-filters button {
   flex-shrink: 0;
@@ -334,14 +340,8 @@
     flex-direction: column;
     gap: 12px;
   }
-  /* One scrollable row of pills rather than a ragged wrap. */
   .learn-filters {
     align-self: stretch;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .learn-filters::-webkit-scrollbar {
-    display: none;
   }
   .learn-search {
     width: 100%;

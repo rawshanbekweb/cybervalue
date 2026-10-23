@@ -321,5 +321,299 @@
       "topic": "Linux",
       "version": "1.0"
     }
+  },
+  {
+    "kind": "RESOURCE",
+    "slug": "parol-va-mfa-qollanma",
+    "title": "Parollar va ikki bosqichli himoya: amaliy qo‘llanma",
+    "summary": "Kuchli parol, parol menejeri va MFA turlari haqida amaliy qo‘llanma: parol qanday buziladi, qaysi akkauntlardan boshlash kerak va parol sizib chiqsa nima qilinadi.",
+    "body": "## Bu resurs haqida\n\nKuchli parol, parol menejeri va MFA turlari haqida amaliy qo‘llanma: parol qanday buziladi, qaysi akkauntlardan boshlash kerak va parol sizib chiqsa nima qilinadi.\n\n## Ichida nima bor\n\n- Parolni buzish usullari va ularga qarshi himoya\n- Yaxshi va yomon parollar taqqoslangan jadval\n- Parol menejeri: afzalliklari va e’tibor beradigan joylar\n- MFA turlari — SMS’dan xavfsizlik kalitigacha\n- Parol sizib chiqqanda qadamma-qadam reja\n- 15 daqiqalik shaxsiy tekshiruv ro‘yxati\n\n## Qanday foydalanish kerak\n\nAvval 1–4-bo‘limlarni o‘qing, so‘ng 7-bo‘limdagi ro‘yxat bo‘yicha o‘z akkauntlaringizni tekshiring. O‘qituvchilar uni sinfda 20 daqiqalik dars sifatida ishlatishi mumkin.\n\nFayl UTF-8 kodlashdagi Markdown hujjat: istalgan matn muharririda ochiladi, uni chop etish yoki o‘z izohlaringizni qo‘shish mumkin.\n\nTil: o‘zbekcha. Versiya: 1.0.",
+    "status": "DRAFT",
+    "category": {
+      "name": "Kiberxavfsizlik asoslari",
+      "slug": "kiberxavfsizlik-asoslari"
+    },
+    "tags": [
+      {
+        "name": "Parollar",
+        "slug": "parollar"
+      },
+      {
+        "name": "MFA",
+        "slug": "mfa"
+      }
+    ],
+    "relatedSlugs": ["autentifikatsiya-va-avtorizatsiya"],
+    "resource": {
+      "type": "Markdown qo‘llanma",
+      "filePath": "/downloads/parol-va-mfa-qollanma.md",
+      "topic": "Autentifikatsiya",
+      "version": "1.0"
+    }
+  },
+  {
+    "kind": "RESOURCE",
+    "slug": "fishing-aniqlash-cheklist",
+    "title": "Fishingni aniqlash: tekshiruv ro‘yxati",
+    "summary": "Shubhali email, SMS yoki Telegram xabarini tekshirish uchun chop etiladigan ro‘yxat: 10 soniyalik tekshiruv, havola va yuboruvchini o‘qish, fishing turlari va bosib qo‘yilganda nima qilish kerakligi.",
+    "body": "## Bu resurs haqida\n\nShubhali email, SMS yoki Telegram xabarini tekshirish uchun chop etiladigan ro‘yxat: 10 soniyalik tekshiruv, havola va yuboruvchini o‘qish, fishing turlari va bosib qo‘yilganda nima qilish kerakligi.\n\n## Ichida nima bor\n\n- Har bir xabar uchun uchta savol\n- Yuboruvchi, havola, ilova va matn bo‘yicha batafsil ro‘yxat\n- Keng tarqalgan 8 ta fishing turi misollar bilan\n- Shubha tug‘ilganda va allaqachon bosib qo‘yilganda harakat rejasi\n- Domen o‘qish mashqi javoblari bilan\n\n## Qanday foydalanish kerak\n\nRo‘yxatni chop eting yoki telefoningizga saqlang. 5-bo‘limdagi mashqni o‘quvchilar bilan birga bajaring — domenni o‘ngdan chapga o‘qish ko‘nikmasi eng ko‘p foyda beradi.\n\nFayl UTF-8 kodlashdagi Markdown hujjat: istalgan matn muharririda ochiladi, uni chop etish yoki o‘z izohlaringizni qo‘shish mumkin.\n\nTil: o‘zbekcha. Versiya: 1.0.",
+    "status": "DRAFT",
+    "category": {
+      "name": "Kiberxavfsizlik asoslari",
+      "slug": "kiberxavfsizlik-asoslari"
+    },
+    "tags": [
+      {
+        "name": "Fishing",
+        "slug": "fishing"
+      },
+      {
+        "name": "Ijtimoiy muhandislik",
+        "slug": "ijtimoiy-muhandislik"
+      }
+    ],
+    "relatedSlugs": [],
+    "resource": {
+      "type": "Markdown qo‘llanma",
+      "filePath": "/downloads/fishing-aniqlash-cheklist.md",
+      "topic": "Fishing",
+      "version": "1.0"
+    }
+  },
+  {
+    "kind": "RESOURCE",
+    "slug": "http-cheatsheet",
+    "title": "HTTP cheat-sheet: metodlar, holat kodlari va sarlavhalar",
+    "summary": "HTTP so‘rov va javob tuzilishi, metodlar, holat kodlari, muhim va xavfsizlik sarlavhalari, cookie atributlari, CORS va terminaldagi curl buyruqlari bir joyda.",
+    "body": "## Bu resurs haqida\n\nHTTP so‘rov va javob tuzilishi, metodlar, holat kodlari, muhim va xavfsizlik sarlavhalari, cookie atributlari, CORS va terminaldagi curl buyruqlari bir joyda.\n\n## Ichida nima bor\n\n- URL qismlari va qaysi biri serverga borishi\n- Metodlar: xavfsiz va idempotent jadval\n- Holat kodlari oilalari va eng ko‘p uchraydigan 20 ta kod\n- So‘rov, javob va xavfsizlik sarlavhalari\n- Cookie atributlari va sessiya uchun tavsiya\n- Same-origin va CORS qisqacha\n- curl va brauzer DevTools bilan ishlash\n\n## Qanday foydalanish kerak\n\nHTTP asoslari, HTTPS va HTTP chuqurroq laboratoriyalarida yoningizda tuting. Har bir jadvalni laboratoriyadagi so‘rovlar bilan solishtiring.\n\nFayl UTF-8 kodlashdagi Markdown hujjat: istalgan matn muharririda ochiladi, uni chop etish yoki o‘z izohlaringizni qo‘shish mumkin.\n\nTil: o‘zbekcha. Versiya: 1.0.",
+    "status": "DRAFT",
+    "category": {
+      "name": "Veb xavfsizlik",
+      "slug": "veb-xavfsizlik"
+    },
+    "tags": [
+      {
+        "name": "HTTP",
+        "slug": "http"
+      },
+      {
+        "name": "Cookie",
+        "slug": "cookie"
+      }
+    ],
+    "relatedSlugs": ["web-security-lab"],
+    "resource": {
+      "type": "Markdown qo‘llanma",
+      "filePath": "/downloads/http-cheatsheet.md",
+      "topic": "HTTP",
+      "version": "1.0"
+    }
+  },
+  {
+    "kind": "RESOURCE",
+    "slug": "subnetting-jadvali",
+    "title": "IPv4 subnetting jadvali va tez hisoblash",
+    "summary": "Bit og‘irliklari, /8 dan /32 gacha mask va hostlar jadvali, blok usuli bilan tez hisoblash, maxsus manzillar va tarmoq nosozliklarini topish tartibi — javoblari bilan mashqlar.",
+    "body": "## Bu resurs haqida\n\nBit og‘irliklari, /8 dan /32 gacha mask va hostlar jadvali, blok usuli bilan tez hisoblash, maxsus manzillar va tarmoq nosozliklarini topish tartibi — javoblari bilan mashqlar.\n\n## Ichida nima bor\n\n- Bit og‘irliklari va mask qiymatlari\n- Prefiks, mask, blok hajmi va hostlar jadvali\n- Blok usuli bilan ikki ishlangan misol\n- Ikki manzil bir tarmoqdami — AND va blok usuli\n- Kerakli subnet o‘lchamini tanlash\n- Xususiy va maxsus manzillar\n- Nosozlikni topish buyruqlari va 4 ta mashq\n\n## Qanday foydalanish kerak\n\nIP manzillash laboratoriyasi va IP manzillash testi oldidan takrorlang. Test paytida qog‘ozga bloklarni yozib hisoblash odatini shakllantiring.\n\nFayl UTF-8 kodlashdagi Markdown hujjat: istalgan matn muharririda ochiladi, uni chop etish yoki o‘z izohlaringizni qo‘shish mumkin.\n\nTil: o‘zbekcha. Versiya: 1.0.",
+    "status": "DRAFT",
+    "category": {
+      "name": "Tarmoq va Linux",
+      "slug": "tarmoq-va-linux"
+    },
+    "tags": [
+      {
+        "name": "Subnetting",
+        "slug": "subnetting"
+      },
+      {
+        "name": "IPv4",
+        "slug": "ipv4"
+      }
+    ],
+    "relatedSlugs": ["linux-va-tarmoq-qollanma"],
+    "resource": {
+      "type": "Markdown qo‘llanma",
+      "filePath": "/downloads/subnetting-jadvali.md",
+      "topic": "Tarmoqlar",
+      "version": "1.0"
+    }
+  },
+  {
+    "kind": "RESOURCE",
+    "slug": "bash-cheatsheet",
+    "title": "Bash cheat-sheet: buyruqlar va ilk skriptlar",
+    "summary": "Linux terminalida harakatlanish, fayllar, qidirish va filtrlash, huquqlar, jarayonlar va tarmoq buyruqlari, Bash skript asoslari va kirish jurnalini tahlil qiluvchi tayyor skript.",
+    "body": "## Bu resurs haqida\n\nLinux terminalida harakatlanish, fayllar, qidirish va filtrlash, huquqlar, jarayonlar va tarmoq buyruqlari, Bash skript asoslari va kirish jurnalini tahlil qiluvchi tayyor skript.\n\n## Ichida nima bor\n\n- Fayl tizimida harakatlanish va fayllar bilan ishlash\n- grep, find, sort, uniq, awk va quvurlar\n- Huquqlar: rwx, chmod raqamlari va xavfsizlik eslatmalari\n- Jarayonlar, disk va tarmoq buyruqlari\n- O‘zgaruvchilar, shartlar, sikllar va funksiyalar\n- auth.log’ni tahlil qiluvchi skript\n- Klaviatura yorliqlari\n\n## Qanday foydalanish kerak\n\nLinux asoslari va Bash asoslari laboratoriyalari bilan birga ishlating. Har bir buyruqni avval o‘quv terminalida sinab ko‘ring.\n\nFayl UTF-8 kodlashdagi Markdown hujjat: istalgan matn muharririda ochiladi, uni chop etish yoki o‘z izohlaringizni qo‘shish mumkin.\n\nTil: o‘zbekcha. Versiya: 1.0.",
+    "status": "DRAFT",
+    "category": {
+      "name": "Tarmoq va Linux",
+      "slug": "tarmoq-va-linux"
+    },
+    "tags": [
+      {
+        "name": "Linux",
+        "slug": "linux"
+      },
+      {
+        "name": "Bash",
+        "slug": "bash"
+      }
+    ],
+    "relatedSlugs": ["linux-va-tarmoq-qollanma"],
+    "resource": {
+      "type": "Markdown qo‘llanma",
+      "filePath": "/downloads/bash-cheatsheet.md",
+      "topic": "Linux",
+      "version": "1.0"
+    }
+  },
+  {
+    "kind": "RESOURCE",
+    "slug": "owasp-top10-qisqa",
+    "title": "OWASP Top 10: veb-ilovalardagi eng muhim xavflar",
+    "summary": "OWASP Top 10:2021 ning o‘zbekcha qisqa sharhi: har bir xavf nima ekanligi, oddiy misol va qanday himoyalanish — bir varaqlik umumiy jadval bilan.",
+    "body": "## Bu resurs haqida\n\nOWASP Top 10:2021 ning o‘zbekcha qisqa sharhi: har bir xavf nima ekanligi, oddiy misol va qanday himoyalanish — bir varaqlik umumiy jadval bilan.\n\n## Ichida nima bor\n\n- A01–A10: kirish nazoratidan SSRF gacha\n- Har bir xavf uchun misol va himoya choralari\n- Bir varaqlik umumiy jadval\n- Akademiyaning qaysi laboratoriyasida mashq qilish mumkinligi\n\n## Qanday foydalanish kerak\n\nVeb-xavfsizlik laboratoriyasidan oldin umumiy tasavvur uchun o‘qing, keyin har bir bandni tegishli laboratoriyada amalda ko‘ring.\n\nFayl UTF-8 kodlashdagi Markdown hujjat: istalgan matn muharririda ochiladi, uni chop etish yoki o‘z izohlaringizni qo‘shish mumkin.\n\nTil: o‘zbekcha. Versiya: 1.0.",
+    "status": "DRAFT",
+    "category": {
+      "name": "Veb xavfsizlik",
+      "slug": "veb-xavfsizlik"
+    },
+    "tags": [
+      {
+        "name": "OWASP",
+        "slug": "owasp"
+      },
+      {
+        "name": "Veb xavfsizlik",
+        "slug": "veb-xavfsizlik"
+      }
+    ],
+    "relatedSlugs": [
+      "sql-kod-va-malumot",
+      "autentifikatsiya-va-avtorizatsiya",
+      "web-security-lab"
+    ],
+    "resource": {
+      "type": "Markdown qo‘llanma",
+      "filePath": "/downloads/owasp-top10-qisqa.md",
+      "topic": "Veb xavfsizlik",
+      "version": "1.0"
+    }
+  },
+  {
+    "kind": "RESOURCE",
+    "slug": "kiberxavfsizlik-lugati",
+    "title": "Kiberxavfsizlik lug‘ati: o‘zbekcha–inglizcha",
+    "summary": "Darslar va xalqaro manbalarda uchraydigan 100 ga yaqin atama: asosiy tushunchalar, kirish va identifikatsiya, hujum turlari, veb xavfsizlik, kriptografiya, tarmoq, himoya va tergov.",
+    "body": "## Bu resurs haqida\n\nDarslar va xalqaro manbalarda uchraydigan 100 ga yaqin atama: asosiy tushunchalar, kirish va identifikatsiya, hujum turlari, veb xavfsizlik, kriptografiya, tarmoq, himoya va tergov.\n\n## Ichida nima bor\n\n- Asosiy tushunchalar: CIA, zaiflik, tahdid, xavf\n- Autentifikatsiya va sessiya atamalari\n- Hujum turlari: fishingdan zero-day gacha\n- Veb xavfsizlik: SQLi, XSS, CSRF, IDOR, SSRF, CORS, CSP\n- Kriptografiya, tarmoq, himoya va tergov atamalari\n\n## Qanday foydalanish kerak\n\nYangi atama uchrasa, shu yerdan qidiring. Inglizcha nomi xalqaro manbalarda qidirish uchun berilgan.\n\nFayl UTF-8 kodlashdagi Markdown hujjat: istalgan matn muharririda ochiladi, uni chop etish yoki o‘z izohlaringizni qo‘shish mumkin.\n\nTil: o‘zbekcha. Versiya: 1.0.",
+    "status": "DRAFT",
+    "category": {
+      "name": "Kiberxavfsizlik asoslari",
+      "slug": "kiberxavfsizlik-asoslari"
+    },
+    "tags": [
+      {
+        "name": "Lug‘at",
+        "slug": "lugat"
+      },
+      {
+        "name": "Atamalar",
+        "slug": "atamalar"
+      }
+    ],
+    "relatedSlugs": [],
+    "resource": {
+      "type": "Markdown qo‘llanma",
+      "filePath": "/downloads/kiberxavfsizlik-lugati.md",
+      "topic": "Atamalar",
+      "version": "1.0"
+    }
+  },
+  {
+    "kind": "RESOURCE",
+    "slug": "ctf-boshlovchi-qollanma",
+    "title": "CTF’ga birinchi qadam: metodika va vositalar",
+    "summary": "CTF turlari va toifalari, har bir topshiriqni yechishning 6 qadami, kodlash va hashlarni tanish jadvali, web va forensika topshiriqlari uchun ro‘yxatlar, flag yuborish qoidalari va etika.",
+    "body": "## Bu resurs haqida\n\nCTF turlari va toifalari, har bir topshiriqni yechishning 6 qadami, kodlash va hashlarni tanish jadvali, web va forensika topshiriqlari uchun ro‘yxatlar, flag yuborish qoidalari va etika.\n\n## Ichida nima bor\n\n- Jeopardy, Attack–Defense va hikoyaviy CTF\n- Topshiriqni yechishning 6 qadami\n- Base64, hex, ROT13, JWT va hashlarni tanish jadvali\n- Web va forensika topshiriqlari uchun ro‘yxatlar\n- Flag yuborish qoidalari va soxta flaglar\n- CTF etikasi va keyingi qadamlar\n\n## Qanday foydalanish kerak\n\n00:17 CTF yoki o‘quvchi kabinetidagi birinchi CTF’dan oldin o‘qing. 3-bo‘limdagi jadvalni topshiriq yechayotganda ochib qo‘ying.\n\nFayl UTF-8 kodlashdagi Markdown hujjat: istalgan matn muharririda ochiladi, uni chop etish yoki o‘z izohlaringizni qo‘shish mumkin.\n\nTil: o‘zbekcha. Versiya: 1.0.",
+    "status": "DRAFT",
+    "category": {
+      "name": "CTF",
+      "slug": "ctf"
+    },
+    "tags": [
+      {
+        "name": "CTF",
+        "slug": "ctf"
+      },
+      {
+        "name": "Metodika",
+        "slug": "metodika"
+      }
+    ],
+    "relatedSlugs": [],
+    "resource": {
+      "type": "Markdown qo‘llanma",
+      "filePath": "/downloads/ctf-boshlovchi-qollanma.md",
+      "topic": "CTF",
+      "version": "1.0"
+    }
+  },
+  {
+    "kind": "RESOURCE",
+    "slug": "xavfsiz-kod-cheklist",
+    "title": "Veb dasturchi uchun xavfsiz kod cheklisti",
+    "summary": "Loyihani topshirish yoki joylashtirishdan oldin tekshiriladigan 40 dan ortiq band: kiritish, SQL, XSS, autentifikatsiya, sessiya, kirish nazorati, maxfiy kalitlar, loglar, sozlamalar va SSRF.",
+    "body": "## Bu resurs haqida\n\nLoyihani topshirish yoki joylashtirishdan oldin tekshiriladigan 40 dan ortiq band: kiritish, SQL, XSS, autentifikatsiya, sessiya, kirish nazorati, maxfiy kalitlar, loglar, sozlamalar va SSRF.\n\n## Ichida nima bor\n\n- 10 bo‘lim, har biri OWASP Top 10 xavfiga qarshi\n- Yomon va yaxshi kod misollari (Node.js va SQL)\n- Topshirishdan oldingi 5 daqiqalik tekshiruv\n\n## Qanday foydalanish kerak\n\nStudio yoki shaxsiy loyihangizni topshirishdan oldin ro‘yxatni bandma-band belgilang. O‘qituvchilar uni loyiha baholash mezoni sifatida ishlatishi mumkin.\n\nFayl UTF-8 kodlashdagi Markdown hujjat: istalgan matn muharririda ochiladi, uni chop etish yoki o‘z izohlaringizni qo‘shish mumkin.\n\nTil: o‘zbekcha. Versiya: 1.0.",
+    "status": "DRAFT",
+    "category": {
+      "name": "Veb xavfsizlik",
+      "slug": "veb-xavfsizlik"
+    },
+    "tags": [
+      {
+        "name": "Xavfsiz kod",
+        "slug": "xavfsiz-kod"
+      },
+      {
+        "name": "OWASP",
+        "slug": "owasp"
+      }
+    ],
+    "relatedSlugs": ["sql-kod-va-malumot", "semantik-html-tuzilmasi"],
+    "resource": {
+      "type": "Markdown qo‘llanma",
+      "filePath": "/downloads/xavfsiz-kod-cheklist.md",
+      "topic": "Xavfsiz dasturlash",
+      "version": "1.0"
+    }
+  },
+  {
+    "kind": "RESOURCE",
+    "slug": "kodlash-hash-shifrlash",
+    "title": "Kodlash, hash va shifrlash: farqi va qachon nima ishlatiladi",
+    "summary": "Kodlash, hash va shifrlashni farqlash bo‘yicha qo‘llanma: misollar va buyruqlar, parol saqlash uchun algoritmlar, simmetrik va asimmetrik shifrlash, HTTPS qanday ishlashi va tanish mashqi.",
+    "body": "## Bu resurs haqida\n\nKodlash, hash va shifrlashni farqlash bo‘yicha qo‘llanma: misollar va buyruqlar, parol saqlash uchun algoritmlar, simmetrik va asimmetrik shifrlash, HTTPS qanday ishlashi va tanish mashqi.\n\n## Ichida nima bor\n\n- Uch tushunchaning taqqoslama jadvali\n- Base64, hex va URL kodlash buyruqlar bilan\n- Hash xususiyatlari va parol uchun algoritmlar\n- Simmetrik va asimmetrik shifrlash, HTTPS’da ikkalasi\n- Qaysi vazifaga qaysi usul to‘g‘ri\n- Tanish mashqi javoblari bilan\n\n## Qanday foydalanish kerak\n\nKriptografiya asoslari testi va kripto lab oldidan o‘qing. 6-bo‘limdagi mashqni javoblarga qaramasdan bajarib ko‘ring.\n\nFayl UTF-8 kodlashdagi Markdown hujjat: istalgan matn muharririda ochiladi, uni chop etish yoki o‘z izohlaringizni qo‘shish mumkin.\n\nTil: o‘zbekcha. Versiya: 1.0.",
+    "status": "DRAFT",
+    "category": {
+      "name": "Kiberxavfsizlik asoslari",
+      "slug": "kiberxavfsizlik-asoslari"
+    },
+    "tags": [
+      {
+        "name": "Kriptografiya",
+        "slug": "kriptografiya"
+      },
+      {
+        "name": "Hash",
+        "slug": "hash"
+      }
+    ],
+    "relatedSlugs": [],
+    "resource": {
+      "type": "Markdown qo‘llanma",
+      "filePath": "/downloads/kodlash-hash-shifrlash.md",
+      "topic": "Kriptografiya",
+      "version": "1.0"
+    }
   }
 ]

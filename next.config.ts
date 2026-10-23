@@ -54,8 +54,14 @@ const config: NextConfig = {
       // Teaching pages moved from the admin panel to the teacher panel.
       {
         source:
-          "/admin/:section(class|analytics|assignments|live|students|junior|kids|groups|materials|grading|results|assessments|trash|search)/:path*",
-        destination: "/teacher/:section/:path*",
+          "/admin/:section(class|analytics|assignments|live|students|junior|kids|groups|materials|grading|results|assessments|trash|search)",
+        destination: "/teacher/:section",
+        permanent: false,
+      },
+      {
+        source:
+          "/admin/:section(class|analytics|assignments|live|students|junior|kids|groups|materials|grading|results|assessments|trash|search)/:path+",
+        destination: "/teacher/:section/:path+",
         permanent: false,
       },
       {

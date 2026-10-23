@@ -1,7 +1,11 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { MISSION_IDS, type MissionId } from "@/lib/junior/content";
+import {
+  CASE_MISSION_IDS,
+  MISSION_IDS,
+  type MissionId,
+} from "@/lib/junior/content";
 import { bestStreak, type MissionEvidence } from "@/lib/junior/verify";
 import type { Progress } from "@/lib/junior/logic";
 import { TOTAL_EXERCISES, type CipherId } from "@/lib/junior/cipher-content";
@@ -81,6 +85,9 @@ export function useJuniorState() {
     finishTour: () => set("agent", { ...progress.agent, tour: true }),
     missionCount: Object.keys(progress.missions).length,
     missionTotal: MISSION_IDS.length,
+    /** The Cyber HQ case's missions, which the case and certificate need. */
+    caseCount: CASE_MISSION_IDS.filter((id) => progress.missions[id]).length,
+    caseTotal: CASE_MISSION_IDS.length,
     exercises: exercisesOf(progress),
     exerciseTotal: TOTAL_EXERCISES,
     xp,

@@ -18,7 +18,7 @@ test("a new member is on mission stage 1 and cipher level 1 with no skills", () 
   assert.deepEqual(stages.skills, []);
   assert.deepEqual(
     stages.missionStages.map((s) => s.open),
-    [true, false, false],
+    [true, false, false, false],
   );
 });
 
@@ -44,10 +44,31 @@ test("everything done shows no current stage or level", () => {
       footprint: true,
       ctf: true,
       ethics: true,
+      permissions: true,
+      wifi: true,
     },
     solvedLevels(1, 2, 3),
   );
   assert.equal(stages.missionStage, null);
   assert.equal(stages.cipherLevel, null);
-  assert.equal(stages.skills.length, 6);
+  assert.equal(stages.skills.length, 7);
+});
+
+test("after the Cyber HQ case the member moves on to stage 4", () => {
+  const stages = juniorStages(
+    {
+      password: true,
+      phishing: true,
+      cipher: true,
+      footprint: true,
+      ctf: true,
+      ethics: true,
+    },
+    {},
+  );
+  assert.equal(stages.missionStage, 4);
+  assert.deepEqual(
+    stages.skills.map((s) => s.key),
+    ["m1", "m2", "m3"],
+  );
 });

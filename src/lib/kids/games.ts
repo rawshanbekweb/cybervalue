@@ -1703,6 +1703,56 @@ qalqon_rangi = "ko'k"
         xp: 35,
         check: { kind: "maze", level: "l10", needs: { while: true, if: true } },
       },
+      {
+        id: "l11",
+        stage: 2,
+        title: { uz: "Taroq", en: "The comb" },
+        task: {
+          uz: "Yo‘l taroq tishlaridek: tepaga, o‘ngga, pastga, o‘ngga… Bir xil qismni takrorla bilan yozing. Ko‘pi bilan 9 qator!",
+          en: "The path runs like the teeth of a comb: up, right, down, right… Write the repeating part once with takrorla. 9 lines at most!",
+        },
+        hint: {
+          uz: `takrorla 2:\n    oldinga(2)\n    ongga()\n    oldinga(2)\n    ongga()\n    oldinga(2)\n    chapga()\n    oldinga(2)\n    chapga()`,
+          en: `takrorla 2:\n    oldinga(2)\n    ongga()\n    oldinga(2)\n    ongga()\n    oldinga(2)\n    chapga()\n    oldinga(2)\n    chapga()`,
+        },
+        xp: 30,
+        check: {
+          kind: "maze",
+          level: "l11",
+          needs: { loop: true },
+          maxLines: 9,
+        },
+      },
+      {
+        id: "l12",
+        stage: 3,
+        title: { uz: "O‘ng qo‘l qoidasi", en: "Right-hand rule" },
+        task: {
+          uz: "Endi o‘ng qo‘lingizni devorga qo‘yib yuring: o‘ngda yo‘l bo‘lsa o‘ngga, bo‘lmasa oldinga, u ham bo‘lmasa chapga. Oddiy “devorda buril” bu yerda ishlamaydi!",
+          en: "Now walk with your right hand on the wall: right if you can, else forward, else left. A plain “turn at the wall” will not work here!",
+        },
+        hint: {
+          uz: `toki chiqishda_emas:\n    agar ongda_yo'l bo'lsa:\n        ongga()\n        oldinga()\n    aks_holda:\n        agar oldinda_yo'l bo'lsa:\n            oldinga()\n        aks_holda:\n            chapga()`,
+          en: `toki chiqishda_emas:\n    agar ongda_yo'l bo'lsa:\n        ongga()\n        oldinga()\n    aks_holda:\n        agar oldinda_yo'l bo'lsa:\n            oldinga()\n        aks_holda:\n            chapga()`,
+        },
+        xp: 35,
+        check: { kind: "maze", level: "l12", needs: { while: true, if: true } },
+      },
+      {
+        id: "l13",
+        stage: 3,
+        title: { uz: "Katta labirint", en: "The big maze" },
+        task: {
+          uz: "Eng katta labirint. Qaysi qo‘l qoidasini tanlaysiz — chapmi yoki o‘ngmi? Ikkalasi ham chiqishga olib boradi, faqat yo‘l uzunligi boshqacha.",
+          en: "The biggest maze. Which hand will you choose, left or right? Both lead to the exit, only the length of the walk differs.",
+        },
+        hint: {
+          uz: `toki chiqishda_emas:\n    agar ongda_yo'l bo'lsa:\n        ongga()\n        oldinga()\n    aks_holda:\n        agar oldinda_yo'l bo'lsa:\n            oldinga()\n        aks_holda:\n            chapga()`,
+          en: `toki chiqishda_emas:\n    agar ongda_yo'l bo'lsa:\n        ongga()\n        oldinga()\n    aks_holda:\n        agar oldinda_yo'l bo'lsa:\n            oldinga()\n        aks_holda:\n            chapga()`,
+        },
+        xp: 40,
+        check: { kind: "maze", level: "l13", needs: { while: true, if: true } },
+      },
     ],
   },
   shifr: {
@@ -1837,6 +1887,48 @@ qalqon_rangi = "ko'k"
         hint: { uz: `kalit("XAZINA")`, en: `kalit("XAZINA")` },
         xp: 35,
         check: { kind: "cipher", chest: "c10" },
+      },
+      {
+        id: "c11",
+        stage: 2,
+        title: { uz: "Uch qulf", en: "Three locks" },
+        task: {
+          uz: "Xat avval atbash qilingan, keyin teskari yozilgan, oxirida 5 ga surilgan. Qulflarni teskari tartibda oching: oxirgi qulf birinchi ochiladi!",
+          en: "The letter was atbashed, then reversed, then shifted by 5. Open the locks in reverse order: the last lock opens first!",
+        },
+        hint: {
+          uz: `sur(5)\nteskari()\natbash()`,
+          en: `sur(5)\nteskari()\natbash()`,
+        },
+        xp: 30,
+        check: { kind: "cipher", chest: "c11" },
+      },
+      {
+        id: "c12",
+        stage: 3,
+        title: { uz: "Noma’lum siljish", en: "Unknown shift" },
+        task: {
+          uz: "Xat teskari yozilgan va noma’lum songa surilgan. Avval teskari(), keyin sinab_kor() bilan o‘qiladigan qatorni toping va o‘sha sonni sur() ga yozing.",
+          en: "The letter is reversed and shifted by an unknown number. First teskari(), then sinab_kor() to find the readable row, and put that number into sur().",
+        },
+        hint: { uz: `teskari()\nsur(11)`, en: `teskari()\nsur(11)` },
+        xp: 35,
+        check: { kind: "cipher", chest: "c12" },
+      },
+      {
+        id: "c13",
+        stage: 3,
+        title: { uz: "Ikki kalit", en: "Two keys" },
+        task: {
+          uz: "Kapitan xatni ikki marta shifrlagan: avval QUM kaliti bilan, keyin DENGIZ kaliti bilan. Qaysi kalitni birinchi ishlatasiz?",
+          en: "The captain encrypted the letter twice: first with the key QUM, then with DENGIZ. Which key do you use first?",
+        },
+        hint: {
+          uz: `kalit("DENGIZ")\nkalit("QUM")`,
+          en: `kalit("DENGIZ")\nkalit("QUM")`,
+        },
+        xp: 40,
+        check: { kind: "cipher", chest: "c13" },
       },
     ],
   },

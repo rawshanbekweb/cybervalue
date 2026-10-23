@@ -25,10 +25,10 @@
   "Locked": "Yopiq",
   "(locked)": "(yopiq)",
   "best {best}": "eng yaxshisi {best}",
-  "This mission opens when you finish both missions of the step before. Missions go in three steps: basics, reading clues, thinking like a pro.": "Bu missiya oldingi bosqichning ikkala missiyasini tugatganingizda ochiladi. Missiyalar uch bosqichda: asoslar, izlarni o‘qish, mutaxassisdek fikrlash.",
+  "This mission opens when you finish both missions of the step before. Missions go in four steps: basics, reading clues, thinking like a pro, and everyday digital life.": "Bu missiya oldingi bosqichning ikkala missiyasini tugatganingizda ochiladi. Missiyalar to‘rt bosqichda: asoslar, izlarni o‘qish, professional kabi fikrlash va kundalik raqamli hayot.",
   "Level {level} homework opens after {count} more exercises of level {previous}. You can already read this cipher’s story and try its tool.": "{level}-daraja uy vazifasi {previous}-darajadan yana {count} ta mashq bajarilgach ochiladi. Bu shifrning hikoyasini o‘qib, vositasini hozirdan sinab ko‘rishingiz mumkin.",
-  "Missions in three steps": "Missiyalar uch bosqichda",
-  "Six missions teach the basics, reading clues and thinking like a pro. Finish both missions of a step to open the next one.": "Oltita missiya asoslarni, belgilarni o‘qishni va professional kabi fikrlashni o‘rgatadi. Bosqichdagi ikkala missiyani tugatsangiz, keyingisi ochiladi.",
+  "Missions in four steps": "Missiyalar to‘rt bosqichda",
+  "Eight missions teach the basics, reading clues, thinking like a pro and everyday digital life. Finish both missions of a step to open the next one.": "Sakkizta missiya asoslarni, belgilarni o‘qishni, professional kabi fikrlashni va kundalik raqamli hayotni o‘rgatadi. Bosqichdagi ikkala missiyani tugatsangiz, keyingisi ochiladi.",
   "Ten historic ciphers with a workbench to try each one. Read the story, then encrypt and decrypt yourself.": "O‘nta tarixiy shifr va har birini sinab ko‘rish uchun ustaxona. Tarixini o‘qing, so‘ng o‘zingiz shifrlang va oching.",
   "Homework and the daily puzzle": "Uy vazifalari va kunlik topishmoq",
   "Exercises earn XP and open harder cipher levels. A new puzzle waits every day; solve it on consecutive days to build a streak.": "Mashqlar XP beradi va qiyinroq shifr darajalarini ochadi. Har kuni yangi topishmoq kutadi; ketma-ket kunlar yechsangiz, seriya hosil bo‘ladi.",
@@ -36,5 +36,12 @@
   "XP raises your rank and earns badges. Pick a codename: classmates see it instead of your name.": "XP unvoningizni oshiradi va nishonlar beradi. Taxallus tanlang: sinfdoshlar ismingiz o‘rniga shuni ko‘radi.",
   "Skip the tour": "Yo‘riqnomani o‘tkazib yuborish",
   "Step {n} of {total}": "{total} qadamdan {n}-qadam",
-  "Open": "Ochish"
+  "Open": "Ochish",
+  "Every app asks for permissions when it is installed. Give each one only what its job really needs.": "Har bir ilova o‘rnatilganda ruxsat so‘raydi. Har biriga faqat o‘z ishi uchun haqiqatan kerak bo‘lganini bering.",
+  "“{app}” asks for: {permission}": "“{app}” so‘rayapti: {permission}",
+  "Allow": "Ruxsat berish",
+  "Deny": "Rad etish",
+  "Public Wi-Fi belongs to someone else. In each situation, is the move safe or risky?": "Ommaviy Wi-Fi boshqa birovniki. Har bir vaziyatda bu harakat xavfsizmi yoki xavflimi?",
+  "Risky": "Xavfli",
+  "Safe to do": "Xavfsiz"
 }

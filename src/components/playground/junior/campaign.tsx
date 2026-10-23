@@ -20,11 +20,12 @@ import {
   Lock,
   Printer,
   ShieldAlert,
+  ShieldCheck,
   Trophy,
   XCircle,
 } from "lucide-react";
 import { useT } from "../network-lab/use-t";
-import { MISSIONS } from "@/lib/junior/content";
+import { CASE_MISSION_IDS, MISSIONS } from "@/lib/junior/content";
 import { EVIDENCE, STORY_INTRO, SUSPECTS } from "@/lib/junior/story";
 import { BADGES, type BadgeIcon } from "@/lib/junior/badges";
 import { CIPHERS } from "@/lib/junior/cipher-content";
@@ -37,10 +38,10 @@ import { Narrator } from "./Narrator";
 
 export function CaseFile() {
   const { t, text } = useT();
-  const { missions, missionCount, missionTotal, story, solveStory } =
+  const { missions, caseCount, caseTotal, story, solveStory } =
     useJuniorState();
   const [accused, setAccused] = useState<string | null>(null);
-  const ready = missionCount === missionTotal;
+  const ready = caseCount === caseTotal;
   const wrong = accused
     ? SUSPECTS.find((s) => s.id === accused && !s.culprit)
     : undefined;
@@ -56,10 +57,11 @@ export function CaseFile() {
         </div>
       </div>
       <ol className="jr-evidence" aria-label={t("Evidence")}>
-        {MISSIONS.map((mission) => {
-          const found = Boolean(missions[mission.id]);
+        {CASE_MISSION_IDS.map((id) => {
+          const mission = MISSIONS.find((m) => m.id === id)!;
+          const found = Boolean(missions[id]);
           return (
-            <li key={mission.id} className={found ? "found" : undefined}>
+            <li key={id} className={found ? "found" : undefined}>
               <span className="jr-evidence-num" aria-hidden="true">
                 {found ? <FileSearch size={14} /> : <Lock size={13} />}
               </span>
@@ -68,7 +70,7 @@ export function CaseFile() {
                   {t("Evidence {number}", { number: mission.number })}
                 </strong>{" "}
                 {found
-                  ? text(EVIDENCE[mission.id])
+                  ? text(EVIDENCE[id])
                   : text({
                       uz: `«${mission.title.uz}» missiyasini bajaring.`,
                       en: `Finish “${mission.title.en}”.`,
@@ -135,7 +137,7 @@ export function CaseFile() {
         <p className="jr-note">
           {t(
             "Collect all the evidence ({missionCount}/{missionTotal}) — then you can unmask the attacker.",
-            { missionCount, missionTotal },
+            { missionCount: caseCount, missionTotal: caseTotal },
           )}
         </p>
       )}
@@ -162,11 +164,10 @@ const UZ_MONTHS = [
 
 export function Certificate() {
   const { t, text, locale } = useT();
-  const { story, missionCount, missionTotal, rank, xp, agent } =
-    useJuniorState();
+  const { story, caseCount, caseTotal, rank, xp, agent } = useJuniorState();
   const [name, setName] = useState<string | null>(null);
   const inputId = useId();
-  if (!story || missionCount < missionTotal) return null;
+  if (!story || caseCount < caseTotal) return null;
   const shown = name ?? agent.name;
   // Browsers lack Uzbek month names, so the Uzbek date is built by hand.
   const now = new Date();
@@ -236,6 +237,7 @@ const GLYPHS: Record<BadgeIcon, typeof Rocket> = {
   flame: Flame,
   key: KeyRound,
   crown: Crown,
+  shield: ShieldCheck,
 };
 
 function BadgeGlyph({ icon }: { icon: BadgeIcon }) {
@@ -250,6 +252,7 @@ export function Badges() {
     badge.earned({
       missions: state.missionCount,
       missionTotal: state.missionTotal,
+      done: state.missions,
       phishing: Boolean(state.missions.phishing),
       ciphers: state.ciphers,
       story: state.story,
