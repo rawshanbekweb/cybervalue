@@ -14,6 +14,7 @@ export const LAB_PROGRESS = {
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
   ssh: { key: "cybervalue:ssh:progress:v1", total: 8 },
   crypto: { key: "cybervalue:crypto:progress:v1", total: 11 },
+  scams: { key: "cybervalue:scams:progress:v1", total: 8 },
 } as const;
 
 export type LabId = keyof typeof LAB_PROGRESS;
@@ -70,6 +71,11 @@ export const LAB_META: {
     id: "crypto",
     title: { uz: "Kriptografiya asoslari", en: "Cryptography basics" },
     href: "/akademiya/crypto",
+  },
+  {
+    id: "scams",
+    title: { uz: "Firibgarlik simulyatori", en: "Scam simulator" },
+    href: "/firibgarlik",
   },
   {
     id: "http",

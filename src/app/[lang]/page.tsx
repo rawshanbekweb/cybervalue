@@ -4,6 +4,7 @@ import {
   ArrowRight,
   ArrowUpRight,
   BookOpen,
+  ShieldAlert,
   ShieldCheck,
   Terminal,
 } from "lucide-react";
@@ -113,6 +114,24 @@ export default async function Home() {
           </div>
           <Directions t={t} config={config} headingLevel={3} />
         </section>
+        {open.scams && (
+          <section className="cv-scam-band" aria-labelledby="scam-title">
+            <ShieldAlert size={28} aria-hidden="true" />
+            <div>
+              <span className="eyebrow">{t("FOR THE WHOLE FAMILY")}</span>
+              <h2 id="scam-title">{t("Would you spot this scam?")}</h2>
+              <p>
+                {t(
+                  "A call from “the bank”, a prize, a friend asking for money: practise on a pretend phone, and check a suspicious message of your own. Free, in Uzbek, no sign-in.",
+                )}
+              </p>
+            </div>
+            <Link className="button button-primary" href="/firibgarlik">
+              {t("Open the scam simulator")}
+              <ArrowUpRight size={18} />
+            </Link>
+          </section>
+        )}
         <section className="cv-feature-band" aria-labelledby="method-title">
           <div>
             <span className="eyebrow">{t("HOW IT WORKS")}</span>

@@ -11,6 +11,7 @@ import { LESSONS as BASH } from "../src/lib/bash-basics/curriculum";
 import { LESSONS as SSH } from "../src/lib/ssh-basics/curriculum";
 import { LESSONS as CRYPTO } from "../src/lib/crypto-basics/curriculum";
 import { LESSONS as INPUT } from "../src/lib/untrusted-input/curriculum";
+import { LESSONS as SCAMS } from "../src/lib/scams/curriculum";
 import {
   isLabId,
   LAB_PROGRESS,
@@ -30,6 +31,7 @@ test("lab progress totals match the lessons", () => {
   assert.equal(LAB_PROGRESS.ssh.total, SSH.length);
   assert.equal(LAB_PROGRESS.crypto.total, CRYPTO.length);
   assert.equal(LAB_PROGRESS.input.total, INPUT.length);
+  assert.equal(LAB_PROGRESS.scams.total, SCAMS.length);
   assert.equal(isLabId("toString"), false);
   assert.equal(isLabId("network"), true);
 });

@@ -28,6 +28,12 @@ export const SECTIONS = [
     label: "Student portal",
     href: "/student",
   },
+  {
+    id: "scams",
+    group: "main",
+    label: "Scam simulator",
+    href: "/firibgarlik",
+  },
   // Labs inside the academy.
   {
     id: "network",
