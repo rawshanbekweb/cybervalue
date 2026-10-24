@@ -30,8 +30,9 @@ export async function adminOverview(
   now = Date.now(),
 ) {
   const people = inGroups(scope);
-  // A teacher's assignments: their groups' ones (never the all-groups ones).
-  const work = inGroups(scope);
+  // A teacher's assignments: their groups' ones and those set for everyone,
+  // which apply to their students too (as on the Class page).
+  const work = scope.owner ? {} : { group: { in: ["", ...scope.groups] } };
   const day = new Date(now - DAY);
   const week = new Date(now - 7 * DAY);
   const ahead = new Date(now + 7 * DAY);

@@ -40,6 +40,7 @@ export function nextStep({
   done,
   labs,
   level = "",
+  opens = () => true,
 }: {
   assignments: Assignment[];
   entrance: Material[];
@@ -49,6 +50,8 @@ export function nextStep({
   labs: Partial<Record<LabId, number>>;
   /** The student's level; Intermediate labs are suggested only when open. */
   level?: string;
+  /** Whether a lab's page is switched on in the site settings. */
+  opens?: (href: string) => boolean;
 }): NextStep {
   const open = assignments
     .filter((a) => a.status === "open")
@@ -82,7 +85,7 @@ export function nextStep({
     total: LAB_PROGRESS[id].total,
   });
   const reachable = LAB_META.filter(
-    (l) => !l.intermediate || opensIntermediate(level),
+    (l) => (!l.intermediate || opensIntermediate(level)) && opens(l.href),
   );
   const started = reachable.find(
     (l) =>

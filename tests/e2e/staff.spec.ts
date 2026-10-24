@@ -192,6 +192,16 @@ test.describe("team and teacher roles", () => {
       );
     }
     await audit(page, "grading queue");
+
+    // Picking another teacher's group in the address shows nobody from it.
+    await page.goto(`/teacher/students?group=${other}`);
+    await expect(page.getByText(`Other Pupil ${id}`)).toHaveCount(0);
+    await page.goto(`/teacher/grading?group=${other}&material=${practice}`);
+    await expect(page.getByText(`Answer from ${otherStudent}`)).toHaveCount(0);
+    const artifact = await page.request.get(
+      `/teacher/materials/${practice}/artifact/${otherStudent}`,
+    );
+    expect(artifact.status()).toBe(404);
   });
 
   test("an admin runs the site but cannot manage owners or admins", async ({

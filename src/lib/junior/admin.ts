@@ -3,6 +3,7 @@ import { BADGES } from "./badges";
 import { CIPHERS, TOTAL_EXERCISES } from "./cipher-content";
 import { MISSIONS } from "./content";
 import { dayIndex, streak } from "./daily";
+import { bestStreak } from "./verify";
 import { exercisesOf, restoreJuniorProgress, xpOf } from "./progress";
 import { rankFor } from "./rank";
 import { juniorStages } from "./summary";
@@ -25,7 +26,7 @@ export function summarizeMember(raw: unknown, now = Date.now()) {
       ciphers: progress.ciphers,
       story: progress.story,
       events: progress.events,
-      streak: days,
+      streak: bestStreak(progress.daily),
       rank: index,
     }),
   ).map((badge) => badge.id);

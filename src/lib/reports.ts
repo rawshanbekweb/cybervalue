@@ -30,6 +30,7 @@ export async function studentReport(
       name: true,
       group: true,
       level: true,
+      createdAt: true,
       bonusXp: true,
       active: true,
       certificates: {

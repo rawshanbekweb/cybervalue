@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
-import { requireStaff } from "@/lib/auth";
+import { canSeeGroup, requireStaff } from "@/lib/auth";
 import { groupCondition, groupLabel, pickGroup } from "@/lib/staff";
 import { getDb } from "@/lib/db";
 import { ConfirmButton } from "@/components/admin/confirm-button";
@@ -57,8 +57,9 @@ export default async function AdminAssignmentsPage({
   const showPast = query.past === "1";
   const [assignments, materials, students] = await Promise.all([
     loadAssignments(db, {
+      // Assignments set for everyone apply to every group's students.
       ...(Array.isArray(picked.group)
-        ? { groups: picked.group }
+        ? { groups: ["", ...picked.group] }
         : group
           ? { groups: ["", group] }
           : {}),
@@ -72,7 +73,13 @@ export default async function AdminAssignmentsPage({
     db.student.findMany({
       where: { active: true, ...groupCondition(picked.group) },
       orderBy: { name: "asc" },
-      select: { id: true, name: true, group: true },
+      select: {
+        id: true,
+        name: true,
+        group: true,
+        level: true,
+        createdAt: true,
+      },
       take: 1000,
     }),
   ]);
@@ -133,15 +140,17 @@ export default async function AdminAssignmentsPage({
               })}
             </span>
           </div>
-          <form action={deleteAssignmentAction.bind(null, a.id)}>
-            <ConfirmButton
-              type="submit"
-              className="button button-danger"
-              message={t("Delete this assignment?")}
-            >
-              {t("Delete")}
-            </ConfirmButton>
-          </form>
+          {canSeeGroup(scope, a.group) && (
+            <form action={deleteAssignmentAction.bind(null, a.id)}>
+              <ConfirmButton
+                type="submit"
+                className="button button-danger"
+                message={t("Delete this assignment?")}
+              >
+                {t("Delete")}
+              </ConfirmButton>
+            </form>
+          )}
         </div>
         {a.note && <p className="admin-assignment-note">{a.note}</p>}
         <p>

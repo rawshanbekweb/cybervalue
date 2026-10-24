@@ -58,7 +58,7 @@ When all eight are complete, the page shows next steps: HTML foundations, the Li
 
 ## Group ranking
 
-The achievements page ranks the member's group by XP (ties go to whoever got there first), showing only codenames (or first name and initial) and XP. Members without a group see a note instead.
+The achievements page ranks the member's group by XP (ties go to whoever joined first), showing only codenames (or first name and initial) and XP. Members without a group see a note instead.
 
 ## Agent card and ranks
 

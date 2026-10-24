@@ -113,7 +113,7 @@ export function JuniorAcademy() {
         </h1>
         <p>
           {t(
-            "Each mission teaches one key idea about passwords, scams, ciphers or your online trail — and gives you one piece of evidence for the Cyber HQ case. No coding needed.",
+            "Each mission teaches one key idea about passwords, scams, ciphers, your online trail or everyday apps and Wi‑Fi. The first six each give you a piece of evidence for the Cyber HQ case. No coding needed.",
           )}
         </p>
         <div className="jr-progress" role="status">
@@ -222,7 +222,7 @@ export function JuniorAcademy() {
           <h2 id="jr-finish-title">{t("Congratulations, cyber recruit!")}</h2>
           <p>
             {t(
-              "You finished all 6 Cybervalue Academy Junior missions. Pick your next step:",
+              "You finished all 8 Cybervalue Academy Junior missions. Pick your next step:",
             )}
           </p>
           <ul className="jr-steps">

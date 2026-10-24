@@ -48,7 +48,6 @@ export default async function AdminStudentPage({
       _count: {
         select: {
           sessions: { where: { expiresAt: { gt: new Date() } } },
-          progress: true,
         },
       },
       certificates: { orderBy: { issuedAt: "desc" } },
@@ -90,7 +89,7 @@ export default async function AdminStudentPage({
           <h1>{student.name}</h1>
           <p className="muted">
             {t("{done} materials completed · {sessions} open sessions", {
-              done: student._count.progress,
+              done: standing.done,
               sessions: student._count.sessions,
             })}
           </p>

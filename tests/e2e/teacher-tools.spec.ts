@@ -68,8 +68,9 @@ test.describe("teacher tools", () => {
     const client = new Client({ connectionString: process.env.DATABASE_URL });
     await client.connect();
     await client.query(
-      `INSERT INTO "Student" (id, name, "group", "updatedAt", "codeHash")
-       VALUES ($1, 'Dana Tester', $2, now(), $3)`,
+      // Joined a month ago, so last week's deadlines apply to her.
+      `INSERT INTO "Student" (id, name, "group", "updatedAt", "codeHash", "createdAt")
+       VALUES ($1, 'Dana Tester', $2, now(), $3, now() - interval '30 days')`,
       [studentId, group, createHash("sha256").update(code).digest("hex")],
     );
     await client.end();
@@ -183,6 +184,12 @@ test.describe("teacher tools", () => {
        VALUES ($1, $2, $3, 'checkpoint:linux-1', now() - interval '2 days')`,
       [`e2e_${randomUUID()}`, `Linux check ${id}`, group],
     );
+    // A classmate who joined today: last week's deadline is not theirs.
+    await client.query(
+      `INSERT INTO "Student" (id, name, "group", "updatedAt", "codeHash")
+       VALUES ($1, 'New Joiner', $2, now(), $3)`,
+      [`e2e_${randomUUID()}`, group, randomUUID()],
+    );
     await client.end();
 
     const student = await (
@@ -217,8 +224,10 @@ test.describe("teacher tools", () => {
     const row = page.locator("tr", { hasText: `Linux check ${id}` });
     await expect(row).toContainText("0/1");
     await expect(row.getByRole("link", { name: "Dana Tester" })).toBeVisible();
+    await expect(row.getByRole("link", { name: "New Joiner" })).toHaveCount(0);
     await expect(
       page.locator("tr", { hasText: `Finish test ${id}` }),
-    ).toContainText("1/1");
+      // The new classmate has the upcoming one to do too.
+    ).toContainText("1/2");
   });
 });

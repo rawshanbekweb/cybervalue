@@ -1,4 +1,4 @@
-import { getSession } from "@/lib/auth";
+import { canSeeGroup, getSession, scopeOf } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { renderArtifact } from "@/lib/student/challenge";
 
@@ -10,8 +10,8 @@ export async function GET(
   _request: Request,
   { params }: RouteContext<"/teacher/materials/[id]/artifact/[studentId]">,
 ) {
-  if (!(await getSession()))
-    return new Response("Sign in required", { status: 401 });
+  const session = await getSession();
+  if (!session) return new Response("Sign in required", { status: 401 });
   const { id, studentId } = await params;
   const db = getDb();
   const [material, student] = db
@@ -20,7 +20,13 @@ export async function GET(
         db.student.findUnique({ where: { id: studentId } }),
       ])
     : [null, null];
-  if (!material?.secret || material.kind !== "CHALLENGE" || !student)
+  // Like the material page, a teacher sees only their own groups' students.
+  if (
+    !material?.secret ||
+    material.kind !== "CHALLENGE" ||
+    !student ||
+    !canSeeGroup(scopeOf(session), student.group)
+  )
     return new Response("Not found", { status: 404 });
   const { text } = renderArtifact(material.artifact, material.secret, student);
   return new Response(text, {

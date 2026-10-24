@@ -209,3 +209,55 @@ test.describe("saved results", () => {
     await admin.context().close();
   });
 });
+
+test.describe("attempts belong to their student", () => {
+  test.skip(!process.env.DATABASE_URL, "Requires DATABASE_URL");
+
+  test("a signed-out submit reveals nothing, and Intermediate is not saved for beginners", async ({
+    page,
+    playwright,
+  }) => {
+    const code = [...randomBytes(16)]
+      .map((b) => "0123456789ABCDEFGHJKMNPQRSTVWXYZ"[b & 31])
+      .join("");
+    const client = new Client({ connectionString: process.env.DATABASE_URL });
+    await client.connect();
+    await client.query(
+      `INSERT INTO "Student" (id, name, level, "codeHash", "updatedAt")
+       VALUES ($1, 'Replay Pupil', 'beginner', $2, now())`,
+      [`e2e_${randomUUID()}`, createHash("sha256").update(code).digest("hex")],
+    );
+    await client.end();
+    await page.goto("/student/login");
+    await page.getByLabel("Access code").fill(code);
+    await page.getByRole("button", { name: "Enter" }).click();
+    await expect(page).toHaveURL(/\/student$/);
+
+    const start = await page.request.post("/student/api/checkpoint", {
+      data: { action: "start", id: "network-2" },
+    });
+    const { token, saving } = await start.json();
+    expect(saving).toBe(true);
+    // The same token, sent without the student's cookie.
+    const anonymous = await playwright.request.newContext({
+      baseURL: new URL(page.url()).origin,
+    });
+    const leak = await anonymous.post("/student/api/checkpoint", {
+      data: { action: "submit", token, answers: [] },
+    });
+    expect(leak.status()).toBe(401);
+    expect(await leak.text()).not.toContain('"review"');
+    await anonymous.dispose();
+
+    // A beginner may try an Intermediate checkpoint, but it is not saved,
+    // and Intermediate lab progress is refused.
+    const intermediate = await page.request.post("/student/api/checkpoint", {
+      data: { action: "start", id: "http-1" },
+    });
+    expect((await intermediate.json()).saving).toBe(false);
+    const progress = await page.request.put("/student/api/progress", {
+      data: { lab: "http", lessons: [1, 2, 3] },
+    });
+    expect(progress.status()).toBe(403);
+  });
+});

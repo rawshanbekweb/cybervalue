@@ -255,7 +255,7 @@ function PathWidget({ filter, onSolved }: { filter: boolean } & WidgetProps) {
   const send = () => {
     const next = download(file, filter);
     setSent(next);
-    onSolved(next.outside && next.body !== null);
+    onSolved(next.outside);
   };
   return (
     <div className="nl-card cb-card">

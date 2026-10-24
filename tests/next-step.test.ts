@@ -90,6 +90,7 @@ test("everything finished", () => {
         security: 36,
         http: 10,
         input: 9,
+        scams: 8,
         httpbasics: 9,
         https: 9,
         bash: 9,
@@ -113,6 +114,7 @@ test("Intermediate labs are suggested only to students they are open to", () => 
     bash: 9,
     ssh: 8,
     crypto: 11,
+    scams: 8,
   };
   assert.deepEqual(nextStep({ ...base, labs: beginnerLabsDone }), {
     kind: "done",

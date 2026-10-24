@@ -79,7 +79,9 @@ export async function studentLogoutAction() {
 export async function markCompleteAction(slug: string) {
   const student = await requireStudent();
   const material = await materialForStudent(student, slug);
-  if (!material || material.kind === "QUIZ" || material.kind === "PRACTICE")
+  // Only lessons and labs are finished by the student's own word; quizzes,
+  // practice answers and personal labs (a flag) are checked elsewhere.
+  if (!material || (material.kind !== "LESSON" && material.kind !== "LAB"))
     return;
   await getDb()!.studentProgress.upsert({
     where: {

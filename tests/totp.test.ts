@@ -68,7 +68,10 @@ test("sealed secrets need the right key and detect tampering", () => {
   assert.equal(openSecret(sealed, "app-secret"), "JBSWY3DPEHPK3PXP");
   assert.throws(() => openSecret(sealed, "other-secret"));
   const parts = sealed.split(".");
-  parts[3] = parts[3].slice(0, -2) + (parts[3].endsWith("A") ? "BB" : "AA");
+  // Change the first character: its 6 bits are all data. (The last one of a
+  // base64url string also holds padding bits, so editing it could leave the
+  // bytes unchanged and the test would pass the tampered value by chance.)
+  parts[3] = (parts[3][0] === "A" ? "B" : "A") + parts[3].slice(1);
   assert.throws(() => openSecret(parts.join("."), "app-secret"));
 });
 

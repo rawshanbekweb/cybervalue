@@ -24,6 +24,8 @@ import {
 import { isLevel, LEVEL_LABEL, opensIntermediate } from "@/lib/student/levels";
 import { getDb } from "@/lib/db";
 import { nextStep } from "@/lib/student/next-step";
+import { getSiteConfig } from "@/lib/site-config-server";
+import { closedSection } from "@/lib/site-config";
 import { NextStepCard } from "@/components/student/next-step";
 import {
   isLabId,
@@ -178,8 +180,12 @@ export default async function StudentHomePage() {
           },
         ];
   const now = new Date().getTime();
+  const config = await getSiteConfig();
+  // Labs whose page is switched off in the site settings are not offered.
+  const opens = (href: string) => !closedSection(config, href);
+  const openLabs = OPEN_LABS.filter((lab) => opens(lab.href));
   const [
-    { materials, done, tests, returned },
+    { materials, done, tests, returned, closed },
     certificates,
     saved,
     standings,
@@ -271,9 +277,12 @@ export default async function StudentHomePage() {
   const entranceDone = entrance.filter((m) => done.has(m.id)).length;
   const next = nextStep({
     level: student.level,
+    opens,
     assignments,
     entrance,
-    materials: materials.filter((m) => !isEntranceExam(m.slug)),
+    materials: materials.filter(
+      (m) => !isEntranceExam(m.slug) && !closed.has(m.id),
+    ),
     done,
     labs: Object.fromEntries(
       labRows
@@ -324,7 +333,7 @@ export default async function StudentHomePage() {
       label: s.label,
       count:
         s.items.length +
-        (s.kind === "LAB" ? OPEN_LABS.length : 0) +
+        (s.kind === "LAB" ? openLabs.length : 0) +
         (s.kind === "QUIZ" ? EXAMS.length : 0),
     })),
     ...(standing
@@ -598,7 +607,7 @@ export default async function StudentHomePage() {
                 {t("Open interactive labs")}
               </p>
               <ul>
-                {OPEN_LABS.map((lab) => (
+                {openLabs.map((lab) => (
                   <li key={lab.href}>
                     <a href={lab.href}>
                       {t(lab.title)}
