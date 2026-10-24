@@ -257,7 +257,7 @@ export function Badges() {
       ciphers: state.ciphers,
       story: state.story,
       events: state.events,
-      streak: state.streak,
+      streak: state.bestStreak,
       rank: state.index,
     }),
   ).map((badge) => badge.id);

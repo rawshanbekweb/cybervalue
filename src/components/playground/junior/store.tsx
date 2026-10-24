@@ -24,6 +24,8 @@ type Store = {
   ) => void;
   /** True when the last save did not reach the server. */
   unsaved: boolean;
+  /** A step the server refused; the page must be reloaded to match it. */
+  rejected: boolean;
 };
 
 const Context = createContext<Store | null>(null);
@@ -42,6 +44,7 @@ export function JuniorStoreProvider({
 }) {
   const [progress, setProgress] = useState(initial);
   const [unsaved, setUnsaved] = useState(false);
+  const [rejected, setRejected] = useState(false);
   // Parts whose last save failed are sent again with the next change,
   // together with the evidence of every step still unsaved.
   const pending = useRef(
@@ -54,14 +57,18 @@ export function JuniorStoreProvider({
     for (const [key, item] of pending.current)
       saveJuniorPartAction(key, item.value, item.proof)
         .then((result) => {
-          if (result.ok && pending.current.get(key) === item)
+          // A refused step is not sent again: it would be refused every time
+          // and hold back later saves of the same part.
+          if (pending.current.get(key) === item) {
             pending.current.delete(key);
+            if (!result.ok) setRejected(true);
+          }
           setUnsaved(pending.current.size > 0);
         })
         .catch(() => setUnsaved(true));
   }, []);
   return (
-    <Context.Provider value={{ member, progress, set, unsaved }}>
+    <Context.Provider value={{ member, progress, set, unsaved, rejected }}>
       {children}
     </Context.Provider>
   );

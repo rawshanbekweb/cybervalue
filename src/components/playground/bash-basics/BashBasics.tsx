@@ -244,6 +244,7 @@ function ScriptWidget({
       command: `bash ${widget.name}${argv.length ? ` ${argv.join(" ")}` : ""}`,
       output: result.output,
       error: result.error,
+      source,
     };
     const next = { state: result.state, entries: [...log.entries, entry] };
     setLog(next);

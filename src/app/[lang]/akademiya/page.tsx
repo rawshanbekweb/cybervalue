@@ -16,7 +16,7 @@ import { DefendGateway } from "@/components/defend-gateway";
 import { getLearningTracks } from "@/lib/learning";
 import { metadata as buildMetadata } from "@/lib/seo";
 import { getSiteConfig, requireSection } from "@/lib/site-config-server";
-import type { SectionId } from "@/lib/site-config";
+import { closedSection, type SectionId } from "@/lib/site-config";
 import "@/components/learning.css";
 
 export const generateMetadata = () =>
@@ -29,9 +29,12 @@ export const generateMetadata = () =>
 export default async function PlaygroundPage() {
   await requireSection("academy");
   const t = await getTranslator();
-  const { sections } = await getSiteConfig();
+  const config = await getSiteConfig();
+  const { sections } = config;
+  // A track is listed only while its page opens (its own switch and its
+  // level's: the Academy or Intermediate).
   const tracks = getLearningTracks().filter(
-    (track) => sections[track.id as SectionId] !== false,
+    (track) => !closedSection(config, track.href),
   );
   const gateways = [
     { id: "ctf", node: <CtfGateway key="ctf" /> },
@@ -138,7 +141,7 @@ export default async function PlaygroundPage() {
           <summary>{t("Will my progress be saved?")}</summary>
           <p>
             {t(
-              "Lesson progress and your practice work are saved in this browser. Return on the same browser to continue. Clearing browser data removes this progress, and it does not sync between devices.",
+              "Lesson progress and your practice work are saved in this browser. Sign in with your student code and lab lessons and checkpoints are also kept on your account, so you can continue on any device. Without signing in, clearing browser data removes the progress.",
             )}
           </p>
         </details>

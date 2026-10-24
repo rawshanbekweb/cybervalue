@@ -1,6 +1,8 @@
 import "server-only";
 import type { PrismaClient } from "@/generated/prisma/client";
-import { LAB_PROGRESS } from "../lab-progress";
+import { LAB_META, LAB_PROGRESS } from "../lab-progress";
+import { CHECKPOINT_META } from "../checkpoints/meta";
+import { opensIntermediate, visibleAtLevel } from "./levels";
 import {
   assignmentStatus,
   completedAt,
@@ -9,8 +11,15 @@ import {
   type Completion,
   type Target,
 } from "./assignments";
+import { withoutReturned } from "./xp";
 
-type Who = { id: string; name: string; group: string };
+type Who = {
+  id: string;
+  name: string;
+  group: string;
+  level: string;
+  createdAt: Date;
+};
 
 export type AssignmentRow = {
   id: string;
@@ -20,7 +29,14 @@ export type AssignmentRow = {
   dueAt: Date;
   target: Target;
   // Title and slug of a material target; null when it was deleted.
-  material: { title: string; slug: string; kind: string } | null;
+  material: {
+    title: string;
+    slug: string;
+    kind: string;
+    published: boolean;
+    groups: string[];
+    levels: string[];
+  } | null;
 };
 
 // Assignments with parsed targets and their materials. A target that no
@@ -47,7 +63,15 @@ export async function loadAssignments(
   const materials = ids.length
     ? await db.studentMaterial.findMany({
         where: { id: { in: ids } },
-        select: { id: true, title: true, slug: true, kind: true },
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          kind: true,
+          published: true,
+          groups: true,
+          levels: true,
+        },
       })
     : [];
   return parsed.map((row) => ({
@@ -95,7 +119,12 @@ async function loadCompletion(
             // A personal lab only counts once solved, which records progress.
             material: { kind: { not: "CHALLENGE" } },
           },
-          select: { studentId: true, materialId: true, createdAt: true },
+          select: {
+            studentId: true,
+            materialId: true,
+            createdAt: true,
+            returned: true,
+          },
         })
       : [],
     checkpoints.length
@@ -129,7 +158,8 @@ async function loadCompletion(
         studentId: p.studentId,
         at: p.completedAt,
       })),
-      ...submissions.map((s) => ({
+      // A practice returned for rework is not done until handed in again.
+      ...withoutReturned(submissions).map((s) => ({
         id: s.materialId,
         studentId: s.studentId,
         at: s.createdAt,
@@ -140,8 +170,31 @@ async function loadCompletion(
   };
 }
 
-const appliesTo = (assignment: { group: string }, student: { group: string }) =>
-  !assignment.group || assignment.group === student.group;
+/**
+ * Whether an assignment is the student's: their group (or everyone), set
+ * after they joined, and on something they can open — an Intermediate lab or
+ * checkpoint needs that level, a material must be visible to them.
+ */
+function appliesTo(assignment: AssignmentRow, student: Who) {
+  if (assignment.group && assignment.group !== student.group) return false;
+  if (student.createdAt > assignment.dueAt) return false;
+  const { target, material } = assignment;
+  if (target.kind === "lab" || target.kind === "checkpoint") {
+    const intermediate =
+      target.kind === "lab"
+        ? LAB_META.find((l) => l.id === target.id)?.intermediate
+        : CHECKPOINT_META.find((c) => c.id === target.id)?.level ===
+          "intermediate";
+    return !intermediate || opensIntermediate(student.level);
+  }
+  return (
+    !material ||
+    (material.published &&
+      (material.groups.length === 0 ||
+        material.groups.includes(student.group)) &&
+      visibleAtLevel(material.levels, student.level))
+  );
+}
 
 export type AssignmentResult = AssignmentRow & {
   students: (Who & { status: AssignmentStatus; at: Date | null })[];

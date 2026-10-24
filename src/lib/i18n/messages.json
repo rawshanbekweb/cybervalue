@@ -111,7 +111,6 @@
   "Where should I start?": "Nimadan boshlash kerak?",
   "New to building websites? Start with HTML foundations. If you already understand basic page structure, the security track begins with architecture and works toward HTTP, identity, and vulnerabilities.": "Web yaratishni endi boshlayapsizmi? HTML asoslaridan boshlang. Sahifa tuzilishini bilsangiz, xavfsizlik yo‘nalishida arxitektura, HTTP, shaxsni aniqlash va zaifliklarni o‘rganing.",
   "Will my progress be saved?": "Natijalarim saqlanadimi?",
-  "Lesson progress and your practice work are saved in this browser. Return on the same browser to continue. Clearing browser data removes this progress, and it does not sync between devices.": "Dars natijalari va amaliy ishlaringiz shu brauzerda saqlanadi. Davom etish uchun shu brauzerdan foydalaning. Brauzer ma’lumotlari o‘chirilsa, natijalar ham o‘chadi. Ular qurilmalar orasida sinxronlanmaydi.",
   "Do I need an account or special software?": "Hisob yoki maxsus dastur kerakmi?",
   "No account is needed for the practice tracks. The HTML editor works in your browser. Security exercises use the site’s prepared lab backend. The separate graded assessment requires a teacher-issued code.": "Amaliy darslar uchun hisob kerak emas. HTML muharriri brauzerda ishlaydi. Xavfsizlik mashqlari saytning tayyor laboratoriya serveridan foydalanadi. Alohida baholanadigan imtihon uchun o‘qituvchi bergan kod kerak.",
   "404 / Outside the archive": "404 / Sahifa topilmadi",
@@ -430,5 +429,6 @@
   "HTML exam · {minutes} minutes, one attempt": "HTML imtihon · {minutes} daqiqa, bitta urinish",
   "Continue the exam": "Imtihonni davom ettirish",
   "This access code is not valid or no longer active.": "Kirish kodi noto‘g‘ri yoki endi faol emas.",
-  "Too many attempts. Try again in a few minutes.": "Urinishlar juda ko‘p. Bir necha daqiqadan so‘ng qayta urinib ko‘ring."
+  "Too many attempts. Try again in a few minutes.": "Urinishlar juda ko‘p. Bir necha daqiqadan so‘ng qayta urinib ko‘ring.",
+  "Lesson progress and your practice work are saved in this browser. Sign in with your student code and lab lessons and checkpoints are also kept on your account, so you can continue on any device. Without signing in, clearing browser data removes the progress.": "Dars natijalari va amaliy ishlaringiz shu brauzerda saqlanadi. O‘quvchi kodingiz bilan kirsangiz, lab darslari va nazorat natijalari akkauntingizda ham saqlanadi va istalgan qurilmada davom etasiz. Kirmasangiz, brauzer ma’lumotlari o‘chirilganda natijalar ham o‘chadi."
 }

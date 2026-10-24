@@ -87,7 +87,7 @@ export function NetworkLab() {
           <progress id="nl-progress" value={done} max={LESSONS.length} />
           <small>
             {t(
-              "Progress is saved in this browser and does not sync across devices.",
+              "Progress is saved in this browser. Signed-in students also keep it on their account, on every device.",
             )}
           </small>
         </div>

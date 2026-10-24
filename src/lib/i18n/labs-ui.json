@@ -54,7 +54,6 @@
   "Flip the bits yourself, slide the mask, configure a computer, send a ping and watch where the packet stops.": "Bitlarni o‘z qo‘lingiz bilan yoqing, maskni suring, kompyuterni sozlab ping yuboring va paket qayerda to‘xtaganini ko‘ring.",
   "In your browser": "Brauzerda",
   "subnet calculator": "subnet kalkulyator",
-  "Progress is saved in this browser and does not sync across devices.": "Natijalar shu brauzerda saqlanadi. Qurilmalar orasida sinxronlanmaydi.",
   "Learning path": "O‘quv yo‘li",
   "Networking lessons": "Tarmoq darslari",
   "Subnet calculator": "Subnet kalkulyator",
@@ -342,7 +341,6 @@
   "LEVEL 1 · FIRST STEP": "1-DARAJA · BIRINCHI QADAM",
   "Eight missions.": "Sakkizta missiya.",
   "One mystery to solve.": "Bitta sirli ish.",
-  "Each mission teaches one key idea about passwords, scams, ciphers or your online trail — and gives you one piece of evidence for the Cyber HQ case. No coding needed.": "Har bir missiyada parollar, aldovchilar, shifrlar va internetdagi izlar haqida bitta muhim narsani o‘rganasiz — va Kiber-shtab ishi uchun bitta dalil topasiz. Dasturlashni bilish shart emas.",
   "{count} / {length} missions complete": "{count} / {length} missiya bajarildi",
   "(complete)": "(bajarildi)",
   "MISSION {number}": "MISSIYA {number}",
@@ -350,7 +348,6 @@
   "Goal:": "Maqsad:",
   "Next mission": "Keyingi missiya",
   "Congratulations, cyber recruit!": "Tabriklaymiz, kiber-nomzod!",
-  "You finished all 6 Cybervalue Academy Junior missions. Pick your next step:": "Siz Cybervalue Academy Junior ning barcha 6 missiyasini bajardingiz. Endi keyingi qadamni tanlang:",
   "Restart the missions": "Missiyalarni qaytadan boshlash",
   "Finish every mission to unlock your next steps. Your progress is saved in this browser.": "Barcha missiyalarni bajargach, keyingi qadamlar ochiladi. Natijangiz shu brauzerda saqlanadi.",
   "HOMEWORK": "UY VAZIFALARI",
@@ -692,5 +689,8 @@
   "Stays a value": "Qiymat bo‘lib qoladi",
   "Matches the rule": "Qoidaga mos",
   "Does not match the rule": "Qoidaga mos emas",
-  "Your sign-in ended. Sign in again and restart the checkpoint.": "Kirish muddati tugadi. Qayta kiring va nazoratni boshidan boshlang."
+  "Your sign-in ended. Sign in again and restart the checkpoint.": "Kirish muddati tugadi. Qayta kiring va nazoratni boshidan boshlang.",
+  "Each mission teaches one key idea about passwords, scams, ciphers, your online trail or everyday apps and Wi‑Fi. The first six each give you a piece of evidence for the Cyber HQ case. No coding needed.": "Har bir missiyada parollar, aldovchilar, shifrlar, internetdagi izlar yoki kundalik ilovalar va Wi‑Fi haqida bitta muhim narsani o‘rganasiz. Dastlabki oltitasining har biri Kiber-shtab ishi uchun bitta dalil beradi. Dasturlashni bilish shart emas.",
+  "You finished all 8 Cybervalue Academy Junior missions. Pick your next step:": "Siz Cybervalue Academy Junior ning barcha 8 missiyasini bajardingiz. Endi keyingi qadamni tanlang:",
+  "Progress is saved in this browser. Signed-in students also keep it on their account, on every device.": "Natijalar shu brauzerda saqlanadi. Tizimga kirgan o‘quvchilarda ular akkauntda ham saqlanib, har qanday qurilmada ko‘rinadi."
 }

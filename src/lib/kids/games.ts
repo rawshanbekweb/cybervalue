@@ -101,9 +101,17 @@ export const stageOf = (m: Mission): Stage => m.stage ?? 1;
 /** Whether a stage is open: the first always, the others once every mission of the stage before is done. */
 export function stageOpen(game: Game, stage: Stage, done: Set<string>) {
   if (stage === 1) return true;
-  return game.missions
-    .filter((m) => stageOf(m) === stage - 1)
-    .every((m) => done.has(missionKey(game.id, m.id)));
+  // A stage a child already worked in stays open when new missions are added
+  // to an earlier stage, like gameOpen and Junior's mission steps.
+  const reached = game.missions.some(
+    (m) => stageOf(m) >= stage && done.has(missionKey(game.id, m.id)),
+  );
+  return (
+    reached ||
+    game.missions
+      .filter((m) => stageOf(m) === stage - 1)
+      .every((m) => done.has(missionKey(game.id, m.id)))
+  );
 }
 
 /** Developer mode is on once the password mission is done. */
@@ -1659,6 +1667,26 @@ qalqon_rangi = "ko'k"
         },
       },
       {
+        id: "l11",
+        stage: 2,
+        title: { uz: "Taroq", en: "The comb" },
+        task: {
+          uz: "Yo‘l taroq tishlaridek: tepaga, o‘ngga, pastga, o‘ngga… Bir xil qismni takrorla bilan yozing. Ko‘pi bilan 9 qator!",
+          en: "The path runs like the teeth of a comb: up, right, down, right… Write the repeating part once with takrorla. 9 lines at most!",
+        },
+        hint: {
+          uz: `takrorla 2:\n    oldinga(2)\n    ongga()\n    oldinga(2)\n    ongga()\n    oldinga(2)\n    chapga()\n    oldinga(2)\n    chapga()`,
+          en: `takrorla 2:\n    oldinga(2)\n    ongga()\n    oldinga(2)\n    ongga()\n    oldinga(2)\n    chapga()\n    oldinga(2)\n    chapga()`,
+        },
+        xp: 30,
+        check: {
+          kind: "maze",
+          level: "l11",
+          needs: { loop: true },
+          maxLines: 9,
+        },
+      },
+      {
         id: "l8",
         stage: 3,
         title: { uz: "Aqlli robot", en: "Smart robot" },
@@ -1702,26 +1730,6 @@ qalqon_rangi = "ko'k"
         },
         xp: 35,
         check: { kind: "maze", level: "l10", needs: { while: true, if: true } },
-      },
-      {
-        id: "l11",
-        stage: 2,
-        title: { uz: "Taroq", en: "The comb" },
-        task: {
-          uz: "Yo‘l taroq tishlaridek: tepaga, o‘ngga, pastga, o‘ngga… Bir xil qismni takrorla bilan yozing. Ko‘pi bilan 9 qator!",
-          en: "The path runs like the teeth of a comb: up, right, down, right… Write the repeating part once with takrorla. 9 lines at most!",
-        },
-        hint: {
-          uz: `takrorla 2:\n    oldinga(2)\n    ongga()\n    oldinga(2)\n    ongga()\n    oldinga(2)\n    chapga()\n    oldinga(2)\n    chapga()`,
-          en: `takrorla 2:\n    oldinga(2)\n    ongga()\n    oldinga(2)\n    ongga()\n    oldinga(2)\n    chapga()\n    oldinga(2)\n    chapga()`,
-        },
-        xp: 30,
-        check: {
-          kind: "maze",
-          level: "l11",
-          needs: { loop: true },
-          maxLines: 9,
-        },
       },
       {
         id: "l12",
@@ -1853,6 +1861,21 @@ qalqon_rangi = "ko'k"
         check: { kind: "cipher", chest: "c7" },
       },
       {
+        id: "c11",
+        stage: 2,
+        title: { uz: "Uch qulf", en: "Three locks" },
+        task: {
+          uz: "Xat avval atbash qilingan, keyin teskari yozilgan, oxirida 5 ga surilgan. Qulflarni teskari tartibda oching: oxirgi qulf birinchi ochiladi!",
+          en: "The letter was atbashed, then reversed, then shifted by 5. Open the locks in reverse order: the last lock opens first!",
+        },
+        hint: {
+          uz: `sur(5)\nteskari()\natbash()`,
+          en: `sur(5)\nteskari()\natbash()`,
+        },
+        xp: 30,
+        check: { kind: "cipher", chest: "c11" },
+      },
+      {
         id: "c8",
         stage: 3,
         title: { uz: "Kalitli shifr", en: "Cipher with a key" },
@@ -1887,21 +1910,6 @@ qalqon_rangi = "ko'k"
         hint: { uz: `kalit("XAZINA")`, en: `kalit("XAZINA")` },
         xp: 35,
         check: { kind: "cipher", chest: "c10" },
-      },
-      {
-        id: "c11",
-        stage: 2,
-        title: { uz: "Uch qulf", en: "Three locks" },
-        task: {
-          uz: "Xat avval atbash qilingan, keyin teskari yozilgan, oxirida 5 ga surilgan. Qulflarni teskari tartibda oching: oxirgi qulf birinchi ochiladi!",
-          en: "The letter was atbashed, then reversed, then shifted by 5. Open the locks in reverse order: the last lock opens first!",
-        },
-        hint: {
-          uz: `sur(5)\nteskari()\natbash()`,
-          en: `sur(5)\nteskari()\natbash()`,
-        },
-        xp: 30,
-        check: { kind: "cipher", chest: "c11" },
       },
       {
         id: "c12",

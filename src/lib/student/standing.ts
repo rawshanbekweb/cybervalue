@@ -1,7 +1,7 @@
 import "server-only";
 import type { PrismaClient } from "@/generated/prisma/client";
 import { visibleAtLevel } from "./levels";
-import { standing, weeklyXp, type WeeklyStanding } from "./xp";
+import { standing, weeklyXp, withoutReturned, type WeeklyStanding } from "./xp";
 
 type Who = { id: string; group: string; level: string; bonusXp?: number };
 
@@ -37,6 +37,7 @@ export async function loadStandings(
           score: true,
           maxScore: true,
           createdAt: true,
+          returned: true,
         },
       }),
       db.studentCheckpoint.findMany({
@@ -58,14 +59,21 @@ export async function loadStandings(
   for (const student of students) {
     const mine = <T extends { studentId: string }>(rows: T[]) =>
       rows.filter((row) => row.studentId === student.id);
+    const own = { progress: mine(progress), submissions: mine(submissions) };
+    // Work already done keeps counting after a level or group change hides
+    // its material from the student.
+    const touched = new Set(
+      [...own.progress, ...own.submissions].map((r) => r.materialId),
+    );
     const input = {
       materials: materials.filter(
         (m) =>
-          (m.groups.length === 0 || m.groups.includes(student.group)) &&
-          visibleAtLevel(m.levels, student.level),
+          touched.has(m.id) ||
+          ((m.groups.length === 0 || m.groups.includes(student.group)) &&
+            visibleAtLevel(m.levels, student.level)),
       ),
-      progress: mine(progress),
-      submissions: mine(submissions),
+      progress: own.progress,
+      submissions: withoutReturned(own.submissions),
       checkpoints: mine(checkpoints),
       labs: mine(labs),
       bonus: student.bonusXp,

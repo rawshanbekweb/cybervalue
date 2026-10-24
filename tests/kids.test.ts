@@ -9,6 +9,7 @@ import {
   gameOpen,
   passwordOpens,
   stageOf,
+  stageOpen,
 } from "../src/lib/kids/games";
 import {
   badges,
@@ -16,6 +17,7 @@ import {
   DAILY_XP,
   dailyPassed,
   dailyTask,
+  dailyTasksToday,
 } from "../src/lib/kids/extras";
 import {
   applyKidsUpdate,
@@ -611,4 +613,52 @@ test("maze levels are proven by running the program on the server", () => {
   assert.equal(maze.after, "robot");
   assert.ok(!gameOpen(maze, new Set(stage1("kosmos"))));
   assert.ok(gameOpen(maze, new Set([...stage1("kosmos"), ...stage1("robot")])));
+});
+
+test("a stage a child already reached stays open when an earlier stage grows", () => {
+  const maze = GAMES.labirint;
+  // Finished l1–l10 before l11 was added to stage 2.
+  const before = new Set(
+    ["l1", "l2", "l3", "l4", "l5", "l6", "l7", "l8", "l9", "l10"].map((id) =>
+      missionKey("labirint", id),
+    ),
+  );
+  assert.equal(stageOpen(maze, 3, before), true);
+  // A new child still needs every stage-2 mission, l11 included.
+  const fresh = new Set(
+    maze.missions
+      .filter((m) => stageOf(m) < 2 || ["l5", "l6", "l7"].includes(m.id))
+      .map((m) => missionKey("labirint", m.id)),
+  );
+  assert.equal(stageOpen(maze, 3, fresh), false);
+  fresh.add(missionKey("labirint", "l11"));
+  assert.equal(stageOpen(maze, 3, fresh), true);
+  // Stage-2 missions come before stage-3 ones, so numbering follows stages.
+  for (const game of [GAMES.labirint, GAMES.shifr]) {
+    const stages = game.missions.map(stageOf);
+    assert.deepEqual(stages, [...stages].sort());
+  }
+});
+
+test("the morning's daily task still counts after a game opens that day", () => {
+  const stage1 = GAMES.kosmos.missions
+    .filter((m) => stageOf(m) === 1)
+    .map((m) => missionKey("kosmos", m.id));
+  const morning = new Set(stage1.slice(0, -1));
+  const evening = new Set(stage1);
+  let changed = 0;
+  for (let d = 1; d <= 28; d++) {
+    const day = `2026-11-${String(d).padStart(2, "0")}`;
+    const shown = dailyTask(day, morning);
+    if (JSON.stringify(dailyTask(day, evening)) !== JSON.stringify(shown))
+      changed++;
+    assert.ok(
+      dailyTasksToday(day, evening).some(
+        (t) => JSON.stringify(t) === JSON.stringify(shown),
+      ),
+      day,
+    );
+  }
+  // The case is real: opening games does change the task on some days.
+  assert.ok(changed > 0);
 });

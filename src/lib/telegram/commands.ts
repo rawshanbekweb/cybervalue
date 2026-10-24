@@ -79,7 +79,14 @@ async function assignmentsText(
 ) {
   const student = await db.student.findUnique({
     where: { id: studentId },
-    select: { id: true, name: true, group: true, active: true },
+    select: {
+      id: true,
+      name: true,
+      group: true,
+      level: true,
+      createdAt: true,
+      active: true,
+    },
   });
   if (!student?.active) return "Akkaunt topilmadi yoki yopilgan.";
   const list = await studentAssignments(db, student, visibleSince(now), now);

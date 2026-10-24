@@ -40,8 +40,9 @@ export async function studentOverview(
       done: new Set<string>(),
       tests: new Map<string, TestStats>(),
       returned: new Set<string>(),
+      closed: new Set<string>(),
     };
-  const [materials, progress, submissions] = await Promise.all([
+  const [materials, progress, submissions, flags] = await Promise.all([
     db.studentMaterial.findMany({
       where: visibleTo(student),
       orderBy: [{ position: "asc" }, { createdAt: "asc" }],
@@ -71,6 +72,12 @@ export async function studentOverview(
         maxScore: true,
         returned: true,
       },
+    }),
+    // Wrong flags per personal lab, to tell when no attempt is left.
+    db.studentSubmission.groupBy({
+      by: ["materialId"],
+      where: { studentId: student.id, material: { kind: "CHALLENGE" } },
+      _count: { _all: true },
     }),
   ]);
   // Handing in a practice or quiz counts as finishing it; a personal lab only
@@ -102,7 +109,21 @@ export async function studentOverview(
       best: Math.max(stats?.best ?? 0, percent),
     });
   }
-  return { materials, done, tests, returned };
+  // A personal lab with every attempt used and no flag is closed: it is no
+  // longer suggested as the next thing to do.
+  const tries = new Map(flags.map((f) => [f.materialId, f._count._all]));
+  const closed = new Set(
+    materials
+      .filter(
+        (m) =>
+          m.kind === "CHALLENGE" &&
+          m.maxAttempts > 0 &&
+          !done.has(m.id) &&
+          (tries.get(m.id) ?? 0) >= m.maxAttempts,
+      )
+      .map((m) => m.id),
+  );
+  return { materials, done, tests, returned, closed };
 }
 
 export async function materialForStudent(

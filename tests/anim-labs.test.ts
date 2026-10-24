@@ -161,6 +161,7 @@ test("bash: every terminal and script goal can be met", () => {
           command: `bash ${lesson.name}`,
           output: before.output,
           error: before.error,
+          source: lesson.source,
         },
       ],
     };
@@ -168,14 +169,40 @@ test("bash: every terminal and script goal can be met", () => {
       !lesson.goals.every((g) => g.check(unsolved)),
       `#${id} starts unsolved`,
     );
-    const after = run(edit(lesson.source), emptyState(lesson.files, args));
+    const source = edit(lesson.source);
+    const after = run(source, emptyState(lesson.files, args));
     const log: Log = {
       state: after.state,
-      entries: [{ command, output: after.output, error: after.error }],
+      entries: [{ command, output: after.output, error: after.error, source }],
     };
     for (const goal of lesson.goals)
       assert.ok(goal.check(log), `#${id} ${goal.label.en}`);
+    return lesson;
   };
+  // Printing the expected lines without doing the task does not pass.
+  const shortcut = (id: number, source: string, args: string[]) => {
+    const lesson = BASH[id - 1].widget;
+    if (lesson.type !== "script") return;
+    const r = run(source, emptyState(lesson.files, args));
+    const log: Log = {
+      state: r.state,
+      entries: [
+        {
+          command: `bash ${lesson.name}${args.length ? ` ${args.join(" ")}` : ""}`,
+          output: r.output,
+          error: r.error,
+          source,
+        },
+      ],
+    };
+    assert.ok(!lesson.goals.every((g) => g.check(log)), `#${id} shortcut`);
+  };
+  shortcut(7, 'echo 5\necho 4\necho 3\necho 2\necho 1\necho "Start!"\n', []);
+  shortcut(
+    8,
+    'echo "Tekshirilmoqda: $1"\necho "Ogohlantirish: root"\necho "Ogohlantirish: admin"\n',
+    ["auth.log"],
+  );
   script(7, (s) => s.replace(/  # .*\n/, "  i=$((i - 1))\n"), []);
   script(
     8,

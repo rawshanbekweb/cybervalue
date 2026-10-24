@@ -11,7 +11,13 @@ import {
 import type { Files, State } from "./interp";
 
 /** One command typed in the terminal and what it printed. */
-export type Entry = { command: string; output: string[]; error: string | null };
+export type Entry = {
+  command: string;
+  output: string[];
+  error: string | null;
+  /** The script as it was run, for goals about how it was written. */
+  source?: string;
+};
 export type Log = { state: State; entries: Entry[] };
 
 export type Goal = { label: Text; check: (log: Log) => boolean };
@@ -515,7 +521,12 @@ export const LESSONS: Lesson<Widget>[] = [
           ),
           check: (log) =>
             log.entries.some(
-              (e) => !e.error && e.output.join(",") === "5,4,3,2,1,Start!",
+              (e) =>
+                !e.error &&
+                e.output.join(",") === "5,4,3,2,1,Start!" &&
+                // The loop must still do the counting, not five echoes.
+                /\bwhile\b/.test(e.source ?? "") &&
+                (e.source ?? "").split(/\becho\b/).length - 1 <= 2,
             ),
         },
       ],
@@ -579,8 +590,15 @@ export const LESSONS: Lesson<Widget>[] = [
             "Warnings for root and admin",
           ),
           check: (log) =>
-            printed(log, "Ogohlantirish: root") &&
-            printed(log, "Ogohlantirish: admin"),
+            log.entries.some(
+              (e) =>
+                !e.error &&
+                e.output.includes("Ogohlantirish: root") &&
+                e.output.includes("Ogohlantirish: admin") &&
+                // The warnings must come from searching the log, not echoes.
+                /\bgrep\b/.test(e.source ?? "") &&
+                !/Ogohlantirish: (root|admin)/.test(e.source ?? ""),
+            ),
         },
         {
           label: t(
