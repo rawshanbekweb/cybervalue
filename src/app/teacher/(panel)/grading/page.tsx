@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
-import { groupWhere, requireStaff } from "@/lib/auth";
+import { groupWhere, pickedGroupWhere, requireStaff } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { formatDate } from "@/components/ui";
 import { SubmissionList } from "@/components/admin/submission-list";
@@ -26,10 +26,7 @@ export default async function GradingPage({
   const returned = show === "returned";
   const reviewed = show === "reviewed" || returned;
   const db = getDb();
-  const people = {
-    ...groupWhere(scope),
-    ...(group ? { group } : {}),
-  };
+  const people = pickedGroupWhere(scope, group);
   const where = {
     material: { kind: "PRACTICE" as const },
     reviewedAt: reviewed ? { not: null } : null,

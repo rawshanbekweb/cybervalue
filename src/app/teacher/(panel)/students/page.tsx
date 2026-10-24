@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
-import { groupWhere, requireStaff } from "@/lib/auth";
+import { pickedGroupWhere, requireStaff } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { formatDate } from "@/components/ui";
 import { CreateStudentsForm } from "@/components/admin/student-forms";
@@ -17,7 +17,7 @@ export default async function AdminStudentsPage({
   const [students, materials] = db
     ? await Promise.all([
         db.student.findMany({
-          where: { ...groupWhere(scope), ...(group ? { group } : {}) },
+          where: pickedGroupWhere(scope, group),
           orderBy: [{ group: "asc" }, { name: "asc" }],
           take: 1000,
           omit: { portrait: true },

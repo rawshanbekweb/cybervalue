@@ -691,5 +691,6 @@
   "Leaves the attribute": "Atributdan chiqib ketadi",
   "Stays a value": "Qiymat bo‘lib qoladi",
   "Matches the rule": "Qoidaga mos",
-  "Does not match the rule": "Qoidaga mos emas"
+  "Does not match the rule": "Qoidaga mos emas",
+  "Your sign-in ended. Sign in again and restart the checkpoint.": "Kirish muddati tugadi. Qayta kiring va nazoratni boshidan boshlang."
 }

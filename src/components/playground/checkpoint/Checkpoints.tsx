@@ -145,9 +145,13 @@ function CheckpointCard({
         throw new Error(
           status === 409
             ? t("These questions were already graded.")
-            : t(
-                "Time ran out or something failed. Start the checkpoint again.",
-              ),
+            : status === 401
+              ? t(
+                  "Your sign-in ended. Sign in again and restart the checkpoint.",
+                )
+              : t(
+                  "Time ran out or something failed. Start the checkpoint again.",
+                ),
         );
       setResult(data);
       onDone();
