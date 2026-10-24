@@ -256,6 +256,11 @@ function TalkWidget({ onSolved }: WidgetProps) {
   const [seen, setSeen] = useState<number[]>([]);
   const [key, setKey] = useState(0);
   const [history, setHistory] = useState<string[]>([]);
+  // The request in flight, fixed when sent: changing the pickers meanwhile
+  // must not change the envelope coming back.
+  const [sent, setSent] = useState<{ label: string; status: number } | null>(
+    null,
+  );
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(
     () => () => {
@@ -267,6 +272,7 @@ function TalkWidget({ onSolved }: WidgetProps) {
   const send = () => {
     if (phase !== "idle") return;
     const result = answer(method, path);
+    setSent({ label: `${method} ${path}`, status: result.status });
     setReply(null);
     setPhase("out");
     setKey(key + 1);
@@ -288,13 +294,13 @@ function TalkWidget({ onSolved }: WidgetProps) {
     }, wait);
   };
   const flight =
-    phase === "out"
-      ? { label: `${method} ${path}`, toServer: true, tone: "plain", key }
-      : phase === "back"
+    sent && phase === "out"
+      ? { label: sent.label, toServer: true, tone: "plain", key }
+      : sent && phase === "back"
         ? {
-            label: `${answer(method, path).status}`,
+            label: `${sent.status}`,
             toServer: false,
-            tone: TONE[family(answer(method, path).status)],
+            tone: TONE[family(sent.status)],
             key,
           }
         : null;
