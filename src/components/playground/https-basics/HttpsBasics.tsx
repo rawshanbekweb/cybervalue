@@ -42,6 +42,7 @@ export function HttpsBasics() {
     <AnimLab
       lessons={LESSONS}
       progressKey={PROGRESS_KEY}
+      checkpoints={["https-1"]}
       eyebrow={t("WEB FOUNDATIONS · ANIMATED")}
       title={t("HTTPS and TLS.")}
       subtitle={t("See what the padlock really protects.")}

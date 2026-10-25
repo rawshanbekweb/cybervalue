@@ -32,6 +32,7 @@ export function SshBasics() {
     <AnimLab
       lessons={LESSONS}
       progressKey={PROGRESS_KEY}
+      checkpoints={["ssh-1"]}
       eyebrow={t("TERMINAL FOUNDATIONS · ANIMATED")}
       title={t("Remote access with SSH.")}
       subtitle={t("How remote connection works.")}

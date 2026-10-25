@@ -49,6 +49,31 @@ export const AWARD_RULES: readonly AwardRule[] = [
     earned: (f) => finished(f, "security") && passed(f, "security-1"),
   },
   {
+    id: "lab-httpbasics",
+    title: "HTTP protokoli asoslari",
+    earned: (f) => finished(f, "httpbasics") && passed(f, "httpbasics-1"),
+  },
+  {
+    id: "lab-https",
+    title: "HTTPS va TLS",
+    earned: (f) => finished(f, "https") && passed(f, "https-1"),
+  },
+  {
+    id: "lab-bash",
+    title: "Bash asoslari",
+    earned: (f) => finished(f, "bash") && passed(f, "bash-1"),
+  },
+  {
+    id: "lab-ssh",
+    title: "SSH: masofadan ulanish",
+    earned: (f) => finished(f, "ssh") && passed(f, "ssh-1"),
+  },
+  {
+    id: "lab-crypto",
+    title: "Kriptografiya asoslari",
+    earned: (f) => finished(f, "crypto") && passed(f, "crypto-1"),
+  },
+  {
     id: "checkpoints-all",
     title: "Barcha laboratoriya nazoratlari",
     // The beginner labs; Intermediate modules have their own awards.

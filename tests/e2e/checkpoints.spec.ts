@@ -93,6 +93,35 @@ test("the HTML and Web Security labs end with their own checkpoints", async ({
   }
 });
 
+test("the animated Academy labs end with their own checkpoints", async ({
+  page,
+}) => {
+  for (const [path, name] of [
+    [
+      "/akademiya/http-basics",
+      "Checkpoint: requests, responses, methods and status codes",
+    ],
+    ["/akademiya/https", "Checkpoint: encryption, TLS and certificates"],
+    ["/akademiya/bash", "Checkpoint: variables, loops and scripts"],
+    ["/akademiya/ssh", "Checkpoint: SSH connections and keys"],
+    [
+      "/akademiya/crypto",
+      "Checkpoint: encoding, hashes, ciphers and signatures",
+    ],
+  ] as const) {
+    await page.goto(path);
+    await page.getByRole("link", { name: "Checkpoints" }).click();
+    const card = page.getByRole("article", { name });
+    await card.getByRole("button", { name: "Take the test" }).click();
+    await expect(card.locator(".cp-form li")).toHaveCount(10);
+    expect(await answerAll(page, card)).toBe(10);
+    await card.getByRole("button", { name: "Submit" }).click();
+    await expect(card.getByRole("status")).toContainText(/\d+\/10 · \d+%/);
+    await expect(card.locator(".cp-right")).toHaveCount(10);
+  }
+  await audit(page, "crypto checkpoint", "#checkpoints");
+});
+
 test("the API keeps answers on the server and rejects forged attempts", async ({
   request,
 }) => {

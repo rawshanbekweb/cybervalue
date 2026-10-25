@@ -40,6 +40,7 @@ export function BashBasics() {
     <AnimLab
       lessons={LESSONS}
       progressKey={PROGRESS_KEY}
+      checkpoints={["bash-1"]}
       eyebrow={t("TERMINAL FOUNDATIONS · ANIMATED")}
       title={t("Bash basics.")}
       subtitle={t("Variables, loops and your first scripts.")}

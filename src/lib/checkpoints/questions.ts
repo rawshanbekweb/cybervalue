@@ -31,6 +31,13 @@ import {
   SECURITY_EXTRA,
   type PoolItem,
 } from "./pools";
+import {
+  BASH_POOL,
+  CRYPTO_POOL,
+  HTTP_BASICS_POOL,
+  HTTPS_POOL,
+  SSH_POOL,
+} from "./foundation-pools";
 import { QUIZ as SECURITY_QUIZ } from "../../components/playground/security-lab/lessons.data";
 import { createTranslator } from "../i18n";
 
@@ -574,6 +581,12 @@ function linuxQuestions(r: Random) {
 const fromPool = (r: Random, item: PoolItem) =>
   choice(r, item.ask, item.right, item.wrong, item.explain, item.code);
 
+// Ten questions from a pool, for the animated Academy labs.
+const tenFrom = (r: Random, pool: PoolItem[]) =>
+  shuffle(r, pool)
+    .slice(0, 10)
+    .map((item) => fromPool(r, item));
+
 // The Web Security Lab's final quiz is written in English with Uzbek in the
 // shared dictionary; both languages come from there.
 const uz = createTranslator("uz");
@@ -620,6 +633,11 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
     shuffle(r, SECURITY_POOL)
       .slice(0, 12)
       .map((item) => fromPool(r, item)),
+  "httpbasics-1": (r) => tenFrom(r, HTTP_BASICS_POOL),
+  "https-1": (r) => tenFrom(r, HTTPS_POOL),
+  "bash-1": (r) => tenFrom(r, BASH_POOL),
+  "ssh-1": (r) => tenFrom(r, SSH_POOL),
+  "crypto-1": (r) => tenFrom(r, CRYPTO_POOL),
   "http-1": (r) =>
     shuffle(r, HTTP_POOL)
       .slice(0, 12)
