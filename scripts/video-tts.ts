@@ -1,9 +1,13 @@
-// Records the Uzbek narration of the video lessons with Azure Speech
-// (neural voices uz-UZ-SardorNeural and uz-UZ-MadinaNeural) and writes
+// Records the Uzbek narration of the video lessons with Microsoft's neural
+// voices uz-UZ-SardorNeural and uz-UZ-MadinaNeural, and writes
 // public/video-lessons/<id>.mp3 plus src/lib/video-lessons/audio.json.
 //
+// With an Azure Speech key (the official service):
 //   AZURE_SPEECH_KEY=… AZURE_SPEECH_REGION=westeurope \
 //     npx tsx scripts/video-tts.ts crypto bash
+// Without one, the same voices through Edge's read-aloud service (no
+// account; needs `pip install edge-tts` and speech.platform.bing.com):
+//   npx tsx scripts/video-tts.ts crypto bash
 //
 // Options (environment): VIDEO_VOICE (default uz-UZ-SardorNeural),
 // VIDEO_RATE (SSML prosody rate, default "-4%"). Each scene is cached in
@@ -22,10 +26,10 @@ const rate = process.env.VIDEO_RATE ?? "-4%";
 // Silence after each scene, so the pictures can breathe between sentences.
 const PAUSE = 0.6;
 
-if (!key || !region) {
-  console.error("Set AZURE_SPEECH_KEY and AZURE_SPEECH_REGION.");
-  process.exit(1);
-}
+const azure = Boolean(key && region);
+console.log(
+  azure ? `Azure Speech (${region}), ${voice}` : `edge-tts, ${voice}`,
+);
 
 const cache = ".video-cache";
 mkdirSync(cache, { recursive: true });
@@ -44,6 +48,20 @@ function spoken(say: string) {
 }
 
 async function record(say: string, file: string) {
+  if (!azure) {
+    execFileSync("python3", [
+      "-m",
+      "edge_tts",
+      "--voice",
+      voice,
+      `--rate=${rate}`,
+      "--text",
+      spoken(say),
+      "--write-media",
+      file,
+    ]);
+    return;
+  }
   const ssml = `<speak version="1.0" xml:lang="uz-UZ"><voice name="${voice}"><prosody rate="${rate}">${spoken(say)}</prosody></voice></speak>`;
   for (let attempt = 1; ; attempt++) {
     const res = await fetch(

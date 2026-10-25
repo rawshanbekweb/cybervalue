@@ -14,7 +14,7 @@ The voice is Azure Speech's Uzbek neural voice (`uz-UZ-SardorNeural`, or `uz-UZ-
 AZURE_SPEECH_KEY=… AZURE_SPEECH_REGION=westeurope npx tsx scripts/video-tts.ts crypto bash
 ```
 
-It records each scene (cached in `.video-cache/`, so only changed scenes are recorded again), adds a short pause after each, joins them into `public/video-lessons/<lab>.mp3` and writes `audio.json`. Commit both. Changing a scene's text later needs another run.
+Without an Azure key the script uses the same voices through Edge's read-aloud service (`pip install edge-tts`, host `speech.platform.bing.com` allowed): `npx tsx scripts/video-tts.ts crypto bash`. That service is unofficial and may change; the official API is the dependable route. Either way it records each scene (cached in `.video-cache/`, so only changed scenes are recorded again), adds a short pause after each, joins them into `public/video-lessons/<lab>.mp3` and writes `audio.json`. Commit both. Changing a scene's text later needs another run.
 
 ## MP4
 
