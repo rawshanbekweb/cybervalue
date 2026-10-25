@@ -99,13 +99,39 @@ function hash(text: string) {
  * then one of its tasks, so every open game gets its turn.
  */
 export function dailyTask(day: string, done: Set<string>): DailyTask {
-  // Puzzle levels are their own challenge; tasks come from the other games.
-  const open = GAME_IDS.filter(
-    (id) => !GAMES[id].lab && gameOpen(GAMES[id], done),
-  );
+  return taskAmong(day, openForTasks(done));
+}
+
+// Puzzle levels are their own challenge; tasks come from the other games.
+const openForTasks = (done: Set<string>) =>
+  GAME_IDS.filter((id) => !GAMES[id].lab && gameOpen(GAMES[id], done));
+
+function taskAmong(day: string, open: GameId[]): DailyTask {
   const h = hash(day);
   const tasks = tasksFor(open[h % open.length]);
   return tasks[(h >>> 8) % tasks.length];
+}
+
+/**
+ * Every task the child may have been shown today. A game that opens during
+ * the day changes dailyTask, but the page picked its task earlier, so the
+ * tasks without the games opened but not yet played also count.
+ */
+export function dailyTasksToday(day: string, done: Set<string>) {
+  const open = openForTasks(done);
+  const fresh = open.filter(
+    (id) =>
+      GAMES[id].after &&
+      !GAMES[id].missions.some((m) => done.has(missionKey(id, m.id))),
+  );
+  const tasks: DailyTask[] = [];
+  for (let mask = 0; mask < 1 << fresh.length; mask++) {
+    const without = open.filter(
+      (id) => !fresh.some((f, i) => f === id && mask & (1 << i)),
+    );
+    if (without.length) tasks.push(taskAmong(day, without));
+  }
+  return tasks;
 }
 
 export type DailyProof = { code?: string; cheat?: string; score?: number };

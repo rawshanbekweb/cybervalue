@@ -130,3 +130,14 @@ test("member edits are validated; the date ends at Tashkent midnight", () => {
     false,
   );
 });
+
+test("the 3-day streak badge stays once earned, after the streak breaks", () => {
+  const now = Date.UTC(2026, 9, 30, 9);
+  const today = dayIndex(now);
+  const summary = summarizeMember(
+    { daily: [today - 6, today - 5, today - 4] },
+    now,
+  );
+  assert.equal(summary.streak, 0);
+  assert.ok(summary.badges.includes("streak"));
+});

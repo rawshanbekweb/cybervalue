@@ -132,6 +132,15 @@ export function canSeeGroup(scope: Scope, group: string) {
   return scope.owner || scope.groups.includes(group);
 }
 
+/**
+ * groupWhere narrowed to one group picked in the URL. A group outside the
+ * teacher's scope matches nobody instead of replacing the scope.
+ */
+export function pickedGroupWhere(scope: Scope, group: string) {
+  if (!group) return groupWhere(scope);
+  return canSeeGroup(scope, group) ? { group } : { group: { in: [] } };
+}
+
 /** For pages and actions only owners and admins may use; teachers get a 404. */
 export async function requireOwner(nextPath?: string) {
   const session = await requireAdmin(nextPath);

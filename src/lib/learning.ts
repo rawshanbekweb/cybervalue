@@ -5,6 +5,7 @@ import { LESSONS as NETWORK_LESSONS } from "@/lib/network/curriculum";
 import { HTML_LESSONS } from "@/components/playground/html-basics/lessons.data";
 import { LESSONS as HTTP_LESSONS } from "@/lib/http/curriculum";
 import { LESSONS as INPUT_LESSONS } from "@/lib/untrusted-input/curriculum";
+import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
 import { LESSONS as BASH_LESSONS } from "@/lib/bash-basics/curriculum";
@@ -149,6 +150,20 @@ export function getLearningTracks() {
       level: "Beginner",
       lessons: SSH_LESSONS.map(({ id, title }) => ({ id, title: title.en })),
       modules: SSH_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "scams",
+      title: "Scam simulator",
+      category: "Security",
+      description:
+        "Eight everyday scams on a pretend phone — a call from “the bank”, a prize, a friend asking for money, a job, an app, a buyer, an investment — and one safe message. Decide what to do, then find every red flag.",
+      href: "/firibgarlik",
+      progressKey: LAB_PROGRESS.scams.key,
+      level: "Beginner",
+      lessons: SCAM_LESSONS.map(({ id, title }) => ({ id, title: title.en })),
+      modules: SCAM_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

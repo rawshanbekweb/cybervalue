@@ -28,6 +28,12 @@ export const SECTIONS = [
     label: "Student portal",
     href: "/student",
   },
+  {
+    id: "scams",
+    group: "main",
+    label: "Scam simulator",
+    href: "/firibgarlik",
+  },
   // Labs inside the academy.
   {
     id: "network",
@@ -220,8 +226,11 @@ export function closedSection(
   const section = own.sort((a, b) => b.href.length - a.href.length)[0];
   if (section) {
     if (!config.sections[section.id]) return section.id;
-    // Labs also close with the academy as a whole.
-    if (section.group === "lab" && !config.sections.academy) return "academy";
+    // Labs also close with their level: the Academy, or Intermediate.
+    const level = section.href.startsWith("/intermediate/")
+      ? "intermediate"
+      : "academy";
+    if (section.group === "lab" && !config.sections[level]) return level;
     return null;
   }
   return path === "/akademiya" && !config.sections.academy ? "academy" : null;

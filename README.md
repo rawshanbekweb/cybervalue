@@ -119,6 +119,8 @@ The [HTML & CSS project studio](docs/studio.md) at `/akademiya/studio` includes 
 
 The [IP addressing lab](docs/network-lab.md) at `/akademiya/network-basics` teaches IP addresses, subnet masks and the default gateway, then how addresses are obtained (DHCP), found (DNS) and shared (NAT), plus subnetting, traceroute, ports, IPv6, and DNS, TLS and HTTP on the wire, in seventeen lessons with clickable bits, frame-by-frame packets, generated practice examples, a bitwise AND view, a small network simulator that explains every ping, and a subnet calculator.
 
+The [scam simulator](docs/scams.md) at `/firibgarlik` is open to everyone: eight everyday scams from Uzbekistan on a pretend phone (decide what to do, then find every red flag) and a tool that checks a pasted message for common scam signs in the browser.
+
 The [cryptography basics lab](docs/crypto-lab.md) at `/akademiya/crypto` tells encoding, hashing and encryption apart in eleven animated lessons: UTF-8 bytes, Base64, the avalanche effect, file integrity, salt, a dictionary attack, XOR, key length and a toy RSA signature.
 
 The hub now includes [three investigation missions](docs/missions.md) at `/akademiya/missions`: invoice authorization, checkout integrity, and webhook replay. Learners edit requests, collect evidence, choose defense policies, and run behavioral regression checks. Completion requires demonstrated outcomes. These browser simulations complement the existing guided lessons and real local API exercises.

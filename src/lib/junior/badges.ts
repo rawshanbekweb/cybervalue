@@ -38,6 +38,7 @@ export type BadgeState = {
   ciphers: CipherProgress;
   story: boolean;
   events: Events;
+  /** The longest run of daily puzzles, so the badge is never taken back. */
   streak: number;
   rank: number;
 };

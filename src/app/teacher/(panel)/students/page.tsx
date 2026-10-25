@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
-import { groupWhere, requireStaff } from "@/lib/auth";
+import { pickedGroupWhere, requireStaff } from "@/lib/auth";
+import { loadStandings } from "@/lib/student/standing";
 import { getDb } from "@/lib/db";
 import { formatDate } from "@/components/ui";
 import { CreateStudentsForm } from "@/components/admin/student-forms";
@@ -17,17 +18,21 @@ export default async function AdminStudentsPage({
   const [students, materials] = db
     ? await Promise.all([
         db.student.findMany({
-          where: { ...groupWhere(scope), ...(group ? { group } : {}) },
+          where: pickedGroupWhere(scope, group),
           orderBy: [{ group: "asc" }, { name: "asc" }],
           take: 1000,
           omit: { portrait: true },
           include: {
-            _count: { select: { progress: true, submissions: true } },
+            _count: { select: { submissions: true } },
           },
         }),
         db.studentMaterial.count({ where: { published: true } }),
       ])
     : [[], 0];
+  // "Completed" as the student page counts it: lessons and labs marked done,
+  // practices and tests handed in, personal labs solved.
+  const standings =
+    db && students.length ? await loadStandings(db, students) : new Map();
   const now = new Date();
   return (
     <div className="admin-page">
@@ -96,7 +101,7 @@ export default async function AdminStudentsPage({
                         t("Active")
                       )}
                     </td>
-                    <td>{student._count.progress}</td>
+                    <td>{standings.get(student.id)?.done ?? 0}</td>
                     <td>{student._count.submissions}</td>
                     <td>
                       {student.lastLoginAt

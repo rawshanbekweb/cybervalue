@@ -34,7 +34,7 @@ const SECTIONS = [
 export function AcademyShell({ children }: { children: React.ReactNode }) {
   const { t, text } = useT();
   const pathname = usePathname();
-  const { member, agent, rank, xp, unsaved } = useJuniorState();
+  const { member, agent, rank, xp, unsaved, rejected } = useJuniorState();
   const tabs = useRef<HTMLElement>(null);
   // On a phone the tabs scroll sideways: bring the open section into view
   // and fade the edges that have more tabs behind them.
@@ -98,7 +98,17 @@ export function AcademyShell({ children }: { children: React.ReactNode }) {
           </Link>
         ))}
       </nav>
-      {unsaved && (
+      {rejected && (
+        <p className="jr-verdict jr-bad jr-unsaved" role="alert">
+          <CloudOff size={16} aria-hidden="true" />
+          <span>
+            {t(
+              "The academy did not accept your last step. Reload the page to see your saved progress.",
+            )}
+          </span>
+        </p>
+      )}
+      {unsaved && !rejected && (
         <p className="jr-verdict jr-bad jr-unsaved" role="alert">
           <CloudOff size={16} aria-hidden="true" />
           <span>

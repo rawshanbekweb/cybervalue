@@ -1,4 +1,4 @@
-import { getSession, groupWhere, scopeOf } from "@/lib/auth";
+import { getSession, pickedGroupWhere, scopeOf } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { createTranslator, localeCookie, resolveLocale } from "@/lib/i18n";
 import { juniorCsv, juniorRow } from "@/lib/junior/admin";
@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
   if (!db) return new Response("Unavailable", { status: 503, headers });
   const group = request.nextUrl.searchParams.get("group") ?? "";
   const members = await db.juniorMember.findMany({
-    where: { ...groupWhere(scopeOf(session)), ...(group ? { group } : {}) },
+    where: pickedGroupWhere(scopeOf(session), group),
     orderBy: [{ group: "asc" }, { xp: "desc" }, { name: "asc" }],
     take: 5000,
   });

@@ -92,7 +92,7 @@ export async function daily(db: PrismaClient, now = Date.now()) {
   const counts = { reminders: 0, missed: 0, parents: 0 };
   const students = await db.student.findMany({
     where: { active: true },
-    select: { id: true, name: true, group: true },
+    select: { id: true, name: true, group: true, level: true, createdAt: true },
   });
   const assignments = await loadAssignments(db, {
     since: new Date(now - DAY),

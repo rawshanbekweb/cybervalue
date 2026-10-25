@@ -20,7 +20,7 @@ export default async function KidsPage() {
   const ranking = member.group
     ? ((await getDb()?.kidsMember.findMany({
         where: { group: member.group, active: true, xp: { gt: 0 } },
-        orderBy: [{ xp: "desc" }, { updatedAt: "asc" }],
+        orderBy: [{ xp: "desc" }, { createdAt: "asc" }],
         take: 10,
         select: { id: true, name: true, xp: true },
       })) ?? [])

@@ -47,6 +47,7 @@ export function useJuniorState() {
     signedIn: Boolean(store),
     member: store?.member ?? null,
     unsaved: store?.unsaved ?? false,
+    rejected: store?.rejected ?? false,
     missions: progress.missions,
     /** A finished mission, with the answers that solve it. */
     completeMission: (id: MissionId, evidence: MissionEvidence) =>
@@ -55,7 +56,11 @@ export function useJuniorState() {
         { ...progress.missions, [id]: true },
         { missions: { [id]: evidence } },
       ),
-    resetMissions: () => set("missions", {} as Progress),
+    // The server reopens the case with the missions; the screen does too.
+    resetMissions: () => {
+      set("missions", {} as Progress);
+      if (progress.story) set("story", false);
+    },
     ciphers: progress.ciphers,
     /** A solved homework exercise, with its answer. */
     solveExercise: (cipher: CipherId, index: number, answer: string) => {

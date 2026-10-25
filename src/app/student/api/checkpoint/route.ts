@@ -8,6 +8,7 @@ import { getDb } from "@/lib/db";
 import { limit } from "@/lib/rate-limit-db";
 import { clientKey } from "@/lib/rate-limit";
 import { getStudentSession } from "@/lib/student/session";
+import { opensIntermediate } from "@/lib/student/levels";
 import {
   checkpointById,
   grade,
@@ -69,28 +70,37 @@ export async function POST(request: NextRequest) {
     const checkpoint = checkpointById(String(body.id));
     if (!checkpoint) return json({ error: "invalid" }, 400);
     const seed = randomInt(1, 2 ** 31 - 1);
+    // An Intermediate checkpoint is saved only for students at that level,
+    // like its lab; anyone else may still try it unsaved.
+    const saves =
+      me &&
+      (checkpoint.level !== "intermediate" || opensIntermediate(me.level));
     const token = issueAttempt(key, {
       checkpoint: checkpoint.id,
       seed,
-      student: me?.id ?? "",
+      student: saves ? me.id : "",
       issued: Date.now(),
     });
     // Answers and explanations stay on the server until the attempt is graded.
     const questions = questionsFor(checkpoint, seed).map(
       ({ ask, code, options }) => ({ ask, code, options }),
     );
-    return json({ token, questions, saving: Boolean(me) });
+    return json({ token, questions, saving: Boolean(saves) });
   }
 
   if (body.action === "submit") {
     const attempt = readAttempt(key, body.token);
     const checkpoint = attempt && checkpointById(attempt.checkpoint);
     if (!attempt || !checkpoint) return json({ error: "expired" }, 400);
+    // A student's attempt is graded only for that student: answering it
+    // signed out would reveal the answers for a saved retry of the same seed.
+    if (attempt.student && me?.id !== attempt.student)
+      return json({ error: "signin" }, 401);
     const questions = questionsFor(checkpoint, attempt.seed);
     const result = grade(questions, body.answers);
     let saved = false;
     let certificates: string[] = [];
-    if (attempt.student && me?.id === attempt.student) {
+    if (attempt.student && me) {
       try {
         await getDb()!.studentCheckpoint.create({
           data: {

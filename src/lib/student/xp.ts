@@ -6,6 +6,29 @@ import { BEGINNER_CHECKPOINTS } from "../checkpoints/meta";
 import { isEntranceExam } from "./levels";
 
 export type XpMaterial = { id: string; slug: string; kind: string };
+/**
+ * Hand-ins without the materials whose latest answer was returned for
+ * rework: those are open again, as on the student page (studentOverview).
+ */
+export function withoutReturned<
+  T extends {
+    studentId?: string;
+    materialId: string;
+    createdAt: Date;
+    returned?: boolean;
+  },
+>(submissions: T[]) {
+  const latest = new Map<string, T>();
+  for (const s of submissions) {
+    const key = `${s.studentId ?? ""}:${s.materialId}`;
+    const seen = latest.get(key);
+    if (!seen || seen.createdAt < s.createdAt) latest.set(key, s);
+  }
+  return submissions.filter(
+    (s) => !latest.get(`${s.studentId ?? ""}:${s.materialId}`)?.returned,
+  );
+}
+
 export type XpInput = {
   // Materials visible to the student.
   materials: XpMaterial[];

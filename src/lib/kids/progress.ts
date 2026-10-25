@@ -21,7 +21,7 @@ import { CHESTS, cipherSolved } from "./cipher";
 import {
   DAILY_XP,
   dailyPassed,
-  dailyTask,
+  dailyTasksToday,
   nextDaily,
   type Daily,
 } from "./extras";
@@ -206,13 +206,15 @@ export function applyKidsUpdate(
   if (code !== null) next.code[game] = code;
   if (score !== null) next.best[game] = Math.max(next.best[game], score);
   if (update.daily === true && next.daily.last !== today) {
-    const task = dailyTask(today, new Set(next.done));
     const proof = {
       code: code ?? undefined,
       score: score ?? undefined,
       cheat: typeof update.cheat === "string" ? update.cheat : undefined,
     };
-    if (task.game !== game || !dailyPassed(task, proof)) return null;
+    const passed = dailyTasksToday(today, new Set(next.done)).some(
+      (task) => task.game === game && dailyPassed(task, proof),
+    );
+    if (!passed) return null;
     next.daily = nextDaily(next.daily, today);
   }
   if (typeof update.mission === "string") {

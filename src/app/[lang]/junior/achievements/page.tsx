@@ -22,7 +22,7 @@ export default async function JuniorAchievementsPage() {
     member.group && getDb()
       ? await getDb()!.juniorMember.findMany({
           where: { group: member.group, active: true, xp: { gt: 0 } },
-          orderBy: [{ xp: "desc" }, { lastActiveAt: "asc" }],
+          orderBy: [{ xp: "desc" }, { createdAt: "asc" }],
           take: 30,
           select: { id: true, name: true, codename: true, xp: true },
         })

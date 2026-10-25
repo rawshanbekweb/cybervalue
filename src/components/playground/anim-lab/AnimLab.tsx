@@ -120,7 +120,7 @@ export function AnimLab<W>({
           <progress id="al-progress" value={done} max={lessons.length} />
           <small>
             {t(
-              "Progress is saved in this browser and does not sync across devices.",
+              "Progress is saved in this browser. Signed-in students also keep it on their account, on every device.",
             )}
           </small>
         </div>

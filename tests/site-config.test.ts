@@ -66,6 +66,13 @@ test("switched-off sections close their own pages only", () => {
   assert.equal(closedSection(academy, "/akademiya"), "academy");
   assert.equal(closedSection(academy, "/akademiya/ctf"), "academy");
   assert.equal(closedSection(academy, "/junior/ciphers"), null);
+  // Intermediate labs close with Intermediate, not with the Academy.
+  assert.equal(closedSection(academy, "/intermediate/input"), null);
+  for (const path of ["/intermediate/http", "/intermediate/input"])
+    assert.equal(
+      closedSection(off({ intermediate: false }), path),
+      "intermediate",
+    );
   assert.equal(
     closedSection(off({ junior: false }), "/junior/ciphers"),
     "junior",
