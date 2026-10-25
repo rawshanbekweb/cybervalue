@@ -66,6 +66,7 @@ export function CryptoBasics() {
     <AnimLab
       lessons={LESSONS}
       progressKey={PROGRESS_KEY}
+      checkpoints={["crypto-1"]}
       eyebrow={t("SECURITY FOUNDATIONS · ANIMATED")}
       title={t("Cryptography basics.")}
       subtitle={t("Encoding, hashing and encryption, told apart.")}

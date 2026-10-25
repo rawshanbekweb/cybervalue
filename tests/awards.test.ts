@@ -30,6 +30,23 @@ test("automatic certificates need every lesson and a passed checkpoint", () => {
     }),
     ["lab-network"],
   );
+  // The animated Academy labs: every lesson plus their own checkpoint.
+  for (const [lab, total, checkpoint] of [
+    ["httpbasics", 9, "httpbasics-1"],
+    ["https", 9, "https-1"],
+    ["bash", 9, "bash-1"],
+    ["ssh", 8, "ssh-1"],
+    ["crypto", 11, "crypto-1"],
+  ] as const) {
+    assert.deepEqual(
+      ids({ labs: { [lab]: total - 1 }, checkpoints: { [checkpoint]: 90 } }),
+      [],
+    );
+    assert.deepEqual(
+      ids({ labs: { [lab]: total }, checkpoints: { [checkpoint]: 70 } }),
+      [`lab-${lab}`],
+    );
+  }
   // Already issued ones are not repeated.
   assert.deepEqual(
     ids({ labs: { linux: 16 }, checkpoints: { "linux-1": 70 } }, ["lab-linux"]),

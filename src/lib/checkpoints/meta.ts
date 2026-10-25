@@ -77,6 +77,76 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     pass: 70,
   },
   {
+    id: "httpbasics-1",
+    lab: { uz: "HTTP protokoli", en: "HTTP basics" },
+    title: {
+      uz: "Nazorat: so‘rov, javob, metod va holat kodi",
+      en: "Checkpoint: requests, responses, methods and status codes",
+    },
+    covers: {
+      uz: "Barcha darslardan 10 savol",
+      en: "10 questions from every lesson",
+    },
+    href: "/akademiya/http-basics#checkpoints",
+    pass: 70,
+  },
+  {
+    id: "https-1",
+    lab: { uz: "HTTPS va TLS", en: "HTTPS and TLS" },
+    title: {
+      uz: "Nazorat: shifrlash, TLS va sertifikatlar",
+      en: "Checkpoint: encryption, TLS and certificates",
+    },
+    covers: {
+      uz: "Barcha darslardan 10 savol",
+      en: "10 questions from every lesson",
+    },
+    href: "/akademiya/https#checkpoints",
+    pass: 70,
+  },
+  {
+    id: "bash-1",
+    lab: { uz: "Bash asoslari", en: "Bash basics" },
+    title: {
+      uz: "Nazorat: o‘zgaruvchi, sikl va skript",
+      en: "Checkpoint: variables, loops and scripts",
+    },
+    covers: {
+      uz: "Barcha darslardan 10 savol",
+      en: "10 questions from every lesson",
+    },
+    href: "/akademiya/bash#checkpoints",
+    pass: 70,
+  },
+  {
+    id: "ssh-1",
+    lab: { uz: "SSH", en: "SSH" },
+    title: {
+      uz: "Nazorat: SSH ulanish va kalitlar",
+      en: "Checkpoint: SSH connections and keys",
+    },
+    covers: {
+      uz: "Barcha darslardan 10 savol",
+      en: "10 questions from every lesson",
+    },
+    href: "/akademiya/ssh#checkpoints",
+    pass: 70,
+  },
+  {
+    id: "crypto-1",
+    lab: { uz: "Kriptografiya asoslari", en: "Cryptography basics" },
+    title: {
+      uz: "Nazorat: kodlash, hash, shifr va imzo",
+      en: "Checkpoint: encoding, hashes, ciphers and signatures",
+    },
+    covers: {
+      uz: "Barcha darslardan 10 savol",
+      en: "10 questions from every lesson",
+    },
+    href: "/akademiya/crypto#checkpoints",
+    pass: 70,
+  },
+  {
     id: "http-1",
     level: "intermediate",
     lab: { uz: "HTTP chuqurroq", en: "HTTP in depth" },

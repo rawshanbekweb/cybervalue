@@ -36,6 +36,7 @@ export function HttpBasics() {
     <AnimLab
       lessons={LESSONS}
       progressKey={PROGRESS_KEY}
+      checkpoints={["httpbasics-1"]}
       eyebrow={t("WEB FOUNDATIONS · ANIMATED")}
       title={t("HTTP basics.")}
       subtitle={t("Watch the browser and the server talk.")}

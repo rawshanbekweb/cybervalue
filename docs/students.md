@@ -161,7 +161,7 @@ The Prisma models are `Student`, `StudentSession`, `StudentMaterial`, `StudentSu
 
 ## Lab checkpoints
 
-The IP addressing and Linux labs end with **checkpoint tests** (`src/lib/checkpoints/`): `network-1` (lessons 1–6, 12 questions), `network-2` (lessons 7–12, 10 questions) and `linux-1` (10 questions from the lesson quizzes), `html-1` (10 of 14 HTML Basics questions, `pools.ts`) and `security-1` (12 from the Web Security Lab's final quiz plus six questions on status codes, methods, SQLi, IDOR, cookies and XSS). Pass mark: 70%.
+The IP addressing and Linux labs end with **checkpoint tests** (`src/lib/checkpoints/`): `network-1` (lessons 1–6, 12 questions), `network-2` (lessons 7–12, 10 questions) and `linux-1` (10 questions from the lesson quizzes), `html-1` (10 of 14 HTML Basics questions, `pools.ts`) and `security-1` (12 from the Web Security Lab's final quiz plus six questions on status codes, methods, SQLi, IDOR, cookies and XSS). The animated Academy labs each end with one: `httpbasics-1`, `https-1`, `bash-1`, `ssh-1` and `crypto-1`, ten of fourteen questions from `foundation-pools.ts`. Pass mark: 70%.
 
 - Every attempt gets fresh questions from a random seed. Address arithmetic is generated with the lab's own `ip.ts`/`practice.ts` code; concept questions come from fixed pools.
 - `POST /student/api/checkpoint` with `{action: "start", id}` returns the questions **without answers** and a signed attempt token (HMAC keyed from `AUTH_SECRET`, or from `DATABASE_URL` when it is unset; valid 2 hours, bound to the signed-in student). `{action: "submit", token, answers}` rebuilds the questions from the seed and grades them on the server; the right answers and explanations are returned only then.
@@ -208,7 +208,7 @@ A Junior member's admin page has **Move to the Academy**. It creates a student a
 
 ## Automatic certificates
 
-`src/lib/student/award-rules.ts` lists certificates the site issues by itself: a lab finished (every lesson) together with its checkpoint(s) passed, and all lab checkpoints passed. They are checked whenever a signed-in student saves lab progress or a checkpoint result; each is issued once (`StudentCertificate.rule`), shows on the student page with the others and, when Telegram is linked, comes with a congratulation.
+`src/lib/student/award-rules.ts` lists certificates the site issues by itself: a lab finished (every lesson) together with its checkpoint(s) passed (IP addressing, Linux, HTML, Web Security, HTTP basics, HTTPS, Bash, SSH, cryptography and the Intermediate modules), and all beginner lab checkpoints passed. A "checkpoints-all" certificate already issued stays; new students need the five new checkpoints too. They are checked whenever a signed-in student saves lab progress or a checkpoint result; each is issued once (`StudentCertificate.rule`), shows on the student page with the others and, when Telegram is linked, comes with a congratulation.
 
 ## One sign-in for the HTML exam
 
