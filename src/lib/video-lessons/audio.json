@@ -1,1 +1,208 @@
-{}
+{
+  "crypto": {
+    "file": "/video-lessons/crypto.mp3",
+    "scenes": [
+      {
+        "hash": "928d9c0d",
+        "duration": 19.056
+      },
+      {
+        "hash": "c31d56f3",
+        "duration": 18.504
+      },
+      {
+        "hash": "a6795645",
+        "duration": 15.456
+      },
+      {
+        "hash": "3aa419b0",
+        "duration": 19.08
+      },
+      {
+        "hash": "bbeb4493",
+        "duration": 15.984
+      },
+      {
+        "hash": "9e79ea4e",
+        "duration": 13.536
+      },
+      {
+        "hash": "25de12d0",
+        "duration": 16.824
+      },
+      {
+        "hash": "5fb3e65f",
+        "duration": 13.248
+      },
+      {
+        "hash": "b369dc07",
+        "duration": 22.656
+      },
+      {
+        "hash": "0782380e",
+        "duration": 19.272
+      },
+      {
+        "hash": "cc968c5c",
+        "duration": 15.216
+      },
+      {
+        "hash": "bacc218c",
+        "duration": 19.056
+      },
+      {
+        "hash": "cfa97004",
+        "duration": 15.504
+      },
+      {
+        "hash": "afa70556",
+        "duration": 19.536
+      },
+      {
+        "hash": "5414c810",
+        "duration": 16.656
+      },
+      {
+        "hash": "77c2b120",
+        "duration": 20.904
+      },
+      {
+        "hash": "70b59d6b",
+        "duration": 17.208
+      },
+      {
+        "hash": "01c09f6b",
+        "duration": 19.248
+      },
+      {
+        "hash": "315dc238",
+        "duration": 17.4
+      },
+      {
+        "hash": "c95adceb",
+        "duration": 22.968
+      },
+      {
+        "hash": "184c7cfd",
+        "duration": 13.584
+      },
+      {
+        "hash": "2488e632",
+        "duration": 26.016
+      },
+      {
+        "hash": "9c6509c5",
+        "duration": 18.144
+      },
+      {
+        "hash": "c07e5da6",
+        "duration": 20.568
+      },
+      {
+        "hash": "cd373983",
+        "duration": 13.584
+      },
+      {
+        "hash": "b51dce99",
+        "duration": 22.176
+      },
+      {
+        "hash": "ab21d36d",
+        "duration": 17.544
+      },
+      {
+        "hash": "8c5a646b",
+        "duration": 17.352
+      }
+    ]
+  },
+  "bash": {
+    "file": "/video-lessons/bash.mp3",
+    "scenes": [
+      {
+        "hash": "d51dc85f",
+        "duration": 20.16
+      },
+      {
+        "hash": "cf29f9b1",
+        "duration": 16.44
+      },
+      {
+        "hash": "55ef0419",
+        "duration": 25.008
+      },
+      {
+        "hash": "d092497c",
+        "duration": 19.8
+      },
+      {
+        "hash": "6a124172",
+        "duration": 16.8
+      },
+      {
+        "hash": "4c376f27",
+        "duration": 15.768
+      },
+      {
+        "hash": "c386644e",
+        "duration": 19.392
+      },
+      {
+        "hash": "f1d1a939",
+        "duration": 16.032
+      },
+      {
+        "hash": "0f863eea",
+        "duration": 19.656
+      },
+      {
+        "hash": "dcabe3ee",
+        "duration": 16.728
+      },
+      {
+        "hash": "b39343be",
+        "duration": 19.464
+      },
+      {
+        "hash": "56700395",
+        "duration": 16.896
+      },
+      {
+        "hash": "26ae361a",
+        "duration": 21.312
+      },
+      {
+        "hash": "f033f850",
+        "duration": 20.184
+      },
+      {
+        "hash": "63f577f1",
+        "duration": 20.496
+      },
+      {
+        "hash": "3e5cc6e9",
+        "duration": 11.928
+      },
+      {
+        "hash": "157850a7",
+        "duration": 22.008
+      },
+      {
+        "hash": "243fdb7c",
+        "duration": 19.272
+      },
+      {
+        "hash": "ab26048f",
+        "duration": 18
+      },
+      {
+        "hash": "543e909d",
+        "duration": 21.768
+      },
+      {
+        "hash": "45bff33f",
+        "duration": 18.504
+      }
+    ]
+  }
+}

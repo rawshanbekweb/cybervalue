@@ -49,9 +49,12 @@ function spoken(say: string) {
 
 async function record(say: string, file: string) {
   if (!azure) {
+    // aiohttp ignores HTTPS_PROXY unless told; pass it on when set.
+    const proxy = process.env.HTTPS_PROXY ?? process.env.https_proxy;
     execFileSync("python3", [
       "-m",
       "edge_tts",
+      ...(proxy ? ["--proxy", proxy] : []),
       "--voice",
       voice,
       `--rate=${rate}`,
