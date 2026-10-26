@@ -29,6 +29,29 @@ import {
   statusShot,
   tamperShot,
 } from "./shots-http";
+import {
+  bytesShot,
+  comboShot,
+  cookieShot,
+  grinderShot,
+  mirrorsShot,
+  stampShot,
+  trioShot,
+  vaultShot,
+  wordlistShot,
+  xorShot,
+} from "./shots-crypto";
+import {
+  conveyorShot,
+  forkShot,
+  guardShot,
+  nightserverShot,
+  quotesShot,
+  recipeShot,
+  rocketShot,
+  shelfShot,
+  trojanShot,
+} from "./shots-bash";
 
 const SHOTS: Record<Shot3D, (stage: number) => Built> = {
   kibi: kibiShot,
@@ -47,6 +70,25 @@ const SHOTS: Record<Shot3D, (stage: number) => Built> = {
   methods: methodsShot,
   status: statusShot,
   tamper: tamperShot,
+  vault: vaultShot,
+  bytes: bytesShot,
+  cookie: cookieShot,
+  trio: trioShot,
+  grinder: grinderShot,
+  mirrors: mirrorsShot,
+  wordlist: wordlistShot,
+  xor: xorShot,
+  combo: comboShot,
+  stamp: stampShot,
+  nightserver: nightserverShot,
+  recipe: recipeShot,
+  shelf: shelfShot,
+  quotes: quotesShot,
+  conveyor: conveyorShot,
+  rocket: rocketShot,
+  fork: forkShot,
+  guard: guardShot,
+  trojan: trojanShot,
 };
 
 /** A renderer for one shot on a canvas; call draw() for each frame. */
