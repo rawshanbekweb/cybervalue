@@ -33,6 +33,8 @@ if (sound && !existsSync(sound)) throw new Error(`Missing ${sound}`);
 
 const browser = await chromium.launch({
   executablePath: process.env.CHROMIUM_PATH || undefined,
+  // WebGL for the 3D scenes, in software when there is no GPU.
+  args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"],
 });
 const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
 await page.goto(`${base}/akademiya/${id}/video?render=1`);

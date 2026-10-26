@@ -1,5 +1,6 @@
 "use client";
 
+import { videoHref } from "@/lib/video-lessons";
 import { useEffect, useRef, useState } from "react";
 import { Check, Globe, Laptop, RefreshCw, Send, Server } from "lucide-react";
 import { useT } from "../network-lab/use-t";
@@ -37,6 +38,7 @@ export function HttpBasics() {
       lessons={LESSONS}
       progressKey={PROGRESS_KEY}
       checkpoints={["httpbasics-1"]}
+      video={videoHref("httpbasics")}
       eyebrow={t("WEB FOUNDATIONS · ANIMATED")}
       title={t("HTTP basics.")}
       subtitle={t("Watch the browser and the server talk.")}

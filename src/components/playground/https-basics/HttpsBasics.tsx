@@ -1,5 +1,6 @@
 "use client";
 
+import { videoHref } from "@/lib/video-lessons";
 import { useEffect, useRef, useState } from "react";
 import {
   Check,
@@ -43,6 +44,7 @@ export function HttpsBasics() {
       lessons={LESSONS}
       progressKey={PROGRESS_KEY}
       checkpoints={["https-1"]}
+      video={videoHref("https")}
       eyebrow={t("WEB FOUNDATIONS · ANIMATED")}
       title={t("HTTPS and TLS.")}
       subtitle={t("See what the padlock really protects.")}

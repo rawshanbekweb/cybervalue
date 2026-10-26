@@ -15,7 +15,6 @@ export const CRYPTO_VIDEO: VideoLesson = {
             kind: "title",
             title: "Kriptografiya asoslari",
             subtitle: "Kodlash, hash, shifr va raqamli imzo",
-            icon: "lock",
           },
         },
         {
@@ -263,7 +262,6 @@ export const CRYPTO_VIDEO: VideoLesson = {
             kind: "title",
             title: "Endi amaliyot!",
             subtitle: "Laboratoriya · nazorat testi · sertifikat",
-            icon: "check",
           },
         },
       ],

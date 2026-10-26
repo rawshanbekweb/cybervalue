@@ -6,6 +6,13 @@ Narrated, animated lessons at `/akademiya/<lab>/video` (now `crypto` and `bash`)
 - **Timing** — with a recording, each scene lasts as long as its audio (`src/lib/video-lessons/audio.json`, matched by a hash of the text). Without one, or when a text changed after recording, the length is estimated (about 14 characters a second) and the video plays with captions only, with a note under the player.
 - **Player** — play/pause, seek bar with chapter marks, chapter list, speed, captions, full screen, and the full text of the lesson below for reading and screen readers.
 
+## Story, Kibi, quizzes, 3D and sound
+
+- **Kibi** (`Kibi.tsx`) hosts from the corner; his mouth follows the voice loudness stored in `audio.json` (`env`, one digit per 80 ms). A scene sets his mood or hides him with `host`.
+- **Story scenes** (`story.tsx`): the café with Ali and Jasur, the postcard, Kibi's host scene and the **quiz** card. A quiz scene has `hold` seconds of quiet after the question; on the site the video stops there until the viewer answers, in the MP4 it counts down and shows the answer.
+- **3D shots** (`three/`, three.js, loaded only for 3D scenes): `world.ts` holds the shared pieces (Kibi in 3D, devices, labels, bloom setup) and the first shots, `shots-https.ts` and `shots-http.ts` the lesson shots, `render.ts` the registry. A scene is `{ kind: "3d", shot, stage }`; every shot is posed from progress, so seeking and frame-by-frame rendering work. Without WebGL a 2D scene stands in.
+- **Sound**: `scripts/video-sounds.py` synthesises a music loop and effects (whoosh, pop, alarm, type, ding, magic) into `.video-cache/sounds`; a scene lists `sfx` at points of its length, and `video-tts.ts` mixes them in, ducking the music under the voice.
+
 ## Recording the narration
 
 Microsoft's Uzbek neural voice (an earlier option) (`uz-UZ-SardorNeural`, or `uz-UZ-MadinaNeural` with `VIDEO_VOICE`):
