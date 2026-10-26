@@ -104,8 +104,8 @@ export function restaurantShot(): Built {
     scene,
     camera,
     frame(p, t, talk) {
-      camera.position.set(Math.sin(t * 0.15) * 2, 5, 12);
-      camera.lookAt(0, 1.4, -0.5);
+      camera.position.set(Math.sin(t * 0.15) * 1.5, 4, 9.5);
+      camera.lookAt(0, 1.6, -0.5);
       const go = ease(seg(p, 0.15, 0.45));
       const back = ease(seg(p, 0.55, 0.85));
       const x = back > 0 ? lerp(3.4, -3.6, back) : lerp(-3.6, 3.4, go);
@@ -113,14 +113,14 @@ export function restaurantShot(): Built {
       kibi.rotation.y = back > 0 ? -Math.PI / 2 : Math.PI / 2;
       pose(t, talk * 0.5, 0);
       order.visible = back === 0 && go < 1;
-      order.position.set(x, 1.9, 1.6);
+      order.position.set(x, 2.55, 1.6);
       dish.visible = back > 0 && back < 1;
-      dish.position.set(x, 1.2, 1.6);
+      dish.position.set(x, 2.3, 1.6);
       food.visible = back === 0;
       req.visible = order.visible;
-      req.position.set(x, 2.8, 1.6);
+      req.position.set(x, 3.4, 1.6);
       res.visible = dish.visible;
-      res.position.set(x, 2.8, 1.6);
+      res.position.set(x, 3.4, 1.6);
     },
   };
 }
