@@ -8,7 +8,7 @@ Narrated, animated lessons at `/akademiya/<lab>/video` (now `crypto` and `bash`)
 
 ## Recording the narration
 
-The voice is Azure Speech's Uzbek neural voice (`uz-UZ-SardorNeural`, or `uz-UZ-MadinaNeural` with `VIDEO_VOICE`):
+Microsoft's Uzbek neural voice (an earlier option) (`uz-UZ-SardorNeural`, or `uz-UZ-MadinaNeural` with `VIDEO_VOICE`):
 
 ```sh
 AZURE_SPEECH_KEY=… AZURE_SPEECH_REGION=westeurope npx tsx scripts/video-tts.ts crypto bash

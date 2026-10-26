@@ -40,7 +40,7 @@ for item in lines:
     target = out / f"{item['id']}.wav"
     if target.exists():
         continue
-    random.seed(1986); torch.manual_seed(1986)
+    seed = item.get("seed", 1986); random.seed(seed); torch.manual_seed(seed)
     t0 = time.time()
     raw = item["text"].replace("‘", "'").replace("’", "'").replace("ʻ", "'").replace("ʼ", "'").replace("“", "").replace("”", "").replace(" — ", ", ")
     text = normalize(raw, mode="infer")
