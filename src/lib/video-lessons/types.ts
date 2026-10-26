@@ -82,7 +82,12 @@ export type Shot3D =
   | "xray"
   | "passport"
   | "chain"
-  | "storefront";
+  | "storefront"
+  | "restaurant"
+  | "letter"
+  | "methods"
+  | "status"
+  | "tamper";
 
 export type Scene = {
   say: string;

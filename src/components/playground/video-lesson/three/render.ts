@@ -22,6 +22,13 @@ import {
   storefrontShot,
   xrayShot,
 } from "./shots-https";
+import {
+  letterShot,
+  methodsShot,
+  restaurantShot,
+  statusShot,
+  tamperShot,
+} from "./shots-http";
 
 const SHOTS: Record<Shot3D, (stage: number) => Built> = {
   kibi: kibiShot,
@@ -35,6 +42,11 @@ const SHOTS: Record<Shot3D, (stage: number) => Built> = {
   passport: passportShot,
   chain: chainShot,
   storefront: storefrontShot,
+  restaurant: restaurantShot,
+  letter: letterShot,
+  methods: methodsShot,
+  status: statusShot,
+  tamper: tamperShot,
 };
 
 /** A renderer for one shot on a canvas; call draw() for each frame. */
