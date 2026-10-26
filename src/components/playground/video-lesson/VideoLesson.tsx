@@ -437,7 +437,9 @@ function Visual({
     case "3d":
       return (
         <Scene3D
+          key={`${visual.shot}-${visual.stage ?? 0}`}
           shot={visual.shot}
+          stage={visual.stage}
           p={progress}
           t={at}
           talk={talk}

@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import type { Shot } from "./world";
+import type { Shot3D } from "@/lib/video-lessons/types";
 
-type World = ReturnType<typeof import("./world").createWorld>;
+type World = ReturnType<typeof import("./render").createWorld>;
 
 /**
  * A 3D shot. three.js loads only when a 3D scene is shown; until then the
@@ -12,12 +12,14 @@ type World = ReturnType<typeof import("./world").createWorld>;
  */
 export function Scene3D({
   shot,
+  stage = 0,
   p,
   t,
   talk,
   fallback,
 }: {
-  shot: Shot;
+  shot: Shot3D;
+  stage?: number;
   p: number;
   t: number;
   talk: number;
@@ -30,10 +32,10 @@ export function Scene3D({
   useEffect(() => {
     let alive = true;
     let made: World | null = null;
-    import("./world")
+    import("./render")
       .then(({ createWorld }) => {
         if (!alive || !canvas.current) return;
-        made = createWorld(canvas.current, shot);
+        made = createWorld(canvas.current, shot, stage);
         world.current = made;
         setState("ready");
       })
@@ -46,7 +48,7 @@ export function Scene3D({
       made?.dispose();
       world.current = null;
     };
-  }, [shot]);
+  }, [shot, stage]);
 
   // Draw this moment, and again once the world has loaded.
   useLayoutEffect(() => {

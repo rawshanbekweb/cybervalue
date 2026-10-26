@@ -5,36 +5,31 @@
 // player can seek and the MP4 renderer can step frame by frame.
 import * as THREE from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
-import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
 
-export type Shot = "kibi" | "network" | "tunnel" | "lock";
+export const BLUE = 0x3b8be0;
+export const NAVY = 0x0b1a2b;
+export const CYAN = 0x7fe3ff;
+export const SPARK = 0xffb829;
+export const GREEN = 0x2fbf8f;
+export const RED = 0xff4d4d;
 
-const BLUE = 0x3b8be0;
-const NAVY = 0x0b1a2b;
-const CYAN = 0x7fe3ff;
-const SPARK = 0xffb829;
-const GREEN = 0x2fbf8f;
-const RED = 0xff4d4d;
+export const clamp = (x: number) => Math.min(1, Math.max(0, x));
+export const seg = (p: number, a: number, b: number) =>
+  clamp((p - a) / (b - a));
+export const ease = (x: number) => x * x * (3 - 2 * x);
 
-const clamp = (x: number) => Math.min(1, Math.max(0, x));
-const seg = (p: number, a: number, b: number) => clamp((p - a) / (b - a));
-const ease = (x: number) => x * x * (3 - 2 * x);
-
-const glow = (color: number, intensity = 1.6) =>
+export const glow = (color: number, intensity = 1.6) =>
   new THREE.MeshStandardMaterial({
     color,
     emissive: color,
     emissiveIntensity: intensity,
     roughness: 0.4,
   });
-const solid = (color: number, metalness = 0.3, roughness = 0.5) =>
+export const solid = (color: number, metalness = 0.3, roughness = 0.5) =>
   new THREE.MeshStandardMaterial({ color, metalness, roughness });
 
 /** A flat label drawn on a canvas, always facing the camera. */
-function label(text: string, color = "#ffffff", size = 64, bg?: string) {
+export function label(text: string, color = "#ffffff", size = 64, bg?: string) {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d")!;
   ctx.font = `700 ${size}px Inter, Arial, sans-serif`;
@@ -61,14 +56,17 @@ function label(text: string, color = "#ffffff", size = 64, bg?: string) {
       transparent: true,
       toneMapped: false,
       color: 0xd8d8d8,
+      // Labels annotate the scene, so they stay readable in front of it.
+      depthTest: false,
     }),
   );
+  sprite.renderOrder = 10;
   sprite.scale.set(canvas.width / 200, canvas.height / 200, 1);
   return sprite;
 }
 
 /** Kibi in 3D: head with a screen face, glowing eyes and mouth, antenna. */
-function makeKibi() {
+export function makeKibi() {
   const kibi = new THREE.Group();
   const body = new THREE.Mesh(
     new RoundedBoxGeometry(1.5, 1.1, 1, 6, 0.3),
@@ -164,7 +162,7 @@ function makeKibi() {
 }
 
 /** A small glowing particle field for depth. */
-function stars(count: number, spread: number, color = 0x9cc3ee) {
+export function stars(count: number, spread: number, color = 0x9cc3ee) {
   const positions = new Float32Array(count * 3);
   let seed = 7;
   const rnd = () => {
@@ -189,20 +187,20 @@ function stars(count: number, spread: number, color = 0x9cc3ee) {
   );
 }
 
-function floor() {
+export function floor() {
   const grid = new THREE.GridHelper(60, 60, BLUE, 0x1b3554);
   (grid.material as THREE.Material).transparent = true;
   (grid.material as THREE.Material).opacity = 0.5;
   return grid;
 }
 
-type Built = {
+export type Built = {
   scene: THREE.Scene;
   camera: THREE.PerspectiveCamera;
   frame: (p: number, t: number, talk: number) => void;
 };
 
-function base(): Pick<Built, "scene" | "camera"> {
+export function base(): Pick<Built, "scene" | "camera"> {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x060d18);
   scene.fog = new THREE.Fog(0x060d18, 12, 40);
@@ -214,7 +212,7 @@ function base(): Pick<Built, "scene" | "camera"> {
   return { scene, camera };
 }
 
-function kibiShot(): Built {
+export function kibiShot(): Built {
   const { scene, camera } = base();
   scene.add(floor(), stars(400, 30));
   const pad = new THREE.Mesh(
@@ -269,7 +267,7 @@ function kibiShot(): Built {
 }
 
 /** A node of the network: a device on a hexagonal plinth with a label. */
-function device(
+export function device(
   kind: "laptop" | "router" | "tower" | "server" | "bank" | "hacker",
   name: string,
 ) {
@@ -369,7 +367,7 @@ function device(
   return g;
 }
 
-function packet(color: number, text: string) {
+export function packet(color: number, text: string) {
   const g = new THREE.Group();
   g.add(
     new THREE.Mesh(
@@ -389,7 +387,7 @@ function packet(color: number, text: string) {
   return g;
 }
 
-function networkShot(): Built {
+export function networkShot(): Built {
   const { scene, camera } = base();
   scene.add(floor(), stars(300, 40));
   const points = [
@@ -462,7 +460,7 @@ function networkShot(): Built {
   };
 }
 
-function tunnelShot(): Built {
+export function tunnelShot(): Built {
   const { scene, camera } = base();
   scene.fog = new THREE.Fog(0x060d18, 4, 30);
   const rings: THREE.Mesh[] = [];
@@ -565,7 +563,7 @@ function tunnelShot(): Built {
   };
 }
 
-function lockShot(): Built {
+export function lockShot(): Built {
   const { scene, camera } = base();
   scene.add(floor(), stars(300, 30));
   const lock = new THREE.Group();
@@ -634,53 +632,6 @@ function lockShot(): Built {
       priv.material.opacity = seg(p, 0.25, 0.35);
       server.position.set(0, 0.2, 2.6 + (1 - fly) * 4);
       server.material.opacity = seg(p, 0.3, 0.4) * (1 - seg(p, 0.6, 0.65));
-    },
-  };
-}
-
-const SHOTS: Record<Shot, () => Built> = {
-  kibi: kibiShot,
-  network: networkShot,
-  tunnel: tunnelShot,
-  lock: lockShot,
-};
-
-/** A renderer for one shot on a canvas; call draw() for each frame. */
-export function createWorld(canvas: HTMLCanvasElement, shot: Shot) {
-  const renderer = new THREE.WebGLRenderer({
-    canvas,
-    antialias: true,
-    preserveDrawingBuffer: true,
-  });
-  renderer.setPixelRatio(1);
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  const built = SHOTS[shot]();
-  const composer = new EffectComposer(renderer);
-  composer.addPass(new RenderPass(built.scene, built.camera));
-  const bloom = new UnrealBloomPass(new THREE.Vector2(640, 360), 0.55, 0.35, 0.92);
-  composer.addPass(bloom);
-  composer.addPass(new OutputPass());
-  const resize = () => {
-    const w = canvas.clientWidth || 1280;
-    const h = canvas.clientHeight || 720;
-    renderer.setSize(w, h, false);
-    composer.setSize(w, h);
-    built.camera.aspect = w / h;
-    built.camera.updateProjectionMatrix();
-  };
-  resize();
-  return {
-    draw(p: number, t: number, talk: number) {
-      built.frame(p, t, talk);
-      composer.render();
-    },
-    resize,
-    dispose() {
-      renderer.dispose();
-      built.scene.traverse((o) => {
-        const mesh = o as THREE.Mesh;
-        mesh.geometry?.dispose();
-      });
     },
   };
 }

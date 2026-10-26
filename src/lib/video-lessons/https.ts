@@ -119,59 +119,68 @@ export const HTTPS_VIDEO: VideoLesson = {
       title: "Shifrlash g‘oyasi",
       scenes: [
         {
-          say: "Shifrlash — matnni kalit yordamida tushunarsiz ko‘rinishga keltirish. Eng oddiy misol — Sezar shifri: har bir harf alifbo bo‘yicha bir necha qadam suriladi. Kalit uch bo‘lsa, a harfi d ga, b harfi e ga aylanadi.",
-          visual: { kind: "caesar", plain: "parol", key: 3 },
+          say: "Shifrlash g‘oyasi juda qadimiy. Ikki ming yil avval Yuliy Sezar xatlaridagi har bir harfni alifbo bo‘yicha uch qadam surib yozgan. A harfi D ga, B harfi E ga aylanadi. Bu g‘ildirakda tashqi halqa — oddiy alifbo, ichki halqa esa surilgan alifbo. Kalitni bilgan odam g‘ildirakni teskari aylantirib, xatni o‘qiydi.",
+          visual: { kind: "3d", shot: "caesar" },
+          host: { mood: "think" },
+          sfx: [{ at: 0.1, name: "whoosh" }],
         },
         {
-          say: "Bu simmetrik shifrlash: bitta kalit bilan qulflanadi va o‘sha kalit bilan ochiladi. Haqiqiy tizimlarda AES kabi kuchli algoritmlar ishlatiladi. Lekin bitta muammo qoladi: ikki tomon shu kalitni qanday qilib xavfsiz kelishib oladi? Axir kalitni ochiq tarmoq orqali yuborsak, uni ham tinglab olishadi.",
+          say: "Lekin Sezar shifrida atigi yigirma oltita kalit bor. Kompyuter ularning hammasini bir zumda sinab ko‘radi. Shuning uchun bugungi shifrlar, masalan AES, yuz yigirma sakkiz yoki ikki yuz ellik olti bitli kalitlardan foydalanadi. Bunday kalitni birma-bir sinab topish uchun koinotning yoshi ham yetmaydi.",
+          visual: { kind: "keylen" },
+          host: { mood: "talk" },
+        },
+        {
+          say: "Sezar ham, AES ham simmetrik shifrlar: bitta kalit bilan qulflanadi va o‘sha kalit bilan ochiladi. Demak, Ali va bank bir xil kalitga ega bo‘lishi kerak. Lekin bu kalitni bir-biriga qanday yetkazishadi? Axir kafedagi Jasur hamma narsani eshitib turibdi!",
+          visual: { kind: "3d", shot: "lock" },
+          host: { mood: "think" },
+        },
+        {
+          say: "Savol! Simmetrik shifrlashda nechta kalit ishlatiladi? Javobni tanlang.",
           visual: {
-            kind: "points",
-            heading: "Simmetrik shifrlash",
-            items: [
-              "Bitta kalit qulflaydi va ochadi",
-              "Tez ishlaydi: AES",
-              "Muammo: kalitni qanday kelishish?",
+            kind: "quiz",
+            question: "Simmetrik shifrlashda nechta kalit ishlatiladi?",
+            options: [
+              "Bitta umumiy kalit — ham qulflaydi, ham ochadi",
+              "Ikkita: ochiq va yopiq",
+              "Kalit kerak emas",
             ],
+            answer: 0,
           },
+          host: { mood: "wink" },
+          hold: 5,
+          sfx: [{ at: 0.02, name: "pop" }],
         },
       ],
     },
     {
-      title: "Kalitni kelishish",
+      title: "Bo‘yoq sehri: kalitni kelishish",
       scenes: [
         {
-          say: "Bu muammoni ochiq kalitli kriptografiya hal qiladi. Serverda ikkita kalit bor. Ochiq kalit — bu qulf, uni hammaga berish mumkin. Yopiq kalit — qulfni ochadigan kalitning o‘zi, u serverdan hech qachon chiqmaydi.",
-          visual: {
-            kind: "analogy",
-            icon: "lock",
-            heading: "Ochiq qulf va yashirin kalit",
-            text: "Qulfni hammaga tarqatasiz, kalitni esa faqat o‘zingiz saqlaysiz.",
-          },
+          say: "Bu muammoni 1976-yilda Diffi va Xellman ajoyib usul bilan hal qilishdi. Keling, uni bo‘yoqlar bilan tushuntiramiz. Ali va bank ochiq joyda bitta umumiy rangni — sariq bo‘yoqni kelishib olishadi. Jasur ham buni ko‘radi, bu muammo emas.",
+          visual: { kind: "3d", shot: "paint", stage: 0 },
+          host: { mood: "happy" },
+          sfx: [{ at: 0.4, name: "pop" }],
         },
         {
-          say: "Brauzer server bergan qulf yordamida umumiy maxfiy kalitni xavfsiz kelishadi. Yo‘ldagi kuzatuvchi qulfni ko‘rsa ham, yopiq kalitsiz hech narsani ocha olmaydi. Keyin butun suhbat o‘sha umumiy kalit bilan tez simmetrik shifrlanadi.",
-          visual: {
-            kind: "exchange",
-            left: "Brauzer",
-            right: "bank.uz",
-            steps: [
-              {
-                dir: "left",
-                label: "ochiq kalit",
-                note: "qulfni hammaga beradi",
-              },
-              {
-                dir: "right",
-                label: "kalit ulushi",
-                note: "faqat server ochadi",
-              },
-              {
-                dir: "right",
-                label: "▓▓▓▓▓▓",
-                note: "endi hammasi shifrlangan",
-              },
-            ],
-          },
+          say: "Endi har biri o‘zining yashirin rangini tanlaydi: Ali — qizil, bank — ko‘k. Bu ranglarni hech kimga aytishmaydi. Har biri yashirin rangini umumiy sariq bilan aralashtiradi va hosil bo‘lgan aralashmani ochiq yuboradi: Alidan to‘q sariq, bankdan yashil.",
+          visual: { kind: "3d", shot: "paint", stage: 1 },
+          host: { mood: "think" },
+          sfx: [
+            { at: 0.45, name: "pop" },
+            { at: 0.7, name: "whoosh" },
+          ],
+        },
+        {
+          say: "Endi sehr boshlanadi. Ali bankdan kelgan yashil aralashmaga o‘zining qizil rangini qo‘shadi. Bank esa Alidan kelgan to‘q sariqqa o‘zining ko‘k rangini qo‘shadi. Ikkalasida ham bir xil jigarrang hosil bo‘ladi! Jasur faqat aralashmalarni ko‘rdi. Bo‘yoqni qaytadan ajratib bo‘lmaydi, shuning uchun u jigarrangni topa olmaydi.",
+          visual: { kind: "3d", shot: "paint", stage: 2 },
+          host: { mood: "happy" },
+          sfx: [{ at: 0.55, name: "magic" }],
+        },
+        {
+          say: "Haqiqiy TLS’da bo‘yoq o‘rniga juda katta sonlar va matematik amallar ishlatiladi, lekin g‘oya aynan shu. Natijada Ali va bank hech qachon tarmoq orqali yubormagan umumiy maxfiy kalitga ega bo‘lishadi. Endi butun suhbat shu kalit bilan shifrlangan tunnel ichida yuradi.",
+          visual: { kind: "3d", shot: "tunnel" },
+          host: { mood: "talk" },
+          sfx: [{ at: 0.1, name: "whoosh" }],
         },
       ],
     },
@@ -179,7 +188,25 @@ export const HTTPS_VIDEO: VideoLesson = {
       title: "TLS qo‘l siqishuvi",
       scenes: [
         {
-          say: "HTTPS ulanish boshida brauzer va server qo‘l siqishadi. Avval brauzer ClientHello yuboradi: o‘zi biladigan TLS versiyalari va shifrlar ro‘yxatini. Server ServerHello bilan javob beradi: bittasini tanlaydi va o‘z sertifikatini yuboradi.",
+          say: "Bularning hammasi TLS qo‘l siqishuvi paytida bo‘ladi. Avval brauzer ClientHello yuboradi: «Salom, men TLS bir nuqta uchni bilaman, mana mening bo‘yoq aralashmam». Server ServerHello bilan javob beradi: «Salom, TLS bir nuqta uchni tanladim, mana mening aralashmam va sertifikatim».",
+          visual: { kind: "3d", shot: "handshake", stage: 0 },
+          host: { mood: "talk" },
+          sfx: [
+            { at: 0.25, name: "whoosh" },
+            { at: 0.6, name: "whoosh" },
+          ],
+        },
+        {
+          say: "Brauzer sertifikatni tekshiradi, ikki tomon umumiy kalitni hisoblaydi va Finished xabarlarini almashadi. Hammasi sekundning o‘ndan biridan ham kam vaqtda tugaydi. Shundan keyin oddiy HTTP so‘rovlar shifrlangan tunnel ichida yuboriladi va manzil qatorida qulf paydo bo‘ladi.",
+          visual: { kind: "3d", shot: "handshake", stage: 1 },
+          host: { mood: "happy" },
+          sfx: [
+            { at: 0.3, name: "whoosh" },
+            { at: 0.75, name: "ding" },
+          ],
+        },
+        {
+          say: "Keling, qo‘l siqishuvni yana bir bor ketma-ket ko‘ramiz. ClientHello — taklif. ServerHello — tanlov. Sertifikat — server kimligini isbotlaydi. Kalit almashuvi — har ikki tomon umumiy kalitni hisoblaydi. Finished — hammasi joyida, endi shifrlangan suhbat boshlanadi.",
           visual: {
             kind: "exchange",
             left: "Brauzer",
@@ -188,60 +215,85 @@ export const HTTPS_VIDEO: VideoLesson = {
               {
                 dir: "right",
                 label: "ClientHello",
-                note: "versiyalar, shifrlar",
+                note: "versiyalar, shifrlar, aralashma",
               },
-              { dir: "left", label: "ServerHello", note: "tanlangan shifr" },
-              { dir: "left", label: "Sertifikat", note: "ochiq kalit + imzo" },
-              { dir: "right", label: "Kalit almashuvi", note: "umumiy kalit" },
               {
-                dir: "right",
+                dir: "left",
+                label: "ServerHello",
+                note: "tanlangan shifr, aralashma",
+              },
+              { dir: "left", label: "Sertifikat", note: "ochiq kalit + imzo" },
+              { dir: "right", label: "Finished", note: "umumiy kalit tayyor" },
+              {
+                dir: "left",
                 label: "Finished",
-                note: "shifrlangan kanal tayyor",
+                note: "shifrlangan kanal ochiq",
               },
             ],
           },
-        },
-        {
-          say: "Brauzer sertifikatni tekshiradi, keyin ikki tomon umumiy kalitni kelishadi. Shundan so‘ng shifrlangan kanal tayyor bo‘ladi va oddiy HTTP so‘rovlar shu kanal ichida yuboriladi. Bularning barchasi soniyaning bir qismida bo‘lib o‘tadi.",
-          visual: {
-            kind: "points",
-            heading: "Qo‘l siqishuv bosqichlari",
-            items: [
-              "ClientHello — taklif",
-              "ServerHello va sertifikat",
-              "Sertifikatni tekshirish",
-              "Umumiy kalit → shifrlangan kanal",
-            ],
-          },
+          host: { mood: "talk" },
         },
       ],
     },
     {
-      title: "HTTPS nimani yashiradi?",
+      title: "Jasurning rentgeni",
       scenes: [
         {
-          say: "Endi o‘sha kafeni yana ko‘ramiz, lekin bu safar HTTPS bilan. Kuzatuvchi faqat tushunarsiz baytlarni ko‘radi. Sahifa manzili, sarlavhalar, cookie’lar, parol va sahifa mazmuni shifrlangan.",
-          visual: { kind: "eavesdrop", secure: true },
+          say: "Endi Jasurning rentgeniga qaraymiz. HTTPS paketini muhrlangan konvertga o‘xshatish mumkin. Konvert ichidagi hamma narsa — sahifa manzili, cookie, parol va sahifa mazmuni — shifrlangan. Jasurning rentgeni ichini ko‘ra olmaydi, faqat tushunarsiz belgilarni ko‘radi.",
+          visual: { kind: "3d", shot: "xray", stage: 0 },
+          host: { mood: "happy" },
+          sfx: [{ at: 0.35, name: "whoosh" }],
         },
         {
-          say: "Lekin hamma narsa yashirilmaydi. Qaysi saytga, ya’ni qaysi domen va IP manzilga ulanayotganingiz, qachon va qancha ma’lumot yuborganingiz ko‘rinib turadi. HTTPS mazmunni himoya qiladi, lekin qayerga borayotganingizni to‘liq yashirmaydi.",
+          say: "Lekin konvert sirtidagi yozuv ko‘rinadi: qaysi domen va qaysi IP manzilga ketayotgani, qachon va qancha ma’lumot yuborilgani. Shuning uchun HTTPS mazmunni yashiradi, lekin qayerga borayotganingizni to‘liq yashirmaydi.",
+          visual: { kind: "3d", shot: "xray", stage: 1 },
+          host: { mood: "think" },
+        },
+        {
+          say: "Savol! HTTPS bilan kafedagi Jasur nimani ko‘ra oladi? Javobni tanlang.",
           visual: {
-            kind: "points",
-            heading: "HTTPS bilan",
-            items: [
-              "Yashirin: yo‘l, sarlavhalar, cookie, parol, mazmun",
-              "Ko‘rinadi: domen va IP manzil",
-              "Ko‘rinadi: vaqt va hajm",
+            kind: "quiz",
+            question: "HTTPS bilan kafedagi Jasur nimani ko‘ra oladi?",
+            options: [
+              "Alining parolini",
+              "Ali qaysi saytga ulanayotganini",
+              "Sahifadagi xabarlarni",
             ],
+            answer: 1,
           },
+          host: { mood: "wink" },
+          hold: 5,
+          sfx: [{ at: 0.02, name: "pop" }],
         },
       ],
     },
     {
-      title: "Sertifikat va ishonch zanjiri",
+      title: "Saytning pasporti",
       scenes: [
         {
-          say: "Sertifikat — saytning raqamli pasporti. Unda sertifikat qaysi domen uchun berilgani, kim tomonidan imzolangani, amal qilish muddati, saytning ochiq kaliti va imzo bor. Yopiq kalit esa sertifikat ichida hech qachon bo‘lmaydi.",
+          say: "Lekin bitta savol qoldi: Ali haqiqatan bank bilan gaplashayotganini qayerdan biladi? Balki Jasur o‘zini bank qilib ko‘rsatayotgandir? Bu yerda sertifikat yordam beradi. Sertifikat — saytning raqamli pasporti.",
+          visual: { kind: "3d", shot: "passport", stage: 0 },
+          host: { mood: "think" },
+          sfx: [{ at: 0.3, name: "magic" }],
+        },
+        {
+          say: "Pasportda saytning nomi — bank.uz, uni bergan tashkilot, amal qilish muddati va saytning ochiq kaliti yozilgan. Eng muhimi — imzo. Pasportni ishonchli sertifikat markazi imzolagan, uni soxtalashtirib bo‘lmaydi. Yopiq kalit esa hech qachon pasportda bo‘lmaydi, u faqat serverda turadi.",
+          visual: { kind: "3d", shot: "passport", stage: 1 },
+          host: { mood: "talk" },
+          sfx: [{ at: 0.6, name: "pop" }],
+        },
+        {
+          say: "Brauzer imzoni tekshiradi. Sayt sertifikatini oraliq markaz imzolagan, oraliq markazni esa ildiz markaz. Ildiz markazlar ro‘yxati brauzeringiz ichida, maxsus seyfda saqlanadi. Zanjirning har bir halqasi to‘g‘ri bo‘lsa, manzil qatorida qulf paydo bo‘ladi.",
+          visual: { kind: "3d", shot: "chain" },
+          host: { mood: "happy" },
+          sfx: [
+            { at: 0.3, name: "ding" },
+            { at: 0.55, name: "ding" },
+            { at: 0.8, name: "ding" },
+          ],
+        },
+        {
+          say: "Buni o‘zingiz ham tekshira olasiz. Brauzerda manzil qatoridagi qulf belgisini bosing, keyin «Ulanish xavfsiz» va «Sertifikat» bo‘limini oching. U yerda sertifikat kimga berilgani, kim imzolagani va qachongacha amal qilishini ko‘rasiz.",
           visual: {
             kind: "message",
             title: "Sertifikat",
@@ -254,28 +306,39 @@ export const HTTPS_VIDEO: VideoLesson = {
               { text: "Signature: sha256-ECDSA 30:45:…", note: "imzo" },
             ],
           },
-        },
-        {
-          say: "Brauzer sertifikatga nega ishonadi? Sayt sertifikatini oraliq sertifikat markazi imzolagan, uni esa ildiz sertifikat markazi imzolagan. Ildiz markazlar ro‘yxati brauzer va operatsion tizimga oldindan o‘rnatilgan. Zanjirning har bir halqasi tekshiriladi.",
-          visual: { kind: "chain" },
+          host: { mood: "talk" },
         },
       ],
     },
     {
-      title: "Ogohlantirishlarni o‘qish",
+      title: "Ogohlantirishlar va firibgarlar",
       scenes: [
         {
-          say: "Agar tekshiruv o‘tmasa, brauzer qizil ogohlantirish ko‘rsatadi. Asosiy sabablar: sertifikat muddati tugagan, boshqa domen uchun berilgan, o‘z-o‘zini imzolagan yoki noma’lum markazdan. Bunday paytda to‘xtang va parol yoki karta ma’lumotlarini kiritmang.",
+          say: "Agar zanjirdagi biror halqa noto‘g‘ri bo‘lsa, brauzer qizil ogohlantirish ko‘rsatadi. Asosiy sabablar: sertifikat muddati tugagan, boshqa domen uchun berilgan, o‘z-o‘zini imzolagan yoki noma’lum markazdan. Bunday paytda to‘xtang va parol yoki karta ma’lumotlarini kiritmang.",
           visual: { kind: "warning" },
+          host: { mood: "shock" },
+          sfx: [{ at: 0.08, name: "alarm" }],
         },
         {
-          say: "Yana bir muhim narsa: qulf belgisi sayt halol ekanini kafolatlamaydi. Firibgar ham o‘z domeni uchun bepul sertifikat ola oladi. Qulf faqat ulanish shifrlanganini bildiradi. Shuning uchun manzil qatoridagi domenni har doim diqqat bilan o‘qing.",
+          say: "Endi eng ayyor hiylani ko‘ramiz. Jasur bank-uz.top degan domen sotib oladi va unga bepul sertifikat oladi. Uning saytida ham qulf bor! Chunki qulf faqat ulanish shifrlanganini bildiradi, sayt halol ekanini emas. Ikki peshtaxtani solishtiring: farq faqat domen nomida.",
+          visual: { kind: "3d", shot: "storefront" },
+          host: { mood: "think" },
+        },
+        {
+          say: "Savol! Qaysi biri haqiqiy bank sayti? Javobni tanlang.",
           visual: {
-            kind: "analogy",
-            icon: "warning",
-            heading: "Qulf ≠ halollik",
-            text: "bank.uz va bank-uz.top — ikkalasida ham qulf bo‘lishi mumkin.",
+            kind: "quiz",
+            question: "Qaysi biri haqiqiy bank sayti?",
+            options: [
+              "bank-uz.top — qulfi bor",
+              "bank.uz — bankning rasmiy domeni",
+              "Ikkalasi ham, chunki ikkalasida qulf bor",
+            ],
+            answer: 1,
           },
+          host: { mood: "wink" },
+          hold: 5,
+          sfx: [{ at: 0.02, name: "pop" }],
         },
         {
           say: "Amalda uchta odatni shakllantiring. Parol yoki karta kiritishdan oldin manzil https bilan boshlanayotganini va domen to‘g‘ri yozilganini tekshiring. Brauzer sozlamalarida faqat HTTPS rejimini yoqing. Ochiq Wi-Fi’da muhim ishlarni qilmang yoki ishonchli VPN ishlating.",
@@ -288,6 +351,7 @@ export const HTTPS_VIDEO: VideoLesson = {
               "Ochiq Wi-Fi’da ehtiyot bo‘ling",
             ],
           },
+          host: { mood: "talk" },
         },
       ],
     },
@@ -295,26 +359,25 @@ export const HTTPS_VIDEO: VideoLesson = {
       title: "Xulosa",
       scenes: [
         {
-          say: "Xulosa qilamiz. HTTPS — bu TLS tunneli ichidagi HTTP. Ochiq kalit bilan umumiy kalit kelishiladi, keyin hammasi tez shifrlanadi. Sertifikat saytning kimligini isbotlaydi, ishonch zanjiri esa ildiz markazgacha tekshiriladi. Ogohlantirishni hech qachon e’tiborsiz qoldirmang.",
+          say: "Xulosa qilamiz. HTTPS — bu TLS tunneli ichidagi HTTP. Bo‘yoq sehri kabi kalit almashuvi bilan umumiy kalit kelishiladi, keyin hammasi tez shifrlanadi. Sertifikat saytning pasporti, ishonch zanjiri esa ildiz markazgacha tekshiriladi. Qulf halollik belgisi emas, domenni har doim o‘zingiz tekshiring.",
           visual: {
             kind: "points",
             heading: "Esda tuting",
             items: [
               "HTTPS = HTTP + TLS",
-              "Ochiq kalit → umumiy kalit → shifr",
+              "Kalit almashuvi → umumiy kalit → shifr",
               "Sertifikat — saytning pasporti",
               "Ogohlantirishda to‘xtang",
               "Qulf ≠ halol sayt",
             ],
           },
+          host: { mood: "talk" },
         },
         {
-          say: "Endi laboratoriyaga o‘ting: kafedagi kuzatuvchini ko‘ring, shifrni o‘zingiz oching, sertifikat zanjirini tekshiring va ogohlantirishlarni o‘qishni mashq qiling. Oxirida nazorat testidan o‘ting va sertifikat oling. Omad!",
-          visual: {
-            kind: "title",
-            title: "Endi amaliyot!",
-            subtitle: "Laboratoriya · nazorat testi · sertifikat",
-          },
+          say: "Ali endi kafeda ham xotirjam: u https’ni va domenni tekshiradi, ogohlantirishlarga e’tibor beradi. Siz ham laboratoriyaga o‘ting: kuzatuvchini ko‘ring, shifrni o‘zingiz oching, sertifikat zanjirini tekshiring va nazorat testidan o‘tib sertifikat oling. Men Kibi edim, keyingi darsda ko‘rishguncha!",
+          visual: { kind: "3d", shot: "kibi" },
+          host: { hide: true },
+          sfx: [{ at: 0.85, name: "magic" }],
         },
       ],
     },

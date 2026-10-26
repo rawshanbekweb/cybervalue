@@ -66,10 +66,23 @@ export type Visual =
   | { kind: "postcard" }
   | { kind: "quiz"; question: string; options: string[]; answer: number }
   | { kind: "host"; title: string; subtitle: string; mood: Mood }
-  | { kind: "3d"; shot: "kibi" | "network" | "tunnel" | "lock" };
+  | { kind: "3d"; shot: Shot3D; stage?: number };
 
 export type Mood = "happy" | "talk" | "shock" | "think" | "wink" | "sad";
 export type Sfx = "whoosh" | "pop" | "alarm" | "type" | "ding" | "magic";
+
+export type Shot3D =
+  | "kibi"
+  | "network"
+  | "tunnel"
+  | "lock"
+  | "caesar"
+  | "paint"
+  | "handshake"
+  | "xray"
+  | "passport"
+  | "chain"
+  | "storefront";
 
 export type Scene = {
   say: string;
