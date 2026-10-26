@@ -12,6 +12,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { useT } from "../network-lab/use-t";
+import { BrandLogo } from "./BrandLogo";
 import { SceneView } from "./scenes";
 import { lessonAudio, videoLesson } from "@/lib/video-lessons";
 import { captionAt, sceneAt, timeline } from "@/lib/video-lessons/types";
@@ -147,6 +148,7 @@ export function VideoLesson({
       >
         <SceneView visual={scene.visual} p={progress} />
       </div>
+      <BrandLogo className="vl-watermark" />
       <div className="vl-chapter-label">
         <span>{String(scene.chapter + 1).padStart(2, "0")}</span>
         {chapter.title}

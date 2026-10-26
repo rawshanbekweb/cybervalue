@@ -37,6 +37,7 @@ export function HttpBasics() {
       lessons={LESSONS}
       progressKey={PROGRESS_KEY}
       checkpoints={["httpbasics-1"]}
+      video="/akademiya/http-basics/video"
       eyebrow={t("WEB FOUNDATIONS · ANIMATED")}
       title={t("HTTP basics.")}
       subtitle={t("Watch the browser and the server talk.")}

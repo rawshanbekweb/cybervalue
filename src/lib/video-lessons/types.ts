@@ -21,12 +21,15 @@ export type Icon =
   | "teacher"
   | "kettle"
   | "warning"
-  | "check";
+  | "check"
+  | "bell"
+  | "id"
+  | "mail";
 
 export type TermLine = { cmd?: string; out?: string };
 
 export type Visual =
-  | { kind: "title"; title: string; subtitle: string; icon: Icon }
+  | { kind: "title"; title: string; subtitle: string }
   | { kind: "points"; heading: string; items: string[] }
   | { kind: "analogy"; icon: Icon; heading: string; text: string }
   | { kind: "bytes"; text: string }
@@ -44,7 +47,21 @@ export type Visual =
   | { kind: "boxes"; vars: [string, string][] }
   | { kind: "loop"; items: string[]; variable: string }
   | { kind: "countdown" }
-  | { kind: "logscan" };
+  | { kind: "logscan" }
+  | {
+      kind: "exchange";
+      left: string;
+      right: string;
+      steps: { dir: "right" | "left"; label: string; note: string }[];
+    }
+  | { kind: "message"; title: string; lines: { text: string; note: string }[] }
+  | { kind: "methods" }
+  | { kind: "families" }
+  | { kind: "devtools" }
+  | { kind: "eavesdrop"; secure: boolean }
+  | { kind: "caesar"; plain: string; key: number }
+  | { kind: "chain" }
+  | { kind: "warning" };
 
 export type Scene = { say: string; visual: Visual };
 

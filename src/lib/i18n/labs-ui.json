@@ -729,5 +729,9 @@
   "Cryptography basics · video lesson": "Kriptografiya asoslari · videodars",
   "A narrated, animated lesson in Uzbek: bytes and Base64, hashes and file checks, salt and dictionary attacks, XOR, key length and digital signatures.": "O‘zbek tilida ovozli animatsion dars: baytlar va Base64, hash va fayl tekshiruvi, tuz va lug‘at hujumi, XOR, kalit uzunligi va raqamli imzo.",
   "Bash basics · video lesson": "Bash asoslari · videodars",
-  "A narrated, animated lesson in Uzbek: what a script is, variables, quotes, arithmetic, for and while loops, if, arguments and a small security script.": "O‘zbek tilida ovozli animatsion dars: skript nima, o‘zgaruvchilar, qo‘shtirnoqlar, hisob-kitob, for va while sikllari, if, argumentlar va kichik xavfsizlik skripti."
+  "A narrated, animated lesson in Uzbek: what a script is, variables, quotes, arithmetic, for and while loops, if, arguments and a small security script.": "O‘zbek tilida ovozli animatsion dars: skript nima, o‘zgaruvchilar, qo‘shtirnoqlar, hisob-kitob, for va while sikllari, if, argumentlar va kichik xavfsizlik skripti.",
+  "HTTP basics · video lesson": "HTTP protokoli · videodars",
+  "A narrated, animated lesson in Uzbek: client and server, what is inside a request and a response, GET and POST, status codes and the Network panel.": "O‘zbek tilida ovozli animatsion dars: mijoz va server, so‘rov va javob ichida nima bor, GET va POST, holat kodlari va Network paneli.",
+  "HTTPS and TLS · video lesson": "HTTPS va TLS · videodars",
+  "A narrated, animated lesson in Uzbek: open Wi-Fi, encryption and keys, the TLS handshake, what HTTPS hides, certificates, the chain of trust and browser warnings.": "O‘zbek tilida ovozli animatsion dars: ochiq Wi-Fi, shifrlash va kalitlar, TLS qo‘l siqishuvi, HTTPS nimani yashiradi, sertifikatlar, ishonch zanjiri va brauzer ogohlantirishlari."
 }

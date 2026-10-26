@@ -986,3 +986,372 @@ body:has(.vl-render) footer {
   align-items: center;
   color: var(--muted);
 }
+
+/* The Cybervalue emblem: large on title scenes, small in the corner. */
+.vl-hero-logo {
+  width: 15cqw;
+  height: 15cqw;
+  filter: drop-shadow(0 0 3cqw #3b8be066);
+}
+.vl-watermark {
+  position: absolute;
+  top: 1.8cqw;
+  right: 2cqw;
+  width: 4.4cqw;
+  height: 4.4cqw;
+  opacity: 0.85;
+}
+
+/* exchange and eavesdrop: two ends and a wire */
+.vl-exchange,
+.vl-eaves {
+  display: grid;
+  gap: 2.4cqw;
+  width: 100%;
+}
+.vl-ends {
+  display: grid;
+  grid-template-columns: 14cqw 1fr 14cqw;
+  align-items: center;
+  gap: 1.6cqw;
+}
+.vl-end {
+  display: grid;
+  justify-items: center;
+  gap: 0.8cqw;
+  padding: 1.6cqw 1cqw;
+  border: 1px solid #3b8be066;
+  border-radius: 1.4cqw;
+  background: #3b8be014;
+  font-size: 1.8cqw;
+}
+.vl-end svg {
+  width: 5cqw;
+  height: 5cqw;
+  color: #9cc3ee;
+}
+.vl-wire {
+  position: relative;
+  height: 9cqw;
+  border-bottom: 2px dashed #ffffff33;
+}
+.vl-packet {
+  position: absolute;
+  bottom: 1.4cqw;
+  transform: translateX(-50%);
+  display: inline-flex;
+  gap: 0.6cqw;
+  align-items: center;
+  padding: 0.7cqw 1.4cqw;
+  border-radius: 0.9cqw;
+  background: var(--spark);
+  color: #1b1b1f;
+  font-family: var(--font-mono);
+  font-size: 1.7cqw;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.vl-packet.left {
+  background: #9cc3ee;
+}
+.vl-packet.locked {
+  background: #2fbf8f;
+}
+.vl-packet svg {
+  width: 2cqw;
+  height: 2cqw;
+}
+.vl-log {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.6cqw;
+}
+.vl-log li {
+  display: grid;
+  grid-template-columns: 3cqw 22cqw 1fr;
+  gap: 1cqw;
+  align-items: center;
+  padding: 0.7cqw 1.4cqw;
+  border-radius: 0.8cqw;
+  background: #ffffff0a;
+  font-size: 1.8cqw;
+  color: #ffffffb3;
+}
+.vl-log li.on {
+  background: #3b8be02e;
+  color: #fff;
+}
+.vl-wifi {
+  position: absolute;
+  left: 50%;
+  top: 9.6cqw;
+  transform: translateX(-50%);
+  display: grid;
+  justify-items: center;
+  font-size: 1.4cqw;
+  color: #ffffff99;
+}
+.vl-wifi svg {
+  width: 3cqw;
+  height: 3cqw;
+}
+.vl-spy {
+  margin-top: 3cqw;
+  padding: 1.4cqw 2cqw;
+  border-radius: 1.2cqw;
+  border: 1px solid #ff6b6b;
+  background: #ff6b6b14;
+}
+.vl-spy.safe {
+  border-color: #2fbf8f;
+  background: #2fbf8f14;
+}
+.vl-spy .vl-tag {
+  display: inline-flex;
+  gap: 0.6cqw;
+  align-items: center;
+}
+.vl-spy .vl-tag svg {
+  width: 2cqw;
+  height: 2cqw;
+}
+.vl-spy pre {
+  margin: 0.8cqw 0 0;
+  font-family: var(--font-mono);
+  font-size: 1.9cqw;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+/* message: a request/response with a moving label */
+.vl-message {
+  display: grid;
+  justify-items: center;
+  gap: 1.6cqw;
+  width: 100%;
+}
+.vl-message .vl-term pre {
+  min-height: 0;
+  font-size: 1.9cqw;
+}
+.vl-note-tag {
+  min-height: 3.6cqw;
+  padding: 0.7cqw 1.8cqw;
+  border-radius: 0.9cqw;
+  background: var(--spark);
+  color: #1b1b1f;
+  font-size: 2.1cqw;
+  font-weight: 700;
+}
+
+/* methods, families */
+.vl-three.two {
+  grid-template-columns: repeat(2, 1fr);
+  width: min(70cqw, 100%);
+}
+.vl-families {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.6cqw;
+  width: 100%;
+}
+.vl-family {
+  display: grid;
+  justify-items: center;
+  gap: 0.8cqw;
+  padding: 2.4cqw 1cqw;
+  border-radius: 1.4cqw;
+  border: 1px solid;
+  text-align: center;
+  font-size: 1.9cqw;
+}
+.vl-family strong {
+  font-size: 4.4cqw;
+}
+.vl-family small {
+  font-size: 1.5cqw;
+  color: #ffffffb3;
+}
+.vl-family.ok {
+  border-color: #2fbf8f;
+  background: #2fbf8f1f;
+}
+.vl-family.info {
+  border-color: #3b8be0;
+  background: #3b8be01f;
+}
+.vl-family.warn {
+  border-color: #ffb829;
+  background: #ffb8291f;
+}
+.vl-family.bad {
+  border-color: #ff6b6b;
+  background: #ff6b6b1f;
+}
+
+/* devtools */
+.vl-devtools .vl-term-bar span {
+  margin: 0 1cqw;
+}
+.vl-devtools .vl-term-bar .on {
+  color: #fff;
+  border-bottom: 2px solid #3b8be0;
+}
+.vl-devtools table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.6cqw;
+}
+.vl-devtools th,
+.vl-devtools td {
+  padding: 0.55cqw 1.4cqw;
+  text-align: left;
+  border-bottom: 1px solid #ffffff14;
+}
+.vl-devtools th {
+  color: #ffffff80;
+  font-weight: 600;
+}
+.vl-devtools .code-2 {
+  color: #2fbf8f;
+}
+.vl-devtools .code-3 {
+  color: #9cc3ee;
+}
+.vl-devtools .code-4 {
+  color: #ffb829;
+}
+.vl-devtools .code-5 {
+  color: #ff6b6b;
+}
+
+/* caesar */
+.vl-caesar {
+  display: flex;
+  gap: 1.4cqw;
+}
+.vl-shift {
+  display: grid;
+  justify-items: center;
+  gap: 0.6cqw;
+  padding: 1.2cqw 1.6cqw;
+  border-radius: 1cqw;
+  border: 1px solid #ffffff1f;
+  font-size: 1.4cqw;
+  color: #ffffff80;
+}
+.vl-shift strong {
+  font-size: 3.6cqw;
+  color: #fff;
+}
+.vl-shift.on {
+  border-color: #3b8be0;
+  background: #3b8be01f;
+}
+.vl-shift.on strong:last-child {
+  color: var(--spark);
+}
+
+/* chain */
+.vl-chain {
+  display: grid;
+  justify-items: center;
+  gap: 0.4cqw;
+}
+.vl-chain-step {
+  display: grid;
+  justify-items: center;
+  gap: 0.4cqw;
+}
+.vl-chain-arrow {
+  font-size: 1.6cqw;
+}
+.vl-link {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3cqw 16cqw 1fr;
+  gap: 1.2cqw;
+  align-items: center;
+  width: 52cqw;
+  padding: 1.2cqw 2cqw;
+  border-radius: 1.2cqw;
+  border: 1px solid #ffffff2e;
+  background: #ffffff0a;
+  font-size: 1.9cqw;
+}
+.vl-link svg {
+  width: 3cqw;
+  height: 3cqw;
+  color: #9cc3ee;
+}
+.vl-link span {
+  color: #ffffffb3;
+}
+.vl-link.ok {
+  border-color: #2fbf8f;
+}
+.vl-link .vl-ok {
+  position: absolute;
+  right: 1.6cqw;
+  color: #2fbf8f;
+}
+
+/* warning */
+.vl-browser {
+  width: min(72cqw, 100%);
+  border-radius: 1.2cqw;
+  overflow: hidden;
+  border: 1px solid #ffffff26;
+  background: #f4f1ea;
+  color: #1b1b1f;
+}
+.vl-address {
+  display: flex;
+  gap: 1cqw;
+  align-items: center;
+  padding: 1cqw 1.6cqw;
+  background: #2a2a33;
+  color: #ff8b8b;
+  font-size: 1.7cqw;
+}
+.vl-address svg {
+  width: 2.2cqw;
+  height: 2.2cqw;
+}
+.vl-warn-body {
+  padding: 2cqw 3cqw 2.6cqw;
+  background: #b3261e;
+  color: #fff;
+}
+.vl-warn-body > svg {
+  width: 5cqw;
+  height: 5cqw;
+}
+.vl-warn-body h3 {
+  margin: 0.6cqw 0;
+  font-size: 3cqw;
+}
+.vl-warn-body p {
+  margin: 0 0 1cqw;
+  font-size: 1.8cqw;
+}
+.vl-warn-body ul {
+  margin: 0 0 1.6cqw;
+  padding-left: 2.4cqw;
+  font-size: 1.8cqw;
+}
+.vl-warn-body li.on {
+  font-weight: 700;
+  text-decoration: underline;
+}
+.vl-back-btn {
+  display: inline-block;
+  padding: 0.8cqw 1.8cqw;
+  border-radius: 0.8cqw;
+  background: #fff;
+  color: #b3261e;
+  font-size: 1.7cqw;
+  font-weight: 700;
+}

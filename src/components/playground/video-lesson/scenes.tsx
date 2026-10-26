@@ -21,8 +21,17 @@ import {
   TriangleAlert,
   Beef,
   FileCheck,
+  ConciergeBell,
+  IdCard,
+  Mail,
+  Laptop,
+  Server,
+  Wifi,
+  Eye,
+  ShieldAlert,
 } from "lucide-react";
 import type { Icon, TermLine, Visual } from "@/lib/video-lessons/types";
+import { BrandLogo } from "./BrandLogo";
 import {
   binary,
   bytesOf,
@@ -50,6 +59,9 @@ const ICONS: Record<Icon, typeof Lock> = {
   kettle: CookingPot,
   warning: TriangleAlert,
   check: CircleCheck,
+  bell: ConciergeBell,
+  id: IdCard,
+  mail: Mail,
 };
 
 const clamp = (x: number) => Math.min(1, Math.max(0, x));
@@ -104,37 +116,46 @@ export function SceneView({ visual, p }: { visual: Visual; p: number }) {
       return <CountdownScene p={p} />;
     case "logscan":
       return <LogScanScene p={p} />;
+    case "exchange":
+      return <ExchangeScene {...visual} p={p} />;
+    case "message":
+      return <MessageScene {...visual} p={p} />;
+    case "methods":
+      return <MethodsScene p={p} />;
+    case "families":
+      return <FamiliesScene p={p} />;
+    case "devtools":
+      return <DevtoolsScene p={p} />;
+    case "eavesdrop":
+      return <EavesdropScene secure={visual.secure} p={p} />;
+    case "caesar":
+      return <CaesarScene plain={visual.plain} shiftBy={visual.key} p={p} />;
+    case "chain":
+      return <ChainScene p={p} />;
+    case "warning":
+      return <WarningScene p={p} />;
   }
 }
 
 function TitleScene({
   title,
   subtitle,
-  icon,
   p,
 }: {
   title: string;
   subtitle: string;
-  icon: Icon;
   p: number;
 }) {
-  const Glyph = ICONS[icon];
-  const pulse = 1 + Math.sin(p * Math.PI * 4) * 0.03;
   return (
     <div className="vl-center">
-      <div
-        className="vl-hero-icon"
-        style={{ ...rise(seg(p, 0, 0.15)), scale: String(pulse) }}
-      >
-        <Glyph />
-      </div>
-      <span className="vl-brand" style={rise(seg(p, 0.05, 0.2))}>
+      <BrandLogo className="vl-hero-logo" p={seg(p, 0, 0.3)} />
+      <span className="vl-brand" style={rise(seg(p, 0.12, 0.26))}>
         CYBERVALUE · AKADEMIYA
       </span>
-      <h2 className="vl-title" style={rise(seg(p, 0.1, 0.3))}>
+      <h2 className="vl-title" style={rise(seg(p, 0.16, 0.32))}>
         {title}
       </h2>
-      <p className="vl-subtitle" style={rise(seg(p, 0.2, 0.4))}>
+      <p className="vl-subtitle" style={rise(seg(p, 0.24, 0.42))}>
         {subtitle}
       </p>
     </div>
@@ -888,6 +909,364 @@ function LogScanScene({ p }: { p: number }) {
         <pre className="vl-out-box">
           {found.map((user) => `Ogohlantirish: ${user}`).join("\n")}
         </pre>
+      </div>
+    </div>
+  );
+}
+
+/** Packets flying between two ends, one step after another. */
+function ExchangeScene({
+  left,
+  right,
+  steps,
+  p,
+}: {
+  left: string;
+  right: string;
+  steps: { dir: "right" | "left"; label: string; note: string }[];
+  p: number;
+}) {
+  const span = seg(p, 0.05, 0.9) * steps.length;
+  const current = Math.min(steps.length - 1, Math.floor(span));
+  const flight = ease(clamp(span - current) * 1.4);
+  const step = steps[current];
+  const x = step.dir === "right" ? flight : 1 - flight;
+  return (
+    <div className="vl-exchange">
+      <div className="vl-ends">
+        <div className="vl-end">
+          <Laptop />
+          <strong>{left}</strong>
+        </div>
+        <div className="vl-wire">
+          <span
+            className={`vl-packet ${step.dir}`}
+            style={{ left: `${12 + x * 76}%` }}
+          >
+            {step.label}
+          </span>
+        </div>
+        <div className="vl-end">
+          <Server />
+          <strong>{right}</strong>
+        </div>
+      </div>
+      <ol className="vl-log">
+        {steps.slice(0, current + 1).map((s, i) => (
+          <li key={i} className={i === current ? "on" : ""}>
+            <span className="vl-mono">{s.dir === "right" ? "→" : "←"}</span>
+            <strong className="vl-mono">{s.label}</strong>
+            <span>{s.note}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+/** A request, response or certificate, line by line with labels. */
+function MessageScene({
+  title,
+  lines,
+  p,
+}: {
+  title: string;
+  lines: { text: string; note: string }[];
+  p: number;
+}) {
+  const shown = seg(p, 0.02, 0.3) * lines.length;
+  const focus = Math.min(
+    lines.length - 1,
+    Math.floor(seg(p, 0.3, 0.95) * lines.length),
+  );
+  return (
+    <div className="vl-message">
+      <div className="vl-term vl-code">
+        <div className="vl-term-bar">
+          <i />
+          <i />
+          <i />
+          <span>{title}</span>
+        </div>
+        <pre>
+          {lines.map((line, i) => (
+            <div
+              key={i}
+              className={p > 0.3 ? (i === focus ? "on" : "dim") : ""}
+              style={{ opacity: clamp(shown - i) }}
+            >
+              {line.text || "\u00a0"}
+            </div>
+          ))}
+        </pre>
+      </div>
+      <div className="vl-note-tag" style={rise(seg(p, 0.3, 0.36))}>
+        {p > 0.3 ? lines[focus].note : ""}
+      </div>
+    </div>
+  );
+}
+
+function MethodsScene({ p }: { p: number }) {
+  const cards = [
+    {
+      name: "GET",
+      what: "Olish",
+      ex: ["Sahifani ochish", "Mahsulotlar ro‘yxati", "Rasm yuklash"],
+      note: "Parametrlar manzilda",
+    },
+    {
+      name: "POST",
+      what: "Yuborish",
+      ex: ["Kirish formasi", "Ro‘yxatdan o‘tish", "Buyurtma berish"],
+      note: "Ma’lumot tanada",
+    },
+  ];
+  return (
+    <div className="vl-three two">
+      {cards.map((c, i) => (
+        <div
+          key={c.name}
+          className="vl-card"
+          style={rise(seg(p, 0.08 + i * 0.3, 0.22 + i * 0.3))}
+        >
+          <h3 className="vl-mono">{c.name}</h3>
+          <span className="vl-tag">{c.what}</span>
+          {c.ex.map((e) => (
+            <p key={e}>{e}</p>
+          ))}
+          <small>{c.note}</small>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+const FAMILIES = [
+  ["2xx", "Muvaffaqiyat", "200 OK", "ok"],
+  ["3xx", "Yo‘naltirish", "301 · 302", "info"],
+  ["4xx", "Mijoz xatosi", "401 · 403 · 404", "warn"],
+  ["5xx", "Server xatosi", "500 · 503", "bad"],
+] as const;
+function FamiliesScene({ p }: { p: number }) {
+  return (
+    <div className="vl-families">
+      {FAMILIES.map(([code, name, ex, tone], i) => (
+        <div
+          key={code}
+          className={`vl-family ${tone}`}
+          style={rise(seg(p, 0.1 + i * 0.17, 0.22 + i * 0.17))}
+        >
+          <strong className="vl-mono">{code}</strong>
+          <span>{name}</span>
+          <small className="vl-mono">{ex}</small>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+const REQUESTS = [
+  ["GET", "/", "200", "document", "84 ms"],
+  ["GET", "/style.css", "200", "stylesheet", "21 ms"],
+  ["GET", "/app.js", "200", "script", "35 ms"],
+  ["GET", "/logo.png", "304", "png", "12 ms"],
+  ["POST", "/api/cart", "201", "fetch", "140 ms"],
+  ["GET", "/old-page", "301", "document", "18 ms"],
+  ["GET", "/admin", "403", "document", "25 ms"],
+  ["GET", "/favicon.ico", "404", "x-icon", "9 ms"],
+] as const;
+function DevtoolsScene({ p }: { p: number }) {
+  const rows = Math.floor(seg(p, 0.08, 0.7) * REQUESTS.length + 0.001);
+  return (
+    <div className="vl-term vl-devtools">
+      <div className="vl-term-bar">
+        <span>Elements</span>
+        <span>Console</span>
+        <span className="on">Network</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Metod</th>
+            <th>Yo‘l</th>
+            <th>Kod</th>
+            <th>Turi</th>
+            <th>Vaqt</th>
+          </tr>
+        </thead>
+        <tbody>
+          {REQUESTS.slice(0, rows).map(([m, path, code, type, time]) => (
+            <tr key={path}>
+              <td className="vl-mono">{m}</td>
+              <td className="vl-mono">{path}</td>
+              <td className={`vl-mono code-${code[0]}`}>{code}</td>
+              <td>{type}</td>
+              <td>{time}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+const GARBLE = "x9#Kq2!vR7@pZ4&mW8$tL1%yB6^cN3*";
+function EavesdropScene({ secure, p }: { secure: boolean; p: number }) {
+  const flight = seg(p, 0.15, 0.55);
+  const reveal = seg(p, 0.5, 0.75);
+  const lines = [
+    "POST /login HTTP/1.1",
+    "Host: kafe-shop.uz",
+    "Cookie: session=7f2a",
+    "user=ali&pass=Qwerty-2026",
+  ];
+  return (
+    <div className="vl-eaves">
+      <div className="vl-ends">
+        <div className="vl-end">
+          <Laptop />
+          <strong>Siz</strong>
+        </div>
+        <div className="vl-wire">
+          <span
+            className={`vl-packet right${secure ? " locked" : ""}`}
+            style={{ left: `${12 + flight * 76}%` }}
+          >
+            {secure ? <Lock /> : null}
+            {secure ? "TLS" : "HTTP"}
+          </span>
+          <div className="vl-wifi">
+            <Wifi />
+            <span>Kafe Wi-Fi</span>
+          </div>
+        </div>
+        <div className="vl-end">
+          <Server />
+          <strong>Sayt</strong>
+        </div>
+      </div>
+      <div
+        className={`vl-spy${secure ? " safe" : " bad"}`}
+        style={rise(reveal)}
+      >
+        <span className="vl-tag">
+          <Eye /> Kuzatuvchi ko‘radi:
+        </span>
+        <pre>
+          {lines
+            .map((l, i) =>
+              secure
+                ? i === 1
+                  ? "→ kafe-shop.uz (faqat domen)"
+                  : GARBLE.slice(i * 5, i * 5 + 22)
+                : l,
+            )
+            .join("\n")}
+        </pre>
+      </div>
+    </div>
+  );
+}
+
+function CaesarScene({
+  plain,
+  shiftBy,
+  p,
+}: {
+  plain: string;
+  shiftBy: number;
+  p: number;
+}) {
+  const shifted = (c: string) =>
+    String.fromCharCode(((c.charCodeAt(0) - 97 + shiftBy) % 26) + 97);
+  const done = Math.floor(seg(p, 0.2, 0.75) * plain.length + 0.001);
+  return (
+    <div className="vl-panel">
+      <h3 className="vl-heading" style={rise(seg(p, 0, 0.08))}>
+        Sezar shifri · kalit = {shiftBy}
+      </h3>
+      <div className="vl-caesar">
+        {plain.split("").map((c, i) => (
+          <div key={i} className={`vl-shift${i < done ? " on" : ""}`}>
+            <strong className="vl-mono">{c}</strong>
+            <span>↓ +{shiftBy}</span>
+            <strong className="vl-mono">{i < done ? shifted(c) : "·"}</strong>
+          </div>
+        ))}
+      </div>
+      <p className="vl-mono vl-result" style={rise(seg(p, 0.75, 0.88))}>
+        {plain} → {plain.split("").map(shifted).join("")}
+      </p>
+    </div>
+  );
+}
+
+function ChainScene({ p }: { p: number }) {
+  const links = [
+    ["Ildiz CA", "Brauzerga o‘rnatilgan", "root"],
+    ["Oraliq CA", "Ildiz imzolagan", "mid"],
+    ["bank.uz", "Oraliq CA imzolagan", "leaf"],
+  ];
+  const checked = Math.floor(seg(p, 0.5, 0.9) * 3 + 0.001);
+  return (
+    <div className="vl-chain">
+      {links.map(([name, by, tone], i) => (
+        <div key={name} className="vl-chain-step">
+          {i > 0 && (
+            <span
+              className="vl-arrow vl-chain-arrow"
+              style={rise(seg(p, 0.1 + i * 0.12, 0.2 + i * 0.12))}
+            >
+              ↓ imzo
+            </span>
+          )}
+          <div
+            className={`vl-link ${tone}${i < checked ? " ok" : ""}`}
+            style={rise(seg(p, 0.05 + i * 0.12, 0.15 + i * 0.12))}
+          >
+            <FileCheck />
+            <strong>{name}</strong>
+            <span>{by}</span>
+            {i < checked && <CircleCheck className="vl-ok" />}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+const REASONS = [
+  "Sertifikat muddati tugagan",
+  "Boshqa domen uchun berilgan",
+  "O‘z-o‘zini imzolagan",
+  "Noma’lum sertifikat markazi",
+];
+function WarningScene({ p }: { p: number }) {
+  const at = Math.min(
+    REASONS.length - 1,
+    Math.floor(seg(p, 0.25, 0.9) * REASONS.length),
+  );
+  return (
+    <div className="vl-browser">
+      <div className="vl-address">
+        <ShieldAlert />
+        <span className="vl-mono">https://bank-uz.top/login</span>
+      </div>
+      <div className="vl-warn-body" style={rise(seg(p, 0.05, 0.18))}>
+        <TriangleAlert />
+        <h3>Ulanish xavfsiz emas</h3>
+        <p>
+          Hujumchilar parol yoki karta ma’lumotlaringizni o‘g‘irlashi mumkin.
+        </p>
+        <ul>
+          {REASONS.map((r, i) => (
+            <li key={r} className={i === at && p > 0.25 ? "on" : ""}>
+              {r}
+            </li>
+          ))}
+        </ul>
+        <span className="vl-back-btn">Xavfsiz joyga qaytish</span>
       </div>
     </div>
   );

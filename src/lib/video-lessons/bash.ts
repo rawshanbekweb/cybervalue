@@ -15,7 +15,6 @@ export const BASH_VIDEO: VideoLesson = {
             kind: "title",
             title: "Bash asoslari",
             subtitle: "O‘zgaruvchi, sikl va skript",
-            icon: "terminal",
           },
         },
         {
@@ -289,7 +288,6 @@ export const BASH_VIDEO: VideoLesson = {
             kind: "title",
             title: "Endi amaliyot!",
             subtitle: "Terminal · nazorat testi · sertifikat",
-            icon: "check",
           },
         },
       ],
