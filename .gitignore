@@ -12,3 +12,7 @@ src/generated/
 content/private/
 .claude/
 .vercel/
+
+# Video lesson narration cache (scripts/video-tts.ts)
+/.video-cache
+__pycache__/

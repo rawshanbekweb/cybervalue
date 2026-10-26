@@ -9,6 +9,7 @@ import {
   Check,
   ClipboardCheck,
   Lightbulb,
+  PlayCircle,
 } from "lucide-react";
 import { useHashLessonId } from "../useHashLessonId";
 import { useLocalStorageState } from "../useLocalStorageState";
@@ -62,6 +63,7 @@ export function AnimLab<W>({
   badge,
   icon,
   checkpoints = [],
+  video,
   back,
   renderWidget,
 }: {
@@ -74,6 +76,8 @@ export function AnimLab<W>({
   badge: string;
   icon: React.ReactNode;
   checkpoints?: string[];
+  /** The lab's narrated video lesson, when it has one. */
+  video?: string;
   /** Where the back link leads; the Academy by default. */
   back?: { href: string; label: string };
   renderWidget: (widget: W, props: WidgetProps) => React.ReactNode;
@@ -100,6 +104,11 @@ export function AnimLab<W>({
             <span>{subtitle}</span>
           </h1>
           <p>{description}</p>
+          {video && (
+            <Link className="nl-primary al-video-link" href={video}>
+              <PlayCircle size={18} /> {t("Watch the video lesson")}
+            </Link>
+          )}
         </div>
         <div className="nl-course-card">
           <div>

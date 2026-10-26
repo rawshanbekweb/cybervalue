@@ -313,3 +313,11 @@
     transition: none;
   }
 }
+
+/* The hero's link to the narrated video lesson. */
+.al-video-link {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 6px;
+}

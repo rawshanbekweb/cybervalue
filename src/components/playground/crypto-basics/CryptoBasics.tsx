@@ -67,6 +67,7 @@ export function CryptoBasics() {
       lessons={LESSONS}
       progressKey={PROGRESS_KEY}
       checkpoints={["crypto-1"]}
+      video="/akademiya/crypto/video"
       eyebrow={t("SECURITY FOUNDATIONS · ANIMATED")}
       title={t("Cryptography basics.")}
       subtitle={t("Encoding, hashing and encryption, told apart.")}

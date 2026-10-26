@@ -243,6 +243,7 @@ test('every t("…") string in the interactive labs has Uzbek in the shared dict
     "src/components/playground/checkpoint",
     "src/components/playground/http-lab",
     "src/components/playground/anim-lab",
+    "src/components/playground/video-lesson",
     "src/components/playground/http-basics",
     "src/components/playground/https-basics",
     "src/components/playground/bash-basics",
