@@ -61,9 +61,25 @@ export type Visual =
   | { kind: "eavesdrop"; secure: boolean }
   | { kind: "caesar"; plain: string; key: number }
   | { kind: "chain" }
-  | { kind: "warning" };
+  | { kind: "warning" }
+  | { kind: "cafe"; mode: "intro" | "attack" | "secure" }
+  | { kind: "postcard" }
+  | { kind: "quiz"; question: string; options: string[]; answer: number }
+  | { kind: "host"; title: string; subtitle: string; mood: Mood };
 
-export type Scene = { say: string; visual: Visual };
+export type Mood = "happy" | "talk" | "shock" | "think" | "wink" | "sad";
+export type Sfx = "whoosh" | "pop" | "alarm" | "type" | "ding" | "magic";
+
+export type Scene = {
+  say: string;
+  visual: Visual;
+  /** Kibi in the corner: his face, or hide him. Talking by default. */
+  host?: { mood?: Mood; hide?: boolean };
+  /** Seconds of quiet after the narration, e.g. to answer a quiz. */
+  hold?: number;
+  /** Sound effects at points of the scene (0…1), mixed into the track. */
+  sfx?: { at: number; name: Sfx }[];
+};
 
 export type Chapter = { title: string; scenes: Scene[] };
 
@@ -79,13 +95,16 @@ export type VideoLesson = {
 /** Recorded narration: one audio file and each scene's length in seconds. */
 export type LessonAudio = {
   file: string;
-  scenes: { hash: string; duration: number }[];
+  /** Per scene: text hash, length in seconds (with any hold) and the
+   * voice loudness every 80 ms as digits 0–9, for Kibi's mouth. */
+  scenes: { hash: string; duration: number; env?: string }[];
 };
 
 export type TimedScene = Scene & {
   chapter: number;
   start: number;
   duration: number;
+  env?: string;
 };
 
 /** Seconds a scene lasts when no recording exists: about 14 characters a second. */
@@ -117,8 +136,11 @@ export function timeline(lesson: VideoLesson, audio?: LessonAudio) {
     flat.every((scene, i) => audio.scenes[i].hash === sayHash(scene.say));
   let start = 0;
   const scenes: TimedScene[] = flat.map((scene, i) => {
-    const duration = recorded ? audio.scenes[i].duration : estimate(scene.say);
-    const timed = { ...scene, start, duration };
+    const duration = recorded
+      ? audio.scenes[i].duration
+      : estimate(scene.say) + (scene.hold ?? 0);
+    const env = recorded ? audio.scenes[i].env : undefined;
+    const timed = { ...scene, start, duration, env };
     start += duration;
     return timed;
   });
@@ -132,6 +154,21 @@ export function sceneAt(scenes: TimedScene[], t: number) {
   const scene = scenes[index];
   const progress = Math.min(1, Math.max(0, (t - scene.start) / scene.duration));
   return { index, scene, progress };
+}
+
+/** Seconds of a scene that carry narration (the rest is the hold). */
+export const spoken = (scene: TimedScene) =>
+  Math.max(0.5, scene.duration - (scene.hold ?? 0));
+
+/** How loud the voice is at second `at` of a scene (0…1). */
+export function loudness(scene: TimedScene, at: number) {
+  if (at > spoken(scene)) return 0;
+  if (scene.env) {
+    const digit = scene.env.charCodeAt(Math.floor(at / 0.08)) - 48;
+    return digit >= 0 && digit <= 9 ? digit / 9 : 0;
+  }
+  // No recording: a plausible talking rhythm.
+  return 0.45 + 0.4 * Math.sin(at * 17) * Math.sin(at * 5.3);
 }
 
 /** The caption sentence for a point in a scene, by position in the text. */

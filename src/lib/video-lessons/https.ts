@@ -7,47 +7,73 @@ export const HTTPS_VIDEO: VideoLesson = {
   href: "/akademiya/https",
   chapters: [
     {
-      title: "Kirish",
+      title: "Kafedagi voqea",
       scenes: [
         {
-          say: "Assalomu alaykum! Cybervalue Akademiyasiga xush kelibsiz. Oldingi darsda HTTP protokolini o‘rgandik. Bugun uning himoyalangan varianti — HTTPS haqida gaplashamiz: shifrlash nima uchun kerak, TLS qanday ishlaydi va brauzer saytga nega ishonadi.",
-          visual: {
-            kind: "title",
-            title: "HTTPS va TLS",
-            subtitle: "Shifrlash, kalitlar va sertifikatlar",
-          },
+          say: "Bu Ali. U kafeda qahva ichib o‘tiribdi va bank saytiga kirmoqchi. Kafening Wi-Fi’i ochiq, parol ham so‘ramaydi. Juda qulay, to‘g‘rimi? Ali loginini yozadi, parolini kiritadi…",
+          visual: { kind: "cafe", mode: "intro" },
+          host: { mood: "happy" },
+          sfx: [
+            { at: 0.25, name: "type" },
+            { at: 0.88, name: "pop" },
+          ],
         },
         {
-          say: "Bu darsda ochiq Wi-Fi xavfini, shifrlash g‘oyasini, kalitni qanday kelishishni, TLS qo‘l siqishuvini, sertifikat va ishonch zanjirini hamda brauzer ogohlantirishlarini ko‘rib chiqamiz.",
+          say: "Lekin burchakdagi stolda Jasur o‘tiribdi. U shu tarmoqdagi barcha trafikni tinglayapti. Ali kirish tugmasini bosdi. Paket Wi-Fi routerga uchdi… va bir soniyadan keyin Alining paroli Jasurning ekranida paydo bo‘ldi!",
+          visual: { kind: "cafe", mode: "attack" },
+          host: { mood: "shock" },
+          sfx: [
+            { at: 0.3, name: "whoosh" },
+            { at: 0.5, name: "whoosh" },
+            { at: 0.72, name: "alarm" },
+          ],
+        },
+        {
+          say: "Salom, men Kibi — Cybervalue’ning yordamchi robotiman! Bugun Ali bilan nima bo‘lganini birga tushunamiz va bunday holat siz bilan sodir bo‘lmasligi uchun HTTPS qanday himoya qilishini ko‘ramiz.",
           visual: {
-            kind: "points",
-            heading: "Bugun nimani o‘rganamiz",
-            items: [
-              "Ochiq Wi-Fi xavfi",
-              "Shifrlash va kalitlar",
-              "TLS qo‘l siqishuvi",
-              "Sertifikat va ishonch zanjiri",
-              "Ogohlantirishlarni o‘qish",
-            ],
+            kind: "host",
+            title: "HTTPS va TLS",
+            subtitle: "Shifrlash, kalitlar va sertifikatlar",
+            mood: "happy",
           },
+          sfx: [{ at: 0.05, name: "magic" }],
         },
       ],
     },
     {
-      title: "Kafedagi Wi-Fi",
+      title: "Nega parol ko‘rindi?",
       scenes: [
         {
-          say: "Tasavvur qiling, kafedagi ochiq Wi-Fi’ga ulandingiz va oddiy HTTP saytga parol kiritdingiz. HTTP — ochiq matn. Shu tarmoqdagi istalgan odam maxsus dastur bilan trafikni tinglasa, parolingizni xuddi qog‘ozdagidek o‘qiydi.",
-          visual: { kind: "eavesdrop", secure: false },
+          say: "Ali kirgan sayt oddiy HTTP’da ishlagan. HTTP — bu ochiq otkritka. U Alidan bankkacha ko‘p qo‘ldan o‘tadi: kafe routeri, internet provayder, oraliq serverlar. Yo‘ldagi har bir kishi otkritkani o‘qiy oladi.",
+          visual: { kind: "postcard" },
+          host: { mood: "think" },
+          sfx: [{ at: 0.1, name: "whoosh" }],
         },
         {
-          say: "HTTP — bu ochiq otkritka. Pochtachi ham, qo‘shni ham uni o‘qiy oladi. HTTPS esa yopiq, muhrlangan konvert: yo‘ldagi hech kim ichini ko‘rmaydi. HTTPS — bu HTTP’ning o‘zi, faqat TLS deb ataluvchi shifrlangan tunnel ichida yuboriladi.",
+          say: "Keling, tekshirib ko‘ramiz! Ochiq Wi-Fi’da HTTP orqali yuborilgan parolni kim ko‘ra oladi? Javobni tanlang.",
           visual: {
-            kind: "analogy",
-            icon: "mail",
-            heading: "Otkritka va muhrlangan konvert",
-            text: "HTTP — hamma o‘qiydigan otkritka. HTTPS — faqat oluvchi ochadigan konvert.",
+            kind: "quiz",
+            question:
+              "Ochiq Wi-Fi’da HTTP orqali yuborilgan parolni kim ko‘ra oladi?",
+            options: [
+              "Faqat bank sayti",
+              "Shu tarmoqdagi istalgan odam",
+              "Hech kim — Wi-Fi o‘zi himoyalaydi",
+            ],
+            answer: 1,
           },
+          host: { mood: "wink" },
+          hold: 5,
+          sfx: [{ at: 0.02, name: "pop" }],
+        },
+        {
+          say: "To‘g‘ri javob: shu tarmoqdagi istalgan odam. Endi xuddi shu voqeani HTTPS bilan ko‘ramiz. Ali yana kiradi… Paket yana Jasurga yetib boradi, lekin uning ekranida faqat tushunarsiz belgilar! Jasur hayron. Qanday qilib? Keling, ichkariga qaraymiz.",
+          visual: { kind: "cafe", mode: "secure" },
+          host: { mood: "happy" },
+          sfx: [
+            { at: 0.3, name: "whoosh" },
+            { at: 0.72, name: "ding" },
+          ],
         },
       ],
     },

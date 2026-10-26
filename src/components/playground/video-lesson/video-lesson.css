@@ -233,11 +233,11 @@ body:has(.vl-render) footer {
 }
 .vl-caption {
   position: absolute;
-  left: 50%;
+  left: 55%;
   bottom: 2.4cqw;
   transform: translateX(-50%);
   width: max-content;
-  max-width: 86cqw;
+  max-width: 74cqw;
   margin: 0;
   padding: 0.7cqw 1.4cqw;
   border-radius: 0.8cqw;
@@ -1354,4 +1354,125 @@ body:has(.vl-render) footer {
   color: #b3261e;
   font-size: 1.7cqw;
   font-weight: 700;
+}
+
+/* Story scenes fill the stage edge to edge. */
+.vl-scene:has(.vl-story) {
+  padding: 0;
+}
+.vl-story {
+  width: 100%;
+  height: 100%;
+}
+
+/* Kibi in the corner, and in the middle on host scenes. */
+.vl-kibi-corner {
+  position: absolute;
+  left: 1.2cqw;
+  bottom: 0.4cqw;
+  width: 11cqw;
+  height: 13cqw;
+  filter: drop-shadow(0 0.6cqw 1.2cqw #0008);
+}
+.vl-host {
+  display: grid;
+  grid-template-columns: 26cqw 1fr;
+  gap: 3cqw;
+  align-items: center;
+  width: 100%;
+}
+.vl-host-kibi {
+  width: 26cqw;
+  height: 30cqw;
+}
+
+/* A diagonal band sweeping across at the start of a chapter. */
+.vl-wipe {
+  position: absolute;
+  inset: -10% 30%;
+  background: linear-gradient(90deg, transparent, #3b8be0cc 30%, #8052ffcc 70%, transparent);
+  pointer-events: none;
+}
+
+/* The spoken word in the caption. */
+.vl-caption .on {
+  color: #ffb829;
+}
+
+/* The quiz card. */
+.vl-quiz {
+  display: grid;
+  justify-items: center;
+  gap: 1.6cqw;
+  width: min(70cqw, 100%);
+}
+.vl-quiz-badge {
+  padding: 0.5cqw 1.6cqw;
+  border-radius: 99cqw;
+  background: #ffb829;
+  color: #1b1b1f;
+  font-size: 1.6cqw;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+}
+.vl-quiz h3 {
+  margin: 0;
+  font-size: 3cqw;
+  text-align: center;
+}
+.vl-quiz-options {
+  display: grid;
+  gap: 1cqw;
+  width: 100%;
+}
+.vl-quiz-option {
+  display: flex;
+  gap: 1.4cqw;
+  align-items: center;
+  padding: 1.2cqw 1.8cqw;
+  border: 2px solid #ffffff33;
+  border-radius: 1.2cqw;
+  background: #ffffff0f;
+  color: #fff;
+  font: inherit;
+  font-size: 2.2cqw;
+  text-align: left;
+  cursor: pointer;
+}
+.vl-quiz-option span {
+  display: grid;
+  place-items: center;
+  width: 3.4cqw;
+  height: 3.4cqw;
+  border-radius: 50%;
+  background: #3b8be0;
+  font-weight: 800;
+  flex: none;
+}
+.vl-quiz-option:hover:not(:disabled) {
+  border-color: #ffb829;
+}
+.vl-quiz-option:focus-visible {
+  outline: 3px solid #ffb829;
+}
+.vl-quiz-option:disabled {
+  cursor: default;
+}
+.vl-quiz-option.right {
+  border-color: #2fbf8f;
+  background: #2fbf8f33;
+}
+.vl-quiz-option.wrong {
+  border-color: #ff6b6b;
+  background: #ff6b6b33;
+}
+.vl-quiz-option.dim {
+  opacity: 0.45 !important;
+}
+.vl-quiz-foot {
+  margin: 0;
+  min-height: 3cqw;
+  font-size: 2.2cqw;
+  font-weight: 700;
+  color: #ffb829;
 }

@@ -13,9 +13,18 @@ import {
 } from "lucide-react";
 import { useT } from "../network-lab/use-t";
 import { BrandLogo } from "./BrandLogo";
+import { Kibi } from "./Kibi";
 import { SceneView } from "./scenes";
+import { CafeScene, HostScene, PostcardScene, QuizScene } from "./story";
 import { lessonAudio, videoLesson } from "@/lib/video-lessons";
-import { captionAt, sceneAt, timeline } from "@/lib/video-lessons/types";
+import {
+  captionAt,
+  loudness,
+  sceneAt,
+  spoken,
+  timeline,
+  type TimedScene,
+} from "@/lib/video-lessons/types";
 import "./video-lesson.css";
 
 const SPEEDS = [1, 1.25, 1.5, 0.75];
@@ -54,6 +63,8 @@ export function VideoLesson({
   const sound = useRef<HTMLAudioElement>(null);
   const stage = useRef<HTMLDivElement>(null);
   const last = useRef<number | null>(null);
+  // The viewer's quiz answers, by scene index.
+  const [answers, setAnswers] = useState<Record<number, number>>({});
 
   const seek = useCallback(
     (to: number) => {
@@ -97,6 +108,20 @@ export function VideoLesson({
     if (sound.current) sound.current.playbackRate = speed;
   }, [speed]);
 
+  // A quiz waits for the viewer's answer at its end.
+  const current = sceneAt(scenes, time);
+  const waiting =
+    !render &&
+    current.scene.visual.kind === "quiz" &&
+    answers[current.index] === undefined &&
+    time >= current.scene.start + current.scene.duration - 0.15;
+  useEffect(() => {
+    if (playing && waiting) {
+      sound.current?.pause();
+      setPlaying(false);
+    }
+  }, [playing, waiting]);
+
   useEffect(() => {
     if (!render) return;
     window.__videoLesson = {
@@ -113,7 +138,17 @@ export function VideoLesson({
     };
   }, [render, total]);
 
+  const choose = (scene: number, option: number) => {
+    setAnswers((old) => ({ ...old, [scene]: option }));
+    // Carry on with the lesson a moment after the answer shows.
+    window.setTimeout(() => {
+      if (sound.current && audio) void sound.current.play();
+      setPlaying(true);
+    }, 1800);
+  };
+
   const toggle = () => {
+    if (waiting) return;
     if (playing) {
       sound.current?.pause();
       setPlaying(false);
@@ -124,39 +159,71 @@ export function VideoLesson({
     setPlaying(true);
   };
 
-  const { index, scene, progress } = sceneAt(scenes, time);
+  const { index, scene, progress } = current;
+  const at = time - scene.start;
+  const talk = loudness(scene, at);
   const chapter = lesson.chapters[scene.chapter];
-  const caption = captionAt(scene.say, progress);
   const starts = lesson.chapters.map(
     (_, c) => scenes.find((s) => s.chapter === c)!.start,
   );
 
+  const fadeIn = Math.min(1, at / 0.35);
+  const fadeOut =
+    index === scenes.length - 1 ? 1 : (scene.duration - at) / 0.25;
+  const chapterStart =
+    index === 0 || scenes[index - 1].chapter !== scene.chapter;
+  const hostless = scene.visual.kind === "host" || scene.host?.hide;
   const picture = (
     <div className="vl-stage" ref={stage}>
       <div
         className="vl-scene"
         key={index}
         style={{
-          opacity: Math.min(
-            1,
-            (time - scene.start) / 0.35,
-            index === scenes.length - 1
-              ? 1
-              : (scene.start + scene.duration - time) / 0.25,
-          ),
+          opacity: Math.min(1, fadeIn, fadeOut),
+          transform: `scale(${1 + 0.035 * progress})`,
         }}
       >
-        <SceneView visual={scene.visual} p={progress} />
+        <Visual
+          scene={scene}
+          index={index}
+          progress={progress}
+          at={at}
+          talk={talk}
+          chosen={
+            answers[index] ??
+            (render &&
+            scene.visual.kind === "quiz" &&
+            at > spoken(scene) + (scene.hold ?? 0) * 0.6
+              ? scene.visual.answer
+              : null)
+          }
+          onChoose={render ? undefined : (i) => choose(index, i)}
+        />
       </div>
+      {chapterStart && at < 0.7 && (
+        <div
+          className="vl-wipe"
+          style={{
+            transform: `translateX(${-110 + (at / 0.7) * 220}%) skewX(-18deg)`,
+          }}
+          aria-hidden="true"
+        />
+      )}
       <BrandLogo className="vl-watermark" />
       <div className="vl-chapter-label">
         <span>{String(scene.chapter + 1).padStart(2, "0")}</span>
         {chapter.title}
       </div>
-      {captions && (
-        <p className="vl-caption" aria-hidden="true">
-          {caption}
-        </p>
+      {!hostless && (
+        <Kibi
+          className="vl-kibi-corner"
+          mood={scene.host?.mood ?? "talk"}
+          talk={talk}
+          t={time}
+        />
+      )}
+      {captions && at < spoken(scene) + 0.2 && (
+        <Caption say={scene.say} progress={Math.min(1, at / spoken(scene))} />
       )}
     </div>
   );
@@ -184,7 +251,7 @@ export function VideoLesson({
         <div className="vl-player">
           <div className="vl-screen" onClick={toggle} role="presentation">
             {picture}
-            {!playing && (
+            {!playing && !waiting && (
               <span className="vl-big-play" aria-hidden="true">
                 {time >= total ? <RotateCcw /> : <Play />}
               </span>
@@ -301,4 +368,84 @@ export function VideoLesson({
       </details>
     </div>
   );
+}
+
+/** The caption sentence, with the word being spoken picked out. */
+function Caption({ say, progress }: { say: string; progress: number }) {
+  const sentence = captionAt(say, progress);
+  const start = say.indexOf(sentence);
+  const local = (progress * say.length - start) / Math.max(1, sentence.length);
+  const words = sentence.split(" ");
+  const current = Math.min(
+    words.length - 1,
+    Math.max(0, Math.floor(local * words.length)),
+  );
+  return (
+    <p className="vl-caption" aria-hidden="true">
+      {words.map((word, i) => (
+        <span key={i} className={i === current ? "on" : undefined}>
+          {word}{" "}
+        </span>
+      ))}
+    </p>
+  );
+}
+
+/** The scene picture: story scenes here, the rest in scenes.tsx. */
+function Visual({
+  scene,
+  index,
+  progress,
+  at,
+  talk,
+  chosen,
+  onChoose,
+}: {
+  scene: TimedScene;
+  index: number;
+  progress: number;
+  at: number;
+  talk: number;
+  chosen: number | null;
+  onChoose?: (option: number) => void;
+}) {
+  const visual = scene.visual;
+  switch (visual.kind) {
+    case "cafe":
+      return <CafeScene mode={visual.mode} p={progress} />;
+    case "postcard":
+      return <PostcardScene p={progress} />;
+    case "host":
+      return (
+        <HostScene
+          title={visual.title}
+          subtitle={visual.subtitle}
+          mood={visual.mood}
+          p={progress}
+          t={at}
+          talk={talk}
+        />
+      );
+    case "quiz": {
+      const left = scene.duration - at;
+      return (
+        <QuizScene
+          key={index}
+          question={visual.question}
+          options={visual.options}
+          answer={visual.answer}
+          p={progress}
+          chosen={chosen}
+          onChoose={onChoose}
+          countdown={
+            at > spoken(scene) && chosen === null
+              ? Math.max(1, Math.ceil(left))
+              : null
+          }
+        />
+      );
+    }
+    default:
+      return <SceneView visual={visual} p={progress} />;
+  }
 }
