@@ -87,7 +87,26 @@ export type Shot3D =
   | "letter"
   | "methods"
   | "status"
-  | "tamper";
+  | "tamper"
+  | "vault"
+  | "bytes"
+  | "cookie"
+  | "trio"
+  | "grinder"
+  | "mirrors"
+  | "wordlist"
+  | "xor"
+  | "combo"
+  | "stamp"
+  | "nightserver"
+  | "recipe"
+  | "shelf"
+  | "quotes"
+  | "conveyor"
+  | "rocket"
+  | "fork"
+  | "guard"
+  | "trojan";
 
 export type Scene = {
   say: string;
