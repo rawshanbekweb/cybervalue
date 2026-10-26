@@ -65,7 +65,8 @@ export type Visual =
   | { kind: "cafe"; mode: "intro" | "attack" | "secure" }
   | { kind: "postcard" }
   | { kind: "quiz"; question: string; options: string[]; answer: number }
-  | { kind: "host"; title: string; subtitle: string; mood: Mood };
+  | { kind: "host"; title: string; subtitle: string; mood: Mood }
+  | { kind: "3d"; shot: "kibi" | "network" | "tunnel" | "lock" };
 
 export type Mood = "happy" | "talk" | "shock" | "think" | "wink" | "sad";
 export type Sfx = "whoosh" | "pop" | "alarm" | "type" | "ding" | "magic";

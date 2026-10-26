@@ -41,6 +41,44 @@ export const HTTPS_VIDEO: VideoLesson = {
       ],
     },
     {
+      title: "Internet ichiga sayohat",
+      scenes: [
+        {
+          say: "Salom! Men Kibi. Bugun siz bilan internetning ichiga sayohat qilamiz va parolingiz kafedan bankkacha qanday yo‘l bosishini o‘z ko‘zimiz bilan ko‘ramiz. Tayyormisiz? Ketdik!",
+          visual: { kind: "3d", shot: "kibi" },
+          host: { mood: "happy", hide: true },
+          sfx: [{ at: 0.05, name: "magic" }],
+        },
+        {
+          say: "Mana bu — tarmoq. Alining noutbukidan chiqqan paket avval kafe routeriga, keyin provayderga, so‘ng bank serveriga boradi. Agar ulanish oddiy HTTP bo‘lsa, paket ochiq holda uchadi va yo‘ldagi xakerning antennasi uni bemalol o‘qiydi.",
+          visual: { kind: "3d", shot: "network" },
+          host: { mood: "think" },
+          sfx: [
+            { at: 0.2, name: "whoosh" },
+            { at: 0.75, name: "alarm" },
+          ],
+        },
+        {
+          say: "Endi HTTPS’ni yoqamiz. Brauzer va server o‘rtasida TLS tunneli quriladi. Paketlar shu shifrlangan tunnel ichida uchadi. Xaker yana urinib ko‘radi, lekin uning nuri tunnel devoridan qaytadi: ichidagi ma’lumotni o‘qib bo‘lmaydi.",
+          visual: { kind: "3d", shot: "tunnel" },
+          host: { mood: "happy" },
+          sfx: [
+            { at: 0.1, name: "whoosh" },
+            { at: 0.7, name: "ding" },
+          ],
+        },
+        {
+          say: "Bu tunnelning siri — kalitlar. Ochiq kalit qulfni yopadi, yopiq kalit esa faqat serverda turadi va qulfni faqat u ochadi. Keyingi qismda bu qanday ishlashini batafsil ko‘ramiz.",
+          visual: { kind: "3d", shot: "lock" },
+          host: { mood: "wink" },
+          sfx: [
+            { at: 0.3, name: "pop" },
+            { at: 0.7, name: "magic" },
+          ],
+        },
+      ],
+    },
+    {
       title: "Nega parol ko‘rindi?",
       scenes: [
         {

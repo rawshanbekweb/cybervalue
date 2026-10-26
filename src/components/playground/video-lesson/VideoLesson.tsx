@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -16,6 +16,7 @@ import { BrandLogo } from "./BrandLogo";
 import { Kibi } from "./Kibi";
 import { SceneView } from "./scenes";
 import { CafeScene, HostScene, PostcardScene, QuizScene } from "./story";
+import { Scene3D } from "./three/Scene3D";
 import { lessonAudio, videoLesson } from "@/lib/video-lessons";
 import {
   captionAt,
@@ -55,7 +56,10 @@ export function VideoLesson({
 }) {
   const { t } = useT();
   const lesson = videoLesson(id)!;
-  const { scenes, total, audio } = timeline(lesson, lessonAudio(id));
+  const { scenes, total, audio } = useMemo(
+    () => timeline(videoLesson(id)!, lessonAudio(id)),
+    [id],
+  );
   const [time, setTime] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [captions, setCaptions] = useState(true);
@@ -79,18 +83,34 @@ export function VideoLesson({
   useEffect(() => {
     if (!playing) return;
     let frame = 0;
+    // A quiz waits for the viewer's answer at its end.
+    const stopsAt = (t: number) => {
+      const { index, scene } = sceneAt(scenes, t);
+      return (
+        !render &&
+        scene.visual.kind === "quiz" &&
+        answers[index] === undefined &&
+        t >= scene.start + scene.duration - 0.15
+      );
+    };
     const tick = (now: number) => {
       if (sound.current && audio) {
-        setTime(sound.current.currentTime);
+        const t = sound.current.currentTime;
+        setTime(t);
         if (sound.current.ended) setPlaying(false);
+        if (stopsAt(t)) {
+          sound.current.pause();
+          setPlaying(false);
+          return;
+        }
       } else {
         const step = last.current === null ? 0 : (now - last.current) / 1000;
         last.current = now;
         setTime((old) => {
           const next = old + step * speed;
-          if (next >= total) {
+          if (next >= total || stopsAt(next)) {
             setPlaying(false);
-            return total;
+            return Math.min(next, total);
           }
           return next;
         });
@@ -102,7 +122,7 @@ export function VideoLesson({
       cancelAnimationFrame(frame);
       last.current = null;
     };
-  }, [playing, audio, speed, total]);
+  }, [playing, audio, speed, total, scenes, answers, render]);
 
   useEffect(() => {
     if (sound.current) sound.current.playbackRate = speed;
@@ -115,12 +135,6 @@ export function VideoLesson({
     current.scene.visual.kind === "quiz" &&
     answers[current.index] === undefined &&
     time >= current.scene.start + current.scene.duration - 0.15;
-  useEffect(() => {
-    if (playing && waiting) {
-      sound.current?.pause();
-      setPlaying(false);
-    }
-  }, [playing, waiting]);
 
   useEffect(() => {
     if (!render) return;
@@ -130,7 +144,12 @@ export function VideoLesson({
       seek: (to) =>
         new Promise((done) => {
           setTime(to);
-          requestAnimationFrame(() => requestAnimationFrame(() => done()));
+          // Two frames for React to paint, then wait for any 3D scene.
+          const ready = () =>
+            document.querySelector("[data-3d-loading]")
+              ? window.setTimeout(ready, 50)
+              : requestAnimationFrame(() => done());
+          requestAnimationFrame(() => requestAnimationFrame(ready));
         }),
     };
     return () => {
@@ -415,6 +434,25 @@ function Visual({
       return <CafeScene mode={visual.mode} p={progress} />;
     case "postcard":
       return <PostcardScene p={progress} />;
+    case "3d":
+      return (
+        <Scene3D
+          shot={visual.shot}
+          p={progress}
+          t={at}
+          talk={talk}
+          fallback={
+            <HostScene
+              title="Kibi"
+              subtitle="3D sahna bu qurilmada ochilmadi"
+              mood="happy"
+              p={progress}
+              t={at}
+              talk={talk}
+            />
+          }
+        />
+      );
     case "host":
       return (
         <HostScene
