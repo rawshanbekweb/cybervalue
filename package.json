@@ -32,8 +32,8 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@prisma/adapter-pg": "^7.0.0",
-    "@prisma/client": "^7.0.0",
+    "@prisma/adapter-pg": "^7.10.1",
+    "@prisma/client": "^7.10.1",
     "dotenv": "^18.0.7",
     "lucide-react": "^1.56.0",
     "next": "^16.4.2",
