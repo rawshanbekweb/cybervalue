@@ -1,5 +1,6 @@
 "use client";
 
+import { videoHref } from "@/lib/video-lessons";
 import { useEffect, useRef, useState } from "react";
 import {
   Check,
@@ -41,7 +42,7 @@ export function BashBasics() {
       lessons={LESSONS}
       progressKey={PROGRESS_KEY}
       checkpoints={["bash-1"]}
-      video="/akademiya/bash/video"
+      video={videoHref("bash")}
       eyebrow={t("TERMINAL FOUNDATIONS · ANIMATED")}
       title={t("Bash basics.")}
       subtitle={t("Variables, loops and your first scripts.")}

@@ -32,3 +32,26 @@ test("the lab links to its video lesson, which plays and seeks by chapter", asyn
     .analyze();
   expect(result.violations.map((v) => v.id)).toEqual([]);
 });
+
+test("a quiz in the video waits for the answer and marks it", async ({
+  page,
+}) => {
+  await page.goto("/akademiya/https/video");
+  const quiz = page.getByRole("button", {
+    name: /Shu tarmoqdagi istalgan odam/,
+  });
+  // Jump to the first quiz chapter and play into the question.
+  const chapters = page.getByRole("navigation", { name: "Boblar" });
+  await chapters.getByRole("button", { name: /Nega parol ko‘rindi/ }).click();
+  await page.getByRole("button", { name: "Ijro" }).first().click();
+  await expect(quiz).toBeVisible({ timeout: 30000 });
+  await expect(page.getByText(/Javobni tanlang… \d/)).toBeVisible({
+    timeout: 40000,
+  });
+  // The video stops at the end of the question until there is an answer.
+  await expect(page.getByRole("button", { name: "Ijro" }).first()).toBeVisible({
+    timeout: 15000,
+  });
+  await quiz.click();
+  await expect(page.getByText("To‘g‘ri! +10 XP")).toBeVisible();
+});
