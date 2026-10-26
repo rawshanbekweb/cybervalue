@@ -9,6 +9,10 @@
 // account; needs `pip install edge-tts` and speech.platform.bing.com):
 //   npx tsx scripts/video-tts.ts crypto bash
 //
+// Narration recorded elsewhere (for example with the open Navoiy TTS model,
+// see docs/video-lessons.md): put one WAV per scene, named by the scene's
+// text hash, in a folder and pass VIDEO_AUDIO_DIR=that/folder.
+//
 // Options (environment): VIDEO_VOICE (default uz-UZ-SardorNeural),
 // VIDEO_RATE (SSML prosody rate, default "-4%"). Each scene is cached in
 // .video-cache/ by its text, so only changed scenes are recorded again.
@@ -27,8 +31,13 @@ const rate = process.env.VIDEO_RATE ?? "-4%";
 const PAUSE = 0.6;
 
 const azure = Boolean(key && region);
+const recorded = process.env.VIDEO_AUDIO_DIR;
 console.log(
-  azure ? `Azure Speech (${region}), ${voice}` : `edge-tts, ${voice}`,
+  recorded
+    ? `recordings from ${recorded}`
+    : azure
+      ? `Azure Speech (${region}), ${voice}`
+      : `edge-tts, ${voice}`,
 );
 
 const cache = ".video-cache";
@@ -110,7 +119,20 @@ const audio = JSON.parse(readFileSync(audioPath, "utf8")) as Record<
   string,
   LessonAudio
 >;
-const ids = process.argv.slice(2);
+const args = process.argv.slice(2);
+// --lines file.json writes every scene's hash and text, for recording elsewhere.
+const linesAt = args.indexOf("--lines");
+if (linesAt >= 0) {
+  const lines = Object.values(VIDEO_LESSONS).flatMap((lesson) =>
+    lesson.chapters.flatMap((c) =>
+      c.scenes.map((s) => ({ id: sayHash(s.say), text: s.say })),
+    ),
+  );
+  writeFileSync(args[linesAt + 1], JSON.stringify(lines, null, 1));
+  console.log(`${lines.length} scenes → ${args[linesAt + 1]}`);
+  process.exit(0);
+}
+const ids = args;
 if (ids.length === 0) ids.push(...Object.keys(VIDEO_LESSONS));
 
 for (const id of ids) {
@@ -121,13 +143,20 @@ for (const id of ids) {
   const timing: LessonAudio["scenes"] = [];
   for (const [i, scene] of scenes.entries()) {
     const hash = sayHash(scene.say);
-    const raw = join(cache, `${voice}-${rate}-${hash}.mp3`);
+    const raw = recorded
+      ? join(recorded, `${hash}.wav`)
+      : join(cache, `${voice}-${rate}-${hash}.mp3`);
+    if (recorded && !existsSync(raw))
+      throw new Error(`${id} ${i + 1}: no recording ${raw}`);
     if (!existsSync(raw)) {
       console.log(`${id} ${i + 1}/${scenes.length} recording…`);
       await record(scene.say, raw);
     }
     // Pad every scene with silence and re-encode, so the parts join cleanly.
-    const padded = join(cache, `${voice}-${rate}-${hash}-pad.wav`);
+    const padded = join(
+      cache,
+      `${recorded ? "rec" : `${voice}-${rate}`}-${hash}-pad.wav`,
+    );
     execFileSync("ffmpeg", [
       "-y",
       "-loglevel",
