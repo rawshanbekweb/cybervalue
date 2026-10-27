@@ -751,3 +751,216 @@ export const INPUT_POOL: PoolItem[] = [
     },
   },
 ];
+
+// Academy Intermediate · Browser-side risks.
+export const BROWSER_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "XSS nima?",
+      en: "What is XSS?",
+    },
+    right: {
+      uz: "Begona kodning sizning sahifangizda ishga tushishi",
+      en: "Foreign code running on your page",
+    },
+    wrong: [
+      { uz: "Parolni taxmin qilish", en: "Guessing a password" },
+      {
+        uz: "Serverni so‘rovlar bilan to‘ldirish",
+        en: "Flooding a server with requests",
+      },
+      { uz: "Bazadagi so‘rovni buzish", en: "Breaking a database query" },
+    ],
+    explain: {
+      uz: "Skript sahifada sayt egasining huquqlari bilan ishlaydi.",
+      en: "The script runs on the page with the site owner’s rights.",
+    },
+  },
+  {
+    ask: {
+      uz: "Foydalanuvchi matnini sahifaga xavfsiz qo‘yish uchun nima ishlatiladi?",
+      en: "What places user text on a page safely?",
+    },
+    right: same("element.textContent"),
+    wrong: [
+      same("element.innerHTML"),
+      same("document.write()"),
+      same("insertAdjacentHTML()"),
+    ],
+    explain: {
+      uz: "textContent matnni hech qachon HTML sifatida o‘qimaydi.",
+      en: "textContent never reads the text as HTML.",
+    },
+  },
+  {
+    ask: {
+      uz: "Stored XSS reflected XSS dan nimasi bilan farq qiladi?",
+      en: "How does stored XSS differ from reflected XSS?",
+    },
+    right: {
+      uz: "U saqlanadi va sahifani ochgan har bir kishiga ko‘rsatiladi",
+      en: "It is saved and shown to everyone who opens the page",
+    },
+    wrong: [
+      { uz: "U faqat serverda ishlaydi", en: "It runs only on the server" },
+      { uz: "U faqat HTTPS da ishlaydi", en: "It works only over HTTPS" },
+      { uz: "Hech qanday farq yo‘q", en: "There is no difference" },
+    ],
+    explain: {
+      uz: "Reflected XSS havolada bo‘ladi va faqat uni ochgan odamga ta’sir qiladi.",
+      en: "Reflected XSS lives in a link and affects only whoever opens it.",
+    },
+  },
+  {
+    ask: {
+      uz: "Profil havolasiga qaysi manzil qo‘yilmasligi kerak?",
+      en: "Which address must not go into a profile link?",
+    },
+    right: same("javascript:…"),
+    wrong: [
+      same("https://kitob.uz/ali"),
+      same("/profil/ali"),
+      same("http://blog.example.uz"),
+    ],
+    explain: {
+      uz: "javascript: sxemasi bosilganda kod ishga tushiradi; faqat http(s) ga ruxsat bering.",
+      en: "The javascript: scheme runs code when clicked; allow only http(s).",
+    },
+  },
+  {
+    ask: {
+      uz: "CSP’da qaysi qiymatdan qochish kerak?",
+      en: "Which CSP value should be avoided?",
+    },
+    right: same("'unsafe-inline'"),
+    wrong: [same("'self'"), same("'none'"), same("https://cdn.example")],
+    explain: {
+      uz: "U sahifa ichidagi skriptlarni ishga tushiradi — aynan XSS kodini.",
+      en: "It runs scripts written in the page — exactly the XSS code.",
+    },
+  },
+  {
+    ask: {
+      uz: "CSP’da script-src yozilmagan bo‘lsa, skriptlar uchun qaysi qoida ishlaydi?",
+      en: "With no script-src in the CSP, which rule covers scripts?",
+    },
+    right: same("default-src"),
+    wrong: [
+      same("img-src"),
+      { uz: "Hech qaysi", en: "None" },
+      same("frame-ancestors"),
+    ],
+    explain: {
+      uz: "default-src yozilmagan turlar uchun umumiy qoida.",
+      en: "default-src is the fallback for types not listed.",
+    },
+  },
+  {
+    ask: {
+      uz: "CSRF nima?",
+      en: "What is CSRF?",
+    },
+    right: {
+      uz: "Begona saytning sizning nomingizdan so‘rov yuborishi",
+      en: "A foreign site sending requests in your name",
+    },
+    wrong: [
+      { uz: "Sahifaga skript qo‘shish", en: "Adding a script to a page" },
+      { uz: "Cookie’ni shifrlash", en: "Encrypting a cookie" },
+      { uz: "Parolni o‘g‘irlash", en: "Stealing a password" },
+    ],
+    explain: {
+      uz: "Brauzer cookie’ni o‘zi qo‘shadi, shuning uchun server so‘rovni sizniki deb o‘ylaydi.",
+      en: "The browser adds the cookie itself, so the server thinks the request is yours.",
+    },
+  },
+  {
+    ask: {
+      uz: "SameSite=Lax cookie boshqa saytdagi yashirin POST formasi bilan yuboriladimi?",
+      en: "Is a SameSite=Lax cookie sent with a hidden POST form on another site?",
+    },
+    right: { uz: "Yo‘q", en: "No" },
+    wrong: [
+      { uz: "Ha, har doim", en: "Yes, always" },
+      { uz: "Faqat HTTPS da", en: "Only over HTTPS" },
+      { uz: "Faqat birinchi marta", en: "Only the first time" },
+    ],
+    explain: {
+      uz: "Lax faqat oddiy o‘tishda (GET havola) yuboriladi.",
+      en: "Lax is sent only on plain navigation (a GET link).",
+    },
+  },
+  {
+    ask: {
+      uz: "CSRF tokeni nima uchun ishlaydi?",
+      en: "Why does a CSRF token work?",
+    },
+    right: {
+      uz: "Begona sayt uning qiymatini bila olmaydi",
+      en: "A foreign site cannot know its value",
+    },
+    wrong: [
+      { uz: "U cookie’ni shifrlaydi", en: "It encrypts the cookie" },
+      { uz: "U so‘rovni tezlashtiradi", en: "It speeds up the request" },
+      { uz: "U parolni almashtiradi", en: "It replaces the password" },
+    ],
+    explain: {
+      uz: "Token faqat bankning o‘z formasida bo‘ladi va har bir so‘rovda tekshiriladi.",
+      en: "The token exists only in the bank’s own form and is checked on every request.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega ma’lumotni o‘zgartiradigan amallar GET bilan bo‘lmasligi kerak?",
+      en: "Why must actions that change data never use GET?",
+    },
+    right: {
+      uz: "Lax cookie boshqa saytdagi GET havolasida ham yuboriladi",
+      en: "A Lax cookie is sent on a GET link from another site too",
+    },
+    wrong: [
+      { uz: "GET sekin", en: "GET is slow" },
+      { uz: "GET da sarlavha bo‘lmaydi", en: "GET has no headers" },
+      { uz: "Brauzerlar GET ni bloklaydi", en: "Browsers block GET" },
+    ],
+    explain: {
+      uz: "Shuning uchun pul o‘tkazish, o‘chirish va sozlash POST bilan bo‘lsin.",
+      en: "So transfers, deletions and settings use POST.",
+    },
+  },
+  {
+    ask: {
+      uz: "Clickjacking’dan qaysi sarlavha himoya qiladi?",
+      en: "Which header protects against clickjacking?",
+    },
+    right: same("frame-ancestors 'none'"),
+    wrong: [
+      same("frame-src 'none'"),
+      same("Access-Control-Allow-Origin: *"),
+      same("Cache-Control: no-store"),
+    ],
+    explain: {
+      uz: "frame-ancestors sahifani kim ramkaga olishi mumkinligini belgilaydi.",
+      en: "frame-ancestors sets who may frame the page.",
+    },
+  },
+  {
+    ask: {
+      uz: "HTML kerak bo‘lganda (formatlangan matn) uni qanday chiqarish kerak?",
+      en: "When HTML is really needed (formatted text), how should it be shown?",
+    },
+    right: {
+      uz: "Ruxsat etilgan teglar ro‘yxati bilan tozalovchi kutubxona orqali",
+      en: "Through a sanitiser with an allowlist of tags",
+    },
+    wrong: [
+      { uz: "To‘g‘ridan-to‘g‘ri innerHTML ga", en: "Straight into innerHTML" },
+      { uz: "<script> so‘zini o‘chirib", en: "By deleting the word <script>" },
+      { uz: "Base64 qilib", en: "As Base64" },
+    ],
+    explain: {
+      uz: "Taqiqlar ro‘yxati aylanib o‘tiladi; faqat ruxsat etilgan teglarni qoldiring.",
+      en: "Blocklists get bypassed; keep only allowed tags.",
+    },
+  },
+];

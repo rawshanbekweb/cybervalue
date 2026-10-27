@@ -6,11 +6,12 @@ students placed at the Intermediate or Advanced level, and to staff.
 
 ## Pages
 
-| Path                  | What is there                                                                  |
-| --------------------- | ------------------------------------------------------------------------------ |
-| `/intermediate`       | The roadmap (12 domains in three phases, career paths) and an access card      |
-| `/intermediate/http`  | Module 1 of web application security, HTTP in depth (10 lessons, a checkpoint) |
-| `/intermediate/input` | Module 2, untrusted input (9 lessons, a checkpoint)                            |
+| Path                    | What is there                                                                  |
+| ----------------------- | ------------------------------------------------------------------------------ |
+| `/intermediate`         | The roadmap (12 domains in three phases, career paths) and an access card      |
+| `/intermediate/http`    | Module 1 of web application security, HTTP in depth (10 lessons, a checkpoint) |
+| `/intermediate/input`   | Module 2, untrusted input (9 lessons, a checkpoint)                            |
+| `/intermediate/browser` | Module 3, browser-side risks (8 lessons, a checkpoint)                         |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -38,6 +39,26 @@ a file download handler and an HTML template. Nothing reaches a real system.
 The site settings switch is `input`. `tests/untrusted-input.test.ts` checks
 every exercise against the engine; `tests/e2e/input-lab.spec.ts` solves the
 lessons as an Intermediate student.
+
+## Module 3: browser-side risks
+
+`/intermediate/browser` (lab id `browser`, checkpoint `browser-1`, award
+`lab-browser`, site setting `browser`) uses a pretend browser
+(`src/lib/browser-risks/tools.ts`). It only describes what would happen and
+runs nothing: `readMarkup` lists what `innerHTML` would build from a comment,
+`applyPolicy` applies chosen CSP directives to one page's resources, and
+`transfer` shows whether the bank accepts its own and a forged transfer.
+
+| Lessons | What the student does                                                         |
+| ------- | ----------------------------------------------------------------------------- |
+| 1       | Sorts what is trusted code and what can bring foreign code into the page      |
+| 2       | Sees a comment become elements with innerHTML, and stay text with textContent |
+| 3       | Sorts link addresses: only http(s) and site paths are allowed                 |
+| 4       | Builds a CSP that keeps the page working and blocks the three attacks         |
+| 5       | Stops a forged transfer with SameSite or a CSRF token                         |
+| 6       | Sorts which requests carry a SameSite=Lax cookie                              |
+| 7       | Clickjacking and `frame-ancestors`                                            |
+| 8       | Final questions                                                               |
 
 ## Who gets in
 

@@ -90,6 +90,7 @@ test("everything finished", () => {
         security: 36,
         http: 10,
         input: 9,
+        browser: 8,
         scams: 8,
         httpbasics: 9,
         https: 9,

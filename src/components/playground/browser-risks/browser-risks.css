@@ -1,0 +1,90 @@
+/* Browser-side risks lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css and untrusted-input.css. */
+.br-modes,
+.br-directives {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.br-modes legend,
+.br-directives legend {
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.br-mode {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+}
+.br-mode.on {
+  border-color: var(--accent);
+  background: #8052ff1f;
+}
+.br-mode input {
+  accent-color: var(--accent);
+}
+.br-mode:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.br-tree {
+  display: grid;
+  gap: 6px;
+  margin: 6px 0 0;
+  padding: 10px 12px 10px 32px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #0b0b0e;
+  font-size: 13px;
+}
+.br-tree code {
+  overflow-wrap: anywhere;
+}
+.br-element {
+  color: #ffb3a8;
+}
+.br-attr {
+  margin-left: 6px;
+  color: #f5c84c;
+}
+.br-danger {
+  margin-top: 6px;
+}
+.br-attempts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 12px;
+}
+.br-attempt {
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 14px;
+}
+.br-attempt.ok {
+  border-color: #2ee6a666;
+}
+.br-attempt.bad {
+  border-color: #ff7b6b88;
+  background: #ff7b6b0d;
+}
+.br-attempt code {
+  overflow-wrap: anywhere;
+  color: var(--muted);
+  font-size: 12px;
+}
+.br-attempt ul {
+  margin: 0;
+  padding-left: 18px;
+}

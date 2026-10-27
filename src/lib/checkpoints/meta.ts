@@ -176,6 +176,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/input#checkpoints",
     pass: 70,
   },
+  {
+    id: "browser-1",
+    level: "intermediate",
+    lab: { uz: "Brauzer tomonidagi xavflar", en: "Browser-side risks" },
+    title: {
+      uz: "Nazorat: XSS, CSP va CSRF",
+      en: "Checkpoint: XSS, CSP and CSRF",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/browser#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

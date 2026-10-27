@@ -102,6 +102,12 @@ export const SECTIONS = [
     href: "/intermediate/input",
   },
   {
+    id: "browser",
+    group: "lab",
+    label: "Browser-side risks (Intermediate)",
+    href: "/intermediate/browser",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",
