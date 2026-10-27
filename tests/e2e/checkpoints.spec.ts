@@ -203,10 +203,11 @@ test.describe("saved results", () => {
     await expect(achievements.locator(".student-ranking li.me")).toContainText(
       "Malika c.",
     );
+    // The checkpoint and its best score sit on the lab's card in My path.
     await expect(
-      achievements.getByRole("link", {
-        name: /Checkpoint: where addresses come from/,
-      }),
+      page
+        .getByRole("region", { name: "My path" })
+        .getByRole("link", { name: /Checkpoint: where addresses come from/ }),
     ).toContainText(/Passed|Best/);
     await audit(page, "student page with achievements");
 

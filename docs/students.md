@@ -33,7 +33,8 @@ In **Admin → Student materials**, create materials of four kinds:
 - **Levels**: tick Beginner, Intermediate or Advanced to show a material only to students placed at those levels. With no level ticked, every student sees it, including students who are not placed yet. Keep the entrance exam open to everyone. A level works alongside groups: a student sees a material only when both their group and their level allow it.
 - Markdown is sanitized like the public site's: raw HTML and images are not rendered.
 - The Labs section also links to the existing public interactive labs.
-- The student's page lists only sections that have materials (Labs always shows, for the open labs), as compact cards with a row of section links at the top.
+- The student's page lists only sections that have materials, as compact cards with a row of section links at the top. Personal labs and the week's CTF are under Labs.
+- **My path** (`src/components/student/path-section.tsx`) comes right after the assignments: one card per catalog lab that is switched on, in the catalog's order, with its lessons done, its checkpoints and best scores, and its certificate (or what earns it). The lab the next-step card points to is marked. Intermediate labs show only from the Intermediate level up; below it a card explains how Intermediate opens. The CTF, missions, studio and Build & Defend are listed as more practice.
 
 ### Writing a test
 
@@ -181,7 +182,7 @@ Students see their assignments at the top of their page, open work due within a 
 
 `src/lib/student/xp.ts` turns what a student has done into XP: lesson or lab completed 20, practice handed in 30, test best percent (up to 100), personal lab solved 100, checkpoint best percent × 0.6, each finished lesson in an open lab 5. Ranks run from Trainee (0) to Expert (3200). Twelve badges reward first steps, tests, flags, checkpoints, a three-week streak and finishing everything. Weeks start on Monday, Tashkent time; the weekly goal is three actions.
 
-The student page shows the rank card, badges, the group ranking (first name and initial only, active students of the same group) and the lab checkpoints with their best scores.
+The student page shows the rank card, badges and the group ranking (first name and initial only, active students of the same group); lab lessons and checkpoints with their best scores are on the My path cards.
 
 ### Hero of the week and the week's CTF
 

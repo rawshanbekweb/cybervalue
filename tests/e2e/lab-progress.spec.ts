@@ -89,12 +89,14 @@ test.describe("lab progress follows the student", () => {
     ).toContain('"2":true');
 
     await second.goto("/student");
-    await expect(
-      second
-        .locator("#achievements")
-        .getByRole("link", { name: /IP addressing lab/ })
-        .first(),
-    ).toContainText("2/17");
+    const card = second
+      .locator("#path .student-path-card")
+      .filter({ hasText: "IP addressing lab" });
+    await expect(card).toContainText("2 of 17 lessons");
+    await expect(card.getByRole("link", { name: /Continue/ })).toHaveAttribute(
+      "href",
+      "/akademiya/network-basics",
+    );
     // The next-step card picks the started lab up where it stopped.
     await expect(second.locator(".student-next")).toContainText(
       "Lesson 3 of 17",
