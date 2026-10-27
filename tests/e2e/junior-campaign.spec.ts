@@ -225,6 +225,8 @@ test("step 4 comes after the case and never reopens it", async ({ page }) => {
 
   // Eight missions and the case: 900 XP, and the case is still closed.
   await expect(page.locator(".jr-topbar")).toContainText("900 XP");
+  // The last mission is saved in the background; reload once it has landed.
+  await page.waitForLoadState("networkidle");
   await page.reload();
   await expect(caseFile.getByText("Case closed.")).toBeVisible();
   await page

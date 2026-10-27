@@ -341,5 +341,18 @@
   "Returned": "Qaytarildi",
   "Return for rework: the student improves it and hands in again": "Qayta ishlashga qaytarish: o‘quvchi yaxshilab, qaytadan topshiradi",
   "Write what to improve before returning the answer.": "Javobni qaytarishdan oldin nimani yaxshilash kerakligini yozing.",
-  "Academy Intermediate is open for you": "Siz uchun Academy Intermediate ochiq"
+  "Academy Intermediate is open for you": "Siz uchun Academy Intermediate ochiq",
+  "My path": "Mening yo‘lim",
+  "Each lab ends with a checkpoint; finishing both earns a certificate. {done} of {total} labs finished.": "Har bir lab nazorat testi bilan tugaydi; ikkalasini tugatsangiz, sertifikat olasiz. {total} ta labdan {done} tasi tugatildi.",
+  "The next level: web application security in depth. It opens when your teacher places you at the Intermediate level, usually after the beginner labs and the entrance test.": "Keyingi daraja: veb-ilovalar xavfsizligi chuqurroq. U o‘qituvchingiz sizni Intermediate darajasiga o‘tkazganda ochiladi — odatda boshlang‘ich lablar va kirish testidan keyin.",
+  "See the roadmap": "Yo‘l xaritasini ko‘rish",
+  "More practice": "Qo‘shimcha amaliyot",
+  "Start": "Boshlash",
+  "Review": "Takrorlash",
+  "Continue": "Davom ettirish",
+  "Next step": "Keyingi qadam",
+  "Lessons of {lab}": "{lab}: darslar",
+  "{done} of {total} lessons": "{total} darsdan {done} tasi",
+  "Short tests at the end of each lab. They and your best score are on each lab’s card under My path.": "Har bir lab oxiridagi qisqa testlar. Ular va eng yaxshi natijangiz “Mening yo‘lim” bo‘limidagi lab kartochkasida.",
+  "Certificate: lessons + checkpoint": "Sertifikat: darslar + nazorat"
 }

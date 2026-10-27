@@ -16,8 +16,6 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import type { Text } from "@/lib/network/ip";
-import { CHECKPOINT_META } from "@/lib/checkpoints/meta";
-import { LAB_META, LAB_PROGRESS } from "@/lib/lab-progress";
 import {
   STUDENT_BADGES,
   WEEKLY_GOAL,
@@ -41,8 +39,6 @@ const ICONS: Record<BadgeIcon, LucideIcon> = {
   half: PieChart,
   crown: Crown,
 };
-
-const LABS = LAB_META;
 
 export type WeekHero = { name: string; xp: number; me: boolean };
 
@@ -235,67 +231,6 @@ export function AchievementsSection({
             {lastHero &&
               ` · ${t("Last week’s hero: {name}", { name: lastHero.name })}`}
           </p>
-          <h3 className="student-panel-sub">{t("Lab lessons")}</h3>
-          <ul className="student-checkpoints">
-            {LABS.map((lab) => {
-              const done = standing.labs[lab.id] ?? 0;
-              const total = LAB_PROGRESS[lab.id].total;
-              return (
-                <li key={lab.id}>
-                  <a href={lab.href}>
-                    <span>
-                      <strong>{lab.title[locale]}</strong>
-                      <span
-                        className="student-meter student-meter-sm"
-                        role="img"
-                        aria-label={`${done}/${total}`}
-                      >
-                        <span style={{ width: `${(done / total) * 100}%` }} />
-                      </span>
-                    </span>
-                    <span
-                      className={`student-pill ${done === total ? "on" : ""}`}
-                    >
-                      {done}/{total}
-                    </span>
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-          <h3 className="student-panel-sub">{t("Lab checkpoints")}</h3>
-          <ul className="student-checkpoints">
-            {CHECKPOINT_META.map((c) => {
-              const best = standing.checkpoints[c.id];
-              const passed = best !== undefined && best >= c.pass;
-              return (
-                <li key={c.id}>
-                  <a href={c.href}>
-                    <span>
-                      <strong>{c.title[locale]}</strong>
-                      <small>
-                        {c.lab[locale]}
-                        {/* Ranges such as "1–6-darslar" stay on one line. */}
-                        {c.covers[locale].split(" · ").map((part) => (
-                          <span key={part}>
-                            {" · "}
-                            <span className="student-nowrap">{part}</span>
-                          </span>
-                        ))}
-                      </small>
-                    </span>
-                    <span className={`student-pill ${passed ? "on" : ""}`}>
-                      {best === undefined
-                        ? t("Not taken")
-                        : passed
-                          ? t("Passed · {percent}%", { percent: best })
-                          : t("Best {percent}%", { percent: best })}
-                    </span>
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
         </div>
       </div>
     </section>

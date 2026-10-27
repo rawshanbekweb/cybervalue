@@ -29,10 +29,15 @@ import { closedSection } from "@/lib/site-config";
 import { NextStepCard } from "@/components/student/next-step";
 import {
   isLabId,
+  LAB_META,
   LAB_PROGRESS,
   lessonList,
   type LabId,
 } from "@/lib/lab-progress";
+import { getLearningTracks } from "@/lib/learning";
+import { CHECKPOINT_META } from "@/lib/checkpoints/meta";
+import { AWARD_RULES } from "@/lib/student/award-rules";
+import { PathSection, type PathLab } from "@/components/student/path-section";
 import { formatCertificateCode } from "@/lib/student/certificate";
 import { Constellation } from "@/components/student/constellation";
 import { Constellation as ParticlePortrait } from "@/components/constellation";
@@ -60,10 +65,10 @@ const SECTIONS: { id: string; kind: MaterialKind; label: string }[] = [
 // find all of them in one place.
 const EXAMS = [
   {
-    href: "#achievements",
+    href: "#path",
     title: "Lab checkpoints",
     summary:
-      "Short tests at the end of the IP addressing, Linux, HTML and Web Security labs. Your best score shows under Achievements.",
+      "Short tests at the end of each lab. They and your best score are on each lab’s card under My path.",
   },
   {
     href: "/akademiya/html-basics/assessment",
@@ -79,19 +84,10 @@ const EXAMS = [
   },
 ];
 
-// Interactive modules that already exist on the site, linked from the lab section.
-const OPEN_LABS = [
-  { href: "/akademiya/web-security-lab", title: "Web Security Lab" },
-  { href: "/akademiya/linux-basics", title: "Linux foundations lab" },
-  { href: "/akademiya/network-basics", title: "IP addressing lab" },
-  { href: "/akademiya/http-basics", title: "HTTP basics" },
-  { href: "/akademiya/https", title: "HTTPS and TLS" },
-  { href: "/akademiya/bash", title: "Bash basics" },
-  { href: "/akademiya/ssh", title: "SSH: remote access" },
-  { href: "/akademiya/crypto", title: "Cryptography basics" },
+// Practice that is not a lesson-by-lesson lab, listed under My path.
+const EXTRAS = [
   { href: "/akademiya/ctf", title: "00:17 CTF investigation" },
   { href: "/akademiya/missions", title: "Investigation missions" },
-  { href: "/akademiya/html-basics", title: "HTML Basics" },
   { href: "/akademiya/studio", title: "HTML & CSS project studio" },
   { href: "/akademiya/defend", title: "Build & Defend" },
 ];
@@ -183,7 +179,7 @@ export default async function StudentHomePage() {
   const config = await getSiteConfig();
   // Labs whose page is switched off in the site settings are not offered.
   const opens = (href: string) => !closedSection(config, href);
-  const openLabs = OPEN_LABS.filter((lab) => opens(lab.href));
+  const extras = EXTRAS.filter((lab) => opens(lab.href));
   const [
     { materials, done, tests, returned, closed },
     certificates,
@@ -197,7 +193,7 @@ export default async function StudentHomePage() {
     getDb()?.studentCertificate.findMany({
       where: { studentId: student.id, revokedAt: null },
       orderBy: { issuedAt: "desc" },
-      select: { code: true, title: true },
+      select: { code: true, title: true, rule: true },
     }) ?? [],
     getDb()?.student.findUnique({
       where: { id: student.id },
@@ -275,6 +271,38 @@ export default async function StudentHomePage() {
   const portrait = isPortraitData(saved?.portrait) ? saved.portrait : null;
   const entrance = materials.filter((m) => isEntranceExam(m.slug));
   const entranceDone = entrance.filter((m) => done.has(m.id)).length;
+  const labDone = Object.fromEntries(
+    labRows
+      .filter((r) => isLabId(r.lab))
+      .map((r) => [
+        r.lab,
+        lessonList(r.lessons, LAB_PROGRESS[r.lab as LabId].total).length,
+      ]),
+  ) as Partial<Record<LabId, number>>;
+  // Every lab of the catalog that is switched on, as a card with its
+  // checkpoints and certificate, in the catalog's order.
+  const intermediateOpen = opensIntermediate(student.level);
+  const pathLabs: PathLab[] = getLearningTracks()
+    .filter((track) => isLabId(track.id) && opens(track.href))
+    .map((track) => {
+      const id = track.id as LabId;
+      const rule = `lab-${id}`;
+      return {
+        id,
+        title: LAB_META.find((l) => l.id === id)!.title,
+        category: t(track.category),
+        href: track.href,
+        done: labDone[id] ?? 0,
+        total: LAB_PROGRESS[id].total,
+        checkpoints: CHECKPOINT_META.filter(
+          (c) => c.href.split("#")[0] === track.href,
+        ).map((c) => ({ ...c, best: standing?.checkpoints[c.id] })),
+        certificate: certificates.find((c) => c.rule === rule)?.code ?? null,
+        awards: AWARD_RULES.some((r) => r.id === rule),
+      };
+    });
+  const isIntermediate = (lab: PathLab) =>
+    LAB_META.find((l) => l.id === lab.id)?.intermediate;
   const next = nextStep({
     level: student.level,
     opens,
@@ -284,14 +312,7 @@ export default async function StudentHomePage() {
       (m) => !isEntranceExam(m.slug) && !closed.has(m.id),
     ),
     done,
-    labs: Object.fromEntries(
-      labRows
-        .filter((r) => isLabId(r.lab))
-        .map((r) => [
-          r.lab,
-          lessonList(r.lessons, LAB_PROGRESS[r.lab as LabId].total).length,
-        ]),
-    ),
+    labs: labDone,
   });
   // Personal labs sit with the other labs; the entrance exam has its own
   // section. Empty sections are left out, except Labs with the open labs.
@@ -304,7 +325,8 @@ export default async function StudentHomePage() {
           (section.kind === "LAB" && m.kind === "CHALLENGE")),
     ),
   })).filter(
-    (s) => s.items.length > 0 || s.kind === "LAB" || s.kind === "QUIZ",
+    (s) =>
+      s.items.length > 0 || s.kind === "QUIZ" || (s.kind === "LAB" && weekly),
   );
   const jumps = [
     ...(assignments.length
@@ -316,6 +338,13 @@ export default async function StudentHomePage() {
           },
         ]
       : []),
+    {
+      id: "path",
+      label: "My path",
+      // The labs on the cards: Intermediate ones only once they are open.
+      count: pathLabs.filter((lab) => intermediateOpen || !isIntermediate(lab))
+        .length,
+    },
     ...(certificates.length
       ? [
           {
@@ -331,10 +360,7 @@ export default async function StudentHomePage() {
     ...sections.map((s) => ({
       id: s.id,
       label: s.label,
-      count:
-        s.items.length +
-        (s.kind === "LAB" ? openLabs.length : 0) +
-        (s.kind === "QUIZ" ? EXAMS.length : 0),
+      count: s.items.length + (s.kind === "QUIZ" ? EXAMS.length : 0),
     })),
     ...(standing
       ? [
@@ -473,6 +499,16 @@ export default async function StudentHomePage() {
         />
       )}
 
+      <PathSection
+        labs={pathLabs.filter((lab) => !isIntermediate(lab))}
+        intermediate={pathLabs.filter((lab) => isIntermediate(lab))}
+        intermediateOpen={intermediateOpen}
+        extras={extras}
+        next={next.kind === "lab" ? next.lab : null}
+        t={t}
+        locale={locale}
+      />
+
       {certificates.length > 0 && (
         <section
           id="certificates"
@@ -600,23 +636,6 @@ export default async function StudentHomePage() {
                     : t("Nobody in your group has solved it yet. Be first.")}
               </span>
             </Link>
-          )}
-          {section.kind === "LAB" && (
-            <div className="student-open-labs">
-              <p className="student-field-label">
-                {t("Open interactive labs")}
-              </p>
-              <ul>
-                {openLabs.map((lab) => (
-                  <li key={lab.href}>
-                    <a href={lab.href}>
-                      {t(lab.title)}
-                      <ArrowUpRight size={14} aria-hidden="true" />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
           )}
         </section>
       ))}

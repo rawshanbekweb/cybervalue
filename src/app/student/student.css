@@ -8,6 +8,10 @@
   --color-electric-iris: #8052ff;
   --color-saffron-spark: #ffb829;
   --color-deep-verdant: #15846e;
+  /* The student layout does not load globals.css; these match it so the
+     meters, links and focus rings that use them are visible. */
+  --accent: var(--color-electric-iris);
+  --accent-text: #a68bff;
   --font-student:
     "PPNeueMontreal", "Inter", "Segoe UI Variable Text", "Segoe UI",
     ui-sans-serif, system-ui, -apple-system, Roboto, sans-serif;
@@ -499,14 +503,135 @@ body.student-root {
 }
 
 /* Open site labs: a compact row of links under the class labs. */
-.student-open-labs {
-  margin-top: 18px;
+/* My path: every lab at the student's level, with checkpoints and the
+   certificate on its card. */
+.student-path {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
-.student-open-labs .student-field-label {
-  margin: 0 0 10px;
+.student-path-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid #1f1f1f;
+  border-radius: 16px;
+  background: #0a0a0a;
+}
+.student-path-card.next {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent) inset;
+}
+.student-path-card.done {
+  border-color: #2ee6a644;
+}
+.student-path-card .student-meter-sm {
+  width: 100%;
+  margin-top: 2px;
+}
+.student-path-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 26px;
+}
+.student-path-top .student-field-label {
+  margin: 0;
+  font-size: 11px;
+}
+.student-path-top .student-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.student-path-title {
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+.student-path-checks {
+  display: grid;
+  gap: 6px;
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.student-path-checks a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid #1f1f1f;
+  border-radius: 10px;
+  font-size: 13px;
+}
+.student-path-checks a:hover {
+  border-color: #3a3a3a;
+}
+.student-path-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+.student-path-cert,
+.student-path-cert-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+.student-path-cert {
+  color: #2ee6a6;
+}
+.student-path-cert-hint {
+  margin: 0;
   font-size: 12px;
 }
-.student-open-labs ul {
+.student-path-go {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 6px 14px;
+  border: 1px solid #2a2a2a;
+  border-radius: 9999px;
+  font-size: 14px;
+}
+.student-path-go:hover,
+.student-path-card.next .student-path-go {
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+.student-path-group {
+  margin: 28px 0 12px;
+  font-size: 15px;
+  font-weight: 500;
+}
+.student-path-locked {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  border: 1px dashed #2a2a2a;
+  border-radius: 14px;
+  color: var(--color-ash-gray);
+  font-size: 14px;
+}
+.student-path-locked svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.student-path-extras {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -514,7 +639,7 @@ body.student-root {
   padding: 0;
   list-style: none;
 }
-.student-open-labs a {
+.student-path-extras a {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -524,14 +649,9 @@ body.student-root {
   border-radius: 9999px;
   color: var(--color-silver-mist);
   font-size: 14px;
-  font-weight: 400;
-  transition:
-    border-color 0.15s,
-    color 0.15s;
 }
-.student-open-labs a:hover {
-  border-color: var(--color-saffron-spark);
-  color: var(--color-bone-white);
+.student-path-extras a:hover {
+  border-color: #4a4a4a;
 }
 .student-done {
   display: inline-flex;
@@ -825,7 +945,8 @@ body.student-root {
     display: none;
   }
   .student-hero {
-    grid-template-columns: 1fr;
+    /* minmax(0, …) lets long names and cards wrap instead of widening the page. */
+    grid-template-columns: minmax(0, 1fr);
   }
   .student-hero-art {
     display: none;
