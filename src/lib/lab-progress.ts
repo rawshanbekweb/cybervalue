@@ -9,6 +9,7 @@ export const LAB_PROGRESS = {
   security: { key: "sabaq:progress:v1", total: 36 },
   http: { key: "cybervalue:http:progress:v1", total: 10 },
   input: { key: "cybervalue:input:progress:v1", total: 9 },
+  browser: { key: "cybervalue:browser:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -93,6 +94,15 @@ export const LAB_META: {
       en: "Untrusted input (Intermediate)",
     },
     href: "/intermediate/input",
+    intermediate: true,
+  },
+  {
+    id: "browser",
+    title: {
+      uz: "Brauzer tomonidagi xavflar (Intermediate)",
+      en: "Browser-side risks (Intermediate)",
+    },
+    href: "/intermediate/browser",
     intermediate: true,
   },
 ];

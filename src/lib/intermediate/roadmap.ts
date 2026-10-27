@@ -107,6 +107,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Brauzer tomonidagi xavflar", en: "Browser-side risks" },
+        href: "/intermediate/browser",
+        lab: "browser",
         topics: ["XSS", "CSP", "output encoding", "CSRF", "SameSite"],
         goal: goal(
           "Sahifaga begona skript tushishining oldini olish usullarini qo‘llash.",

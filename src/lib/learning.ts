@@ -5,6 +5,7 @@ import { LESSONS as NETWORK_LESSONS } from "@/lib/network/curriculum";
 import { HTML_LESSONS } from "@/components/playground/html-basics/lessons.data";
 import { LESSONS as HTTP_LESSONS } from "@/lib/http/curriculum";
 import { LESSONS as INPUT_LESSONS } from "@/lib/untrusted-input/curriculum";
+import { LESSONS as BROWSER_LESSONS } from "@/lib/browser-risks/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -192,6 +193,23 @@ export function getLearningTracks() {
       level: "Intermediate",
       lessons: INPUT_LESSONS.map(({ id, title }) => ({ id, title: title.en })),
       modules: INPUT_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "browser",
+      title: "Browser-side risks",
+      category: "Intermediate · Web security",
+      description:
+        "See what a comment becomes when it is read as HTML, check link addresses, build a Content-Security-Policy, and stop a foreign site from sending a bank transfer in your name.",
+      href: "/intermediate/browser",
+      progressKey: LAB_PROGRESS.browser.key,
+      level: "Intermediate",
+      lessons: BROWSER_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: BROWSER_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },
