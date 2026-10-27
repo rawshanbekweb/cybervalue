@@ -62,10 +62,10 @@ export function CodeEditor({
             (/:\s*$/.test(line) ? "    " : "");
           if (!indent) return;
           e.preventDefault();
-          const next = `${area.value.slice(0, at)}\n${indent}${area.value.slice(area.selectionEnd)}`;
-          onChange(next.slice(0, 4000));
-          const caret = at + 1 + indent.length;
-          requestAnimationFrame(() => area.setSelectionRange(caret, caret));
+          // Edit the box itself so the caret moves with the text at once;
+          // setting it later lets fast typing land before the indent.
+          area.setRangeText(`\n${indent}`, at, area.selectionEnd, "end");
+          onChange(area.value.slice(0, 4000));
         }}
       />
     </div>
