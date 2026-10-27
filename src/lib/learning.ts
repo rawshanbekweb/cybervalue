@@ -6,6 +6,7 @@ import { HTML_LESSONS } from "@/components/playground/html-basics/lessons.data";
 import { LESSONS as HTTP_LESSONS } from "@/lib/http/curriculum";
 import { LESSONS as INPUT_LESSONS } from "@/lib/untrusted-input/curriculum";
 import { LESSONS as BROWSER_LESSONS } from "@/lib/browser-risks/curriculum";
+import { LESSONS as ACCESS_LESSONS } from "@/lib/access-control/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -210,6 +211,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: BROWSER_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "access",
+      title: "Access control",
+      category: "Intermediate · Web security",
+      description:
+        "Open someone else’s order by changing a number and close the gap, forge a JWT and set the server up to refuse it, and choose a second factor that stops a fake sign-in page.",
+      href: "/intermediate/access",
+      progressKey: LAB_PROGRESS.access.key,
+      level: "Intermediate",
+      lessons: ACCESS_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: ACCESS_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

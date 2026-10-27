@@ -94,6 +94,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Brauzer tomonidagi xavflar (Intermediate)",
     earned: (f) => finished(f, "browser") && passed(f, "browser-1"),
   },
+  {
+    id: "lab-access",
+    title: "Kirish nazorati (Intermediate)",
+    earned: (f) => finished(f, "access") && passed(f, "access-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

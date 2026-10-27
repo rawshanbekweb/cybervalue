@@ -1,0 +1,40 @@
+/* Access control lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css and browser-risks.css. */
+.cb-field select {
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #0b0b0e;
+  color: inherit;
+  font: 15px var(--font-mono);
+}
+.cb-field select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.ac-reply {
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 14px;
+}
+.ac-reply.ok {
+  border-color: #2ee6a666;
+}
+.ac-reply.bad {
+  border-color: #ff7b6b88;
+  background: #ff7b6b0d;
+}
+.ac-reply ul,
+.ac-reply p {
+  margin: 0;
+}
+.ac-reply ul {
+  padding-left: 18px;
+}
+.br-attempt .ac-token {
+  color: #f5c84c;
+}

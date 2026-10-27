@@ -108,6 +108,12 @@ export const SECTIONS = [
     href: "/intermediate/browser",
   },
   {
+    id: "access",
+    group: "lab",
+    label: "Access control (Intermediate)",
+    href: "/intermediate/access",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

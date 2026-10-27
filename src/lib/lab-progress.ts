@@ -10,6 +10,7 @@ export const LAB_PROGRESS = {
   http: { key: "cybervalue:http:progress:v1", total: 10 },
   input: { key: "cybervalue:input:progress:v1", total: 9 },
   browser: { key: "cybervalue:browser:progress:v1", total: 8 },
+  access: { key: "cybervalue:access:progress:v1", total: 9 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -103,6 +104,15 @@ export const LAB_META: {
       en: "Browser-side risks (Intermediate)",
     },
     href: "/intermediate/browser",
+    intermediate: true,
+  },
+  {
+    id: "access",
+    title: {
+      uz: "Kirish nazorati (Intermediate)",
+      en: "Access control (Intermediate)",
+    },
+    href: "/intermediate/access",
     intermediate: true,
   },
 ];

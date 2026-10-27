@@ -22,7 +22,7 @@ test("learning catalog filters lessons and opens the selected HTML exercise", as
   page,
 }) => {
   await page.goto("/akademiya");
-  await expect(page.locator(".learn-card")).toHaveCount(13);
+  await expect(page.locator(".learn-card")).toHaveCount(14);
   await page
     .getByRole("button", { name: "Linux & terminal", exact: true })
     .click();
@@ -122,7 +122,7 @@ test("empty search can be cleared", async ({ page }) => {
     page.getByRole("heading", { name: "No matching tracks" }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Clear filters" }).click();
-  await expect(page.locator(".learn-card")).toHaveCount(13);
+  await expect(page.locator(".learn-card")).toHaveCount(14);
 });
 
 test("learning hub is accessible and fits mobile through desktop", async ({
