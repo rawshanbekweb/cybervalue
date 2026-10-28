@@ -1,0 +1,21 @@
+/* API security lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css and
+   access-control.css. */
+.cb-field .as-body {
+  min-height: 72px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #0b0b0e;
+  color: inherit;
+  font: 14px var(--font-mono);
+  resize: vertical;
+}
+.cb-field .as-body:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.ui-cases th[scope="row"] {
+  text-align: left;
+  font-weight: 600;
+}
