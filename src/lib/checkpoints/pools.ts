@@ -2115,3 +2115,297 @@ export const SYMMETRIC_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const HASHES_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Kriptografik xeshning asosiy xossasi?",
+      en: "The key property of a cryptographic hash?",
+    },
+    right: {
+      uz: "Uni orqaga qaytarib bo‘lmaydi",
+      en: "It cannot be reversed",
+    },
+    wrong: [
+      {
+        uz: "Uni kalit bilan ochish mumkin",
+        en: "It can be opened with a key",
+      },
+      {
+        uz: "Natija matndan uzunroq",
+        en: "The result is longer than the text",
+      },
+      {
+        uz: "Har safar boshqa natija beradi",
+        en: "It gives a new result every time",
+      },
+    ],
+    explain: {
+      uz: "Bir xil matn doim bir xil, qisqa va qaytarilmas xesh beradi.",
+      en: "The same text always gives the same short, one-way hash.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi xesh xavfsizlik uchun yaroqsiz (to‘qnashuvlar topilgan)?",
+      en: "Which hash is unfit for security (collisions found)?",
+    },
+    right: same("MD5"),
+    wrong: [same("SHA-256"), same("SHA-3"), same("SHA-512")],
+    explain: {
+      uz: "MD5 va SHA-1 da bir xil xeshli turli fayllar yasash mumkin.",
+      en: "MD5 and SHA-1 let different files be made with the same hash.",
+    },
+  },
+  {
+    ask: {
+      uz: "Rainbow table nima?",
+      en: "What is a rainbow table?",
+    },
+    right: {
+      uz: "Keng tarqalgan parollar va ularning xeshlari oldindan tayyorlangan jadvali",
+      en: "A precomputed table of common passwords and their hashes",
+    },
+    wrong: [
+      { uz: "Rangli parol menejeri", en: "A colourful password manager" },
+      { uz: "Shifrlash kalitlari ro‘yxati", en: "A list of encryption keys" },
+      { uz: "Tarmoq trafigi diagrammasi", en: "A network traffic chart" },
+    ],
+    explain: {
+      uz: "Salt bunday jadvallarni befoyda qiladi.",
+      en: "A salt makes such tables useless.",
+    },
+  },
+  {
+    ask: {
+      uz: "Salt haqida qaysi gap to‘g‘ri?",
+      en: "Which statement about a salt is true?",
+    },
+    right: {
+      uz: "U har bir foydalanuvchi uchun tasodifiy va xesh yonida ochiq saqlanadi",
+      en: "It is random per user and stored openly next to the hash",
+    },
+    wrong: [
+      {
+        uz: "U barcha foydalanuvchilar uchun bir xil maxfiy kalit",
+        en: "It is one secret key for all users",
+      },
+      {
+        uz: "U parolning o‘rniga saqlanadi",
+        en: "It is stored instead of the password",
+      },
+      { uz: "U faqat admin uchun kerak", en: "It is only needed for admins" },
+    ],
+    explain: {
+      uz: "Salt maxfiy emas — uning vazifasi bir xil parollarni har xil qilish.",
+      en: "A salt is not secret — its job is to make equal passwords differ.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ikki foydalanuvchining paroli bir xil. Salt bo‘lmasa nima ko‘rinadi?",
+      en: "Two users have the same password. Without a salt, what shows?",
+    },
+    right: {
+      uz: "Ularning xeshlari bir xil",
+      en: "Their hashes are identical",
+    },
+    wrong: [
+      { uz: "Hech narsa", en: "Nothing" },
+      { uz: "Ularning parollari ochiq", en: "Their passwords in plain text" },
+      { uz: "Ularning email’lari", en: "Their emails" },
+    ],
+    explain: {
+      uz: "Bitta parol topilsa, ikkinchisi ham ochiladi.",
+      en: "Cracking one opens the other too.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega SHA-256 + salt parol uchun yetarli emas?",
+      en: "Why is SHA-256 plus a salt not enough for passwords?",
+    },
+    right: {
+      uz: "SHA-256 juda tez — taxminlar arzon",
+      en: "SHA-256 is too fast — guesses are cheap",
+    },
+    wrong: [
+      {
+        uz: "SHA-256 ni orqaga qaytarish mumkin",
+        en: "SHA-256 can be reversed",
+      },
+      { uz: "Salt xeshni buzadi", en: "The salt breaks the hash" },
+      {
+        uz: "SHA-256 faqat fayllar uchun ishlaydi",
+        en: "SHA-256 only works on files",
+      },
+    ],
+    explain: {
+      uz: "Bitta videokarta soniyasiga milliardlab SHA-256 hisoblaydi.",
+      en: "One graphics card computes billions of SHA-256 hashes a second.",
+    },
+  },
+  {
+    ask: {
+      uz: "Parol saqlash uchun qaysi biri tavsiya etiladi?",
+      en: "Which is recommended for storing passwords?",
+    },
+    right: same("Argon2id"),
+    wrong: [same("SHA-1"), same("AES-256"), same("Base64")],
+    explain: {
+      uz: "Argon2id sekin va xotira talab qiladi — taxminlar qimmatlashadi.",
+      en: "Argon2id is slow and memory-hard — guessing gets expensive.",
+    },
+  },
+  {
+    ask: {
+      uz: "bcrypt cost 12 dan 13 ga oshirildi. Natija?",
+      en: "bcrypt’s cost went from 12 to 13. The result?",
+    },
+    right: {
+      uz: "Har bir xesh ikki baravar uzoqroq hisoblanadi",
+      en: "Each hash takes twice as long",
+    },
+    wrong: [
+      { uz: "Xesh qisqaradi", en: "The hash gets shorter" },
+      { uz: "Salt o‘chadi", en: "The salt is removed" },
+      { uz: "Hech narsa o‘zgarmaydi", en: "Nothing changes" },
+    ],
+    explain: {
+      uz: "Cost — ikki darajasi.",
+      en: "The cost is a power of two.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega parollarni AES bilan shifrlab saqlash yomon fikr?",
+      en: "Why is encrypting passwords with AES a bad idea?",
+    },
+    right: {
+      uz: "Kalit sizib chiqsa, barcha parollar ochiladi",
+      en: "If the key leaks, every password opens",
+    },
+    wrong: [
+      { uz: "AES juda sekin", en: "AES is too slow" },
+      { uz: "AES parollarni qisqartiradi", en: "AES shortens passwords" },
+      { uz: "AES faqat rasmlarni shifrlaydi", en: "AES only encrypts images" },
+    ],
+    explain: {
+      uz: "Xesh qaytarilmaydi — bu uning parol uchun afzalligi.",
+      en: "A hash cannot be reversed — that is its advantage for passwords.",
+    },
+  },
+  {
+    ask: {
+      uz: "Webhook imzosi sha256(body) bo‘lsa, hujumchi nima qila oladi?",
+      en: "If a webhook’s signature is sha256(body), what can an attacker do?",
+    },
+    right: {
+      uz: "Tanani o‘zgartirib, yangi imzoni o‘zi hisoblaydi",
+      en: "Change the body and compute the new signature itself",
+    },
+    wrong: [
+      {
+        uz: "Hech narsa, xesh qaytarilmaydi",
+        en: "Nothing, a hash is one-way",
+      },
+      { uz: "Faqat xabarni o‘qiydi", en: "Only read the message" },
+      { uz: "Serverni o‘chiradi", en: "Shut down the server" },
+    ],
+    explain: {
+      uz: "Kalitsiz xeshni har kim hisoblaydi; HMAC maxfiy kalit talab qiladi.",
+      en: "Anyone can compute a keyless hash; HMAC needs the secret key.",
+    },
+  },
+  {
+    ask: {
+      uz: "HMAC nima beradi?",
+      en: "What does HMAC give?",
+    },
+    right: {
+      uz: "Xabar kalitni biladigan tomondan kelgani va o‘zgarmaganini",
+      en: "That a message came from someone with the key and was not changed",
+    },
+    wrong: [
+      { uz: "Xabarni shifrlaydi", en: "It encrypts the message" },
+      { uz: "Parolni xavfsiz saqlaydi", en: "It stores passwords safely" },
+      { uz: "Faylni siqadi", en: "It compresses a file" },
+    ],
+    explain: {
+      uz: "HMAC — kalitli xesh; u maxfiylik emas, haqiqiylik beradi.",
+      en: "HMAC is a keyed hash; it gives authenticity, not secrecy.",
+    },
+  },
+  {
+    ask: {
+      uz: "Imzolarni solishtirishda nima ishlatiladi?",
+      en: "What should compare two signatures?",
+    },
+    right: {
+      uz: "Vaqt bo‘yicha xavfsiz taqqoslash (timingSafeEqual)",
+      en: "A constant-time compare (timingSafeEqual)",
+    },
+    wrong: [
+      { uz: "Oddiy === taqqoslash", en: "A plain === comparison" },
+      {
+        uz: "Birinchi 4 belgini solishtirish",
+        en: "Comparing the first 4 characters",
+      },
+      { uz: "Uzunligini solishtirish", en: "Comparing their lengths" },
+    ],
+    explain: {
+      uz: "Oddiy taqqoslash birinchi farqda to‘xtaydi va vaqt orqali sirni oshkor qilishi mumkin.",
+      en: "A plain compare stops at the first difference and can leak the secret through timing.",
+    },
+  },
+  {
+    ask: {
+      uz: "Yuklab olingan fayl o‘zgarmaganini tekshirish uchun?",
+      en: "To check that a downloaded file was not changed?",
+    },
+    right: same("SHA-256"),
+    wrong: [same("bcrypt"), same("Base64"), same("MD5")],
+    explain: {
+      uz: "Fayl uchun tez va ishonchli xesh yetarli.",
+      en: "A fast, sound hash is enough for a file.",
+    },
+  },
+  {
+    ask: {
+      uz: "Zamonaviy tavsiyaga ko‘ra eng muhim parol xossasi?",
+      en: "Under modern guidance, the most important property of a password?",
+    },
+    right: { uz: "Uzunlik", en: "Length" },
+    wrong: [
+      { uz: "Majburiy maxsus belgi", en: "A forced symbol" },
+      { uz: "Har oy almashtirish", en: "Changing it every month" },
+      { uz: "Katta harf bilan boshlanishi", en: "Starting with a capital" },
+    ],
+    explain: {
+      uz: "Uzun ibora qisqa “murakkab” paroldan kuchliroq va eslash oson.",
+      en: "A long phrase beats a short “complex” password and is easier to remember.",
+    },
+  },
+  {
+    ask: {
+      uz: "Parolni qachon almashtirishni so‘rash kerak?",
+      en: "When should users be asked to change a password?",
+    },
+    right: {
+      uz: "Sizib chiqqanligi aniqlanganda",
+      en: "When it is known to have leaked",
+    },
+    wrong: [
+      { uz: "Har 30 kunda", en: "Every 30 days" },
+      { uz: "Har kirishda", en: "At every sign-in" },
+      {
+        uz: "Hech qachon, hatto sizib chiqsa ham",
+        en: "Never, even after a leak",
+      },
+    ],
+    explain: {
+      uz: "Tez-tez majburiy almashtirish zaif parollarga olib keladi.",
+      en: "Frequent forced changes lead to weak passwords.",
+    },
+  },
+];

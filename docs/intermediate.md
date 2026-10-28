@@ -16,6 +16,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/api`       | Module 5, API security (8 lessons, a checkpoint)                               |
 | `/intermediate/classic`   | Cryptography module 1, classical ciphers (8 lessons, a checkpoint)             |
 | `/intermediate/symmetric` | Cryptography module 2, symmetric encryption (8 lessons, a checkpoint)          |
+| `/intermediate/hashes`    | Cryptography module 3, hashes and passwords (8 lessons, a checkpoint)          |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -149,6 +150,28 @@ which a keyed tag (standing in for GCM's) then catches.
 | 6       | Sorts sound and risky ways to keep keys                                   |
 | 7       | Questions on choosing AES-GCM and deriving keys from passwords            |
 | 8       | Final questions                                                           |
+
+## Cryptography module 3: hashes and passwords
+
+`/intermediate/hashes` (lab id `hashes`, checkpoint `hashes-1`, award
+`lab-hashes`, site setting `hashes`) uses real SHA-256 (from
+`src/lib/crypto-basics/tools.ts`) and an HMAC-SHA256 checked against
+`node:crypto` in `src/lib/hashes/tools.ts`. `leak` shows a user table with and
+without salt against a table of common passwords; `costOutcome` compares
+SHA-256 with bcrypt at each cost, using round speeds for one graphics card;
+`webhook` signs a payment notice with a plain hash or an HMAC and shows
+whether a forged amount gets through.
+
+| Lessons | What the student does                                                   |
+| ------- | ----------------------------------------------------------------------- |
+| 1       | Sorts true and false claims about SHA-256                               |
+| 2       | Sees three passwords cracked from an unsalted table, then adds a salt   |
+| 3       | Picks bcrypt at a cost (8–12) slow for a GPU and quick for a user       |
+| 4       | Sorts what is fit for storing passwords                                 |
+| 5       | Sees a plain-hash webhook forged, then signs it with HMAC               |
+| 6       | Questions on password policy (length, breach lists, no forced rotation) |
+| 7       | Picks the right tool: SHA-256 for files, HMAC for a shared key          |
+| 8       | Final questions                                                         |
 
 ## Who gets in
 

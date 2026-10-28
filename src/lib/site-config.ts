@@ -132,6 +132,12 @@ export const SECTIONS = [
     href: "/intermediate/symmetric",
   },
   {
+    id: "hashes",
+    group: "lab",
+    label: "Hashes and passwords (Intermediate)",
+    href: "/intermediate/hashes",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

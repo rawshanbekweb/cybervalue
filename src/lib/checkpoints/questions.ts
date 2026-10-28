@@ -33,6 +33,7 @@ import {
   API_POOL,
   CLASSIC_POOL,
   SYMMETRIC_POOL,
+  HASHES_POOL,
   SECURITY_EXTRA,
   type PoolItem,
 } from "./pools";
@@ -669,6 +670,10 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
       .map((item) => fromPool(r, item)),
   "symmetric-1": (r) =>
     shuffle(r, SYMMETRIC_POOL)
+      .slice(0, 10)
+      .map((item) => fromPool(r, item)),
+  "hashes-1": (r) =>
+    shuffle(r, HASHES_POOL)
       .slice(0, 10)
       .map((item) => fromPool(r, item)),
 };
