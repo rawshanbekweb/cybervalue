@@ -8,6 +8,7 @@ import { LESSONS as INPUT_LESSONS } from "@/lib/untrusted-input/curriculum";
 import { LESSONS as BROWSER_LESSONS } from "@/lib/browser-risks/curriculum";
 import { LESSONS as ACCESS_LESSONS } from "@/lib/access-control/curriculum";
 import { LESSONS as API_LESSONS } from "@/lib/api-security/curriculum";
+import { LESSONS as CLASSIC_LESSONS } from "@/lib/classical-ciphers/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -246,6 +247,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: API_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "classic",
+      title: "Classical ciphers",
+      category: "Intermediate · Cryptography",
+      description:
+        "Break a Caesar message by trying every key and then by counting letters, read a Vigenère message from its first word, and see what makes the one-time pad perfect and what breaks it.",
+      href: "/intermediate/classic",
+      progressKey: LAB_PROGRESS.classic.key,
+      level: "Intermediate",
+      lessons: CLASSIC_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: CLASSIC_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

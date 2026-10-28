@@ -150,6 +150,8 @@ export const DOMAINS: Domain[] = [
     modules: [
       {
         title: { uz: "Klassik shifrlar", en: "Classical ciphers" },
+        href: "/intermediate/classic",
+        lab: "classic",
         topics: ["Caesar", "Vigenère", "frequency analysis"],
         goal: goal(
           "Nega eski shifrlar bugun himoya bermasligini tushuntirish.",

@@ -1565,3 +1565,274 @@ export const API_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const CLASSIC_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Sezar shifrida 3 siljish bilan “a” qaysi harfga aylanadi?",
+      en: "With a Caesar shift of 3, what does “a” become?",
+    },
+    right: same("d"),
+    wrong: [same("c"), same("x"), same("b")],
+    explain: {
+      uz: "a → b → c → d: uch qadam oldinga.",
+      en: "a → b → c → d: three steps on.",
+    },
+  },
+  {
+    ask: {
+      uz: "Sezar shifrini buzishning eng oddiy usuli?",
+      en: "The simplest way to break a Caesar cipher?",
+    },
+    right: {
+      uz: "Barcha 25 kalitni sinab chiqish",
+      en: "Try all 25 keys",
+    },
+    wrong: [
+      { uz: "Kalitni serverdan so‘rash", en: "Ask the server for the key" },
+      { uz: "Matnni ikki marta shifrlash", en: "Encrypt the text twice" },
+      { uz: "Buzib bo‘lmaydi", en: "It cannot be broken" },
+    ],
+    explain: {
+      uz: "Kalitlar juda kam, shuning uchun brute force bir zumda ishlaydi.",
+      en: "There are so few keys that brute force works at once.",
+    },
+  },
+  {
+    ask: {
+      uz: "O‘zbekcha uzun matnda eng ko‘p uchraydigan harf qaysi?",
+      en: "Which letter is most frequent in a long Uzbek text?",
+    },
+    right: same("a"),
+    wrong: [same("z"), same("q"), same("x")],
+    explain: {
+      uz: "Shu sababli eng ko‘p uchragan shifr harfi odatda “a” ning o‘rnida turadi.",
+      en: "So the most frequent cipher letter usually stands for “a”.",
+    },
+  },
+  {
+    ask: {
+      uz: "Sezar matnida eng ko‘p uchragan harf “l”. Ehtimoliy kalit (siljish) qancha?",
+      en: "The most frequent letter of a Caesar text is “l”. What is the likely key (shift)?",
+    },
+    right: same("11"),
+    wrong: [same("12"), same("10"), same("3")],
+    explain: {
+      uz: "“l” “a” dan 11 harf keyin turadi.",
+      en: "“l” is 11 letters after “a”.",
+    },
+  },
+  {
+    ask: {
+      uz: "Oddiy almashtirish shifrida 26! kalit bor. Nega u baribir zaif?",
+      en: "A simple substitution cipher has 26! keys. Why is it still weak?",
+    },
+    right: {
+      uz: "Harflar chastotasi shifr matnida saqlanadi",
+      en: "Letter frequencies survive in the ciphertext",
+    },
+    wrong: [
+      { uz: "26! juda kichik son", en: "26! is a small number" },
+      {
+        uz: "Kalit matnning oxirida yoziladi",
+        en: "The key is written at the end",
+      },
+      { uz: "U faqat raqamlarni shifrlaydi", en: "It encrypts digits only" },
+    ],
+    explain: {
+      uz: "Kalitlar soni ko‘p bo‘lsa ham, til izlari yo‘qolmaydi.",
+      en: "However many keys there are, the language’s traces remain.",
+    },
+  },
+  {
+    ask: {
+      uz: "Chastota tahlilini kim birinchi bo‘lib yozib qoldirgan?",
+      en: "Who first wrote down frequency analysis?",
+    },
+    right: { uz: "Al-Kindiy (IX asr)", en: "Al-Kindi (9th century)" },
+    wrong: [
+      { uz: "Yuliy Sezar", en: "Julius Caesar" },
+      { uz: "Alan Turing", en: "Alan Turing" },
+      { uz: "Blez de Vigenère", en: "Blaise de Vigenère" },
+    ],
+    explain: {
+      uz: "Al-Kindiyning risolasi kriptotahlilning eng qadimgi qo‘llanmasi.",
+      en: "Al-Kindi’s treatise is the oldest known manual of cryptanalysis.",
+    },
+  },
+  {
+    ask: {
+      uz: "Vigenère shifri Sezardan nimasi bilan farq qiladi?",
+      en: "How does Vigenère differ from Caesar?",
+    },
+    right: {
+      uz: "Har bir harf kalit so‘zning navbatdagi harfi qadar suriladi",
+      en: "Each letter moves by the next letter of a key word",
+    },
+    wrong: [
+      { uz: "U faqat unlilarni shifrlaydi", en: "It encrypts vowels only" },
+      {
+        uz: "U harflarni teskari tartibda yozadi",
+        en: "It writes letters backwards",
+      },
+      { uz: "Hech qanday farq yo‘q", en: "There is no difference" },
+    ],
+    explain: {
+      uz: "Shuning uchun bir xil harf turli joyda turli harfga aylanadi.",
+      en: "So the same letter becomes different letters in different places.",
+    },
+  },
+  {
+    ask: {
+      uz: "“kalit” kaliti bilan Vigenère’da birinchi harf necha qadam suriladi?",
+      en: "With the key “kalit”, how far does Vigenère move the first letter?",
+    },
+    right: same("10"),
+    wrong: [same("11"), same("1"), same("0")],
+    explain: {
+      uz: "k — alifboning 11-harfi, a = 0 dan sanaganda 10.",
+      en: "k is the 11th letter; counting a = 0, that is 10.",
+    },
+  },
+  {
+    ask: {
+      uz: "Vigenère’ning asosiy zaifligi?",
+      en: "Vigenère’s main weakness?",
+    },
+    right: { uz: "Kalit takrorlanadi", en: "The key repeats" },
+    wrong: [
+      { uz: "Kalit juda uzun", en: "The key is too long" },
+      { uz: "Faqat raqamlar ishlatiladi", en: "Only digits are used" },
+      {
+        uz: "Shifr matni ochiq matndan qisqa",
+        en: "The ciphertext is shorter",
+      },
+    ],
+    explain: {
+      uz: "Kalit uzunligi ma’lum bo‘lsa, matn bir nechta Sezar shifriga bo‘linadi.",
+      en: "Once the key length is known, the text splits into Caesar ciphers.",
+    },
+  },
+  {
+    ask: {
+      uz: "Xabar “salom” bilan boshlanishi ma’lum. Bu qaysi hujum?",
+      en: "A message is known to start with “salom”. Which attack is this?",
+    },
+    right: {
+      uz: "Ma’lum ochiq matn hujumi",
+      en: "A known-plaintext attack",
+    },
+    wrong: [
+      { uz: "Brute force", en: "Brute force" },
+      { uz: "Fishing", en: "Phishing" },
+      { uz: "DDoS", en: "DDoS" },
+    ],
+    explain: {
+      uz: "Ochiq va shifrlangan harflarni solishtirib kalit tiklanadi.",
+      en: "Comparing plain and cipher letters rebuilds the key.",
+    },
+  },
+  {
+    ask: {
+      uz: "One-time pad xavfsiz bo‘lishi uchun qaysi shart kerak emas?",
+      en: "Which condition is not needed for a one-time pad to be secure?",
+    },
+    right: {
+      uz: "Algoritmni maxfiy saqlash",
+      en: "Keeping the algorithm secret",
+    },
+    wrong: [
+      { uz: "Kalit haqiqatan tasodifiy", en: "A truly random key" },
+      { uz: "Kalit xabar uzunligida", en: "A key as long as the message" },
+      { uz: "Kalit bir marta ishlatiladi", en: "The key is used once" },
+    ],
+    explain: {
+      uz: "Algoritm ma’lum bo‘lsa ham, uchta shart bajarilsa — xavfsiz.",
+      en: "Even with the algorithm known, the three conditions keep it secure.",
+    },
+  },
+  {
+    ask: {
+      uz: "One-time pad kaliti ikki xabar uchun ishlatildi. Nima bo‘ladi?",
+      en: "A one-time pad key was used for two messages. What happens?",
+    },
+    right: {
+      uz: "Ikki shifr matnini birlashtirish kalitni yo‘qotadi va matnlarni ochish mumkin",
+      en: "Combining the two ciphertexts cancels the key and the texts can be recovered",
+    },
+    wrong: [
+      { uz: "Hech narsa, u baribir xavfsiz", en: "Nothing, it stays secure" },
+      {
+        uz: "Shifr ikki baravar kuchliroq bo‘ladi",
+        en: "The cipher gets twice as strong",
+      },
+      { uz: "Xabarlar o‘chib ketadi", en: "The messages are deleted" },
+    ],
+    explain: {
+      uz: "Nomining o‘zi aytib turibdi: kalit faqat bir marta.",
+      en: "The name says it: the key is for one time only.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kerckhoffs tamoyili nima deydi?",
+      en: "What does Kerckhoffs’s principle say?",
+    },
+    right: {
+      uz: "Algoritm ma’lum bo‘lsa ham shifr xavfsiz qolishi kerak; maxfiy faqat kalit",
+      en: "A cipher must stay secure even if the algorithm is known; only the key is secret",
+    },
+    wrong: [
+      {
+        uz: "Algoritm hech qachon oshkor qilinmasligi kerak",
+        en: "The algorithm must never be revealed",
+      },
+      {
+        uz: "Kalit algoritm ichida yozilishi kerak",
+        en: "The key must be written into the algorithm",
+      },
+      {
+        uz: "Har bir xabar uchun yangi algoritm kerak",
+        en: "Each message needs a new algorithm",
+      },
+    ],
+    explain: {
+      uz: "Algoritmlar sizib chiqadi; xavfsizlik kalitga tayanishi kerak.",
+      en: "Algorithms leak; security must rest on the key.",
+    },
+  },
+  {
+    ask: {
+      uz: "Dasturchi o‘zi o‘ylab topgan shifrni ishlatmoqchi. To‘g‘ri maslahat?",
+      en: "A developer wants to use a cipher they invented. The right advice?",
+    },
+    right: {
+      uz: "Sinovdan o‘tgan standart kutubxonani ishlatish",
+      en: "Use a tested, standard library",
+    },
+    wrong: [
+      { uz: "Algoritmni yashirin saqlash", en: "Keep the algorithm hidden" },
+      { uz: "Shifrni uch marta qo‘llash", en: "Apply the cipher three times" },
+      {
+        uz: "Faqat qisqa xabarlarni shifrlash",
+        en: "Only encrypt short messages",
+      },
+    ],
+    explain: {
+      uz: "Uydirma shifrlar deyarli har doim oson buziladi.",
+      en: "Home-made ciphers are almost always easy to break.",
+    },
+  },
+  {
+    ask: {
+      uz: "Zamonaviy shifrlarda kalitlar soni qanchaga yaqin?",
+      en: "Roughly how many keys do modern ciphers have?",
+    },
+    right: same("2¹²⁸"),
+    wrong: [same("25"), same("26"), same("1000")],
+    explain: {
+      uz: "Bunday sonni sinab chiqish amalda imkonsiz.",
+      en: "Trying that many is impossible in practice.",
+    },
+  },
+];
