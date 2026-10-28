@@ -13,6 +13,7 @@ import { LESSONS as CRYPTO } from "../src/lib/crypto-basics/curriculum";
 import { LESSONS as INPUT } from "../src/lib/untrusted-input/curriculum";
 import { LESSONS as SCAMS } from "../src/lib/scams/curriculum";
 import { LESSONS as BROWSER } from "../src/lib/browser-risks/curriculum";
+import { LESSONS as ACCESS } from "../src/lib/access-control/curriculum";
 import {
   isLabId,
   LAB_PROGRESS,
@@ -34,6 +35,7 @@ test("lab progress totals match the lessons", () => {
   assert.equal(LAB_PROGRESS.input.total, INPUT.length);
   assert.equal(LAB_PROGRESS.scams.total, SCAMS.length);
   assert.equal(LAB_PROGRESS.browser.total, BROWSER.length);
+  assert.equal(LAB_PROGRESS.access.total, ACCESS.length);
   assert.equal(isLabId("toString"), false);
   assert.equal(isLabId("network"), true);
 });

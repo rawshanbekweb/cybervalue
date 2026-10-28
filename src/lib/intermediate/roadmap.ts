@@ -117,6 +117,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Kirish nazorati", en: "Access control" },
+        href: "/intermediate/access",
+        lab: "access",
         topics: ["authentication", "authorization", "IDOR", "JWT", "MFA"],
         goal: goal(
           "“Kim?” va “nimaga ruxsat?” savollarini to‘g‘ri tekshiradigan kodni tanib olish.",

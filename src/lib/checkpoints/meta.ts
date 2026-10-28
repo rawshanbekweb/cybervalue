@@ -191,6 +191,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/browser#checkpoints",
     pass: 70,
   },
+  {
+    id: "access-1",
+    level: "intermediate",
+    lab: { uz: "Kirish nazorati", en: "Access control" },
+    title: {
+      uz: "Nazorat: IDOR, JWT va MFA",
+      en: "Checkpoint: IDOR, JWT and MFA",
+    },
+    covers: {
+      uz: "1–9-darslar · 10 savol",
+      en: "Lessons 1–9 · 10 questions",
+    },
+    href: "/intermediate/access#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

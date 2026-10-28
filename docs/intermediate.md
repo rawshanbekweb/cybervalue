@@ -12,6 +12,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/http`    | Module 1 of web application security, HTTP in depth (10 lessons, a checkpoint) |
 | `/intermediate/input`   | Module 2, untrusted input (9 lessons, a checkpoint)                            |
 | `/intermediate/browser` | Module 3, browser-side risks (8 lessons, a checkpoint)                         |
+| `/intermediate/access`  | Module 4, access control (9 lessons, a checkpoint)                             |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -59,6 +60,28 @@ runs nothing: `readMarkup` lists what `innerHTML` would build from a comment,
 | 6       | Sorts which requests carry a SameSite=Lax cookie                              |
 | 7       | Clickjacking and `frame-ancestors`                                            |
 | 8       | Final questions                                                               |
+
+## Module 4: access control
+
+`/intermediate/access` (lab id `access`, checkpoint `access-1`, award
+`lab-access`, site setting `access`) uses pretend services
+(`src/lib/access-control/tools.ts`) that answer in the page: `getOrder` is an
+orders API with and without the owner check, `makeToken` and `check` issue and
+check JWTs (with a simplified, keyed stand-in for HMAC-SHA256, so the lesson
+needs no crypto library), and `stops` says which attacks each way of signing
+in stops.
+
+| Lessons | What the student does                                                        |
+| ------- | ---------------------------------------------------------------------------- |
+| 1       | Sorts checks into “who?” (authentication) and “allowed?” (authorization)     |
+| 2       | Opens another person’s order by changing a number, then adds the owner check |
+| 3       | Sorts which measures really protect: server checks, not hidden buttons       |
+| 4       | Reads the parts of a JWT                                                     |
+| 5       | Sets up the server so an edited token and an `alg: none` token are refused   |
+| 6       | Sorts what may go in a token payload                                         |
+| 7       | Chooses a second factor that stops all four attacks (a security key)         |
+| 8       | Questions on password storage, error messages and rate limiting              |
+| 9       | Final questions                                                              |
 
 ## Who gets in
 

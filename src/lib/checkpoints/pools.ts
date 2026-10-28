@@ -964,3 +964,324 @@ export const BROWSER_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const ACCESS_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Autentifikatsiya qaysi savolga javob beradi?",
+      en: "Which question does authentication answer?",
+    },
+    right: { uz: "Siz kimsiz?", en: "Who are you?" },
+    wrong: [
+      { uz: "Sizga bunga ruxsat bormi?", en: "Are you allowed to do this?" },
+      { uz: "So‘rov qayerdan keldi?", en: "Where did the request come from?" },
+      { uz: "Ma’lumot shifrlanganmi?", en: "Is the data encrypted?" },
+    ],
+    explain: {
+      uz: "Avtorizatsiya — “ruxsat bormi?”, autentifikatsiya — “kim?”.",
+      en: "Authorization is “allowed?”, authentication is “who?”.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ali /api/orders/1042 ni ochdi va Valining buyurtmasini ko‘rdi. Server nimani tekshirmagan?",
+      en: "Ali opened /api/orders/1042 and saw Vali’s order. What did the server not check?",
+    },
+    right: {
+      uz: "Buyurtma shu foydalanuvchiga tegishli ekanini",
+      en: "That the order belongs to this user",
+    },
+    wrong: [
+      { uz: "Alining tizimga kirganini", en: "That Ali is signed in" },
+      {
+        uz: "So‘rov HTTPS orqali kelganini",
+        en: "That the request came over HTTPS",
+      },
+      {
+        uz: "Buyurtma raqami sonligini",
+        en: "That the order number is a number",
+      },
+    ],
+    explain: {
+      uz: "Bu IDOR: egalik har bir so‘rovda serverda tekshirilishi kerak.",
+      en: "This is IDOR: ownership must be checked on the server on every request.",
+    },
+  },
+  {
+    ask: {
+      uz: "Egalik tekshiruvi bo‘lgan so‘rov qaysi?",
+      en: "Which query checks ownership?",
+    },
+    right: same("SELECT * FROM orders WHERE id = ? AND owner = ?"),
+    wrong: [
+      same("SELECT * FROM orders WHERE id = ?"),
+      same("SELECT * FROM orders WHERE owner LIKE '%'"),
+      same("SELECT * FROM orders ORDER BY id"),
+    ],
+    explain: {
+      uz: "Yozuv faqat egasi so‘raganda qaytadi.",
+      en: "The record comes back only when its owner asks.",
+    },
+  },
+  {
+    ask: {
+      uz: "Buyurtma raqamlarini tasodifiy UUID ga almashtirish IDOR ni to‘liq tuzatadimi?",
+      en: "Does switching order numbers to random UUIDs fully fix IDOR?",
+    },
+    right: {
+      uz: "Yo‘q: taxminni qiyinlashtiradi, lekin egalik tekshiruvi baribir kerak",
+      en: "No: it makes guessing harder, but the ownership check is still needed",
+    },
+    wrong: [
+      {
+        uz: "Ha, UUID ni hech kim bilmaydi",
+        en: "Yes, nobody can know a UUID",
+      },
+      { uz: "Ha, agar HTTPS bo‘lsa", en: "Yes, if HTTPS is used" },
+      { uz: "Faqat adminlar uchun", en: "Only for admins" },
+    ],
+    explain: {
+      uz: "Havola loglar yoki xatlar orqali sizib chiqishi mumkin.",
+      en: "A link can leak through logs or messages.",
+    },
+  },
+  {
+    ask: {
+      uz: "Admin tugmasi oddiy foydalanuvchilardan yashirilgan. Bu yetarlimi?",
+      en: "The admin button is hidden from ordinary users. Is that enough?",
+    },
+    right: {
+      uz: "Yo‘q: server API’da rolni tekshirishi kerak",
+      en: "No: the server must check the role on the API",
+    },
+    wrong: [
+      {
+        uz: "Ha, tugma ko‘rinmasa, bosib bo‘lmaydi",
+        en: "Yes, a button nobody sees cannot be clicked",
+      },
+      {
+        uz: "Ha, agar tugma disabled bo‘lsa",
+        en: "Yes, if the button is disabled",
+      },
+      {
+        uz: "Ha, agar sahifa React’da bo‘lsa",
+        en: "Yes, if the page uses React",
+      },
+    ],
+    explain: {
+      uz: "So‘rovni tugmasiz ham yuborish mumkin.",
+      en: "The request can be sent without the button.",
+    },
+  },
+  {
+    ask: {
+      uz: "“Deny by default” nimani anglatadi?",
+      en: "What does “deny by default” mean?",
+    },
+    right: {
+      uz: "Har bir yo‘l yopiq, ruxsat aniq qoida bilan beriladi",
+      en: "Every route is closed until an explicit rule opens it",
+    },
+    wrong: [
+      { uz: "Barcha so‘rovlar rad etiladi", en: "Every request is refused" },
+      { uz: "Faqat adminlar kira oladi", en: "Only admins can get in" },
+      {
+        uz: "Xatolar foydalanuvchiga ko‘rsatilmaydi",
+        en: "Errors are not shown to users",
+      },
+    ],
+    explain: {
+      uz: "Shunda unutilgan yo‘l ochiq qolmaydi.",
+      en: "Then a forgotten route does not stay open.",
+    },
+  },
+  {
+    ask: {
+      uz: "JWT necha qismdan iborat?",
+      en: "How many parts does a JWT have?",
+    },
+    right: {
+      uz: "Uch: sarlavha, payload va imzo",
+      en: "Three: header, payload and signature",
+    },
+    wrong: [
+      { uz: "Ikki: login va parol", en: "Two: login and password" },
+      { uz: "Bitta shifrlangan qism", en: "One encrypted part" },
+      {
+        uz: "To‘rt: kalit, sir, vaqt va imzo",
+        en: "Four: key, secret, time and signature",
+      },
+    ],
+    explain: {
+      uz: "Qismlar nuqta bilan ajratiladi.",
+      en: "The parts are separated by dots.",
+    },
+  },
+  {
+    ask: {
+      uz: "JWT payload’i qanday himoyalangan?",
+      en: "How is a JWT payload protected?",
+    },
+    right: {
+      uz: "Imzo uni o‘zgartirishdan himoya qiladi, lekin uni har kim o‘qiy oladi",
+      en: "The signature guards it against changes, but anyone can read it",
+    },
+    wrong: [
+      {
+        uz: "U shifrlangan, faqat server o‘qiydi",
+        en: "It is encrypted; only the server reads it",
+      },
+      { uz: "Hech qanday himoya yo‘q", en: "It has no protection at all" },
+      {
+        uz: "Uni faqat brauzer o‘qiy oladi",
+        en: "Only the browser can read it",
+      },
+    ],
+    explain: {
+      uz: "Payload faqat Base64URL bilan yozilgan.",
+      en: "The payload is only Base64URL.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ali tokendagi role ni admin ga o‘zgartirdi, imzo eskicha qoldi. Imzoni tekshiradigan server nima qiladi?",
+      en: "Ali changed the role in his token to admin and kept the old signature. What does a server that checks signatures do?",
+    },
+    right: {
+      uz: "Rad etadi: imzo mos kelmaydi",
+      en: "Refuses it: the signature does not match",
+    },
+    wrong: [
+      {
+        uz: "Qabul qiladi: token o‘qiladi",
+        en: "Accepts it: the token can be read",
+      },
+      { uz: "Alini admin qiladi", en: "Makes Ali an admin" },
+      {
+        uz: "Tokenning muddatini uzaytiradi",
+        en: "Extends the token’s lifetime",
+      },
+    ],
+    explain: {
+      uz: "Imzo sarlavha va payload’dan server siri bilan hisoblanadi.",
+      en: "The signature is computed from the header and payload with the server’s secret.",
+    },
+  },
+  {
+    ask: {
+      uz: "alg: none hujumini nima to‘xtatadi?",
+      en: "What stops the alg: none attack?",
+    },
+    right: {
+      uz: "Ruxsat etilgan algoritmni serverda belgilash",
+      en: "Fixing the allowed algorithm on the server",
+    },
+    wrong: [
+      { uz: "Tokenni uzunroq qilish", en: "Making the token longer" },
+      { uz: "Tokenni cookie’da saqlash", en: "Keeping the token in a cookie" },
+      {
+        uz: "Payload’ga parol qo‘shish",
+        en: "Adding the password to the payload",
+      },
+    ],
+    explain: {
+      uz: "Algoritmni tokendan olgan server hujumchiga tanlov beradi.",
+      en: "A server that takes the algorithm from the token lets the attacker choose it.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi ma’lumot JWT payload’iga yozilmasligi kerak?",
+      en: "Which data must not go in a JWT payload?",
+    },
+    right: { uz: "Foydalanuvchi paroli", en: "The user’s password" },
+    wrong: [
+      { uz: "Foydalanuvchi ID (sub)", en: "The user ID (sub)" },
+      { uz: "Amal qilish muddati (exp)", en: "The expiry time (exp)" },
+      { uz: "Rol", en: "The role" },
+    ],
+    explain: {
+      uz: "Payload’ni tokenni ko‘rgan har kim o‘qiydi.",
+      en: "Anyone who sees the token reads the payload.",
+    },
+  },
+  {
+    ask: {
+      uz: "Hujumchi SIM almashtirish bilan raqamingizni oldi. Qaysi ikkinchi omil o‘g‘irlanadi?",
+      en: "An attacker took your number with a SIM swap. Which second factor is stolen?",
+    },
+    right: { uz: "SMS kod", en: "The SMS code" },
+    wrong: [
+      { uz: "Ilovadagi TOTP kod", en: "The TOTP app code" },
+      { uz: "Xavfsizlik kaliti", en: "The security key" },
+      { uz: "Passkey", en: "The passkey" },
+    ],
+    explain: {
+      uz: "SMS raqamga keladi; raqam boshqa kartada bo‘lsa, kod hujumchiga boradi.",
+      en: "SMS goes to the number; once it is on another card, the code goes to the attacker.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega passkey soxta kirish sahifasidan himoya qiladi?",
+      en: "Why does a passkey protect against a fake sign-in page?",
+    },
+    right: {
+      uz: "U faqat saytning haqiqiy manzili uchun imzo qo‘yadi",
+      en: "It signs only for the site’s real address",
+    },
+    wrong: [
+      { uz: "U uzunroq kod yuboradi", en: "It sends a longer code" },
+      { uz: "U SMS orqali keladi", en: "It arrives by SMS" },
+      { uz: "U parolni shifrlaydi", en: "It encrypts the password" },
+    ],
+    explain: {
+      uz: "Soxta sahifa haqiqiy saytga uzatadigan hech narsa olmaydi.",
+      en: "The fake page gets nothing it can pass to the real site.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kirish xato bo‘lganda qaysi xabar to‘g‘ri?",
+      en: "Which message is right after a failed sign-in?",
+    },
+    right: { uz: "Email yoki parol noto‘g‘ri", en: "Wrong email or password" },
+    wrong: [
+      { uz: "Bunday email topilmadi", en: "No account with this email" },
+      {
+        uz: "Parol noto‘g‘ri, email to‘g‘ri",
+        en: "Wrong password, the email is right",
+      },
+      {
+        uz: "Parolning birinchi harfi xato",
+        en: "The first letter of the password is wrong",
+      },
+    ],
+    explain: {
+      uz: "Umumiy xabar qaysi hisoblar mavjudligini oshkor qilmaydi.",
+      en: "A shared message does not reveal which accounts exist.",
+    },
+  },
+  {
+    ask: {
+      uz: "Parollarni saqlashning to‘g‘ri usuli?",
+      en: "The right way to store passwords?",
+    },
+    right: {
+      uz: "Argon2 yoki bcrypt, tuz bilan",
+      en: "Argon2 or bcrypt, salted",
+    },
+    wrong: [
+      { uz: "Base64 bilan kodlab", en: "Encoded in Base64" },
+      {
+        uz: "Ochiq matnda, lekin yopiq bazada",
+        en: "In plain text, in a private database",
+      },
+      { uz: "Bitta MD5 xesh bilan", en: "As a single MD5 hash" },
+    ],
+    explain: {
+      uz: "Sekin xesh har bir taxminni qimmat qiladi.",
+      en: "A slow hash makes every guess expensive.",
+    },
+  },
+];

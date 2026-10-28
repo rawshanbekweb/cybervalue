@@ -29,6 +29,7 @@ import {
   HTTP_POOL,
   INPUT_POOL,
   BROWSER_POOL,
+  ACCESS_POOL,
   SECURITY_EXTRA,
   type PoolItem,
 } from "./pools";
@@ -649,6 +650,10 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
       .map((item) => fromPool(r, item)),
   "browser-1": (r) =>
     shuffle(r, BROWSER_POOL)
+      .slice(0, 10)
+      .map((item) => fromPool(r, item)),
+  "access-1": (r) =>
+    shuffle(r, ACCESS_POOL)
       .slice(0, 10)
       .map((item) => fromPool(r, item)),
 };
