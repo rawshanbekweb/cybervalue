@@ -183,6 +183,8 @@ export const DOMAINS: Domain[] = [
           uz: "Ochiq kalitli kriptografiya",
           en: "Public-key cryptography",
         },
+        href: "/intermediate/pubkey",
+        lab: "pubkey",
         topics: ["RSA", "Diffie–Hellman", "ECC", "signatures"],
         goal: goal(
           "Kalit almashish va raqamli imzo g‘oyasini tushuntirish.",

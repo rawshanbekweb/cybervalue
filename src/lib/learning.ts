@@ -11,6 +11,7 @@ import { LESSONS as API_LESSONS } from "@/lib/api-security/curriculum";
 import { LESSONS as CLASSIC_LESSONS } from "@/lib/classical-ciphers/curriculum";
 import { LESSONS as SYMMETRIC_LESSONS } from "@/lib/symmetric/curriculum";
 import { LESSONS as HASHES_LESSONS } from "@/lib/hashes/curriculum";
+import { LESSONS as PUBKEY_LESSONS } from "@/lib/public-key/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -300,6 +301,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: HASHES_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "pubkey",
+      title: "Public-key cryptography",
+      category: "Intermediate · Cryptography",
+      description:
+        "Agree a key with Diffie–Hellman while Eve listens, build an RSA key from two primes and see it factored, and stop a man in the middle with a signed public value.",
+      href: "/intermediate/pubkey",
+      progressKey: LAB_PROGRESS.pubkey.key,
+      level: "Intermediate",
+      lessons: PUBKEY_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: PUBKEY_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },
