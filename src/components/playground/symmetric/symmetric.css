@@ -1,0 +1,85 @@
+/* Symmetric encryption lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css and
+   access-control.css. */
+.sy-pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  gap: 16px;
+}
+.sy-figure {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+.sy-pixels {
+  display: grid;
+  grid-template-columns: repeat(32, 1fr);
+  aspect-ratio: 32 / 24;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.sy-pixels .c0 {
+  background: #15151b;
+}
+.sy-pixels .c1 {
+  background: #9a9aa6;
+}
+.sy-pixels .c2 {
+  background: #8052ff;
+}
+.sy-pixels .c3 {
+  background: #050507;
+}
+.sy-pixels.cipher .c0 {
+  background: #1d4e89;
+}
+.sy-pixels.cipher .c1 {
+  background: #f5c84c;
+}
+.sy-pixels.cipher .c2 {
+  background: #2ee6a6;
+}
+.sy-pixels.cipher .c3 {
+  background: #ff7b6b;
+}
+.sy-pixels.cipher .c4 {
+  background: #b8a3ff;
+}
+.sy-pixels.cipher .c5 {
+  background: #e0e0e6;
+}
+.sy-pixels.cipher .c6 {
+  background: #5c3fd6;
+}
+.sy-pixels.cipher .c7 {
+  background: #2b2b33;
+}
+.sy-msg {
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #0b0b0e;
+  overflow-wrap: anywhere;
+  font: 14px/1.5 var(--font-mono);
+}
+.sy-msg.bad {
+  border-color: #ff7b6b88;
+  color: #ffb3a8;
+}
+.sy-msg.ok {
+  border-color: #2ee6a666;
+}
+.sy-hex {
+  display: block;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #0b0b0e;
+  overflow-wrap: anywhere;
+  color: #f5c84c;
+  font-size: 13px;
+}

@@ -236,6 +236,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/classic#checkpoints",
     pass: 70,
   },
+  {
+    id: "symmetric-1",
+    level: "intermediate",
+    lab: { uz: "Simmetrik shifrlash", en: "Symmetric encryption" },
+    title: {
+      uz: "Nazorat: simmetrik shifrlash",
+      en: "Checkpoint: symmetric encryption",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/symmetric#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

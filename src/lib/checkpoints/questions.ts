@@ -32,6 +32,7 @@ import {
   ACCESS_POOL,
   API_POOL,
   CLASSIC_POOL,
+  SYMMETRIC_POOL,
   SECURITY_EXTRA,
   type PoolItem,
 } from "./pools";
@@ -664,6 +665,10 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
       .map((item) => fromPool(r, item)),
   "classic-1": (r) =>
     shuffle(r, CLASSIC_POOL)
+      .slice(0, 10)
+      .map((item) => fromPool(r, item)),
+  "symmetric-1": (r) =>
+    shuffle(r, SYMMETRIC_POOL)
       .slice(0, 10)
       .map((item) => fromPool(r, item)),
 };

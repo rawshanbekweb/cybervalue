@@ -109,6 +109,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Klassik shifrlar (Intermediate)",
     earned: (f) => finished(f, "classic") && passed(f, "classic-1"),
   },
+  {
+    id: "lab-symmetric",
+    title: "Simmetrik shifrlash (Intermediate)",
+    earned: (f) => finished(f, "symmetric") && passed(f, "symmetric-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

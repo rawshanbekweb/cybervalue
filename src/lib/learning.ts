@@ -9,6 +9,7 @@ import { LESSONS as BROWSER_LESSONS } from "@/lib/browser-risks/curriculum";
 import { LESSONS as ACCESS_LESSONS } from "@/lib/access-control/curriculum";
 import { LESSONS as API_LESSONS } from "@/lib/api-security/curriculum";
 import { LESSONS as CLASSIC_LESSONS } from "@/lib/classical-ciphers/curriculum";
+import { LESSONS as SYMMETRIC_LESSONS } from "@/lib/symmetric/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -264,6 +265,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: CLASSIC_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "symmetric",
+      title: "Symmetric encryption",
+      category: "Intermediate · Cryptography",
+      description:
+        "See a padlock picture show through ECB and vanish under CBC and CTR, read a secret message because a nonce was used twice, and stop a changed payment with an authentication tag.",
+      href: "/intermediate/symmetric",
+      progressKey: LAB_PROGRESS.symmetric.key,
+      level: "Intermediate",
+      lessons: SYMMETRIC_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: SYMMETRIC_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },
