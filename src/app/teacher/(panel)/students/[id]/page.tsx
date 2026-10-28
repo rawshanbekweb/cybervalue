@@ -14,6 +14,7 @@ import {
   ResetCodeForm,
   StudentEditForm,
 } from "@/components/admin/student-forms";
+import { setStudentLevelAction } from "../../results/actions";
 import {
   deleteStudentAction,
   issueCertificateAction,
@@ -25,7 +26,7 @@ import {
   DEFAULT_CERTIFICATE_TITLE,
   formatCertificateCode,
 } from "@/lib/student/certificate";
-import { LEVEL_LABEL, LEVELS } from "@/lib/student/levels";
+import { LEVEL_LABEL, LEVELS, opensIntermediate } from "@/lib/student/levels";
 import { levelText } from "@/lib/student/results";
 
 // The date input shows the Tashkent calendar day the access ends on.
@@ -120,6 +121,25 @@ export default async function AdminStudentPage({
           </span>
         </div>
         <div className="admin-card">
+          <span className="eyebrow">{t("Level")}</span>
+          <strong>{levelText(student.level, t) || t("Not placed yet")}</strong>
+          {opensIntermediate(student.level) ? (
+            <span className="muted">{t("Intermediate labs are open")}</span>
+          ) : (
+            <form
+              action={setStudentLevelAction.bind(
+                null,
+                student.id,
+                "intermediate",
+              )}
+            >
+              <button type="submit" className="button button-secondary">
+                {t("Move to Intermediate")}
+              </button>
+            </form>
+          )}
+        </div>
+        <div className="admin-card">
           <span className="eyebrow">{t("Badges")}</span>
           <strong>{standing.badges.length}</strong>
           <span className="muted">
@@ -175,7 +195,10 @@ export default async function AdminStudentPage({
         </div>
       )}
       <h2>{t("Details")}</h2>
+      {/* Keyed by the level so the form shows a level set elsewhere on the
+          page instead of keeping its old choice and saving it back. */}
       <StudentEditForm
+        key={student.level}
         student={{
           id: student.id,
           name: student.name,

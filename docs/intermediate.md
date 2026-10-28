@@ -116,8 +116,18 @@ gets through 10,000 passwords under a sign-in limit.
   for a beginner student, what opens Intermediate (the beginner labs and the
   entrance test, then the teacher's placement).
 
-Teachers set the level on the student's page; the Results page suggests one
-after the entrance test.
+Teachers place students in three ways:
+
+- **Students** list (`/teacher/students`): the Level column and filter show
+  who is where; tick students (or the header box for the whole list or group)
+  and choose **Move the ticked students to → Intermediate**;
+- a student's page: **Move to Intermediate** on the Level card, or the Level
+  field of the details form;
+- **Results** (`/teacher/results`): the level suggested by the entrance test,
+  one by one or for everyone not placed yet.
+
+Students outside a teacher's groups are never changed, and every change is
+written to the audit log as `student.level`.
 
 ## Sessions
 
