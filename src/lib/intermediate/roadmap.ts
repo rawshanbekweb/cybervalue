@@ -170,6 +170,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Xesh va parollar", en: "Hashes and passwords" },
+        href: "/intermediate/hashes",
+        lab: "hashes",
         topics: ["SHA-2", "salt", "bcrypt", "argon2", "HMAC"],
         goal: goal(
           "Parollarni xavfsiz saqlash usulini tanlash va asoslash.",

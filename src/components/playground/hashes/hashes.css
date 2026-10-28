@@ -1,0 +1,12 @@
+/* Hashes and passwords lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css and
+   access-control.css. */
+.hs-hash {
+  overflow-wrap: anywhere;
+  color: #f5c84c;
+  font-size: 12px;
+}
+.ui-cases th[scope="row"] {
+  text-align: left;
+  font-weight: 600;
+}

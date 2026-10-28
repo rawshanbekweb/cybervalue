@@ -10,6 +10,7 @@ import { LESSONS as ACCESS_LESSONS } from "@/lib/access-control/curriculum";
 import { LESSONS as API_LESSONS } from "@/lib/api-security/curriculum";
 import { LESSONS as CLASSIC_LESSONS } from "@/lib/classical-ciphers/curriculum";
 import { LESSONS as SYMMETRIC_LESSONS } from "@/lib/symmetric/curriculum";
+import { LESSONS as HASHES_LESSONS } from "@/lib/hashes/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -282,6 +283,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: SYMMETRIC_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "hashes",
+      title: "Hashes and passwords",
+      category: "Intermediate · Cryptography",
+      description:
+        "Crack a leaked password table with a ready-made list and stop it with a salt, pick a bcrypt cost that slows a graphics card for years but not a user, and stop a forged payment webhook with HMAC.",
+      href: "/intermediate/hashes",
+      progressKey: LAB_PROGRESS.hashes.key,
+      level: "Intermediate",
+      lessons: HASHES_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: HASHES_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

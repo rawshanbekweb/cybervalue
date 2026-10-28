@@ -251,6 +251,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/symmetric#checkpoints",
     pass: 70,
   },
+  {
+    id: "hashes-1",
+    level: "intermediate",
+    lab: { uz: "Xesh va parollar", en: "Hashes and passwords" },
+    title: {
+      uz: "Nazorat: xesh va parollar",
+      en: "Checkpoint: hashes and passwords",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/hashes#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>
