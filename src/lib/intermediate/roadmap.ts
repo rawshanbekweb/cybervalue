@@ -160,6 +160,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Simmetrik shifrlash", en: "Symmetric encryption" },
+        href: "/intermediate/symmetric",
+        lab: "symmetric",
         topics: ["AES", "block modes", "IV/nonce", "key management"],
         goal: goal(
           "To‘g‘ri rejim va kalit boshqaruvini tanlash.",

@@ -13,6 +13,7 @@ export const LAB_PROGRESS = {
   access: { key: "cybervalue:access:progress:v1", total: 9 },
   api: { key: "cybervalue:api:progress:v1", total: 8 },
   classic: { key: "cybervalue:classic:progress:v1", total: 8 },
+  symmetric: { key: "cybervalue:symmetric:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -133,6 +134,15 @@ export const LAB_META: {
       en: "Classical ciphers (Intermediate)",
     },
     href: "/intermediate/classic",
+    intermediate: true,
+  },
+  {
+    id: "symmetric",
+    title: {
+      uz: "Simmetrik shifrlash (Intermediate)",
+      en: "Symmetric encryption (Intermediate)",
+    },
+    href: "/intermediate/symmetric",
     intermediate: true,
   },
 ];

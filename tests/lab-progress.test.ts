@@ -16,6 +16,7 @@ import { LESSONS as BROWSER } from "../src/lib/browser-risks/curriculum";
 import { LESSONS as ACCESS } from "../src/lib/access-control/curriculum";
 import { LESSONS as API } from "../src/lib/api-security/curriculum";
 import { LESSONS as CLASSIC } from "../src/lib/classical-ciphers/curriculum";
+import { LESSONS as SYMMETRIC } from "../src/lib/symmetric/curriculum";
 import {
   isLabId,
   LAB_PROGRESS,
@@ -40,6 +41,7 @@ test("lab progress totals match the lessons", () => {
   assert.equal(LAB_PROGRESS.access.total, ACCESS.length);
   assert.equal(LAB_PROGRESS.api.total, API.length);
   assert.equal(LAB_PROGRESS.classic.total, CLASSIC.length);
+  assert.equal(LAB_PROGRESS.symmetric.total, SYMMETRIC.length);
   assert.equal(isLabId("toString"), false);
   assert.equal(isLabId("network"), true);
 });

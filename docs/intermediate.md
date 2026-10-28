@@ -6,15 +6,16 @@ students placed at the Intermediate or Advanced level, and to staff.
 
 ## Pages
 
-| Path                    | What is there                                                                  |
-| ----------------------- | ------------------------------------------------------------------------------ |
-| `/intermediate`         | The roadmap (12 domains in three phases, career paths) and an access card      |
-| `/intermediate/http`    | Module 1 of web application security, HTTP in depth (10 lessons, a checkpoint) |
-| `/intermediate/input`   | Module 2, untrusted input (9 lessons, a checkpoint)                            |
-| `/intermediate/browser` | Module 3, browser-side risks (8 lessons, a checkpoint)                         |
-| `/intermediate/access`  | Module 4, access control (9 lessons, a checkpoint)                             |
-| `/intermediate/api`     | Module 5, API security (8 lessons, a checkpoint)                               |
-| `/intermediate/classic` | Cryptography module 1, classical ciphers (8 lessons, a checkpoint)             |
+| Path                      | What is there                                                                  |
+| ------------------------- | ------------------------------------------------------------------------------ |
+| `/intermediate`           | The roadmap (12 domains in three phases, career paths) and an access card      |
+| `/intermediate/http`      | Module 1 of web application security, HTTP in depth (10 lessons, a checkpoint) |
+| `/intermediate/input`     | Module 2, untrusted input (9 lessons, a checkpoint)                            |
+| `/intermediate/browser`   | Module 3, browser-side risks (8 lessons, a checkpoint)                         |
+| `/intermediate/access`    | Module 4, access control (9 lessons, a checkpoint)                             |
+| `/intermediate/api`       | Module 5, API security (8 lessons, a checkpoint)                               |
+| `/intermediate/classic`   | Cryptography module 1, classical ciphers (8 lessons, a checkpoint)             |
+| `/intermediate/symmetric` | Cryptography module 2, symmetric encryption (8 lessons, a checkpoint)          |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -126,6 +127,28 @@ reads.
 | 6       | Sorts when a one-time pad stays secure and when it breaks           |
 | 7       | Kerckhoffs’s principle and home-made ciphers                        |
 | 8       | Final questions                                                     |
+
+## Cryptography module 2: symmetric encryption
+
+`/intermediate/symmetric` (lab id `symmetric`, checkpoint `symmetric-1`, award
+`lab-symmetric`, site setting `symmetric`) uses `src/lib/symmetric/tools.ts`:
+a toy 8-byte block cipher (a keyed Feistel network) standing in for AES, with
+ECB, CBC and CTR. It behaves as AES does in each mode — ECB repeats on
+repeated blocks, CTR is XOR with a keystream — and the lessons say it is not
+for real protection. `nonceReuse` recovers a second message when two share a
+nonce, and `tamper` changes a payment's sum by flipping ciphertext bits,
+which a keyed tag (standing in for GCM's) then catches.
+
+| Lessons | What the student does                                                     |
+| ------- | ------------------------------------------------------------------------- |
+| 1       | Sorts symmetric ciphers from hashes, encodings and RSA                    |
+| 2       | Questions on AES block and key sizes, and DES                             |
+| 3       | Sees a padlock picture show through ECB and vanish under CBC or CTR       |
+| 4       | Reads message B because a nonce was reused, then gives each a fresh one   |
+| 5       | Sees a sum changed from 100000 to 900000, then adds a tag that refuses it |
+| 6       | Sorts sound and risky ways to keep keys                                   |
+| 7       | Questions on choosing AES-GCM and deriving keys from passwords            |
+| 8       | Final questions                                                           |
 
 ## Who gets in
 

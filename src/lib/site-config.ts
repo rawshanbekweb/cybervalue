@@ -126,6 +126,12 @@ export const SECTIONS = [
     href: "/intermediate/classic",
   },
   {
+    id: "symmetric",
+    group: "lab",
+    label: "Symmetric encryption (Intermediate)",
+    href: "/intermediate/symmetric",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

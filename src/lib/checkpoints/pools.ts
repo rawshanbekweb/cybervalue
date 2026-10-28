@@ -1836,3 +1836,282 @@ export const CLASSIC_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const SYMMETRIC_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Simmetrik shifrlashning asosiy belgisi?",
+      en: "The defining trait of symmetric encryption?",
+    },
+    right: {
+      uz: "Bitta kalit ham shifrlaydi, ham ochadi",
+      en: "One key both encrypts and decrypts",
+    },
+    wrong: [
+      { uz: "Kalit umuman kerak emas", en: "No key is needed" },
+      {
+        uz: "Ochiq va yopiq kalit ishlatiladi",
+        en: "A public and a private key are used",
+      },
+      { uz: "Ma’lumotni ochib bo‘lmaydi", en: "The data cannot be decrypted" },
+    ],
+    explain: {
+      uz: "Ochiq/yopiq kalit juftligi — asimmetrik kriptografiya.",
+      en: "A public/private key pair is asymmetric cryptography.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi biri simmetrik shifr?",
+      en: "Which one is a symmetric cipher?",
+    },
+    right: same("AES"),
+    wrong: [same("RSA"), same("SHA-256"), same("Base64")],
+    explain: {
+      uz: "RSA — asimmetrik, SHA-256 — xesh, Base64 — kodlash.",
+      en: "RSA is asymmetric, SHA-256 a hash, Base64 an encoding.",
+    },
+  },
+  {
+    ask: {
+      uz: "AES blokining o‘lchami?",
+      en: "The size of an AES block?",
+    },
+    right: same("128 bit"),
+    wrong: [same("64 bit"), same("256 bit"), same("1024 bit")],
+    explain: {
+      uz: "Kalit 128/192/256 bit bo‘lishi mumkin, blok esa doim 128 bit.",
+      en: "The key may be 128/192/256 bits; the block is always 128.",
+    },
+  },
+  {
+    ask: {
+      uz: "DES nega eskirgan?",
+      en: "Why is DES obsolete?",
+    },
+    right: {
+      uz: "56 bitli kalitni sinab chiqish mumkin",
+      en: "Its 56-bit key can be searched",
+    },
+    wrong: [
+      { uz: "U juda sekin", en: "It is too slow" },
+      {
+        uz: "Uni faqat harbiylar ishlata oladi",
+        en: "Only the military may use it",
+      },
+      { uz: "U ma’lumotni yo‘qotadi", en: "It loses data" },
+    ],
+    explain: {
+      uz: "1998-yildayoq DES kaliti bir necha kunda topilgan.",
+      en: "A DES key was found in days as early as 1998.",
+    },
+  },
+  {
+    ask: {
+      uz: "ECB rejimining zaifligi?",
+      en: "The weakness of ECB mode?",
+    },
+    right: {
+      uz: "Bir xil bloklar bir xil shifrga aylanadi",
+      en: "Identical blocks give identical ciphertext",
+    },
+    wrong: [
+      { uz: "U juda sekin", en: "It is too slow" },
+      {
+        uz: "U kalitni shifr matniga yozadi",
+        en: "It writes the key into the ciphertext",
+      },
+      { uz: "U faqat matnni shifrlaydi", en: "It encrypts text only" },
+    ],
+    explain: {
+      uz: "Shuning uchun ECB’da rasmning shakli ko‘rinib qoladi.",
+      en: "That is why a picture’s outline shows through ECB.",
+    },
+  },
+  {
+    ask: {
+      uz: "CBC rejimida birinchi blok nima bilan aralashtiriladi?",
+      en: "In CBC mode, what is the first block mixed with?",
+    },
+    right: {
+      uz: "IV (boshlang‘ich vektor)",
+      en: "The IV (initialisation vector)",
+    },
+    wrong: [
+      { uz: "Kalitning o‘zi", en: "The key itself" },
+      { uz: "Oxirgi blok", en: "The last block" },
+      { uz: "Hech narsa bilan", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Keyingi bloklar oldingi shifr bloki bilan aralashtiriladi.",
+      en: "Later blocks are mixed with the previous ciphertext block.",
+    },
+  },
+  {
+    ask: {
+      uz: "CTR rejimida shifr matni qanday hosil bo‘ladi?",
+      en: "How is the ciphertext made in CTR mode?",
+    },
+    right: {
+      uz: "Ochiq matn XOR kalit oqimi",
+      en: "Plain text XOR a keystream",
+    },
+    wrong: [
+      { uz: "Harflarni teskari yozib", en: "By writing letters backwards" },
+      {
+        uz: "Har bir blokni alohida shifrlab",
+        en: "By encrypting each block alone",
+      },
+      { uz: "Ochiq matnni siqib", en: "By compressing the plain text" },
+    ],
+    explain: {
+      uz: "Kalit oqimi kalit, nonce va hisoblagichdan yasaladi.",
+      en: "The keystream is built from the key, a nonce and a counter.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nonce haqida qaysi gap to‘g‘ri?",
+      en: "Which statement about a nonce is true?",
+    },
+    right: {
+      uz: "Maxfiy emas, lekin bitta kalit bilan takrorlanmasligi kerak",
+      en: "It is not secret, but must never repeat under one key",
+    },
+    wrong: [
+      {
+        uz: "U kalitdek maxfiy saqlanadi",
+        en: "It is kept secret like the key",
+      },
+      { uz: "Uni har doim 0 qilish mumkin", en: "It can always be 0" },
+      { uz: "U faqat ECB’da ishlatiladi", en: "It is used only in ECB" },
+    ],
+    explain: {
+      uz: "Nonce shifr matni bilan birga ochiq yuboriladi.",
+      en: "The nonce travels openly with the ciphertext.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ikki xabar bir kalit va bir nonce bilan CTR’da shifrlandi. Natija?",
+      en: "Two messages were encrypted in CTR with one key and one nonce. The result?",
+    },
+    right: {
+      uz: "Birini bilgan odam ikkinchisini o‘qiy oladi",
+      en: "Whoever knows one can read the other",
+    },
+    wrong: [
+      { uz: "Ikkalasi ham xavfsiz", en: "Both stay safe" },
+      { uz: "Kalit o‘zgaradi", en: "The key changes" },
+      { uz: "Xabarlar qisqaradi", en: "The messages get shorter" },
+    ],
+    explain: {
+      uz: "Kalit oqimi takrorlanadi va XOR uni yo‘qotadi.",
+      en: "The keystream repeats and XOR cancels it.",
+    },
+  },
+  {
+    ask: {
+      uz: "Shifrlangan to‘lovdagi summani kalitsiz o‘zgartirishni nima to‘xtatadi?",
+      en: "What stops a sum in an encrypted payment being changed without the key?",
+    },
+    right: {
+      uz: "Autentifikatsiya tegi (AEAD, masalan AES-GCM)",
+      en: "An authentication tag (AEAD, e.g. AES-GCM)",
+    },
+    wrong: [
+      { uz: "Uzunroq kalit", en: "A longer key" },
+      { uz: "ECB rejimi", en: "ECB mode" },
+      { uz: "Base64 kodlash", en: "Base64 encoding" },
+    ],
+    explain: {
+      uz: "Teg bitta bit o‘zgarsa ham mos kelmay qoladi.",
+      en: "The tag fails if even one bit changes.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi biri AEAD rejimi?",
+      en: "Which one is an AEAD mode?",
+    },
+    right: same("ChaCha20-Poly1305"),
+    wrong: [same("AES-ECB"), same("AES-CBC"), same("DES-CTR")],
+    explain: {
+      uz: "AES-GCM va ChaCha20-Poly1305 — shifrlash va yaxlitlik birga.",
+      en: "AES-GCM and ChaCha20-Poly1305 give encryption and integrity together.",
+    },
+  },
+  {
+    ask: {
+      uz: "Shifrlash kaliti qayerda saqlanmasligi kerak?",
+      en: "Where must an encryption key not be kept?",
+    },
+    right: { uz: "Dastur kodi ichida", en: "Inside the program’s code" },
+    wrong: [
+      { uz: "KMS’da", en: "In a KMS" },
+      { uz: "HSM’da", en: "In an HSM" },
+      { uz: "Maxfiy ma’lumotlar omborida", en: "In a secret manager" },
+    ],
+    explain: {
+      uz: "Kod repozitoriyga, nusxalarga va loglarga tushadi.",
+      en: "Code ends up in repositories, copies and logs.",
+    },
+  },
+  {
+    ask: {
+      uz: "Paroldan shifrlash kalitini qanday yasash kerak?",
+      en: "How should an encryption key be made from a password?",
+    },
+    right: {
+      uz: "Argon2 yoki PBKDF2 bilan, tuz qo‘shib",
+      en: "With Argon2 or PBKDF2, salted",
+    },
+    wrong: [
+      { uz: "Parolning o‘zini kalit qilib", en: "Using the password itself" },
+      {
+        uz: "Parolni MD5 bilan bir marta xeshlab",
+        en: "Hashing it once with MD5",
+      },
+      { uz: "Parolni teskari yozib", en: "Writing the password backwards" },
+    ],
+    explain: {
+      uz: "Sekin funksiya parolni taxmin qilishni qimmatlashtiradi.",
+      en: "A slow function makes guessing the password expensive.",
+    },
+  },
+  {
+    ask: {
+      uz: "Shifrlangan zaxira nusxa bilan birga nima saqlanmasligi kerak?",
+      en: "What must not be stored together with an encrypted backup?",
+    },
+    right: { uz: "Uning kaliti", en: "Its key" },
+    wrong: [
+      { uz: "Uning nonce’i", en: "Its nonce" },
+      { uz: "Uning hajmi", en: "Its size" },
+      { uz: "Uning sanasi", en: "Its date" },
+    ],
+    explain: {
+      uz: "Kalit va ma’lumot birga bo‘lsa, shifrlashning ma’nosi qolmaydi.",
+      en: "Key and data together make the encryption pointless.",
+    },
+  },
+  {
+    ask: {
+      uz: "Amalda shifrlash muammolari ko‘pincha nimadan kelib chiqadi?",
+      en: "Where do encryption problems usually come from in practice?",
+    },
+    right: {
+      uz: "Rejim, nonce yoki kalitni noto‘g‘ri ishlatishdan",
+      en: "Misusing the mode, the nonce or the key",
+    },
+    wrong: [
+      { uz: "AES’ning buzilganidan", en: "AES being broken" },
+      { uz: "Kompyuterning sekinligidan", en: "Slow computers" },
+      { uz: "Internetning uzilishidan", en: "Internet outages" },
+    ],
+    explain: {
+      uz: "AES’ning o‘zi hozircha buzilmagan.",
+      en: "AES itself remains unbroken.",
+    },
+  },
+];
