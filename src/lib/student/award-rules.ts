@@ -104,6 +104,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "API xavfsizligi (Intermediate)",
     earned: (f) => finished(f, "api") && passed(f, "api-1"),
   },
+  {
+    id: "lab-classic",
+    title: "Klassik shifrlar (Intermediate)",
+    earned: (f) => finished(f, "classic") && passed(f, "classic-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

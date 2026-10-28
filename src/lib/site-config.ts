@@ -120,6 +120,12 @@ export const SECTIONS = [
     href: "/intermediate/api",
   },
   {
+    id: "classic",
+    group: "lab",
+    label: "Classical ciphers (Intermediate)",
+    href: "/intermediate/classic",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

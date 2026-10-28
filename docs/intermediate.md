@@ -14,6 +14,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/browser` | Module 3, browser-side risks (8 lessons, a checkpoint)                         |
 | `/intermediate/access`  | Module 4, access control (9 lessons, a checkpoint)                             |
 | `/intermediate/api`     | Module 5, API security (8 lessons, a checkpoint)                               |
+| `/intermediate/classic` | Cryptography module 1, classical ciphers (8 lessons, a checkpoint)             |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -103,6 +104,28 @@ gets through 10,000 passwords under a sign-in limit.
 | 6       | Questions on old versions, SSRF and CORS                                              |
 | 7       | Sorts the points of an API description into gaps and sound choices                    |
 | 8       | Final questions                                                                       |
+
+## Cryptography module 1: classical ciphers
+
+`/intermediate/classic` (lab id `classic`, checkpoint `classic-1`, award
+`lab-classic`, site setting `classic`) uses `src/lib/classical-ciphers/tools.ts`:
+`caesar` and `vigenere` work on the 26 Latin letters and pass everything else
+through, so the messages can be ordinary Uzbek; `letterCounts` draws the
+frequency chart and `keyUnderCrib` subtracts a guessed first word from a
+Vigenère message to show the key under it. The unit test checks that “a”
+stands clearly ahead in the frequency text and that only one Caesar shift
+reads.
+
+| Lessons | What the student does                                               |
+| ------- | ------------------------------------------------------------------- |
+| 1       | Breaks a Caesar message by trying shifts (or listing all 26)        |
+| 2       | Questions: 25 keys vs 26!, and why many keys are not enough         |
+| 3       | Finds the key of a long Caesar text from its most frequent letter   |
+| 4       | Sorts claims about Vigenère                                         |
+| 5       | Types “salom” to see the key `kalit` and opens the Vigenère message |
+| 6       | Sorts when a one-time pad stays secure and when it breaks           |
+| 7       | Kerckhoffs’s principle and home-made ciphers                        |
+| 8       | Final questions                                                     |
 
 ## Who gets in
 

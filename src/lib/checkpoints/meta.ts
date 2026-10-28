@@ -221,6 +221,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/api#checkpoints",
     pass: 70,
   },
+  {
+    id: "classic-1",
+    level: "intermediate",
+    lab: { uz: "Klassik shifrlar", en: "Classical ciphers" },
+    title: {
+      uz: "Nazorat: klassik shifrlar",
+      en: "Checkpoint: classical ciphers",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/classic#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>
