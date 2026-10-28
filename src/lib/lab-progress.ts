@@ -11,6 +11,7 @@ export const LAB_PROGRESS = {
   input: { key: "cybervalue:input:progress:v1", total: 9 },
   browser: { key: "cybervalue:browser:progress:v1", total: 8 },
   access: { key: "cybervalue:access:progress:v1", total: 9 },
+  api: { key: "cybervalue:api:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -113,6 +114,15 @@ export const LAB_META: {
       en: "Access control (Intermediate)",
     },
     href: "/intermediate/access",
+    intermediate: true,
+  },
+  {
+    id: "api",
+    title: {
+      uz: "API xavfsizligi (Intermediate)",
+      en: "API security (Intermediate)",
+    },
+    href: "/intermediate/api",
     intermediate: true,
   },
 ];

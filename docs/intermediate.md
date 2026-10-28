@@ -13,6 +13,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/input`   | Module 2, untrusted input (9 lessons, a checkpoint)                            |
 | `/intermediate/browser` | Module 3, browser-side risks (8 lessons, a checkpoint)                         |
 | `/intermediate/access`  | Module 4, access control (9 lessons, a checkpoint)                             |
+| `/intermediate/api`     | Module 5, API security (8 lessons, a checkpoint)                               |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -82,6 +83,26 @@ in stops.
 | 7       | Chooses a second factor that stops all four attacks (a security key)         |
 | 8       | Questions on password storage, error messages and rate limiting              |
 | 9       | Final questions                                                              |
+
+## Module 5: API security
+
+`/intermediate/api` (lab id `api`, checkpoint `api-1`, award `lab-api`, site
+setting `api`) uses a pretend API (`src/lib/api-security/tools.ts`): `respond`
+builds a profile reply from the chosen fields, `patchMe` applies a profile
+update with or without an allowlist, `validateOrder` checks an order body
+against its schema, and `limitOutcome` works out how fast a 50-address botnet
+gets through 10,000 passwords under a sign-in limit.
+
+| Lessons | What the student does                                                                 |
+| ------- | ------------------------------------------------------------------------------------- |
+| 1       | Trims a profile reply to the fields the card needs                                    |
+| 2       | Makes themselves an admin with an extra field, then switches on an allowlist          |
+| 3       | Sorts request bodies the order schema passes or refuses                               |
+| 4       | Picks a limit per account that slows the botnet to over a day without blocking a user |
+| 5       | Sorts safe and unsafe places for an API key                                           |
+| 6       | Questions on old versions, SSRF and CORS                                              |
+| 7       | Sorts the points of an API description into gaps and sound choices                    |
+| 8       | Final questions                                                                       |
 
 ## Who gets in
 

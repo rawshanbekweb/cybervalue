@@ -1285,3 +1285,283 @@ export const ACCESS_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const API_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Profil kartasi uchun API butun bazadagi yozuvni qaytaradi, ilova esa faqat ismni ko‘rsatadi. Muammo nimada?",
+      en: "For a profile card the API returns the whole record and the app shows only the name. What is wrong?",
+    },
+    right: {
+      uz: "Javobni har kim to‘liq o‘qiy oladi — ortiqcha maydonlar sizib chiqadi",
+      en: "Anyone can read the full reply — the extra fields leak",
+    },
+    wrong: [
+      {
+        uz: "Hech narsa, ilova ularni ko‘rsatmaydi",
+        en: "Nothing, the app does not show them",
+      },
+      { uz: "Faqat javob sekinlashadi", en: "Only the reply gets slower" },
+      { uz: "Faqat HTTPS bo‘lmasa muammo", en: "Only a problem without HTTPS" },
+    ],
+    explain: {
+      uz: "Filtr serverda bo‘lishi kerak, ilovada emas.",
+      en: "The filter belongs on the server, not in the app.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ochiq profil javobida qaysi maydon bo‘lmasligi kerak?",
+      en: "Which field must not be in a public profile reply?",
+    },
+    right: same("passwordHash"),
+    wrong: [same("name"), same("avatar"), same("id")],
+    explain: {
+      uz: "Xesh qo‘lga tushsa, parolni oflayn taxmin qilish mumkin.",
+      en: "With the hash, the password can be guessed offline.",
+    },
+  },
+  {
+    ask: {
+      uz: "Mass assignment nima?",
+      en: "What is mass assignment?",
+    },
+    right: {
+      uz: "Server so‘rovdagi har qanday maydonni yozuvga ko‘chirishi",
+      en: "The server copying any field in the request onto the record",
+    },
+    wrong: [
+      {
+        uz: "Bir vaqtda ko‘p so‘rov yuborish",
+        en: "Sending many requests at once",
+      },
+      {
+        uz: "Ko‘p foydalanuvchiga bir xil parol berish",
+        en: "Giving many users the same password",
+      },
+      {
+        uz: "Bazadagi barcha yozuvlarni o‘chirish",
+        en: "Deleting every record in the database",
+      },
+    ],
+    explain: {
+      uz: "Shunda foydalanuvchi role yoki balance ni o‘zi o‘zgartira oladi.",
+      en: "Then a user can change role or balance themselves.",
+    },
+  },
+  {
+    ask: {
+      uz: "Mass assignment’dan qaysi kod himoyalanadi?",
+      en: "Which code is safe from mass assignment?",
+    },
+    right: same("user.name = body.name; user.bio = body.bio;"),
+    wrong: [
+      same("Object.assign(user, body);"),
+      same("user = { ...user, ...body };"),
+      same("db.user.update({ data: body });"),
+    ],
+    explain: {
+      uz: "Faqat ruxsat etilgan maydonlar o‘qiladi.",
+      en: "Only the allowed fields are read.",
+    },
+  },
+  {
+    ask: {
+      uz: "Sxema: quantity — 1 dan 10 gacha butun son. Qaysi tana o‘tadi?",
+      en: "Schema: quantity is a whole number from 1 to 10. Which body passes?",
+    },
+    right: same('{"quantity": 4}'),
+    wrong: [
+      same('{"quantity": "4"}'),
+      same('{"quantity": 0}'),
+      same('{"quantity": 4.5}'),
+    ],
+    explain: {
+      uz: "Tur, oraliq va butunlik — hammasi tekshiriladi.",
+      en: "Type, range and wholeness are all checked.",
+    },
+  },
+  {
+    ask: {
+      uz: 'Buyurtma so‘rovida "price": 0 kelsa, server nima qilishi kerak?',
+      en: 'An order request arrives with "price": 0. What should the server do?',
+    },
+    right: {
+      uz: "Rad etish yoki e’tiborsiz qoldirish — narxni o‘zi hisoblaydi",
+      en: "Refuse or ignore it — it works out the price itself",
+    },
+    wrong: [
+      { uz: "Narxni 0 deb qabul qilish", en: "Take the price as 0" },
+      { uz: "Narxni ikki baravar oshirish", en: "Double the price" },
+      { uz: "Foydalanuvchini bloklash", en: "Block the user" },
+    ],
+    explain: {
+      uz: "Narx kabi qiymatlar hech qachon mijozdan olinmaydi.",
+      en: "Values like the price never come from the client.",
+    },
+  },
+  {
+    ask: {
+      uz: "50 ta IP’li hujumchi bitta hisob parolini taxmin qilmoqda. Qaysi cheklov samarali?",
+      en: "An attacker with 50 IPs guesses one account’s password. Which limit works?",
+    },
+    right: { uz: "Hisob bo‘yicha cheklov", en: "A limit per account" },
+    wrong: [
+      { uz: "Faqat IP bo‘yicha cheklov", en: "A limit per IP only" },
+      { uz: "Faqat CAPTCHA’siz cheklov", en: "A limit without any key" },
+      { uz: "Cheklov emas, uzunroq javob", en: "No limit, a longer reply" },
+    ],
+    explain: {
+      uz: "Hujumchi IP almashtiradi, hisob esa bitta.",
+      en: "The attacker swaps IPs; the account stays the same.",
+    },
+  },
+  {
+    ask: {
+      uz: "Chegaradan oshgan so‘rovga qaysi status kod qaytariladi?",
+      en: "Which status code answers a request over the limit?",
+    },
+    right: same("429 Too Many Requests"),
+    wrong: [same("403 Forbidden"), same("404 Not Found"), same("200 OK")],
+    explain: {
+      uz: "Retry-After sarlavhasi qachon qayta urinishni aytadi.",
+      en: "The Retry-After header says when to try again.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kirish cheklovini juda past (daqiqasiga 1) qilish nimaga olib keladi?",
+      en: "What does a very low sign-in limit (1 a minute) cause?",
+    },
+    right: {
+      uz: "Xato yozgan haqiqiy foydalanuvchilar bloklanadi",
+      en: "Real users who mistype get blocked",
+    },
+    wrong: [
+      { uz: "Hech narsa, faqat foyda", en: "Nothing, only benefit" },
+      { uz: "Server tezlashadi", en: "The server gets faster" },
+      { uz: "Parollar avtomatik almashadi", en: "Passwords change themselves" },
+    ],
+    explain: {
+      uz: "Cheklov hujumni sekinlashtirsin, foydalanuvchini to‘xtatmasin.",
+      en: "A limit should slow the attack, not stop the user.",
+    },
+  },
+  {
+    ask: {
+      uz: "SMS xizmati API kaliti qayerda saqlanadi?",
+      en: "Where is an SMS service API key kept?",
+    },
+    right: {
+      uz: "Serverdagi muhit o‘zgaruvchisi yoki secret manager’da",
+      en: "In a server environment variable or a secret manager",
+    },
+    wrong: [
+      { uz: "Mobil ilova kodida", en: "In the mobile app’s code" },
+      { uz: "Git’dagi config faylda", en: "In a config file in git" },
+      { uz: "Brauzer JavaScript’ida", en: "In the browser’s JavaScript" },
+    ],
+    explain: {
+      uz: "Foydalanuvchiga yetib boradigan kodni har kim ochib ko‘ra oladi.",
+      en: "Anyone can open code that reaches the user.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega API kalitini manzilda (?key=) yubormaslik kerak?",
+      en: "Why should an API key not go in the URL (?key=)?",
+    },
+    right: {
+      uz: "Manzillar loglarga va tarixga yoziladi",
+      en: "Addresses get written to logs and history",
+    },
+    wrong: [
+      { uz: "Manzil juda uzun bo‘lib ketadi", en: "The address gets too long" },
+      { uz: "Server uni o‘qiy olmaydi", en: "The server cannot read it" },
+      { uz: "HTTPS uni bloklaydi", en: "HTTPS blocks it" },
+    ],
+    explain: {
+      uz: "Kalit Authorization sarlavhasida yuboriladi.",
+      en: "Send the key in the Authorization header.",
+    },
+  },
+  {
+    ask: {
+      uz: "/api/v1 eski va tekshiruvsiz, lekin hali ishlaydi. Bu qaysi xavf?",
+      en: "The old /api/v1 has no checks but still runs. Which risk is this?",
+    },
+    right: {
+      uz: "API inventari: unutilgan versiya ochiq qolgan",
+      en: "API inventory: a forgotten version left open",
+    },
+    wrong: [
+      { uz: "XSS", en: "XSS" },
+      { uz: "CSRF", en: "CSRF" },
+      { uz: "Clickjacking", en: "Clickjacking" },
+    ],
+    explain: {
+      uz: "Har bir endpoint ro‘yxatda bo‘lishi va bir xil himoyalanishi kerak.",
+      en: "Every endpoint should be listed and protected the same way.",
+    },
+  },
+  {
+    ask: {
+      uz: "“URL’dan rasm yuklash” endpoint’i 169.254.169.254 ga so‘rov yubordi. Bu nima?",
+      en: "An “upload from URL” endpoint called 169.254.169.254. What is this?",
+    },
+    right: {
+      uz: "SSRF: server ichki manzilga so‘rov yuborishga majburlandi",
+      en: "SSRF: the server was made to call an internal address",
+    },
+    wrong: [
+      { uz: "Oddiy rasm yuklash", en: "An ordinary picture upload" },
+      { uz: "Mass assignment", en: "Mass assignment" },
+      { uz: "Tezlik cheklovi", en: "A rate limit" },
+    ],
+    explain: {
+      uz: "Bu bulut metadata manzili; ruxsat etilgan hostlar ro‘yxatini ishlating.",
+      en: "That is the cloud metadata address; use an allowlist of hosts.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi CORS sozlamasi xavfli?",
+      en: "Which CORS setup is dangerous?",
+    },
+    right: {
+      uz: "Har qanday Origin’ni aks ettirish va Allow-Credentials: true",
+      en: "Echoing any Origin with Allow-Credentials: true",
+    },
+    wrong: [
+      {
+        uz: "Faqat o‘z ilovangiz manziliga ruxsat",
+        en: "Allowing only your own app’s origin",
+      },
+      { uz: "CORS sarlavhalarini bermaslik", en: "Sending no CORS headers" },
+      { uz: "Faqat GET uchun ruxsat", en: "Allowing GET only" },
+    ],
+    explain: {
+      uz: "Shunda begona sayt foydalanuvchi cookie’si bilan javobni o‘qiydi.",
+      en: "Then a foreign site reads replies with the user’s cookie.",
+    },
+  },
+  {
+    ask: {
+      uz: "Xatolik javobida stack trace ko‘rsatish nega xavfli?",
+      en: "Why is showing a stack trace in an error reply risky?",
+    },
+    right: {
+      uz: "U kod tuzilishi, kutubxonalar va yo‘llarni oshkor qiladi",
+      en: "It reveals the code’s structure, libraries and paths",
+    },
+    wrong: [
+      { uz: "U sahifani sekinlashtiradi", en: "It slows the page down" },
+      { uz: "U parolni o‘chiradi", en: "It deletes the password" },
+      { uz: "Hech qanday xavf yo‘q", en: "There is no risk" },
+    ],
+    explain: {
+      uz: "Foydalanuvchiga umumiy xabar, tafsilotlar esa loglarga.",
+      en: "A general message to the user; the details go to the logs.",
+    },
+  },
+];

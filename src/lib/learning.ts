@@ -7,6 +7,7 @@ import { LESSONS as HTTP_LESSONS } from "@/lib/http/curriculum";
 import { LESSONS as INPUT_LESSONS } from "@/lib/untrusted-input/curriculum";
 import { LESSONS as BROWSER_LESSONS } from "@/lib/browser-risks/curriculum";
 import { LESSONS as ACCESS_LESSONS } from "@/lib/access-control/curriculum";
+import { LESSONS as API_LESSONS } from "@/lib/api-security/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -228,6 +229,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: ACCESS_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "api",
+      title: "API security",
+      category: "Intermediate · Web security",
+      description:
+        "Trim a reply that says too much, stop a request that makes itself an admin, check bodies against a schema, set a rate limit that stops a botnet but not a real user, and review an API against a checklist.",
+      href: "/intermediate/api",
+      progressKey: LAB_PROGRESS.api.key,
+      level: "Intermediate",
+      lessons: API_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: API_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

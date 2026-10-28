@@ -127,6 +127,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "API xavfsizligi", en: "API security" },
+        href: "/intermediate/api",
+        lab: "api",
         topics: ["OWASP API Top 10", "rate limiting", "schemas", "tokens"],
         goal: goal(
           "API ni xavfsizlik ro‘yxati bo‘yicha ko‘rib chiqish va kamchiliklarni yozish.",
