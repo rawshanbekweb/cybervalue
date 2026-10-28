@@ -21,6 +21,8 @@ export async function setStudentLevelAction(studentId: string, level: string) {
   });
   await audit("student.level", session.user.id, `${student.name}: ${level}`);
   revalidatePath("/teacher/results");
+  revalidatePath("/teacher/students");
+  revalidatePath("/teacher/intermediate");
   revalidatePath(`/teacher/students/${studentId}`);
 }
 

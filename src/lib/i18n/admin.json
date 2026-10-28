@@ -881,5 +881,12 @@
   "Open the public page": "Ochiq sahifani ko‘rish",
   "Intermediate students and their progress": "Intermediate o‘quvchilari va ularning natijalari",
   "{done} of {total} lessons": "{total} darsdan {done} tasi",
-  "No students at the Intermediate level yet. Set a student's level to Intermediate on their page to open the labs.": "Hozircha Intermediate darajasida o‘quvchi yo‘q. Laboratoriyalarni ochish uchun o‘quvchi sahifasida darajasini Intermediate qiling."
+  "No students at the Intermediate level yet. Set a student's level to Intermediate on their page to open the labs.": "Hozircha Intermediate darajasida o‘quvchi yo‘q. Laboratoriyalarni ochish uchun o‘quvchi sahifasida darajasini Intermediate qiling.",
+  "Level changed for {count} students.": "{count} ta o‘quvchining darajasi o‘zgartirildi.",
+  "No students at this level.": "Bu darajada o‘quvchi yo‘q.",
+  "Move the ticked students to": "Belgilangan o‘quvchilarni o‘tkazish",
+  "Tick every student": "Barcha o‘quvchilarni belgilash",
+  "Tick {name}": "{name} ni belgilash",
+  "Intermediate labs are open": "Intermediate lablari ochiq",
+  "Move to Intermediate": "Intermediate’ga o‘tkazish"
 }

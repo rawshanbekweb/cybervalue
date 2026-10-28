@@ -1,7 +1,7 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { requireOwner, requireStaff } from "@/lib/auth";
+import { groupWhere, requireOwner, requireStaff } from "@/lib/auth";
 import {
   mayUseGroup,
   requireMember,
@@ -114,6 +114,52 @@ export async function updateStudentAction(
   revalidatePath("/teacher/students");
   revalidatePath(`/teacher/students/${id}`);
   return { success: "Saved." };
+}
+
+// Places the ticked students at one level ("" clears it), for moving a
+// whole group to Intermediate at once. Students outside the teacher's groups
+// are skipped, and each change is written to the audit log.
+export async function setStudentsLevelAction(form: FormData) {
+  const { session, scope } = await requireStaff("/teacher/students");
+  // Back to the same filtered list, with how many were moved.
+  const to = (moved: number) => {
+    const params = new URLSearchParams();
+    for (const key of ["group", "show"]) {
+      const value = form.get(key);
+      if (typeof value === "string" && value) params.set(key, value);
+    }
+    params.set("moved", String(moved));
+    return `/teacher/students?${params}`;
+  };
+  const level = String(form.get("level") ?? "");
+  const ids = form
+    .getAll("ids")
+    .map(String)
+    .filter((id) => id.length > 0 && id.length <= 64)
+    .slice(0, 1000);
+  if ((level !== "" && !isLevel(level)) || ids.length === 0) redirect(to(0));
+  const db = getDb();
+  if (!db) redirect(to(0));
+  const students = await db.student.findMany({
+    where: { id: { in: ids }, level: { not: level }, ...groupWhere(scope) },
+    select: { id: true, name: true },
+  });
+  if (students.length) {
+    await db.student.updateMany({
+      where: { id: { in: students.map((s) => s.id) } },
+      data: { level },
+    });
+    for (const student of students)
+      await audit(
+        "student.level",
+        session.user.id,
+        `${student.name}: ${level}`,
+      );
+  }
+  revalidatePath("/teacher/students");
+  revalidatePath("/teacher/results");
+  revalidatePath("/teacher/intermediate");
+  redirect(to(students.length));
 }
 
 // Bound for useActionState; the previous state is not needed.
