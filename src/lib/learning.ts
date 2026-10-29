@@ -22,6 +22,7 @@ import { LESSONS as EVIDENCE_LESSONS } from "@/lib/evidence/curriculum";
 import { LESSONS as FILESYSTEM_LESSONS } from "@/lib/filesystem/curriculum";
 import { LESSONS as LOGS_LESSONS } from "@/lib/logs/curriculum";
 import { LESSONS as RESPONSE_LESSONS } from "@/lib/response/curriculum";
+import { LESSONS as REPORT_LESSONS } from "@/lib/report/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -498,6 +499,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: RESPONSE_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "report",
+      title: "Writing the report",
+      category: "Intermediate · Digital forensics",
+      description:
+        "Give every reader the section they need, put a report in order, tell fact from opinion, build a finding with evidence and impact but no guesses or secrets, write recommendations people can act on, and hand the report over safely.",
+      href: "/intermediate/report",
+      progressKey: LAB_PROGRESS.report.key,
+      level: "Intermediate",
+      lessons: REPORT_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: REPORT_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

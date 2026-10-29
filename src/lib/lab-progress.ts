@@ -26,6 +26,7 @@ export const LAB_PROGRESS = {
   filesystem: { key: "cybervalue:filesystem:progress:v1", total: 8 },
   logs: { key: "cybervalue:logs:progress:v1", total: 8 },
   response: { key: "cybervalue:response:progress:v1", total: 8 },
+  report: { key: "cybervalue:report:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -263,6 +264,15 @@ export const LAB_META: {
       en: "Incident response (Intermediate)",
     },
     href: "/intermediate/response",
+    intermediate: true,
+  },
+  {
+    id: "report",
+    title: {
+      uz: "Hisobot yozish (Intermediate)",
+      en: "Writing the report (Intermediate)",
+    },
+    href: "/intermediate/report",
     intermediate: true,
   },
 ];

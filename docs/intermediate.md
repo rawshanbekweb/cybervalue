@@ -28,6 +28,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/filesystem`  | Digital forensics module 2, file systems (8 lessons, a checkpoint)              |
 | `/intermediate/logs`        | Digital forensics module 3, logs and artefacts (8 lessons, a checkpoint)        |
 | `/intermediate/response`    | Digital forensics module 4, incident response (8 lessons, a checkpoint)         |
+| `/intermediate/report`      | Digital forensics module 5, writing the report (8 lessons, a checkpoint)        |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -422,6 +423,27 @@ once, discuss it in the company chat) do harm.
 | 6       | Questions on out-of-band communication and notification |
 | 7       | Sorts helpful from harmful lessons-learned practice     |
 | 8       | Final questions                                         |
+
+## Digital forensics module 5: Writing the report
+
+`/intermediate/report` (lab id `report`, checkpoint `report-1`, award
+`lab-report`, site setting `report`) uses `src/lib/report/tools.ts`:
+`SECTIONS` are a report's six sections in order and `DRAFT` the shuffled
+order the lesson starts from; `PIECES` are six candidate sentences for one
+finding — what happened, the evidence, the impact and a recommendation
+belong; a guess about the attacker and the guessed password do not. It
+completes the Digital forensics domain.
+
+| Lessons | What the student does                                 |
+| ------- | ----------------------------------------------------- |
+| 1       | Matches readers to the section they read first        |
+| 2       | Puts a draft report's sections in order               |
+| 3       | Sorts facts from opinions                             |
+| 4       | Builds one finding from the right pieces              |
+| 5       | Sorts actionable recommendations from vague ones      |
+| 6       | Questions on the executive summary                    |
+| 7       | Questions on TLP labels and sending the report safely |
+| 8       | Final questions                                       |
 
 ## Who gets in
 
