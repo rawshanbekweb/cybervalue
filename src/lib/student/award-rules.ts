@@ -184,6 +184,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Steganografiya: asosiy g‘oya (Intermediate)",
     earned: (f) => finished(f, "stego") && passed(f, "stego-1"),
   },
+  {
+    id: "lab-lsb",
+    title: "Rasm ichida (Intermediate)",
+    earned: (f) => finished(f, "lsb") && passed(f, "lsb-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

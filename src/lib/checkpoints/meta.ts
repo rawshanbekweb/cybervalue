@@ -461,6 +461,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/stego#checkpoints",
     pass: 70,
   },
+  {
+    id: "lsb-1",
+    level: "intermediate",
+    lab: { uz: "Rasm ichida", en: "Inside images" },
+    title: {
+      uz: "Nazorat: Rasm ichida",
+      en: "Checkpoint: Inside images",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/lsb#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

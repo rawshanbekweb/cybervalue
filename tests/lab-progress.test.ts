@@ -31,6 +31,7 @@ import { LESSONS as LOGS } from "../src/lib/logs/curriculum";
 import { LESSONS as RESPONSE } from "../src/lib/response/curriculum";
 import { LESSONS as REPORT } from "../src/lib/report/curriculum";
 import { LESSONS as STEGO } from "../src/lib/stego/curriculum";
+import { LESSONS as LSB } from "../src/lib/lsb/curriculum";
 import {
   isLabId,
   LAB_PROGRESS,
@@ -70,6 +71,7 @@ test("lab progress totals match the lessons", () => {
   assert.equal(LAB_PROGRESS.response.total, RESPONSE.length);
   assert.equal(LAB_PROGRESS.report.total, REPORT.length);
   assert.equal(LAB_PROGRESS.stego.total, STEGO.length);
+  assert.equal(LAB_PROGRESS.lsb.total, LSB.length);
   assert.equal(isLabId("toString"), false);
   assert.equal(isLabId("network"), true);
 });

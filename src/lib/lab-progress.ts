@@ -28,6 +28,7 @@ export const LAB_PROGRESS = {
   response: { key: "cybervalue:response:progress:v1", total: 8 },
   report: { key: "cybervalue:report:progress:v1", total: 8 },
   stego: { key: "cybervalue:stego:progress:v1", total: 8 },
+  lsb: { key: "cybervalue:lsb:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -283,6 +284,15 @@ export const LAB_META: {
       en: "Steganography: the idea (Intermediate)",
     },
     href: "/intermediate/stego",
+    intermediate: true,
+  },
+  {
+    id: "lsb",
+    title: {
+      uz: "Rasm ichida (Intermediate)",
+      en: "Inside images (Intermediate)",
+    },
+    href: "/intermediate/lsb",
     intermediate: true,
   },
 ];

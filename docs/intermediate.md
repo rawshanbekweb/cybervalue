@@ -30,6 +30,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/response`    | Digital forensics module 4, incident response (8 lessons, a checkpoint)         |
 | `/intermediate/report`      | Digital forensics module 5, writing the report (8 lessons, a checkpoint)        |
 | `/intermediate/stego`       | Steganography module 1, the idea (8 lessons, a checkpoint)                      |
+| `/intermediate/lsb`         | Steganography module 2, inside images (8 lessons, a checkpoint)                 |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -465,6 +466,26 @@ character, and `bitsOf`/`decodeBits` read it back.
 | 6       | Questions on the signs of hiding and Kerckhoffs's principle |
 | 7       | Questions on capacity and stealth                           |
 | 8       | Final questions                                             |
+
+## Steganography module 2: Inside images
+
+`/intermediate/lsb` (lab id `lsb`, checkpoint `lsb-1`, award `lab-lsb`, site
+setting `lsb`) uses `src/lib/lsb/tools.ts`: `flipRed` shows how far flipping
+each bit of a red value moves the colour (only bit 0 is invisible); `ROW` is
+24 sky-blue pixels whose red LSBs spell "Hi!"; `picture` draws a 64×32
+gradient with the word "CV26" written only into blue bit 0, and `plane`
+shows any channel's bit plane on a canvas.
+
+| Lessons | What the student does                                |
+| ------- | ---------------------------------------------------- |
+| 1       | Clicks through a pixel's channels and bits           |
+| 2       | Finds the bit that changes a colour unseen           |
+| 3       | Reads a message from the red LSBs of a row of pixels |
+| 4       | Questions on capacity                                |
+| 5       | Finds the word hidden in one bit plane               |
+| 6       | Sorts formats and actions that keep or destroy LSBs  |
+| 7       | Questions on statistical detection                   |
+| 8       | Final questions                                      |
 
 ## Who gets in
 

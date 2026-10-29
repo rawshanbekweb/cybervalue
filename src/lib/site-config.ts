@@ -216,6 +216,12 @@ export const SECTIONS = [
     href: "/intermediate/stego",
   },
   {
+    id: "lsb",
+    group: "lab",
+    label: "Inside images (Intermediate)",
+    href: "/intermediate/lsb",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

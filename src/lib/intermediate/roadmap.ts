@@ -363,6 +363,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Rasm ichida", en: "Inside images" },
+        href: "/intermediate/lsb",
+        lab: "lsb",
         topics: ["pixels", "LSB", "colour channels"],
         goal: goal(
           "Rasm piksellarida yashirilgan xabarni topish.",

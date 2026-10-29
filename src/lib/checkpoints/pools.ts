@@ -5959,3 +5959,240 @@ export const STEGO_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const LSB_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Bitta rang kanali necha bit?",
+      en: "How many bits is one colour channel?",
+    },
+    right: same("8"),
+    wrong: [same("1"), same("3"), same("24")],
+    explain: {
+      uz: "0 dan 255 gacha — 8 bit.",
+      en: "0 to 255 is 8 bits.",
+    },
+  },
+  {
+    ask: {
+      uz: "LSB nima?",
+      en: "What is the LSB?",
+    },
+    right: {
+      uz: "Eng kichik bit — qiymati 1",
+      en: "The least significant bit — worth 1",
+    },
+    wrong: [
+      { uz: "Eng katta bit — 128", en: "The most significant bit — 128" },
+      { uz: "Rasm formati", en: "A picture format" },
+      { uz: "Kanal nomi", en: "A channel name" },
+    ],
+    explain: {
+      uz: "Uni o‘zgartirish ko‘zga ko‘rinmaydi.",
+      en: "Flipping it can’t be seen.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi bitni o‘zgartirish rangni eng ko‘p o‘zgartiradi?",
+      en: "Which bit changes the colour most when flipped?",
+    },
+    right: { uz: "7-bit (MSB)", en: "Bit 7 (the MSB)" },
+    wrong: [
+      { uz: "0-bit (LSB)", en: "Bit 0 (the LSB)" },
+      { uz: "1-bit", en: "Bit 1" },
+      { uz: "Hammasi bir xil", en: "They are all the same" },
+    ],
+    explain: {
+      uz: "U 128 qadamga teng.",
+      en: "It is worth 128 steps.",
+    },
+  },
+  {
+    ask: {
+      uz: "200 ning LSB’i o‘zgartirilsa?",
+      en: "Flip the LSB of 200 and you get?",
+    },
+    right: same("201"),
+    wrong: [same("72"), same("199"), same("100")],
+    explain: {
+      uz: "11001000 → 11001001.",
+      en: "11001000 → 11001001.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ko‘z qaysi rangga eng kam sezgir?",
+      en: "Which colour is the eye least sensitive to?",
+    },
+    right: { uz: "Ko‘k", en: "Blue" },
+    wrong: [
+      { uz: "Yashil", en: "Green" },
+      { uz: "Qizil", en: "Red" },
+      { uz: "Hammasiga bir xil", en: "All the same" },
+    ],
+    explain: {
+      uz: "Shuning uchun ko‘k kanal yashirish uchun qulay.",
+      en: "Which makes the blue channel handy for hiding.",
+    },
+  },
+  {
+    ask: {
+      uz: "Bitta harf (ASCII) uchun nechta piksel kerak (har pikselga 1 bit)?",
+      en: "How many pixels does one ASCII letter take at 1 bit per pixel?",
+    },
+    right: same("8"),
+    wrong: [same("1"), same("3"), same("24")],
+    explain: {
+      uz: "Bitta belgi — 8 bit.",
+      en: "One character is 8 bits.",
+    },
+  },
+  {
+    ask: {
+      uz: "01001000 qaysi ASCII belgi?",
+      en: "Which ASCII character is 01001000?",
+    },
+    right: same("H"),
+    wrong: [same("A"), same("Z"), same("h")],
+    explain: {
+      uz: "01001000 = 72 = H.",
+      en: "01001000 is 72, which is H.",
+    },
+  },
+  {
+    ask: {
+      uz: "100×100 rasm, RGB, har kanalga 1 bit — necha bayt?",
+      en: "A 100×100 RGB picture, 1 bit per channel — how many bytes?",
+    },
+    right: same("3 750"),
+    wrong: [same("10 000"), same("30 000"), same("1 250")],
+    explain: {
+      uz: "100 × 100 × 3 ÷ 8.",
+      en: "100 × 100 × 3 ÷ 8.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ikki LSB ishlatishning kamchiligi?",
+      en: "The drawback of using two LSBs?",
+    },
+    right: {
+      uz: "Rang ko‘proq o‘zgaradi, aniqlash osonlashadi",
+      en: "Colours shift more and detection gets easier",
+    },
+    wrong: [
+      { uz: "Sig‘im kamayadi", en: "Capacity drops" },
+      { uz: "Kamchiligi yo‘q", en: "There is none" },
+      { uz: "Rasm o‘chadi", en: "The picture is erased" },
+    ],
+    explain: {
+      uz: "Sig‘im va yashirinlik — muvozanat.",
+      en: "Capacity and stealth trade off.",
+    },
+  },
+  {
+    ask: {
+      uz: "Bit tekisligi nima?",
+      en: "What is a bit plane?",
+    },
+    right: {
+      uz: "Bitta kanalning bitta biti, oq-qora ko‘rinishda",
+      en: "One bit of one channel, shown in black and white",
+    },
+    wrong: [
+      { uz: "Rasmning nusxasi", en: "A copy of the picture" },
+      { uz: "Fayl formati", en: "A file format" },
+      { uz: "Rang palitrasi", en: "A colour palette" },
+    ],
+    explain: {
+      uz: "stegsolve aynan shuni ko‘rsatadi.",
+      en: "That is what stegsolve shows.",
+    },
+  },
+  {
+    ask: {
+      uz: "Tabiiy rasmning 0-bit tekisligi odatda qanday ko‘rinadi?",
+      en: "What does a natural picture’s bit-0 plane usually look like?",
+    },
+    right: { uz: "Shovqin kabi", en: "Like noise" },
+    wrong: [
+      { uz: "Aniq harflar", en: "Clear letters" },
+      { uz: "Butunlay oq", en: "All white" },
+      { uz: "Asl rasm kabi", en: "Like the original" },
+    ],
+    explain: {
+      uz: "Shakl yoki harf ko‘rinsa — shubhali.",
+      en: "Shapes or letters there are suspicious.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi format LSB xabarini saqlaydi?",
+      en: "Which format keeps an LSB message?",
+    },
+    right: same("PNG"),
+    wrong: [same("JPEG"), same("WebP (lossy)"), same("GIF (resized)")],
+    explain: {
+      uz: "PNG lossless.",
+      en: "PNG is lossless.",
+    },
+  },
+  {
+    ask: {
+      uz: "LSB xabarli rasm ijtimoiy tarmoqqa yuklansa?",
+      en: "What happens when an LSB picture is uploaded to a social network?",
+    },
+    right: {
+      uz: "Qayta siqiladi va xabar yo‘qoladi",
+      en: "It is recompressed and the message is lost",
+    },
+    wrong: [
+      { uz: "Xabar saqlanadi", en: "The message survives" },
+      { uz: "Xabar shifrlanadi", en: "The message gets encrypted" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Lossy siqish LSB’larni o‘zgartiradi.",
+      en: "Lossy compression changes the LSBs.",
+    },
+  },
+  {
+    ask: {
+      uz: "LSB yashirishni statistik aniqlash nimaga asoslanadi?",
+      en: "What does statistical LSB detection rely on?",
+    },
+    right: {
+      uz: "2k va 2k+1 qiymatlar juftliklari tenglashadi",
+      en: "Pairs of values 2k and 2k+1 even out",
+    },
+    wrong: [
+      { uz: "Fayl nomi", en: "The file name" },
+      { uz: "Rasm o‘lchami", en: "The picture size" },
+      { uz: "Rang nomi", en: "A colour’s name" },
+    ],
+    explain: {
+      uz: "Chi-kvadrat testi shuni o‘lchaydi.",
+      en: "The chi-square test measures that.",
+    },
+  },
+  {
+    ask: {
+      uz: "Asl rasm topilsa, eng oson tekshiruv?",
+      en: "If the original is found, the easiest check?",
+    },
+    right: {
+      uz: "Piksel-ma-piksel solishtirish",
+      en: "Comparing pixel by pixel",
+    },
+    wrong: [
+      { uz: "Diqqat bilan qarash", en: "Looking closely" },
+      { uz: "Fayl nomini solishtirish", en: "Comparing file names" },
+      { uz: "Tekshirib bo‘lmaydi", en: "It can’t be checked" },
+    ],
+    explain: {
+      uz: "Farq qilgan piksellar — yashirilgan joy.",
+      en: "The pixels that differ are the hiding place.",
+    },
+  },
+];
