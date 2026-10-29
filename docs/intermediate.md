@@ -24,6 +24,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/firewall`    | Network security module 3, firewalls and segmentation (8 lessons, a checkpoint) |
 | `/intermediate/connections` | Network security module 4, secure connections (8 lessons, a checkpoint)         |
 | `/intermediate/ids`         | Network security module 5, intrusion detection (8 lessons, a checkpoint)        |
+| `/intermediate/evidence`    | Digital forensics module 1, handling evidence (8 lessons, a checkpoint)         |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -334,6 +335,28 @@ completes the Network security domain.
 | 6       | Questions on IDS versus IPS and encrypted traffic                 |
 | 7       | Questions on base rates and alert fatigue                         |
 | 8       | Final questions                                                   |
+
+## Digital forensics module 1: Handling evidence
+
+`/intermediate/evidence` (lab id `evidence`, checkpoint `evidence-1`, award
+`lab-evidence`, site setting `evidence`) opens the Digital forensics domain.
+It uses `src/lib/evidence/tools.ts`: `problems` names what a reviewer would
+pick on for each missing acquisition step (write blocker, hash of the
+original, bit-for-bit image, hash of the image, working on a copy); `COPIES`
+are four copies of an image, two of them one hex digit away from the
+acquisition hash; `brokenLink` finds the first custody entry that doesn't
+start with whoever held the evidence last.
+
+| Lessons | What the student does                                          |
+| ------- | -------------------------------------------------------------- |
+| 1       | Sorts evidence by the order of volatility                      |
+| 2       | Sorts right and wrong actions at the scene                     |
+| 3       | Picks every step of an acquisition that stands up              |
+| 4       | Clicks through the parts of a dd and a sha256sum command       |
+| 5       | Marks copies intact or altered against the report's hash       |
+| 6       | Finds where a chain of custody breaks                          |
+| 7       | Questions on live systems, encrypted disks and hash algorithms |
+| 8       | Final questions                                                |
 
 ## Who gets in
 

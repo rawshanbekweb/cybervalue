@@ -285,6 +285,8 @@ export const DOMAINS: Domain[] = [
     modules: [
       {
         title: { uz: "Dalil bilan ishlash", en: "Handling evidence" },
+        href: "/intermediate/evidence",
+        lab: "evidence",
         topics: ["chain of custody", "hashing evidence", "imaging"],
         goal: goal(
           "Dalil o‘zgarmaganini isbotlash usullarini qo‘llash.",

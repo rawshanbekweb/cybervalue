@@ -4327,3 +4327,287 @@ export const IDS_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const EVIDENCE_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "O‘zgaruvchanlik tartibiga ko‘ra birinchi nima yig‘iladi?",
+      en: "By the order of volatility, what is collected first?",
+    },
+    right: { uz: "Operativ xotira (RAM)", en: "Memory (RAM)" },
+    wrong: [
+      { uz: "Qattiq disk", en: "The hard disk" },
+      { uz: "Zaxira lentasi", en: "The backup tape" },
+      { uz: "Arxiv loglari", en: "Archived logs" },
+    ],
+    explain: {
+      uz: "RAM elektr uzilishi bilan yo‘qoladi.",
+      en: "RAM is lost the moment the power goes.",
+    },
+  },
+  {
+    ask: {
+      uz: "Shubhali kompyuterda antivirus ishga tushirish nega xato?",
+      en: "Why is running antivirus on the suspect computer a mistake?",
+    },
+    right: {
+      uz: "U diskka yozadi va dalilni o‘zgartiradi",
+      en: "It writes to the disk and changes the evidence",
+    },
+    wrong: [
+      { uz: "Antivirus juda qimmat", en: "Antivirus is too expensive" },
+      { uz: "U internetni o‘chiradi", en: "It cuts the internet" },
+      { uz: "Xato emas", en: "It isn’t" },
+    ],
+    explain: {
+      uz: "Har qanday yozish — vaqt belgilari va fayllar o‘zgaradi.",
+      en: "Any write changes timestamps and files.",
+    },
+  },
+  {
+    ask: {
+      uz: "Write blocker nima qiladi?",
+      en: "What does a write blocker do?",
+    },
+    right: {
+      uz: "Diskdan faqat o‘qishga ruxsat beradi",
+      en: "It allows only reading from the disk",
+    },
+    wrong: [
+      { uz: "Diskni shifrlaydi", en: "It encrypts the disk" },
+      { uz: "Diskni tozalaydi", en: "It wipes the disk" },
+      { uz: "Tasvirni siqadi", en: "It compresses the image" },
+    ],
+    explain: {
+      uz: "Tizim diskka hech narsa yoza olmaydi.",
+      en: "The system can’t write anything to the disk.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega fayllarni oddiy nusxalash yetmaydi?",
+      en: "Why isn’t copying the files enough?",
+    },
+    right: {
+      uz: "O‘chirilgan fayllar, bo‘sh joy va metama’lumot qoladi",
+      en: "Deleted files, free space and metadata are left behind",
+    },
+    wrong: [
+      { uz: "Juda sekin", en: "It is too slow" },
+      { uz: "Fayllar shifrlanadi", en: "The files get encrypted" },
+      { uz: "Yetarli", en: "It is enough" },
+    ],
+    explain: {
+      uz: "Bit-ma-bit tasvir (dd, E01) hammasini saqlaydi.",
+      en: "A bit-for-bit image (dd, E01) keeps everything.",
+    },
+  },
+  {
+    ask: {
+      uz: "dd if=/dev/sdb of=disk.img — if va of almashtirilsa?",
+      en: "dd if=/dev/sdb of=disk.img — what if if and of are swapped?",
+    },
+    right: {
+      uz: "Asl diskning ustidan yoziladi — dalil yo‘qoladi",
+      en: "The original disk is written over — the evidence is lost",
+    },
+    wrong: [
+      { uz: "Hech narsa bo‘lmaydi", en: "Nothing happens" },
+      { uz: "Tasvir tezroq olinadi", en: "The image is taken faster" },
+      { uz: "Xesh o‘zgarmaydi", en: "The hash stays the same" },
+    ],
+    explain: {
+      uz: "Shuning uchun write blocker ham kerak.",
+      en: "That is one more reason for a write blocker.",
+    },
+  },
+  {
+    ask: {
+      uz: "conv=noerror,sync nima uchun?",
+      en: "What is conv=noerror,sync for?",
+    },
+    right: {
+      uz: "Buzilgan sektorda to‘xtamaslik va uni nollar bilan to‘ldirish",
+      en: "To keep going past bad sectors and fill them with zeros",
+    },
+    wrong: [
+      { uz: "Diskni shifrlash", en: "To encrypt the disk" },
+      { uz: "Xeshni hisoblash", en: "To compute the hash" },
+      { uz: "Fayllarni o‘chirish", en: "To delete files" },
+    ],
+    explain: {
+      uz: "Tasvir hajmi asl bilan bir xil qoladi.",
+      en: "The image stays the same size as the original.",
+    },
+  },
+  {
+    ask: {
+      uz: "Tasvir aniq nusxa ekanini nima isbotlaydi?",
+      en: "What proves an image is an exact copy?",
+    },
+    right: {
+      uz: "Asl disk va tasvirning bir xil SHA-256 xeshi",
+      en: "The same SHA-256 hash for the original and the image",
+    },
+    wrong: [
+      { uz: "Bir xil fayl hajmi", en: "The same file size" },
+      { uz: "Bir xil fayl nomi", en: "The same file name" },
+      { uz: "Tahlilchining so‘zi", en: "The analyst’s word" },
+    ],
+    explain: {
+      uz: "Hajm bir xil bo‘lib, mazmun farq qilishi mumkin.",
+      en: "Sizes can match while the contents differ.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nusxaning xeshi hisobotdagidan bitta belgiga farq qiladi. Bu?",
+      en: "A copy’s hash differs from the report by one character. This means?",
+    },
+    right: {
+      uz: "Nusxa o‘zgargan — undan foydalanib bo‘lmaydi",
+      en: "The copy has changed — it can’t be used",
+    },
+    wrong: [
+      { uz: "Arzimas farq", en: "A trifling difference" },
+      { uz: "Xesh dasturi xatosi", en: "A bug in the hash tool" },
+      { uz: "Yangi versiya", en: "A newer version" },
+    ],
+    explain: {
+      uz: "Bitta bayt o‘zgarsa ham, xesh butunlay boshqacha.",
+      en: "Even one changed byte changes the whole hash.",
+    },
+  },
+  {
+    ask: {
+      uz: "Dalil uchun qaysi xesh eskirgan?",
+      en: "Which hash is out of date for evidence?",
+    },
+    right: same("MD5"),
+    wrong: [same("SHA-256"), same("SHA-512"), same("SHA3-256")],
+    explain: {
+      uz: "MD5 uchun to‘qnashuvlar topilgan.",
+      en: "MD5 collisions are known.",
+    },
+  },
+  {
+    ask: {
+      uz: "Tahlil qaysi faylda olib boriladi?",
+      en: "Which file is the analysis done on?",
+    },
+    right: {
+      uz: "Tasvirning ishchi nusxasida",
+      en: "A working copy of the image",
+    },
+    wrong: [
+      { uz: "Asl diskda", en: "The original disk" },
+      { uz: "Asl (master) tasvirda", en: "The master image" },
+      { uz: "Gumondorning kompyuterida", en: "The suspect’s computer" },
+    ],
+    explain: {
+      uz: "Master tasvir muhrlangan holda saqlanadi.",
+      en: "The master image stays sealed.",
+    },
+  },
+  {
+    ask: {
+      uz: "Saqlash zanjiri nima?",
+      en: "What is the chain of custody?",
+    },
+    right: {
+      uz: "Dalilni kim, qachon, kimdan olib, kimga berganining uzluksiz yozuvi",
+      en: "An unbroken record of who took the evidence from whom and when, and who they gave it to",
+    },
+    wrong: [
+      {
+        uz: "Dalillar saqlanadigan shkaf",
+        en: "The locker evidence is kept in",
+      },
+      { uz: "Xeshlar ro‘yxati", en: "A list of hashes" },
+      { uz: "Sud qarori", en: "A court order" },
+    ],
+    explain: {
+      uz: "Bitta bo‘shliq dalilni shubha ostiga qo‘yadi.",
+      en: "One gap puts the evidence in doubt.",
+    },
+  },
+  {
+    ask: {
+      uz: "Saqlash zanjirida yozuv bo‘lmagan oraliq bo‘lsa?",
+      en: "What if the chain of custody has a period with no entry?",
+    },
+    right: {
+      uz: "Dalil sudda rad etilishi mumkin",
+      en: "The evidence may be thrown out in court",
+    },
+    wrong: [
+      { uz: "Hech narsa", en: "Nothing" },
+      { uz: "Faqat xesh qayta olinadi", en: "Just rehash it" },
+      { uz: "Dalil kuchliroq bo‘ladi", en: "The evidence gets stronger" },
+    ],
+    explain: {
+      uz: "Bu vaqtda dalil bilan nima bo‘lganini hech kim isbotlay olmaydi.",
+      en: "Nobody can show what happened to it in that time.",
+    },
+  },
+  {
+    ask: {
+      uz: "Har bir saqlash yozuvida nima bo‘lishi kerak?",
+      en: "What must each custody entry contain?",
+    },
+    right: {
+      uz: "Vaqt, kimdan, kimga, muhr holati va imzolar",
+      en: "The time, from whom, to whom, the seal’s state and signatures",
+    },
+    wrong: [
+      { uz: "Faqat sana", en: "Just the date" },
+      { uz: "Faqat dalil nomi", en: "Just the item’s name" },
+      {
+        uz: "Hech narsa, og‘zaki yetarli",
+        en: "Nothing, word of mouth will do",
+      },
+    ],
+    explain: {
+      uz: "Har bir topshiriq hujjatlashtiriladi.",
+      en: "Every hand-over is documented.",
+    },
+  },
+  {
+    ask: {
+      uz: "Noutbuk yoniq, disk BitLocker bilan shifrlangan. Birinchi qadam?",
+      en: "A laptop is on and BitLocker-encrypted. The first step?",
+    },
+    right: {
+      uz: "RAM tasvirini olish",
+      en: "Image the RAM",
+    },
+    wrong: [
+      { uz: "Darhol o‘chirish", en: "Turn it off at once" },
+      { uz: "Qayta yuklash", en: "Reboot it" },
+      { uz: "Antivirus ishga tushirish", en: "Run antivirus" },
+    ],
+    explain: {
+      uz: "Shifrlash kaliti faqat xotirada bo‘lishi mumkin.",
+      en: "The encryption key may exist only in memory.",
+    },
+  },
+  {
+    ask: {
+      uz: "Jonli tizimda ishlatilgan vositalar haqida nima qilinadi?",
+      en: "What happens with the tools used on a live system?",
+    },
+    right: {
+      uz: "Har biri va ishlatilgan vaqti hisobotga yoziladi",
+      en: "Each one and when it ran goes into the report",
+    },
+    wrong: [
+      { uz: "Yashiriladi", en: "They are kept quiet" },
+      { uz: "O‘chirib tashlanadi", en: "They are deleted" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Ular tizimda iz qoldiradi — buni tushuntirish kerak.",
+      en: "They leave traces on the system — those must be explained.",
+    },
+  },
+];

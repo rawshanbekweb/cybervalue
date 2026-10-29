@@ -18,6 +18,7 @@ import { LESSONS as TRAFFIC_LESSONS } from "@/lib/traffic/curriculum";
 import { LESSONS as FIREWALL_LESSONS } from "@/lib/firewall/curriculum";
 import { LESSONS as CONNECTIONS_LESSONS } from "@/lib/connections/curriculum";
 import { LESSONS as IDS_LESSONS } from "@/lib/ids/curriculum";
+import { LESSONS as EVIDENCE_LESSONS } from "@/lib/evidence/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -426,6 +427,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: IDS_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "evidence",
+      title: "Handling evidence",
+      category: "Intermediate · Digital forensics",
+      description:
+        "Collect the most volatile evidence first, take a disk image that stands up in court, check copies against the acquisition hash, and find the gap in a chain of custody.",
+      href: "/intermediate/evidence",
+      progressKey: LAB_PROGRESS.evidence.key,
+      level: "Intermediate",
+      lessons: EVIDENCE_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: EVIDENCE_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

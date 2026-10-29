@@ -22,6 +22,7 @@ export const LAB_PROGRESS = {
   firewall: { key: "cybervalue:firewall:progress:v1", total: 8 },
   connections: { key: "cybervalue:connections:progress:v1", total: 8 },
   ids: { key: "cybervalue:ids:progress:v1", total: 8 },
+  evidence: { key: "cybervalue:evidence:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -223,6 +224,15 @@ export const LAB_META: {
       en: "Intrusion detection (Intermediate)",
     },
     href: "/intermediate/ids",
+    intermediate: true,
+  },
+  {
+    id: "evidence",
+    title: {
+      uz: "Dalil bilan ishlash (Intermediate)",
+      en: "Handling evidence (Intermediate)",
+    },
+    href: "/intermediate/evidence",
     intermediate: true,
   },
 ];
