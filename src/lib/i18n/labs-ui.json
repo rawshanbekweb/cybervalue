@@ -1226,5 +1226,20 @@
   "Bit plane": "Bit tekisligi",
   "Invisible in the picture, plain as day in blue bit 0.": "Rasmda ko‘rinmaydi, ko‘k kanalning 0-bitida esa aniq ko‘rinadi.",
   "Inside images · Academy Intermediate": "Rasm ichida · Academy Intermediate",
-  "Inside images": "Rasm ichida"
+  "Inside images": "Rasm ichida",
+  "STEGANOGRAPHY · MODULE 3": "STEGANOGRAFIYA · 3-MODUL",
+  "Metadata.": "Metama’lumotlar.",
+  "The file says more about you than its content does.": "Fayl siz haqingizda mazmunidan ko‘ra ko‘proq gapiradi.",
+  "See what EXIF gives away, find the city a photo was taken in from its GPS tags, read a document’s author and template path, and strip the personal fields before publishing without breaking the picture.": "EXIF nimani oshkor qilishini ko‘ring, GPS teglaridan rasm olingan shaharni toping, hujjat muallifi va shablon yo‘lini o‘qing hamda rasmni buzmasdan, nashrdan oldin shaxsiy maydonlarni olib tashlang.",
+  "EXIF / LAB": "EXIF / AMALIYOT",
+  "Convert the GPS to decimal degrees": "GPS’ni o‘nlik graduslarga aylantirish",
+  "Where was it taken?": "Rasm qayerda olingan?",
+  "Samarkand, right by the Registan — and the Artist tag says who took it.": "Samarqand, Registon yonida — Artist tegi esa kim olganini aytadi.",
+  "Too far away: compare the decimal degrees again.": "Juda uzoq: o‘nlik graduslarni yana solishtiring.",
+  "Remove before publishing:": "Nashrdan oldin olib tashlash:",
+  "Nothing personal left, and the photo still shows upright in true colour.": "Shaxsiy hech narsa qolmadi, rasm esa hamon to‘g‘ri va asl ranglarida ko‘rinadi.",
+  "Still gives away: {tags}": "Hali ham oshkor qiladi: {tags}",
+  "Removing {tags} breaks how the photo displays.": "{tags} ni olib tashlash rasm ko‘rinishini buzadi.",
+  "Metadata · Academy Intermediate": "Metama’lumotlar · Academy Intermediate",
+  "Metadata": "Metama’lumotlar"
 }

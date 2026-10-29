@@ -25,6 +25,7 @@ import { LESSONS as RESPONSE_LESSONS } from "@/lib/response/curriculum";
 import { LESSONS as REPORT_LESSONS } from "@/lib/report/curriculum";
 import { LESSONS as STEGO_LESSONS } from "@/lib/stego/curriculum";
 import { LESSONS as LSB_LESSONS } from "@/lib/lsb/curriculum";
+import { LESSONS as METADATA_LESSONS } from "@/lib/metadata/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -552,6 +553,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: LSB_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "metadata",
+      title: "Metadata",
+      category: "Intermediate · Steganography",
+      description:
+        "See what EXIF gives away, find the city a photo was taken in from its GPS tags, read a document’s author and template path, and strip the personal fields before publishing without breaking the picture.",
+      href: "/intermediate/metadata",
+      progressKey: LAB_PROGRESS.metadata.key,
+      level: "Intermediate",
+      lessons: METADATA_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: METADATA_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

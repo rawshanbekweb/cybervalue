@@ -373,6 +373,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Metama’lumotlar", en: "Metadata" },
+        href: "/intermediate/metadata",
+        lab: "metadata",
         topics: ["EXIF", "GPS tags", "document properties"],
         goal: goal(
           "Fayl metama’lumotlari nimani oshkor qilishini aniqlash va tozalash.",

@@ -29,6 +29,7 @@ export const LAB_PROGRESS = {
   report: { key: "cybervalue:report:progress:v1", total: 8 },
   stego: { key: "cybervalue:stego:progress:v1", total: 8 },
   lsb: { key: "cybervalue:lsb:progress:v1", total: 8 },
+  metadata: { key: "cybervalue:metadata:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -293,6 +294,15 @@ export const LAB_META: {
       en: "Inside images (Intermediate)",
     },
     href: "/intermediate/lsb",
+    intermediate: true,
+  },
+  {
+    id: "metadata",
+    title: {
+      uz: "Metama’lumotlar (Intermediate)",
+      en: "Metadata (Intermediate)",
+    },
+    href: "/intermediate/metadata",
     intermediate: true,
   },
 ];

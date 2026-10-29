@@ -6196,3 +6196,240 @@ export const LSB_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const METADATA_POOL: PoolItem[] = [
+  {
+    ask: { uz: "Metama’lumot nima?", en: "What is metadata?" },
+    right: { uz: "Fayl haqidagi ma’lumot", en: "Data about the file" },
+    wrong: [
+      { uz: "Faylning mazmuni", en: "The file’s content" },
+      { uz: "Fayl nomi xolos", en: "Only the file name" },
+      { uz: "Shifrlash kaliti", en: "An encryption key" },
+    ],
+    explain: {
+      uz: "U fayl ichida, ko‘zga ko‘rinmas joyda.",
+      en: "It sits inside the file, out of sight.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi EXIF maydoni joylashuvni oshkor qiladi?",
+      en: "Which EXIF field gives away location?",
+    },
+    right: same("GPS Latitude / Longitude"),
+    wrong: [same("Image Width"), same("Color Space"), same("Orientation")],
+    explain: {
+      uz: "Koordinatalar xaritada joyni ko‘rsatadi.",
+      en: "Coordinates point to a place on a map.",
+    },
+  },
+  {
+    ask: {
+      uz: "39° 30′ 0″ o‘nlik graduslarda?",
+      en: "39° 30′ 0″ in decimal degrees?",
+    },
+    right: same("39.5"),
+    wrong: [same("39.30"), same("3930"), same("39.03")],
+    explain: { uz: "39 + 30/60 = 39.5.", en: "39 + 30/60 = 39.5." },
+  },
+  {
+    ask: {
+      uz: "DMS’ni o‘nlikka aylantirish formulasi?",
+      en: "The formula for DMS to decimal?",
+    },
+    right: same("deg + min/60 + sec/3600"),
+    wrong: [
+      same("deg + min + sec"),
+      same("deg × min × sec"),
+      same("deg + min/100 + sec/10000"),
+    ],
+    explain: {
+      uz: "Bir gradusda 60 daqiqa, bir daqiqada 60 soniya.",
+      en: "A degree has 60 minutes, a minute 60 seconds.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kamera seriya raqami nega shaxsiy?",
+      en: "Why is a camera serial number personal?",
+    },
+    right: {
+      uz: "U bir odamning turli rasmlarini bog‘laydi",
+      en: "It ties different photos to one person",
+    },
+    wrong: [
+      { uz: "U parolni saqlaydi", en: "It stores a password" },
+      { uz: "Shaxsiy emas", en: "It isn’t" },
+      { uz: "U GPS’ni saqlaydi", en: "It stores the GPS" },
+    ],
+    explain: {
+      uz: "Bir xil raqam — bir xil kamera.",
+      en: "Same number, same camera.",
+    },
+  },
+  {
+    ask: {
+      uz: "Orientation maydonini o‘chirsangiz?",
+      en: "What if you delete the Orientation field?",
+    },
+    right: {
+      uz: "Tik rasm yonboshlab ko‘rinadi",
+      en: "An upright photo shows on its side",
+    },
+    wrong: [
+      { uz: "GPS o‘chadi", en: "The GPS goes" },
+      { uz: "Hech narsa", en: "Nothing" },
+      { uz: "Rang o‘zgaradi", en: "The colours change" },
+    ],
+    explain: {
+      uz: "U ko‘rsatish uchun kerak.",
+      en: "It is needed for display.",
+    },
+  },
+  {
+    ask: {
+      uz: "Faqat GPS’ni o‘chiradigan exiftool buyrug‘i?",
+      en: "The exiftool command that removes only GPS?",
+    },
+    right: same("exiftool -gps:all= photo.jpg"),
+    wrong: [
+      same("exiftool -all= photo.jpg"),
+      same("exiftool photo.jpg"),
+      same("mv photo.jpg x.jpg"),
+    ],
+    explain: {
+      uz: "-all= hammasini o‘chiradi.",
+      en: "-all= removes everything.",
+    },
+  },
+  {
+    ask: {
+      uz: "Fayl nomini o‘zgartirish metama’lumotni o‘chiradimi?",
+      en: "Does renaming a file remove its metadata?",
+    },
+    right: { uz: "Yo‘q", en: "No" },
+    wrong: [
+      { uz: "Ha", en: "Yes" },
+      { uz: "Faqat GPS’ni", en: "Only the GPS" },
+      { uz: "Faqat JPEG’da", en: "Only for JPEG" },
+    ],
+    explain: {
+      uz: "Metama’lumot fayl ichida.",
+      en: "Metadata lives inside the file.",
+    },
+  },
+  {
+    ask: {
+      uz: "Faylni ZIP’ga solish metama’lumotni o‘chiradimi?",
+      en: "Does zipping a file remove its metadata?",
+    },
+    right: {
+      uz: "Yo‘q — ochilganda hammasi joyida",
+      en: "No — it is all there once unzipped",
+    },
+    wrong: [
+      { uz: "Ha", en: "Yes" },
+      { uz: "Faqat muallifni", en: "Only the author" },
+      { uz: "Faqat shifrlangan ZIP’da", en: "Only in an encrypted ZIP" },
+    ],
+    explain: {
+      uz: "ZIP faylni o‘zgartirmaydi.",
+      en: "ZIP doesn’t change the file.",
+    },
+  },
+  {
+    ask: {
+      uz: "Word hujjatidagi Template yo‘li nimani oshkor qiladi?",
+      en: "What does the Template path in a Word file give away?",
+    },
+    right: { uz: "Windows foydalanuvchi nomini", en: "The Windows user name" },
+    wrong: [
+      { uz: "Parolni", en: "The password" },
+      { uz: "IP manzilni", en: "The IP address" },
+      { uz: "Hech narsani", en: "Nothing" },
+    ],
+    explain: { uz: "C:\\Users\\<ism>\\…", en: "C:\\Users\\<name>\\…" },
+  },
+  {
+    ask: {
+      uz: "“Anonim” xat muallifini nima fosh qilishi mumkin?",
+      en: "What can unmask the author of an “anonymous” letter?",
+    },
+    right: {
+      uz: "Creator va Last Modified By maydonlari",
+      en: "The Creator and Last Modified By fields",
+    },
+    wrong: [
+      { uz: "Shrift o‘lchami", en: "The font size" },
+      { uz: "Sahifalar soni", en: "The page count" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Office ismni o‘zi yozadi.",
+      en: "Office writes the name itself.",
+    },
+  },
+  {
+    ask: {
+      uz: "EXIF’da “Software: Adobe Photoshop” — bu?",
+      en: "“Software: Adobe Photoshop” in EXIF — this means?",
+    },
+    right: {
+      uz: "Rasm tahrirlangan bo‘lishi mumkin",
+      en: "The photo may have been edited",
+    },
+    wrong: [
+      { uz: "Rasm albatta asl", en: "It is certainly original" },
+      { uz: "Kamera modeli", en: "The camera model" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Kamera bunday yozuv qoldirmaydi.",
+      en: "A camera doesn’t write that.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega metama’lumot yagona dalil bo‘lolmaydi?",
+      en: "Why can’t metadata be the only evidence?",
+    },
+    right: { uz: "Uni soxtalashtirish oson", en: "It is easy to fake" },
+    wrong: [
+      { uz: "U shifrlangan", en: "It is encrypted" },
+      { uz: "U doim noto‘g‘ri", en: "It is always wrong" },
+      { uz: "U o‘qilmaydi", en: "It can’t be read" },
+    ],
+    explain: {
+      uz: "exiftool bilan istalgan maydon yoziladi.",
+      en: "exiftool can write any field.",
+    },
+  },
+  {
+    ask: {
+      uz: "Telefonda GPS yozilishining oldini olishning oddiy usuli?",
+      en: "A simple way to stop phone photos carrying GPS?",
+    },
+    right: {
+      uz: "Kamera uchun joylashuv ruxsatini o‘chirish",
+      en: "Turn off location permission for the camera",
+    },
+    wrong: [
+      { uz: "Rasmni kichraytirish", en: "Make the photo smaller" },
+      { uz: "Telefonni qayta yuklash", en: "Restart the phone" },
+      { uz: "Rasmni qayta nomlash", en: "Rename the photo" },
+    ],
+    explain: {
+      uz: "Ruxsatsiz kamera koordinata yozmaydi.",
+      en: "Without permission no coordinates are written.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi vosita hujjatlardan metama’lumotni tozalaydi?",
+      en: "Which tool cleans metadata from documents?",
+    },
+    right: same("mat2"),
+    wrong: [same("ping"), same("grep"), same("ssh")],
+    explain: { uz: "exiftool ham ishlaydi.", en: "exiftool works too." },
+  },
+];
