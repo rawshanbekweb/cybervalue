@@ -353,6 +353,8 @@ export const DOMAINS: Domain[] = [
     modules: [
       {
         title: { uz: "Asosiy g‘oya", en: "The idea" },
+        href: "/intermediate/stego",
+        lab: "stego",
         topics: ["cover file", "payload", "stego vs crypto"],
         goal: goal(
           "Steganografiya va shifrlash farqini tushuntirish.",

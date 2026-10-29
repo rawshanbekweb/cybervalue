@@ -29,6 +29,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/logs`        | Digital forensics module 3, logs and artefacts (8 lessons, a checkpoint)        |
 | `/intermediate/response`    | Digital forensics module 4, incident response (8 lessons, a checkpoint)         |
 | `/intermediate/report`      | Digital forensics module 5, writing the report (8 lessons, a checkpoint)        |
+| `/intermediate/stego`       | Steganography module 1, the idea (8 lessons, a checkpoint)                      |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -444,6 +445,26 @@ completes the Digital forensics domain.
 | 6       | Questions on the executive summary                    |
 | 7       | Questions on TLP labels and sending the report safely |
 | 8       | Final questions                                       |
+
+## Steganography module 1: The idea
+
+`/intermediate/stego` (lab id `stego`, checkpoint `stego-1`, award
+`lab-stego`, site setting `stego`) opens the Steganography domain. It uses
+`src/lib/stego/tools.ts`: `POEMS` are two acrostics, one per language, whose
+first letters spell the answer; `embed` tucks a secret into a chat message
+as zero-width space (0) and zero-width non-joiner (1) characters, eight per
+character, and `bitsOf`/`decodeBits` read it back.
+
+| Lessons | What the student does                                       |
+| ------- | ----------------------------------------------------------- |
+| 1       | Sorts methods into hiding, encrypting or both               |
+| 2       | Reads the word hidden in a poem's first letters             |
+| 3       | Finds a secret hidden in invisible characters               |
+| 4       | Clicks through the parts of a steghide command              |
+| 5       | Sorts legitimate from malicious uses                        |
+| 6       | Questions on the signs of hiding and Kerckhoffs's principle |
+| 7       | Questions on capacity and stealth                           |
+| 8       | Final questions                                             |
 
 ## Who gets in
 
