@@ -31,6 +31,7 @@ import { LESSONS as STEGANALYSIS_LESSONS } from "@/lib/steganalysis/curriculum";
 import { LESSONS as SIEM_LESSONS } from "@/lib/siem/curriculum";
 import { LESSONS as DETECTION_LESSONS } from "@/lib/detection/curriculum";
 import { LESSONS as TRIAGE_LESSONS } from "@/lib/triage/curriculum";
+import { LESSONS as HUNTING_LESSONS } from "@/lib/hunting/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -660,6 +661,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: TRIAGE_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "hunting",
+      title: "Threat hunting",
+      category: "Intermediate · Blue team",
+      description:
+        "Tell hunting from alert handling, write testable hypotheses, map a threat report onto the ATT&CK matrix, read a technique’s page, stack scheduled tasks across forty computers to find the rogue one, share indicators safely and close a hunt properly.",
+      href: "/intermediate/hunting",
+      progressKey: LAB_PROGRESS.hunting.key,
+      level: "Intermediate",
+      lessons: HUNTING_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: HUNTING_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

@@ -54,6 +54,7 @@ import {
   SIEM_POOL,
   DETECTION_POOL,
   TRIAGE_POOL,
+  HUNTING_POOL,
   SECURITY_EXTRA,
   type PoolItem,
 } from "./pools";
@@ -774,6 +775,10 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
       .map((item) => fromPool(r, item)),
   "triage-1": (r) =>
     shuffle(r, TRIAGE_POOL)
+      .slice(0, 10)
+      .map((item) => fromPool(r, item)),
+  "hunting-1": (r) =>
+    shuffle(r, HUNTING_POOL)
       .slice(0, 10)
       .map((item) => fromPool(r, item)),
 };

@@ -7680,3 +7680,264 @@ export const TRIAGE_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const HUNTING_POOL: PoolItem[] = [
+  {
+    ask: { uz: "Tahdid izlash nima?", en: "What is threat hunting?" },
+    right: {
+      uz: "Qoidalar sezmagan hujumchini faol qidirish",
+      en: "Actively looking for attackers the rules missed",
+    },
+    wrong: [
+      { uz: "Ogohlantirishni kutish", en: "Waiting for alerts" },
+      { uz: "Parol almashtirish", en: "Changing passwords" },
+      { uz: "Antivirus o‘rnatish", en: "Installing antivirus" },
+    ],
+    explain: {
+      uz: "Ovchi savoldan boshlaydi.",
+      en: "A hunter starts from a question.",
+    },
+  },
+  {
+    ask: {
+      uz: "“Assume breach” nimani bildiradi?",
+      en: "What does “assume breach” mean?",
+    },
+    right: {
+      uz: "Hujumchi allaqachon ichkarida deb hisoblash",
+      en: "Working as if an attacker is already inside",
+    },
+    wrong: [
+      { uz: "Hamma narsa xavfsiz deb hisoblash", en: "Assuming all is safe" },
+      { uz: "Tarmoqni o‘chirish", en: "Shutting the network down" },
+      { uz: "Faqat firewall’ga ishonish", en: "Trusting only the firewall" },
+    ],
+    explain: {
+      uz: "Ovchining boshlang‘ich nuqtasi.",
+      en: "The hunter’s starting point.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi biri yaxshi gipoteza?",
+      en: "Which is a good hypothesis?",
+    },
+    right: {
+      uz: "RDP bilan harakat bo‘lsa, stansiyalar orasida 4624 LogonType 10 bor",
+      en: "If there was RDP movement, workstations show 4624 LogonType 10 logons",
+    },
+    wrong: [
+      {
+        uz: "Bizni buzishgan bo‘lishi mumkin",
+        en: "We might have been hacked",
+      },
+      { uz: "Tarmoqda nimadir g‘alati", en: "Something is odd" },
+      { uz: "Hujumchilar yomon", en: "Attackers are bad" },
+    ],
+    explain: {
+      uz: "Nima, qayerda, qaysi ma’lumot.",
+      en: "What, where and which data.",
+    },
+  },
+  {
+    ask: { uz: "MITRE ATT&CK nima?", en: "What is MITRE ATT&CK?" },
+    right: {
+      uz: "Haqiqiy hujumlardan yig‘ilgan taktika va texnikalar bazasi",
+      en: "A knowledge base of tactics and techniques from real attacks",
+    },
+    wrong: [
+      { uz: "Antivirus", en: "An antivirus" },
+      { uz: "SIEM", en: "A SIEM" },
+      { uz: "Zaiflik skaneri", en: "A vulnerability scanner" },
+    ],
+    explain: {
+      uz: "Hujumchi xatti-harakatining umumiy tili.",
+      en: "A shared language for attacker behaviour.",
+    },
+  },
+  {
+    ask: {
+      uz: "ATT&CK’da taktika nima?",
+      en: "What is a tactic in ATT&CK?",
+    },
+    right: {
+      uz: "Hujumchining maqsadi, masalan, o‘rnashish",
+      en: "The attacker’s goal, such as persistence",
+    },
+    wrong: [
+      { uz: "Aniq dastur", en: "A specific program" },
+      { uz: "IP manzil", en: "An IP address" },
+      { uz: "Fayl xeshi", en: "A file hash" },
+    ],
+    explain: {
+      uz: "Texnika — maqsadga erishish usuli.",
+      en: "A technique is the way to reach the goal.",
+    },
+  },
+  {
+    ask: {
+      uz: "“Rejalashtirilgan vazifa yaratadi” qaysi texnika?",
+      en: "“Creates a scheduled task” is which technique?",
+    },
+    right: { uz: "T1053.005", en: "T1053.005" },
+    wrong: [
+      { uz: "T1566.001", en: "T1566.001" },
+      { uz: "T1021.001", en: "T1021.001" },
+      { uz: "T1567.002", en: "T1567.002" },
+    ],
+    explain: {
+      uz: "Persistence taktikasi ostida.",
+      en: "Under the Persistence tactic.",
+    },
+  },
+  {
+    ask: {
+      uz: "“Ilovali fishing xati” qaysi texnika?",
+      en: "“A phishing email with an attachment” is which technique?",
+    },
+    right: { uz: "T1566.001", en: "T1566.001" },
+    wrong: [
+      { uz: "T1053.005", en: "T1053.005" },
+      { uz: "T1003.001", en: "T1003.001" },
+      { uz: "T1048", en: "T1048" },
+    ],
+    explain: {
+      uz: "Spearphishing Attachment, Initial Access.",
+      en: "Spearphishing Attachment, under Initial Access.",
+    },
+  },
+  {
+    ask: {
+      uz: "T1053.005 da “.005” nima?",
+      en: "In T1053.005, what is “.005”?",
+    },
+    right: { uz: "Subtexnika", en: "The sub-technique" },
+    wrong: [
+      { uz: "Versiya", en: "A version" },
+      { uz: "Port", en: "A port" },
+      { uz: "Jiddiylik", en: "The severity" },
+    ],
+    explain: {
+      uz: "Windows Task Scheduler turi.",
+      en: "The Windows Task Scheduler kind.",
+    },
+  },
+  {
+    ask: {
+      uz: "Texnika sahifasida ovchi uchun eng muhim qism?",
+      en: "On a technique’s page, the part a hunter needs most?",
+    },
+    right: { uz: "Ma’lumot manbalari", en: "The data sources" },
+    wrong: [
+      { uz: "Yaratilgan sana", en: "The date created" },
+      { uz: "Sahifa rangi", en: "The page colour" },
+      { uz: "Mualliflar", en: "The authors" },
+    ],
+    explain: {
+      uz: "Qayerdan qidirishni aytadi.",
+      en: "They say where to look.",
+    },
+  },
+  {
+    ask: { uz: "Stacking nima?", en: "What is stacking?" },
+    right: {
+      uz: "Barcha kompyuterlardan bir xil narsani yig‘ib, qiymat bo‘yicha sanash",
+      en: "Collecting the same thing from every machine and counting by value",
+    },
+    wrong: [
+      { uz: "Loglarni o‘chirish", en: "Deleting logs" },
+      { uz: "Serverlarni ustma-ust qo‘yish", en: "Piling servers up" },
+      { uz: "Parollarni sinash", en: "Trying passwords" },
+    ],
+    explain: {
+      uz: "Kam uchraydigan qiymat — tekshirishga arziydi.",
+      en: "The rare value is worth a look.",
+    },
+  },
+  {
+    ask: {
+      uz: "40 kompyuterdan faqat bittasida “WindowsUpdateCheck” vazifasi C:\\Users\\Public’dan ishlaydi. Bu?",
+      en: "Only one of 40 PCs has a “WindowsUpdateCheck” task running from C:\\Users\\Public. That is?",
+    },
+    right: { uz: "Tekshirishga arziydi", en: "Worth investigating" },
+    wrong: [
+      { uz: "Oddiy Windows yangilanishi", en: "A normal Windows update" },
+      { uz: "Hammada bor", en: "Found everywhere" },
+      { uz: "Muhim emas", en: "Not important" },
+    ],
+    explain: {
+      uz: "Nomga emas, buyruqqa qarang.",
+      en: "Look at the command, not the name.",
+    },
+  },
+  {
+    ask: { uz: "IOC va IOA farqi?", en: "IOC versus IOA?" },
+    right: {
+      uz: "IOC — buzilish izi; IOA — hujum harakati",
+      en: "An IOC is a trace of a breach; an IOA is attack behaviour",
+    },
+    wrong: [
+      { uz: "Farqi yo‘q", en: "No difference" },
+      { uz: "IOA — fayl xeshi", en: "An IOA is a file hash" },
+      { uz: "IOC — firewall qoidasi", en: "An IOC is a firewall rule" },
+    ],
+    explain: {
+      uz: "Xesh — IOC; Public’dan vazifa yaratish — IOA.",
+      en: "A hash is an IOC; creating a task from Public is an IOA.",
+    },
+  },
+  {
+    ask: {
+      uz: "TLP:RED belgili ma’lumotni kim ko‘rishi mumkin?",
+      en: "Who may see information labelled TLP:RED?",
+    },
+    right: {
+      uz: "Faqat nomlangan qabul qiluvchilar",
+      en: "Only the named recipients",
+    },
+    wrong: [
+      { uz: "Hamma", en: "Everyone" },
+      { uz: "Butun soha", en: "The whole sector" },
+      { uz: "Butun tashkilot", en: "The whole organisation" },
+    ],
+    explain: {
+      uz: "TLP:CLEAR — hammaga ochiq.",
+      en: "TLP:CLEAR is open to everyone.",
+    },
+  },
+  {
+    ask: {
+      uz: "Indikatorlarni almashish uchun ochiq platforma?",
+      en: "An open platform for sharing indicators?",
+    },
+    right: { uz: "MISP", en: "MISP" },
+    wrong: [
+      { uz: "RDP", en: "RDP" },
+      { uz: "SMTP", en: "SMTP" },
+      { uz: "NTP", en: "NTP" },
+    ],
+    explain: {
+      uz: "STIX — format, TAXII — uzatish.",
+      en: "STIX is the format, TAXII the transport.",
+    },
+  },
+  {
+    ask: {
+      uz: "Izlash hech narsa topmadi. Keyin?",
+      en: "The hunt found nothing. Then?",
+    },
+    right: {
+      uz: "Nima tekshirilganini yozib, qoidaga aylantirish",
+      en: "Record what was checked and turn it into a rule",
+    },
+    wrong: [
+      { uz: "Hech narsa yozmaslik", en: "Record nothing" },
+      { uz: "Izlashni befoyda deyish", en: "Call it a waste" },
+      { uz: "Loglarni o‘chirish", en: "Delete the logs" },
+    ],
+    explain: {
+      uz: "Salbiy natija ham natija.",
+      en: "A null result is still a result.",
+    },
+  },
+];

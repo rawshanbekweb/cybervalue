@@ -258,6 +258,12 @@ export const SECTIONS = [
     href: "/intermediate/triage",
   },
   {
+    id: "hunting",
+    group: "lab",
+    label: "Threat hunting (Intermediate)",
+    href: "/intermediate/hunting",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

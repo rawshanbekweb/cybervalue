@@ -35,6 +35,7 @@ export const LAB_PROGRESS = {
   siem: { key: "cybervalue:siem:progress:v1", total: 8 },
   detection: { key: "cybervalue:detection:progress:v1", total: 8 },
   triage: { key: "cybervalue:triage:progress:v1", total: 8 },
+  hunting: { key: "cybervalue:hunting:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -353,6 +354,15 @@ export const LAB_META: {
       en: "Alert triage (Intermediate)",
     },
     href: "/intermediate/triage",
+    intermediate: true,
+  },
+  {
+    id: "hunting",
+    title: {
+      uz: "Tahdid izlash (Intermediate)",
+      en: "Threat hunting (Intermediate)",
+    },
+    href: "/intermediate/hunting",
     intermediate: true,
   },
 ];

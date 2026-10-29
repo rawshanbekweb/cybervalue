@@ -449,6 +449,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Tahdid izlash", en: "Threat hunting" },
+        href: "/intermediate/hunting",
+        lab: "hunting",
         topics: ["MITRE ATT&CK", "hypotheses", "IOC"],
         goal: goal(
           "ATT&CK xaritasi asosida izlash rejasini tuzish.",
