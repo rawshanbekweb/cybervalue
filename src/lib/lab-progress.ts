@@ -33,6 +33,7 @@ export const LAB_PROGRESS = {
   formats: { key: "cybervalue:formats:progress:v1", total: 8 },
   steganalysis: { key: "cybervalue:steganalysis:progress:v1", total: 8 },
   siem: { key: "cybervalue:siem:progress:v1", total: 8 },
+  detection: { key: "cybervalue:detection:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -333,6 +334,15 @@ export const LAB_META: {
       en: "Logs and SIEM (Intermediate)",
     },
     href: "/intermediate/siem",
+    intermediate: true,
+  },
+  {
+    id: "detection",
+    title: {
+      uz: "Aniqlash qoidalari (Intermediate)",
+      en: "Detection rules (Intermediate)",
+    },
+    href: "/intermediate/detection",
     intermediate: true,
   },
 ];

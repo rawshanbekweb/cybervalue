@@ -209,6 +209,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Loglar va SIEM (Intermediate)",
     earned: (f) => finished(f, "siem") && passed(f, "siem-1"),
   },
+  {
+    id: "lab-detection",
+    title: "Aniqlash qoidalari (Intermediate)",
+    earned: (f) => finished(f, "detection") && passed(f, "detection-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

@@ -29,6 +29,7 @@ import { LESSONS as METADATA_LESSONS } from "@/lib/metadata/curriculum";
 import { LESSONS as FORMATS_LESSONS } from "@/lib/formats/curriculum";
 import { LESSONS as STEGANALYSIS_LESSONS } from "@/lib/steganalysis/curriculum";
 import { LESSONS as SIEM_LESSONS } from "@/lib/siem/curriculum";
+import { LESSONS as DETECTION_LESSONS } from "@/lib/detection/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -624,6 +625,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: SIEM_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "detection",
+      title: "Detection rules",
+      category: "Intermediate · Blue team",
+      description:
+        "Sort indicator, behaviour and anomaly rules, read a Sigma rule, build one for encoded PowerShell that catches every attack with no false alarms, set thresholds, tell false positives from misses, climb the pyramid of pain and keep rules tested.",
+      href: "/intermediate/detection",
+      progressKey: LAB_PROGRESS.detection.key,
+      level: "Intermediate",
+      lessons: DETECTION_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: DETECTION_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

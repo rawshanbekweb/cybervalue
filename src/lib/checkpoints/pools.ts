@@ -7140,3 +7140,273 @@ export const SIEM_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const DETECTION_POOL: PoolItem[] = [
+  {
+    ask: { uz: "Aniqlash qoidasi nima?", en: "What is a detection rule?" },
+    right: {
+      uz: "Loglardan xavfli holatni topadigan so‘rov",
+      en: "A search that finds a dangerous situation in the logs",
+    },
+    wrong: [
+      { uz: "Firewall sozlamasi", en: "A firewall setting" },
+      { uz: "Parol siyosati", en: "A password policy" },
+      { uz: "Zaxira nusxa", en: "A backup" },
+    ],
+    explain: {
+      uz: "Mos hodisa topilsa, ogohlantirish chiqadi.",
+      en: "When an event matches, an alert fires.",
+    },
+  },
+  {
+    ask: {
+      uz: "“Fayl xeshi ma’lum zararli dastur xeshiga teng” — qaysi tur?",
+      en: "“A file’s hash equals a known malware hash” — which kind?",
+    },
+    right: { uz: "Indikator (IOC)", en: "Indicator (IOC)" },
+    wrong: [
+      { uz: "Xatti-harakat", en: "Behaviour" },
+      { uz: "Anomaliya", en: "Anomaly" },
+      { uz: "Chegara", en: "Threshold" },
+    ],
+    explain: {
+      uz: "Aniq ma’lum qiymat — indikator.",
+      en: "An exact known value is an indicator.",
+    },
+  },
+  {
+    ask: {
+      uz: "“Word PowerShell’ni ishga tushirdi” — qaysi tur?",
+      en: "“Word started PowerShell” — which kind?",
+    },
+    right: { uz: "Xatti-harakat", en: "Behaviour" },
+    wrong: [
+      { uz: "Indikator", en: "Indicator" },
+      { uz: "Anomaliya", en: "Anomaly" },
+      { uz: "Hech qaysi", en: "None" },
+    ],
+    explain: {
+      uz: "Hujumchining harakati tasvirlangan.",
+      en: "It describes what the attacker does.",
+    },
+  },
+  {
+    ask: { uz: "Sigma nima?", en: "What is Sigma?" },
+    right: {
+      uz: "Aniqlash qoidalari uchun ochiq YAML formati",
+      en: "An open YAML format for detection rules",
+    },
+    wrong: [
+      { uz: "SIEM mahsuloti", en: "A SIEM product" },
+      { uz: "Antivirus", en: "An antivirus" },
+      { uz: "Log manbasi", en: "A log source" },
+    ],
+    explain: {
+      uz: "U Splunk, Elastic, Sentinel so‘rovlariga o‘giriladi.",
+      en: "It converts into Splunk, Elastic and Sentinel searches.",
+    },
+  },
+  {
+    ask: {
+      uz: "Sigma’da bitta selection ichidagi maydonlar qanday birlashadi?",
+      en: "In Sigma, how are the fields in one selection joined?",
+    },
+    right: { uz: "VA (AND)", en: "With AND" },
+    wrong: [
+      { uz: "YOKI (OR)", en: "With OR" },
+      { uz: "XOR", en: "With XOR" },
+      { uz: "Birlashmaydi", en: "They aren’t" },
+    ],
+    explain: {
+      uz: "Hammasi bir vaqtda bajarilishi kerak.",
+      en: "All of them must hold at once.",
+    },
+  },
+  {
+    ask: {
+      uz: "“selection and not filter” nimani bildiradi?",
+      en: "What does “selection and not filter” mean?",
+    },
+    right: {
+      uz: "Tanlovga mos, lekin ma’lum istisno bo‘lmaganlar",
+      en: "Matches of the selection that aren’t the known exception",
+    },
+    wrong: [
+      { uz: "Barcha hodisalar", en: "Every event" },
+      { uz: "Faqat filterdagilar", en: "Only the filtered ones" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Filter yolg‘on ogohlantirishlarni olib tashlaydi.",
+      en: "The filter removes false alarms.",
+    },
+  },
+  {
+    ask: {
+      uz: "Sigma’da logsource nimani belgilaydi?",
+      en: "What does logsource set in Sigma?",
+    },
+    right: {
+      uz: "Qoida qaysi loglarga qo‘llanishini",
+      en: "Which logs the rule applies to",
+    },
+    wrong: [
+      { uz: "Ogohlantirish rangini", en: "The alert’s colour" },
+      { uz: "Muallifni", en: "The author" },
+      { uz: "Saqlash muddatini", en: "The retention period" },
+    ],
+    explain: {
+      uz: "Masalan, product: windows, service: security.",
+      en: "For example product: windows, service: security.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kodlangan PowerShell qoidasi IT avtomatlashtirish hisobini ham ushlayapti. Yechim?",
+      en: "An encoded-PowerShell rule also catches IT’s automation account. The fix?",
+    },
+    right: {
+      uz: "O‘sha hisobni filter bilan chiqarib tashlash",
+      en: "Leave that account out with a filter",
+    },
+    wrong: [
+      { uz: "Qoidani o‘chirish", en: "Delete the rule" },
+      {
+        uz: "Faqat Word’dan kelganlarni qoldirish",
+        en: "Keep only the ones from Word",
+      },
+      {
+        uz: "Ogohlantirishlarni e’tiborsiz qoldirish",
+        en: "Ignore the alerts",
+      },
+    ],
+    explain: {
+      uz: "Torayish ortiqcha bo‘lsa, hujum o‘tib ketadi.",
+      en: "Narrow too far and the attack slips through.",
+    },
+  },
+  {
+    ask: {
+      uz: "Chegara juda past bo‘lsa nima bo‘ladi?",
+      en: "What happens when a threshold is too low?",
+    },
+    right: {
+      uz: "Ko‘p yolg‘on ogohlantirish va charchash",
+      en: "Many false alarms, and alert fatigue",
+    },
+    wrong: [
+      { uz: "Hujumlar o‘tib ketadi", en: "Attacks slip through" },
+      { uz: "Hech narsa", en: "Nothing" },
+      { uz: "SIEM tezlashadi", en: "The SIEM gets faster" },
+    ],
+    explain: {
+      uz: "Juda yuqori bo‘lsa — sekin hujum o‘tib ketadi.",
+      en: "Too high and slow attacks slip through.",
+    },
+  },
+  {
+    ask: {
+      uz: "Har 10 daqiqada bitta urinish qanday ko‘rinadi?",
+      en: "How does one try every 10 minutes show up?",
+    },
+    right: {
+      uz: "Uzun vaqt oynasidagi qoida bilan",
+      en: "Through a rule over a long time window",
+    },
+    wrong: [
+      { uz: "5 daqiqalik oynada", en: "In a 5-minute window" },
+      { uz: "Ko‘rinmaydi", en: "It can’t" },
+      { uz: "Faqat antivirusda", en: "Only in antivirus" },
+    ],
+    explain: {
+      uz: "Past va sekin hujumlar uzun oynada ko‘rinadi.",
+      en: "Low-and-slow attacks show over long windows.",
+    },
+  },
+  {
+    ask: { uz: "False positive nima?", en: "What is a false positive?" },
+    right: {
+      uz: "Hujum yo‘q, lekin ogohlantirish chiqdi",
+      en: "An alert with no attack behind it",
+    },
+    wrong: [
+      {
+        uz: "Hujum bor, lekin ogohlantirish yo‘q",
+        en: "An attack with no alert",
+      },
+      { uz: "To‘g‘ri ogohlantirish", en: "A correct alert" },
+      { uz: "To‘g‘ri jimlik", en: "Correct silence" },
+    ],
+    explain: {
+      uz: "Hujum bor-u ogohlantirish yo‘q — false negative.",
+      en: "An attack with no alert is a false negative.",
+    },
+  },
+  {
+    ask: {
+      uz: "Hujumchi pwsh.exe ishlatdi, qoida jim qoldi. Bu?",
+      en: "The attacker used pwsh.exe and the rule stayed silent. That is?",
+    },
+    right: { uz: "False negative", en: "A false negative" },
+    wrong: [
+      { uz: "False positive", en: "A false positive" },
+      { uz: "True positive", en: "A true positive" },
+      { uz: "True negative", en: "A true negative" },
+    ],
+    explain: {
+      uz: "Shartni kengaytirish kerak.",
+      en: "The condition needs widening.",
+    },
+  },
+  {
+    ask: {
+      uz: "Og‘riq piramidasida hujumchi uchun eng oson almashtiriladigani?",
+      en: "On the pyramid of pain, what is easiest for an attacker to change?",
+    },
+    right: { uz: "Xesh qiymat", en: "A hash value" },
+    wrong: [
+      { uz: "TTP", en: "TTPs" },
+      { uz: "Vositalar", en: "Tools" },
+      { uz: "Texnika", en: "A technique" },
+    ],
+    explain: {
+      uz: "Bir bayt o‘zgarsa — xesh boshqa.",
+      en: "Change one byte and the hash differs.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qoidani xavfsiz sinash uchun qaysi vosita?",
+      en: "Which tool safely tests a rule?",
+    },
+    right: { uz: "Atomic Red Team", en: "Atomic Red Team" },
+    wrong: [
+      { uz: "Haqiqiy zararli dastur", en: "Real malware" },
+      { uz: "Wireshark", en: "Wireshark" },
+      { uz: "exiftool", en: "exiftool" },
+    ],
+    explain: {
+      uz: "U hujum texnikalarini sinov muhitida takrorlaydi.",
+      en: "It replays attack techniques in a test lab.",
+    },
+  },
+  {
+    ask: {
+      uz: "“Detection as code” nimani bildiradi?",
+      en: "What does “detection as code” mean?",
+    },
+    right: {
+      uz: "Qoidalar git’da saqlanadi, ko‘rib chiqiladi va sinaladi",
+      en: "Rules live in git and get reviewed and tested",
+    },
+    wrong: [
+      { uz: "Qoidalarni yozmaslik", en: "Not writing rules" },
+      { uz: "Faqat Python’da yozish", en: "Writing them only in Python" },
+      { uz: "Kodni shifrlash", en: "Encrypting code" },
+    ],
+    explain: {
+      uz: "Dastur kodi kabi tartib.",
+      en: "The same discipline as program code.",
+    },
+  },
+];

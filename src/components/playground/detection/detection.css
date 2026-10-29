@@ -1,0 +1,50 @@
+/* Detection rules lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css and
+   access-control.css. */
+.dt-yaml {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+.dt-events {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.dt-event {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-left-width: 3px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+.dt-event code {
+  overflow-wrap: anywhere;
+}
+.dt-cmd {
+  color: var(--muted);
+  font-size: 12px;
+}
+.dt-tp {
+  border-left-color: #2ee6a6;
+}
+.dt-fp,
+.dt-fn {
+  border-left-color: #ff9b8a;
+}
+.dt-tp .dt-verdict {
+  color: #2ee6a6;
+}
+.dt-fp .dt-verdict,
+.dt-fn .dt-verdict {
+  color: #ff9b8a;
+}
+.dt-tn .dt-verdict {
+  color: var(--muted);
+}

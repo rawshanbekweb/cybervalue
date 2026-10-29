@@ -35,6 +35,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/formats`      | Steganography module 4, audio and file formats (8 lessons, a checkpoint)        |
 | `/intermediate/steganalysis` | Steganography module 5, steganalysis (8 lessons, a checkpoint)                  |
 | `/intermediate/siem`         | Blue team module 1, logs and SIEM (8 lessons, a checkpoint)                     |
+| `/intermediate/detection`    | Blue team module 2, detection rules (8 lessons, a checkpoint)                   |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -571,6 +572,28 @@ three systems and then gets into one account; `search` counts them by
 | 5       | Clicks through a Splunk search                         |
 | 6       | Sorts useful dashboard panels from noise               |
 | 7       | Questions on source health                             |
+| 8       | Final questions                                        |
+
+## Blue team module 2: Detection rules
+
+`/intermediate/detection` (lab id `detection`, checkpoint `detection-1`,
+award `lab-detection`, site setting `detection`) uses
+`src/lib/detection/tools.ts`: `EVENTS` are eight Windows process-creation
+events (three attacks, five normal); a `Rule` ticks selection items
+(`powershell.exe`, `-enc` in the command line, an Office parent) and a filter
+for the `svc_sccm` automation account; `score` counts caught attacks, false
+alarms and misses, and `sigma` prints the rule as Sigma YAML. Only
+powershell + `-enc` with the filter is perfect.
+
+| Lessons | What the student does                                  |
+| ------- | ------------------------------------------------------ |
+| 1       | Sorts indicator, behaviour and anomaly rules           |
+| 2       | Clicks through a Sigma rule                            |
+| 3       | Builds an encoded-PowerShell rule with no false alarms |
+| 4       | Questions on thresholds and time windows               |
+| 5       | Sorts false positives from false negatives             |
+| 6       | Sorts what is easy or hard for an attacker to change   |
+| 7       | Questions on testing and keeping rules                 |
 | 8       | Final questions                                        |
 
 ## Who gets in
