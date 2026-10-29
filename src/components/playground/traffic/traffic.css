@@ -1,0 +1,91 @@
+/* Traffic analysis lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css and
+   access-control.css. */
+.cb-field input.tr-filter.ok {
+  border-color: #2ee6a6;
+  background: #2ee6a614;
+}
+.cb-field input.tr-filter.bad {
+  border-color: #ff7b6b;
+  background: #ff7b6b14;
+}
+.tr-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.tr-scroll:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.tr-packets {
+  min-width: 640px;
+  font-size: 12px;
+}
+.tr-packets th,
+.tr-packets td {
+  white-space: nowrap;
+}
+.tr-stream .tr-out {
+  color: #ff9b8a;
+}
+.tr-stream .tr-in {
+  color: #8ab4ff;
+}
+.tr-hosts {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.tr-hosts legend {
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.tr-host {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 8px 10px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+}
+.tr-host.on {
+  border-color: var(--accent);
+  background: #8052ff1f;
+}
+.tr-host input {
+  accent-color: var(--accent);
+}
+.tr-host:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.tr-host-name {
+  display: grid;
+  gap: 2px;
+}
+.tr-host-name small {
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.tr-line {
+  position: relative;
+  grid-column: 1 / -1;
+  height: 18px;
+  border-bottom: 1px solid var(--border);
+}
+.tr-line i {
+  position: absolute;
+  bottom: 3px;
+  width: 4px;
+  height: 12px;
+  margin-left: -2px;
+  border-radius: 2px;
+  background: var(--accent);
+}

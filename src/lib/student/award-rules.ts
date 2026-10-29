@@ -134,6 +134,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "TCP/IP chuqurroq (Intermediate)",
     earned: (f) => finished(f, "tcpip") && passed(f, "tcpip-1"),
   },
+  {
+    id: "lab-traffic",
+    title: "Trafik tahlili (Intermediate)",
+    earned: (f) => finished(f, "traffic") && passed(f, "traffic-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */
