@@ -119,6 +119,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Xesh va parollar (Intermediate)",
     earned: (f) => finished(f, "hashes") && passed(f, "hashes-1"),
   },
+  {
+    id: "lab-pubkey",
+    title: "Ochiq kalitli kriptografiya (Intermediate)",
+    earned: (f) => finished(f, "pubkey") && passed(f, "pubkey-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

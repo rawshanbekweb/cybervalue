@@ -15,6 +15,7 @@ export const LAB_PROGRESS = {
   classic: { key: "cybervalue:classic:progress:v1", total: 8 },
   symmetric: { key: "cybervalue:symmetric:progress:v1", total: 8 },
   hashes: { key: "cybervalue:hashes:progress:v1", total: 8 },
+  pubkey: { key: "cybervalue:pubkey:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -153,6 +154,15 @@ export const LAB_META: {
       en: "Hashes and passwords (Intermediate)",
     },
     href: "/intermediate/hashes",
+    intermediate: true,
+  },
+  {
+    id: "pubkey",
+    title: {
+      uz: "Ochiq kalitli kriptografiya (Intermediate)",
+      en: "Public-key cryptography (Intermediate)",
+    },
+    href: "/intermediate/pubkey",
     intermediate: true,
   },
 ];

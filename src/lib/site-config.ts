@@ -138,6 +138,12 @@ export const SECTIONS = [
     href: "/intermediate/hashes",
   },
   {
+    id: "pubkey",
+    group: "lab",
+    label: "Public-key cryptography (Intermediate)",
+    href: "/intermediate/pubkey",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

@@ -17,6 +17,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/classic`   | Cryptography module 1, classical ciphers (8 lessons, a checkpoint)             |
 | `/intermediate/symmetric` | Cryptography module 2, symmetric encryption (8 lessons, a checkpoint)          |
 | `/intermediate/hashes`    | Cryptography module 3, hashes and passwords (8 lessons, a checkpoint)          |
+| `/intermediate/pubkey`    | Cryptography module 4, public-key cryptography (8 lessons, a checkpoint)       |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -172,6 +173,27 @@ whether a forged amount gets through.
 | 6       | Questions on password policy (length, breach lists, no forced rotation) |
 | 7       | Picks the right tool: SHA-256 for files, HMAC for a shared key          |
 | 8       | Final questions                                                         |
+
+## Cryptography module 4: public-key cryptography
+
+`/intermediate/pubkey` (lab id `pubkey`, checkpoint `pubkey-1`, award
+`lab-pubkey`, site setting `pubkey`) does real BigInt arithmetic on small
+numbers in `src/lib/public-key/tools.ts`: `exchange` runs Diffie–Hellman in
+three groups (p = 23, 2087 and 2⁶¹ − 1) and `eveSearch` tries exponents up to
+100 000; `rsaKey` builds a key from two of the offered primes with e = 17,
+and `factor` splits n by trial division; `middle` runs the exchange with
+Mallory swapping in her own value, stopped when Bob's value is signed.
+
+| Lessons | What the student does                                                |
+| ------- | -------------------------------------------------------------------- |
+| 1       | Sorts which key each action uses                                     |
+| 2       | Sees Eve find the secret in small groups, then picks p = 2⁶¹ − 1     |
+| 3       | Builds an RSA key, encrypts 42 and gets it back, and sees n factored |
+| 4       | Questions on key sizes, factoring and quantum-resistant algorithms   |
+| 5       | Sees Mallory read both sides, then has Bob sign his value            |
+| 6       | Questions on what a signature proves                                 |
+| 7       | Questions on hybrid encryption and forward secrecy                   |
+| 8       | Final questions                                                      |
 
 ## Who gets in
 

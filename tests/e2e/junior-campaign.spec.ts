@@ -225,17 +225,21 @@ test("step 4 comes after the case and never reopens it", async ({ page }) => {
 
   // Eight missions and the case: 900 XP, and the case is still closed.
   await expect(page.locator(".jr-topbar")).toContainText("900 XP");
-  // The last mission is saved in the background; reload once it has landed.
+  // The last mission is saved in the background, which can land after the
+  // page goes quiet on a slow runner: reload until the saved account shows
+  // it. A save that never lands still fails here.
   await page.waitForLoadState("networkidle");
-  await page.reload();
-  await expect(caseFile.getByText("Case closed.")).toBeVisible();
-  await page
-    .getByRole("navigation", { name: "Academy sections" })
-    .getByRole("link", { name: "Achievements" })
-    .click();
-  await expect(
-    page
-      .getByRole("region", { name: "Achievements" })
-      .locator("li.on", { hasText: "Digital defender" }),
-  ).toBeVisible();
+  await expect(async () => {
+    await page.reload();
+    await expect(caseFile.getByText("Case closed.")).toBeVisible();
+    await page
+      .getByRole("navigation", { name: "Academy sections" })
+      .getByRole("link", { name: "Achievements" })
+      .click();
+    await expect(
+      page
+        .getByRole("region", { name: "Achievements" })
+        .locator("li.on", { hasText: "Digital defender" }),
+    ).toBeVisible({ timeout: 3_000 });
+  }).toPass({ timeout: 30_000 });
 });

@@ -2409,3 +2409,271 @@ export const HASHES_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const PUBKEY_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Bobga faqat u o‘qiy oladigan xat yuborish uchun nima bilan shifrlaysiz?",
+      en: "To send Bob a letter only he can read, what do you encrypt with?",
+    },
+    right: { uz: "Bobning ochiq kaliti", en: "Bob’s public key" },
+    wrong: [
+      { uz: "Bobning yopiq kaliti", en: "Bob’s private key" },
+      { uz: "Sizning ochiq kalitingiz", en: "Your public key" },
+      { uz: "Umumiy parol", en: "A shared password" },
+    ],
+    explain: {
+      uz: "Faqat Bobning yopiq kaliti uni ochadi.",
+      en: "Only Bob’s private key opens it.",
+    },
+  },
+  {
+    ask: {
+      uz: "Raqamli imzo qaysi kalit bilan qo‘yiladi?",
+      en: "Which key makes a digital signature?",
+    },
+    right: {
+      uz: "Yuboruvchining yopiq kaliti",
+      en: "The sender’s private key",
+    },
+    wrong: [
+      { uz: "Yuboruvchining ochiq kaliti", en: "The sender’s public key" },
+      {
+        uz: "Qabul qiluvchining ochiq kaliti",
+        en: "The recipient’s public key",
+      },
+      { uz: "AES kaliti", en: "An AES key" },
+    ],
+    explain: {
+      uz: "Imzoni hamma ochiq kalit bilan tekshiradi.",
+      en: "Anyone checks it with the public key.",
+    },
+  },
+  {
+    ask: {
+      uz: "Diffie–Hellman nimani hal qiladi?",
+      en: "What does Diffie–Hellman solve?",
+    },
+    right: {
+      uz: "Ochiq kanalda umumiy maxfiy kalit kelishishni",
+      en: "Agreeing a shared secret key over an open channel",
+    },
+    wrong: [
+      { uz: "Parollarni saqlashni", en: "Storing passwords" },
+      { uz: "Fayllarni siqishni", en: "Compressing files" },
+      { uz: "Xabarni imzolashni", en: "Signing a message" },
+    ],
+    explain: {
+      uz: "Ikki tomon faqat ochiq qiymatlarni almashib, bir xil kalitga ega bo‘ladi.",
+      en: "Swapping only public values, both sides end up with the same key.",
+    },
+  },
+  {
+    ask: {
+      uz: "Diffie–Hellman’da Eve nimani topishi kerak?",
+      en: "What must Eve find in Diffie–Hellman?",
+    },
+    right: {
+      uz: "gᵃ mod p dan a ni (diskret logarifm)",
+      en: "a from gᵃ mod p (a discrete logarithm)",
+    },
+    wrong: [
+      { uz: "p va g ni", en: "p and g" },
+      { uz: "Bobning parolini", en: "Bob’s password" },
+      { uz: "Hech narsa, kalit ochiq", en: "Nothing, the key is public" },
+    ],
+    explain: {
+      uz: "Katta p da bu amalda imkonsiz.",
+      en: "With a large p this is impossible in practice.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega kichik p bilan Diffie–Hellman xavfli?",
+      en: "Why is Diffie–Hellman with a small p dangerous?",
+    },
+    right: {
+      uz: "Eve barcha sonlarni sinab, maxfiy sonni topadi",
+      en: "Eve tries every number and finds the secret",
+    },
+    wrong: [
+      { uz: "Kalitlar mos kelmaydi", en: "The keys do not match" },
+      { uz: "U juda sekin ishlaydi", en: "It runs too slowly" },
+      { uz: "Hech qanday xavf yo‘q", en: "There is no danger" },
+    ],
+    explain: {
+      uz: "Haqiqiy guruhlar 2048 bit yoki elliptik egri chiziqlar.",
+      en: "Real groups are 2048 bits or elliptic curves.",
+    },
+  },
+  {
+    ask: {
+      uz: "RSA’da n qanday hosil bo‘ladi?",
+      en: "How is n made in RSA?",
+    },
+    right: {
+      uz: "Ikki tub sonning ko‘paytmasi",
+      en: "The product of two primes",
+    },
+    wrong: [
+      { uz: "Ikki tub sonning yig‘indisi", en: "The sum of two primes" },
+      { uz: "Tasodifiy juft son", en: "A random even number" },
+      { uz: "Parolning xeshi", en: "A password’s hash" },
+    ],
+    explain: {
+      uz: "n = p·q ochiq; p va q maxfiy.",
+      en: "n = p·q is public; p and q are secret.",
+    },
+  },
+  {
+    ask: {
+      uz: "RSA’ning n sonini ko‘paytuvchilarga ajratgan odam nima qila oladi?",
+      en: "Whoever factors RSA’s n can do what?",
+    },
+    right: { uz: "Yopiq kalitni hisoblaydi", en: "Compute the private key" },
+    wrong: [
+      { uz: "Faqat ochiq kalitni ko‘radi", en: "Only see the public key" },
+      { uz: "Kalitni uzaytiradi", en: "Make the key longer" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "p, q dan φ, undan d topiladi.",
+      en: "From p and q comes φ, and from φ comes d.",
+    },
+  },
+  {
+    ask: {
+      uz: "RSA uchun bugun kamida qancha bitli kalit kerak?",
+      en: "At least how many bits does an RSA key need today?",
+    },
+    right: same("2048"),
+    wrong: [same("512"), same("128"), same("64")],
+    explain: {
+      uz: "Yangi tizimlarda 3072 bit tavsiya etiladi.",
+      en: "3072 bits are recommended for new systems.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega ECC kalitlari RSA kalitlaridan qisqa?",
+      en: "Why are ECC keys shorter than RSA keys?",
+    },
+    right: {
+      uz: "Bir xil kuch uchun kamroq bit kerak",
+      en: "They need fewer bits for the same strength",
+    },
+    wrong: [
+      { uz: "Ular kuchsizroq", en: "They are weaker" },
+      { uz: "Ular faqat sinov uchun", en: "They are only for tests" },
+      { uz: "Ular simmetrik", en: "They are symmetric" },
+    ],
+    explain: {
+      uz: "256 bitli ECC taxminan 3072 bitli RSA ga teng.",
+      en: "256-bit ECC is about as strong as 3072-bit RSA.",
+    },
+  },
+  {
+    ask: {
+      uz: "O‘rtadagi odam (MITM) hujumida Mallory nima qiladi?",
+      en: "What does Mallory do in a man-in-the-middle attack?",
+    },
+    right: {
+      uz: "Har ikki tomonga o‘z ochiq qiymatini yuboradi",
+      en: "Sends her own public value to both sides",
+    },
+    wrong: [
+      { uz: "Faqat tinglaydi", en: "Only listens" },
+      { uz: "Kalitni ko‘paytuvchilarga ajratadi", en: "Factors the key" },
+      { uz: "Serverni o‘chiradi", en: "Shuts down the server" },
+    ],
+    explain: {
+      uz: "Natijada har bir tomon Mallory bilan kalit kelishadi.",
+      en: "Each side ends up agreeing a key with Mallory.",
+    },
+  },
+  {
+    ask: {
+      uz: "MITM hujumini nima to‘xtatadi?",
+      en: "What stops a man-in-the-middle attack?",
+    },
+    right: {
+      uz: "Ochiq qiymatni ishonchli kalit bilan imzolash (sertifikat)",
+      en: "Signing the public value with a trusted key (a certificate)",
+    },
+    wrong: [
+      { uz: "Uzunroq p", en: "A longer p" },
+      { uz: "Ikki marta kalit almashish", en: "Exchanging keys twice" },
+      { uz: "Parolni yashirish", en: "Hiding the password" },
+    ],
+    explain: {
+      uz: "Mallory ishonchli kalit bilan imzo yasay olmaydi.",
+      en: "Mallory cannot make a signature with the trusted key.",
+    },
+  },
+  {
+    ask: {
+      uz: "Raqamli imzo nimani bermaydi?",
+      en: "What does a digital signature not give?",
+    },
+    right: { uz: "Maxfiylik", en: "Secrecy" },
+    wrong: [
+      { uz: "Haqiqiylik", en: "Authenticity" },
+      { uz: "Yaxlitlik", en: "Integrity" },
+      { uz: "Inkor etib bo‘lmaslik", en: "Non-repudiation" },
+    ],
+    explain: {
+      uz: "Imzolangan xabarni hamma o‘qiy oladi.",
+      en: "Anyone can read a signed message.",
+    },
+  },
+  {
+    ask: {
+      uz: "Gibrid shifrlashda katta ma’lumot nima bilan shifrlanadi?",
+      en: "In hybrid encryption, what encrypts the bulk data?",
+    },
+    right: same("AES-GCM"),
+    wrong: [same("RSA"), same("SHA-256"), same("Diffie–Hellman")],
+    explain: {
+      uz: "Ochiq kalit faqat AES kalitini kelishish uchun.",
+      en: "The public key only agrees the AES key.",
+    },
+  },
+  {
+    ask: {
+      uz: "Forward secrecy nimani kafolatlaydi?",
+      en: "What does forward secrecy guarantee?",
+    },
+    right: {
+      uz: "Server kaliti keyin o‘g‘irlansa ham eski seanslar ochilmaydi",
+      en: "Old sessions stay closed even if the server key is stolen later",
+    },
+    wrong: [
+      { uz: "Parollar eskirmaydi", en: "Passwords never expire" },
+      { uz: "Kalit hech qachon almashmaydi", en: "The key never changes" },
+      { uz: "Sertifikat abadiy", en: "The certificate lasts forever" },
+    ],
+    explain: {
+      uz: "Har bir seans uchun yangi DH kaliti ishlatiladi.",
+      en: "A fresh DH key is used for each session.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kvant kompyuter xavfiga qarshi nima joriy qilinmoqda?",
+      en: "What is being rolled out against the quantum threat?",
+    },
+    right: {
+      uz: "Kvantga chidamli algoritmlar (ML-KEM, ML-DSA)",
+      en: "Quantum-resistant algorithms (ML-KEM, ML-DSA)",
+    },
+    wrong: [
+      { uz: "MD5", en: "MD5" },
+      { uz: "Qisqaroq RSA kalitlari", en: "Shorter RSA keys" },
+      { uz: "Base64", en: "Base64" },
+    ],
+    explain: {
+      uz: "RSA va ECC kvant kompyuterlar uchun zaif bo‘lishi mumkin.",
+      en: "RSA and ECC could fall to quantum computers.",
+    },
+  },
+];
