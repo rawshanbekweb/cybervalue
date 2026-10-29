@@ -20,6 +20,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/pubkey`    | Cryptography module 4, public-key cryptography (8 lessons, a checkpoint)       |
 | `/intermediate/tls`       | Cryptography module 5, TLS and certificates (8 lessons, a checkpoint)          |
 | `/intermediate/tcpip`     | Network security module 1, TCP/IP in depth (8 lessons, a checkpoint)           |
+| `/intermediate/traffic`   | Network security module 2, traffic analysis (8 lessons, a checkpoint)          |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -237,6 +238,29 @@ a random source port too, or with DNSSEC.
 | 5       | Questions on ping, traceroute and why not to block all ICMP        |
 | 6       | Pushes the odds of DNS cache poisoning below one in a thousand     |
 | 7       | Questions on SYN floods and SYN cookies                            |
+| 8       | Final questions                                                    |
+
+## Network security module 2: Traffic analysis
+
+`/intermediate/traffic` (lab id `traffic`, checkpoint `traffic-1`, award
+`lab-traffic`, site setting `traffic`) uses `src/lib/traffic/tools.ts`:
+`CAPTURE` is a fifteen-packet recording with a port scan in it;
+`parseFilter` reads a subset of Wireshark's display-filter syntax (`ip.src`,
+`ip.dst`, `ip.addr`, `tcp.port`, `tcp.srcport`, `tcp.dstport`, `udp.port`,
+the SYN, ACK and RST flags, bare protocol names, `==`/`!=`/`eq`/`ne`,
+`&&`/`||`/`!` or `and`/`or`/`not`, brackets) and reports why a filter does
+not parse; `decodeBasic` opens Basic credentials; `isBeacon` flags a host
+with many connections at nearly equal gaps.
+
+| Lessons | What the student does                                              |
+| ------- | ------------------------------------------------------------------ |
+| 1       | Clicks through the parts of a tcpdump line                         |
+| 2       | Writes a display filter that shows exactly the scanner's bare SYNs |
+| 3       | Sorts what TLS hides from what an observer still sees              |
+| 4       | Follows a plain-HTTP stream and decodes the Basic password         |
+| 5       | Sorts normal traffic from warning signs                            |
+| 6       | Finds and isolates the beaconing host                              |
+| 7       | Questions on SPAN, TAPs, NetFlow and permission to capture         |
 | 8       | Final questions                                                    |
 
 ## Who gets in

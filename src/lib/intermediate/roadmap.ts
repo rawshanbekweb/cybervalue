@@ -226,6 +226,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Trafik tahlili", en: "Traffic analysis" },
+        href: "/intermediate/traffic",
+        lab: "traffic",
         topics: ["pcap", "Wireshark filters", "protocol fields"],
         goal: goal(
           "Tayyor yozuvdan g‘ayrioddiy ulanishlarni topish.",

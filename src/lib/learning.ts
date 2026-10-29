@@ -14,6 +14,7 @@ import { LESSONS as HASHES_LESSONS } from "@/lib/hashes/curriculum";
 import { LESSONS as PUBKEY_LESSONS } from "@/lib/public-key/curriculum";
 import { LESSONS as TLS_LESSONS } from "@/lib/tls/curriculum";
 import { LESSONS as TCPIP_LESSONS } from "@/lib/tcpip/curriculum";
+import { LESSONS as TRAFFIC_LESSONS } from "@/lib/traffic/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -354,6 +355,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: TCPIP_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "traffic",
+      title: "Traffic analysis",
+      category: "Intermediate · Network security",
+      description:
+        "Read a capture line by line, write Wireshark display filters that pick out a port scan, pull a password out of a plain-HTTP stream, and find the infected host by its regular check-ins.",
+      href: "/intermediate/traffic",
+      progressKey: LAB_PROGRESS.traffic.key,
+      level: "Intermediate",
+      lessons: TRAFFIC_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: TRAFFIC_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

@@ -18,6 +18,7 @@ export const LAB_PROGRESS = {
   pubkey: { key: "cybervalue:pubkey:progress:v1", total: 8 },
   tls: { key: "cybervalue:tls:progress:v1", total: 8 },
   tcpip: { key: "cybervalue:tcpip:progress:v1", total: 8 },
+  traffic: { key: "cybervalue:traffic:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -183,6 +184,15 @@ export const LAB_META: {
       en: "TCP/IP in depth (Intermediate)",
     },
     href: "/intermediate/tcpip",
+    intermediate: true,
+  },
+  {
+    id: "traffic",
+    title: {
+      uz: "Trafik tahlili (Intermediate)",
+      en: "Traffic analysis (Intermediate)",
+    },
+    href: "/intermediate/traffic",
     intermediate: true,
   },
 ];

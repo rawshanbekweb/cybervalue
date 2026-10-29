@@ -99,6 +99,7 @@ test("everything finished", () => {
         pubkey: 8,
         tls: 8,
         tcpip: 8,
+        traffic: 8,
         scams: 8,
         httpbasics: 9,
         https: 9,

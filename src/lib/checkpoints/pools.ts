@@ -3208,3 +3208,274 @@ export const TCPIP_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const TRAFFIC_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "tcpdump qatorida 10.0.0.5.50122 nimani bildiradi?",
+      en: "In a tcpdump line, what does 10.0.0.5.50122 mean?",
+    },
+    right: {
+      uz: "10.0.0.5 manzilining 50122-porti",
+      en: "Port 50122 on the address 10.0.0.5",
+    },
+    wrong: [
+      { uz: "IPv6 manzil", en: "An IPv6 address" },
+      { uz: "Paket raqami 50122", en: "Packet number 50122" },
+      { uz: "MAC manzil", en: "A MAC address" },
+    ],
+    explain: {
+      uz: "Oxirgi nuqtadan keyingi raqam — port.",
+      en: "The number after the last dot is the port.",
+    },
+  },
+  {
+    ask: {
+      uz: "tcpdump’dagi Flags [S] nima?",
+      en: "What is Flags [S] in tcpdump?",
+    },
+    right: same("SYN"),
+    wrong: [same("RST"), same("ACK"), same("FIN")],
+    explain: {
+      uz: "S — SYN, nuqta — ACK, R — RST, F — FIN.",
+      en: "S is SYN, a dot is ACK, R is RST, F is FIN.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi filtr faqat 10.0.0.66 yuborgan paketlarni ko‘rsatadi?",
+      en: "Which filter shows only packets sent by 10.0.0.66?",
+    },
+    right: same("ip.src == 10.0.0.66"),
+    wrong: [
+      same("ip.dst == 10.0.0.66"),
+      same("ip.addr != 10.0.0.66"),
+      same("tcp.port == 10.0.0.66"),
+    ],
+    explain: {
+      uz: "ip.src — manba, ip.dst — qabul qiluvchi, ip.addr — ikkalasidan biri.",
+      en: "ip.src is the source, ip.dst the destination, ip.addr either one.",
+    },
+  },
+  {
+    ask: {
+      uz: "Skanerning SYN’larini oddiy ulanishlardan qanday ajratasiz?",
+      en: "How do you tell a scanner’s SYNs from ordinary connections?",
+    },
+    right: {
+      uz: "ACK’siz SYN va manba manzil bo‘yicha, ko‘p portlarga qisqa vaqtda",
+      en: "Bare SYNs from one source to many ports in a short time",
+    },
+    wrong: [
+      { uz: "Paket rangiga qarab", en: "By the packet’s colour" },
+      { uz: "Faqat UDP’ga qarab", en: "By looking at UDP only" },
+      { uz: "Ajratib bo‘lmaydi", en: "You can’t" },
+    ],
+    explain: {
+      uz: "Bitta SYN odatiy; bir manbadan yuzlab portga SYN — skaner.",
+      en: "One SYN is normal; SYNs from one source to hundreds of ports is a scan.",
+    },
+  },
+  {
+    ask: {
+      uz: "dns && tcp.port == 443 filtri nimani ko‘rsatadi?",
+      en: "What does the filter dns && tcp.port == 443 show?",
+    },
+    right: {
+      uz: "Deyarli hech narsani: DNS ham, 443-port TCP ham bo‘lishi kerak",
+      en: "Almost nothing: a packet must be DNS and TCP on 443 at once",
+    },
+    wrong: [
+      { uz: "Barcha DNS va barcha HTTPS’ni", en: "All DNS and all HTTPS" },
+      { uz: "Faqat DNS’ni", en: "Only DNS" },
+      { uz: "Hamma narsani", en: "Everything" },
+    ],
+    explain: {
+      uz: "Ikkalasidan birini ko‘rish uchun || kerak.",
+      en: "To see either one you need ||.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ko‘rsatish filtri yozib olish filtridan nimasi bilan farq qiladi?",
+      en: "How does a display filter differ from a capture filter?",
+    },
+    right: {
+      uz: "Faqat ko‘rinishni o‘zgartiradi; paketlar o‘chirilmaydi",
+      en: "It changes only the view; no packets are thrown away",
+    },
+    wrong: [
+      { uz: "Paketlarni shifrlaydi", en: "It encrypts the packets" },
+      { uz: "Tarmoqni tezlashtiradi", en: "It speeds up the network" },
+      { uz: "Hech qanday farq yo‘q", en: "There is no difference" },
+    ],
+    explain: {
+      uz: "Capture filter (BPF) yozib olinadigan narsani cheklaydi; display filter — faqat ko‘rsatishni.",
+      en: "A capture filter (BPF) limits what is recorded; a display filter only what is shown.",
+    },
+  },
+  {
+    ask: {
+      uz: "HTTPS’da tarmoqdagi kuzatuvchi nimani ko‘rmaydi?",
+      en: "With HTTPS, what can’t someone on the network see?",
+    },
+    right: {
+      uz: "So‘rov yo‘li, cookie va parol",
+      en: "The request path, cookies and the password",
+    },
+    wrong: [
+      { uz: "IP manzillar", en: "The IP addresses" },
+      { uz: "Paketlar hajmi", en: "The packet sizes" },
+      { uz: "Ulanish vaqti", en: "When the connection happened" },
+    ],
+    explain: {
+      uz: "Mazmun shifrlangan; metama’lumot ochiq.",
+      en: "The content is encrypted; the metadata is not.",
+    },
+  },
+  {
+    ask: {
+      uz: "Client Hello’dagi SNI kuzatuvchiga nimani aytadi?",
+      en: "What does the SNI in a Client Hello tell an observer?",
+    },
+    right: {
+      uz: "Qaysi sayt nomiga ulanilayotganini",
+      en: "Which site name is being reached",
+    },
+    wrong: [
+      { uz: "Foydalanuvchi parolini", en: "The user’s password" },
+      { uz: "Sahifa matnini", en: "The page text" },
+      { uz: "Hech narsani", en: "Nothing" },
+    ],
+    explain: {
+      uz: "ECH yoqilmagan bo‘lsa, SNI ochiq yuboriladi.",
+      en: "Unless ECH is on, the SNI is sent in the clear.",
+    },
+  },
+  {
+    ask: {
+      uz: "Base64 haqida qaysi gap to‘g‘ri?",
+      en: "Which is true of Base64?",
+    },
+    right: {
+      uz: "Bu kodlash: kalitsiz har kim ortga qaytaradi",
+      en: "It is an encoding: anyone can reverse it without a key",
+    },
+    wrong: [
+      { uz: "Bu kuchli shifr", en: "It is strong encryption" },
+      { uz: "Bu xesh", en: "It is a hash" },
+      { uz: "Faqat server ocha oladi", en: "Only the server can open it" },
+    ],
+    explain: {
+      uz: "Basic autentifikatsiya faqat HTTPS ichida xavfsiz.",
+      en: "Basic authentication is only safe inside HTTPS.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi protokol parolni ochiq yuboradi?",
+      en: "Which protocol sends passwords in the clear?",
+    },
+    right: same("FTP"),
+    wrong: [same("SSH"), same("SFTP"), same("HTTPS")],
+    explain: {
+      uz: "FTP, Telnet, POP3 va oddiy HTTP — ochiq; o‘rniga SFTP, SSH, HTTPS.",
+      en: "FTP, Telnet, POP3 and plain HTTP are clear text; use SFTP, SSH, HTTPS instead.",
+    },
+  },
+  {
+    ask: {
+      uz: "Soatiga minglab aGVsbG8.x7f3.evil.uz kabi DNS so‘rovlari nimaga o‘xshaydi?",
+      en: "Thousands of DNS queries an hour like aGVsbG8.x7f3.evil.uz look like what?",
+    },
+    right: { uz: "DNS tunnel", en: "A DNS tunnel" },
+    wrong: [
+      { uz: "Oddiy brauzer", en: "An ordinary browser" },
+      { uz: "Dasturiy yangilanish", en: "A software update" },
+      { uz: "Port skaneri", en: "A port scan" },
+    ],
+    explain: {
+      uz: "Ma’lumot subdomen nomiga kodlangan.",
+      en: "The data is encoded in the subdomain.",
+    },
+  },
+  {
+    ask: {
+      uz: "Shlyuz uchun ARP’ga ikki xil MAC javob bersa?",
+      en: "Two different MACs answer ARP for the gateway. What is it?",
+    },
+    right: { uz: "ARP spoofing ehtimoli", en: "Probably ARP spoofing" },
+    wrong: [
+      { uz: "Odatiy holat", en: "Normal behaviour" },
+      { uz: "DNS xatosi", en: "A DNS error" },
+      { uz: "TLS muammosi", en: "A TLS problem" },
+    ],
+    explain: {
+      uz: "Kimdir trafikni o‘zi orqali o‘tkazmoqchi (man-in-the-middle).",
+      en: "Someone wants the traffic to pass through them (man in the middle).",
+    },
+  },
+  {
+    ask: {
+      uz: "Beacon’ni nimasidan tanish mumkin?",
+      en: "What gives a beacon away?",
+    },
+    right: {
+      uz: "Bir manzilga deyarli teng oraliqlardagi ko‘p ulanishlar",
+      en: "Many connections to one address at nearly equal gaps",
+    },
+    wrong: [
+      { uz: "Katta bitta yuklab olish", en: "One big download" },
+      { uz: "Faqat ish vaqtidagi trafik", en: "Traffic only in work hours" },
+      { uz: "ICMP ping", en: "An ICMP ping" },
+    ],
+    explain: {
+      uz: "Kichik jitter — avtomat belgisi; odam tartibsiz.",
+      en: "Low jitter points to a program; people are irregular.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kommutatordagi butun segment trafigini qanday ko‘rasiz?",
+      en: "How do you see a whole switched segment’s traffic?",
+    },
+    right: {
+      uz: "SPAN (port mirroring) yoki TAP orqali",
+      en: "With SPAN (port mirroring) or a TAP",
+    },
+    wrong: [
+      {
+        uz: "Wireshark’ni qayta ishga tushirib",
+        en: "By restarting Wireshark",
+      },
+      { uz: "Wi-Fi’ni o‘chirib", en: "By turning off the Wi-Fi" },
+      { uz: "Hech qanday usul yo‘q", en: "There is no way" },
+    ],
+    explain: {
+      uz: "Kommutator har bir portga faqat unga tegishli trafikni beradi.",
+      en: "A switch gives each port only the traffic meant for it.",
+    },
+  },
+  {
+    ask: {
+      uz: "NetFlow nimani saqlaydi?",
+      en: "What does NetFlow keep?",
+    },
+    right: {
+      uz: "Kim, kimga, qachon va qancha — mazmunsiz",
+      en: "Who, to whom, when and how much — no content",
+    },
+    wrong: [
+      {
+        uz: "Har bir paketning to‘liq mazmunini",
+        en: "Every packet’s full content",
+      },
+      { uz: "Faqat parollarni", en: "Only passwords" },
+      { uz: "Faqat DNS nomlarini", en: "Only DNS names" },
+    ],
+    explain: {
+      uz: "Oqim yozuvlari kichik — uzoq muddat saqlash uchun qulay.",
+      en: "Flow records are small, so they suit long-term keeping.",
+    },
+  },
+];

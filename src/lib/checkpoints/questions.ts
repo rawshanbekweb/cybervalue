@@ -37,6 +37,7 @@ import {
   PUBKEY_POOL,
   TLS_POOL,
   TCPIP_POOL,
+  TRAFFIC_POOL,
   SECURITY_EXTRA,
   type PoolItem,
 } from "./pools";
@@ -689,6 +690,10 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
       .map((item) => fromPool(r, item)),
   "tcpip-1": (r) =>
     shuffle(r, TCPIP_POOL)
+      .slice(0, 10)
+      .map((item) => fromPool(r, item)),
+  "traffic-1": (r) =>
+    shuffle(r, TRAFFIC_POOL)
       .slice(0, 10)
       .map((item) => fromPool(r, item)),
 };

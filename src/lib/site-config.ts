@@ -156,6 +156,12 @@ export const SECTIONS = [
     href: "/intermediate/tcpip",
   },
   {
+    id: "traffic",
+    group: "lab",
+    label: "Traffic analysis (Intermediate)",
+    href: "/intermediate/traffic",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",
