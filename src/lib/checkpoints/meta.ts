@@ -476,6 +476,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/lsb#checkpoints",
     pass: 70,
   },
+  {
+    id: "metadata-1",
+    level: "intermediate",
+    lab: { uz: "Metama’lumotlar", en: "Metadata" },
+    title: {
+      uz: "Nazorat: Metama’lumotlar",
+      en: "Checkpoint: Metadata",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/metadata#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

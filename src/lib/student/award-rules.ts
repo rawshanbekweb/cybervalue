@@ -189,6 +189,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Rasm ichida (Intermediate)",
     earned: (f) => finished(f, "lsb") && passed(f, "lsb-1"),
   },
+  {
+    id: "lab-metadata",
+    title: "Metama’lumotlar (Intermediate)",
+    earned: (f) => finished(f, "metadata") && passed(f, "metadata-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

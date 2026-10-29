@@ -222,6 +222,12 @@ export const SECTIONS = [
     href: "/intermediate/lsb",
   },
   {
+    id: "metadata",
+    group: "lab",
+    label: "Metadata (Intermediate)",
+    href: "/intermediate/metadata",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

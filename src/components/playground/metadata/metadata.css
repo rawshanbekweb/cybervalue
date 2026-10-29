@@ -1,0 +1,15 @@
+/* Metadata lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css,
+   access-control.css and evidence.css. */
+.md-exif {
+  margin: 0;
+  overflow-x: auto;
+  font-size: 12px;
+}
+.md-coord {
+  color: var(--muted);
+  font: 11px var(--font-mono);
+}
+.cb-out code {
+  overflow-wrap: anywhere;
+}

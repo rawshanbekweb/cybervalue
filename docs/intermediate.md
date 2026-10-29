@@ -31,6 +31,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/report`      | Digital forensics module 5, writing the report (8 lessons, a checkpoint)        |
 | `/intermediate/stego`       | Steganography module 1, the idea (8 lessons, a checkpoint)                      |
 | `/intermediate/lsb`         | Steganography module 2, inside images (8 lessons, a checkpoint)                 |
+| `/intermediate/metadata`    | Steganography module 3, metadata (8 lessons, a checkpoint)                      |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -486,6 +487,26 @@ shows any channel's bit plane on a canvas.
 | 6       | Sorts formats and actions that keep or destroy LSBs  |
 | 7       | Questions on statistical detection                   |
 | 8       | Final questions                                      |
+
+## Steganography module 3: Metadata
+
+`/intermediate/metadata` (lab id `metadata`, checkpoint `metadata-1`, award
+`lab-metadata`, site setting `metadata`) uses `src/lib/metadata/tools.ts`:
+`EXIF` is a phone photo's exiftool listing whose GPS (`toDecimal`) lands at
+the Registan, and `nearest` picks Samarkand out of four cities; `TAGS` are
+six tags, four personal (GPS, Artist, lens serial, original date) to strip
+and two (Orientation, colour space) the picture needs to display right.
+
+| Lessons | What the student does                                    |
+| ------- | -------------------------------------------------------- |
+| 1       | Sorts personal from technical metadata                   |
+| 2       | Locates a photo from its GPS tags                        |
+| 3       | Clicks through a Word document's exiftool output         |
+| 4       | Strips the personal tags but keeps the display ones      |
+| 5       | Sorts actions that remove metadata from those that don't |
+| 6       | Questions on metadata as evidence                        |
+| 7       | Questions on real cases and prevention                   |
+| 8       | Final questions                                          |
 
 ## Who gets in
 
