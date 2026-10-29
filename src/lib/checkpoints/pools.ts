@@ -5411,3 +5411,285 @@ export const RESPONSE_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const REPORT_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Rahbar hisobotning qaysi qismini o‘qiydi?",
+      en: "Which part of the report does a manager read?",
+    },
+    right: { uz: "Qisqacha xulosa", en: "The executive summary" },
+    wrong: [
+      { uz: "Ilovalar", en: "The appendices" },
+      { uz: "To‘liq loglar", en: "The full logs" },
+      { uz: "Xeshlar ro‘yxati", en: "The list of hashes" },
+    ],
+    explain: {
+      uz: "Ko‘pincha faqat birinchi sahifani.",
+      en: "Often only the first page.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qisqacha xulosa qachon yoziladi?",
+      en: "When is the executive summary written?",
+    },
+    right: { uz: "Oxirida", en: "Last" },
+    wrong: [
+      { uz: "Birinchi", en: "First" },
+      { uz: "Tahlildan oldin", en: "Before the analysis" },
+      { uz: "Yozilmaydi", en: "It isn’t" },
+    ],
+    explain: {
+      uz: "Xulosa uchun topilmalar kerak.",
+      en: "A summary needs the findings first.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qisqacha xulosada nima bo‘lishi kerak?",
+      en: "What belongs in the executive summary?",
+    },
+    right: {
+      uz: "Nima bo‘ldi, ta’siri, holat va rahbariyatdan nima kerak",
+      en: "What happened, the impact, the status and what management must do",
+    },
+    wrong: [
+      { uz: "To‘liq buyruqlar ro‘yxati", en: "The full list of commands" },
+      { uz: "Barcha IP manzillar", en: "Every IP address" },
+      { uz: "Faqat texnik jargon", en: "Technical jargon only" },
+    ],
+    explain: {
+      uz: "Qisqa, aniq, jargonsiz.",
+      en: "Short, clear, no jargon.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qamrov bo‘limi nima uchun “nima tekshirilmadi”ni ham yozadi?",
+      en: "Why does the scope section also say what was not examined?",
+    },
+    right: {
+      uz: "Keyingi bahs va noto‘g‘ri xulosalarning oldini olish uchun",
+      en: "To head off arguments and wrong conclusions later",
+    },
+    wrong: [
+      { uz: "Hisobotni uzaytirish uchun", en: "To make the report longer" },
+      { uz: "Shart emas", en: "It needn’t" },
+      { uz: "Mijozni qo‘rqitish uchun", en: "To scare the client" },
+    ],
+    explain: {
+      uz: "O‘quvchi hisobot chegarasini biladi.",
+      en: "The reader knows the report’s limits.",
+    },
+  },
+  {
+    ask: {
+      uz: "Yaxshi topilmaning qismlari?",
+      en: "The parts of a good finding?",
+    },
+    right: {
+      uz: "Nima (UTC vaqt), dalil, ta’sir, tavsiya",
+      en: "What (with UTC time), evidence, impact, recommendation",
+    },
+    wrong: [
+      { uz: "Faqat sarlavha", en: "Just a title" },
+      { uz: "Taxmin va parol", en: "A guess and a password" },
+      { uz: "Faqat skrinshot", en: "Just a screenshot" },
+    ],
+    explain: {
+      uz: "O‘quvchi har bir da’voni tekshira oladi.",
+      en: "The reader can check every claim.",
+    },
+  },
+  {
+    ask: {
+      uz: "Topilmaga topilgan parolni yozish kerakmi?",
+      en: "Should a password you found go into a finding?",
+    },
+    right: {
+      uz: "Yo‘q — yashiriladi (redact)",
+      en: "No — it is redacted",
+    },
+    wrong: [
+      { uz: "Ha, to‘liq", en: "Yes, in full" },
+      { uz: "Ha, qalin harf bilan", en: "Yes, in bold" },
+      { uz: "Faqat ilovada", en: "Only in an appendix" },
+    ],
+    explain: {
+      uz: "Hisobot ko‘p qo‘ldan o‘tadi.",
+      en: "A report passes through many hands.",
+    },
+  },
+  {
+    ask: {
+      uz: "“Hujumchi juda tajribali bo‘lsa kerak” — bu?",
+      en: "“The attacker must be very experienced” — this is?",
+    },
+    right: { uz: "Fikr, fakt emas", en: "An opinion, not a fact" },
+    wrong: [
+      { uz: "Tasdiqlangan fakt", en: "A confirmed fact" },
+      { uz: "Dalil", en: "Evidence" },
+      { uz: "Tavsiya", en: "A recommendation" },
+    ],
+    explain: {
+      uz: "Dalilga havola yo‘q.",
+      en: "It points to no evidence.",
+    },
+  },
+  {
+    ask: {
+      uz: "IP manzil nimani ko‘rsatadi?",
+      en: "What does an IP address point to?",
+    },
+    right: {
+      uz: "Qurilmani — odamni emas",
+      en: "A device — not a person",
+    },
+    wrong: [
+      { uz: "Hujumchining uyini", en: "The attacker’s home" },
+      { uz: "Hujumchining ismini", en: "The attacker’s name" },
+      { uz: "Mamlakat hukumatini", en: "A government" },
+    ],
+    explain: {
+      uz: "U VPN yoki buzilgan kompyuter bo‘lishi mumkin.",
+      en: "It may be a VPN or a hacked computer.",
+    },
+  },
+  {
+    ask: {
+      uz: "Dalillarga qanday havola qilinadi?",
+      en: "How is evidence referred to?",
+    },
+    right: {
+      uz: "Raqam bilan (E-03), ilovada xeshi bilan",
+      en: "By number (E-03), listed with its hash in an appendix",
+    },
+    wrong: [
+      { uz: "“Biror joyda bor”", en: "“It’s somewhere”" },
+      { uz: "Havola kerak emas", en: "No reference needed" },
+      { uz: "Faqat og‘zaki", en: "Only by word of mouth" },
+    ],
+    explain: {
+      uz: "Har bir da’vo tekshiriladigan bo‘ladi.",
+      en: "Every claim becomes checkable.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi biri bajarsa bo‘ladigan tavsiya?",
+      en: "Which recommendation is actionable?",
+    },
+    right: {
+      uz: "“VPN’ga MFA — IT, 15-noyabrgacha”",
+      en: "“MFA on the VPN — IT, by 15 November”",
+    },
+    wrong: [
+      { uz: "“Xavfsizlikni yaxshilash”", en: "“Improve security”" },
+      { uz: "“Ehtiyot bo‘lish”", en: "“Be careful”" },
+      { uz: "“Yaxshiroq firewall”", en: "“A better firewall”" },
+    ],
+    explain: {
+      uz: "Nima, kim va qachongacha.",
+      en: "What, who and by when.",
+    },
+  },
+  {
+    ask: {
+      uz: "Hisobot bo‘limlarining to‘g‘ri tartibi?",
+      en: "The right order of a report’s sections?",
+    },
+    right: {
+      uz: "Xulosa, qamrov, xronologiya, topilmalar, tavsiyalar, ilovalar",
+      en: "Summary, scope, timeline, findings, recommendations, appendices",
+    },
+    wrong: [
+      {
+        uz: "Ilovalar, topilmalar, xulosa",
+        en: "Appendices, findings, summary",
+      },
+      {
+        uz: "Tavsiyalar, ilovalar, qamrov",
+        en: "Recommendations, appendices, scope",
+      },
+      { uz: "Tartib muhim emas", en: "Order doesn’t matter" },
+    ],
+    explain: {
+      uz: "Eng muhimi — tepada.",
+      en: "The most important goes on top.",
+    },
+  },
+  {
+    ask: {
+      uz: "TLP:RED belgisi nimani bildiradi?",
+      en: "What does a TLP:RED label mean?",
+    },
+    right: {
+      uz: "Faqat qabul qiluvchining o‘zi uchun",
+      en: "For the named recipients only",
+    },
+    wrong: [
+      { uz: "Hamma bilan ulashish mumkin", en: "It may be shared with anyone" },
+      { uz: "Hujjat muhim emas", en: "The document doesn’t matter" },
+      { uz: "Faqat jurnalistlar uchun", en: "Only for journalists" },
+    ],
+    explain: {
+      uz: "AMBER — tashkilot ichida, GREEN — hamjamiyat, CLEAR — hamma.",
+      en: "AMBER is the organisation, GREEN the community, CLEAR anyone.",
+    },
+  },
+  {
+    ask: {
+      uz: "Hisobotni qanday yuborish kerak?",
+      en: "How should the report be sent?",
+    },
+    right: {
+      uz: "Shifrlangan holda, faqat kerakli odamlarga",
+      en: "Encrypted, only to those who need it",
+    },
+    wrong: [
+      { uz: "Ochiq havola bilan", en: "Through a public link" },
+      { uz: "Umumiy chatga", en: "To the general chat" },
+      { uz: "Ijtimoiy tarmoqqa", en: "On social media" },
+    ],
+    explain: {
+      uz: "Hisobot hujumchi uchun ham yo‘l xaritasi.",
+      en: "A report is also a road map for an attacker.",
+    },
+  },
+  {
+    ask: {
+      uz: "Xronologiyadagi vaqtlar qaysi zonada yoziladi?",
+      en: "Which time zone does the report’s timeline use?",
+    },
+    right: same("UTC"),
+    wrong: [
+      { uz: "Har bir manbaning o‘z zonasida", en: "Each source’s own zone" },
+      { uz: "Tahlilchining mahalliy vaqtida", en: "The analyst’s local time" },
+      { uz: "Zonasiz", en: "No zone at all" },
+    ],
+    explain: {
+      uz: "Bitta zona — chalkashlik yo‘q.",
+      en: "One zone, no confusion.",
+    },
+  },
+  {
+    ask: {
+      uz: "Hisobot versiyalari bilan nima qilinadi?",
+      en: "What is done about versions of the report?",
+    },
+    right: {
+      uz: "Raqamlanadi va o‘zgarishlar jurnali yuritiladi",
+      en: "They are numbered and a change log is kept",
+    },
+    wrong: [
+      { uz: "Eski versiyalar yashiriladi", en: "Old versions are hidden" },
+      { uz: "Hech narsa", en: "Nothing" },
+      { uz: "Har safar yangi nom", en: "A new name each time" },
+    ],
+    explain: {
+      uz: "Kim, qachon va nimani o‘zgartirgani ma’lum bo‘ladi.",
+      en: "Who changed what, and when, stays clear.",
+    },
+  },
+];

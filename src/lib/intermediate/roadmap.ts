@@ -330,6 +330,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Hisobot yozish", en: "Writing the report" },
+        href: "/intermediate/report",
+        lab: "report",
         topics: ["findings", "evidence", "recommendations"],
         goal: goal(
           "Texnik bo‘lmagan o‘quvchi ham tushunadigan hisobot tayyorlash.",

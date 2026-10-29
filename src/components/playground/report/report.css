@@ -1,0 +1,36 @@
+/* Report lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css,
+   access-control.css, firewall.css, evidence.css and response.css. */
+.rp-finding {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #f5f2ea;
+  color: #1c1b22;
+  font-size: 14px;
+}
+.rp-finding h4 {
+  margin: 0;
+  font-size: 15px;
+}
+.rp-finding p {
+  margin: 0;
+}
+.rp-finding small {
+  display: block;
+  margin-top: 2px;
+  color: #3c6e4f;
+  font-size: 12px;
+}
+.rp-finding .rp-bad .rp-text {
+  text-decoration: line-through;
+  text-decoration-color: #b3261e;
+}
+.rp-finding .rp-bad small {
+  color: #b3261e;
+}
+.rp-empty {
+  color: #5b5966;
+}

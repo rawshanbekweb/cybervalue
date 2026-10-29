@@ -45,6 +45,7 @@ import {
   FILESYSTEM_POOL,
   LOGS_POOL,
   RESPONSE_POOL,
+  REPORT_POOL,
   SECURITY_EXTRA,
   type PoolItem,
 } from "./pools";
@@ -729,6 +730,10 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
       .map((item) => fromPool(r, item)),
   "response-1": (r) =>
     shuffle(r, RESPONSE_POOL)
+      .slice(0, 10)
+      .map((item) => fromPool(r, item)),
+  "report-1": (r) =>
+    shuffle(r, REPORT_POOL)
       .slice(0, 10)
       .map((item) => fromPool(r, item)),
 };

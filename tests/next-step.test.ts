@@ -107,6 +107,7 @@ test("everything finished", () => {
         filesystem: 8,
         logs: 8,
         response: 8,
+        report: 8,
         scams: 8,
         httpbasics: 9,
         https: 9,

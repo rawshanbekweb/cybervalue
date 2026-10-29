@@ -204,6 +204,12 @@ export const SECTIONS = [
     href: "/intermediate/response",
   },
   {
+    id: "report",
+    group: "lab",
+    label: "Writing the report (Intermediate)",
+    href: "/intermediate/report",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",
