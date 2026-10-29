@@ -1,0 +1,70 @@
+/* Handling evidence lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css and
+   access-control.css. */
+.ev-steps,
+.ev-custody {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.ev-steps legend,
+.ev-custody legend {
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.ev-problems {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+}
+.ev-hash {
+  display: block;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+.ev-copy {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.ev-copy legend {
+  padding: 0 4px;
+}
+.ev-copy .br-modes {
+  align-items: center;
+}
+.ev-entry {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.ev-entry.on {
+  border-color: var(--accent);
+  background: #8052ff1f;
+}
+.ev-entry input {
+  margin-top: 3px;
+  accent-color: var(--accent);
+}
+.ev-entry:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.ev-entry small {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+}

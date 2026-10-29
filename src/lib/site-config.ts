@@ -180,6 +180,12 @@ export const SECTIONS = [
     href: "/intermediate/ids",
   },
   {
+    id: "evidence",
+    group: "lab",
+    label: "Handling evidence (Intermediate)",
+    href: "/intermediate/evidence",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

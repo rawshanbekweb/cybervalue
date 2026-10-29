@@ -154,6 +154,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Hujumni aniqlash (Intermediate)",
     earned: (f) => finished(f, "ids") && passed(f, "ids-1"),
   },
+  {
+    id: "lab-evidence",
+    title: "Dalil bilan ishlash (Intermediate)",
+    earned: (f) => finished(f, "evidence") && passed(f, "evidence-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */
