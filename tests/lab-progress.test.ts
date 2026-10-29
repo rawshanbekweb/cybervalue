@@ -34,6 +34,7 @@ import { LESSONS as STEGO } from "../src/lib/stego/curriculum";
 import { LESSONS as LSB } from "../src/lib/lsb/curriculum";
 import { LESSONS as METADATA } from "../src/lib/metadata/curriculum";
 import { LESSONS as FORMATS } from "../src/lib/formats/curriculum";
+import { LESSONS as STEGANALYSIS } from "../src/lib/steganalysis/curriculum";
 import {
   isLabId,
   LAB_PROGRESS,
@@ -76,6 +77,7 @@ test("lab progress totals match the lessons", () => {
   assert.equal(LAB_PROGRESS.lsb.total, LSB.length);
   assert.equal(LAB_PROGRESS.metadata.total, METADATA.length);
   assert.equal(LAB_PROGRESS.formats.total, FORMATS.length);
+  assert.equal(LAB_PROGRESS.steganalysis.total, STEGANALYSIS.length);
   assert.equal(isLabId("toString"), false);
   assert.equal(isLabId("network"), true);
 });

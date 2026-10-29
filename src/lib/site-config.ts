@@ -234,6 +234,12 @@ export const SECTIONS = [
     href: "/intermediate/formats",
   },
   {
+    id: "steganalysis",
+    group: "lab",
+    label: "Steganalysis (Intermediate)",
+    href: "/intermediate/steganalysis",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

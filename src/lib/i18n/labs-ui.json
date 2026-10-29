@@ -1259,5 +1259,18 @@
   "Loudness over time: it just sounds like noise.": "Vaqt bo‘yicha balandlik: shunchaki shovqinga o‘xshaydi.",
   "SOS, written in frequencies too high to notice by ear.": "SOS — quloq sezmaydigan baland chastotalarda yozilgan.",
   "Audio and file formats · Academy Intermediate": "Ovoz va fayl formatlari · Academy Intermediate",
-  "Audio and file formats": "Ovoz va fayl formatlari"
+  "Audio and file formats": "Ovoz va fayl formatlari",
+  "STEGANOGRAPHY · MODULE 5": "STEGANOGRAFIYA · 5-MODUL",
+  "Steganalysis.": "Steganaliz.",
+  "Proving something is hidden, before you can read it.": "O‘qiy olmasdan oldin, yashirin narsa borligini isbotlash.",
+  "Sort strong signs of hiding from ordinary quirks, spot the even value pairs LSB embedding leaves in a histogram, learn what statistical tests can and can’t say, pick the right tool for each suspect file, and read zsteg output.": "Yashirishning kuchli belgilarini oddiy holatlardan ajrating, LSB yashirish gistogrammada qoldiradigan teng juftliklarni toping, statistik testlar nimani ayta olishi va ayta olmasligini bilib oling, har bir shubhali faylga to‘g‘ri vositani tanlang va zsteg chiqishini o‘qing.",
+  "Histogram of {name}, values {from} to {to}": "{name} gistogrammasi, {from} dan {to} gacha qiymatlar",
+  "pair spread {spread}": "juftlik farqi {spread}",
+  "Bars of one colour are a pair: 2k and 2k+1.": "Bir rangdagi ustunlar — juftlik: 2k va 2k+1.",
+  "Measure how much each pair differs": "Har bir juftlik qanchalik farq qilishini o‘lchash",
+  "Which photo carries data in its LSBs?": "Qaysi rasm LSB’da ma’lumot olib yuradi?",
+  "Its pairs are near-equal steps — too even for chance. That is the chi-square signal.": "Uning juftliklari deyarli teng zinapoyalar — tasodif uchun juda tekis. Bu chi-kvadrat signali.",
+  "This one’s pairs differ freely, as a natural photo’s do. Look at the other.": "Bu rasmning juftliklari tabiiy rasmnikidek erkin farq qiladi. Boshqasiga qarang.",
+  "Steganalysis · Academy Intermediate": "Steganaliz · Academy Intermediate",
+  "Steganalysis": "Steganaliz"
 }

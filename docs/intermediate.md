@@ -6,33 +6,34 @@ students placed at the Intermediate or Advanced level, and to staff.
 
 ## Pages
 
-| Path                        | What is there                                                                   |
-| --------------------------- | ------------------------------------------------------------------------------- |
-| `/intermediate`             | The roadmap (12 domains in three phases, career paths) and an access card       |
-| `/intermediate/http`        | Module 1 of web application security, HTTP in depth (10 lessons, a checkpoint)  |
-| `/intermediate/input`       | Module 2, untrusted input (9 lessons, a checkpoint)                             |
-| `/intermediate/browser`     | Module 3, browser-side risks (8 lessons, a checkpoint)                          |
-| `/intermediate/access`      | Module 4, access control (9 lessons, a checkpoint)                              |
-| `/intermediate/api`         | Module 5, API security (8 lessons, a checkpoint)                                |
-| `/intermediate/classic`     | Cryptography module 1, classical ciphers (8 lessons, a checkpoint)              |
-| `/intermediate/symmetric`   | Cryptography module 2, symmetric encryption (8 lessons, a checkpoint)           |
-| `/intermediate/hashes`      | Cryptography module 3, hashes and passwords (8 lessons, a checkpoint)           |
-| `/intermediate/pubkey`      | Cryptography module 4, public-key cryptography (8 lessons, a checkpoint)        |
-| `/intermediate/tls`         | Cryptography module 5, TLS and certificates (8 lessons, a checkpoint)           |
-| `/intermediate/tcpip`       | Network security module 1, TCP/IP in depth (8 lessons, a checkpoint)            |
-| `/intermediate/traffic`     | Network security module 2, traffic analysis (8 lessons, a checkpoint)           |
-| `/intermediate/firewall`    | Network security module 3, firewalls and segmentation (8 lessons, a checkpoint) |
-| `/intermediate/connections` | Network security module 4, secure connections (8 lessons, a checkpoint)         |
-| `/intermediate/ids`         | Network security module 5, intrusion detection (8 lessons, a checkpoint)        |
-| `/intermediate/evidence`    | Digital forensics module 1, handling evidence (8 lessons, a checkpoint)         |
-| `/intermediate/filesystem`  | Digital forensics module 2, file systems (8 lessons, a checkpoint)              |
-| `/intermediate/logs`        | Digital forensics module 3, logs and artefacts (8 lessons, a checkpoint)        |
-| `/intermediate/response`    | Digital forensics module 4, incident response (8 lessons, a checkpoint)         |
-| `/intermediate/report`      | Digital forensics module 5, writing the report (8 lessons, a checkpoint)        |
-| `/intermediate/stego`       | Steganography module 1, the idea (8 lessons, a checkpoint)                      |
-| `/intermediate/lsb`         | Steganography module 2, inside images (8 lessons, a checkpoint)                 |
-| `/intermediate/metadata`    | Steganography module 3, metadata (8 lessons, a checkpoint)                      |
-| `/intermediate/formats`     | Steganography module 4, audio and file formats (8 lessons, a checkpoint)        |
+| Path                         | What is there                                                                   |
+| ---------------------------- | ------------------------------------------------------------------------------- |
+| `/intermediate`              | The roadmap (12 domains in three phases, career paths) and an access card       |
+| `/intermediate/http`         | Module 1 of web application security, HTTP in depth (10 lessons, a checkpoint)  |
+| `/intermediate/input`        | Module 2, untrusted input (9 lessons, a checkpoint)                             |
+| `/intermediate/browser`      | Module 3, browser-side risks (8 lessons, a checkpoint)                          |
+| `/intermediate/access`       | Module 4, access control (9 lessons, a checkpoint)                              |
+| `/intermediate/api`          | Module 5, API security (8 lessons, a checkpoint)                                |
+| `/intermediate/classic`      | Cryptography module 1, classical ciphers (8 lessons, a checkpoint)              |
+| `/intermediate/symmetric`    | Cryptography module 2, symmetric encryption (8 lessons, a checkpoint)           |
+| `/intermediate/hashes`       | Cryptography module 3, hashes and passwords (8 lessons, a checkpoint)           |
+| `/intermediate/pubkey`       | Cryptography module 4, public-key cryptography (8 lessons, a checkpoint)        |
+| `/intermediate/tls`          | Cryptography module 5, TLS and certificates (8 lessons, a checkpoint)           |
+| `/intermediate/tcpip`        | Network security module 1, TCP/IP in depth (8 lessons, a checkpoint)            |
+| `/intermediate/traffic`      | Network security module 2, traffic analysis (8 lessons, a checkpoint)           |
+| `/intermediate/firewall`     | Network security module 3, firewalls and segmentation (8 lessons, a checkpoint) |
+| `/intermediate/connections`  | Network security module 4, secure connections (8 lessons, a checkpoint)         |
+| `/intermediate/ids`          | Network security module 5, intrusion detection (8 lessons, a checkpoint)        |
+| `/intermediate/evidence`     | Digital forensics module 1, handling evidence (8 lessons, a checkpoint)         |
+| `/intermediate/filesystem`   | Digital forensics module 2, file systems (8 lessons, a checkpoint)              |
+| `/intermediate/logs`         | Digital forensics module 3, logs and artefacts (8 lessons, a checkpoint)        |
+| `/intermediate/response`     | Digital forensics module 4, incident response (8 lessons, a checkpoint)         |
+| `/intermediate/report`       | Digital forensics module 5, writing the report (8 lessons, a checkpoint)        |
+| `/intermediate/stego`        | Steganography module 1, the idea (8 lessons, a checkpoint)                      |
+| `/intermediate/lsb`          | Steganography module 2, inside images (8 lessons, a checkpoint)                 |
+| `/intermediate/metadata`     | Steganography module 3, metadata (8 lessons, a checkpoint)                      |
+| `/intermediate/formats`      | Steganography module 4, audio and file formats (8 lessons, a checkpoint)        |
+| `/intermediate/steganalysis` | Steganography module 5, steganalysis (8 lessons, a checkpoint)                  |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -528,6 +529,27 @@ while `waveform` shows nothing but noise.
 | 6       | Questions on file and strings                                  |
 | 7       | Questions on which tool to use when                            |
 | 8       | Final questions                                                |
+
+## Steganography module 5: Steganalysis
+
+`/intermediate/steganalysis` (lab id `steganalysis`, checkpoint
+`steganalysis-1`, award `lab-steganalysis`, site setting `steganalysis`)
+uses `src/lib/steganalysis/tools.ts`: `natural` builds a photo's histogram
+for values 100–115 whose neighbouring pairs differ by chance; `embedded`
+evens every pair out (keeping its total), as filling the LSBs with random
+bits does; `pairSpread` is the average share by which pairs differ, under
+0.05 being too even for chance. It completes the Steganography domain.
+
+| Lessons | What the student does                                 |
+| ------- | ----------------------------------------------------- |
+| 1       | Sorts strong signs of hiding from ordinary quirks     |
+| 2       | Picks the photo whose histogram pairs are too even    |
+| 3       | Questions on what statistical tests can and can't say |
+| 4       | Matches suspect files to the tool to run first        |
+| 5       | Clicks through zsteg output                           |
+| 6       | Questions on stegseek and ethics                      |
+| 7       | Questions on a methodical check                       |
+| 8       | Final questions                                       |
 
 ## Who gets in
 

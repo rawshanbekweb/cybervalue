@@ -506,6 +506,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/formats#checkpoints",
     pass: 70,
   },
+  {
+    id: "steganalysis-1",
+    level: "intermediate",
+    lab: { uz: "Steganaliz", en: "Steganalysis" },
+    title: {
+      uz: "Nazorat: Steganaliz",
+      en: "Checkpoint: Steganalysis",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/steganalysis#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

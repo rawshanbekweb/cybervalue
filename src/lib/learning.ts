@@ -27,6 +27,7 @@ import { LESSONS as STEGO_LESSONS } from "@/lib/stego/curriculum";
 import { LESSONS as LSB_LESSONS } from "@/lib/lsb/curriculum";
 import { LESSONS as METADATA_LESSONS } from "@/lib/metadata/curriculum";
 import { LESSONS as FORMATS_LESSONS } from "@/lib/formats/curriculum";
+import { LESSONS as STEGANALYSIS_LESSONS } from "@/lib/steganalysis/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -588,6 +589,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: FORMATS_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "steganalysis",
+      title: "Steganalysis",
+      category: "Intermediate · Steganography",
+      description:
+        "Sort strong signs of hiding from ordinary quirks, spot the even value pairs LSB embedding leaves in a histogram, learn what statistical tests can and can’t say, pick the right tool for each suspect file, and read zsteg output.",
+      href: "/intermediate/steganalysis",
+      progressKey: LAB_PROGRESS.steganalysis.key,
+      level: "Intermediate",
+      lessons: STEGANALYSIS_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: STEGANALYSIS_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },
