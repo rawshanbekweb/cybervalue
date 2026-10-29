@@ -20,6 +20,7 @@ export const LAB_PROGRESS = {
   tcpip: { key: "cybervalue:tcpip:progress:v1", total: 8 },
   traffic: { key: "cybervalue:traffic:progress:v1", total: 8 },
   firewall: { key: "cybervalue:firewall:progress:v1", total: 8 },
+  connections: { key: "cybervalue:connections:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -203,6 +204,15 @@ export const LAB_META: {
       en: "Firewalls and segmentation (Intermediate)",
     },
     href: "/intermediate/firewall",
+    intermediate: true,
+  },
+  {
+    id: "connections",
+    title: {
+      uz: "Xavfsiz ulanishlar (Intermediate)",
+      en: "Secure connections (Intermediate)",
+    },
+    href: "/intermediate/connections",
     intermediate: true,
   },
 ];

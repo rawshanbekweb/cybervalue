@@ -249,6 +249,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Xavfsiz ulanishlar", en: "Secure connections" },
+        href: "/intermediate/connections",
+        lab: "connections",
         topics: ["VPN", "SSH", "Wi‑Fi security", "WPA3"],
         goal: goal(
           "Masofaviy ulanish uchun to‘g‘ri himoyani tanlash.",

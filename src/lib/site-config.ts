@@ -168,6 +168,12 @@ export const SECTIONS = [
     href: "/intermediate/firewall",
   },
   {
+    id: "connections",
+    group: "lab",
+    label: "Secure connections (Intermediate)",
+    href: "/intermediate/connections",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

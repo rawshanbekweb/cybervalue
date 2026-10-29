@@ -101,6 +101,7 @@ test("everything finished", () => {
         tcpip: 8,
         traffic: 8,
         firewall: 8,
+        connections: 8,
         scams: 8,
         httpbasics: 9,
         https: 9,

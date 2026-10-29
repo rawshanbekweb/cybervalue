@@ -3769,3 +3769,280 @@ export const FIREWALL_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const CONNECTIONS_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "WPA2-PSK’ning asosiy zaif joyi?",
+      en: "The main weakness of WPA2-PSK?",
+    },
+    right: {
+      uz: "Yozib olingan handshake’ni offline buzish mumkin",
+      en: "A recorded handshake can be cracked offline",
+    },
+    wrong: [
+      { uz: "U shifrlamaydi", en: "It doesn’t encrypt" },
+      { uz: "Faqat 2,4 GHz’da ishlaydi", en: "It works on 2.4 GHz only" },
+      { uz: "Zaif joyi yo‘q", en: "It has none" },
+    ],
+    explain: {
+      uz: "Himoya faqat parol uzunligi va tasodifiyligiga bog‘liq.",
+      en: "The only defence is the passphrase’s length and randomness.",
+    },
+  },
+  {
+    ask: {
+      uz: "WPA3 (SAE) offline lug‘at hujumiga qanday qarshi turadi?",
+      en: "How does WPA3 (SAE) resist offline dictionary attacks?",
+    },
+    right: {
+      uz: "Har bir taxmin tarmoqqa jonli urinish bo‘lishi kerak",
+      en: "Every guess has to be a live attempt on the network",
+    },
+    wrong: [
+      { uz: "Parolni yashiradi", en: "It hides the password" },
+      { uz: "Wi-Fi nomini yashiradi", en: "It hides the network name" },
+      { uz: "Qarshi turmaydi", en: "It doesn’t" },
+    ],
+    explain: {
+      uz: "Yozib olingan handshake offline foydasiz.",
+      en: "A recorded handshake is useless offline.",
+    },
+  },
+  {
+    ask: {
+      uz: "WEP haqida qaysi gap to‘g‘ri?",
+      en: "Which is true of WEP?",
+    },
+    right: {
+      uz: "Kalit trafikning o‘zidan daqiqalarda chiqadi",
+      en: "The key falls out of the traffic itself in minutes",
+    },
+    wrong: [
+      { uz: "WPA3 dan kuchliroq", en: "It is stronger than WPA3" },
+      { uz: "Uzun parol bilan xavfsiz", en: "It is safe with a long password" },
+      { uz: "Faqat ofislar uchun", en: "It is for offices only" },
+    ],
+    explain: {
+      uz: "WEP butunlay buzilgan — parol uzunligi yordam bermaydi.",
+      en: "WEP is fully broken — password length doesn’t help.",
+    },
+  },
+  {
+    ask: {
+      uz: "“Evil twin” hujumi nima?",
+      en: "What is an “evil twin” attack?",
+    },
+    right: {
+      uz: "Haqiqiy tarmoq nomi bilan soxta Wi-Fi nuqtasi",
+      en: "A fake access point with a real network’s name",
+    },
+    wrong: [
+      { uz: "Ikki marta kiritilgan parol", en: "A password typed twice" },
+      {
+        uz: "Bir xil IP manzilli ikki kompyuter",
+        en: "Two computers with one IP",
+      },
+      { uz: "DNS xatosi", en: "A DNS error" },
+    ],
+    explain: {
+      uz: "Tarmoq nomi (SSID) hech narsani isbotlamaydi.",
+      en: "A network name (SSID) proves nothing.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega routerda WPS’ni o‘chirish kerak?",
+      en: "Why turn WPS off on a router?",
+    },
+    right: {
+      uz: "8 raqamli PIN amalda ~11 000 urinishda topiladi",
+      en: "The 8-digit PIN falls in about 11 000 tries in practice",
+    },
+    wrong: [
+      { uz: "U internetni sekinlashtiradi", en: "It slows the internet" },
+      { uz: "U WPA3 ni yoqadi", en: "It turns on WPA3" },
+      { uz: "O‘chirish shart emas", en: "There is no need" },
+    ],
+    explain: {
+      uz: "PIN ikki yarimda alohida tekshiriladi.",
+      en: "The PIN is checked in two halves separately.",
+    },
+  },
+  {
+    ask: {
+      uz: "Katta ofis Wi-Fi’si uchun eng yaxshi tanlov?",
+      en: "The best choice for a big office’s Wi-Fi?",
+    },
+    right: same("WPA3-Enterprise (802.1X)"),
+    wrong: [same("WPA2-PSK"), same("WEP"), same("Open + hidden SSID")],
+    explain: {
+      uz: "Har bir xodimning o‘z logini — umumiy parol yo‘q.",
+      en: "Each employee’s own login — no shared password.",
+    },
+  },
+  {
+    ask: {
+      uz: "Split tunnel VPN nimani tunnel orqali yuboradi?",
+      en: "What does a split-tunnel VPN send through the tunnel?",
+    },
+    right: { uz: "Faqat ofis manzillarini", en: "Only the office addresses" },
+    wrong: [
+      { uz: "Butun trafikni", en: "All traffic" },
+      { uz: "Faqat DNS’ni", en: "Only DNS" },
+      { uz: "Hech narsani", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Qolgan trafik to‘g‘ridan-to‘g‘ri, kafe tarmog‘i orqali ketadi.",
+      en: "The rest goes direct, over the café network.",
+    },
+  },
+  {
+    ask: {
+      uz: "DNS leak nima?",
+      en: "What is a DNS leak?",
+    },
+    right: {
+      uz: "VPN yoqilgan, lekin DNS so‘rovlari tunneldan tashqarida ketadi",
+      en: "The VPN is on but DNS queries go outside the tunnel",
+    },
+    wrong: [
+      { uz: "DNS server o‘chib qolishi", en: "The DNS server going down" },
+      { uz: "Domen muddati tugashi", en: "A domain expiring" },
+      { uz: "Parol sizishi", en: "A password leaking" },
+    ],
+    explain: {
+      uz: "Kuzatuvchi qaysi saytlarga kirayotganingizni ko‘radi.",
+      en: "An observer sees which sites you visit.",
+    },
+  },
+  {
+    ask: {
+      uz: "VPN ishlatganda trafikingizni kim ko‘radi?",
+      en: "With a VPN on, who can see your traffic?",
+    },
+    right: {
+      uz: "VPN provayderi — shuning uchun ishonchlisini tanlang",
+      en: "The VPN provider — so pick one you trust",
+    },
+    wrong: [
+      { uz: "Hech kim, hech qachon", en: "Nobody, ever" },
+      { uz: "Faqat kafe egasi", en: "Only the café owner" },
+      { uz: "Faqat brauzer", en: "Only the browser" },
+    ],
+    explain: {
+      uz: "VPN ishonchni kafe tarmog‘idan provayderga ko‘chiradi.",
+      en: "A VPN moves trust from the café network to the provider.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi VPN protokoli eskirgan va buzilgan?",
+      en: "Which VPN protocol is obsolete and broken?",
+    },
+    right: same("PPTP"),
+    wrong: [same("WireGuard"), same("IKEv2"), same("OpenVPN")],
+    explain: {
+      uz: "WireGuard va IPsec/IKEv2 — zamonaviy tanlov.",
+      en: "WireGuard and IPsec/IKEv2 are the modern choices.",
+    },
+  },
+  {
+    ask: {
+      uz: "SSH “REMOTE HOST IDENTIFICATION HAS CHANGED” desa?",
+      en: "SSH says “REMOTE HOST IDENTIFICATION HAS CHANGED”. What then?",
+    },
+    right: {
+      uz: "To‘xtash va kalitni adminning xavfsiz kanali orqali tekshirish",
+      en: "Stop and check the key with the admin over a safe channel",
+    },
+    wrong: [
+      {
+        uz: "known_hosts’ni o‘chirib, qayta ulanish",
+        en: "Delete known_hosts and reconnect",
+      },
+      { uz: "“yes” deb davom etish", en: "Type “yes” and go on" },
+      { uz: "Parolni almashtirish", en: "Change your password" },
+    ],
+    explain: {
+      uz: "Bu man-in-the-middle bo‘lishi mumkin.",
+      en: "It may be a man in the middle.",
+    },
+  },
+  {
+    ask: {
+      uz: "SSH fingerprint’ni qanday solishtirish kerak?",
+      en: "How should an SSH fingerprint be compared?",
+    },
+    right: {
+      uz: "Boshidan oxirigacha, e’lon qilingani bilan",
+      en: "End to end, against the published one",
+    },
+    wrong: [
+      { uz: "Faqat birinchi 4 belgini", en: "The first 4 characters only" },
+      { uz: "Solishtirish shart emas", en: "There is no need" },
+      { uz: "Faqat uzunligini", en: "Only its length" },
+    ],
+    explain: {
+      uz: "Hujumchi boshi o‘xshash kalit yaratishi mumkin.",
+      en: "An attacker can make a key with a similar start.",
+    },
+  },
+  {
+    ask: {
+      uz: "sshd_config’dagi qaysi qator xavfsizlikni oshiradi?",
+      en: "Which sshd_config line improves security?",
+    },
+    right: same("PasswordAuthentication no"),
+    wrong: [
+      same("PermitRootLogin yes"),
+      same("PermitEmptyPasswords yes"),
+      same("PasswordAuthentication yes"),
+    ],
+    explain: {
+      uz: "Faqat kalit bilan kirish — parol taxmin qiluvchi bot’lar befoyda.",
+      en: "Keys only — password-guessing bots get nowhere.",
+    },
+  },
+  {
+    ask: {
+      uz: "ssh -L 5432:localhost:5432 server nima qiladi?",
+      en: "What does ssh -L 5432:localhost:5432 server do?",
+    },
+    right: {
+      uz: "Serverdagi bazani o‘z kompyuteringizda localhost:5432 da ochadi",
+      en: "Opens the server’s database on localhost:5432 on your own machine",
+    },
+    wrong: [
+      {
+        uz: "5432-portni internetga ochadi",
+        en: "Opens port 5432 to the internet",
+      },
+      { uz: "Bazani o‘chiradi", en: "Deletes the database" },
+      { uz: "Serverni qayta yuklaydi", en: "Restarts the server" },
+    ],
+    explain: {
+      uz: "Trafik SSH ichida shifrlangan, baza tashqaridan ko‘rinmaydi.",
+      en: "The traffic is encrypted inside SSH; the database stays hidden.",
+    },
+  },
+  {
+    ask: {
+      uz: "Agent forwarding (ssh -A) o‘rniga nima xavfsizroq?",
+      en: "What is safer than agent forwarding (ssh -A)?",
+    },
+    right: same("ProxyJump (ssh -J)"),
+    wrong: [
+      {
+        uz: "Shaxsiy kalitni serverga nusxalash",
+        en: "Copying the private key to the server",
+      },
+      { uz: "Parol bilan kirish", en: "Logging in with a password" },
+      { uz: "root bilan kirish", en: "Logging in as root" },
+    ],
+    explain: {
+      uz: "ProxyJump agentingizni oraliq serverga bermaydi.",
+      en: "ProxyJump doesn’t hand your agent to the middle server.",
+    },
+  },
+];
