@@ -5126,3 +5126,288 @@ export const LOGS_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const RESPONSE_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "NIST SP 800-61 bo‘yicha birinchi bosqich?",
+      en: "The first phase in NIST SP 800-61?",
+    },
+    right: { uz: "Tayyorgarlik", en: "Preparation" },
+    wrong: [
+      { uz: "Cheklash", en: "Containment" },
+      { uz: "Saboqlar", en: "Lessons learned" },
+      { uz: "Tiklash", en: "Recovery" },
+    ],
+    explain: {
+      uz: "Reja, aloqa ro‘yxati va loglash — hodisadan oldin.",
+      en: "The plan, contact list and logging come before any incident.",
+    },
+  },
+  {
+    ask: {
+      uz: "Javob rejasi qachon yoziladi?",
+      en: "When is the response plan written?",
+    },
+    right: { uz: "Hodisadan oldin", en: "Before any incident" },
+    wrong: [
+      { uz: "Hodisa paytida", en: "During the incident" },
+      { uz: "Hodisadan keyin", en: "After the incident" },
+      { uz: "Hech qachon", en: "Never" },
+    ],
+    explain: {
+      uz: "Hodisa paytida reja yozishga vaqt yo‘q.",
+      en: "There is no time for it mid-incident.",
+    },
+  },
+  {
+    ask: {
+      uz: "Jiddiylikni nima belgilaydi?",
+      en: "What sets an incident’s severity?",
+    },
+    right: {
+      uz: "Ta’sir va shoshilinchlik",
+      en: "Impact and urgency",
+    },
+    wrong: [
+      { uz: "Xabar kelgan vaqt", en: "When the report came in" },
+      { uz: "Xabar bergan odam", en: "Who reported it" },
+      { uz: "Server nomi", en: "The server’s name" },
+    ],
+    explain: {
+      uz: "Navbat kelgan tartibda emas, jiddiylik bo‘yicha.",
+      en: "By severity, not the order reports arrive.",
+    },
+  },
+  {
+    ask: {
+      uz: "Tarqalayotgan ransomware’ga birinchi harakat?",
+      en: "The first move against spreading ransomware?",
+    },
+    right: {
+      uz: "Zararlangan xostlarni tarmoqdan uzish",
+      en: "Cut infected hosts off the network",
+    },
+    wrong: [
+      { uz: "Hamma kompyuterni o‘chirish", en: "Power off every computer" },
+      { uz: "To‘lovni to‘lash", en: "Pay the ransom" },
+      { uz: "Hech narsa qilmaslik", en: "Do nothing" },
+    ],
+    explain: {
+      uz: "Uzish tarqalishni to‘xtatadi, xotira saqlanadi.",
+      en: "Isolating stops the spread and keeps memory intact.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega hamma kompyuterni o‘chirish yomon?",
+      en: "Why is powering off every computer a bad move?",
+    },
+    right: {
+      uz: "RAM’dagi dalillar yo‘qoladi va kompaniya to‘xtaydi",
+      en: "Memory evidence is lost and the company stops",
+    },
+    wrong: [
+      { uz: "Elektr ko‘p sarflanadi", en: "It uses a lot of power" },
+      { uz: "Yomon emas", en: "It isn’t" },
+      { uz: "Disklar shifrlanadi", en: "The disks get encrypted" },
+    ],
+    explain: {
+      uz: "Kerakli joydagina uzish — maqsadli cheklash.",
+      en: "Isolate only where needed — targeted containment.",
+    },
+  },
+  {
+    ask: {
+      uz: "Hodisani kompaniya chatida muhokama qilish xavfi?",
+      en: "The risk of discussing the incident in company chat?",
+    },
+    right: {
+      uz: "Hujumchi buzilgan hisob orqali o‘qiydi",
+      en: "The attacker reads it through a hacked account",
+    },
+    wrong: [
+      { uz: "Chat sekinlashadi", en: "The chat slows down" },
+      { uz: "Xavf yo‘q", en: "There is none" },
+      { uz: "Xabarlar o‘chadi", en: "Messages get deleted" },
+    ],
+    explain: {
+      uz: "Tashqi kanal (telefon, alohida messenjer) ishlating.",
+      en: "Use an out-of-band channel (phone, a separate messenger).",
+    },
+  },
+  {
+    ask: {
+      uz: "Zararlangan mashinalarni darhol qayta o‘rnatsangiz?",
+      en: "What if you reinstall infected machines straight away?",
+    },
+    right: {
+      uz: "Hujumchi qanday kirganini bilib bo‘lmaydi",
+      en: "Nobody can learn how the attacker got in",
+    },
+    wrong: [
+      { uz: "Hammasi hal bo‘ladi", en: "Everything is solved" },
+      { uz: "Dalil ko‘payadi", en: "There is more evidence" },
+      { uz: "Hujumchi qaytmaydi", en: "The attacker won’t return" },
+    ],
+    explain: {
+      uz: "Avval dalil va ildiz sabab, keyin tozalash.",
+      en: "Evidence and root cause first, clean-up after.",
+    },
+  },
+  {
+    ask: {
+      uz: "Hujum 1-oktabrda boshlangan. Qaysi zaxiradan tiklash kerak?",
+      en: "The attack began on 1 October. Which backup to restore?",
+    },
+    right: {
+      uz: "1-oktabrdan oldingi, tekshirilgan nusxadan",
+      en: "A checked copy from before 1 October",
+    },
+    wrong: [
+      { uz: "Eng oxirgisidan", en: "The latest one" },
+      { uz: "Istalganidan", en: "Any of them" },
+      { uz: "Zaxira kerak emas", en: "No backup needed" },
+    ],
+    explain: {
+      uz: "Keyingilarida hujumchi izlari bo‘lishi mumkin.",
+      en: "Later ones may carry the attacker’s traces.",
+    },
+  },
+  {
+    ask: {
+      uz: "Tiklashdan keyin nima shart?",
+      en: "What is a must after recovery?",
+    },
+    right: {
+      uz: "Parollarni almashtirish va kirish yo‘lini yopish",
+      en: "Changing passwords and closing the way in",
+    },
+    wrong: [
+      { uz: "Firewall’ni o‘chirish", en: "Turning off the firewall" },
+      { uz: "Loglarni o‘chirish", en: "Deleting the logs" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Aks holda hujumchi o‘sha yo‘l bilan qaytadi.",
+      en: "Otherwise the attacker comes back the same way.",
+    },
+  },
+  {
+    ask: {
+      uz: "Dwell time nima?",
+      en: "What is dwell time?",
+    },
+    right: {
+      uz: "Hujum boshlanishidan aniqlanishigacha o‘tgan vaqt",
+      en: "The time from the attack starting to its detection",
+    },
+    wrong: [
+      { uz: "Tiklash vaqti", en: "The time to recover" },
+      { uz: "Yig‘ilish davomiyligi", en: "The meeting’s length" },
+      { uz: "Zaxira hajmi", en: "The backup’s size" },
+    ],
+    explain: {
+      uz: "Qisqa dwell time — yaxshi aniqlash belgisi.",
+      en: "A short dwell time is a sign of good detection.",
+    },
+  },
+  {
+    ask: {
+      uz: "Hodisa kartasida nima bo‘lishi kerak?",
+      en: "What belongs on an incident ticket?",
+    },
+    right: {
+      uz: "Raqam, jiddiylik, vaqt, qamrov, harakatlar, mas’ul",
+      en: "ID, severity, time, scope, actions, owner",
+    },
+    wrong: [
+      { uz: "Faqat sarlavha", en: "Just a title" },
+      { uz: "Faqat aybdor ismi", en: "Just the culprit’s name" },
+      {
+        uz: "Hech narsa, og‘zaki yetarli",
+        en: "Nothing, word of mouth will do",
+      },
+    ],
+    explain: {
+      uz: "Karta — jamoaning umumiy xotirasi.",
+      en: "The ticket is the team’s shared memory.",
+    },
+  },
+  {
+    ask: {
+      uz: "Shaxsiy ma’lumotlar sizgani tasdiqlansa?",
+      en: "A personal data leak is confirmed. Then?",
+    },
+    right: {
+      uz: "Yuristlar bilan nazorat organi va jabrlanganlarga muddatida xabar berish",
+      en: "With the lawyers, tell the regulator and those affected within the deadline",
+    },
+    wrong: [
+      { uz: "Hech kimga aytmaslik", en: "Tell nobody" },
+      { uz: "Faqat IT bo‘limiga", en: "Only the IT team" },
+      { uz: "Faqat ijtimoiy tarmoqqa", en: "Only social media" },
+    ],
+    explain: {
+      uz: "Yashirish javobgarlikni oshiradi.",
+      en: "Hiding it adds liability.",
+    },
+  },
+  {
+    ask: {
+      uz: "Jurnalistlar bilan kim gaplashadi?",
+      en: "Who talks to journalists?",
+    },
+    right: {
+      uz: "Oldindan tayinlangan vakil",
+      en: "A spokesperson appointed in advance",
+    },
+    wrong: [
+      { uz: "Istalgan xodim", en: "Any employee" },
+      { uz: "IR jamoasi a’zolari", en: "Members of the IR team" },
+      { uz: "Hech kim, hech qachon", en: "Nobody, ever" },
+    ],
+    explain: {
+      uz: "Bitta aniq va izchil xabar.",
+      en: "One clear and consistent message.",
+    },
+  },
+  {
+    ask: {
+      uz: "Blameless saboqlar yig‘ilishining maqsadi?",
+      en: "The point of a blameless lessons-learned meeting?",
+    },
+    right: {
+      uz: "Tizimni yaxshilash, mas’ul va muddat bilan",
+      en: "Fixing the system, with owners and dates",
+    },
+    wrong: [
+      { uz: "Aybdorni topish", en: "Finding the culprit" },
+      { uz: "Hisobotni uzaytirish", en: "Making the report longer" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Odamlar xatolarni yashirmasa, tizim tezroq yaxshilanadi.",
+      en: "When people don’t hide mistakes, things improve faster.",
+    },
+  },
+  {
+    ask: {
+      uz: "Fishing havolasini bosgan xodimni ishdan bo‘shatish — qanday yondashuv?",
+      en: "Firing the employee who clicked a phishing link — what kind of approach?",
+    },
+    right: {
+      uz: "Zararli: odamlar keyingi safar xatoni yashiradi",
+      en: "Harmful: next time people will hide their mistakes",
+    },
+    wrong: [
+      { uz: "To‘g‘ri va samarali", en: "Right and effective" },
+      { uz: "Majburiy talab", en: "A required step" },
+      { uz: "Blameless yondashuv", en: "The blameless approach" },
+    ],
+    explain: {
+      uz: "Savol — tizim nega bu xatoga yo‘l qo‘ydi?",
+      en: "The question is why the system let it happen.",
+    },
+  },
+];

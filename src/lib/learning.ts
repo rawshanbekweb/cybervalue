@@ -21,6 +21,7 @@ import { LESSONS as IDS_LESSONS } from "@/lib/ids/curriculum";
 import { LESSONS as EVIDENCE_LESSONS } from "@/lib/evidence/curriculum";
 import { LESSONS as FILESYSTEM_LESSONS } from "@/lib/filesystem/curriculum";
 import { LESSONS as LOGS_LESSONS } from "@/lib/logs/curriculum";
+import { LESSONS as RESPONSE_LESSONS } from "@/lib/response/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -480,6 +481,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: LOGS_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "response",
+      title: "Incident response",
+      category: "Intermediate · Digital forensics",
+      description:
+        "Sort the work of the NIST lifecycle, rank incidents by impact and urgency, contain ransomware without destroying evidence or tipping off the attacker, and run a blameless lessons-learned review.",
+      href: "/intermediate/response",
+      progressKey: LAB_PROGRESS.response.key,
+      level: "Intermediate",
+      lessons: RESPONSE_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: RESPONSE_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

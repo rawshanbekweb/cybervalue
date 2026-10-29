@@ -315,6 +315,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Hodisaga javob", en: "Incident response" },
+        href: "/intermediate/response",
+        lab: "response",
         topics: [
           "NIST lifecycle",
           "containment",

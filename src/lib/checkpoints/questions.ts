@@ -44,6 +44,7 @@ import {
   EVIDENCE_POOL,
   FILESYSTEM_POOL,
   LOGS_POOL,
+  RESPONSE_POOL,
   SECURITY_EXTRA,
   type PoolItem,
 } from "./pools";
@@ -724,6 +725,10 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
       .map((item) => fromPool(r, item)),
   "logs-1": (r) =>
     shuffle(r, LOGS_POOL)
+      .slice(0, 10)
+      .map((item) => fromPool(r, item)),
+  "response-1": (r) =>
+    shuffle(r, RESPONSE_POOL)
       .slice(0, 10)
       .map((item) => fromPool(r, item)),
 };
