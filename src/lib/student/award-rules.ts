@@ -149,6 +149,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Xavfsiz ulanishlar (Intermediate)",
     earned: (f) => finished(f, "connections") && passed(f, "connections-1"),
   },
+  {
+    id: "lab-ids",
+    title: "Hujumni aniqlash (Intermediate)",
+    earned: (f) => finished(f, "ids") && passed(f, "ids-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

@@ -21,6 +21,7 @@ export const LAB_PROGRESS = {
   traffic: { key: "cybervalue:traffic:progress:v1", total: 8 },
   firewall: { key: "cybervalue:firewall:progress:v1", total: 8 },
   connections: { key: "cybervalue:connections:progress:v1", total: 8 },
+  ids: { key: "cybervalue:ids:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -213,6 +214,15 @@ export const LAB_META: {
       en: "Secure connections (Intermediate)",
     },
     href: "/intermediate/connections",
+    intermediate: true,
+  },
+  {
+    id: "ids",
+    title: {
+      uz: "Hujumni aniqlash (Intermediate)",
+      en: "Intrusion detection (Intermediate)",
+    },
+    href: "/intermediate/ids",
     intermediate: true,
   },
 ];

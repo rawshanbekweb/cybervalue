@@ -40,6 +40,7 @@ import {
   TRAFFIC_POOL,
   FIREWALL_POOL,
   CONNECTIONS_POOL,
+  IDS_POOL,
   SECURITY_EXTRA,
   type PoolItem,
 } from "./pools";
@@ -704,6 +705,10 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
       .map((item) => fromPool(r, item)),
   "connections-1": (r) =>
     shuffle(r, CONNECTIONS_POOL)
+      .slice(0, 10)
+      .map((item) => fromPool(r, item)),
+  "ids-1": (r) =>
+    shuffle(r, IDS_POOL)
       .slice(0, 10)
       .map((item) => fromPool(r, item)),
 };

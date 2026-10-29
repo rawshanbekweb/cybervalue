@@ -259,6 +259,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Hujumni aniqlash", en: "Intrusion detection" },
+        href: "/intermediate/ids",
+        lab: "ids",
         topics: ["IDS/IPS", "Suricata", "signatures", "anomalies"],
         goal: goal(
           "Aniqlash qoidasi nimani ushlashini o‘qib tushunish.",

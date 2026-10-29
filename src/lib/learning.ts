@@ -17,6 +17,7 @@ import { LESSONS as TCPIP_LESSONS } from "@/lib/tcpip/curriculum";
 import { LESSONS as TRAFFIC_LESSONS } from "@/lib/traffic/curriculum";
 import { LESSONS as FIREWALL_LESSONS } from "@/lib/firewall/curriculum";
 import { LESSONS as CONNECTIONS_LESSONS } from "@/lib/connections/curriculum";
+import { LESSONS as IDS_LESSONS } from "@/lib/ids/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -408,6 +409,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: CONNECTIONS_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "ids",
+      title: "Intrusion detection",
+      category: "Intermediate · Network security",
+      description:
+        "Read a Suricata rule, make a content match catch encoded path traversal, tune a brute-force threshold for a slow bot, triage alerts, and see why a tiny false-positive rate buries real attacks.",
+      href: "/intermediate/ids",
+      progressKey: LAB_PROGRESS.ids.key,
+      level: "Intermediate",
+      lessons: IDS_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: IDS_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },
