@@ -4611,3 +4611,258 @@ export const EVIDENCE_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const FILESYSTEM_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "MACB’dagi C nimani bildiradi?",
+      en: "What does the C in MACB stand for?",
+    },
+    right: {
+      uz: "Change — inode o‘zgargan (ruxsat, nom, egasi, mazmun)",
+      en: "Change — the inode changed (permissions, name, owner, content)",
+    },
+    wrong: [
+      { uz: "Creation — yaratilgan", en: "Creation — when it was made" },
+      { uz: "Copy — nusxalangan", en: "Copy — when it was copied" },
+      { uz: "Close — yopilgan", en: "Close — when it was closed" },
+    ],
+    explain: {
+      uz: "Yaratilish — Birth (crtime).",
+      en: "Creation is Birth (crtime).",
+    },
+  },
+  {
+    ask: {
+      uz: "Faylni o‘qish qaysi vaqtni o‘zgartiradi?",
+      en: "Which timestamp does reading a file change?",
+    },
+    right: same("atime"),
+    wrong: [same("mtime"), same("ctime"), same("crtime")],
+    explain: {
+      uz: "relatime bo‘lsa, har o‘qishda emas.",
+      en: "With relatime, not on every read.",
+    },
+  },
+  {
+    ask: {
+      uz: "Faylga yozish qaysi vaqtlarni o‘zgartiradi?",
+      en: "Which timestamps does writing to a file change?",
+    },
+    right: same("mtime, ctime"),
+    wrong: [
+      { uz: "Faqat atime", en: "Only atime" },
+      same("crtime"),
+      { uz: "Hech biri", en: "None of them" },
+    ],
+    explain: {
+      uz: "Mazmun va hajm o‘zgaradi — inode ham.",
+      en: "Content and size change — so does the inode.",
+    },
+  },
+  {
+    ask: {
+      uz: "mv report.xlsx old.xlsx (bitta disk ichida) nimani o‘zgartiradi?",
+      en: "What does mv report.xlsx old.xlsx (on one disk) change?",
+    },
+    right: { uz: "Faqat ctime", en: "Only ctime" },
+    wrong: [
+      { uz: "mtime va birth", en: "mtime and birth" },
+      { uz: "Hammasini", en: "All of them" },
+      { uz: "Hech narsani", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Mazmun o‘sha, inode o‘sha — faqat nom.",
+      en: "Same content, same inode — only the name.",
+    },
+  },
+  {
+    ask: {
+      uz: "Inode raqami nom o‘zgarganda nima bo‘ladi?",
+      en: "What happens to the inode number when a file is renamed?",
+    },
+    right: { uz: "O‘zgarmaydi", en: "It stays the same" },
+    wrong: [
+      { uz: "Yangisi beriladi", en: "A new one is given" },
+      { uz: "Nolga tushadi", en: "It drops to zero" },
+      { uz: "O‘chiriladi", en: "It is deleted" },
+    ],
+    explain: {
+      uz: "Nom — katalog yozuvi; inode — faylning o‘zi.",
+      en: "The name is a directory entry; the inode is the file itself.",
+    },
+  },
+  {
+    ask: {
+      uz: "Faylni o‘chirganda (HDD) ma’lumot bilan nima bo‘ladi?",
+      en: "When a file is deleted (on an HDD), what happens to its data?",
+    },
+    right: {
+      uz: "Ustidan yozilguncha diskda qoladi",
+      en: "It stays on the disk until written over",
+    },
+    wrong: [
+      { uz: "Darhol nollar bilan yoziladi", en: "It is zeroed at once" },
+      { uz: "Bulutga ko‘chadi", en: "It moves to the cloud" },
+      { uz: "Shifrlanadi", en: "It gets encrypted" },
+    ],
+    explain: {
+      uz: "Faqat nom va bloklar “bo‘sh” deb belgilanadi.",
+      en: "Only the name goes and the blocks are marked free.",
+    },
+  },
+  {
+    ask: {
+      uz: "SSD’da TRIM nima qiladi?",
+      en: "What does TRIM do on an SSD?",
+    },
+    right: {
+      uz: "Bo‘sh bloklarni tez orada tozalaydi",
+      en: "It soon wipes the free blocks",
+    },
+    wrong: [
+      { uz: "Fayllarni shifrlaydi", en: "It encrypts files" },
+      { uz: "Diskni tezlashtiradi, xolos", en: "It just speeds up the disk" },
+      { uz: "O‘chirilganlarni tiklaydi", en: "It restores deleted files" },
+    ],
+    explain: {
+      uz: "Shuning uchun SSD’dan tiklash qiyinroq.",
+      en: "That is why recovery from an SSD is harder.",
+    },
+  },
+  {
+    ask: {
+      uz: "Slack space nima?",
+      en: "What is slack space?",
+    },
+    right: {
+      uz: "Fayl oxiri va blok oxiri orasidagi joy",
+      en: "The gap between a file’s end and its block’s end",
+    },
+    wrong: [
+      { uz: "Savat papkasi", en: "The recycle bin" },
+      { uz: "Operativ xotira", en: "Memory" },
+      { uz: "Zaxira nusxa", en: "A backup" },
+    ],
+    explain: {
+      uz: "Unda eski ma’lumot qoldiqlari bo‘lishi mumkin.",
+      en: "It may hold scraps of older data.",
+    },
+  },
+  {
+    ask: {
+      uz: "25 50 44 46 bilan boshlanadigan fayl turi?",
+      en: "Which file type starts with 25 50 44 46?",
+    },
+    right: same("PDF"),
+    wrong: [same("JPEG"), same("ZIP"), same("EXE")],
+    explain: {
+      uz: "Bu ASCII’da “%PDF”.",
+      en: "It is “%PDF” in ASCII.",
+    },
+  },
+  {
+    ask: {
+      uz: "DOCX fayl qaysi imzo bilan boshlanadi?",
+      en: "Which signature does a DOCX file start with?",
+    },
+    right: same("50 4B 03 04 (ZIP)"),
+    wrong: [same("FF D8 FF"), same("4D 5A"), same("25 50 44 46")],
+    explain: {
+      uz: "DOCX aslida ZIP arxiv.",
+      en: "A DOCX is really a ZIP archive.",
+    },
+  },
+  {
+    ask: {
+      uz: "photo.jpg 4D 5A bilan boshlanadi. Bu?",
+      en: "photo.jpg starts with 4D 5A. This is?",
+    },
+    right: {
+      uz: "Rasm niqobidagi Windows dasturi",
+      en: "A Windows program dressed up as an image",
+    },
+    wrong: [
+      { uz: "Oddiy rasm", en: "An ordinary image" },
+      { uz: "Buzilgan rasm", en: "A broken image" },
+      { uz: "PDF", en: "A PDF" },
+    ],
+    explain: {
+      uz: "JPEG FF D8 FF bilan boshlanadi.",
+      en: "A JPEG starts with FF D8 FF.",
+    },
+  },
+  {
+    ask: {
+      uz: "Veb-log UTC+5 da 07:11, fayl tizimi UTC’da 02:11. Bu?",
+      en: "Web log at 07:11 in UTC+5, file system at 02:11 UTC. These are?",
+    },
+    right: { uz: "Bir vaqtda", en: "The same moment" },
+    wrong: [
+      { uz: "5 soat farq bilan", en: "Five hours apart" },
+      { uz: "Turli kunlarda", en: "On different days" },
+      { uz: "Aniqlab bo‘lmaydi", en: "Impossible to tell" },
+    ],
+    explain: {
+      uz: "07:11 − 5 = 02:11 UTC.",
+      en: "07:11 minus 5 is 02:11 UTC.",
+    },
+  },
+  {
+    ask: {
+      uz: "Xronologiya tuzishdan oldin vaqtlar bilan nima qilinadi?",
+      en: "What is done with the times before building a timeline?",
+    },
+    right: {
+      uz: "Hammasi bitta zonaga (UTC) keltiriladi",
+      en: "They are all brought to one zone (UTC)",
+    },
+    wrong: [
+      { uz: "Yaxlitlanadi", en: "They are rounded" },
+      { uz: "Hech narsa", en: "Nothing" },
+      { uz: "Mahalliy vaqtga o‘tkazilmaydi", en: "They are left as they are" },
+    ],
+    explain: {
+      uz: "Aks holda voqealar tartibi buziladi.",
+      en: "Otherwise the order of events falls apart.",
+    },
+  },
+  {
+    ask: {
+      uz: "mtime birth’dan oldin bo‘lsa, bu nimaning belgisi?",
+      en: "An mtime earlier than the birth time is a sign of what?",
+    },
+    right: {
+      uz: "Timestomping — vaqt soxtalashtirilgan",
+      en: "Timestomping — the time was faked",
+    },
+    wrong: [
+      { uz: "Oddiy holat", en: "Normal behaviour" },
+      { uz: "Disk to‘lgan", en: "A full disk" },
+      { uz: "Virus yo‘qligi", en: "No virus present" },
+    ],
+    explain: {
+      uz: "Fayl yaratilishidan oldin o‘zgara olmaydi.",
+      en: "A file can’t change before it exists.",
+    },
+  },
+  {
+    ask: {
+      uz: "NSRL kabi bazalar nimaga kerak?",
+      en: "What are sets such as the NSRL for?",
+    },
+    right: {
+      uz: "Ma’lum, o‘zgarmagan fayllarni tahlildan chetga olish",
+      en: "Setting known, unchanged files aside from the analysis",
+    },
+    wrong: [
+      { uz: "Parollarni tiklash", en: "Recovering passwords" },
+      { uz: "Diskni shifrlash", en: "Encrypting the disk" },
+      { uz: "Fayllarni o‘chirish", en: "Deleting files" },
+    ],
+    explain: {
+      uz: "Xeshi mos kelmagan tizim fayli — shubhali.",
+      en: "A system file whose hash doesn’t match is suspicious.",
+    },
+  },
+];

@@ -25,6 +25,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/connections` | Network security module 4, secure connections (8 lessons, a checkpoint)         |
 | `/intermediate/ids`         | Network security module 5, intrusion detection (8 lessons, a checkpoint)        |
 | `/intermediate/evidence`    | Digital forensics module 1, handling evidence (8 lessons, a checkpoint)         |
+| `/intermediate/filesystem`  | Digital forensics module 2, file systems (8 lessons, a checkpoint)              |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -357,6 +358,27 @@ start with whoever held the evidence last.
 | 6       | Finds where a chain of custody breaks                          |
 | 7       | Questions on live systems, encrypted disks and hash algorithms |
 | 8       | Final questions                                                |
+
+## Digital forensics module 2: File systems
+
+`/intermediate/filesystem` (lab id `filesystem`, checkpoint `filesystem-1`,
+award `lab-filesystem`, site setting `filesystem`) uses
+`src/lib/filesystem/tools.ts`: `CHANGES` gives the MACB timestamps that
+reading, writing, chmod and a rename change on ext4 with strictatime;
+`identify` names a file from its first bytes; `ARTIFACTS` are five events
+from a web log in Tashkent time (UTC+5) and a file system in UTC, starting
+in the order their clocks suggest, and `timelineSolved` checks them in UTC.
+
+| Lessons | What the student does                                 |
+| ------- | ----------------------------------------------------- |
+| 1       | Clicks through the parts of stat output               |
+| 2       | Ticks the timestamps each command changes             |
+| 3       | Questions on deleted files, TRIM and disk images      |
+| 4       | Matches file signatures (magic numbers) to file types |
+| 5       | Orders an attack's events once every clock is in UTC  |
+| 6       | Questions on timestomping                             |
+| 7       | Questions on known-file hash sets (NSRL)              |
+| 8       | Final questions                                       |
 
 ## Who gets in
 

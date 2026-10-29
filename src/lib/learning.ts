@@ -19,6 +19,7 @@ import { LESSONS as FIREWALL_LESSONS } from "@/lib/firewall/curriculum";
 import { LESSONS as CONNECTIONS_LESSONS } from "@/lib/connections/curriculum";
 import { LESSONS as IDS_LESSONS } from "@/lib/ids/curriculum";
 import { LESSONS as EVIDENCE_LESSONS } from "@/lib/evidence/curriculum";
+import { LESSONS as FILESYSTEM_LESSONS } from "@/lib/filesystem/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -444,6 +445,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: EVIDENCE_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "filesystem",
+      title: "File systems",
+      category: "Intermediate · Digital forensics",
+      description:
+        "Read stat output, work out which MACB timestamps an action changes, see why deleted files survive, recognise files by their first bytes, and build an attack timeline from sources in different time zones.",
+      href: "/intermediate/filesystem",
+      progressKey: LAB_PROGRESS.filesystem.key,
+      level: "Intermediate",
+      lessons: FILESYSTEM_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: FILESYSTEM_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

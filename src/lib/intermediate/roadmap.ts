@@ -295,6 +295,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Fayl tizimlari", en: "File systems" },
+        href: "/intermediate/filesystem",
+        lab: "filesystem",
         topics: ["timestamps", "deleted files", "timeline"],
         goal: goal(
           "Fayl vaqt belgilaridan voqealar ketma-ketligini tuzish.",
