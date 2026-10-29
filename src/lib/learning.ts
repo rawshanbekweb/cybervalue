@@ -13,6 +13,7 @@ import { LESSONS as SYMMETRIC_LESSONS } from "@/lib/symmetric/curriculum";
 import { LESSONS as HASHES_LESSONS } from "@/lib/hashes/curriculum";
 import { LESSONS as PUBKEY_LESSONS } from "@/lib/public-key/curriculum";
 import { LESSONS as TLS_LESSONS } from "@/lib/tls/curriculum";
+import { LESSONS as TCPIP_LESSONS } from "@/lib/tcpip/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -336,6 +337,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: TLS_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "tcpip",
+      title: "TCP/IP in depth",
+      category: "Intermediate · Network security",
+      description:
+        "Work out the sequence and acknowledgement numbers of a TCP handshake, read a port scan, see how ICMP and SYN floods work, and push the odds of poisoning a DNS cache below one in a thousand.",
+      href: "/intermediate/tcpip",
+      progressKey: LAB_PROGRESS.tcpip.key,
+      level: "Intermediate",
+      lessons: TCPIP_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: TCPIP_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

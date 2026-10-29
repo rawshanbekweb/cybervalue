@@ -150,6 +150,12 @@ export const SECTIONS = [
     href: "/intermediate/tls",
   },
   {
+    id: "tcpip",
+    group: "lab",
+    label: "TCP/IP in depth (Intermediate)",
+    href: "/intermediate/tcpip",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

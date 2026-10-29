@@ -98,6 +98,7 @@ test("everything finished", () => {
         hashes: 8,
         pubkey: 8,
         tls: 8,
+        tcpip: 8,
         scams: 8,
         httpbasics: 9,
         https: 9,
