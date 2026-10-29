@@ -1,0 +1,37 @@
+/* Secure connections lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css and
+   access-control.css. */
+.cb-field input:disabled {
+  opacity: 0.5;
+}
+.cn-connect {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.cn-connect legend {
+  padding: 0 4px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.cn-connect legend code {
+  overflow-wrap: anywhere;
+}
+.cn-prompt {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+.cn-published {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+.cn-published code {
+  overflow-wrap: anywhere;
+  color: inherit;
+}

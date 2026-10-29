@@ -16,6 +16,7 @@ import { LESSONS as TLS_LESSONS } from "@/lib/tls/curriculum";
 import { LESSONS as TCPIP_LESSONS } from "@/lib/tcpip/curriculum";
 import { LESSONS as TRAFFIC_LESSONS } from "@/lib/traffic/curriculum";
 import { LESSONS as FIREWALL_LESSONS } from "@/lib/firewall/curriculum";
+import { LESSONS as CONNECTIONS_LESSONS } from "@/lib/connections/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -390,6 +391,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: FIREWALL_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "connections",
+      title: "Secure connections",
+      category: "Intermediate · Network security",
+      description:
+        "See how long a recorded Wi-Fi handshake holds out under WEP, WPA2 and WPA3, close every leak a VPN can have on café Wi-Fi, and decide when an SSH host key fingerprint should stop you.",
+      href: "/intermediate/connections",
+      progressKey: LAB_PROGRESS.connections.key,
+      level: "Intermediate",
+      lessons: CONNECTIONS_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: CONNECTIONS_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

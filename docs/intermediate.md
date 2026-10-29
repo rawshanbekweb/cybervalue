@@ -6,22 +6,23 @@ students placed at the Intermediate or Advanced level, and to staff.
 
 ## Pages
 
-| Path                      | What is there                                                                   |
-| ------------------------- | ------------------------------------------------------------------------------- |
-| `/intermediate`           | The roadmap (12 domains in three phases, career paths) and an access card       |
-| `/intermediate/http`      | Module 1 of web application security, HTTP in depth (10 lessons, a checkpoint)  |
-| `/intermediate/input`     | Module 2, untrusted input (9 lessons, a checkpoint)                             |
-| `/intermediate/browser`   | Module 3, browser-side risks (8 lessons, a checkpoint)                          |
-| `/intermediate/access`    | Module 4, access control (9 lessons, a checkpoint)                              |
-| `/intermediate/api`       | Module 5, API security (8 lessons, a checkpoint)                                |
-| `/intermediate/classic`   | Cryptography module 1, classical ciphers (8 lessons, a checkpoint)              |
-| `/intermediate/symmetric` | Cryptography module 2, symmetric encryption (8 lessons, a checkpoint)           |
-| `/intermediate/hashes`    | Cryptography module 3, hashes and passwords (8 lessons, a checkpoint)           |
-| `/intermediate/pubkey`    | Cryptography module 4, public-key cryptography (8 lessons, a checkpoint)        |
-| `/intermediate/tls`       | Cryptography module 5, TLS and certificates (8 lessons, a checkpoint)           |
-| `/intermediate/tcpip`     | Network security module 1, TCP/IP in depth (8 lessons, a checkpoint)            |
-| `/intermediate/traffic`   | Network security module 2, traffic analysis (8 lessons, a checkpoint)           |
-| `/intermediate/firewall`  | Network security module 3, firewalls and segmentation (8 lessons, a checkpoint) |
+| Path                        | What is there                                                                   |
+| --------------------------- | ------------------------------------------------------------------------------- |
+| `/intermediate`             | The roadmap (12 domains in three phases, career paths) and an access card       |
+| `/intermediate/http`        | Module 1 of web application security, HTTP in depth (10 lessons, a checkpoint)  |
+| `/intermediate/input`       | Module 2, untrusted input (9 lessons, a checkpoint)                             |
+| `/intermediate/browser`     | Module 3, browser-side risks (8 lessons, a checkpoint)                          |
+| `/intermediate/access`      | Module 4, access control (9 lessons, a checkpoint)                              |
+| `/intermediate/api`         | Module 5, API security (8 lessons, a checkpoint)                                |
+| `/intermediate/classic`     | Cryptography module 1, classical ciphers (8 lessons, a checkpoint)              |
+| `/intermediate/symmetric`   | Cryptography module 2, symmetric encryption (8 lessons, a checkpoint)           |
+| `/intermediate/hashes`      | Cryptography module 3, hashes and passwords (8 lessons, a checkpoint)           |
+| `/intermediate/pubkey`      | Cryptography module 4, public-key cryptography (8 lessons, a checkpoint)        |
+| `/intermediate/tls`         | Cryptography module 5, TLS and certificates (8 lessons, a checkpoint)           |
+| `/intermediate/tcpip`       | Network security module 1, TCP/IP in depth (8 lessons, a checkpoint)            |
+| `/intermediate/traffic`     | Network security module 2, traffic analysis (8 lessons, a checkpoint)           |
+| `/intermediate/firewall`    | Network security module 3, firewalls and segmentation (8 lessons, a checkpoint) |
+| `/intermediate/connections` | Network security module 4, secure connections (8 lessons, a checkpoint)         |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -286,6 +287,29 @@ database access opens beyond the one it needs.
 | 6       | Questions on egress filtering, VLANs and logging denies                  |
 | 7       | Sorts good practice from common mistakes                                 |
 | 8       | Final questions                                                          |
+
+## Network security module 4: Secure connections
+
+`/intermediate/connections` (lab id `connections`, checkpoint
+`connections-1`, award `lab-connections`, site setting `connections`) uses
+`src/lib/connections/tools.ts`: `wifi` says what an attacker who recorded the
+handshake gets under an open network, WEP, WPA2-PSK (an offline search at a
+million guesses a second, or one second for a dictionary word) and WPA3-SAE
+(no offline attack); `LEAKS` lists what an attacker on café Wi-Fi sees with
+no VPN, a split tunnel or a full one, with DNS inside the tunnel or not;
+`CONNECTS` are three SSH prompts, one of them a fingerprint that differs from
+the published one only in its last character.
+
+| Lessons | What the student does                                                 |
+| ------- | --------------------------------------------------------------------- |
+| 1       | Matches situations to WPA3, TLS, a VPN or SSH                         |
+| 2       | Picks a Wi-Fi mode and password that a recorded handshake can't break |
+| 3       | Questions on evil twins, WPS and WPA3-Enterprise                      |
+| 4       | Sets up a VPN that leaves nothing visible on café Wi-Fi               |
+| 5       | Decides, three times, whether an SSH host key fingerprint is safe     |
+| 6       | Sorts safe sshd settings from risky ones                              |
+| 7       | Questions on SSH port forwarding, bastion hosts and agent forwarding  |
+| 8       | Final questions                                                       |
 
 ## Who gets in
 
