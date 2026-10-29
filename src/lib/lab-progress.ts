@@ -27,6 +27,7 @@ export const LAB_PROGRESS = {
   logs: { key: "cybervalue:logs:progress:v1", total: 8 },
   response: { key: "cybervalue:response:progress:v1", total: 8 },
   report: { key: "cybervalue:report:progress:v1", total: 8 },
+  stego: { key: "cybervalue:stego:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -273,6 +274,15 @@ export const LAB_META: {
       en: "Writing the report (Intermediate)",
     },
     href: "/intermediate/report",
+    intermediate: true,
+  },
+  {
+    id: "stego",
+    title: {
+      uz: "Steganografiya: asosiy g‘oya (Intermediate)",
+      en: "Steganography: the idea (Intermediate)",
+    },
+    href: "/intermediate/stego",
     intermediate: true,
   },
 ];

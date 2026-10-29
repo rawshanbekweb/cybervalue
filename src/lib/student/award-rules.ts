@@ -179,6 +179,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Hisobot yozish (Intermediate)",
     earned: (f) => finished(f, "report") && passed(f, "report-1"),
   },
+  {
+    id: "lab-stego",
+    title: "Steganografiya: asosiy g‘oya (Intermediate)",
+    earned: (f) => finished(f, "stego") && passed(f, "stego-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

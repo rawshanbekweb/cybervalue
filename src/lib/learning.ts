@@ -23,6 +23,7 @@ import { LESSONS as FILESYSTEM_LESSONS } from "@/lib/filesystem/curriculum";
 import { LESSONS as LOGS_LESSONS } from "@/lib/logs/curriculum";
 import { LESSONS as RESPONSE_LESSONS } from "@/lib/response/curriculum";
 import { LESSONS as REPORT_LESSONS } from "@/lib/report/curriculum";
+import { LESSONS as STEGO_LESSONS } from "@/lib/stego/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -516,6 +517,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: REPORT_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "stego",
+      title: "Steganography: the idea",
+      category: "Intermediate · Steganography",
+      description:
+        "Tell hiding from encrypting, read a word out of a poem’s first letters, find a secret tucked into a chat message as invisible characters, read a steghide command, and see where hiding is used for good and for harm.",
+      href: "/intermediate/stego",
+      progressKey: LAB_PROGRESS.stego.key,
+      level: "Intermediate",
+      lessons: STEGO_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: STEGO_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

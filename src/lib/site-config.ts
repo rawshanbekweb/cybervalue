@@ -210,6 +210,12 @@ export const SECTIONS = [
     href: "/intermediate/report",
   },
   {
+    id: "stego",
+    group: "lab",
+    label: "Steganography: the idea (Intermediate)",
+    href: "/intermediate/stego",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

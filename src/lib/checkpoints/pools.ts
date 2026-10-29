@@ -5693,3 +5693,269 @@ export const REPORT_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const STEGO_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Steganografiya nimani yashiradi?",
+      en: "What does steganography hide?",
+    },
+    right: {
+      uz: "Xabar borligining o‘zini",
+      en: "The fact that a message exists",
+    },
+    wrong: [
+      { uz: "Faqat xabar mazmunini", en: "Only what the message says" },
+      { uz: "Jo‘natuvchining IP’sini", en: "The sender’s IP" },
+      { uz: "Hech narsani", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Shifrlash mazmunni yashiradi; stego — borligini.",
+      en: "Encryption hides the content; stego hides its existence.",
+    },
+  },
+  {
+    ask: {
+      uz: "Cover nima?",
+      en: "What is the cover?",
+    },
+    right: {
+      uz: "Xabar yashiriladigan oddiy fayl",
+      en: "The ordinary file the message is hidden in",
+    },
+    wrong: [
+      { uz: "Yashirin xabarning o‘zi", en: "The hidden message itself" },
+      { uz: "Parol", en: "The passphrase" },
+      { uz: "Shifr algoritmi", en: "The cipher" },
+    ],
+    explain: {
+      uz: "Payload — xabar; stego-ob’ekt — xabarli fayl.",
+      en: "The payload is the message; the stego object is the file carrying it.",
+    },
+  },
+  {
+    ask: {
+      uz: "Payload nima?",
+      en: "What is the payload?",
+    },
+    right: { uz: "Yashirin xabar", en: "The hidden message" },
+    wrong: [
+      { uz: "Cover rasm", en: "The cover picture" },
+      { uz: "Fayl nomi", en: "The file name" },
+      { uz: "Fayl hajmi", en: "The file size" },
+    ],
+    explain: {
+      uz: "Uni yashirishdan oldin shifrlash yaxshi.",
+      en: "Encrypting it before hiding is wise.",
+    },
+  },
+  {
+    ask: {
+      uz: "Akrostixda xabar qayerda?",
+      en: "Where is the message in an acrostic?",
+    },
+    right: {
+      uz: "Har bir qatorning birinchi harfida",
+      en: "In the first letter of each line",
+    },
+    wrong: [
+      { uz: "Oxirgi qatorda", en: "In the last line" },
+      { uz: "She’r sarlavhasida", en: "In the title" },
+      { uz: "Muallif ismida", en: "In the author’s name" },
+    ],
+    explain: {
+      uz: "Eng qadimgi matn usullaridan biri.",
+      en: "One of the oldest text methods.",
+    },
+  },
+  {
+    ask: {
+      uz: "Zero-width space (U+200B) ekranda qanday ko‘rinadi?",
+      en: "How does a zero-width space (U+200B) look on screen?",
+    },
+    right: { uz: "Umuman ko‘rinmaydi", en: "It doesn’t show at all" },
+    wrong: [
+      { uz: "Bo‘sh joy kabi", en: "Like a space" },
+      { uz: "Nuqta kabi", en: "Like a dot" },
+      { uz: "Qizil belgi", en: "As a red mark" },
+    ],
+    explain: {
+      uz: "Shuning uchun u bit sifatida yashirishga qulay.",
+      en: "Which is why it works as a hidden bit.",
+    },
+  },
+  {
+    ask: {
+      uz: "5 belgilik sir zero-width bitlarida necha belgi bo‘ladi?",
+      en: "How many zero-width characters does a five-character secret take?",
+    },
+    right: same("40"),
+    wrong: [same("5"), same("8"), same("16")],
+    explain: {
+      uz: "Har bir belgi 8 bit.",
+      en: "Each character is 8 bits.",
+    },
+  },
+  {
+    ask: {
+      uz: "Zero-width yashirishni nima fosh qiladi?",
+      en: "What gives zero-width hiding away?",
+    },
+    right: {
+      uz: "Matn uzunligi ko‘rinadiganidan katta",
+      en: "The text is longer than it looks",
+    },
+    wrong: [
+      { uz: "Shrift rangi", en: "The font colour" },
+      { uz: "Xabar vaqti", en: "The message time" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Belgilarni sanash yetarli.",
+      en: "Counting the characters is enough.",
+    },
+  },
+  {
+    ask: {
+      uz: "steghide’da -ef nima?",
+      en: "What is -ef in steghide?",
+    },
+    right: {
+      uz: "Yashiriladigan fayl (payload)",
+      en: "The file to hide (the payload)",
+    },
+    wrong: [
+      { uz: "Cover fayl", en: "The cover file" },
+      { uz: "Parol", en: "The passphrase" },
+      { uz: "Natija papkasi", en: "The output folder" },
+    ],
+    explain: {
+      uz: "-cf — cover, -p — parol.",
+      en: "-cf is the cover, -p the passphrase.",
+    },
+  },
+  {
+    ask: {
+      uz: "steghide embed cover faylni qanday o‘zgartiradi?",
+      en: "How does steghide embed change the cover file?",
+    },
+    right: {
+      uz: "Joyida — asl nusxa yo‘qoladi",
+      en: "In place — the original is lost",
+    },
+    wrong: [
+      { uz: "Umuman o‘zgartirmaydi", en: "It doesn’t change it" },
+      { uz: "Yangi nom bilan nusxa yaratadi", en: "It makes a renamed copy" },
+      { uz: "Faylni o‘chiradi", en: "It deletes the file" },
+    ],
+    explain: {
+      uz: "Asl nusxani oldindan saqlang.",
+      en: "Keep a copy of the original first.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi biri steganografiyaning qonuniy qo‘llanishi?",
+      en: "Which is a legitimate use of steganography?",
+    },
+    right: { uz: "Mualliflik suv belgisi", en: "A copyright watermark" },
+    wrong: [
+      { uz: "Zararli dastur buyruqlari", en: "Malware commands" },
+      { uz: "Ma’lumot o‘g‘irlash", en: "Data theft" },
+      { uz: "Fishing skripti", en: "A phishing script" },
+    ],
+    explain: {
+      uz: "Printer nuqtalari ham qonuniy misol.",
+      en: "Printer tracking dots are another legitimate example.",
+    },
+  },
+  {
+    ask: {
+      uz: "Zararli dasturlar stegodan qanday foydalanadi?",
+      en: "How does malware use steganography?",
+    },
+    right: {
+      uz: "Buyruqlarni yoki o‘g‘irlangan ma’lumotni rasmlarda tashiydi",
+      en: "It carries commands or stolen data inside pictures",
+    },
+    wrong: [
+      { uz: "Antivirusni yangilaydi", en: "It updates antivirus" },
+      { uz: "Hech qanday", en: "It doesn’t" },
+      { uz: "Faqat matn yozadi", en: "It only writes text" },
+    ],
+    explain: {
+      uz: "Oddiy rasm trafigi shubha uyg‘otmaydi.",
+      en: "Ordinary picture traffic raises no suspicion.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kerkhoffs tamoyiliga ko‘ra stego xavfsizligi nimaga tayanadi?",
+      en: "By Kerckhoffs’s principle, what does stego security rest on?",
+    },
+    right: { uz: "Faqat kalitga", en: "The key alone" },
+    wrong: [
+      { uz: "Usul siriga", en: "A secret method" },
+      { uz: "Fayl nomiga", en: "The file name" },
+      { uz: "Fayl formatiga", en: "The file format" },
+    ],
+    explain: {
+      uz: "Usul ma’lum deb hisoblang.",
+      en: "Assume the method is known.",
+    },
+  },
+  {
+    ask: {
+      uz: "2 MB payload uchun qaysi cover yaxshiroq?",
+      en: "Which cover suits a 2 MB payload better?",
+    },
+    right: { uz: "40 MB video", en: "A 40 MB video" },
+    wrong: [
+      { uz: "16×16 ikonka", en: "A 16×16 icon" },
+      { uz: "Bir qatorli SMS", en: "A one-line text" },
+      { uz: "1 KB matn fayli", en: "A 1 KB text file" },
+    ],
+    explain: {
+      uz: "Katta coverda o‘zgarish ulushi kichik.",
+      en: "In a big cover the change is a smaller share.",
+    },
+  },
+  {
+    ask: {
+      uz: "Payloadni yashirishdan oldin shifrlash nima beradi?",
+      en: "What does encrypting the payload before hiding give?",
+    },
+    right: {
+      uz: "Topilsa ham kalitsiz o‘qib bo‘lmaydi",
+      en: "Even if found, it can’t be read without the key",
+    },
+    wrong: [
+      { uz: "Fayl kichrayadi", en: "The file shrinks" },
+      { uz: "Yashirish shart emas bo‘ladi", en: "Hiding becomes unnecessary" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Ikki qatlamli himoya.",
+      en: "Two layers of protection.",
+    },
+  },
+  {
+    ask: {
+      uz: "Yashirilgan ma’lumotning belgilaridan biri?",
+      en: "One sign of hidden data?",
+    },
+    right: {
+      uz: "Fayl hajmi kutilganidan katta",
+      en: "The file is bigger than expected",
+    },
+    wrong: [
+      { uz: "Fayl nomi qisqa", en: "A short file name" },
+      { uz: "Rasm rangli", en: "The picture is in colour" },
+      { uz: "Fayl yangi", en: "The file is new" },
+    ],
+    explain: {
+      uz: "Asl nusxa bilan solishtirish ham yordam beradi.",
+      en: "Comparing with the original helps too.",
+    },
+  },
+];

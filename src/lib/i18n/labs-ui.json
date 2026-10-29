@@ -1187,5 +1187,20 @@
   "Checkable, clear and safe to pass around.": "Tekshirsa bo‘ladi, tushunarli va ulashish xavfsiz.",
   "Not yet: something is missing, or something should come out.": "Hali emas: nimadir yetishmayapti yoki nimanidir olib tashlash kerak.",
   "Writing the report · Academy Intermediate": "Hisobot yozish · Academy Intermediate",
-  "Writing the report": "Hisobot yozish"
+  "Writing the report": "Hisobot yozish",
+  "STEGANOGRAPHY · MODULE 1": "STEGANOGRAFIYA · 1-MODUL",
+  "Hiding in plain sight.": "Ko‘z oldida yashirish.",
+  "Encryption hides what a message says; steganography hides that it exists.": "Shifrlash xabar mazmunini yashiradi; steganografiya — xabar borligining o‘zini.",
+  "Tell hiding from encrypting, read a word out of a poem’s first letters, find a secret tucked into a chat message as invisible characters, read a steghide command, and see where hiding is used for good and for harm.": "Yashirishni shifrlashdan ajrating, she’r qatorlarining birinchi harflaridan so‘zni o‘qing, chat xabariga ko‘rinmas belgilar bilan yashirilgan sirni toping, steghide buyrug‘ini o‘qing va yashirish qayerda yaxshi, qayerda yomon maqsadda ishlatilishini ko‘ring.",
+  "STEGO / LAB": "STEGO / AMALIYOT",
+  "The hidden word": "Yashirin so‘z",
+  "Found it: the first letters spell {word}.": "Topdingiz: birinchi harflar {word} so‘zini hosil qiladi.",
+  "Visible characters: {visible} · actual length: {actual}": "Ko‘rinadigan belgilar: {visible} · haqiqiy uzunlik: {actual}",
+  "Show invisible characters": "Ko‘rinmas belgilarni ko‘rsatish",
+  "Decode the bits (8 per character)": "Bitlarni ochish (har belgiga 8 tadan)",
+  "The hidden text": "Yashirin matn",
+  "“13:00” — a meeting time nobody else in the chat could see.": "“13:00” — chatdagi boshqa hech kim ko‘rmagan uchrashuv vaqti.",
+  "Steganography: the idea · Academy Intermediate": "Steganografiya: asosiy g‘oya · Academy Intermediate",
+  "Steganography: the idea": "Steganografiya: asosiy g‘oya",
+  "Intermediate · Steganography": "Intermediate · Steganografiya"
 }

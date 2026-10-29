@@ -446,6 +446,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/report#checkpoints",
     pass: 70,
   },
+  {
+    id: "stego-1",
+    level: "intermediate",
+    lab: { uz: "Steganografiya: asosiy g‘oya", en: "Steganography: the idea" },
+    title: {
+      uz: "Nazorat: Steganografiya, asosiy g‘oya",
+      en: "Checkpoint: Steganography, the idea",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/stego#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

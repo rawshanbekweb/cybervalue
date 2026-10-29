@@ -1,0 +1,59 @@
+/* Steganography lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css and
+   access-control.css. */
+.sg-poem {
+  margin: 0;
+  padding: 14px 16px;
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  background: #0b0b0e;
+  font-style: italic;
+  line-height: 1.7;
+}
+.sg-poem p {
+  margin: 0;
+}
+.sg-poem.solved .sg-first {
+  color: #2ee6a6;
+  font-weight: 700;
+  font-style: normal;
+}
+.sg-chat {
+  display: grid;
+  gap: 4px;
+}
+.sg-from {
+  color: var(--muted);
+  font-size: 12px;
+}
+.sg-bubble {
+  max-width: 100%;
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 14px 14px 14px 4px;
+  background: #23232c;
+  overflow-wrap: anywhere;
+}
+.sg-bit {
+  display: inline-block;
+  min-width: 1ch;
+  margin: 0 1px;
+  padding: 0 2px;
+  border-radius: 3px;
+  background: #8052ff33;
+  color: #c9b8ff;
+  font: 11px var(--font-mono);
+}
+.sg-bit.one {
+  background: #2ee6a633;
+  color: #2ee6a6;
+}
+.sg-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.sg-bits {
+  margin: 0;
+  font-size: 12px;
+}
