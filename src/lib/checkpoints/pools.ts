@@ -3479,3 +3479,293 @@ export const TRAFFIC_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const FIREWALL_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Firewall qoidalar ro‘yxatini qanday tekshiradi?",
+      en: "How does a firewall go through its rule list?",
+    },
+    right: {
+      uz: "Yuqoridan pastga; birinchi mos kelgani qaror qiladi",
+      en: "From the top; the first match decides",
+    },
+    wrong: [
+      {
+        uz: "Eng aniq qoida qaror qiladi",
+        en: "The most specific rule decides",
+      },
+      { uz: "Oxirgi qoida qaror qiladi", en: "The last rule decides" },
+      { uz: "Tasodifiy tartibda", en: "In random order" },
+    ],
+    explain: {
+      uz: "Shuning uchun aniq qoidalar tepada turadi.",
+      en: "That is why specific rules go on top.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi standart siyosat xavfsiz?",
+      en: "Which default policy is the safe one?",
+    },
+    right: same("deny"),
+    wrong: [same("allow"), same("log"), same("forward")],
+    explain: {
+      uz: "Ruxsat etilmagan hamma narsa taqiqlangan — unutilgan xizmat yopiq qoladi.",
+      en: "Whatever is not allowed is forbidden — a forgotten service stays closed.",
+    },
+  },
+  {
+    ask: {
+      uz: "iptables’dagi -j DROP va -j REJECT farqi?",
+      en: "What is the difference between -j DROP and -j REJECT in iptables?",
+    },
+    right: {
+      uz: "DROP jim tashlaydi, REJECT rad javobini yuboradi",
+      en: "DROP discards silently, REJECT sends a refusal back",
+    },
+    wrong: [
+      { uz: "Farqi yo‘q", en: "There is none" },
+      { uz: "DROP paketni o‘tkazadi", en: "DROP lets the packet through" },
+      { uz: "REJECT paketni shifrlaydi", en: "REJECT encrypts the packet" },
+    ],
+    explain: {
+      uz: "DROP’da skaner portni “filtered” ko‘radi.",
+      en: "With DROP a scanner sees the port as “filtered”.",
+    },
+  },
+  {
+    ask: {
+      uz: "INPUT zanjiri qaysi paketlarga tegishli?",
+      en: "Which packets does the INPUT chain handle?",
+    },
+    right: {
+      uz: "Kompyuterning o‘ziga kelayotgan paketlarga",
+      en: "Packets addressed to the machine itself",
+    },
+    wrong: [
+      { uz: "Undan chiqayotganlarga", en: "Packets leaving it" },
+      { uz: "U orqali o‘tayotganlarga", en: "Packets passing through it" },
+      { uz: "Faqat DNS’ga", en: "DNS only" },
+    ],
+    explain: {
+      uz: "OUTPUT — chiquvchi, FORWARD — o‘tib ketuvchi.",
+      en: "OUTPUT is outbound, FORWARD is passing through.",
+    },
+  },
+  {
+    ask: {
+      uz: "1: ALLOW lan → any; 2: DENY lan → db:5432. Ofis PC bazaga ulanadimi?",
+      en: "1: ALLOW lan → any; 2: DENY lan → db:5432. Does an office PC reach the database?",
+    },
+    right: {
+      uz: "Ha, 1-qoida birinchi mos keladi",
+      en: "Yes, rule 1 matches first",
+    },
+    wrong: [
+      { uz: "Yo‘q, 2-qoida aniqroq", en: "No, rule 2 is more specific" },
+      { uz: "Yo‘q, standart deny", en: "No, the default is deny" },
+      {
+        uz: "Faqat 5432 dan boshqa portlarda",
+        en: "Only on ports other than 5432",
+      },
+    ],
+    explain: {
+      uz: "DENY qoidasini tepaga ko‘tarish kerak.",
+      en: "The DENY rule has to move up.",
+    },
+  },
+  {
+    ask: {
+      uz: "Holatsiz firewall’da “manba porti 443 bo‘lsa kirit” qoidasining xavfi?",
+      en: "On a stateless firewall, what is the risk of “let in anything from source port 443”?",
+    },
+    right: {
+      uz: "Hujumchi manba portini 443 qilib, ichkariga kiradi",
+      en: "An attacker sets source port 443 and gets in",
+    },
+    wrong: [
+      { uz: "HTTPS ishlamay qoladi", en: "HTTPS stops working" },
+      { uz: "Hech qanday xavf yo‘q", en: "There is no risk" },
+      { uz: "DNS buziladi", en: "DNS breaks" },
+    ],
+    explain: {
+      uz: "Manba portini paket yuboruvchi o‘zi tanlaydi.",
+      en: "The sender picks the source port itself.",
+    },
+  },
+  {
+    ask: {
+      uz: "Holatli firewall javoblarni qanday kiritadi?",
+      en: "How does a stateful firewall let replies in?",
+    },
+    right: {
+      uz: "Ichkaridan ochilgan ulanishlarni eslab, ularga tegishli (ESTABLISHED) paketlarni",
+      en: "It remembers connections opened from inside and admits packets that belong to them (ESTABLISHED)",
+    },
+    wrong: [
+      {
+        uz: "Barcha TCP paketlarni kiritadi",
+        en: "It admits every TCP packet",
+      },
+      { uz: "Javoblarni umuman kiritmaydi", en: "It never admits replies" },
+      { uz: "Parol so‘raydi", en: "It asks for a password" },
+    ],
+    explain: {
+      uz: "Bu conntrack: manzil, port va holat jadvali.",
+      en: "That is conntrack: a table of addresses, ports and states.",
+    },
+  },
+  {
+    ask: {
+      uz: "Veb-server bazaga 5432 orqali ulanishi kerak. Eng to‘g‘ri qoida?",
+      en: "The web server must reach the database on 5432. The right rule?",
+    },
+    right: same("ALLOW web → db tcp/5432"),
+    wrong: [
+      same("ALLOW dmz → servers any"),
+      same("ALLOW any → db tcp/5432"),
+      same("ALLOW any → any any"),
+    ],
+    explain: {
+      uz: "Eng kam imtiyoz: aynan manba, qabul qiluvchi va port.",
+      en: "Least privilege: exactly the source, destination and port.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega keng “any” qoidalari xavfli?",
+      en: "Why are broad “any” rules dangerous?",
+    },
+    right: {
+      uz: "Bitta server buzilsa, hujumchiga ko‘p yo‘l ochiladi",
+      en: "Once one server falls, the attacker has many roads open",
+    },
+    wrong: [
+      { uz: "Tarmoq sekinlashadi", en: "They slow the network" },
+      { uz: "Ular ishlamaydi", en: "They don’t work" },
+      { uz: "Xavfli emas", en: "They aren’t" },
+    ],
+    explain: {
+      uz: "Har bir ortiqcha ulanish — lateral movement uchun yo‘l.",
+      en: "Every extra path is a road for lateral movement.",
+    },
+  },
+  {
+    ask: {
+      uz: "Internetga ochiq veb-sayt qaysi zonada turadi?",
+      en: "Which zone does a public website sit in?",
+    },
+    right: same("DMZ"),
+    wrong: [
+      { uz: "Ofis LAN", en: "The office LAN" },
+      { uz: "Ichki serverlar", en: "The internal servers" },
+      { uz: "Mehmon Wi-Fi", en: "The guest Wi-Fi" },
+    ],
+    explain: {
+      uz: "DMZ buzilsa ham, ichki tarmoq alohida qoladi.",
+      en: "Even if the DMZ falls, the internal network stays apart.",
+    },
+  },
+  {
+    ask: {
+      uz: "Tekis (flat) tarmoqning asosiy xavfi?",
+      en: "The main risk of a flat network?",
+    },
+    right: {
+      uz: "Bitta zararlangan qurilma hamma narsaga yetadi",
+      en: "One infected device reaches everything",
+    },
+    wrong: [
+      { uz: "Internet sekin", en: "Slow internet" },
+      { uz: "IP manzillar tugaydi", en: "Running out of IP addresses" },
+      { uz: "Xavf yo‘q", en: "There is none" },
+    ],
+    explain: {
+      uz: "Ransomware aynan shunday tarqaladi.",
+      en: "That is how ransomware spreads.",
+    },
+  },
+  {
+    ask: {
+      uz: "VLAN’lar orasidagi trafikni nima cheklashi kerak?",
+      en: "What should limit traffic between VLANs?",
+    },
+    right: {
+      uz: "Firewall yoki router ACL qoidalari",
+      en: "Firewall or router ACL rules",
+    },
+    wrong: [
+      { uz: "VLAN’ning o‘zi yetarli", en: "The VLAN alone is enough" },
+      { uz: "Wi-Fi paroli", en: "The Wi-Fi password" },
+      { uz: "DNS", en: "DNS" },
+    ],
+    explain: {
+      uz: "VLAN ajratadi; marshrutlash esa qoidalar bilan cheklanadi.",
+      en: "VLANs separate; routing between them is limited by rules.",
+    },
+  },
+  {
+    ask: {
+      uz: "Egress (chiquvchi) filtrlash nimaga yordam beradi?",
+      en: "What does egress filtering help with?",
+    },
+    right: {
+      uz: "Buzilgan server C2’ga ulana olmaydi va ma’lumot olib chiqa olmaydi",
+      en: "A hacked server can’t reach its C2 or carry data out",
+    },
+    wrong: [
+      { uz: "Saytni tezlashtiradi", en: "It speeds up the site" },
+      { uz: "Parollarni shifrlaydi", en: "It encrypts passwords" },
+      { uz: "Hech narsaga", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Serverlarga faqat kerakli manzillar ochiladi.",
+      en: "Servers get only the destinations they need.",
+    },
+  },
+  {
+    ask: {
+      uz: "RDP (3389) yoki SSH’ni qanday ochish to‘g‘ri?",
+      en: "How should RDP (3389) or SSH be reachable?",
+    },
+    right: {
+      uz: "Faqat VPN yoki bastion host orqali",
+      en: "Only through a VPN or a bastion host",
+    },
+    wrong: [
+      { uz: "Butun internetga", en: "To the whole internet" },
+      { uz: "“Vaqtincha” internetga", en: "“Temporarily” to the internet" },
+      { uz: "Mehmon Wi-Fi’ga", en: "To the guest Wi-Fi" },
+    ],
+    explain: {
+      uz: "Boshqaruv portlari — hujumchilarning sevimli nishoni.",
+      en: "Management ports are attackers’ favourite target.",
+    },
+  },
+  {
+    ask: {
+      uz: "Firewall qoidalarini yaxshi saqlashning belgisi?",
+      en: "A sign of well-kept firewall rules?",
+    },
+    right: {
+      uz: "Har bir qoidada izoh va egasi, muntazam ko‘rib chiqish",
+      en: "A comment and an owner on every rule, with regular reviews",
+    },
+    wrong: [
+      {
+        uz: "Qoidalar hech qachon o‘chirilmaydi",
+        en: "Rules are never removed",
+      },
+      {
+        uz: "Muammo bo‘lsa allow any any",
+        en: "allow any any when something breaks",
+      },
+      { uz: "Hech kim qoidalarni ko‘rmaydi", en: "Nobody looks at the rules" },
+    ],
+    explain: {
+      uz: "“Vaqtincha” qoidalar yillab qolib ketadi.",
+      en: "“Temporary” rules linger for years.",
+    },
+  },
+];

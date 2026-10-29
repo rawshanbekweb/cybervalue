@@ -38,6 +38,7 @@ import {
   TLS_POOL,
   TCPIP_POOL,
   TRAFFIC_POOL,
+  FIREWALL_POOL,
   SECURITY_EXTRA,
   type PoolItem,
 } from "./pools";
@@ -694,6 +695,10 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
       .map((item) => fromPool(r, item)),
   "traffic-1": (r) =>
     shuffle(r, TRAFFIC_POOL)
+      .slice(0, 10)
+      .map((item) => fromPool(r, item)),
+  "firewall-1": (r) =>
+    shuffle(r, FIREWALL_POOL)
       .slice(0, 10)
       .map((item) => fromPool(r, item)),
 };

@@ -6,21 +6,22 @@ students placed at the Intermediate or Advanced level, and to staff.
 
 ## Pages
 
-| Path                      | What is there                                                                  |
-| ------------------------- | ------------------------------------------------------------------------------ |
-| `/intermediate`           | The roadmap (12 domains in three phases, career paths) and an access card      |
-| `/intermediate/http`      | Module 1 of web application security, HTTP in depth (10 lessons, a checkpoint) |
-| `/intermediate/input`     | Module 2, untrusted input (9 lessons, a checkpoint)                            |
-| `/intermediate/browser`   | Module 3, browser-side risks (8 lessons, a checkpoint)                         |
-| `/intermediate/access`    | Module 4, access control (9 lessons, a checkpoint)                             |
-| `/intermediate/api`       | Module 5, API security (8 lessons, a checkpoint)                               |
-| `/intermediate/classic`   | Cryptography module 1, classical ciphers (8 lessons, a checkpoint)             |
-| `/intermediate/symmetric` | Cryptography module 2, symmetric encryption (8 lessons, a checkpoint)          |
-| `/intermediate/hashes`    | Cryptography module 3, hashes and passwords (8 lessons, a checkpoint)          |
-| `/intermediate/pubkey`    | Cryptography module 4, public-key cryptography (8 lessons, a checkpoint)       |
-| `/intermediate/tls`       | Cryptography module 5, TLS and certificates (8 lessons, a checkpoint)          |
-| `/intermediate/tcpip`     | Network security module 1, TCP/IP in depth (8 lessons, a checkpoint)           |
-| `/intermediate/traffic`   | Network security module 2, traffic analysis (8 lessons, a checkpoint)          |
+| Path                      | What is there                                                                   |
+| ------------------------- | ------------------------------------------------------------------------------- |
+| `/intermediate`           | The roadmap (12 domains in three phases, career paths) and an access card       |
+| `/intermediate/http`      | Module 1 of web application security, HTTP in depth (10 lessons, a checkpoint)  |
+| `/intermediate/input`     | Module 2, untrusted input (9 lessons, a checkpoint)                             |
+| `/intermediate/browser`   | Module 3, browser-side risks (8 lessons, a checkpoint)                          |
+| `/intermediate/access`    | Module 4, access control (9 lessons, a checkpoint)                              |
+| `/intermediate/api`       | Module 5, API security (8 lessons, a checkpoint)                                |
+| `/intermediate/classic`   | Cryptography module 1, classical ciphers (8 lessons, a checkpoint)              |
+| `/intermediate/symmetric` | Cryptography module 2, symmetric encryption (8 lessons, a checkpoint)           |
+| `/intermediate/hashes`    | Cryptography module 3, hashes and passwords (8 lessons, a checkpoint)           |
+| `/intermediate/pubkey`    | Cryptography module 4, public-key cryptography (8 lessons, a checkpoint)        |
+| `/intermediate/tls`       | Cryptography module 5, TLS and certificates (8 lessons, a checkpoint)           |
+| `/intermediate/tcpip`     | Network security module 1, TCP/IP in depth (8 lessons, a checkpoint)            |
+| `/intermediate/traffic`   | Network security module 2, traffic analysis (8 lessons, a checkpoint)           |
+| `/intermediate/firewall`  | Network security module 3, firewalls and segmentation (8 lessons, a checkpoint) |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -262,6 +263,29 @@ with many connections at nearly equal gaps.
 | 6       | Finds and isolates the beaconing host                              |
 | 7       | Questions on SPAN, TAPs, NetFlow and permission to capture         |
 | 8       | Final questions                                                    |
+
+## Network security module 3: Firewalls and segmentation
+
+`/intermediate/firewall` (lab id `firewall`, checkpoint `firewall-1`, award
+`lab-firewall`, site setting `firewall`) uses `src/lib/firewall/tools.ts`: a
+company with four zones (internet, office LAN, DMZ, internal servers) and
+seven endpoints; `decide` applies a rule list first match wins, falling back
+to a default policy; `orderResults` checks eight flows against a given order
+(only D before E before F, with a default deny, gets all eight right);
+`inbound` compares connection tracking with the stateless "allow source port
+443" workaround; `narrowCheck` counts the flows a rule for the web server's
+database access opens beyond the one it needs.
+
+| Lessons | What the student does                                                    |
+| ------- | ------------------------------------------------------------------------ |
+| 1       | Clicks through the parts of an iptables rule                             |
+| 2       | Reorders a rule list and picks the default policy                        |
+| 3       | Lets the reply in and keeps a faked source port out                      |
+| 4       | Narrows a rule until it opens nothing but the flow it is for             |
+| 5       | Sorts devices into the DMZ, internal servers, office LAN and guest Wi-Fi |
+| 6       | Questions on egress filtering, VLANs and logging denies                  |
+| 7       | Sorts good practice from common mistakes                                 |
+| 8       | Final questions                                                          |
 
 ## Who gets in
 

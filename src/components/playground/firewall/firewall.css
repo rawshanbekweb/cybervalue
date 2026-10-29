@@ -1,0 +1,81 @@
+/* Firewall lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css and
+   access-control.css. */
+.fw-rules {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.fw-rule {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 6px 8px 6px 12px;
+  border: 1px solid var(--border);
+  border-left: 3px solid #2ee6a6;
+  border-radius: 8px;
+  background: #0b0b0e;
+}
+.fw-rule.deny {
+  border-left-color: #ff7b6b;
+}
+.fw-rule code {
+  overflow-wrap: anywhere;
+  font-size: 13px;
+}
+.fw-id {
+  color: var(--muted);
+  font-weight: 600;
+}
+.fw-move {
+  display: flex;
+  gap: 4px;
+}
+.fw-move button {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #15151b;
+  color: inherit;
+  cursor: pointer;
+}
+.fw-move button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.fw-move button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.fw-why {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+}
+.fw-select {
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #0b0b0e;
+  color: inherit;
+  font: 15px var(--font-mono);
+}
+.fw-select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.fw-extra {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+}
+.fw-extra code {
+  overflow-wrap: anywhere;
+}

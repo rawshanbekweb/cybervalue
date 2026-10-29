@@ -139,6 +139,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Trafik tahlili (Intermediate)",
     earned: (f) => finished(f, "traffic") && passed(f, "traffic-1"),
   },
+  {
+    id: "lab-firewall",
+    title: "Firewall va segmentlash (Intermediate)",
+    earned: (f) => finished(f, "firewall") && passed(f, "firewall-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

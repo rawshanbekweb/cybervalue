@@ -100,6 +100,7 @@ test("everything finished", () => {
         tls: 8,
         tcpip: 8,
         traffic: 8,
+        firewall: 8,
         scams: 8,
         httpbasics: 9,
         https: 9,

@@ -15,6 +15,7 @@ import { LESSONS as PUBKEY_LESSONS } from "@/lib/public-key/curriculum";
 import { LESSONS as TLS_LESSONS } from "@/lib/tls/curriculum";
 import { LESSONS as TCPIP_LESSONS } from "@/lib/tcpip/curriculum";
 import { LESSONS as TRAFFIC_LESSONS } from "@/lib/traffic/curriculum";
+import { LESSONS as FIREWALL_LESSONS } from "@/lib/firewall/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -372,6 +373,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: TRAFFIC_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "firewall",
+      title: "Firewalls and segmentation",
+      category: "Intermediate · Network security",
+      description:
+        "Read an iptables rule, put a rule list in the right order with a default deny, see why replies need a stateful firewall, narrow a rule to one flow, and split a company network into zones.",
+      href: "/intermediate/firewall",
+      progressKey: LAB_PROGRESS.firewall.key,
+      level: "Intermediate",
+      lessons: FIREWALL_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: FIREWALL_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

@@ -162,6 +162,12 @@ export const SECTIONS = [
     href: "/intermediate/traffic",
   },
   {
+    id: "firewall",
+    group: "lab",
+    label: "Firewalls and segmentation (Intermediate)",
+    href: "/intermediate/firewall",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",
