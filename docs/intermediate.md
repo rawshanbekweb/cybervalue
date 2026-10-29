@@ -27,6 +27,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/evidence`    | Digital forensics module 1, handling evidence (8 lessons, a checkpoint)         |
 | `/intermediate/filesystem`  | Digital forensics module 2, file systems (8 lessons, a checkpoint)              |
 | `/intermediate/logs`        | Digital forensics module 3, logs and artefacts (8 lessons, a checkpoint)        |
+| `/intermediate/response`    | Digital forensics module 4, incident response (8 lessons, a checkpoint)         |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -400,6 +401,27 @@ microseconds since 1601, and `RAWS` are one moment written all three ways.
 | 6       | Questions on cleared logs and central logging                      |
 | 7       | Questions on shared accounts and clock sync                        |
 | 8       | Final questions                                                    |
+
+## Digital forensics module 4: Incident response
+
+`/intermediate/response` (lab id `response`, checkpoint `response-1`, award
+`lab-response`, site setting `response`) uses `src/lib/response/tools.ts`:
+`INCIDENTS` are four reports with an impact and an urgency, and
+`triageSolved` checks they are ordered by impact × urgency; `OUTCOMES` says
+what each of six ransomware containment moves does — three keep the
+evidence and stop the spread, three (power off everything, reinstall at
+once, discuss it in the company chat) do harm.
+
+| Lessons | What the student does                                   |
+| ------- | ------------------------------------------------------- |
+| 1       | Sorts actions into the four NIST SP 800-61 phases       |
+| 2       | Orders an incident queue by severity                    |
+| 3       | Picks only the right moves to contain ransomware        |
+| 4       | Clicks through the parts of an incident ticket          |
+| 5       | Questions on eradication, clean backups and recovery    |
+| 6       | Questions on out-of-band communication and notification |
+| 7       | Sorts helpful from harmful lessons-learned practice     |
+| 8       | Final questions                                         |
 
 ## Who gets in
 

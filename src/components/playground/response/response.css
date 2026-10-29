@@ -1,0 +1,37 @@
+/* Incident response lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css,
+   access-control.css, firewall.css and evidence.css. */
+.ir-item {
+  border-left-color: var(--accent);
+}
+.ir-what {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  font-size: 14px;
+}
+.ir-what small {
+  color: var(--muted);
+}
+.ir-outcomes {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+}
+.ir-outcomes li {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.ir-outcomes li.ok {
+  border-color: #2ee6a666;
+  color: #2ee6a6;
+}
+.ir-outcomes li.bad {
+  border-color: #ff7b6b88;
+  background: #ff7b6b0d;
+  color: #ff9b8a;
+}

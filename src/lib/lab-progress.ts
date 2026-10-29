@@ -25,6 +25,7 @@ export const LAB_PROGRESS = {
   evidence: { key: "cybervalue:evidence:progress:v1", total: 8 },
   filesystem: { key: "cybervalue:filesystem:progress:v1", total: 8 },
   logs: { key: "cybervalue:logs:progress:v1", total: 8 },
+  response: { key: "cybervalue:response:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -253,6 +254,15 @@ export const LAB_META: {
       en: "Logs and artefacts (Intermediate)",
     },
     href: "/intermediate/logs",
+    intermediate: true,
+  },
+  {
+    id: "response",
+    title: {
+      uz: "Hodisaga javob (Intermediate)",
+      en: "Incident response (Intermediate)",
+    },
+    href: "/intermediate/response",
     intermediate: true,
   },
 ];
