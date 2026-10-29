@@ -1,0 +1,40 @@
+/* Domains and infrastructure lab widgets; shared pieces come from
+   anim-lab.css, crypto-basics.css, untrusted-input.css, browser-risks.css
+   and access-control.css. */
+.in-zone {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+.in-questions {
+  display: grid;
+  gap: 10px;
+}
+.in-table {
+  overflow-x: auto;
+}
+.in-certs td:nth-child(2) {
+  white-space: nowrap;
+}
+.in-name {
+  display: block;
+  overflow-wrap: anywhere;
+}
+.cb-out code {
+  overflow-wrap: anywhere;
+}
+.in-questions .cb-field,
+.in-questions select {
+  min-width: 0;
+  max-width: 100%;
+}
+.in-certs {
+  font-size: 12px;
+}
+.in-certs th[scope="row"] {
+  white-space: nowrap;
+}
+.in-certs thead th {
+  white-space: nowrap;
+}

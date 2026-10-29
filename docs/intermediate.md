@@ -41,6 +41,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/phishing`     | Blue team module 5, phishing analysis (8 lessons, a checkpoint)                 |
 | `/intermediate/ethics`       | OSINT module 1, ethics and law (8 lessons, a checkpoint)                        |
 | `/intermediate/search`       | OSINT module 2, search technique (8 lessons, a checkpoint)                      |
+| `/intermediate/infra`        | OSINT module 3, domains and infrastructure (8 lessons, a checkpoint)            |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -701,6 +702,27 @@ price list (`TARGET`) is left.
 | 6       | Questions on independent confirmation               |
 | 7       | Questions on local languages and registers          |
 | 8       | Final questions                                     |
+
+## OSINT module 3: Domains and infrastructure
+
+`/intermediate/infra` (lab id `infra`, checkpoint `infra-1`, award
+`lab-infra`, site setting `infra`) uses `src/lib/infra/tools.ts`: `RECORDS`
+is an invented company's DNS zone (Google mail, a Shopify shop, a CNAME left
+pointing at a deleted Ghost blog) with three `QUESTIONS` answered from it;
+`CERTS` are crt.sh-style rows and `subdomains` turns them into unique names
+without wildcards, of which the student flags the three build and test
+systems (`INTERNAL`).
+
+| Lessons | What the student does                            |
+| ------- | ------------------------------------------------ |
+| 1       | Clicks through a WHOIS record                    |
+| 2       | Sorts DNS records by what they reveal            |
+| 3       | Reads a zone for providers and a dangling record |
+| 4       | Turns certificate logs into a subdomain list     |
+| 5       | Questions on ASNs and passive scanners           |
+| 6       | Questions on third-party ownership               |
+| 7       | Questions on assembling the map                  |
+| 8       | Final questions                                  |
 
 ## Who gets in
 

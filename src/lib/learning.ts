@@ -35,6 +35,7 @@ import { LESSONS as HUNTING_LESSONS } from "@/lib/hunting/curriculum";
 import { LESSONS as PHISHING_LESSONS } from "@/lib/phishing/curriculum";
 import { LESSONS as ETHICS_LESSONS } from "@/lib/ethics/curriculum";
 import { LESSONS as SEARCH_LESSONS } from "@/lib/search/curriculum";
+import { LESSONS as INFRA_LESSONS } from "@/lib/infra/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -732,6 +733,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: SEARCH_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "infra",
+      title: "Domains and infrastructure",
+      category: "Intermediate · OSINT",
+      description:
+        "Read a WHOIS record, sort what DNS records reveal, work out a company’s mail and shop providers and spot a dangling record, turn certificate logs into a subdomain list and flag exposed build servers, use ASNs and passive scanners, respect third-party ownership and assemble the map.",
+      href: "/intermediate/infra",
+      progressKey: LAB_PROGRESS.infra.key,
+      level: "Intermediate",
+      lessons: INFRA_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: INFRA_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

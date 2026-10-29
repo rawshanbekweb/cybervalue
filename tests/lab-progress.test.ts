@@ -42,6 +42,7 @@ import { LESSONS as HUNTING } from "../src/lib/hunting/curriculum";
 import { LESSONS as PHISHING } from "../src/lib/phishing/curriculum";
 import { LESSONS as ETHICS } from "../src/lib/ethics/curriculum";
 import { LESSONS as SEARCH } from "../src/lib/search/curriculum";
+import { LESSONS as INFRA } from "../src/lib/infra/curriculum";
 import {
   isLabId,
   LAB_PROGRESS,
@@ -92,6 +93,7 @@ test("lab progress totals match the lessons", () => {
   assert.equal(LAB_PROGRESS.phishing.total, PHISHING.length);
   assert.equal(LAB_PROGRESS.ethics.total, ETHICS.length);
   assert.equal(LAB_PROGRESS.search.total, SEARCH.length);
+  assert.equal(LAB_PROGRESS.infra.total, INFRA.length);
   assert.equal(isLabId("toString"), false);
   assert.equal(isLabId("network"), true);
 });

@@ -8700,3 +8700,240 @@ export const SEARCH_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const INFRA_POOL: PoolItem[] = [
+  {
+    ask: { uz: "WHOIS nimani ko‘rsatadi?", en: "What does WHOIS show?" },
+    right: {
+      uz: "Registrator, sanalar va nom serverlari",
+      en: "The registrar, dates and name servers",
+    },
+    wrong: [
+      { uz: "Saytning paroli", en: "The site’s password" },
+      { uz: "Ochiq portlar", en: "Open ports" },
+      { uz: "Xodimlar ro‘yxati", en: "The staff list" },
+    ],
+    explain: {
+      uz: "Egasi ko‘pincha yashirilgan.",
+      en: "The owner is usually redacted.",
+    },
+  },
+  {
+    ask: {
+      uz: "WHOIS’ning zamonaviy o‘rinbosari?",
+      en: "WHOIS’s modern successor?",
+    },
+    right: { uz: "RDAP", en: "RDAP" },
+    wrong: [
+      { uz: "SNMP", en: "SNMP" },
+      { uz: "LDAP", en: "LDAP" },
+      { uz: "SMTP", en: "SMTP" },
+    ],
+    explain: { uz: "JSON shaklida javob beradi.", en: "It answers in JSON." },
+  },
+  {
+    ask: {
+      uz: "3 kun oldin ochilgan “bank” domeni?",
+      en: "A “bank” domain created three days ago?",
+    },
+    right: { uz: "Shubhali belgi", en: "A warning sign" },
+    wrong: [
+      { uz: "Ishonch belgisi", en: "A sign of trust" },
+      { uz: "Ahamiyatsiz", en: "Meaningless" },
+      { uz: "Rasmiy domen", en: "An official domain" },
+    ],
+    explain: {
+      uz: "Fishing domenlari odatda yangi.",
+      en: "Phishing domains are usually new.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi yozuv pochta serverini ko‘rsatadi?",
+      en: "Which record names the mail server?",
+    },
+    right: { uz: "MX", en: "MX" },
+    wrong: [
+      { uz: "A", en: "A" },
+      { uz: "NS", en: "NS" },
+      { uz: "CNAME", en: "CNAME" },
+    ],
+    explain: { uz: "Mail eXchanger.", en: "Mail eXchanger." },
+  },
+  {
+    ask: { uz: "A yozuvi nimani beradi?", en: "What does an A record give?" },
+    right: { uz: "IPv4 manzil", en: "An IPv4 address" },
+    wrong: [
+      { uz: "Pochta serveri", en: "The mail server" },
+      { uz: "Taxallus", en: "An alias" },
+      { uz: "Domen egasi", en: "The owner" },
+    ],
+    explain: { uz: "AAAA — IPv6.", en: "AAAA is IPv6." },
+  },
+  {
+    ask: { uz: "CNAME nima?", en: "What is a CNAME?" },
+    right: { uz: "Boshqa nomga taxallus", en: "An alias to another name" },
+    wrong: [
+      { uz: "IP manzil", en: "An IP address" },
+      { uz: "Pochta yozuvi", en: "A mail record" },
+      { uz: "Sertifikat", en: "A certificate" },
+    ],
+    explain: {
+      uz: "Ko‘pincha bulut xizmatiga ishora qiladi.",
+      en: "Often points at a cloud service.",
+    },
+  },
+  {
+    ask: {
+      uz: "“google-site-verification” TXT yozuvi nimani bildiradi?",
+      en: "What does a “google-site-verification” TXT record show?",
+    },
+    right: {
+      uz: "Domen Google xizmatida tasdiqlangan",
+      en: "The domain is verified with a Google service",
+    },
+    wrong: [
+      { uz: "Sayt buzilgan", en: "The site is hacked" },
+      { uz: "Pochta Microsoft’da", en: "Mail is on Microsoft" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Tasdiqlash kodlari xizmatlarni ko‘rsatadi.",
+      en: "Verification codes reveal services.",
+    },
+  },
+  {
+    ask: {
+      uz: "SPF’da include:_spf.google.com bor. Pochta qayerda?",
+      en: "SPF has include:_spf.google.com. Where is mail?",
+    },
+    right: { uz: "Google Workspace", en: "Google Workspace" },
+    wrong: [
+      { uz: "Microsoft 365", en: "Microsoft 365" },
+      { uz: "O‘z serverida", en: "Self-hosted" },
+      { uz: "Noma’lum", en: "Unknown" },
+    ],
+    explain: { uz: "MX ham shuni tasdiqlaydi.", en: "The MX confirms it." },
+  },
+  {
+    ask: {
+      uz: "CNAME NXDOMAIN’ga ishora qilsa, xavf?",
+      en: "A CNAME pointing at NXDOMAIN: the risk?",
+    },
+    right: { uz: "Subdomain takeover", en: "Subdomain takeover" },
+    wrong: [
+      { uz: "DDoS", en: "DDoS" },
+      { uz: "SQL injection", en: "SQL injection" },
+      { uz: "Xavf yo‘q", en: "None" },
+    ],
+    explain: {
+      uz: "Nomni boshqasi egallashi mumkin.",
+      en: "Someone else could claim the name.",
+    },
+  },
+  {
+    ask: {
+      uz: "Subdomenlarni passiv topishning eng yaxshi manbai?",
+      en: "The best passive source of subdomains?",
+    },
+    right: {
+      uz: "Sertifikat jurnallari (crt.sh)",
+      en: "Certificate logs (crt.sh)",
+    },
+    wrong: [
+      { uz: "Port skanerlash", en: "A port scan" },
+      { uz: "Xodimga qo‘ng‘iroq", en: "Phoning staff" },
+      { uz: "Brute force", en: "Brute force" },
+    ],
+    explain: {
+      uz: "Har bir sertifikat nomlarini ochiq yozadi.",
+      en: "Every certificate lists its names.",
+    },
+  },
+  {
+    ask: {
+      uz: "CT jurnalidagi *.domen nomi nimani bildiradi?",
+      en: "What does a *.domain name in a CT log tell you?",
+    },
+    right: {
+      uz: "Wildcard sertifikat — aniq subdomen emas",
+      en: "A wildcard certificate — no specific subdomain",
+    },
+    wrong: [
+      { uz: "Barcha subdomenlar ro‘yxati", en: "A list of all subdomains" },
+      { uz: "Xato", en: "An error" },
+      { uz: "Yashirin server", en: "A hidden server" },
+    ],
+    explain: { uz: "Ro‘yxatdan chiqariladi.", en: "Leave it out of the list." },
+  },
+  {
+    ask: {
+      uz: "Internetga ochiq jenkins.* nega xavfli?",
+      en: "Why is an internet-facing jenkins.* risky?",
+    },
+    right: {
+      uz: "CI serveri kod, kalit va serverlarga yo‘l ochishi mumkin",
+      en: "A CI server can lead to code, keys and servers",
+    },
+    wrong: [
+      { uz: "Xavfli emas", en: "It isn’t" },
+      { uz: "Sayt sekinlashadi", en: "The site slows" },
+      { uz: "Pochta to‘xtaydi", en: "Mail stops" },
+    ],
+    explain: {
+      uz: "U VPN ortida bo‘lishi kerak.",
+      en: "It belongs behind the VPN.",
+    },
+  },
+  {
+    ask: {
+      uz: "Shodan’da qidirish passivmi?",
+      en: "Is searching Shodan passive?",
+    },
+    right: {
+      uz: "Ha — Shodan yig‘gan ma’lumotni o‘qiysiz",
+      en: "Yes — you read what Shodan collected",
+    },
+    wrong: [
+      { uz: "Yo‘q, bu skanerlash", en: "No, it is scanning" },
+      { uz: "Noqonuniy", en: "It is illegal" },
+      { uz: "Faqat tunda", en: "Only at night" },
+    ],
+    explain: {
+      uz: "Topilgan xizmatga ulanish — faol.",
+      en: "Connecting to what you find is active.",
+    },
+  },
+  {
+    ask: { uz: "ASN nimani bildiradi?", en: "What does an ASN tell you?" },
+    right: {
+      uz: "IP qaysi tarmoq va tashkilotga tegishli",
+      en: "Which network and organisation an IP belongs to",
+    },
+    wrong: [
+      { uz: "Domen paroli", en: "A domain password" },
+      { uz: "Domen tugash sanasi", en: "A domain’s expiry" },
+      { uz: "Port raqami", en: "A port number" },
+    ],
+    explain: {
+      uz: "Autonomous System Number.",
+      en: "Autonomous System Number.",
+    },
+  },
+  {
+    ask: {
+      uz: "shop.* Shopify’ga CNAME. Uni faol tekshirish uchun kimning ruxsati kerak?",
+      en: "shop.* is a CNAME to Shopify. Whose permission does active testing need?",
+    },
+    right: { uz: "Shopify qoidalari ham", en: "Shopify’s rules too" },
+    wrong: [
+      { uz: "Faqat mijozniki", en: "The client’s only" },
+      { uz: "Hech kimniki", en: "Nobody’s" },
+      { uz: "Registratorniki", en: "The registrar’s" },
+    ],
+    explain: {
+      uz: "Serverlar Shopify’niki.",
+      en: "The servers are Shopify’s.",
+    },
+  },
+];

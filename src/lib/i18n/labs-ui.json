@@ -1381,5 +1381,20 @@
   "{n} of {total} pages": "{total} ta sahifadan {n} tasi",
   "One result: the internal price list is public. Record the address and time, don’t share the file, and tell the client now.": "Bitta natija: ichki narxlar ro‘yxati ochiq turibdi. Manzil va vaqtni yozing, faylni tarqatmang va mijozga hozir xabar bering.",
   "Search technique · Academy Intermediate": "Qidiruv texnikasi · Academy Intermediate",
-  "Search technique": "Qidiruv texnikasi"
+  "Search technique": "Qidiruv texnikasi",
+  "OSINT · MODULE 3": "OSINT · 3-MODUL",
+  "Domains and infrastructure.": "Domen va infratuzilma.",
+  "Map what an organisation shows the internet.": "Tashkilot internetga nimani ko‘rsatayotganini xaritaga tushiring.",
+  "Read a WHOIS record, sort what DNS records reveal, work out a company’s mail and shop providers and spot a dangling record, turn certificate logs into a subdomain list and flag exposed build servers, use ASNs and passive scanners, respect third-party ownership and assemble the map.": "WHOIS yozuvini o‘qing, DNS yozuvlari nimani oshkor qilishini ajrating, kompaniyaning pochta va do‘kon provayderlarini aniqlab, osilib qolgan yozuvni toping, sertifikat jurnallaridan subdomenlar ro‘yxatini tuzib, ochiq qolgan qurish serverlarini belgilang, ASN va passiv skanerlardan foydalaning, uchinchi tomon egaligini hurmat qiling va xaritani yig‘ing.",
+  "DNS / LAB": "DNS / AMALIYOT",
+  "Choose an answer": "Javobni tanlang",
+  "Mail is on Google, the shop on Shopify, and blog points at a deleted Ghost site — remove that record before someone claims the name.": "Pochta Google’da, do‘kon Shopify’da, blog esa o‘chirilgan Ghost saytiga ishora qiladi — kimdir nomni egallashidan oldin bu yozuvni o‘chiring.",
+  "Read the MX, the SPF and each CNAME again.": "MX, SPF va har bir CNAME’ni qayta o‘qing.",
+  "Logged": "Yozilgan",
+  "Names": "Nomlar",
+  "Make a list of unique names, without wildcards": "Takrorlanmas nomlar ro‘yxatini tuzish, wildcard’larsiz",
+  "{n} names — mark the build and test systems": "{n} ta nom — qurish va test tizimlarini belgilang",
+  "Jenkins, staging and the dev API belong behind the VPN. The certificates gave them away without a single packet sent to the company.": "Jenkins, staging va dev API VPN ortida turishi kerak. Sertifikatlar ularni kompaniyaga bitta paket ham yubormasdan oshkor qildi.",
+  "Domains and infrastructure · Academy Intermediate": "Domen va infratuzilma · Academy Intermediate",
+  "Domains and infrastructure": "Domen va infratuzilma"
 }

@@ -239,6 +239,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Qidiruv texnikasi (Intermediate)",
     earned: (f) => finished(f, "search") && passed(f, "search-1"),
   },
+  {
+    id: "lab-infra",
+    title: "Domen va infratuzilma (Intermediate)",
+    earned: (f) => finished(f, "infra") && passed(f, "infra-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */
