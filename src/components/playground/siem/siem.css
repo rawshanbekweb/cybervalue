@@ -1,0 +1,35 @@
+/* Logs and SIEM lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css and
+   access-control.css. */
+.sm-raw {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.sm-raw legend {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+.sm-done {
+  color: #2ee6a6;
+}
+.sm-line {
+  margin: 0 0 8px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+.sm-table {
+  overflow-x: auto;
+}
+.sm-cases td,
+.sm-cases th:not([scope="row"]) {
+  white-space: nowrap;
+}
+.cb-out code {
+  overflow-wrap: anywhere;
+}

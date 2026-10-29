@@ -419,6 +419,8 @@ export const DOMAINS: Domain[] = [
     modules: [
       {
         title: { uz: "Loglar va SIEM", en: "Logs and SIEM" },
+        href: "/intermediate/siem",
+        lab: "siem",
         topics: ["log sources", "normalisation", "dashboards"],
         goal: goal(
           "Qaysi loglar kerakligini va ular qanday birlashtirilishini tushuntirish.",

@@ -113,6 +113,7 @@ test("everything finished", () => {
         metadata: 8,
         formats: 8,
         steganalysis: 8,
+        siem: 8,
         scams: 8,
         httpbasics: 9,
         https: 9,

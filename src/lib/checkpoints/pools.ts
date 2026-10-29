@@ -6867,3 +6867,276 @@ export const STEGANALYSIS_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const SIEM_POOL: PoolItem[] = [
+  {
+    ask: { uz: "SIEM nima qiladi?", en: "What does a SIEM do?" },
+    right: {
+      uz: "Turli manbalar loglarini bir joyga yig‘ib, qidirish va ogohlantirish imkonini beradi",
+      en: "Brings logs from many sources together to search and alert on",
+    },
+    wrong: [
+      { uz: "Hujumlarni o‘zi to‘xtatadi", en: "Blocks attacks by itself" },
+      { uz: "Parollarni saqlaydi", en: "Stores passwords" },
+      { uz: "Loglarni o‘chiradi", en: "Deletes logs" },
+    ],
+    explain: {
+      uz: "Security Information and Event Management.",
+      en: "Security Information and Event Management.",
+    },
+  },
+  {
+    ask: {
+      uz: "“Kim tunda SSH bilan kirdi?” — qaysi log?",
+      en: "“Who logged in over SSH at night?” — which log?",
+    },
+    right: { uz: "Autentifikatsiya logi", en: "The authentication log" },
+    wrong: [
+      { uz: "DNS logi", en: "The DNS log" },
+      { uz: "Do‘kon ilovasi logi", en: "The shop app’s log" },
+      { uz: "Printer logi", en: "The printer log" },
+    ],
+    explain: {
+      uz: "Kirishlar auth.log yoki Security.evtx’da.",
+      en: "Logins live in auth.log or Security.evtx.",
+    },
+  },
+  {
+    ask: {
+      uz: "“Noutbuk qaysi domenni so‘radi?” — qaysi log?",
+      en: "“Which domain did a laptop look up?” — which log?",
+    },
+    right: { uz: "DNS logi", en: "The DNS log" },
+    wrong: [
+      { uz: "Autentifikatsiya logi", en: "The authentication log" },
+      { uz: "Ilova logi", en: "The application log" },
+      { uz: "Antivirus logi", en: "The antivirus log" },
+    ],
+    explain: {
+      uz: "Tarmoq loglari ulanishlar haqida.",
+      en: "Network logs are about connections.",
+    },
+  },
+  {
+    ask: { uz: "Normallashtirish nima?", en: "What is normalisation?" },
+    right: {
+      uz: "Bir xil ma’noli qiymatlarni umumiy nomli maydonlarga yozish",
+      en: "Writing values that mean the same thing into fields with shared names",
+    },
+    wrong: [
+      { uz: "Loglarni siqish", en: "Compressing logs" },
+      { uz: "Loglarni shifrlash", en: "Encrypting logs" },
+      { uz: "Eski loglarni o‘chirish", en: "Deleting old logs" },
+    ],
+    explain: {
+      uz: "Shunda bitta so‘rov hamma manbada ishlaydi.",
+      en: "Then one search works on every source.",
+    },
+  },
+  {
+    ask: {
+      uz: "ECS’da ulanish kelgan manzil maydoni?",
+      en: "In ECS, the field for the address a connection came from?",
+    },
+    right: { uz: "source.ip", en: "source.ip" },
+    wrong: [
+      { uz: "user.name", en: "user.name" },
+      { uz: "host.name", en: "host.name" },
+      { uz: "event.outcome", en: "event.outcome" },
+    ],
+    explain: {
+      uz: "user.name — hisob, host.name — kompyuter.",
+      en: "user.name is the account, host.name the machine.",
+    },
+  },
+  {
+    ask: {
+      uz: "Windows 4625 hodisasida hisob nomi qaysi maydonda?",
+      en: "In a Windows 4625 event, which field holds the account?",
+    },
+    right: { uz: "TargetUserName", en: "TargetUserName" },
+    wrong: [
+      { uz: "Computer", en: "Computer" },
+      { uz: "LogonType", en: "LogonType" },
+      { uz: "Status", en: "Status" },
+    ],
+    explain: {
+      uz: "Manzil esa IpAddress’da.",
+      en: "The address is in IpAddress.",
+    },
+  },
+  {
+    ask: {
+      uz: "Windows’da muvaffaqiyatsiz kirish EventID’si?",
+      en: "The Windows EventID for a failed logon?",
+    },
+    right: { uz: "4625", en: "4625" },
+    wrong: [
+      { uz: "4624", en: "4624" },
+      { uz: "4720", en: "4720" },
+      { uz: "1102", en: "1102" },
+    ],
+    explain: {
+      uz: "4624 — muvaffaqiyatli kirish.",
+      en: "4624 is a successful logon.",
+    },
+  },
+  {
+    ask: {
+      uz: "SIEM vaqtni qaysi zonada saqlaydi?",
+      en: "Which time zone does a SIEM store times in?",
+    },
+    right: { uz: "UTC", en: "UTC" },
+    wrong: [
+      { uz: "Har serverning o‘z zonasi", en: "Each server’s own zone" },
+      { uz: "Tahlilchining zonasi", en: "The analyst’s zone" },
+      { uz: "Zonasiz", en: "No zone at all" },
+    ],
+    explain: {
+      uz: "Bitta vaqt o‘qi — to‘g‘ri tartib.",
+      en: "One timeline keeps the order right.",
+    },
+  },
+  {
+    ask: {
+      uz: "Barcha soatlarni nima sinxronlaydi?",
+      en: "What keeps every clock in sync?",
+    },
+    right: { uz: "NTP", en: "NTP" },
+    wrong: [
+      { uz: "DNS", en: "DNS" },
+      { uz: "DHCP", en: "DHCP" },
+      { uz: "SMTP", en: "SMTP" },
+    ],
+    explain: {
+      uz: "Network Time Protocol.",
+      en: "The Network Time Protocol.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega loglar darhol markaziy serverga yuboriladi?",
+      en: "Why are logs forwarded to a central server at once?",
+    },
+    right: {
+      uz: "Hujumchi mahalliy logni o‘chirsa ham nusxa qoladi",
+      en: "A copy survives even if an attacker wipes the local log",
+    },
+    wrong: [
+      { uz: "Disk joyini tejash uchun", en: "To save disk space" },
+      { uz: "Tarmoqni tezlashtirish uchun", en: "To speed up the network" },
+      { uz: "Loglarni shifrlash uchun", en: "To encrypt them" },
+    ],
+    explain: {
+      uz: "Izlarni o‘chirish — hujumchining odatiy qadami.",
+      en: "Wiping traces is a standard attacker step.",
+    },
+  },
+  {
+    ask: {
+      uz: "Password spraying belgisi?",
+      en: "The sign of password spraying?",
+    },
+    right: {
+      uz: "Bitta manzil ko‘p hisobga bir-ikki martadan urinadi",
+      en: "One address tries many accounts once or twice each",
+    },
+    wrong: [
+      {
+        uz: "Bitta foydalanuvchi parolni 3 marta xato yozadi",
+        en: "One user mistypes a password three times",
+      },
+      {
+        uz: "Server qayta yuklanadi",
+        en: "A server reboots",
+      },
+      { uz: "Yangi printer ulanadi", en: "A new printer is connected" },
+    ],
+    explain: {
+      uz: "source.ip bo‘yicha guruhlash buni ko‘rsatadi.",
+      en: "Grouping by source.ip shows it.",
+    },
+  },
+  {
+    ask: {
+      uz: "SPL’da “stats dc(user) by src_ip” nima qiladi?",
+      en: "In SPL, what does “stats dc(user) by src_ip” do?",
+    },
+    right: {
+      uz: "Har manzil uchun turli hisoblar sonini sanaydi",
+      en: "Counts the different accounts for each address",
+    },
+    wrong: [
+      {
+        uz: "Hisoblarni o‘chiradi",
+        en: "Deletes the accounts",
+      },
+      { uz: "Manzillarni bloklaydi", en: "Blocks the addresses" },
+      { uz: "Loglarni saralaydi", en: "Sorts the logs alphabetically" },
+    ],
+    explain: {
+      uz: "dc — distinct count.",
+      en: "dc means distinct count.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi dashboard paneli foydali?",
+      en: "Which dashboard panel is useful?",
+    },
+    right: {
+      uz: "Loglarni yubormay qo‘ygan manbalar",
+      en: "Sources that stopped sending logs",
+    },
+    wrong: [
+      {
+        uz: "Aylanadigan 3D globus",
+        en: "A spinning 3D globe",
+      },
+      { uz: "Bugungi jami loglar soni", en: "Today’s total log count" },
+      { uz: "SIEM logotipi", en: "The SIEM’s logo" },
+    ],
+    explain: {
+      uz: "Foydali panel harakatga undaydi.",
+      en: "A useful panel leads to an action.",
+    },
+  },
+  {
+    ask: {
+      uz: "Domen kontrolleridan 2 soat log kelmadi. Bu?",
+      en: "No logs from the domain controller for 2 hours. That is?",
+    },
+    right: {
+      uz: "Tekshirish kerak bo‘lgan signal",
+      en: "A signal worth checking",
+    },
+    wrong: [
+      { uz: "Yaxshi belgi", en: "A good sign" },
+      { uz: "Oddiy holat", en: "Normal" },
+      { uz: "SIEM yangilanishi", en: "A SIEM update" },
+    ],
+    explain: {
+      uz: "Jimlik ham signal: agent buzilgan yoki o‘chirilgan bo‘lishi mumkin.",
+      en: "Silence is a signal: an agent may be broken or switched off.",
+    },
+  },
+  {
+    ask: {
+      uz: "Log formati o‘zgarib user.name bo‘sh qoldi. Oqibat?",
+      en: "A log format changed and user.name came out empty. The result?",
+    },
+    right: {
+      uz: "Shu maydonga tayangan qoidalar ishlamaydi",
+      en: "Rules relying on that field stop working",
+    },
+    wrong: [
+      { uz: "Hech narsa", en: "Nothing" },
+      { uz: "SIEM o‘zi tuzatadi", en: "The SIEM fixes it itself" },
+      { uz: "Loglar shifrlanadi", en: "The logs get encrypted" },
+    ],
+    explain: {
+      uz: "Parserlar ham kuzatiladi.",
+      en: "Parsers get watched too.",
+    },
+  },
+];

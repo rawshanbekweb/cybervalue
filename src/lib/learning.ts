@@ -28,6 +28,7 @@ import { LESSONS as LSB_LESSONS } from "@/lib/lsb/curriculum";
 import { LESSONS as METADATA_LESSONS } from "@/lib/metadata/curriculum";
 import { LESSONS as FORMATS_LESSONS } from "@/lib/formats/curriculum";
 import { LESSONS as STEGANALYSIS_LESSONS } from "@/lib/steganalysis/curriculum";
+import { LESSONS as SIEM_LESSONS } from "@/lib/siem/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -606,6 +607,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: STEGANALYSIS_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "siem",
+      title: "Logs and SIEM",
+      category: "Intermediate · Blue team",
+      description:
+        "Match each question to the log that answers it, map sshd, JSON and Windows lines onto one schema, keep clocks and copies straight, search across sources for a password-spraying attack, read a SIEM query, and keep dashboards and sources useful.",
+      href: "/intermediate/siem",
+      progressKey: LAB_PROGRESS.siem.key,
+      level: "Intermediate",
+      lessons: SIEM_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: SIEM_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

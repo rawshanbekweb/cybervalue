@@ -521,6 +521,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/steganalysis#checkpoints",
     pass: 70,
   },
+  {
+    id: "siem-1",
+    level: "intermediate",
+    lab: { uz: "Loglar va SIEM", en: "Logs and SIEM" },
+    title: {
+      uz: "Nazorat: Loglar va SIEM",
+      en: "Checkpoint: Logs and SIEM",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/siem#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>
