@@ -1,0 +1,66 @@
+/* OSINT ethics lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css and
+   access-control.css. */
+.et-letter {
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+}
+.et-letter p {
+  margin: 0;
+}
+.et-head {
+  font-weight: 500;
+}
+.et-cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+.et-cols ul {
+  display: grid;
+  gap: 4px;
+  margin: 4px 0 0;
+  padding-left: 18px;
+  font-size: 13px;
+}
+.et-in {
+  color: #2ee6a6;
+  font-size: 13px;
+  font-weight: 600;
+}
+.et-out {
+  color: #ff9b8a;
+  font-size: 13px;
+  font-weight: 600;
+}
+.et-actions {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.et-action {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.et-action legend {
+  padding: 0 4px;
+  font-size: 13px;
+}
+.et-what {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.et-action .nl-pass,
+.et-action .nl-fail {
+  margin: 0;
+}

@@ -33,6 +33,7 @@ import { LESSONS as DETECTION_LESSONS } from "@/lib/detection/curriculum";
 import { LESSONS as TRIAGE_LESSONS } from "@/lib/triage/curriculum";
 import { LESSONS as HUNTING_LESSONS } from "@/lib/hunting/curriculum";
 import { LESSONS as PHISHING_LESSONS } from "@/lib/phishing/curriculum";
+import { LESSONS as ETHICS_LESSONS } from "@/lib/ethics/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -696,6 +697,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: PHISHING_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "ethics",
+      title: "Ethics and law",
+      category: "Intermediate · OSINT",
+      description:
+        "Tell open sources from stolen or private ones, learn what personal-data and computer-crime law expect, check seven research actions against a signed authorisation, tell passive from active reconnaissance, avoid harm, protect yourself and record findings so they can be checked.",
+      href: "/intermediate/ethics",
+      progressKey: LAB_PROGRESS.ethics.key,
+      level: "Intermediate",
+      lessons: ETHICS_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: ETHICS_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

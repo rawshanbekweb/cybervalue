@@ -1356,5 +1356,21 @@
   "Suspicious": "Shubhali",
   "Four traps: a brand as a subdomain, a 1 for an l, a Cyrillic а and a .pdf.exe. Only the post office and the newsletter were real.": "To‘rtta tuzoq: subdomen sifatidagi brend, l o‘rniga 1, kirill “а” va .pdf.exe. Faqat pochta va axborot byulleteni haqiqiy edi.",
   "Phishing analysis · Academy Intermediate": "Fishing tahlili · Academy Intermediate",
-  "Phishing analysis": "Fishing tahlili"
+  "Phishing analysis": "Fishing tahlili",
+  "OSINT · MODULE 1": "OSINT · 1-MODUL",
+  "Ethics and law.": "Axloq va qonun.",
+  "Public doesn’t mean fair game.": "Ochiq degani — olish mumkin degani emas.",
+  "Tell open sources from stolen or private ones, learn what personal-data and computer-crime law expect, check seven research actions against a signed authorisation, tell passive from active reconnaissance, avoid harm, protect yourself and record findings so they can be checked.": "Ochiq manbalarni o‘g‘irlangan yoki yopiq manbalardan ajrating, shaxsga doir ma’lumotlar va kompyuter jinoyatlari haqidagi qonun talablarini bilib oling, yettita tadqiqot harakatini imzolangan ruxsat bilan solishtiring, passiv va faol razvedkani farqlang, zarar keltirmang, o‘zingizni himoya qiling va topilmalarni tekshirib bo‘ladigan qilib qayd eting.",
+  "OSINT / LAB": "OSINT / AMALIYOT",
+  "Authorisation letter": "Ruxsat xati",
+  "Authorisation for an OSINT assessment": "OSINT tekshiruvi uchun ruxsat",
+  "From {from} to {to}, inclusive": "{from} dan {to} gacha, shu kunlar ham kiradi",
+  "In scope": "Ruxsat etilgan",
+  "Out of scope": "Ruxsatdan tashqari",
+  "Allowed": "Mumkin",
+  "Not allowed": "Mumkin emas",
+  "Check the target, the method and the date again.": "Maqsad, usul va sanani qayta tekshiring.",
+  "Three allowed, four refused: one too early, one too personal, one too active and one aimed at the wrong company.": "Uchtasi mumkin, to‘rttasi rad etildi: biri juda erta, biri juda shaxsiy, biri juda faol va biri boshqa kompaniyaga qaratilgan.",
+  "Ethics and law · Academy Intermediate": "Axloq va qonun · Academy Intermediate",
+  "Ethics and law": "Axloq va qonun"
 }

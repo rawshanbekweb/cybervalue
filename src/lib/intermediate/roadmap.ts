@@ -482,6 +482,8 @@ export const DOMAINS: Domain[] = [
     modules: [
       {
         title: { uz: "Axloq va qonun", en: "Ethics and law" },
+        href: "/intermediate/ethics",
+        lab: "ethics",
         topics: ["consent", "privacy", "scope"],
         goal: goal(
           "Qaysi izlanish ruxsat etilgani va qaysi biri yo‘qligini ajratish.",

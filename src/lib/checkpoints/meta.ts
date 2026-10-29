@@ -596,6 +596,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/phishing#checkpoints",
     pass: 70,
   },
+  {
+    id: "ethics-1",
+    level: "intermediate",
+    lab: { uz: "Axloq va qonun", en: "Ethics and law" },
+    title: {
+      uz: "Nazorat: Axloq va qonun",
+      en: "Checkpoint: Ethics and law",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/ethics#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

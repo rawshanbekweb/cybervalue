@@ -270,6 +270,12 @@ export const SECTIONS = [
     href: "/intermediate/phishing",
   },
   {
+    id: "ethics",
+    group: "lab",
+    label: "Ethics and law (Intermediate)",
+    href: "/intermediate/ethics",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",
