@@ -1,0 +1,49 @@
+/* Formats lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css,
+   access-control.css and lsb.css. */
+.fm-dump {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.fm-dump legend {
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.fm-line {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  gap: 4px 10px;
+  align-items: center;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #0b0b0e;
+  cursor: pointer;
+  font-size: 12px;
+}
+.fm-line.on {
+  border-color: var(--accent);
+  background: #8052ff1f;
+}
+.fm-line input {
+  accent-color: var(--accent);
+}
+.fm-line:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.fm-off {
+  color: var(--muted);
+}
+.fm-hex {
+  overflow-wrap: anywhere;
+}
+.fm-ascii {
+  grid-column: 2 / -1;
+  color: #8ab4ff;
+  white-space: pre;
+}

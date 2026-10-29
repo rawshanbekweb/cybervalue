@@ -6433,3 +6433,213 @@ export const METADATA_POOL: PoolItem[] = [
     explain: { uz: "exiftool ham ishlaydi.", en: "exiftool works too." },
   },
 ];
+
+export const FORMATS_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "JPEG qaysi baytlar bilan boshlanadi?",
+      en: "Which bytes start a JPEG?",
+    },
+    right: same("FF D8"),
+    wrong: [same("FF D9"), same("50 4B"), same("25 50")],
+    explain: { uz: "FF D9 — oxiri.", en: "FF D9 is the end." },
+  },
+  {
+    ask: {
+      uz: "JPEG qaysi baytlar bilan tugaydi?",
+      en: "Which bytes end a JPEG?",
+    },
+    right: same("FF D9"),
+    wrong: [same("FF D8"), same("00 00"), same("50 4B")],
+    explain: {
+      uz: "Undan keyingisini ko‘ruvchi o‘qimaydi.",
+      en: "Viewers don’t read past it.",
+    },
+  },
+  {
+    ask: {
+      uz: "“PK” (50 4B 03 04) qaysi format?",
+      en: "Which format is “PK” (50 4B 03 04)?",
+    },
+    right: same("ZIP"),
+    wrong: [same("PDF"), same("PNG"), same("MP3")],
+    explain: { uz: "DOCX va APK ham ZIP.", en: "DOCX and APK are ZIPs too." },
+  },
+  {
+    ask: { uz: "binwalk nima qiladi?", en: "What does binwalk do?" },
+    right: {
+      uz: "Fayl ichidagi tanish imzolarni qidiradi",
+      en: "Searches a file for familiar signatures inside it",
+    },
+    wrong: [
+      { uz: "Faylni shifrlaydi", en: "Encrypts the file" },
+      { uz: "Faylni o‘chiradi", en: "Deletes the file" },
+      { uz: "Tarmoqni skanerlaydi", en: "Scans the network" },
+    ],
+    explain: {
+      uz: "-e topilganlarini chiqaradi.",
+      en: "-e extracts what it finds.",
+    },
+  },
+  {
+    ask: {
+      uz: "Oxiriga ZIP qo‘shilgan JPEG rasm ko‘ruvchida qanday ochiladi?",
+      en: "How does a JPEG with a ZIP appended open in a viewer?",
+    },
+    right: { uz: "Oddiy rasm kabi", en: "As an ordinary picture" },
+    wrong: [
+      { uz: "Xato bilan", en: "With an error" },
+      { uz: "Arxiv sifatida", en: "As an archive" },
+      { uz: "Ochilmaydi", en: "It doesn’t" },
+    ],
+    explain: {
+      uz: "Ko‘ruvchi FF D9 da to‘xtaydi.",
+      en: "The viewer stops at FF D9.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega unzip shunday JPEG’ni ham ochadi?",
+      en: "Why does unzip open such a JPEG too?",
+    },
+    right: {
+      uz: "ZIP mundarijasi fayl oxirida",
+      en: "A ZIP’s directory is at the end of the file",
+    },
+    wrong: [
+      { uz: "JPEG ZIP’ning turi", en: "JPEG is a kind of ZIP" },
+      { uz: "Ochmaydi", en: "It doesn’t" },
+      { uz: "Kengaytma tufayli", en: "Because of the extension" },
+    ],
+    explain: {
+      uz: "unzip fayl oxiridan o‘qiydi.",
+      en: "unzip reads from the end.",
+    },
+  },
+  {
+    ask: { uz: "Polyglot fayl nima?", en: "What is a polyglot file?" },
+    right: {
+      uz: "Bir vaqtda ikki xil tur sifatida o‘qiladigan fayl",
+      en: "A file that reads correctly as two types at once",
+    },
+    wrong: [
+      { uz: "Ko‘p tilli matn", en: "A text in many languages" },
+      { uz: "Shifrlangan fayl", en: "An encrypted file" },
+      { uz: "Buzilgan fayl", en: "A broken file" },
+    ],
+    explain: {
+      uz: "Masalan, rasm + arxiv.",
+      en: "A picture plus an archive, say.",
+    },
+  },
+  {
+    ask: {
+      uz: "Yuklangan rasmdagi qo‘shimchani qanday yo‘q qilish mumkin?",
+      en: "How can extras in an uploaded picture be stripped?",
+    },
+    right: { uz: "Rasmni qayta kodlash", en: "Re-encode the picture" },
+    wrong: [
+      { uz: "Kengaytmani tekshirish", en: "Check the extension" },
+      { uz: "Nomini o‘zgartirish", en: "Rename it" },
+      { uz: "Hech qanday", en: "There is no way" },
+    ],
+    explain: {
+      uz: "Qayta kodlash faqat piksellarni saqlaydi.",
+      en: "Re-encoding keeps only the pixels.",
+    },
+  },
+  {
+    ask: {
+      uz: "Spektrogramma nimani ko‘rsatadi?",
+      en: "What does a spectrogram show?",
+    },
+    right: {
+      uz: "Vaqt bo‘yicha har bir chastota kuchini",
+      en: "The strength of each frequency over time",
+    },
+    wrong: [
+      { uz: "Faqat balandlikni", en: "Only loudness" },
+      { uz: "Fayl hajmini", en: "The file size" },
+      { uz: "Metama’lumotni", en: "The metadata" },
+    ],
+    explain: {
+      uz: "To‘lqin shakli — balandlik.",
+      en: "The waveform shows loudness.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ovozga chizilgan so‘z qayerda ko‘rinadi?",
+      en: "Where does a word drawn into a sound show?",
+    },
+    right: { uz: "Spektrogrammada", en: "In the spectrogram" },
+    wrong: [
+      { uz: "To‘lqin shaklida", en: "In the waveform" },
+      { uz: "Fayl nomida", en: "In the file name" },
+      { uz: "Ko‘rinmaydi", en: "Nowhere" },
+    ],
+    explain: { uz: "Audacity’da bir bosishda.", en: "One click in Audacity." },
+  },
+  {
+    ask: {
+      uz: "WAV namunalarining LSB’idagi matnni spektrogramma ko‘rsatadimi?",
+      en: "Does a spectrogram show text in the LSBs of WAV samples?",
+    },
+    right: {
+      uz: "Yo‘q — boshqa vosita kerak",
+      en: "No — another tool is needed",
+    },
+    wrong: [
+      { uz: "Ha, aniq", en: "Yes, clearly" },
+      { uz: "Faqat MP3’da", en: "Only in MP3" },
+      { uz: "Faqat stereo’da", en: "Only in stereo" },
+    ],
+    explain: { uz: "LSB o‘zgarishi juda kichik.", en: "LSB changes are tiny." },
+  },
+  {
+    ask: {
+      uz: "MP3 ga siqish WAV’dagi LSB xabarini?",
+      en: "What does MP3 compression do to an LSB message in a WAV?",
+    },
+    right: { uz: "Buzadi", en: "Destroys it" },
+    wrong: [
+      { uz: "Saqlaydi", en: "Keeps it" },
+      { uz: "Shifrlaydi", en: "Encrypts it" },
+      { uz: "Kattalashtiradi", en: "Enlarges it" },
+    ],
+    explain: { uz: "MP3 lossy — JPEG kabi.", en: "MP3 is lossy, like JPEG." },
+  },
+  {
+    ask: {
+      uz: "Faylning haqiqiy turini qaysi buyruq aytadi?",
+      en: "Which command tells a file’s real type?",
+    },
+    right: same("file"),
+    wrong: [same("ls"), same("cat"), same("touch")],
+    explain: { uz: "Imzoga qaraydi.", en: "It reads the signature." },
+  },
+  {
+    ask: {
+      uz: "Binar fayldagi o‘qiladigan satrlarni qaysi buyruq chiqaradi?",
+      en: "Which command lists readable text in a binary?",
+    },
+    right: same("strings"),
+    wrong: [same("chmod"), same("ping"), same("mv")],
+    explain: {
+      uz: "-n 8 — kamida 8 belgi.",
+      en: "-n 8 means at least 8 characters.",
+    },
+  },
+  {
+    ask: {
+      uz: "PNG LSB’larini avtomatik tekshiradigan vosita?",
+      en: "Which tool checks PNG LSBs automatically?",
+    },
+    right: same("zsteg"),
+    wrong: [same("binwalk"), same("exiftool"), same("ssh")],
+    explain: {
+      uz: "Barcha kanal va tartiblarni sinaydi.",
+      en: "It tries every channel and order.",
+    },
+  },
+];

@@ -30,6 +30,7 @@ export const LAB_PROGRESS = {
   stego: { key: "cybervalue:stego:progress:v1", total: 8 },
   lsb: { key: "cybervalue:lsb:progress:v1", total: 8 },
   metadata: { key: "cybervalue:metadata:progress:v1", total: 8 },
+  formats: { key: "cybervalue:formats:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -303,6 +304,15 @@ export const LAB_META: {
       en: "Metadata (Intermediate)",
     },
     href: "/intermediate/metadata",
+    intermediate: true,
+  },
+  {
+    id: "formats",
+    title: {
+      uz: "Ovoz va fayl formatlari (Intermediate)",
+      en: "Audio and file formats (Intermediate)",
+    },
+    href: "/intermediate/formats",
     intermediate: true,
   },
 ];

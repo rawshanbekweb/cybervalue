@@ -228,6 +228,12 @@ export const SECTIONS = [
     href: "/intermediate/metadata",
   },
   {
+    id: "formats",
+    group: "lab",
+    label: "Audio and file formats (Intermediate)",
+    href: "/intermediate/formats",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",
