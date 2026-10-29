@@ -19,6 +19,7 @@ export const LAB_PROGRESS = {
   tls: { key: "cybervalue:tls:progress:v1", total: 8 },
   tcpip: { key: "cybervalue:tcpip:progress:v1", total: 8 },
   traffic: { key: "cybervalue:traffic:progress:v1", total: 8 },
+  firewall: { key: "cybervalue:firewall:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -193,6 +194,15 @@ export const LAB_META: {
       en: "Traffic analysis (Intermediate)",
     },
     href: "/intermediate/traffic",
+    intermediate: true,
+  },
+  {
+    id: "firewall",
+    title: {
+      uz: "Firewall va segmentlash (Intermediate)",
+      en: "Firewalls and segmentation (Intermediate)",
+    },
+    href: "/intermediate/firewall",
     intermediate: true,
   },
 ];

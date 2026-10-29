@@ -326,6 +326,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/traffic#checkpoints",
     pass: 70,
   },
+  {
+    id: "firewall-1",
+    level: "intermediate",
+    lab: { uz: "Firewall va segmentlash", en: "Firewalls and segmentation" },
+    title: {
+      uz: "Nazorat: Firewall va segmentlash",
+      en: "Checkpoint: Firewalls and segmentation",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/firewall#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

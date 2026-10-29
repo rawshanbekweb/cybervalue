@@ -239,6 +239,8 @@ export const DOMAINS: Domain[] = [
           uz: "Firewall va segmentlash",
           en: "Firewalls and segmentation",
         },
+        href: "/intermediate/firewall",
+        lab: "firewall",
         topics: ["rules", "DMZ", "VLAN", "least privilege"],
         goal: goal(
           "Kichik tarmoq uchun xavfsiz qoidalar to‘plamini loyihalash.",

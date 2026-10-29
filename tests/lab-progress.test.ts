@@ -22,6 +22,7 @@ import { LESSONS as PUBKEY } from "../src/lib/public-key/curriculum";
 import { LESSONS as TLS } from "../src/lib/tls/curriculum";
 import { LESSONS as TCPIP } from "../src/lib/tcpip/curriculum";
 import { LESSONS as TRAFFIC } from "../src/lib/traffic/curriculum";
+import { LESSONS as FIREWALL } from "../src/lib/firewall/curriculum";
 import {
   isLabId,
   LAB_PROGRESS,
@@ -52,6 +53,7 @@ test("lab progress totals match the lessons", () => {
   assert.equal(LAB_PROGRESS.tls.total, TLS.length);
   assert.equal(LAB_PROGRESS.tcpip.total, TCPIP.length);
   assert.equal(LAB_PROGRESS.traffic.total, TRAFFIC.length);
+  assert.equal(LAB_PROGRESS.firewall.total, FIREWALL.length);
   assert.equal(isLabId("toString"), false);
   assert.equal(isLabId("network"), true);
 });
