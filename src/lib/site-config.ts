@@ -144,6 +144,12 @@ export const SECTIONS = [
     href: "/intermediate/pubkey",
   },
   {
+    id: "tls",
+    group: "lab",
+    label: "TLS and certificates (Intermediate)",
+    href: "/intermediate/tls",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

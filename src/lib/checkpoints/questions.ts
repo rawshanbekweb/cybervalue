@@ -35,6 +35,7 @@ import {
   SYMMETRIC_POOL,
   HASHES_POOL,
   PUBKEY_POOL,
+  TLS_POOL,
   SECURITY_EXTRA,
   type PoolItem,
 } from "./pools";
@@ -679,6 +680,10 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
       .map((item) => fromPool(r, item)),
   "pubkey-1": (r) =>
     shuffle(r, PUBKEY_POOL)
+      .slice(0, 10)
+      .map((item) => fromPool(r, item)),
+  "tls-1": (r) =>
+    shuffle(r, TLS_POOL)
       .slice(0, 10)
       .map((item) => fromPool(r, item)),
 };
