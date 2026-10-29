@@ -276,6 +276,12 @@ export const SECTIONS = [
     href: "/intermediate/ethics",
   },
   {
+    id: "search",
+    group: "lab",
+    label: "Search technique (Intermediate)",
+    href: "/intermediate/search",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

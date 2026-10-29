@@ -492,6 +492,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Qidiruv texnikasi", en: "Search technique" },
+        href: "/intermediate/search",
+        lab: "search",
         topics: ["search operators", "archives", "verification"],
         goal: goal(
           "Topilgan ma’lumotni bir nechta manba bilan tasdiqlash.",

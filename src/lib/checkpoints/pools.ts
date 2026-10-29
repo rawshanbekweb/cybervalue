@@ -8469,3 +8469,234 @@ export const ETHICS_POOL: PoolItem[] = [
     explain: { uz: "Boshqalar tekshira oladi.", en: "Others can check it." },
   },
 ];
+
+export const SEARCH_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Qidiruv tizimi nimani ko‘rsatadi?",
+      en: "What does a search engine show?",
+    },
+    right: {
+      uz: "Faqat o‘zi indekslagan sahifalarni",
+      en: "Only the pages it has indexed",
+    },
+    wrong: [
+      { uz: "Butun internetni", en: "The whole internet" },
+      { uz: "Login ortidagi sahifalarni", en: "Pages behind logins" },
+      { uz: "Faqat yangi sahifalarni", en: "Only new pages" },
+    ],
+    explain: {
+      uz: "Indekslanmagan — topilmaydi.",
+      en: "Not indexed, not found.",
+    },
+  },
+  {
+    ask: {
+      uz: "robots.txt papkani himoya qiladimi?",
+      en: "Does robots.txt protect a folder?",
+    },
+    right: {
+      uz: "Yo‘q — bu robotlarga iltimos",
+      en: "No — it is a request to crawlers",
+    },
+    wrong: [
+      { uz: "Ha, parol qo‘yadi", en: "Yes, with a password" },
+      { uz: "Ha, shifrlaydi", en: "Yes, it encrypts" },
+      { uz: "Ha, o‘chiradi", en: "Yes, it deletes it" },
+    ],
+    explain: { uz: "Hamma o‘qiy oladi.", en: "Anyone can read it." },
+  },
+  {
+    ask: { uz: "site: operatori nima qiladi?", en: "What does site: do?" },
+    right: {
+      uz: "Qidiruvni bitta domen va subdomenlariga cheklaydi",
+      en: "Limits results to one domain and its subdomains",
+    },
+    wrong: [
+      { uz: "Saytni bloklaydi", en: "Blocks a site" },
+      { uz: "Sahifa sarlavhasini qidiradi", en: "Searches titles" },
+      { uz: "Fayl turini tanlaydi", en: "Picks a file type" },
+    ],
+    explain: {
+      uz: "site:sarbon-logistics.example",
+      en: "site:sarbon-logistics.example",
+    },
+  },
+  {
+    ask: { uz: "filetype:pdf nima qiladi?", en: "What does filetype:pdf do?" },
+    right: { uz: "Faqat PDF fayllarni qoldiradi", en: "Keeps only PDF files" },
+    wrong: [
+      { uz: "PDF’ni o‘chiradi", en: "Removes PDFs" },
+      { uz: "PDF yaratadi", en: "Creates a PDF" },
+      { uz: "Sarlavhada “pdf” qidiradi", en: "Looks for “pdf” in titles" },
+    ],
+    explain: { uz: "ext: ham xuddi shunday.", en: "ext: works the same way." },
+  },
+  {
+    ask: { uz: "intitle: nima qiladi?", en: "What does intitle: do?" },
+    right: {
+      uz: "So‘z sahifa sarlavhasida bo‘lishini talab qiladi",
+      en: "Requires the word in the page title",
+    },
+    wrong: [
+      { uz: "Domenni cheklaydi", en: "Limits the domain" },
+      { uz: "So‘zni chiqarib tashlaydi", en: "Excludes the word" },
+      { uz: "Fayl turini tanlaydi", en: "Picks a file type" },
+    ],
+    explain: {
+      uz: "“Index of” sarlavhasi — ochiq papka belgisi.",
+      en: "An “Index of” title often means an open folder.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qo‘shtirnoq ichidagi ibora nimani bildiradi?",
+      en: "What do quotes around a phrase mean?",
+    },
+    right: {
+      uz: "Aynan shu ibora, shu tartibda",
+      en: "This exact phrase, in this order",
+    },
+    wrong: [
+      { uz: "Har qanday so‘z", en: "Any of the words" },
+      { uz: "Iborani chiqarib tashlash", en: "Exclude the phrase" },
+      { uz: "Iborani tarjima qilish", en: "Translate it" },
+    ],
+    explain: { uz: '"price list"', en: '"price list"' },
+  },
+  {
+    ask: { uz: "-draft nima qiladi?", en: "What does -draft do?" },
+    right: {
+      uz: "“draft” bor natijalarni olib tashlaydi",
+      en: "Drops results containing “draft”",
+    },
+    wrong: [
+      { uz: "Faqat qoralamalarni qoldiradi", en: "Keeps only drafts" },
+      { uz: "Sonni ayiradi", en: "Subtracts a number" },
+      { uz: "Saralaydi", en: "Sorts results" },
+    ],
+    explain: { uz: "Minus — istisno.", en: "Minus means exclude." },
+  },
+  {
+    ask: {
+      uz: "Operatorlarni birlashtirib qidirish nima deyiladi?",
+      en: "What is combining operators called?",
+    },
+    right: { uz: "Dorking", en: "Dorking" },
+    wrong: [
+      { uz: "Phishing", en: "Phishing" },
+      { uz: "Spoofing", en: "Spoofing" },
+      { uz: "Fuzzing", en: "Fuzzing" },
+    ],
+    explain: {
+      uz: "GHDB — tayyor so‘rovlar to‘plami.",
+      en: "GHDB collects ready-made dorks.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ruxsat etilgan tekshiruvda maxfiy fayl topildi. Nima qilasiz?",
+      en: "An authorised check turns up a confidential file. What now?",
+    },
+    right: {
+      uz: "Manzil va vaqtni yozib, mijozga darhol xabar beraman",
+      en: "Record the address and time, tell the client at once",
+    },
+    wrong: [
+      { uz: "Yuklab, tarqataman", en: "Download and share it" },
+      { uz: "Ijtimoiy tarmoqda e’lon qilaman", en: "Post it online" },
+      { uz: "Hech narsa qilmayman", en: "Do nothing" },
+    ],
+    explain: { uz: "Zarar keltirmang.", en: "Do no harm." },
+  },
+  {
+    ask: {
+      uz: "web.archive.org/web/20190704…/ nusxasi qachongi?",
+      en: "When is a web.archive.org/web/20190704…/ copy from?",
+    },
+    right: { uz: "2019-yil 4-iyul", en: "4 July 2019" },
+    wrong: [
+      { uz: "2020-yil 7-aprel", en: "7 April 2020" },
+      { uz: "Bugun", en: "Today" },
+      { uz: "Noma’lum", en: "Unknown" },
+    ],
+    explain: { uz: "YYYYMMDD…", en: "YYYYMMDD…" },
+  },
+  {
+    ask: {
+      uz: "O‘chirilgan sahifani qayerdan topish mumkin?",
+      en: "Where might a deleted page still be?",
+    },
+    right: { uz: "Veb-arxivlarda", en: "In web archives" },
+    wrong: [
+      { uz: "Hech qayerda", en: "Nowhere" },
+      { uz: "Faqat kompaniya serverida", en: "Only on the company server" },
+      { uz: "DNS’da", en: "In DNS" },
+    ],
+    explain: {
+      uz: "Wayback Machine, archive.today.",
+      en: "The Wayback Machine, archive.today.",
+    },
+  },
+  {
+    ask: { uz: "Qaysi biri kuchli manba?", en: "Which is a strong source?" },
+    right: { uz: "Davlat reyestri", en: "The government register" },
+    wrong: [
+      { uz: "Anonim forum posti", en: "An anonymous forum post" },
+      { uz: "Manbasiz skrinshot", en: "An unsourced screenshot" },
+      { uz: "“Bir tanish aytdi”", en: "“A friend said”" },
+    ],
+    explain: { uz: "Birlamchi, rasmiy.", en: "Primary and official." },
+  },
+  {
+    ask: {
+      uz: "Beshta sayt bitta press-relizni qayta yozdi. Necha mustaqil manba?",
+      en: "Five sites rewrote one press release. How many independent sources?",
+    },
+    right: { uz: "1", en: "1" },
+    wrong: [
+      { uz: "5", en: "5" },
+      { uz: "6", en: "6" },
+      { uz: "0", en: "0" },
+    ],
+    explain: { uz: "Hammasi bir joydan.", en: "All from one origin." },
+  },
+  {
+    ask: {
+      uz: "Tasdiqlash tuzog‘i nima?",
+      en: "What is the confirmation trap?",
+    },
+    right: {
+      uz: "Faqat taxminni tasdiqlaydigan dalilni qidirish",
+      en: "Looking only for evidence that backs your guess",
+    },
+    wrong: [
+      { uz: "Parolni tasdiqlash", en: "Confirming a password" },
+      { uz: "Email tasdiqlash", en: "Confirming an email" },
+      { uz: "Ikki manba bilan tekshirish", en: "Checking with two sources" },
+    ],
+    explain: {
+      uz: "Qarshi dalilni ataylab qidiring.",
+      en: "Seek the counter-evidence on purpose.",
+    },
+  },
+  {
+    ask: {
+      uz: "O‘zbek kompaniyasi nomini qaysi yozuvlarda qidirish kerak?",
+      en: "Which spellings for an Uzbek company’s name?",
+    },
+    right: {
+      uz: "Lotin, kirill va inglizcha",
+      en: "Latin, Cyrillic and English",
+    },
+    wrong: [
+      { uz: "Faqat inglizcha", en: "English only" },
+      { uz: "Faqat lotin", en: "Latin only" },
+      { uz: "Faqat kirill", en: "Cyrillic only" },
+    ],
+    explain: {
+      uz: "Eski hujjatlar ko‘pincha kirillda.",
+      en: "Older records are often Cyrillic.",
+    },
+  },
+];

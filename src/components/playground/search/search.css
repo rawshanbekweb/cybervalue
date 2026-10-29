@@ -1,0 +1,36 @@
+/* Search technique lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css and
+   access-control.css. */
+.sr-results {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sr-result {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+}
+.sr-result.hit {
+  border-color: #2ee6a6;
+}
+.sr-title {
+  color: var(--accent-text);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+.sr-url {
+  color: #2ee6a6;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.sr-text {
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
