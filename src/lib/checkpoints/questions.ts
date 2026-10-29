@@ -51,6 +51,7 @@ import {
   METADATA_POOL,
   FORMATS_POOL,
   STEGANALYSIS_POOL,
+  SIEM_POOL,
   SECURITY_EXTRA,
   type PoolItem,
 } from "./pools";
@@ -759,6 +760,10 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
       .map((item) => fromPool(r, item)),
   "steganalysis-1": (r) =>
     shuffle(r, STEGANALYSIS_POOL)
+      .slice(0, 10)
+      .map((item) => fromPool(r, item)),
+  "siem-1": (r) =>
+    shuffle(r, SIEM_POOL)
       .slice(0, 10)
       .map((item) => fromPool(r, item)),
 };

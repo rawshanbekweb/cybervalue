@@ -34,6 +34,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/metadata`     | Steganography module 3, metadata (8 lessons, a checkpoint)                      |
 | `/intermediate/formats`      | Steganography module 4, audio and file formats (8 lessons, a checkpoint)        |
 | `/intermediate/steganalysis` | Steganography module 5, steganalysis (8 lessons, a checkpoint)                  |
+| `/intermediate/siem`         | Blue team module 1, logs and SIEM (8 lessons, a checkpoint)                     |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -550,6 +551,27 @@ bits does; `pairSpread` is the average share by which pairs differ, under
 | 6       | Questions on stegseek and ethics                      |
 | 7       | Questions on a methodical check                       |
 | 8       | Final questions                                       |
+
+## Blue team module 1: Logs and SIEM
+
+`/intermediate/siem` (lab id `siem`, checkpoint `siem-1`, award `lab-siem`,
+site setting `siem`) uses `src/lib/siem/tools.ts`: `RAWS` is one failed
+login as sshd, a JSON web app and Windows event 4625 write it, with the
+values the student maps onto the ECS fields `source.ip` and `user.name`;
+`EVENTS` are twenty minutes of normalised logins in which one address sprays
+three systems and then gets into one account; `search` counts them by
+`user.name`, `source.ip` or `event.dataset`. It opens the Blue team domain.
+
+| Lessons | What the student does                                  |
+| ------- | ------------------------------------------------------ |
+| 1       | Matches questions to the log source that answers them  |
+| 2       | Maps three log formats onto one schema                 |
+| 3       | Questions on time, clocks and forwarding               |
+| 4       | Searches across sources for a password-spraying attack |
+| 5       | Clicks through a Splunk search                         |
+| 6       | Sorts useful dashboard panels from noise               |
+| 7       | Questions on source health                             |
+| 8       | Final questions                                        |
 
 ## Who gets in
 

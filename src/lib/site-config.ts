@@ -240,6 +240,12 @@ export const SECTIONS = [
     href: "/intermediate/steganalysis",
   },
   {
+    id: "siem",
+    group: "lab",
+    label: "Logs and SIEM (Intermediate)",
+    href: "/intermediate/siem",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",
