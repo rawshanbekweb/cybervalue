@@ -109,6 +109,7 @@ test("everything finished", () => {
         response: 8,
         report: 8,
         stego: 8,
+        lsb: 8,
         scams: 8,
         httpbasics: 9,
         https: 9,

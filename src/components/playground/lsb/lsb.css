@@ -1,0 +1,63 @@
+/* LSB lab widgets; shared pieces come from anim-lab.css, crypto-basics.css,
+   untrusted-input.css, browser-risks.css and access-control.css. */
+.ls-pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  gap: 12px;
+}
+.ls-pair figure {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+}
+.ls-pair figcaption {
+  color: var(--muted);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.ls-swatch {
+  display: block;
+  height: 80px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.ls-row {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 2px;
+}
+.ls-px {
+  display: block;
+  aspect-ratio: 1;
+  border-radius: 3px;
+}
+.ls-table {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: 4px;
+  font-size: 12px;
+}
+.ls-table code {
+  padding: 2px 4px;
+  border-radius: 4px;
+  background: #0b0b0e;
+  text-align: center;
+}
+.ls-table b {
+  color: #2ee6a6;
+}
+.ls-bytes {
+  margin: 0;
+  font-size: 12px;
+}
+.ls-canvas {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  image-rendering: pixelated;
+}
+.ls-range {
+  width: 100%;
+  min-height: 32px;
+  accent-color: var(--accent);
+}

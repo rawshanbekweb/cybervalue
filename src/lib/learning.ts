@@ -24,6 +24,7 @@ import { LESSONS as LOGS_LESSONS } from "@/lib/logs/curriculum";
 import { LESSONS as RESPONSE_LESSONS } from "@/lib/response/curriculum";
 import { LESSONS as REPORT_LESSONS } from "@/lib/report/curriculum";
 import { LESSONS as STEGO_LESSONS } from "@/lib/stego/curriculum";
+import { LESSONS as LSB_LESSONS } from "@/lib/lsb/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -534,6 +535,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: STEGO_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "lsb",
+      title: "Inside images",
+      category: "Intermediate · Steganography",
+      description:
+        "See which bit of a colour can change unseen, read a message out of the red LSBs of a row of pixels, work out how much a picture can carry, and find a word in an image by looking at one bit plane at a time.",
+      href: "/intermediate/lsb",
+      progressKey: LAB_PROGRESS.lsb.key,
+      level: "Intermediate",
+      lessons: LSB_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: LSB_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },
