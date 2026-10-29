@@ -6643,3 +6643,227 @@ export const FORMATS_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const STEGANALYSIS_POOL: PoolItem[] = [
+  {
+    ask: { uz: "Steganaliz nima?", en: "What is steganalysis?" },
+    right: {
+      uz: "Fayl ichida yashirin narsa borligini aniqlash",
+      en: "Telling that a file carries something hidden",
+    },
+    wrong: [
+      { uz: "Xabarni yashirish", en: "Hiding a message" },
+      { uz: "Faylni shifrlash", en: "Encrypting a file" },
+      { uz: "Faylni o‘chirish", en: "Deleting a file" },
+    ],
+    explain: {
+      uz: "Avval borligini, keyin mazmunini.",
+      en: "First that it exists, then what it says.",
+    },
+  },
+  {
+    ask: { uz: "Qaysi biri kuchli belgi?", en: "Which is a strong sign?" },
+    right: { uz: "800×600 PNG 12 MB", en: "An 800×600 PNG weighing 12 MB" },
+    wrong: [
+      { uz: "EXIF yo‘q", en: "No EXIF" },
+      { uz: "Fayl nomi IMG_2041", en: "The name IMG_2041" },
+      { uz: "JPEG sifati 85%", en: "JPEG quality 85%" },
+    ],
+    explain: {
+      uz: "Hajm piksellarga mos emas.",
+      en: "The size doesn’t fit the pixels.",
+    },
+  },
+  {
+    ask: {
+      uz: "LSB’ga tasodifiy bitlar yozilsa, gistogrammada nima bo‘ladi?",
+      en: "Random bits written into the LSBs do what to a histogram?",
+    },
+    right: {
+      uz: "2k va 2k+1 juftliklari tenglashadi",
+      en: "Pairs 2k and 2k+1 even out",
+    },
+    wrong: [
+      { uz: "Gistogramma yo‘qoladi", en: "The histogram disappears" },
+      { uz: "Hamma qiymat 0 bo‘ladi", en: "Every value becomes 0" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Har bir juftlik piksellarni teng bo‘lib oladi.",
+      en: "Each pair shares its pixels evenly.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi hujum juftliklar tengligini o‘lchaydi?",
+      en: "Which attack measures how even the pairs are?",
+    },
+    right: { uz: "Chi-kvadrat", en: "Chi-square" },
+    wrong: [
+      { uz: "Brute force", en: "Brute force" },
+      { uz: "SQL injection", en: "SQL injection" },
+      { uz: "Phishing", en: "Phishing" },
+    ],
+    explain: {
+      uz: "RS-tahlil ham shunga o‘xshash.",
+      en: "RS analysis is similar.",
+    },
+  },
+  {
+    ask: {
+      uz: "Test rasmni “toza” desa?",
+      en: "A test calls a picture “clean”. Then?",
+    },
+    right: {
+      uz: "Katta LSB payload ehtimoli kam — lekin kafolat emas",
+      en: "A large LSB payload is unlikely — but it isn’t a guarantee",
+    },
+    wrong: [
+      { uz: "Aniq hech narsa yo‘q", en: "There is definitely nothing" },
+      { uz: "Rasm shifrlangan", en: "The picture is encrypted" },
+      { uz: "Rasm buzilgan", en: "The picture is broken" },
+    ],
+    explain: {
+      uz: "Test faqat o‘z izini ko‘radi.",
+      en: "A test sees only its own trace.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kichik payloadni aniqlash nega qiyin?",
+      en: "Why is a small payload hard to detect?",
+    },
+    right: {
+      uz: "Juda kam piksel o‘zgaradi",
+      en: "Very few pixels change",
+    },
+    wrong: [
+      { uz: "U ko‘rinmas siyohda", en: "It is in invisible ink" },
+      { uz: "Qiyin emas", en: "It isn’t" },
+      { uz: "U shifrlangan", en: "It is encrypted" },
+    ],
+    explain: {
+      uz: "Statistika deyarli siljimaydi.",
+      en: "The statistics barely shift.",
+    },
+  },
+  {
+    ask: {
+      uz: "Hajmi g‘ayritabiiy rasm uchun birinchi vosita?",
+      en: "The first tool for a picture of odd size?",
+    },
+    right: same("binwalk"),
+    wrong: [same("stegseek"), same("zsteg"), same("ping")],
+    explain: {
+      uz: "Ichida boshqa fayl bo‘lishi mumkin.",
+      en: "There may be another file inside.",
+    },
+  },
+  {
+    ask: {
+      uz: "PDF muallifi g‘alati. Qaysi vosita?",
+      en: "A PDF’s author looks odd. Which tool?",
+    },
+    right: same("exiftool"),
+    wrong: [same("binwalk"), same("zsteg"), same("stegseek")],
+    explain: { uz: "Metama’lumotni o‘qiydi.", en: "It reads metadata." },
+  },
+  {
+    ask: {
+      uz: "PNG piksellarini tekshirish uchun?",
+      en: "To check a PNG’s pixels?",
+    },
+    right: same("zsteg / stegsolve"),
+    wrong: [same("exiftool"), same("strings"), same("nmap")],
+    explain: {
+      uz: "Barcha bit va kanallarni sinaydi.",
+      en: "They try every bit and channel.",
+    },
+  },
+  {
+    ask: {
+      uz: "steghide parolini lug‘atdan qaysi vosita sinaydi?",
+      en: "Which tool tries steghide passphrases from a wordlist?",
+    },
+    right: same("stegseek"),
+    wrong: [same("zsteg"), same("binwalk"), same("exiftool")],
+    explain: {
+      uz: "Zaif parol soniyalarda topiladi.",
+      en: "A weak passphrase falls in seconds.",
+    },
+  },
+  {
+    ask: { uz: "zsteg’dagi “b1” nima?", en: "What is “b1” in zsteg?" },
+    right: { uz: "Har qiymatdan 1 bit", en: "One bit per value" },
+    wrong: [
+      { uz: "Birinchi bayt", en: "The first byte" },
+      { uz: "Ko‘k kanal", en: "The blue channel" },
+      { uz: "1-sahifa", en: "Page 1" },
+    ],
+    explain: { uz: "b2 — ikkita bit.", en: "b2 would be two bits." },
+  },
+  {
+    ask: { uz: "zsteg’dagi “xy” nima?", en: "What is “xy” in zsteg?" },
+    right: {
+      uz: "Chapdan o‘ngga, yuqoridan pastga o‘qish",
+      en: "Reading left to right, top to bottom",
+    },
+    wrong: [
+      { uz: "Koordinatalar", en: "Coordinates" },
+      { uz: "Fayl turi", en: "The file type" },
+      { uz: "Kanal nomi", en: "A channel name" },
+    ],
+    explain: { uz: "yx — ustunma-ustun.", en: "yx goes column by column." },
+  },
+  {
+    ask: {
+      uz: "steghide yashirishini nima himoya qiladi?",
+      en: "What protects steghide hiding?",
+    },
+    right: { uz: "Uzun, tasodifiy parol", en: "A long, random passphrase" },
+    wrong: [
+      { uz: "Fayl nomi", en: "The file name" },
+      { uz: "JPEG sifati", en: "JPEG quality" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Lug‘atdagi parol tez topiladi.",
+      en: "A wordlist passphrase is found fast.",
+    },
+  },
+  {
+    ask: {
+      uz: "Shubhali fayl bilan birinchi qadam?",
+      en: "The first step with a suspect file?",
+    },
+    right: { uz: "file va SHA-256 xesh", en: "file and a SHA-256 hash" },
+    wrong: [
+      { uz: "Parol sinash", en: "Trying passphrases" },
+      { uz: "Faylni tahrirlash", en: "Editing the file" },
+      { uz: "Faylni yuborish", en: "Sending the file on" },
+    ],
+    explain: {
+      uz: "Avval nima ekanini bilib, o‘zgarmaganini qayd eting.",
+      en: "Learn what it is and record that it is unchanged.",
+    },
+  },
+  {
+    ask: {
+      uz: "Boshqalarning fayllarida stegseek ishlatish mumkinmi?",
+      en: "May you run stegseek on other people’s files?",
+    },
+    right: {
+      uz: "Faqat ruxsat bilan yoki rasmiy tergovda",
+      en: "Only with permission or in an official investigation",
+    },
+    wrong: [
+      { uz: "Har doim", en: "Always" },
+      { uz: "Qiziq bo‘lsa", en: "If you’re curious" },
+      { uz: "Tunda", en: "At night" },
+    ],
+    explain: {
+      uz: "Ruxsatsiz — qonunbuzarlik.",
+      en: "Without permission it is unlawful.",
+    },
+  },
+];

@@ -199,6 +199,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Ovoz va fayl formatlari (Intermediate)",
     earned: (f) => finished(f, "formats") && passed(f, "formats-1"),
   },
+  {
+    id: "lab-steganalysis",
+    title: "Steganaliz (Intermediate)",
+    earned: (f) => finished(f, "steganalysis") && passed(f, "steganalysis-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

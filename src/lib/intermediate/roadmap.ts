@@ -393,6 +393,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Steganaliz", en: "Steganalysis" },
+        href: "/intermediate/steganalysis",
+        lab: "steganalysis",
         topics: ["statistics", "binwalk", "exiftool"],
         goal: goal(
           "Fayl ichida yashirin narsa borligini belgilardan aniqlash.",

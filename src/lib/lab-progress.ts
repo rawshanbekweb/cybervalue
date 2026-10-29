@@ -31,6 +31,7 @@ export const LAB_PROGRESS = {
   lsb: { key: "cybervalue:lsb:progress:v1", total: 8 },
   metadata: { key: "cybervalue:metadata:progress:v1", total: 8 },
   formats: { key: "cybervalue:formats:progress:v1", total: 8 },
+  steganalysis: { key: "cybervalue:steganalysis:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -313,6 +314,15 @@ export const LAB_META: {
       en: "Audio and file formats (Intermediate)",
     },
     href: "/intermediate/formats",
+    intermediate: true,
+  },
+  {
+    id: "steganalysis",
+    title: {
+      uz: "Steganaliz (Intermediate)",
+      en: "Steganalysis (Intermediate)",
+    },
+    href: "/intermediate/steganalysis",
     intermediate: true,
   },
 ];

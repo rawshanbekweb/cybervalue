@@ -1,0 +1,40 @@
+/* Steganalysis lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css and
+   access-control.css. */
+.sa-pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 12px;
+}
+.sa-pair figure {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+}
+.sa-pair figcaption {
+  color: var(--muted);
+  font-size: 13px;
+}
+.sa-hist {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #0b0b0e;
+}
+.sa-a {
+  fill: #8052ff;
+}
+.sa-b {
+  fill: #2ee6a6;
+}
+.sa-tick {
+  fill: var(--muted);
+  font: 7px var(--font-mono);
+}
+.sa-low {
+  color: #ff9b8a;
+}
+.sa-ok {
+  color: #2ee6a6;
+}

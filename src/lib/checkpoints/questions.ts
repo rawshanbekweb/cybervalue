@@ -50,6 +50,7 @@ import {
   LSB_POOL,
   METADATA_POOL,
   FORMATS_POOL,
+  STEGANALYSIS_POOL,
   SECURITY_EXTRA,
   type PoolItem,
 } from "./pools";
@@ -754,6 +755,10 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
       .map((item) => fromPool(r, item)),
   "formats-1": (r) =>
     shuffle(r, FORMATS_POOL)
+      .slice(0, 10)
+      .map((item) => fromPool(r, item)),
+  "steganalysis-1": (r) =>
+    shuffle(r, STEGANALYSIS_POOL)
       .slice(0, 10)
       .map((item) => fromPool(r, item)),
 };
