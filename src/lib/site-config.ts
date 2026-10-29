@@ -300,6 +300,12 @@ export const SECTIONS = [
     href: "/intermediate/footprint",
   },
   {
+    id: "stride",
+    group: "lab",
+    label: "Threat modelling (Intermediate)",
+    href: "/intermediate/stride",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

@@ -38,6 +38,7 @@ import { LESSONS as SEARCH_LESSONS } from "@/lib/search/curriculum";
 import { LESSONS as INFRA_LESSONS } from "@/lib/infra/curriculum";
 import { LESSONS as GEO_LESSONS } from "@/lib/geo/curriculum";
 import { LESSONS as FOOTPRINT_LESSONS } from "@/lib/footprint/curriculum";
+import { LESSONS as STRIDE_LESSONS } from "@/lib/stride/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -786,6 +787,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: FOOTPRINT_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "stride",
+      title: "Threat modelling",
+      category: "Intermediate · AppSec",
+      description:
+        "Learn the four questions, draw a data-flow diagram, find the flows that cross trust boundaries in a school grades app, sort six threats into STRIDE, pick controls and decide what to fix first.",
+      href: "/intermediate/stride",
+      progressKey: LAB_PROGRESS.stride.key,
+      level: "Intermediate",
+      lessons: STRIDE_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: STRIDE_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

@@ -42,6 +42,7 @@ export const LAB_PROGRESS = {
   infra: { key: "cybervalue:infra:progress:v1", total: 8 },
   geo: { key: "cybervalue:geo:progress:v1", total: 8 },
   footprint: { key: "cybervalue:footprint:progress:v1", total: 8 },
+  stride: { key: "cybervalue:stride:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -423,6 +424,15 @@ export const LAB_META: {
       en: "Digital footprint (Intermediate)",
     },
     href: "/intermediate/footprint",
+    intermediate: true,
+  },
+  {
+    id: "stride",
+    title: {
+      uz: "Tahdid modeli (Intermediate)",
+      en: "Threat modelling (Intermediate)",
+    },
+    href: "/intermediate/stride",
     intermediate: true,
   },
 ];

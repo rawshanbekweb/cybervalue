@@ -9441,3 +9441,228 @@ export const FOOTPRINT_POOL: PoolItem[] = [
     explain: { uz: "Iz doim o‘sadi.", en: "A footprint keeps growing." },
   },
 ];
+
+export const STRIDE_POOL: PoolItem[] = [
+  {
+    ask: { uz: "Tahdid modeli nima?", en: "What is threat modelling?" },
+    right: {
+      uz: "Qurishdan oldin nima noto‘g‘ri ketishi mumkinligini aniqlash",
+      en: "Working out what can go wrong before it is built",
+    },
+    wrong: [
+      { uz: "Hujumdan keyingi tergov", en: "Investigating after an attack" },
+      { uz: "Parol siyosati", en: "A password policy" },
+      { uz: "Antivirus sozlash", en: "Configuring antivirus" },
+    ],
+    explain: { uz: "Erta topilgan xato arzon.", en: "Early flaws are cheap." },
+  },
+  {
+    ask: {
+      uz: "To‘rt savolning birinchisi?",
+      en: "The first of the four questions?",
+    },
+    right: { uz: "Biz nima qurayapmiz?", en: "What are we working on?" },
+    wrong: [
+      { uz: "Kim aybdor?", en: "Who is to blame?" },
+      { uz: "Qancha turadi?", en: "What does it cost?" },
+      { uz: "Qachon tugaydi?", en: "When is it done?" },
+    ],
+    explain: {
+      uz: "Keyin: nima noto‘g‘ri ketishi mumkin?",
+      en: "Then: what can go wrong?",
+    },
+  },
+  {
+    ask: {
+      uz: "DFD’da sizning kodingiz qaysi element?",
+      en: "In a DFD, which element is your code?",
+    },
+    right: { uz: "Jarayon", en: "A process" },
+    wrong: [
+      { uz: "Ombor", en: "A data store" },
+      { uz: "Tashqi obyekt", en: "An external entity" },
+      { uz: "Chegara", en: "A boundary" },
+    ],
+    explain: { uz: "Ma’lumotni qayta ishlaydi.", en: "It handles data." },
+  },
+  {
+    ask: {
+      uz: "DFD’da SMS provayderi qaysi element?",
+      en: "In a DFD, which element is an SMS provider?",
+    },
+    right: { uz: "Tashqi obyekt", en: "An external entity" },
+    wrong: [
+      { uz: "Jarayon", en: "A process" },
+      { uz: "Ombor", en: "A data store" },
+      { uz: "Oqim", en: "A data flow" },
+    ],
+    explain: {
+      uz: "Sizning nazoratingizdan tashqarida.",
+      en: "Outside your control.",
+    },
+  },
+  {
+    ask: { uz: "Ishonch chegarasi nima?", en: "What is a trust boundary?" },
+    right: {
+      uz: "Ma’lumot bir ishonch darajasidan boshqasiga o‘tadigan joy",
+      en: "Where data passes between levels of trust",
+    },
+    wrong: [
+      { uz: "Sahifa chekkasi", en: "The edge of a page" },
+      { uz: "Parol uzunligi", en: "A password length" },
+      { uz: "Server xonasi", en: "The server room" },
+    ],
+    explain: { uz: "Hujumlar shu yerda.", en: "Attacks happen there." },
+  },
+  {
+    ask: {
+      uz: "Qaysi oqim ishonch chegarasini kesib o‘tadi?",
+      en: "Which flow crosses a trust boundary?",
+    },
+    right: {
+      uz: "Brauzer → DMZ’dagi veb-ilova",
+      en: "Browser → the web app in the DMZ",
+    },
+    wrong: [
+      { uz: "Ichki API → ichki baza", en: "Internal API → internal database" },
+      {
+        uz: "Ichki API → ichki log serveri",
+        en: "Internal API → internal log server",
+      },
+      { uz: "Hech qaysi", en: "None" },
+    ],
+    explain: {
+      uz: "Internetdan DMZ’ga.",
+      en: "From the internet into the DMZ.",
+    },
+  },
+  {
+    ask: {
+      uz: "Spoofing qaysi xususiyatni buzadi?",
+      en: "Which property does spoofing break?",
+    },
+    right: { uz: "Autentifikatsiya", en: "Authentication" },
+    wrong: [
+      { uz: "Mavjudlik", en: "Availability" },
+      { uz: "Yaxlitlik", en: "Integrity" },
+      { uz: "Maxfiylik", en: "Confidentiality" },
+    ],
+    explain: {
+      uz: "Kimdir o‘zini boshqa odam deb ko‘rsatadi.",
+      en: "Someone pretends to be someone else.",
+    },
+  },
+  {
+    ask: {
+      uz: "Tampering qaysi xususiyatni buzadi?",
+      en: "Which property does tampering break?",
+    },
+    right: { uz: "Yaxlitlik", en: "Integrity" },
+    wrong: [
+      { uz: "Mavjudlik", en: "Availability" },
+      { uz: "Autentifikatsiya", en: "Authentication" },
+      { uz: "Maxfiylik", en: "Confidentiality" },
+    ],
+    explain: { uz: "Ma’lumot o‘zgartiriladi.", en: "Data is changed." },
+  },
+  {
+    ask: {
+      uz: "“O‘qituvchi bahoni o‘zgartirganini inkor qiladi, log yo‘q” — STRIDE harfi?",
+      en: "“A teacher denies changing a grade, no log” — STRIDE letter?",
+    },
+    right: { uz: "R", en: "R" },
+    wrong: [
+      { uz: "S", en: "S" },
+      { uz: "D", en: "D" },
+      { uz: "I", en: "I" },
+    ],
+    explain: { uz: "Repudiation.", en: "Repudiation." },
+  },
+  {
+    ask: {
+      uz: "“API barcha telefon raqamlarini qaytaradi” — STRIDE harfi?",
+      en: "“The API returns every phone number” — STRIDE letter?",
+    },
+    right: { uz: "I", en: "I" },
+    wrong: [
+      { uz: "T", en: "T" },
+      { uz: "E", en: "E" },
+      { uz: "S", en: "S" },
+    ],
+    explain: { uz: "Information disclosure.", en: "Information disclosure." },
+  },
+  {
+    ask: {
+      uz: "“O‘quvchi admin API’ni chaqira oladi” — STRIDE harfi?",
+      en: "“A student can call the admin API” — STRIDE letter?",
+    },
+    right: { uz: "E", en: "E" },
+    wrong: [
+      { uz: "D", en: "D" },
+      { uz: "R", en: "R" },
+      { uz: "T", en: "T" },
+    ],
+    explain: { uz: "Elevation of privilege.", en: "Elevation of privilege." },
+  },
+  {
+    ask: {
+      uz: "Denial of service’ga qarshi odatiy chora?",
+      en: "A typical control for denial of service?",
+    },
+    right: { uz: "Rate limiting", en: "Rate limiting" },
+    wrong: [
+      { uz: "Audit log", en: "An audit log" },
+      { uz: "MFA", en: "MFA" },
+      { uz: "Shifrlash", en: "Encryption" },
+    ],
+    explain: { uz: "So‘rovlar soni cheklanadi.", en: "Requests are capped." },
+  },
+  {
+    ask: {
+      uz: "Spoofing’ga qarshi odatiy chora?",
+      en: "A typical control for spoofing?",
+    },
+    right: { uz: "MFA", en: "MFA" },
+    wrong: [
+      { uz: "Rate limiting", en: "Rate limiting" },
+      { uz: "Kesh", en: "Caching" },
+      { uz: "Siqish", en: "Compression" },
+    ],
+    explain: {
+      uz: "Parol o‘g‘irlansa ham kira olmaydi.",
+      en: "A stolen password isn’t enough.",
+    },
+  },
+  {
+    ask: {
+      uz: "Xavf kichik, tuzatish qimmat. To‘g‘ri yo‘l?",
+      en: "Small risk, expensive fix. The right move?",
+    },
+    right: {
+      uz: "Qabul qilib, sababi va qayta ko‘rish sanasini yozish",
+      en: "Accept it, writing down why and when to review",
+    },
+    wrong: [
+      { uz: "Unutish", en: "Forget it" },
+      { uz: "Yashirish", en: "Hide it" },
+      { uz: "Loyihani to‘xtatish", en: "Stop the project" },
+    ],
+    explain: {
+      uz: "Qabul qilish — ongli qaror.",
+      en: "Accepting is a decision.",
+    },
+  },
+  {
+    ask: { uz: "Xavf qanday baholanadi?", en: "How is risk rated?" },
+    right: { uz: "Ehtimollik × ta’sir", en: "Likelihood × impact" },
+    wrong: [
+      { uz: "Faqat ta’sir", en: "Impact only" },
+      { uz: "Kod qatorlari soni", en: "Lines of code" },
+      { uz: "Tasodifiy", en: "At random" },
+    ],
+    explain: {
+      uz: "DREAD yoki CVSS kabi shkalalar ham bor.",
+      en: "Scales such as DREAD or CVSS help.",
+    },
+  },
+];

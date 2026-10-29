@@ -1,0 +1,75 @@
+/* Threat modelling lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css and
+   access-control.css. */
+.sd-dfd {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+.sd-zone-0 {
+  fill: rgba(255, 155, 138, 0.08);
+}
+.sd-zone-1 {
+  fill: rgba(255, 209, 102, 0.08);
+}
+.sd-zone-2 {
+  fill: rgba(46, 230, 166, 0.07);
+}
+.sd-zone {
+  stroke: var(--border);
+  stroke-dasharray: 6 4;
+}
+.sd-zone-label {
+  fill: var(--muted);
+  font-size: 12px;
+}
+.sd-flow {
+  stroke: var(--muted);
+  stroke-width: 2;
+}
+.sd-flow.on {
+  stroke: #ffd166;
+  stroke-width: 3;
+}
+.sd-flow-dot {
+  fill: #8052ff;
+}
+.sd-num {
+  fill: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+.sd-node {
+  fill: #16161c;
+  stroke: var(--border);
+}
+.sd-label {
+  fill: #f2f2f2;
+  font-size: 11px;
+}
+.sd-threats {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sd-threat {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.sd-threat .cb-field,
+.sd-threat select {
+  min-width: 0;
+  max-width: 100%;
+}
+.sd-ok {
+  color: #2ee6a6;
+  font-size: 13px;
+}
+.sd-bad {
+  color: #ff9b8a;
+  font-size: 13px;
+}
