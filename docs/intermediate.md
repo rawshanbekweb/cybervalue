@@ -26,6 +26,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/ids`         | Network security module 5, intrusion detection (8 lessons, a checkpoint)        |
 | `/intermediate/evidence`    | Digital forensics module 1, handling evidence (8 lessons, a checkpoint)         |
 | `/intermediate/filesystem`  | Digital forensics module 2, file systems (8 lessons, a checkpoint)              |
+| `/intermediate/logs`        | Digital forensics module 3, logs and artefacts (8 lessons, a checkpoint)        |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -379,6 +380,26 @@ in the order their clocks suggest, and `timelineSolved` checks them in UTC.
 | 6       | Questions on timestomping                             |
 | 7       | Questions on known-file hash sets (NSRL)              |
 | 8       | Final questions                                       |
+
+## Digital forensics module 3: Logs and artefacts
+
+`/intermediate/logs` (lab id `logs`, checkpoint `logs-1`, award `lab-logs`,
+site setting `logs`) uses `src/lib/logs/tools.ts`: `grep` runs `grep -E`
+(with `-i` and `-v`) over an eleven-line auth.log in which 203.0.113.7
+guesses root's password, logs in and adds a second UID 0 account; `readAs`
+reads a raw number as Unix seconds, Unix milliseconds or Chrome/WebKit
+microseconds since 1601, and `RAWS` are one moment written all three ways.
+
+| Lessons | What the student does                                              |
+| ------- | ------------------------------------------------------------------ |
+| 1       | Clicks through the parts of an auth.log line                       |
+| 2       | Greps the log and names the attacker's IP and back-door account    |
+| 3       | Sorts Windows event IDs into logons, account changes and red flags |
+| 4       | Sorts artefacts that prove a visit from those that prove a run     |
+| 5       | Picks the epoch format that makes three numbers one moment         |
+| 6       | Questions on cleared logs and central logging                      |
+| 7       | Questions on shared accounts and clock sync                        |
+| 8       | Final questions                                                    |
 
 ## Who gets in
 

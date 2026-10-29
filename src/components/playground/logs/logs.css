@@ -1,0 +1,22 @@
+/* Logs lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css,
+   access-control.css and evidence.css. */
+.lg-flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+}
+.lg-out {
+  max-height: 320px;
+  margin: 0;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+.cb-out code {
+  overflow-wrap: anywhere;
+}
+.lg-raw {
+  font-size: 15px;
+}

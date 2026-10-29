@@ -20,6 +20,7 @@ import { LESSONS as CONNECTIONS_LESSONS } from "@/lib/connections/curriculum";
 import { LESSONS as IDS_LESSONS } from "@/lib/ids/curriculum";
 import { LESSONS as EVIDENCE_LESSONS } from "@/lib/evidence/curriculum";
 import { LESSONS as FILESYSTEM_LESSONS } from "@/lib/filesystem/curriculum";
+import { LESSONS as LOGS_LESSONS } from "@/lib/logs/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -462,6 +463,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: FILESYSTEM_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "logs",
+      title: "Logs and artefacts",
+      category: "Intermediate · Digital forensics",
+      description:
+        "Read and grep a Linux auth.log until the break-in and the back door show, sort Windows event IDs and browser and system artefacts, and turn raw epoch numbers into one moment.",
+      href: "/intermediate/logs",
+      progressKey: LAB_PROGRESS.logs.key,
+      level: "Intermediate",
+      lessons: LOGS_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: LOGS_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

@@ -43,6 +43,7 @@ import {
   IDS_POOL,
   EVIDENCE_POOL,
   FILESYSTEM_POOL,
+  LOGS_POOL,
   SECURITY_EXTRA,
   type PoolItem,
 } from "./pools";
@@ -719,6 +720,10 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
       .map((item) => fromPool(r, item)),
   "filesystem-1": (r) =>
     shuffle(r, FILESYSTEM_POOL)
+      .slice(0, 10)
+      .map((item) => fromPool(r, item)),
+  "logs-1": (r) =>
+    shuffle(r, LOGS_POOL)
       .slice(0, 10)
       .map((item) => fromPool(r, item)),
 };

@@ -27,6 +27,7 @@ import { LESSONS as CONNECTIONS } from "../src/lib/connections/curriculum";
 import { LESSONS as IDS } from "../src/lib/ids/curriculum";
 import { LESSONS as EVIDENCE } from "../src/lib/evidence/curriculum";
 import { LESSONS as FILESYSTEM } from "../src/lib/filesystem/curriculum";
+import { LESSONS as LOGS } from "../src/lib/logs/curriculum";
 import {
   isLabId,
   LAB_PROGRESS,
@@ -62,6 +63,7 @@ test("lab progress totals match the lessons", () => {
   assert.equal(LAB_PROGRESS.ids.total, IDS.length);
   assert.equal(LAB_PROGRESS.evidence.total, EVIDENCE.length);
   assert.equal(LAB_PROGRESS.filesystem.total, FILESYSTEM.length);
+  assert.equal(LAB_PROGRESS.logs.total, LOGS.length);
   assert.equal(isLabId("toString"), false);
   assert.equal(isLabId("network"), true);
 });

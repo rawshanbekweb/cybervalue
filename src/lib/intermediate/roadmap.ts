@@ -305,6 +305,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Loglar va artefaktlar", en: "Logs and artefacts" },
+        href: "/intermediate/logs",
+        lab: "logs",
         topics: ["event logs", "auth logs", "browser history"],
         goal: goal(
           "Loglardan kim, qachon va nima qilganini aniqlash.",
