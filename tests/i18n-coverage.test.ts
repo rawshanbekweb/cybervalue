@@ -265,6 +265,7 @@ test('every t("…") string in the interactive labs has Uzbek in the shared dict
     "src/components/playground/connections",
     "src/components/playground/ids",
     "src/components/playground/evidence",
+    "src/components/playground/filesystem",
   ];
   const texts: string[] = [];
   for (const dir of dirs)

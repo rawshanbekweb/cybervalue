@@ -386,6 +386,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/evidence#checkpoints",
     pass: 70,
   },
+  {
+    id: "filesystem-1",
+    level: "intermediate",
+    lab: { uz: "Fayl tizimlari", en: "File systems" },
+    title: {
+      uz: "Nazorat: Fayl tizimlari",
+      en: "Checkpoint: File systems",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/filesystem#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

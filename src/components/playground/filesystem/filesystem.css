@@ -1,0 +1,58 @@
+/* File systems lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css,
+   access-control.css and firewall.css. */
+.fs-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+}
+.fs-scroll:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.fs-grid {
+  min-width: 0;
+}
+.fs-grid td,
+.fs-grid thead th:not(:first-child) {
+  text-align: center;
+}
+.fs-grid td.ok {
+  background: #2ee6a614;
+}
+.fs-grid td.bad {
+  background: #ff7b6b1f;
+}
+.fs-grid th code {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+.fs-grid td,
+.fs-grid thead th:not(:first-child) {
+  width: 40px;
+  padding-inline: 4px;
+}
+.fs-box {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--accent);
+}
+.fs-event {
+  border-left-color: var(--accent);
+}
+.fs-what {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.fs-what small {
+  color: var(--muted);
+}
+.fs-what code {
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+.fs-utc {
+  color: #2ee6a6;
+  font-size: 13px;
+}

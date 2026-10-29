@@ -186,6 +186,12 @@ export const SECTIONS = [
     href: "/intermediate/evidence",
   },
   {
+    id: "filesystem",
+    group: "lab",
+    label: "File systems (Intermediate)",
+    href: "/intermediate/filesystem",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",
