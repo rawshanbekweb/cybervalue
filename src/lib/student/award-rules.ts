@@ -164,6 +164,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Fayl tizimlari (Intermediate)",
     earned: (f) => finished(f, "filesystem") && passed(f, "filesystem-1"),
   },
+  {
+    id: "lab-logs",
+    title: "Loglar va artefaktlar (Intermediate)",
+    earned: (f) => finished(f, "logs") && passed(f, "logs-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

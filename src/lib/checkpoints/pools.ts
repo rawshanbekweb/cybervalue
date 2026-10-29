@@ -4866,3 +4866,263 @@ export const FILESYSTEM_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const LOGS_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Debian/Ubuntu’da SSH kirishlari qaysi faylga yoziladi?",
+      en: "Where does Debian/Ubuntu write SSH logins?",
+    },
+    right: same("/var/log/auth.log"),
+    wrong: [
+      same("/var/log/nginx/access.log"),
+      same("/etc/passwd"),
+      same("/tmp/ssh.log"),
+    ],
+    explain: {
+      uz: "RHEL’da — /var/log/secure.",
+      en: "On RHEL it is /var/log/secure.",
+    },
+  },
+  {
+    ask: {
+      uz: "Klassik syslog vaqtida nima yo‘q?",
+      en: "What does a classic syslog timestamp lack?",
+    },
+    right: { uz: "Yil va vaqt zonasi", en: "The year and the time zone" },
+    wrong: [
+      { uz: "Soat", en: "The hour" },
+      { uz: "Oy", en: "The month" },
+      { uz: "Soniya", en: "The seconds" },
+    ],
+    explain: {
+      uz: "Ularni server sozlamasidan bilish kerak.",
+      en: "You have to learn them from the server’s settings.",
+    },
+  },
+  {
+    ask: {
+      uz: "“Accepted password for root from 203.0.113.7” nimani bildiradi?",
+      en: "What does “Accepted password for root from 203.0.113.7” mean?",
+    },
+    right: {
+      uz: "203.0.113.7 root sifatida parol bilan muvaffaqiyatli kirgan",
+      en: "203.0.113.7 logged in as root with a password",
+    },
+    wrong: [
+      { uz: "Kirish rad etilgan", en: "The login was refused" },
+      { uz: "Parol o‘zgartirilgan", en: "The password was changed" },
+      { uz: "Kalit bilan kirilgan", en: "It was a key login" },
+    ],
+    explain: {
+      uz: "Failed — rad etilgan; publickey — kalit bilan.",
+      en: "Failed means refused; publickey means a key.",
+    },
+  },
+  {
+    ask: {
+      uz: "useradd logida UID=0 nimani bildiradi?",
+      en: "What does UID=0 in a useradd log mean?",
+    },
+    right: {
+      uz: "Yangi hisob root huquqiga ega — orqa eshik",
+      en: "The new account has root rights — a back door",
+    },
+    wrong: [
+      { uz: "Hisob o‘chirilgan", en: "The account is disabled" },
+      { uz: "Mehmon hisobi", en: "A guest account" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "UID 0 — root.",
+      en: "UID 0 is root.",
+    },
+  },
+  {
+    ask: {
+      uz: "grep -v 'deploy' nima qiladi?",
+      en: "What does grep -v 'deploy' do?",
+    },
+    right: {
+      uz: "deploy so‘zi yo‘q qatorlarni ko‘rsatadi",
+      en: "Shows the lines without “deploy”",
+    },
+    wrong: [
+      { uz: "Faqat deploy qatorlarini", en: "Only the deploy lines" },
+      { uz: "deploy’ni o‘chiradi", en: "Deletes deploy" },
+      { uz: "Versiyani ko‘rsatadi", en: "Shows the version" },
+    ],
+    explain: {
+      uz: "-v — teskari moslik.",
+      en: "-v inverts the match.",
+    },
+  },
+  {
+    ask: {
+      uz: "Bitta SSH seansining qatorlarini nima bog‘laydi?",
+      en: "What ties together the lines of one SSH session?",
+    },
+    right: { uz: "Bir xil PID (sshd[2211])", en: "The same PID (sshd[2211])" },
+    wrong: [
+      { uz: "Bir xil daqiqa", en: "The same minute" },
+      { uz: "Bir xil xost", en: "The same host" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Jarayon raqami seans davomida o‘zgarmaydi.",
+      en: "The process ID stays the same for the session.",
+    },
+  },
+  {
+    ask: {
+      uz: "Windows hodisasi 4625 nima?",
+      en: "What is Windows event 4625?",
+    },
+    right: { uz: "Muvaffaqiyatsiz kirish", en: "A failed logon" },
+    wrong: [
+      { uz: "Muvaffaqiyatli kirish", en: "A successful logon" },
+      { uz: "Jurnal tozalandi", en: "The log was cleared" },
+      { uz: "Xizmat o‘rnatildi", en: "A service was installed" },
+    ],
+    explain: {
+      uz: "4624 — muvaffaqiyatli.",
+      en: "4624 is the successful one.",
+    },
+  },
+  {
+    ask: {
+      uz: "Windows hodisasi 1102 nimani bildiradi?",
+      en: "What does Windows event 1102 mean?",
+    },
+    right: {
+      uz: "Xavfsizlik jurnali tozalangan",
+      en: "The security log was cleared",
+    },
+    wrong: [
+      { uz: "Yangi foydalanuvchi", en: "A new user" },
+      { uz: "Tizim yangilandi", en: "The system was updated" },
+      { uz: "Printer ulandi", en: "A printer was connected" },
+    ],
+    explain: {
+      uz: "Kimdir izlarini yashirmoqchi bo‘lgan.",
+      en: "Someone tried to hide their tracks.",
+    },
+  },
+  {
+    ask: {
+      uz: "4624’dagi Logon Type 10 nima?",
+      en: "What is Logon Type 10 in a 4624 event?",
+    },
+    right: { uz: "RDP orqali kirish", en: "A logon over RDP" },
+    wrong: [
+      { uz: "Klaviaturadan kirish", en: "A logon at the keyboard" },
+      { uz: "Xizmat hisobi", en: "A service account" },
+      { uz: "Muvaffaqiyatsiz kirish", en: "A failed logon" },
+    ],
+    explain: {
+      uz: "2 — klaviatura, 3 — tarmoq, 10 — RDP.",
+      en: "2 is the keyboard, 3 the network, 10 RDP.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi artefakt dastur ishga tushganini ko‘rsatadi?",
+      en: "Which artefact shows a program ran?",
+    },
+    right: same("Prefetch (.pf)"),
+    wrong: [
+      { uz: "Brauzer cookie’si", en: "A browser cookie" },
+      { uz: "Brauzer keshi", en: "The browser cache" },
+      { uz: "Xatcho‘p", en: "A bookmark" },
+    ],
+    explain: {
+      uz: "Prefetch — Windows dastur ishga tushganda yaratadi.",
+      en: "Windows creates Prefetch when a program runs.",
+    },
+  },
+  {
+    ask: {
+      uz: "10 xonali vaqt raqami (1791000000) odatda qaysi format?",
+      en: "A 10-digit time number (1791000000) is usually which format?",
+    },
+    right: { uz: "Unix soniya", en: "Unix seconds" },
+    wrong: [
+      { uz: "Unix millisoniya", en: "Unix milliseconds" },
+      { uz: "Chrome mikrosoniya", en: "Chrome microseconds" },
+      { uz: "Windows FILETIME", en: "Windows FILETIME" },
+    ],
+    explain: {
+      uz: "13 xona — millisoniya, 17 — Chrome.",
+      en: "13 digits are milliseconds, 17 Chrome.",
+    },
+  },
+  {
+    ask: {
+      uz: "Chrome vaqtlari qaysi sanadan sanaladi?",
+      en: "From what date does Chrome count its times?",
+    },
+    right: same("1601-01-01"),
+    wrong: [same("1970-01-01"), same("2000-01-01"), same("1900-01-01")],
+    explain: {
+      uz: "Mikrosoniyalarda, Windows kabi 1601 dan.",
+      en: "In microseconds, from 1601 like Windows.",
+    },
+  },
+  {
+    ask: {
+      uz: "Loglarni tozalashdan eng yaxshi himoya?",
+      en: "The best protection against cleared logs?",
+    },
+    right: {
+      uz: "Real vaqtda markaziy serverga (SIEM) yuborish",
+      en: "Shipping them to a central server (SIEM) in real time",
+    },
+    wrong: [
+      { uz: "Log fayllarini yashirish", en: "Hiding the log files" },
+      { uz: "Loglarni o‘chirib qo‘yish", en: "Turning logs off" },
+      { uz: "Faqat haftada bir ko‘rish", en: "Looking once a week" },
+    ],
+    explain: {
+      uz: "Hujumchi markaziy serverga yeta olmaydi.",
+      en: "The attacker can’t reach the central server.",
+    },
+  },
+  {
+    ask: {
+      uz: "Umumiy “admin” hisobi tergovga qanday xalaqit beradi?",
+      en: "How does a shared “admin” account hurt an investigation?",
+    },
+    right: {
+      uz: "Kim nima qilganini aniqlab bo‘lmaydi",
+      en: "You can’t tell who did what",
+    },
+    wrong: [
+      { uz: "Loglar yozilmaydi", en: "No logs get written" },
+      { uz: "Hech qanday", en: "It doesn’t" },
+      { uz: "Parol uzunroq bo‘ladi", en: "The password gets longer" },
+    ],
+    explain: {
+      uz: "Har kimga o‘z hisobi kerak.",
+      en: "Everyone needs their own account.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega barcha serverlarda NTP kerak?",
+      en: "Why should every server run NTP?",
+    },
+    right: {
+      uz: "Turli loglardagi vaqtlarni solishtirish uchun",
+      en: "So times in different logs line up",
+    },
+    wrong: [
+      { uz: "Internetni tezlashtirish uchun", en: "To speed up the internet" },
+      { uz: "Parollarni saqlash uchun", en: "To store passwords" },
+      { uz: "Kerak emas", en: "It isn’t needed" },
+    ],
+    explain: {
+      uz: "Soatlar farq qilsa, xronologiya buziladi.",
+      en: "If the clocks drift, the timeline falls apart.",
+    },
+  },
+];

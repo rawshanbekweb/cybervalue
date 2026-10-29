@@ -24,6 +24,7 @@ export const LAB_PROGRESS = {
   ids: { key: "cybervalue:ids:progress:v1", total: 8 },
   evidence: { key: "cybervalue:evidence:progress:v1", total: 8 },
   filesystem: { key: "cybervalue:filesystem:progress:v1", total: 8 },
+  logs: { key: "cybervalue:logs:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -243,6 +244,15 @@ export const LAB_META: {
       en: "File systems (Intermediate)",
     },
     href: "/intermediate/filesystem",
+    intermediate: true,
+  },
+  {
+    id: "logs",
+    title: {
+      uz: "Loglar va artefaktlar (Intermediate)",
+      en: "Logs and artefacts (Intermediate)",
+    },
+    href: "/intermediate/logs",
     intermediate: true,
   },
 ];
