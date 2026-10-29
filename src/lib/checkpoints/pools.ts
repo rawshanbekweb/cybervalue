@@ -2677,3 +2677,297 @@ export const PUBKEY_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const TLS_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "TLS nimani yashirmaydi?",
+      en: "What does TLS not hide?",
+    },
+    right: { uz: "Server IP manzilini", en: "The server’s IP address" },
+    wrong: [
+      { uz: "Kiritilgan parolni", en: "The password typed in" },
+      { uz: "Sessiya cookie’sini", en: "The session cookie" },
+      { uz: "Sahifa matnini", en: "The page’s text" },
+    ],
+    explain: {
+      uz: "Ulanishning o‘zi (IP, vaqt, hajm, ko‘pincha domen) ko‘rinadi.",
+      en: "The connection itself (IP, timing, size, often the domain) is visible.",
+    },
+  },
+  {
+    ask: {
+      uz: "Fishing saytda HTTPS qulfi bor. Bu nimani anglatadi?",
+      en: "A phishing site shows the HTTPS padlock. What does that mean?",
+    },
+    right: {
+      uz: "Ulanish shifrlangan, lekin sayt ishonchli degani emas",
+      en: "The connection is encrypted, not that the site is trustworthy",
+    },
+    wrong: [
+      {
+        uz: "Sayt bank tomonidan tasdiqlangan",
+        en: "The bank has approved the site",
+      },
+      {
+        uz: "Sayt xavfsiz, ma’lumot kiritish mumkin",
+        en: "The site is safe to type into",
+      },
+      {
+        uz: "Sayt virusdan tekshirilgan",
+        en: "The site was scanned for viruses",
+      },
+    ],
+    explain: {
+      uz: "Qulf faqat shifrlashni va domen nomini tasdiqlaydi.",
+      en: "The padlock only vouches for encryption and the domain name.",
+    },
+  },
+  {
+    ask: {
+      uz: "*.shop.uz sertifikati qaysi manzilni qamraydi?",
+      en: "Which address does a *.shop.uz certificate cover?",
+    },
+    right: same("pay.shop.uz"),
+    wrong: [
+      same("shop.uz"),
+      same("a.pay.shop.uz"),
+      same("shop.uz.evil.example"),
+    ],
+    explain: {
+      uz: "Yulduzcha chapdagi faqat bitta qismni almashtiradi.",
+      en: "The wildcard stands for exactly one label on the left.",
+    },
+  },
+  {
+    ask: {
+      uz: "NET::ERR_CERT_DATE_INVALID nimani bildiradi?",
+      en: "What does NET::ERR_CERT_DATE_INVALID mean?",
+    },
+    right: {
+      uz: "Sertifikat muddati o‘tgan (yoki hali boshlanmagan)",
+      en: "The certificate has expired (or is not valid yet)",
+    },
+    wrong: [
+      { uz: "Nom mos emas", en: "The name does not match" },
+      { uz: "Server o‘chiq", en: "The server is down" },
+      { uz: "Parol noto‘g‘ri", en: "The password is wrong" },
+    ],
+    explain: {
+      uz: "Kompyuter soati noto‘g‘ri bo‘lsa ham shu xato chiqishi mumkin.",
+      en: "A wrong clock on the computer can cause it too.",
+    },
+  },
+  {
+    ask: {
+      uz: "Sertifikat zanjirida server nimani yuborishi kerak?",
+      en: "What must the server send in the certificate chain?",
+    },
+    right: {
+      uz: "O‘z sertifikati va oraliq sertifikat",
+      en: "Its own certificate and the intermediate",
+    },
+    wrong: [
+      { uz: "Faqat ildiz sertifikat", en: "Only the root certificate" },
+      { uz: "Yopiq kaliti", en: "Its private key" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Ildiz brauzerda oldindan bor; oraliqni server yuboradi (fullchain.pem).",
+      en: "The root is built in; the server sends the intermediate (fullchain.pem).",
+    },
+  },
+  {
+    ask: {
+      uz: "O‘zi imzolagan sertifikat ochiq saytda nima uchun ishlamaydi?",
+      en: "Why does a self-signed certificate fail on a public site?",
+    },
+    right: {
+      uz: "Brauzer uni tasdiqlagan ishonchli CA yo‘q",
+      en: "No trusted CA vouches for it",
+    },
+    wrong: [
+      { uz: "U juda qisqa", en: "It is too short" },
+      { uz: "U shifrlamaydi", en: "It does not encrypt" },
+      { uz: "U faqat Windows’da ishlaydi", en: "It only works on Windows" },
+    ],
+    explain: {
+      uz: "Har kim o‘ziga istalgan nomli sertifikat yasay oladi.",
+      en: "Anyone can make themselves a certificate with any name.",
+    },
+  },
+  {
+    ask: {
+      uz: "Certificate Transparency nima uchun kerak?",
+      en: "What is Certificate Transparency for?",
+    },
+    right: {
+      uz: "Berilgan barcha sertifikatlarni ochiq jurnalda ko‘rish uchun",
+      en: "To see every issued certificate in public logs",
+    },
+    wrong: [
+      { uz: "Sertifikatni yashirish uchun", en: "To hide certificates" },
+      { uz: "Parollarni saqlash uchun", en: "To store passwords" },
+      { uz: "Trafikni tezlashtirish uchun", en: "To speed up traffic" },
+    ],
+    explain: {
+      uz: "Domeningizga soxta sertifikat berilsa, uni jurnaldan topasiz.",
+      en: "A fake certificate for your domain shows up in the logs.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega sertifikat yangilashni avtomatlashtirish kerak?",
+      en: "Why automate certificate renewal?",
+    },
+    right: {
+      uz: "Muddat qisqa va unutilgan yangilash saytni to‘xtatadi",
+      en: "Lifetimes are short and a forgotten renewal takes the site down",
+    },
+    wrong: [
+      { uz: "Qo‘lda yangilash taqiqlangan", en: "Manual renewal is forbidden" },
+      {
+        uz: "Avtomatik sertifikat kuchliroq shifrlaydi",
+        en: "Automatic certificates encrypt more strongly",
+      },
+      { uz: "Hech qanday sabab yo‘q", en: "There is no reason" },
+    ],
+    explain: {
+      uz: "ACME (certbot) yangilashni o‘zi bajaradi.",
+      en: "ACME (certbot) renews on its own.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi protokollar yoqilgan bo‘lishi kerak?",
+      en: "Which protocols should be on?",
+    },
+    right: same("TLS 1.2, TLS 1.3"),
+    wrong: [
+      same("SSL 3.0, TLS 1.0"),
+      same("TLS 1.0, TLS 1.1"),
+      same("SSL 2.0"),
+    ],
+    explain: {
+      uz: "Eski protokollarda ma’lum hujumlar bor (POODLE, BEAST).",
+      en: "Old protocols have known attacks (POODLE, BEAST).",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega RSA kalit almashinuvi tavsiya etilmaydi?",
+      en: "Why is RSA key exchange not recommended?",
+    },
+    right: {
+      uz: "U forward secrecy bermaydi",
+      en: "It gives no forward secrecy",
+    },
+    wrong: [
+      { uz: "U juda tez", en: "It is too fast" },
+      { uz: "Uni brauzerlar bilmaydi", en: "Browsers do not know it" },
+      { uz: "U sertifikat talab qilmaydi", en: "It needs no certificate" },
+    ],
+    explain: {
+      uz: "Server kaliti keyin o‘g‘irlansa, eski yozilgan trafik ochiladi. ECDHE ishlating.",
+      en: "If the server key is stolen later, recorded traffic opens. Use ECDHE.",
+    },
+  },
+  {
+    ask: {
+      uz: "SSL stripping nima?",
+      en: "What is SSL stripping?",
+    },
+    right: {
+      uz: "Hujumchi foydalanuvchini HTTPS’siz nusxada ushlab qoladi",
+      en: "An attacker keeps the user on a copy without HTTPS",
+    },
+    wrong: [
+      { uz: "Sertifikatni o‘chirish", en: "Deleting the certificate" },
+      { uz: "Parolni taxmin qilish", en: "Guessing a password" },
+      { uz: "Serverni so‘rovlar bilan to‘ldirish", en: "Flooding the server" },
+    ],
+    explain: {
+      uz: "Birinchi oddiy http:// so‘rovga hujumchi javob beradi.",
+      en: "The attacker answers the first plain http:// request.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega HTTP’dan HTTPS’ga yo‘naltirish SSL stripping’ni to‘xtatmaydi?",
+      en: "Why does an HTTP-to-HTTPS redirect not stop SSL stripping?",
+    },
+    right: {
+      uz: "Yo‘naltirishning o‘zi shifrlanmagan so‘rovda keladi",
+      en: "The redirect itself arrives over the unencrypted request",
+    },
+    wrong: [
+      { uz: "Yo‘naltirish juda sekin", en: "The redirect is too slow" },
+      {
+        uz: "Brauzerlar yo‘naltirishni bilmaydi",
+        en: "Browsers ignore redirects",
+      },
+      { uz: "U to‘xtatadi", en: "It does stop it" },
+    ],
+    explain: {
+      uz: "Hujumchi yo‘naltirishni yetkazmaydi.",
+      en: "The attacker simply never delivers the redirect.",
+    },
+  },
+  {
+    ask: {
+      uz: "HSTS sarlavhasi birinchi tashrifni ham himoya qiladimi?",
+      en: "Does the HSTS header protect the very first visit?",
+    },
+    right: {
+      uz: "Yo‘q, buning uchun preload ro‘yxati kerak",
+      en: "No, that needs the preload list",
+    },
+    wrong: [
+      { uz: "Ha, har doim", en: "Yes, always" },
+      { uz: "Faqat telefonlarda", en: "Only on phones" },
+      { uz: "Faqat HTTP orqali", en: "Only over HTTP" },
+    ],
+    explain: {
+      uz: "Brauzer sarlavhani birinchi HTTPS javobda ko‘radi.",
+      en: "The browser first sees the header in an HTTPS reply.",
+    },
+  },
+  {
+    ask: {
+      uz: "HTTPS sahifa skriptni http:// orqali yuklasa, bu qanday muammo?",
+      en: "An HTTPS page loads a script over http://. What problem is this?",
+    },
+    right: { uz: "Aralash kontent (mixed content)", en: "Mixed content" },
+    wrong: [
+      { uz: "CORS", en: "CORS" },
+      { uz: "IDOR", en: "IDOR" },
+      { uz: "Rate limiting", en: "Rate limiting" },
+    ],
+    explain: {
+      uz: "Hujumchi aynan o‘sha shifrlanmagan skriptni almashtiradi.",
+      en: "An attacker swaps exactly that unencrypted script.",
+    },
+  },
+  {
+    ask: {
+      uz: "Mobil ilova sertifikat xatolarini e’tiborsiz qoldirsa nima bo‘ladi?",
+      en: "What happens if a mobile app ignores certificate errors?",
+    },
+    right: {
+      uz: "O‘rtadagi odam har qanday sertifikat bilan trafikni o‘qiydi",
+      en: "A man in the middle reads the traffic with any certificate",
+    },
+    wrong: [
+      {
+        uz: "Ilova tezroq ishlaydi va xavf yo‘q",
+        en: "The app is faster and safe",
+      },
+      { uz: "Faqat reklama o‘zgaradi", en: "Only the ads change" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Tekshiruvsiz TLS — himoyasiz TLS.",
+      en: "TLS without the checks is TLS without protection.",
+    },
+  },
+];

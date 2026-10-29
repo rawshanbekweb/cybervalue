@@ -18,6 +18,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/symmetric` | Cryptography module 2, symmetric encryption (8 lessons, a checkpoint)          |
 | `/intermediate/hashes`    | Cryptography module 3, hashes and passwords (8 lessons, a checkpoint)          |
 | `/intermediate/pubkey`    | Cryptography module 4, public-key cryptography (8 lessons, a checkpoint)       |
+| `/intermediate/tls`       | Cryptography module 5, TLS and certificates (8 lessons, a checkpoint)          |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -194,6 +195,28 @@ Mallory swapping in her own value, stopped when Bob's value is signed.
 | 6       | Questions on what a signature proves                                 |
 | 7       | Questions on hybrid encryption and forward secrecy                   |
 | 8       | Final questions                                                      |
+
+## Cryptography module 5: TLS and certificates
+
+`/intermediate/tls` (lab id `tls`, checkpoint `tls-1`, award `lab-tls`, site
+setting `tls`) follows the rules browsers and scanners apply, simplified, in
+`src/lib/tls/tools.ts`: `nameMatches` covers one label per wildcard;
+`checkCert` runs the browser's checks in order (trust, chain, dates, name)
+and gives the error the first failure shows; `grade` caps an SSL Labs style
+grade by the worst problem; `stripping` says whether a first and a later
+visit survive SSL stripping with a redirect, HSTS and preloading. This
+completes the Cryptography domain.
+
+| Lessons | What the student does                                            |
+| ------- | ---------------------------------------------------------------- |
+| 1       | Sorts what TLS hides and what stays visible                      |
+| 2       | Sorts which addresses a `*.shop.uz` certificate covers           |
+| 3       | Fixes a server's certificate until the browser opens pay.shop.uz |
+| 4       | Questions on CAs, Certificate Transparency and short lifetimes   |
+| 5       | Raises a TLS setup from C to A+                                  |
+| 6       | Protects the first and later visits with HSTS and preloading     |
+| 7       | Sorts sound practice from common mistakes                        |
+| 8       | Final questions                                                  |
 
 ## Who gets in
 

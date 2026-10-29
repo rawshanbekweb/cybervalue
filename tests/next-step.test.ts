@@ -97,6 +97,7 @@ test("everything finished", () => {
         symmetric: 8,
         hashes: 8,
         pubkey: 8,
+        tls: 8,
         scams: 8,
         httpbasics: 9,
         https: 9,

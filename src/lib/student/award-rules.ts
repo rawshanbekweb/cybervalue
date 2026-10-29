@@ -124,6 +124,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Ochiq kalitli kriptografiya (Intermediate)",
     earned: (f) => finished(f, "pubkey") && passed(f, "pubkey-1"),
   },
+  {
+    id: "lab-tls",
+    title: "TLS va sertifikatlar (Intermediate)",
+    earned: (f) => finished(f, "tls") && passed(f, "tls-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

@@ -1,0 +1,48 @@
+/* TLS lab widgets; shared pieces come from anim-lab.css, crypto-basics.css,
+   untrusted-input.css, browser-risks.css and access-control.css. */
+.tl-grade {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 16px;
+}
+.tl-mark {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 14px;
+  color: #0b0b0e;
+  font: 700 30px var(--font-mono);
+}
+.tl-mark.g-Ap,
+.tl-mark.g-A {
+  background: #2ee6a6;
+}
+.tl-mark.g-B {
+  background: #f5c84c;
+}
+.tl-mark.g-C {
+  background: #ff9b6b;
+}
+.tl-mark.g-F {
+  background: #ff7b6b;
+}
+.tl-grade ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-left: 18px;
+  font-size: 14px;
+}
+.tl-cap {
+  color: var(--muted);
+  font: 12px var(--font-mono);
+}
+.ui-cases th[scope="row"] {
+  text-align: left;
+  font-weight: 600;
+}
+.ui-cases caption {
+  text-align: left;
+}

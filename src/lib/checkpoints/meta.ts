@@ -281,6 +281,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/pubkey#checkpoints",
     pass: 70,
   },
+  {
+    id: "tls-1",
+    level: "intermediate",
+    lab: { uz: "TLS va sertifikatlar", en: "TLS and certificates" },
+    title: {
+      uz: "Nazorat: TLS va sertifikatlar",
+      en: "Checkpoint: TLS and certificates",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/tls#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

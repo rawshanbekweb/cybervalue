@@ -16,6 +16,7 @@ export const LAB_PROGRESS = {
   symmetric: { key: "cybervalue:symmetric:progress:v1", total: 8 },
   hashes: { key: "cybervalue:hashes:progress:v1", total: 8 },
   pubkey: { key: "cybervalue:pubkey:progress:v1", total: 8 },
+  tls: { key: "cybervalue:tls:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -163,6 +164,15 @@ export const LAB_META: {
       en: "Public-key cryptography (Intermediate)",
     },
     href: "/intermediate/pubkey",
+    intermediate: true,
+  },
+  {
+    id: "tls",
+    title: {
+      uz: "TLS va sertifikatlar (Intermediate)",
+      en: "TLS and certificates (Intermediate)",
+    },
+    href: "/intermediate/tls",
     intermediate: true,
   },
 ];

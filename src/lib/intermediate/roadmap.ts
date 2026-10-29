@@ -193,6 +193,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "TLS va sertifikatlar", en: "TLS and certificates" },
+        href: "/intermediate/tls",
+        lab: "tls",
         topics: ["PKI", "certificate chain", "HTTPS", "HSTS"],
         goal: goal(
           "Sertifikat zanjirini tekshirish va HTTPS sozlamasini baholash.",
