@@ -252,6 +252,12 @@ export const SECTIONS = [
     href: "/intermediate/detection",
   },
   {
+    id: "triage",
+    group: "lab",
+    label: "Alert triage (Intermediate)",
+    href: "/intermediate/triage",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

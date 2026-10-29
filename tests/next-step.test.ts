@@ -115,6 +115,7 @@ test("everything finished", () => {
         steganalysis: 8,
         siem: 8,
         detection: 8,
+        triage: 8,
         scams: 8,
         httpbasics: 9,
         https: 9,

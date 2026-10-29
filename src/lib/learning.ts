@@ -30,6 +30,7 @@ import { LESSONS as FORMATS_LESSONS } from "@/lib/formats/curriculum";
 import { LESSONS as STEGANALYSIS_LESSONS } from "@/lib/steganalysis/curriculum";
 import { LESSONS as SIEM_LESSONS } from "@/lib/siem/curriculum";
 import { LESSONS as DETECTION_LESSONS } from "@/lib/detection/curriculum";
+import { LESSONS as TRIAGE_LESSONS } from "@/lib/triage/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -642,6 +643,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: DETECTION_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "triage",
+      title: "Alert triage",
+      category: "Intermediate · Blue team",
+      description:
+        "Put alerts in order of priority, read an alert’s parts, work a queue of five alerts to escalate, close or tune, stay careful under pressure, write a clean escalation, and learn SOC tiers, playbooks and metrics.",
+      href: "/intermediate/triage",
+      progressKey: LAB_PROGRESS.triage.key,
+      level: "Intermediate",
+      lessons: TRIAGE_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: TRIAGE_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

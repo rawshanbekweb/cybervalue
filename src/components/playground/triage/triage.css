@@ -1,0 +1,63 @@
+/* Alert triage lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css and
+   access-control.css. */
+.tr-queue {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tr-alert fieldset {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.tr-alert legend {
+  padding: 0 4px;
+  font-size: 13px;
+}
+.tr-alert code {
+  overflow-wrap: anywhere;
+}
+.tr-sev {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.tr-high {
+  background: rgba(255, 155, 138, 0.18);
+  color: #ff9b8a;
+}
+.tr-medium {
+  background: rgba(255, 209, 102, 0.16);
+  color: #ffd166;
+}
+.tr-low {
+  background: rgba(46, 230, 166, 0.14);
+  color: #2ee6a6;
+}
+.tr-title {
+  margin: 0;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+.tr-context {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.tr-alert .nl-pass,
+.tr-alert .nl-fail {
+  margin: 0;
+}
