@@ -1417,5 +1417,17 @@
   "Read at least three clues before deciding.": "Qaror qilishdan oldin kamida uchta belgini o‘qing.",
   "Look at the plate and the language on the sign again.": "Raqamga va yozuvdagi tilga qayta qarang.",
   "Images and location · Academy Intermediate": "Rasm va joylashuv · Academy Intermediate",
-  "Images and location": "Rasm va joylashuv"
+  "Images and location": "Rasm va joylashuv",
+  "OSINT · MODULE 5": "OSINT · 5-MODUL",
+  "Digital footprint.": "Raqamli iz.",
+  "Turn the method on yourself.": "Usulni o‘zingizga qo‘llang.",
+  "Tell active from passive traces, see how one username links every account, audit a student’s six public findings and decide what to hide, secure or keep, deal with breaches, fix privacy settings, ask for removal and plan what to do today and this month.": "Faol va passiv izlarni farqlang, bitta foydalanuvchi nomi barcha akkauntlarni qanday bog‘lashini ko‘ring, o‘quvchining oltita ochiq topilmasini tekshirib, nimani yashirish, himoyalash yoki qoldirishni hal qiling, sizib chiqishlar bilan ishlang, maxfiylik sozlamalarini tuzating, o‘chirishni so‘rang va bugun hamda shu oy nima qilishni rejalashtiring.",
+  "SELF / LAB": "SELF / AMALIYOT",
+  "Hide or delete": "Yashirish yoki o‘chirish",
+  "Secure the account": "Akkauntni himoyalash",
+  "Keep it": "Qoldirish",
+  "Ask: does this help a stranger find you, trick you or get into your accounts?": "So‘rang: bu begonaga sizni topish, aldash yoki akkauntingizga kirishga yordam beradimi?",
+  "Two hidden, two secured, two kept. A smaller footprint, not an empty one.": "Ikkitasi yashirildi, ikkitasi himoyalandi, ikkitasi qoldi. Iz kichraydi, lekin yo‘qolmaydi.",
+  "Digital footprint · Academy Intermediate": "Raqamli iz · Academy Intermediate",
+  "Digital footprint": "Raqamli iz"
 }

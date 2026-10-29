@@ -525,6 +525,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Raqamli iz", en: "Digital footprint" },
+        href: "/intermediate/footprint",
+        lab: "footprint",
         topics: ["privacy settings", "data brokers", "self-audit"],
         goal: goal(
           "O‘z raqamli izingizni tekshirib, kamaytirish rejasini tuzish.",

@@ -294,6 +294,12 @@ export const SECTIONS = [
     href: "/intermediate/geo",
   },
   {
+    id: "footprint",
+    group: "lab",
+    label: "Digital footprint (Intermediate)",
+    href: "/intermediate/footprint",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",
