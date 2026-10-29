@@ -216,6 +216,8 @@ export const DOMAINS: Domain[] = [
     modules: [
       {
         title: { uz: "TCP/IP chuqurroq", en: "TCP/IP in depth" },
+        href: "/intermediate/tcpip",
+        lab: "tcpip",
         topics: ["handshake", "ports", "UDP", "ICMP", "DNS"],
         goal: goal(
           "Ulanish qanday o‘rnatilishini bosqichma-bosqich tushuntirish.",

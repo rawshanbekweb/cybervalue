@@ -19,6 +19,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/hashes`    | Cryptography module 3, hashes and passwords (8 lessons, a checkpoint)          |
 | `/intermediate/pubkey`    | Cryptography module 4, public-key cryptography (8 lessons, a checkpoint)       |
 | `/intermediate/tls`       | Cryptography module 5, TLS and certificates (8 lessons, a checkpoint)          |
+| `/intermediate/tcpip`     | Network security module 1, TCP/IP in depth (8 lessons, a checkpoint)           |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -217,6 +218,26 @@ completes the Cryptography domain.
 | 6       | Protects the first and later visits with HSTS and preloading     |
 | 7       | Sorts sound practice from common mistakes                        |
 | 8       | Final questions                                                  |
+
+## Network security module 1: TCP/IP in depth
+
+`/intermediate/tcpip` (lab id `tcpip`, checkpoint `tcpip-1`, award
+`lab-tcpip`, site setting `tcpip`) uses `src/lib/tcpip/tools.ts`: `ANSWERS`
+gives the sequence and acknowledgement numbers of a handshake and its first
+100 bytes; `portState` reads a SYN scan's replies as nmap does; `poisonOdds`
+gives the chance one race poisons a DNS cache with the 16-bit ID alone, with
+a random source port too, or with DNSSEC.
+
+| Lessons | What the student does                                              |
+| ------- | ------------------------------------------------------------------ |
+| 1       | Sorts what the Ethernet, IP and TCP headers carry                  |
+| 2       | Fills in the seq and ack numbers of a handshake and its first data |
+| 3       | Sorts services into TCP and UDP                                    |
+| 4       | Reads port states from scan replies                                |
+| 5       | Questions on ping, traceroute and why not to block all ICMP        |
+| 6       | Pushes the odds of DNS cache poisoning below one in a thousand     |
+| 7       | Questions on SYN floods and SYN cookies                            |
+| 8       | Final questions                                                    |
 
 ## Who gets in
 

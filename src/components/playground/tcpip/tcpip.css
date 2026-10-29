@@ -1,0 +1,48 @@
+/* TCP/IP lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css and
+   access-control.css. */
+.tc-flow {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tc-flow li {
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #0b0b0e;
+}
+.tc-flow code {
+  overflow-wrap: anywhere;
+  line-height: 2.2;
+}
+.tc-dir {
+  color: var(--muted);
+  font-size: 12px;
+}
+.tc-blank {
+  width: 7ch;
+  min-height: 36px;
+  margin: 0 2px;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #15151b;
+  color: inherit;
+  font: inherit;
+}
+.tc-blank:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.tc-blank.ok {
+  border-color: #2ee6a6;
+  color: #2ee6a6;
+}
+.tc-blank.bad {
+  border-color: #ff7b6b;
+}

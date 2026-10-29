@@ -20,6 +20,7 @@ import { LESSONS as SYMMETRIC } from "../src/lib/symmetric/curriculum";
 import { LESSONS as HASHES } from "../src/lib/hashes/curriculum";
 import { LESSONS as PUBKEY } from "../src/lib/public-key/curriculum";
 import { LESSONS as TLS } from "../src/lib/tls/curriculum";
+import { LESSONS as TCPIP } from "../src/lib/tcpip/curriculum";
 import {
   isLabId,
   LAB_PROGRESS,
@@ -48,6 +49,7 @@ test("lab progress totals match the lessons", () => {
   assert.equal(LAB_PROGRESS.hashes.total, HASHES.length);
   assert.equal(LAB_PROGRESS.pubkey.total, PUBKEY.length);
   assert.equal(LAB_PROGRESS.tls.total, TLS.length);
+  assert.equal(LAB_PROGRESS.tcpip.total, TCPIP.length);
   assert.equal(isLabId("toString"), false);
   assert.equal(isLabId("network"), true);
 });

@@ -17,6 +17,7 @@ export const LAB_PROGRESS = {
   hashes: { key: "cybervalue:hashes:progress:v1", total: 8 },
   pubkey: { key: "cybervalue:pubkey:progress:v1", total: 8 },
   tls: { key: "cybervalue:tls:progress:v1", total: 8 },
+  tcpip: { key: "cybervalue:tcpip:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -173,6 +174,15 @@ export const LAB_META: {
       en: "TLS and certificates (Intermediate)",
     },
     href: "/intermediate/tls",
+    intermediate: true,
+  },
+  {
+    id: "tcpip",
+    title: {
+      uz: "TCP/IP chuqurroq (Intermediate)",
+      en: "TCP/IP in depth (Intermediate)",
+    },
+    href: "/intermediate/tcpip",
     intermediate: true,
   },
 ];

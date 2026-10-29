@@ -129,6 +129,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "TLS va sertifikatlar (Intermediate)",
     earned: (f) => finished(f, "tls") && passed(f, "tls-1"),
   },
+  {
+    id: "lab-tcpip",
+    title: "TCP/IP chuqurroq (Intermediate)",
+    earned: (f) => finished(f, "tcpip") && passed(f, "tcpip-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

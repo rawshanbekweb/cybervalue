@@ -296,6 +296,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/tls#checkpoints",
     pass: 70,
   },
+  {
+    id: "tcpip-1",
+    level: "intermediate",
+    lab: { uz: "TCP/IP chuqurroq", en: "TCP/IP in depth" },
+    title: {
+      uz: "Nazorat: TCP/IP chuqurroq",
+      en: "Checkpoint: TCP/IP in depth",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/tcpip#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

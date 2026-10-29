@@ -2971,3 +2971,240 @@ export const TLS_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const TCPIP_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Port raqami qaysi sarlavhada yoziladi?",
+      en: "Which header carries the port number?",
+    },
+    right: same("TCP/UDP"),
+    wrong: [same("IP"), same("Ethernet"), same("HTTP")],
+    explain: {
+      uz: "Port — kompyuter ichidagi qaysi dastur; transport qatlami.",
+      en: "A port names the program on the computer; it is the transport layer.",
+    },
+  },
+  {
+    ask: {
+      uz: "MAC manzil qachon ahamiyatli?",
+      en: "Where does a MAC address matter?",
+    },
+    right: {
+      uz: "Faqat bitta tarmoq segmenti ichida",
+      en: "Only within one network segment",
+    },
+    wrong: [
+      { uz: "Butun internet bo‘ylab", en: "Across the whole internet" },
+      { uz: "Faqat DNS’da", en: "Only in DNS" },
+      { uz: "Hech qachon", en: "Never" },
+    ],
+    explain: {
+      uz: "Har bir routerda Ethernet ramkasi yangidan yoziladi.",
+      en: "Each router writes a fresh Ethernet frame.",
+    },
+  },
+  {
+    ask: {
+      uz: "TCP ulanishi qaysi xabarlar bilan boshlanadi?",
+      en: "Which messages start a TCP connection?",
+    },
+    right: same("SYN → SYN-ACK → ACK"),
+    wrong: [same("ACK → SYN → FIN"), same("GET → 200 OK"), same("RST → ACK")],
+    explain: {
+      uz: "Uch qadamli salomlashish.",
+      en: "The three-way handshake.",
+    },
+  },
+  {
+    ask: {
+      uz: "Mijoz SYN’ni seq=1000 bilan yubordi. SYN-ACK’dagi ack qancha?",
+      en: "The client’s SYN has seq=1000. What is the ack in the SYN-ACK?",
+    },
+    right: same("1001"),
+    wrong: [same("1000"), same("999"), same("2000")],
+    explain: {
+      uz: "SYN bitta raqam egallaydi.",
+      en: "A SYN takes up one number.",
+    },
+  },
+  {
+    ask: {
+      uz: "100 bayt ma’lumot seq=1001 dan boshlab yuborildi. Javobdagi ack?",
+      en: "100 bytes of data were sent from seq=1001. The ack in the reply?",
+    },
+    right: same("1101"),
+    wrong: [same("1002"), same("1100"), same("101")],
+    explain: {
+      uz: "ack = seq + baytlar soni: keyingi kutilgan bayt.",
+      en: "ack = seq + bytes: the next byte expected.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega TCP boshlang‘ich raqami (ISN) tasodifiy bo‘lishi kerak?",
+      en: "Why must the TCP initial sequence number be random?",
+    },
+    right: {
+      uz: "Aks holda hujumchi soxta paketlarni ulanishga qo‘sha oladi",
+      en: "Otherwise an attacker can inject forged packets into a connection",
+    },
+    wrong: [
+      { uz: "Tezlik uchun", en: "For speed" },
+      { uz: "DNS uchun", en: "For DNS" },
+      { uz: "Hech qanday sabab yo‘q", en: "No reason" },
+    ],
+    explain: {
+      uz: "Taxmin qilinadigan raqamlar ulanishni o‘g‘irlashga yo‘l ochadi.",
+      en: "Guessable numbers open the way to hijacking a connection.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi xizmat odatda UDP ishlatadi?",
+      en: "Which service usually uses UDP?",
+    },
+    right: { uz: "Video qo‘ng‘iroq", en: "A video call" },
+    wrong: [
+      { uz: "SSH", en: "SSH" },
+      { uz: "Pochta yuborish (SMTP)", en: "Sending mail (SMTP)" },
+      { uz: "Fayl yuklab olish (HTTP/1.1)", en: "A file download (HTTP/1.1)" },
+    ],
+    explain: {
+      uz: "Kechikish yo‘qolgan kadrdan muhimroq.",
+      en: "Delay matters more than a lost frame.",
+    },
+  },
+  {
+    ask: {
+      uz: "Skaner SYN yubordi va RST oldi. Port holati?",
+      en: "A scanner sent a SYN and got a RST. The port’s state?",
+    },
+    right: { uz: "Yopiq", en: "Closed" },
+    wrong: [
+      { uz: "Ochiq", en: "Open" },
+      { uz: "Filtrlangan", en: "Filtered" },
+      { uz: "Shifrlangan", en: "Encrypted" },
+    ],
+    explain: {
+      uz: "Kompyuter javob berdi, lekin portda dastur yo‘q.",
+      en: "The host answered, but nothing listens on the port.",
+    },
+  },
+  {
+    ask: {
+      uz: "Skaner SYN-ACK oldi. Port holati?",
+      en: "A scanner got a SYN-ACK. The port’s state?",
+    },
+    right: { uz: "Ochiq", en: "Open" },
+    wrong: [
+      { uz: "Yopiq", en: "Closed" },
+      { uz: "Filtrlangan", en: "Filtered" },
+      { uz: "Noma’lum", en: "Unknown" },
+    ],
+    explain: {
+      uz: "Portda dastur ulanishni qabul qilmoqda.",
+      en: "A program on the port is accepting connections.",
+    },
+  },
+  {
+    ask: {
+      uz: "traceroute qaysi maydonni oshirib boradi?",
+      en: "Which field does traceroute raise step by step?",
+    },
+    right: same("TTL"),
+    wrong: [same("Port"), same("MAC"), same("seq")],
+    explain: {
+      uz: "Har bir router TTL tugaganda “time exceeded” qaytaradi.",
+      en: "Each router returns “time exceeded” when the TTL runs out.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega barcha ICMP’ni bloklash yomon?",
+      en: "Why is blocking all ICMP bad?",
+    },
+    right: {
+      uz: "Path MTU aniqlash buziladi",
+      en: "Path MTU discovery breaks",
+    },
+    wrong: [
+      { uz: "Internet tezlashadi", en: "The internet gets faster" },
+      { uz: "Parollar ochiladi", en: "Passwords are exposed" },
+      { uz: "Hech qanday zarar yo‘q", en: "There is no harm" },
+    ],
+    explain: {
+      uz: "“Fragmentation needed” xabarlarisiz katta paketlar yo‘qoladi.",
+      en: "Without “fragmentation needed” messages large packets vanish.",
+    },
+  },
+  {
+    ask: {
+      uz: "DNS keshini zaharlashda hujumchi nimani taxmin qiladi?",
+      en: "What does an attacker guess when poisoning a DNS cache?",
+    },
+    right: {
+      uz: "Tranzaksiya ID’si (va manba portni)",
+      en: "The transaction ID (and the source port)",
+    },
+    wrong: [
+      { uz: "Foydalanuvchi parolini", en: "The user’s password" },
+      { uz: "TLS kalitini", en: "The TLS key" },
+      { uz: "MAC manzilni", en: "The MAC address" },
+    ],
+    explain: {
+      uz: "Soxta javob so‘rovning ID va portiga mos kelishi kerak.",
+      en: "The forged answer must match the query’s ID and port.",
+    },
+  },
+  {
+    ask: {
+      uz: "Tasodifiy manba port DNS zaharlashni qanchalik qiyinlashtiradi?",
+      en: "How much harder does a random source port make DNS poisoning?",
+    },
+    right: {
+      uz: "Taxmin maydoni ~65 ming dan ~1,8 milliardga oshadi",
+      en: "The space to guess grows from ~65 thousand to ~1.8 billion",
+    },
+    wrong: [
+      { uz: "Hech qancha", en: "Not at all" },
+      { uz: "Ikki baravar", en: "Twice as hard" },
+      { uz: "Butunlay imkonsiz qiladi", en: "It makes it impossible" },
+    ],
+    explain: {
+      uz: "To‘liq himoya uchun DNSSEC kerak.",
+      en: "Full protection needs DNSSEC.",
+    },
+  },
+  {
+    ask: {
+      uz: "SYN toshqiniga qarshi server tomonidagi himoya?",
+      en: "A server-side defence against SYN floods?",
+    },
+    right: same("SYN cookies"),
+    wrong: [same("DNSSEC"), same("HSTS"), same("WPA3")],
+    explain: {
+      uz: "Server holatni seq raqamiga yozadi va xotira ajratmaydi.",
+      en: "The server encodes state in the sequence number and keeps no memory.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega UDP xizmatlari amplification DDoS’da ishlatiladi?",
+      en: "Why are UDP services used in amplification DDoS?",
+    },
+    right: {
+      uz: "Manzilni soxtalashtirish oson va javob so‘rovdan katta",
+      en: "Sources are easy to fake and the reply is bigger than the request",
+    },
+    wrong: [
+      { uz: "UDP shifrlangan", en: "UDP is encrypted" },
+      { uz: "UDP salomlashishni talab qiladi", en: "UDP needs a handshake" },
+      { uz: "UDP sekin", en: "UDP is slow" },
+    ],
+    explain: {
+      uz: "Kichik so‘rov katta javobni qurbonga yo‘naltiradi.",
+      en: "A small request steers a large reply at the victim.",
+    },
+  },
+];
