@@ -174,6 +174,12 @@ export const SECTIONS = [
     href: "/intermediate/connections",
   },
   {
+    id: "ids",
+    group: "lab",
+    label: "Intrusion detection (Intermediate)",
+    href: "/intermediate/ids",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

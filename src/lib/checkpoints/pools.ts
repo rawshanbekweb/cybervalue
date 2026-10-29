@@ -4046,3 +4046,284 @@ export const CONNECTIONS_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const IDS_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Imzo asosidagi aniqlashning zaif tomoni?",
+      en: "The weakness of signature-based detection?",
+    },
+    right: {
+      uz: "Yangi, noma’lum hujumni ko‘rmaydi",
+      en: "It misses new, unknown attacks",
+    },
+    wrong: [
+      { uz: "Juda sekin ishlaydi", en: "It is very slow" },
+      { uz: "Faqat UDP’ni ko‘radi", en: "It sees UDP only" },
+      { uz: "Zaif tomoni yo‘q", en: "It has none" },
+    ],
+    explain: {
+      uz: "U faqat ma’lum izni qidiradi.",
+      en: "It looks only for a known trace.",
+    },
+  },
+  {
+    ask: {
+      uz: "Anomaliya asosidagi aniqlashning kamchiligi?",
+      en: "The drawback of anomaly-based detection?",
+    },
+    right: {
+      uz: "Ko‘proq yolg‘on signal beradi",
+      en: "It raises more false alarms",
+    },
+    wrong: [
+      { uz: "Yangi hujumlarni ko‘rmaydi", en: "It misses new attacks" },
+      { uz: "Qoidalar yozib bo‘lmaydi", en: "No rules can be written" },
+      { uz: "Shifrlashni buzadi", en: "It breaks encryption" },
+    ],
+    explain: {
+      uz: "“Odatdan farq” har doim ham hujum emas.",
+      en: "“Different from usual” isn’t always an attack.",
+    },
+  },
+  {
+    ask: {
+      uz: "Suricata qoidasida alert va drop farqi?",
+      en: "In a Suricata rule, alert versus drop?",
+    },
+    right: {
+      uz: "alert faqat xabar beradi, drop paketni ham to‘xtatadi (inline)",
+      en: "alert only reports; drop also stops the packet (inline)",
+    },
+    wrong: [
+      { uz: "Farqi yo‘q", en: "No difference" },
+      { uz: "drop faqat log yozadi", en: "drop only writes a log" },
+      { uz: "alert paketni o‘chiradi", en: "alert deletes the packet" },
+    ],
+    explain: {
+      uz: "drop faqat IPS (inline) rejimida ishlaydi.",
+      en: "drop works only in IPS (inline) mode.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qoidadagi $HOME_NET nima?",
+      en: "What is $HOME_NET in a rule?",
+    },
+    right: {
+      uz: "Sozlamadagi o‘z tarmog‘imiz manzillari",
+      en: "Our own network’s addresses, from the config",
+    },
+    wrong: [
+      { uz: "Butun internet", en: "The whole internet" },
+      { uz: "Foydalanuvchining uyi", en: "The user’s home" },
+      { uz: "DNS server", en: "The DNS server" },
+    ],
+    explain: {
+      uz: "$EXTERNAL_NET — qolgan hamma manzillar.",
+      en: "$EXTERNAL_NET is every other address.",
+    },
+  },
+  {
+    ask: {
+      uz: "sid:1000001 nima?",
+      en: "What is sid:1000001?",
+    },
+    right: {
+      uz: "Qoidaning yagona raqami",
+      en: "The rule’s unique ID",
+    },
+    wrong: [
+      { uz: "Port raqami", en: "A port number" },
+      { uz: "Paketlar soni", en: "A packet count" },
+      { uz: "Sessiya ID’si", en: "A session ID" },
+    ],
+    explain: {
+      uz: "O‘z qoidalarimiz odatda 1000000 dan boshlanadi.",
+      en: "Local rules usually start at 1000000.",
+    },
+  },
+  {
+    ask: {
+      uz: 'Nega content:"/etc/passwd" ..%2fetc%2fpasswd ni ushlamaydi?',
+      en: 'Why doesn’t content:"/etc/passwd" catch ..%2fetc%2fpasswd?',
+    },
+    right: {
+      uz: "%2f — kodlangan “/”; xom baytlarda satr yo‘q",
+      en: "%2f is an encoded “/”; the raw bytes don’t contain the string",
+    },
+    wrong: [
+      { uz: "Suricata HTTP’ni ko‘rmaydi", en: "Suricata can’t see HTTP" },
+      { uz: "Bu hujum emas", en: "It isn’t an attack" },
+      { uz: "passwd kichik harfda", en: "passwd is lower case" },
+    ],
+    explain: {
+      uz: "http.uri buferi URI’ni normallashtiradi.",
+      en: "The http.uri buffer normalizes the URI.",
+    },
+  },
+  {
+    ask: {
+      uz: "nocase parametri nima qiladi?",
+      en: "What does the nocase option do?",
+    },
+    right: {
+      uz: "Katta-kichik harfni farqlamaydi",
+      en: "It ignores upper and lower case",
+    },
+    wrong: [
+      { uz: "Qoidani o‘chiradi", en: "It turns the rule off" },
+      { uz: "Faqat raqamlarni qidiradi", en: "It matches digits only" },
+      { uz: "Shifrlangan trafikni ochadi", en: "It opens encrypted traffic" },
+    ],
+    explain: {
+      uz: "/ETC/PASSWD ham ushlanadi.",
+      en: "/ETC/PASSWD is caught too.",
+    },
+  },
+  {
+    ask: {
+      uz: "“track by_src” chegarada nimani bildiradi?",
+      en: "What does “track by_src” mean in a threshold?",
+    },
+    right: {
+      uz: "Hodisalar har bir manba IP uchun alohida sanaladi",
+      en: "Events are counted separately for each source IP",
+    },
+    wrong: [
+      { uz: "Faqat birinchi manba", en: "The first source only" },
+      { uz: "Hamma manbalar birga", en: "All sources together" },
+      { uz: "Faqat qabul qiluvchi", en: "The destination only" },
+    ],
+    explain: {
+      uz: "by_dst — qabul qiluvchi bo‘yicha sanaydi.",
+      en: "by_dst counts per destination instead.",
+    },
+  },
+  {
+    ask: {
+      uz: "Har 25 soniyada bitta taxmin qiladigan botni count 5, seconds 60 ushlaydimi?",
+      en: "Does count 5, seconds 60 catch a bot guessing once every 25 seconds?",
+    },
+    right: {
+      uz: "Yo‘q — 60 soniyaga atigi 3 urinish sig‘adi",
+      en: "No — only 3 attempts fit in 60 seconds",
+    },
+    wrong: [
+      { uz: "Ha, darhol", en: "Yes, straight away" },
+      { uz: "Ha, 10 daqiqadan keyin", en: "Yes, after 10 minutes" },
+      { uz: "Faqat kechasi", en: "Only at night" },
+    ],
+    explain: {
+      uz: "“Low and slow” uchun uzunroq oyna kerak.",
+      en: "“Low and slow” needs a longer window.",
+    },
+  },
+  {
+    ask: {
+      uz: "Juda qattiq brute-force chegarasining oqibati?",
+      en: "What does a brute-force threshold that is too strict cause?",
+    },
+    right: {
+      uz: "Parolni xato yozgan xodimlar uchun ham signal",
+      en: "Alerts for colleagues who mistype their password",
+    },
+    wrong: [
+      { uz: "Bot’lar ko‘rinmaydi", en: "Bots go unseen" },
+      { uz: "Tarmoq tezlashadi", en: "The network speeds up" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Ko‘p yolg‘on signal — signal charchog‘i.",
+      en: "Many false alarms lead to alert fatigue.",
+    },
+  },
+  {
+    ask: {
+      uz: "SQL injection signali — manba kompaniyaning o‘z skaneri, rejadagi vaqtda. To‘g‘ri harakat?",
+      en: "A SQL injection alert from the company’s own scanner, at its scheduled time. The right move?",
+    },
+    right: {
+      uz: "Tor istisno qo‘shish: skaner IP’si va vaqti",
+      en: "Add a narrow exception: the scanner’s IP and time",
+    },
+    wrong: [
+      { uz: "Qoidani butunlay o‘chirish", en: "Turn the rule off entirely" },
+      { uz: "Incident e’lon qilish", en: "Declare an incident" },
+      { uz: "Skanerni bloklash", en: "Block the scanner" },
+    ],
+    explain: {
+      uz: "Istisno qanchalik tor bo‘lsa, shuncha kam ko‘r nuqta.",
+      en: "The narrower the exception, the fewer blind spots.",
+    },
+  },
+  {
+    ask: {
+      uz: "SSH brute force signali, keyin o‘sha IP’dan muvaffaqiyatli kirish. Bu?",
+      en: "An SSH brute-force alert, then a successful login from the same IP. This is?",
+    },
+    right: {
+      uz: "Haqiqiy hujum — darhol eskalatsiya",
+      en: "A real attack — escalate at once",
+    },
+    wrong: [
+      { uz: "Yolg‘on signal", en: "A false positive" },
+      { uz: "Oddiy holat", en: "Normal behaviour" },
+      { uz: "Skaner", en: "A scanner" },
+    ],
+    explain: {
+      uz: "Muvaffaqiyatli kirish — hujumchi ichkarida bo‘lishi mumkin.",
+      en: "A successful login means the attacker may be in.",
+    },
+  },
+  {
+    ask: {
+      uz: "SPAN portidagi IDS hujum paketini to‘xtata oladimi?",
+      en: "Can an IDS on a SPAN port stop an attack packet?",
+    },
+    right: {
+      uz: "Yo‘q — u faqat nusxani ko‘radi",
+      en: "No — it sees only a copy",
+    },
+    wrong: [
+      { uz: "Ha, har doim", en: "Yes, always" },
+      { uz: "Faqat TCP’da", en: "Only for TCP" },
+      { uz: "Faqat kunduzi", en: "Only by day" },
+    ],
+    explain: {
+      uz: "To‘xtatish uchun inline (IPS) kerak.",
+      en: "Stopping takes an inline IPS.",
+    },
+  },
+  {
+    ask: {
+      uz: "HTTPS trafikida tarmoq IDS’i nimani ko‘ra oladi?",
+      en: "What can a network IDS see in HTTPS traffic?",
+    },
+    right: {
+      uz: "Metama’lumot: IP, SNI, vaqt, hajm",
+      en: "Metadata: IPs, SNI, timing, sizes",
+    },
+    wrong: [
+      { uz: "So‘rovning to‘liq matni", en: "The full request text" },
+      { uz: "Parollar", en: "Passwords" },
+      { uz: "Cookie’lar", en: "Cookies" },
+    ],
+    explain: {
+      uz: "Mazmun uchun TLS tugaydigan joyda loglash kerak.",
+      en: "For content, log where TLS ends.",
+    },
+  },
+  {
+    ask: {
+      uz: "Million hodisada 10 hujum; IDS 99% ushlaydi, 0,1% adashadi. Signallarning qanchasi haqiqiy?",
+      en: "10 attacks in a million events; the IDS catches 99% and errs on 0.1%. What share of alerts is real?",
+    },
+    right: same("≈ 1%"),
+    wrong: [same("≈ 50%"), same("≈ 90%"), same("≈ 99%")],
+    explain: {
+      uz: "≈ 10 haqiqiy va ≈ 1000 yolg‘on signal.",
+      en: "About 10 real and about 1000 false alerts.",
+    },
+  },
+];

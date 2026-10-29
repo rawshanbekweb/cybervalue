@@ -1,0 +1,26 @@
+/* Intrusion detection lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css and
+   access-control.css. */
+.id-rule {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+.id-kind {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+}
+.ui-cases td code {
+  overflow-wrap: anywhere;
+}
+.id-range {
+  width: 100%;
+  min-height: 32px;
+  accent-color: var(--accent);
+}
+.id-cases th:last-child,
+.id-cases td:last-child {
+  white-space: nowrap;
+}

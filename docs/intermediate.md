@@ -23,6 +23,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/traffic`     | Network security module 2, traffic analysis (8 lessons, a checkpoint)           |
 | `/intermediate/firewall`    | Network security module 3, firewalls and segmentation (8 lessons, a checkpoint) |
 | `/intermediate/connections` | Network security module 4, secure connections (8 lessons, a checkpoint)         |
+| `/intermediate/ids`         | Network security module 5, intrusion detection (8 lessons, a checkpoint)        |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -310,6 +311,29 @@ the published one only in its last character.
 | 6       | Sorts safe sshd settings from risky ones                              |
 | 7       | Questions on SSH port forwarding, bastion hosts and agent forwarding  |
 | 8       | Final questions                                                       |
+
+## Network security module 5: Intrusion detection
+
+`/intermediate/ids` (lab id `ids`, checkpoint `ids-1`, award `lab-ids`, site
+setting `ids`) uses `src/lib/ids/tools.ts`: `contentMatches` runs
+`content:"/etc/passwd"` over seven request lines, on the raw bytes or on the
+normalized `http.uri` buffer (`normalize`: %xx decoded, `//` collapsed), with
+or without `nocase`; `peak` and `alerts` apply `threshold: type both, track
+by_src` to failed SSH logins from two colleagues and two bots (only a
+300-second window with a count from 4 to 12 catches both bots and neither
+colleague); `precision` gives the share of real alerts for a base rate. It
+completes the Network security domain.
+
+| Lessons | What the student does                                             |
+| ------- | ----------------------------------------------------------------- |
+| 1       | Sorts detections into signatures and anomalies                    |
+| 2       | Clicks through the parts of a Suricata rule                       |
+| 3       | Makes a content rule catch encoded and upper-case path traversal  |
+| 4       | Tunes a brute-force threshold to catch a slow bot and spare typos |
+| 5       | Triages alerts into real and benign                               |
+| 6       | Questions on IDS versus IPS and encrypted traffic                 |
+| 7       | Questions on base rates and alert fatigue                         |
+| 8       | Final questions                                                   |
 
 ## Who gets in
 

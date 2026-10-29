@@ -356,6 +356,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/connections#checkpoints",
     pass: 70,
   },
+  {
+    id: "ids-1",
+    level: "intermediate",
+    lab: { uz: "Hujumni aniqlash", en: "Intrusion detection" },
+    title: {
+      uz: "Nazorat: Hujumni aniqlash",
+      en: "Checkpoint: Intrusion detection",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/ids#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>
