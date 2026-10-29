@@ -288,6 +288,12 @@ export const SECTIONS = [
     href: "/intermediate/infra",
   },
   {
+    id: "geo",
+    group: "lab",
+    label: "Images and location (Intermediate)",
+    href: "/intermediate/geo",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",
