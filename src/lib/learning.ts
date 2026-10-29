@@ -32,6 +32,7 @@ import { LESSONS as SIEM_LESSONS } from "@/lib/siem/curriculum";
 import { LESSONS as DETECTION_LESSONS } from "@/lib/detection/curriculum";
 import { LESSONS as TRIAGE_LESSONS } from "@/lib/triage/curriculum";
 import { LESSONS as HUNTING_LESSONS } from "@/lib/hunting/curriculum";
+import { LESSONS as PHISHING_LESSONS } from "@/lib/phishing/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -678,6 +679,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: HUNTING_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "phishing",
+      title: "Phishing analysis",
+      category: "Intermediate · Blue team",
+      description:
+        "Sort the signs of phishing, read an email’s headers, trace a fake bank email to its first server and its real reply address, interpret SPF, DKIM and DMARC, unmask six links, rank attachments by risk and respond once the verdict is in.",
+      href: "/intermediate/phishing",
+      progressKey: LAB_PROGRESS.phishing.key,
+      level: "Intermediate",
+      lessons: PHISHING_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: PHISHING_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

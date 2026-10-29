@@ -39,6 +39,7 @@ import { LESSONS as SIEM } from "../src/lib/siem/curriculum";
 import { LESSONS as DETECTION } from "../src/lib/detection/curriculum";
 import { LESSONS as TRIAGE } from "../src/lib/triage/curriculum";
 import { LESSONS as HUNTING } from "../src/lib/hunting/curriculum";
+import { LESSONS as PHISHING } from "../src/lib/phishing/curriculum";
 import {
   isLabId,
   LAB_PROGRESS,
@@ -86,6 +87,7 @@ test("lab progress totals match the lessons", () => {
   assert.equal(LAB_PROGRESS.detection.total, DETECTION.length);
   assert.equal(LAB_PROGRESS.triage.total, TRIAGE.length);
   assert.equal(LAB_PROGRESS.hunting.total, HUNTING.length);
+  assert.equal(LAB_PROGRESS.phishing.total, PHISHING.length);
   assert.equal(isLabId("toString"), false);
   assert.equal(isLabId("network"), true);
 });

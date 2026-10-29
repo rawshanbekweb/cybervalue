@@ -459,6 +459,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Fishing tahlili", en: "Phishing analysis" },
+        href: "/intermediate/phishing",
+        lab: "phishing",
         topics: ["email headers", "SPF/DKIM/DMARC", "links"],
         goal: goal(
           "Shubhali xatni tekshirib, xulosa yozish.",

@@ -581,6 +581,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/hunting#checkpoints",
     pass: 70,
   },
+  {
+    id: "phishing-1",
+    level: "intermediate",
+    lab: { uz: "Fishing tahlili", en: "Phishing analysis" },
+    title: {
+      uz: "Nazorat: Fishing tahlili",
+      en: "Checkpoint: Phishing analysis",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/phishing#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

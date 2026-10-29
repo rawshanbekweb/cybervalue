@@ -1341,5 +1341,20 @@
   "Only on {host}, and a fake svchost.exe in the Public folder. Windows never runs svchost from there: open an incident.": "Faqat {host} da, va Public papkasidagi soxta svchost.exe. Windows svchost’ni hech qachon u yerdan ishga tushirmaydi: hodisa oching.",
   "This one is a normal updater found on many machines. Look for what is rare.": "Bu ko‘p kompyuterda bor oddiy yangilash dasturi. Kam uchraydiganini qidiring.",
   "Threat hunting · Academy Intermediate": "Tahdid izlash · Academy Intermediate",
-  "Threat hunting": "Tahdid izlash"
+  "Threat hunting": "Tahdid izlash",
+  "BLUE TEAM · MODULE 5": "BLUE TEAM · 5-MODUL",
+  "Phishing analysis.": "Fishing tahlili.",
+  "The From line is text. The headers are evidence.": "From qatori — matn. Sarlavhalar — dalil.",
+  "Sort the signs of phishing, read an email’s headers, trace a fake bank email to its first server and its real reply address, interpret SPF, DKIM and DMARC, unmask six links, rank attachments by risk and respond once the verdict is in.": "Fishing belgilarini ajrating, xat sarlavhalarini o‘qing, soxta bank xatini birinchi serverigacha va haqiqiy javob manzilgacha kuzating, SPF, DKIM va DMARC natijalarini tushuning, oltita havolaning niqobini oching, ilovalarni xavf bo‘yicha baholang va hukmdan keyin to‘g‘ri harakat qiling.",
+  "MAIL / LAB": "MAIL / AMALIYOT",
+  "The first server’s IP address": "Birinchi serverning IP manzili",
+  "Replies would go to the domain": "Javoblar ketadigan domen",
+  "It started at {ip}, not at the bank, failed SPF and DMARC, and replies go to a free mailbox. Phishing.": "Xat bankdan emas, {ip} dan boshlangan, SPF va DMARC’dan o‘tmagan, javoblar esa bepul pochta qutisiga ketadi. Fishing.",
+  "Read the bottom Received line for the IP, and the Reply-To line for the domain.": "IP uchun eng pastdagi Received qatorini, domen uchun Reply-To qatorini o‘qing.",
+  "Show the real address": "Haqiqiy manzilni ko‘rsatish",
+  "Domain: {domain}": "Domen: {domain}",
+  "Suspicious": "Shubhali",
+  "Four traps: a brand as a subdomain, a 1 for an l, a Cyrillic а and a .pdf.exe. Only the post office and the newsletter were real.": "To‘rtta tuzoq: subdomen sifatidagi brend, l o‘rniga 1, kirill “а” va .pdf.exe. Faqat pochta va axborot byulleteni haqiqiy edi.",
+  "Phishing analysis · Academy Intermediate": "Fishing tahlili · Academy Intermediate",
+  "Phishing analysis": "Fishing tahlili"
 }

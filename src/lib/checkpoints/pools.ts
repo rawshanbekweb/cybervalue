@@ -7941,3 +7941,264 @@ export const HUNTING_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const PHISHING_POOL: PoolItem[] = [
+  {
+    ask: { uz: "Fishing nima?", en: "What is phishing?" },
+    right: {
+      uz: "Ishonchli tashkilot nomidan parol, pul yoki kirish so‘raydigan xat",
+      en: "An email posing as a trusted organisation to get passwords, money or access",
+    },
+    wrong: [
+      { uz: "Spam filtri", en: "A spam filter" },
+      { uz: "Pochta serveri", en: "A mail server" },
+      { uz: "Shifrlash usuli", en: "An encryption method" },
+    ],
+    explain: {
+      uz: "U shoshiltiradi, qo‘rqitadi yoki aldaydi.",
+      en: "It rushes, scares or tempts.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi biri fishing belgisi?",
+      en: "Which is a sign of phishing?",
+    },
+    right: {
+      uz: "“24 soatda tasdiqlamasangiz, karta bloklanadi”",
+      en: "“Confirm within 24 hours or your card is blocked”",
+    },
+    wrong: [
+      { uz: "Xat ismingiz bilan boshlanadi", en: "It starts with your name" },
+      { uz: "Obunadan chiqish havolasi", en: "An unsubscribe link" },
+      { uz: "Kompaniya logotipi", en: "A company logo" },
+    ],
+    explain: {
+      uz: "Shoshiltirish — o‘ylashga vaqt bermaslik.",
+      en: "Rushing leaves no time to think.",
+    },
+  },
+  {
+    ask: {
+      uz: "Received zanjirida birinchi server qaysi?",
+      en: "Which Received header is the first server?",
+    },
+    right: { uz: "Eng pastdagisi", en: "The bottom one" },
+    wrong: [
+      { uz: "Eng tepadagisi", en: "The top one" },
+      { uz: "O‘rtadagisi", en: "The middle one" },
+      { uz: "Received’da ko‘rinmaydi", en: "It isn’t in Received" },
+    ],
+    explain: {
+      uz: "Har bir server tepaga qo‘shadi.",
+      en: "Each server adds one on top.",
+    },
+  },
+  {
+    ask: {
+      uz: "Reply-To From’dan boshqa domenda. Bu?",
+      en: "Reply-To is on a different domain from From. That is?",
+    },
+    right: { uz: "Ogohlik belgisi", en: "A warning sign" },
+    wrong: [
+      { uz: "Har doim normal", en: "Always normal" },
+      { uz: "Shifrlash belgisi", en: "A sign of encryption" },
+      { uz: "DKIM imzosi", en: "A DKIM signature" },
+    ],
+    explain: {
+      uz: "Javoblar hujumchiga ketadi.",
+      en: "Replies would go to the attacker.",
+    },
+  },
+  {
+    ask: { uz: "SPF nimani tekshiradi?", en: "What does SPF check?" },
+    right: {
+      uz: "Yuboruvchi server domen nomidan xat yuborishga ruxsat etilganmi",
+      en: "Whether the sending server may send mail for the domain",
+    },
+    wrong: [
+      { uz: "Xat imzosi", en: "The email’s signature" },
+      { uz: "Virus borligi", en: "Whether it has a virus" },
+      { uz: "Xat matni", en: "The email’s text" },
+    ],
+    explain: {
+      uz: "Ro‘yxat DNS’da e’lon qilinadi.",
+      en: "The list is published in DNS.",
+    },
+  },
+  {
+    ask: { uz: "DKIM nimani tekshiradi?", en: "What does DKIM check?" },
+    right: {
+      uz: "Xat imzolangan va yo‘lda o‘zgarmagan",
+      en: "The email was signed and not changed on the way",
+    },
+    wrong: [
+      { uz: "Yuboruvchi IP manzili", en: "The sender’s IP" },
+      { uz: "Qabul qiluvchi paroli", en: "The recipient’s password" },
+      { uz: "Ilova hajmi", en: "The attachment’s size" },
+    ],
+    explain: {
+      uz: "Ochiq kalit DNS’da turadi.",
+      en: "The public key sits in DNS.",
+    },
+  },
+  {
+    ask: { uz: "DMARC nima qiladi?", en: "What does DMARC do?" },
+    right: {
+      uz: "From domenini SPF/DKIM bilan moslashtiradi va mos kelmasa nima qilishni aytadi",
+      en: "Ties the From domain to SPF/DKIM and says what to do if they don’t match",
+    },
+    wrong: [
+      { uz: "Xatni shifrlaydi", en: "Encrypts the email" },
+      { uz: "Spam’ni o‘chiradi", en: "Deletes spam" },
+      { uz: "Parol saqlaydi", en: "Stores passwords" },
+    ],
+    explain: {
+      uz: "Siyosat: none, quarantine yoki reject.",
+      en: "The policy is none, quarantine or reject.",
+    },
+  },
+  {
+    ask: {
+      uz: "SPF va DKIM pass bo‘lsa, xat xavfsizmi?",
+      en: "If SPF and DKIM pass, is the email safe?",
+    },
+    right: {
+      uz: "Shart emas — domenning o‘zi soxta bo‘lishi mumkin",
+      en: "Not necessarily — the domain itself may be the fake",
+    },
+    wrong: [
+      { uz: "Ha, har doim", en: "Yes, always" },
+      { uz: "Ha, logo bo‘lsa", en: "Yes, if it has a logo" },
+      { uz: "Ha, ilova bo‘lmasa", en: "Yes, if it has no attachment" },
+    ],
+    explain: {
+      uz: "Hujumchilar o‘xshash domenlarni to‘g‘ri sozlaydi.",
+      en: "Attackers set up look-alike domains properly.",
+    },
+  },
+  {
+    ask: {
+      uz: "my.bank.uz.secure-login.example’ning haqiqiy domeni?",
+      en: "The real domain of my.bank.uz.secure-login.example?",
+    },
+    right: { uz: "secure-login.example", en: "secure-login.example" },
+    wrong: [
+      { uz: "bank.uz", en: "bank.uz" },
+      { uz: "my.bank.uz", en: "my.bank.uz" },
+      { uz: "uz.secure", en: "uz.secure" },
+    ],
+    explain: {
+      uz: "Domen xost nomining oxirida.",
+      en: "The domain is at the end of the host name.",
+    },
+  },
+  {
+    ask: {
+      uz: "“paypa1.com” qanday usul?",
+      en: "What trick is “paypa1.com”?",
+    },
+    right: {
+      uz: "Harfni o‘xshash belgiga almashtirish (typosquatting)",
+      en: "Swapping a letter for a look-alike (typosquatting)",
+    },
+    wrong: [
+      { uz: "Subdomen", en: "A subdomain" },
+      { uz: "Ikki kengaytma", en: "A double extension" },
+      { uz: "Shifrlash", en: "Encryption" },
+    ],
+    explain: {
+      uz: "l o‘rniga 1.",
+      en: "A 1 instead of an l.",
+    },
+  },
+  {
+    ask: {
+      uz: "xn-- bilan boshlanadigan domen nima?",
+      en: "What is a domain starting with xn--?",
+    },
+    right: {
+      uz: "Punycode — lotin bo‘lmagan harflar, masalan, kirill “а”",
+      en: "Punycode — non-Latin letters, such as a Cyrillic “а”",
+    },
+    wrong: [
+      { uz: "Xavfsiz bank domeni", en: "A safe bank domain" },
+      { uz: "IP manzil", en: "An IP address" },
+      { uz: "Email manzili", en: "An email address" },
+    ],
+    explain: {
+      uz: "Ko‘zga apple.com bo‘lib ko‘rinishi mumkin.",
+      en: "It can look exactly like apple.com.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi ilova eng xavfli?",
+      en: "Which attachment is riskiest?",
+    },
+    right: { uz: "payment.pdf.lnk", en: "payment.pdf.lnk" },
+    wrong: [
+      { uz: "photo.png", en: "photo.png" },
+      { uz: "notes.txt", en: "notes.txt" },
+      { uz: "logo.jpg", en: "logo.jpg" },
+    ],
+    explain: {
+      uz: "Yorliq buyruq ishga tushiradi.",
+      en: "A shortcut runs a command.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega .iso ilovalar xavfli?",
+      en: "Why are .iso attachments risky?",
+    },
+    right: {
+      uz: "Ichidagi fayllar ogohlantirishsiz ochiladi",
+      en: "The files inside open without warnings",
+    },
+    wrong: [
+      { uz: "Ular juda katta", en: "They are too big" },
+      { uz: "Ular shifrlangan", en: "They are encrypted" },
+      { uz: "Xavfli emas", en: "They aren’t" },
+    ],
+    explain: {
+      uz: "Disk tasviri internetdan kelgan belgini olib tashlashi mumkin.",
+      en: "A disk image can shed the downloaded-from-internet mark.",
+    },
+  },
+  {
+    ask: {
+      uz: "Shubhali ilovani qayerda ochasiz?",
+      en: "Where do you open a suspect attachment?",
+    },
+    right: { uz: "Sandbox’da", en: "In a sandbox" },
+    wrong: [
+      { uz: "O‘z kompyuteringizda", en: "On your own PC" },
+      { uz: "Serverda", en: "On a server" },
+      { uz: "Telefonda", en: "On your phone" },
+    ],
+    explain: {
+      uz: "Ajratilgan muhit tarmoqni himoya qiladi.",
+      en: "An isolated machine protects the network.",
+    },
+  },
+  {
+    ask: {
+      uz: "Xodim fishing havolasida parol kiritdi. Nima qilasiz?",
+      en: "A worker typed a password on a phishing link. What now?",
+    },
+    right: {
+      uz: "Parolni almashtirib, sessiyalarini yopib, kirishlarni tekshiraman",
+      en: "Reset the password, end the sessions, check the logins",
+    },
+    wrong: [
+      { uz: "Kutaman", en: "Wait" },
+      { uz: "Xodimni ayblayman", en: "Blame the worker" },
+      { uz: "Xatni o‘chiraman, xolos", en: "Just delete the email" },
+    ],
+    explain: {
+      uz: "Hujumchi parolni darhol ishlatishi mumkin.",
+      en: "The attacker may use it at once.",
+    },
+  },
+];
