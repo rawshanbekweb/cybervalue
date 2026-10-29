@@ -491,6 +491,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/metadata#checkpoints",
     pass: 70,
   },
+  {
+    id: "formats-1",
+    level: "intermediate",
+    lab: { uz: "Ovoz va fayl formatlari", en: "Audio and file formats" },
+    title: {
+      uz: "Nazorat: Ovoz va fayl formatlari",
+      en: "Checkpoint: Audio and file formats",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/formats#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

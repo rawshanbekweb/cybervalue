@@ -383,6 +383,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Ovoz va fayl formatlari", en: "Audio and file formats" },
+        href: "/intermediate/formats",
+        lab: "formats",
         topics: ["spectrogram", "magic bytes", "appended data"],
         goal: goal(
           "Fayl turi va ichidagi qo‘shimcha ma’lumotni aniqlash.",

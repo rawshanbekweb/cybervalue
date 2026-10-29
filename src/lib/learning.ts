@@ -26,6 +26,7 @@ import { LESSONS as REPORT_LESSONS } from "@/lib/report/curriculum";
 import { LESSONS as STEGO_LESSONS } from "@/lib/stego/curriculum";
 import { LESSONS as LSB_LESSONS } from "@/lib/lsb/curriculum";
 import { LESSONS as METADATA_LESSONS } from "@/lib/metadata/curriculum";
+import { LESSONS as FORMATS_LESSONS } from "@/lib/formats/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -570,6 +571,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: METADATA_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "formats",
+      title: "Audio and file formats",
+      category: "Intermediate · Steganography",
+      description:
+        "Read binwalk output, find where a JPEG ends and the ZIP glued after it begins, see why polyglot files slip past filters, find a word drawn into a sound’s spectrogram, and pick the right tool for each search.",
+      href: "/intermediate/formats",
+      progressKey: LAB_PROGRESS.formats.key,
+      level: "Intermediate",
+      lessons: FORMATS_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: FORMATS_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

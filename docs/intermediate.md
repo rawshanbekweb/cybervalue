@@ -32,6 +32,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/stego`       | Steganography module 1, the idea (8 lessons, a checkpoint)                      |
 | `/intermediate/lsb`         | Steganography module 2, inside images (8 lessons, a checkpoint)                 |
 | `/intermediate/metadata`    | Steganography module 3, metadata (8 lessons, a checkpoint)                      |
+| `/intermediate/formats`     | Steganography module 4, audio and file formats (8 lessons, a checkpoint)        |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -507,6 +508,26 @@ and two (Orientation, colour space) the picture needs to display right.
 | 6       | Questions on metadata as evidence                        |
 | 7       | Questions on real cases and prevention                   |
 | 8       | Final questions                                          |
+
+## Steganography module 4: Audio and file formats
+
+`/intermediate/formats` (lab id `formats`, checkpoint `formats-1`, award
+`lab-formats`, site setting `formats`) uses `src/lib/formats/tools.ts`:
+`DUMP` is five xxd lines of cat.jpg, one of them holding the FF D9 end marker
+followed at byte 48203 by a ZIP signature; `spectrogram` draws "SOS" into
+the high frequencies of a 72×28 spectrogram over low-frequency "music",
+while `waveform` shows nothing but noise.
+
+| Lessons | What the student does                                          |
+| ------- | -------------------------------------------------------------- |
+| 1       | Clicks through binwalk output                                  |
+| 2       | Finds where the JPEG ends and what is appended                 |
+| 3       | Questions on polyglot files                                    |
+| 4       | Finds the word in a sound's spectrogram                        |
+| 5       | Sorts audio hiding methods by whether a spectrogram shows them |
+| 6       | Questions on file and strings                                  |
+| 7       | Questions on which tool to use when                            |
+| 8       | Final questions                                                |
 
 ## Who gets in
 

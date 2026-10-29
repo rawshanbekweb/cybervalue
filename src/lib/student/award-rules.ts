@@ -194,6 +194,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Metama’lumotlar (Intermediate)",
     earned: (f) => finished(f, "metadata") && passed(f, "metadata-1"),
   },
+  {
+    id: "lab-formats",
+    title: "Ovoz va fayl formatlari (Intermediate)",
+    earned: (f) => finished(f, "formats") && passed(f, "formats-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */
