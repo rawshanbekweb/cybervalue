@@ -51,7 +51,9 @@ test("the module is on the roadmap and locked for visitors", async ({
 }) => {
   await page.goto("/intermediate");
   await expect(
-    page.locator("#syssec").getByRole("link", { name: /Patching and builds/ }),
+    page
+      .locator("#reverse")
+      .getByRole("link", { name: /How programs are built/ }),
   ).toHaveAttribute("href", "/intermediate/build");
   await page.goto("/intermediate/build");
   await expect(
