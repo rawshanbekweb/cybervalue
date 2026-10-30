@@ -51,6 +51,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/codereview`   | AppSec module 5, secure code review (8 lessons, a checkpoint)                   |
 | `/intermediate/hardening`    | System security module 1, Linux hardening (8 lessons, a checkpoint)             |
 | `/intermediate/windows`      | System security module 2, Windows basics (8 lessons, a checkpoint)              |
+| `/intermediate/authn`        | System security module 4, authentication (8 lessons, a checkpoint)              |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -912,6 +913,25 @@ with one of the `MEANINGS`.
 | 6       | Gives five Security log events their meaning    |
 | 7       | Questions on Defender, BitLocker and LAPS       |
 | 8       | Final questions                                 |
+
+## System security module 4: Authentication
+
+`/intermediate/authn` (lab id `authn`, checkpoint `authn-1`, award
+`lab-authn`, site setting `authn`) uses `src/lib/authn/tools.ts`: `check`
+applies a modern password policy (at least `MIN_LENGTH` characters, not on
+the small `BLOCKLIST`, not containing the username) to six `CANDIDATES` for
+the user `dilnoza`; two pass and each reason to reject appears once or more.
+
+| Lessons | What the student does                                |
+| ------- | ---------------------------------------------------- |
+| 1       | Sorts proofs into know, have and are                 |
+| 2       | Questions on a modern password policy                |
+| 3       | Accepts or rejects six passwords under the policy    |
+| 4       | Questions on storing passwords as slow salted hashes |
+| 5       | Sorts MFA methods by phishing resistance             |
+| 6       | Questions on SSH keys                                |
+| 7       | Questions on watching sign-ins                       |
+| 8       | Final questions                                      |
 
 ## Who gets in
 

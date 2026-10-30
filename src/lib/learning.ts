@@ -45,6 +45,7 @@ import { LESSONS as AUTOTEST_LESSONS } from "@/lib/autotest/curriculum";
 import { LESSONS as CODEREVIEW_LESSONS } from "@/lib/codereview/curriculum";
 import { LESSONS as HARDENING_LESSONS } from "@/lib/hardening/curriculum";
 import { LESSONS as WINDOWS_LESSONS } from "@/lib/windows/curriculum";
+import { LESSONS as AUTHN_LESSONS } from "@/lib/authn/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -912,6 +913,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: WINDOWS_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "authn",
+      title: "Authentication",
+      category: "Intermediate · System security",
+      description:
+        "Sort the three factors, apply a modern password policy to six passwords, store passwords as slow salted hashes, rank MFA methods by phishing resistance, use SSH keys properly and watch sign-ins for spraying and impossible travel.",
+      href: "/intermediate/authn",
+      progressKey: LAB_PROGRESS.authn.key,
+      level: "Intermediate",
+      lessons: AUTHN_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: AUTHN_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

@@ -289,6 +289,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Windows asoslari (Intermediate)",
     earned: (f) => finished(f, "windows") && passed(f, "windows-1"),
   },
+  {
+    id: "lab-authn",
+    title: "Autentifikatsiya (Intermediate)",
+    earned: (f) => finished(f, "authn") && passed(f, "authn-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

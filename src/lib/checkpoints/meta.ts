@@ -782,6 +782,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/windows#checkpoints",
     pass: 70,
   },
+  {
+    id: "authn-1",
+    level: "intermediate",
+    lab: { uz: "Autentifikatsiya", en: "Authentication" },
+    title: {
+      uz: "Nazorat: Autentifikatsiya",
+      en: "Checkpoint: Authentication",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/authn#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

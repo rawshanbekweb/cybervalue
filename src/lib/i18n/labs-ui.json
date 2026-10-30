@@ -1548,5 +1548,18 @@
   "The story: password guessing, an RDP sign-in as the backup account, a new admin account, then the log wiped. Time to respond.": "Hikoya: parol taxmini, zaxira hisobi bilan RDP orqali kirish, yangi admin hisob, keyin log tozalandi. Javob choralarini ko‘rish vaqti.",
   "Windows basics": "Windows asoslari",
   "Windows basics · Academy Intermediate": "Windows asoslari · Academy Intermediate",
-  "Tell standard from admin work, read NTFS permissions, trim a share’s access list, meet Active Directory and Group Policy, name five Security log events from one suspicious night and switch on Windows’ built-in defences.": "Oddiy va admin ishini ajrating, NTFS huquqlarini o‘qing, ulashilgan papka huquqlarini qisqartiring, Active Directory va Group Policy bilan tanishing, shubhali bir kechaning beshta Security log hodisasini nomlang va Windows’ning o‘rnatilgan himoyalarini yoqing."
+  "Tell standard from admin work, read NTFS permissions, trim a share’s access list, meet Active Directory and Group Policy, name five Security log events from one suspicious night and switch on Windows’ built-in defences.": "Oddiy va admin ishini ajrating, NTFS huquqlarini o‘qing, ulashilgan papka huquqlarini qisqartiring, Active Directory va Group Policy bilan tanishing, shubhali bir kechaning beshta Security log hodisasini nomlang va Windows’ning o‘rnatilgan himoyalarini yoqing.",
+  "SYSSEC · MODULE 4": "SYSSEC · 4-MODUL",
+  "Authentication.": "Autentifikatsiya.",
+  "Proving who you are, in layers.": "Kimligingizni qatlam-qatlam isbotlash.",
+  "Sort the three factors, follow a modern password policy and apply it to six passwords, store passwords as slow salted hashes, rank MFA methods by phishing resistance, use SSH keys properly and watch sign-ins for spraying and impossible travel.": "Uch omilni ajrating, zamonaviy parol siyosatini oltita parolga qo‘llang, parollarni sekin, tuzli xesh sifatida saqlang, MFA usullarini fishingga chidamliligi bo‘yicha saralang, SSH kalitlaridan to‘g‘ri foydalaning va kirishlarda spraying hamda imkonsiz sayohatni kuzating.",
+  "SIGN-IN / LAB": "KIRISH / LAB",
+  "Policy: at least {n} characters, not on the breached list, not containing the username “{user}”.": "Siyosat: kamida {n} belgi, sizib chiqqanlar ro‘yxatida yo‘q, “{user}” foydalanuvchi nomini o‘z ichiga olmaydi.",
+  "{n} characters": "{n} belgi",
+  "Accept": "Qabul qilish",
+  "Reject": "Rad etish",
+  "Only the two long phrases pass. Note that neither needs a capital or a digit: length and the breached list do the work.": "Faqat ikkita uzun ibora o‘tdi. E’tibor bering: ularda katta harf ham, raqam ham yo‘q — ishni uzunlik va sizib chiqqanlar ro‘yxati bajaradi.",
+  "Authentication": "Autentifikatsiya",
+  "Authentication · Academy Intermediate": "Autentifikatsiya · Academy Intermediate",
+  "Sort the three factors, apply a modern password policy to six passwords, store passwords as slow salted hashes, rank MFA methods by phishing resistance, use SSH keys properly and watch sign-ins for spraying and impossible travel.": "Uch omilni ajrating, zamonaviy parol siyosatini oltita parolga qo‘llang, parollarni sekin, tuzli xesh sifatida saqlang, MFA usullarini fishingga chidamliligi bo‘yicha saralang, SSH kalitlaridan to‘g‘ri foydalaning va kirishlarda spraying hamda imkonsiz sayohatni kuzating."
 }
