@@ -1,0 +1,29 @@
+/* Code review lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css and securecode.css. */
+.cr-diff {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.cr-line {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.cr-line label {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 12px;
+}
+.cr-line code {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}

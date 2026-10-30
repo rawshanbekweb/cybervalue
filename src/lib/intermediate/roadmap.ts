@@ -594,6 +594,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Kod ko‘rigi", en: "Code review" },
+        href: "/intermediate/codereview",
+        lab: "codereview",
         topics: ["checklists", "review comments", "risk rating"],
         goal: goal(
           "Pull request ni xavfsizlik nuqtai nazaridan ko‘rib chiqish.",

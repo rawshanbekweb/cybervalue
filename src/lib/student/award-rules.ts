@@ -274,6 +274,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Avtomatik xavfsizlik tekshiruvlari (Intermediate)",
     earned: (f) => finished(f, "autotest") && passed(f, "autotest-1"),
   },
+  {
+    id: "lab-codereview",
+    title: "Xavfsiz kod ko‘rigi (Intermediate)",
+    earned: (f) => finished(f, "codereview") && passed(f, "codereview-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

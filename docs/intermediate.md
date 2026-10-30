@@ -48,6 +48,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/securecode`   | AppSec module 2, secure coding (8 lessons, a checkpoint)                        |
 | `/intermediate/supplychain`  | AppSec module 3, dependencies and supply chain (8 lessons, a checkpoint)        |
 | `/intermediate/autotest`     | AppSec module 4, automated security testing (8 lessons, a checkpoint)           |
+| `/intermediate/codereview`   | AppSec module 5, secure code review (8 lessons, a checkpoint)                   |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -849,6 +850,25 @@ alarms, and `PROBLEMS` are five problems, each caught by one of the `CHECKS`
 | 6       | Matches five problems to the check that catches them |
 | 7       | Sorts findings into block the merge or warn          |
 | 8       | Final questions                                      |
+
+## AppSec module 5: Secure code review
+
+`/intermediate/codereview` (lab id `codereview`, checkpoint `codereview-1`,
+award `lab-codereview`, site setting `codereview`) uses
+`src/lib/codereview/tools.ts`: `DIFF` is a ten-line pull request whose
+`FLAGGED` lines 2, 5, 6 and 8 have a security problem, and `RATED` are four
+findings, one at each of the `LEVELS`. It completes the AppSec domain.
+
+| Lessons | What the student does                               |
+| ------- | --------------------------------------------------- |
+| 1       | Questions on what people find that tools miss       |
+| 2       | Sorts items onto the security checklist or not      |
+| 3       | Ticks the four problem lines in a pull request      |
+| 4       | Questions on writing a comment an author can act on |
+| 5       | Questions on impact and likelihood                  |
+| 6       | Rates four findings from critical to low            |
+| 7       | Sorts cases into request changes or approve         |
+| 8       | Final questions                                     |
 
 ## Who gets in
 

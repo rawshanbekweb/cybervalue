@@ -10524,3 +10524,264 @@ export const AUTOTEST_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const CODEREVIEW_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Kod ko‘rigida odam vositadan nimani yaxshiroq topadi?",
+      en: "What does a reviewer find better than a tool?",
+    },
+    right: {
+      uz: "Huquq va biznes mantiq xatolarini",
+      en: "Authorisation and logic flaws",
+    },
+    wrong: [
+      { uz: "Eski kutubxonalarni", en: "Old libraries" },
+      { uz: "Formatlash xatolarini", en: "Formatting errors" },
+      { uz: "Hech narsani", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Masalan, buyurtma egasini tekshirish unutilgani.",
+      en: "Such as a missing check of who owns an order.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi PR’ni yaxshi ko‘rib chiqish oson?",
+      en: "Which PR is easier to review well?",
+    },
+    right: { uz: "Bitta vazifali kichik PR", en: "A small PR about one task" },
+    wrong: [
+      { uz: "3000 qatorlik PR", en: "A 3,000-line PR" },
+      { uz: "Tavsifsiz PR", en: "A PR with no description" },
+      { uz: "Beshta vazifali PR", en: "A PR about five tasks" },
+    ],
+    explain: {
+      uz: "Katta PR’da diqqat pasayadi.",
+      en: "Attention drops on big PRs.",
+    },
+  },
+  {
+    ask: {
+      uz: "IDOR nima?",
+      en: "What is an IDOR?",
+    },
+    right: {
+      uz: "ID ni o‘zgartirib, birovning ma’lumotiga kirish",
+      en: "Reaching someone else’s data by changing an ID",
+    },
+    wrong: [
+      { uz: "Parolni taxmin qilish", en: "Guessing a password" },
+      { uz: "Serverni to‘xtatish", en: "Taking a server down" },
+      { uz: "Kodni shifrlash", en: "Encrypting code" },
+    ],
+    explain: {
+      uz: "Har so‘rovda egasi tekshiriladi.",
+      en: "Check the owner on every request.",
+    },
+  },
+  {
+    ask: {
+      uz: '`if (user.role = "admin")` da xato nima?',
+      en: 'What is wrong with `if (user.role = "admin")`?',
+    },
+    right: {
+      uz: "= qiymat beradi, shart har doim rost",
+      en: "= assigns, so the condition is always true",
+    },
+    wrong: [
+      { uz: "Qo‘shtirnoq noto‘g‘ri", en: "Wrong quotes" },
+      { uz: "Hech narsa", en: "Nothing" },
+      {
+        uz: "admin katta harf bo‘lishi kerak",
+        en: "admin must be capitalised",
+      },
+    ],
+    explain: { uz: "=== bilan taqqoslanadi.", en: "Compare with ===." },
+  },
+  {
+    ask: {
+      uz: "`cors({ origin: true, credentials: true })` xavfi?",
+      en: "The risk of `cors({ origin: true, credentials: true })`?",
+    },
+    right: {
+      uz: "Har qanday sayt foydalanuvchi cookie’lari bilan so‘rov yuboradi",
+      en: "Any site can send requests with the user’s cookies",
+    },
+    wrong: [
+      { uz: "Sayt sekinlashadi", en: "The site gets slower" },
+      { uz: "Xavf yo‘q", en: "No risk" },
+      { uz: "Cookie’lar o‘chadi", en: "Cookies get deleted" },
+    ],
+    explain: {
+      uz: "Ishonchli manbalar ro‘yxatini yozing.",
+      en: "List the trusted origins.",
+    },
+  },
+  {
+    ask: {
+      uz: "Yaxshi ko‘rik izohida nima bo‘ladi?",
+      en: "What does a good review comment contain?",
+    },
+    right: {
+      uz: "Muammo, ta’sir va tuzatish",
+      en: "The problem, the impact and the fix",
+    },
+    wrong: [
+      { uz: "Faqat “bu xavfli”", en: "Just “this is insecure”" },
+      { uz: "Muallifni tanqid", en: "Criticism of the author" },
+      { uz: "Faqat emoji", en: "Just an emoji" },
+    ],
+    explain: {
+      uz: "Kodni tanqid qiling, odamni emas.",
+      en: "Criticise the code, not the person.",
+    },
+  },
+  {
+    ask: { uz: "Xavf qanday baholanadi?", en: "How is risk rated?" },
+    right: { uz: "Ta’sir × ehtimollik", en: "Impact × likelihood" },
+    wrong: [
+      { uz: "Qatorlar soni", en: "Line count" },
+      { uz: "Fayl hajmi", en: "File size" },
+      { uz: "Muallif yoshi", en: "The author’s age" },
+    ],
+    explain: { uz: "CVSS buni rasmiylashtiradi.", en: "CVSS formalises it." },
+  },
+  {
+    ask: {
+      uz: "Login ham kerak bo‘lmagan admin kirishi qaysi daraja?",
+      en: "Admin access needing not even a login is which level?",
+    },
+    right: { uz: "Kritik", en: "Critical" },
+    wrong: [
+      { uz: "Past", en: "Low" },
+      { uz: "O‘rta", en: "Medium" },
+      { uz: "Daraja yo‘q", en: "No level" },
+    ],
+    explain: {
+      uz: "Ta’sir ham, ehtimollik ham eng yuqori.",
+      en: "Both impact and likelihood are at the top.",
+    },
+  },
+  {
+    ask: {
+      uz: "X-Powered-By sarlavhasi odatda qaysi daraja?",
+      en: "An X-Powered-By header is usually which level?",
+    },
+    right: { uz: "Past", en: "Low" },
+    wrong: [
+      { uz: "Kritik", en: "Critical" },
+      { uz: "Yuqori", en: "High" },
+      { uz: "Daraja yo‘q", en: "No level" },
+    ],
+    explain: {
+      uz: "Ozgina ma’lumot beradi, o‘zi hech narsani ochmaydi.",
+      en: "It tells a little but opens nothing.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kritik topilma bor. Qaror?",
+      en: "There’s a critical finding. The decision?",
+    },
+    right: { uz: "Request changes", en: "Request changes" },
+    wrong: [
+      { uz: "Approve", en: "Approve" },
+      { uz: "Izohsiz merge", en: "Merge without comment" },
+      { uz: "E’tiborsiz qoldirish", en: "Ignore it" },
+    ],
+    explain: {
+      uz: "Tuzatilmaguncha birlashtirilmaydi.",
+      en: "It doesn’t merge until fixed.",
+    },
+  },
+  {
+    ask: {
+      uz: "Faqat nit qolgan. Qaror?",
+      en: "Only nits remain. The decision?",
+    },
+    right: { uz: "Izohlar bilan Approve", en: "Approve with comments" },
+    wrong: [
+      { uz: "PR’ni yopish", en: "Close the PR" },
+      { uz: "Request changes", en: "Request changes" },
+      { uz: "Hech narsa demaslik", en: "Say nothing" },
+    ],
+    explain: {
+      uz: "Nit — kichik uslub izohi.",
+      en: "A nit is a small style note.",
+    },
+  },
+  {
+    ask: {
+      uz: "Autentifikatsiya va avtorizatsiya farqi?",
+      en: "Authentication versus authorisation?",
+    },
+    right: {
+      uz: "Kim ekanligi va nimaga haqli ekanligi",
+      en: "Who someone is, and what they may do",
+    },
+    wrong: [
+      { uz: "Ikkalasi bir xil", en: "They’re the same" },
+      { uz: "Shifrlash va xeshlash", en: "Encryption and hashing" },
+      { uz: "Login va logout", en: "Login and logout" },
+    ],
+    explain: {
+      uz: "requireLogin faqat birinchisini tekshiradi.",
+      en: "requireLogin checks only the first.",
+    },
+  },
+  {
+    ask: {
+      uz: "Bir yillik sessiya muddatining xavfi?",
+      en: "The risk of a year-long session?",
+    },
+    right: {
+      uz: "O‘g‘irlangan cookie bir yil ishlaydi",
+      en: "A stolen cookie works for a year",
+    },
+    wrong: [
+      { uz: "Xavf yo‘q", en: "No risk" },
+      { uz: "Sayt sekinlashadi", en: "The site gets slower" },
+      { uz: "Parol unutiladi", en: "Passwords get forgotten" },
+    ],
+    explain: {
+      uz: "Qisqa muddat va qayta kirish talab qiling.",
+      en: "Use short lifetimes and re-authentication.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ko‘ruvchi xotirasi o‘rniga nimaga tayanadi?",
+      en: "What does a reviewer rely on instead of memory?",
+    },
+    right: { uz: "Tekshiruv ro‘yxatiga", en: "A checklist" },
+    wrong: [
+      { uz: "Omadga", en: "Luck" },
+      { uz: "Muallifning so‘ziga", en: "The author’s word" },
+      { uz: "Kod uzunligiga", en: "Code length" },
+    ],
+    explain: {
+      uz: "OWASP Code Review Guide, ASVS.",
+      en: "The OWASP Code Review Guide, ASVS.",
+    },
+  },
+  {
+    ask: {
+      uz: "Muallif topilmaga rozi emas. Nima qilinadi?",
+      en: "The author disagrees with a finding. What now?",
+    },
+    right: {
+      uz: "Hujum yo‘lini misol bilan ko‘rsatish",
+      en: "Show the attack path with an example",
+    },
+    wrong: [
+      { uz: "Indamay tasdiqlash", en: "Approve quietly" },
+      { uz: "Baqirish", en: "Shout" },
+      { uz: "PR’ni o‘chirish", en: "Delete the PR" },
+    ],
+    explain: {
+      uz: "Dalil bahsni hal qiladi.",
+      en: "Evidence settles it.",
+    },
+  },
+];
