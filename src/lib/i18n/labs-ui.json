@@ -1533,5 +1533,20 @@
   "Two public, two on localhost, two off: the internet now sees only the site and SSH.": "Ikkitasi ochiq, ikkitasi localhost’da, ikkitasi o‘chiq: endi internet faqat sayt va SSH’ni ko‘radi.",
   "Linux hardening": "Linux mustahkamlash",
   "Linux hardening · Academy Intermediate": "Linux mustahkamlash · Academy Intermediate",
-  "Shrink the attack surface, read permissions and special bits, find risky entries in an audit listing, keep sudo to least privilege, decide which services stay public, harden SSH, and set up updates, a firewall and logs.": "Hujum yuzasini kichraytiring, huquqlar va maxsus bitlarni o‘qing, tekshiruv ro‘yxatidan xavfli yozuvlarni toping, sudo’ni eng kam huquq bilan cheklang, qaysi xizmatlar ochiq qolishini hal qiling, SSH’ni mustahkamlang hamda yangilanish, firewall va loglarni sozlang."
+  "Shrink the attack surface, read permissions and special bits, find risky entries in an audit listing, keep sudo to least privilege, decide which services stay public, harden SSH, and set up updates, a firewall and logs.": "Hujum yuzasini kichraytiring, huquqlar va maxsus bitlarni o‘qing, tekshiruv ro‘yxatidan xavfli yozuvlarni toping, sudo’ni eng kam huquq bilan cheklang, qaysi xizmatlar ochiq qolishini hal qiling, SSH’ni mustahkamlang hamda yangilanish, firewall va loglarni sozlang.",
+  "SYSSEC · MODULE 2": "SYSSEC · 2-MODUL",
+  "Windows basics.": "Windows asoslari.",
+  "Who, what they may touch, and what happened.": "Kim, nimaga tega oladi va nima bo‘ldi.",
+  "Tell standard from admin work, read NTFS permissions, trim a payroll share’s access list, meet Active Directory and Group Policy, name five Security log events from one suspicious night and switch on Windows’ built-in defences.": "Oddiy va admin ishini ajrating, NTFS huquqlarini o‘qing, ish haqi papkasining huquqlar ro‘yxatini qisqartiring, Active Directory va Group Policy bilan tanishing, shubhali bir kechaning beshta Security log hodisasini nomlang va Windows’ning o‘rnatilgan himoyalarini yoqing.",
+  "WINDOWS / LAB": "WINDOWS / LABORATORIYA",
+  "Security": "Xavfsizlik",
+  "{who} shouldn’t have this": "{who} da bu bo‘lmasligi kerak",
+  "Remove Everyone and Domain Users: now only HR, the system and backups reach the payroll.": "Everyone va Domain Users olib tashlandi: endi ish haqi papkasiga faqat HR, tizim va zaxira nusxa yetadi.",
+  "Event {id}": "Hodisa {id}",
+  "Choose a meaning": "Ma’nosini tanlang",
+  "That’s it": "Aynan shu",
+  "The story: password guessing, an RDP sign-in as the backup account, a new admin account, then the log wiped. Time to respond.": "Hikoya: parol taxmini, zaxira hisobi bilan RDP orqali kirish, yangi admin hisob, keyin log tozalandi. Javob choralarini ko‘rish vaqti.",
+  "Windows basics": "Windows asoslari",
+  "Windows basics · Academy Intermediate": "Windows asoslari · Academy Intermediate",
+  "Tell standard from admin work, read NTFS permissions, trim a share’s access list, meet Active Directory and Group Policy, name five Security log events from one suspicious night and switch on Windows’ built-in defences.": "Oddiy va admin ishini ajrating, NTFS huquqlarini o‘qing, ulashilgan papka huquqlarini qisqartiring, Active Directory va Group Policy bilan tanishing, shubhali bir kechaning beshta Security log hodisasini nomlang va Windows’ning o‘rnatilgan himoyalarini yoqing."
 }

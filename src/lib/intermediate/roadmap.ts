@@ -627,6 +627,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Windows asoslari", en: "Windows basics" },
+        href: "/intermediate/windows",
+        lab: "windows",
         topics: ["accounts", "ACL", "Group Policy", "Active Directory"],
         goal: goal(
           "Windows da foydalanuvchi va ruxsatlar tuzilishini tushuntirish.",

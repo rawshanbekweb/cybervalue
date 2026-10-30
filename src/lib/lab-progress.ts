@@ -48,6 +48,7 @@ export const LAB_PROGRESS = {
   autotest: { key: "cybervalue:autotest:progress:v1", total: 8 },
   codereview: { key: "cybervalue:codereview:progress:v1", total: 8 },
   hardening: { key: "cybervalue:hardening:progress:v1", total: 8 },
+  windows: { key: "cybervalue:windows:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -483,6 +484,15 @@ export const LAB_META: {
       en: "Linux hardening (Intermediate)",
     },
     href: "/intermediate/hardening",
+    intermediate: true,
+  },
+  {
+    id: "windows",
+    title: {
+      uz: "Windows asoslari (Intermediate)",
+      en: "Windows basics (Intermediate)",
+    },
+    href: "/intermediate/windows",
     intermediate: true,
   },
 ];

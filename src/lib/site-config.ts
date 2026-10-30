@@ -336,6 +336,12 @@ export const SECTIONS = [
     href: "/intermediate/hardening",
   },
   {
+    id: "windows",
+    group: "lab",
+    label: "Windows basics (Intermediate)",
+    href: "/intermediate/windows",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",
