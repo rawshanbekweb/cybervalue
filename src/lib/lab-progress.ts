@@ -47,6 +47,7 @@ export const LAB_PROGRESS = {
   supplychain: { key: "cybervalue:supplychain:progress:v1", total: 8 },
   autotest: { key: "cybervalue:autotest:progress:v1", total: 8 },
   codereview: { key: "cybervalue:codereview:progress:v1", total: 8 },
+  hardening: { key: "cybervalue:hardening:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -473,6 +474,15 @@ export const LAB_META: {
       en: "Secure code review (Intermediate)",
     },
     href: "/intermediate/codereview",
+    intermediate: true,
+  },
+  {
+    id: "hardening",
+    title: {
+      uz: "Linux mustahkamlash (Intermediate)",
+      en: "Linux hardening (Intermediate)",
+    },
+    href: "/intermediate/hardening",
     intermediate: true,
   },
 ];

@@ -43,6 +43,7 @@ import { LESSONS as SECURECODE_LESSONS } from "@/lib/securecode/curriculum";
 import { LESSONS as SUPPLYCHAIN_LESSONS } from "@/lib/supplychain/curriculum";
 import { LESSONS as AUTOTEST_LESSONS } from "@/lib/autotest/curriculum";
 import { LESSONS as CODEREVIEW_LESSONS } from "@/lib/codereview/curriculum";
+import { LESSONS as HARDENING_LESSONS } from "@/lib/hardening/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -876,6 +877,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: CODEREVIEW_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "hardening",
+      title: "Linux hardening",
+      category: "Intermediate · System security",
+      description:
+        "Shrink the attack surface, read permissions and special bits, find risky entries in an audit listing, keep sudo to least privilege, decide which services stay public, harden SSH, and set up updates, a firewall and logs.",
+      href: "/intermediate/hardening",
+      progressKey: LAB_PROGRESS.hardening.key,
+      level: "Intermediate",
+      lessons: HARDENING_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: HARDENING_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

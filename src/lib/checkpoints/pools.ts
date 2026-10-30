@@ -10785,3 +10785,270 @@ export const CODEREVIEW_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const HARDENING_POOL: PoolItem[] = [
+  {
+    ask: { uz: "Mustahkamlash (hardening) nima?", en: "What is hardening?" },
+    right: {
+      uz: "Keraksizini olib tashlash va qolganini qattiq sozlash",
+      en: "Removing what isn’t needed and locking down the rest",
+    },
+    wrong: [
+      { uz: "Serverni tezlashtirish", en: "Making a server faster" },
+      { uz: "Zaxira nusxa olish", en: "Taking a backup" },
+      { uz: "Antivirus o‘rnatish", en: "Installing antivirus" },
+    ],
+    explain: {
+      uz: "Kichik hujum yuzasi — kam eshik.",
+      en: "A small attack surface means fewer doors.",
+    },
+  },
+  {
+    ask: {
+      uz: "`-rw-rw-rw-` faylga kim yoza oladi?",
+      en: "Who can write to a `-rw-rw-rw-` file?",
+    },
+    right: { uz: "Har bir foydalanuvchi", en: "Every user" },
+    wrong: [
+      { uz: "Faqat egasi", en: "Only the owner" },
+      { uz: "Faqat root", en: "Only root" },
+      { uz: "Hech kim", en: "Nobody" },
+    ],
+    explain: {
+      uz: "Oxirgi uchlikdagi w — boshqalar uchun.",
+      en: "The w in the last triplet is for others.",
+    },
+  },
+  {
+    ask: { uz: "SUID bit nima qiladi?", en: "What does the SUID bit do?" },
+    right: {
+      uz: "Dastur egasi huquqi bilan ishlaydi",
+      en: "Runs the program with its owner’s rights",
+    },
+    wrong: [
+      { uz: "Faylni yashiradi", en: "Hides the file" },
+      { uz: "Faylni shifrlaydi", en: "Encrypts the file" },
+      { uz: "O‘chirishni taqiqlaydi", en: "Blocks deletion" },
+    ],
+    explain: {
+      uz: "Egasi root bo‘lsa — root huquqi bilan.",
+      en: "If the owner is root, it runs as root.",
+    },
+  },
+  {
+    ask: {
+      uz: "/tmp dagi `t` (sticky bit) nima uchun?",
+      en: "What is the `t` (sticky bit) on /tmp for?",
+    },
+    right: {
+      uz: "Har kim faqat o‘z faylini o‘chira oladi",
+      en: "Each user can delete only their own files",
+    },
+    wrong: [
+      { uz: "Papka vaqtinchalik", en: "The folder is temporary" },
+      { uz: "Papka shifrlangan", en: "The folder is encrypted" },
+      { uz: "Papka faqat root uchun", en: "The folder is root-only" },
+    ],
+    explain: {
+      uz: "Hamma yozadi, lekin birovnikini o‘chirmaydi.",
+      en: "All may write, none may delete others’ files.",
+    },
+  },
+  {
+    ask: {
+      uz: "/etc/shadow uchun to‘g‘ri huquq?",
+      en: "The right mode for /etc/shadow?",
+    },
+    right: {
+      uz: "640 (root va shadow guruhi)",
+      en: "640 (root and the shadow group)",
+    },
+    wrong: [
+      { uz: "666", en: "666" },
+      { uz: "777", en: "777" },
+      { uz: "644", en: "644" },
+    ],
+    explain: {
+      uz: "Unda parol xeshlari saqlanadi.",
+      en: "It holds the password hashes.",
+    },
+  },
+  {
+    ask: {
+      uz: "Root ishga tushiradigan cron skripti hamma uchun yoziladigan. Xavf?",
+      en: "A cron script root runs is world-writable. The risk?",
+    },
+    right: {
+      uz: "Har kim root bo‘lib buyruq bajartira oladi",
+      en: "Anyone can get commands run as root",
+    },
+    wrong: [
+      { uz: "Skript sekinlashadi", en: "The script slows down" },
+      { uz: "Xavf yo‘q", en: "No risk" },
+      { uz: "Disk to‘ladi", en: "The disk fills up" },
+    ],
+    explain: { uz: "chmod 755, egasi root.", en: "chmod 755, owned by root." },
+  },
+  {
+    ask: {
+      uz: "Barcha SUID fayllarni qanday topasiz?",
+      en: "How do you list every SUID file?",
+    },
+    right: {
+      uz: "find / -perm -4000 -type f",
+      en: "find / -perm -4000 -type f",
+    },
+    wrong: [
+      { uz: "ls -la /", en: "ls -la /" },
+      { uz: "ps aux", en: "ps aux" },
+      { uz: "df -h", en: "df -h" },
+    ],
+    explain: {
+      uz: "4000 — SUID bitining raqami.",
+      en: "4000 is the SUID bit’s number.",
+    },
+  },
+  {
+    ask: {
+      uz: "sudoers’dagi eng xavfli qator?",
+      en: "The most dangerous sudoers line?",
+    },
+    right: {
+      uz: "user ALL=(ALL) NOPASSWD: ALL",
+      en: "user ALL=(ALL) NOPASSWD: ALL",
+    },
+    wrong: [
+      {
+        uz: "user ALL=(root) /usr/bin/systemctl restart app",
+        en: "user ALL=(root) /usr/bin/systemctl restart app",
+      },
+      { uz: "Defaults env_reset", en: "Defaults env_reset" },
+      { uz: "Defaults logfile", en: "Defaults logfile" },
+    ],
+    explain: {
+      uz: "Hamma narsa, parolsiz.",
+      en: "Everything, with no password.",
+    },
+  },
+  {
+    ask: {
+      uz: "sudo ruxsatlarini qaysi buyruq ko‘rsatadi?",
+      en: "Which command shows your sudo rights?",
+    },
+    right: { uz: "sudo -l", en: "sudo -l" },
+    wrong: [
+      { uz: "whoami", en: "whoami" },
+      { uz: "id -u", en: "id -u" },
+      { uz: "ls /etc", en: "ls /etc" },
+    ],
+    explain: {
+      uz: "Pentesterning birinchi buyrug‘i.",
+      en: "A pentester’s first command.",
+    },
+  },
+  {
+    ask: {
+      uz: "Xizmat `0.0.0.0:3306` da tinglayapti. Bu nimani bildiradi?",
+      en: "A service listens on `0.0.0.0:3306`. What does that mean?",
+    },
+    right: {
+      uz: "Barcha tarmoqlardan, internetdan ham ulanish mumkin",
+      en: "Reachable from every network, the internet included",
+    },
+    wrong: [
+      { uz: "Faqat shu serverdan", en: "Only from this server" },
+      { uz: "Xizmat o‘chiq", en: "The service is off" },
+      { uz: "Faqat IPv6", en: "IPv6 only" },
+    ],
+    explain: {
+      uz: "Faqat lokal uchun — 127.0.0.1.",
+      en: "Local only would be 127.0.0.1.",
+    },
+  },
+  {
+    ask: {
+      uz: "Baza faqat shu serverdagi ilovaga kerak. To‘g‘ri qaror?",
+      en: "Only the app on this server uses the database. The right call?",
+    },
+    right: { uz: "127.0.0.1 ga bog‘lash", en: "Bind it to 127.0.0.1" },
+    wrong: [
+      { uz: "Ochiq qoldirish", en: "Keep it public" },
+      { uz: "Portni almashtirish", en: "Change the port" },
+      { uz: "Parolni olib tashlash", en: "Remove the password" },
+    ],
+    explain: {
+      uz: "Port almashtirish — yashirish, himoya emas.",
+      en: "Changing the port hides; it doesn’t protect.",
+    },
+  },
+  {
+    ask: {
+      uz: "Telnet o‘rniga nima ishlatiladi?",
+      en: "What replaces telnet?",
+    },
+    right: { uz: "SSH", en: "SSH" },
+    wrong: [
+      { uz: "FTP", en: "FTP" },
+      { uz: "HTTP", en: "HTTP" },
+      { uz: "SMTP", en: "SMTP" },
+    ],
+    explain: {
+      uz: "Telnet parolni ochiq matnda yuboradi.",
+      en: "Telnet sends passwords in clear text.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi SSH sozlamasi mustahkamlaydi?",
+      en: "Which SSH setting hardens it?",
+    },
+    right: { uz: "PasswordAuthentication no", en: "PasswordAuthentication no" },
+    wrong: [
+      { uz: "PermitRootLogin yes", en: "PermitRootLogin yes" },
+      { uz: "PermitEmptyPasswords yes", en: "PermitEmptyPasswords yes" },
+      { uz: "Port 23", en: "Port 23" },
+    ],
+    explain: {
+      uz: "Faqat kalit bilan kirish — parol taxmini ishlamaydi.",
+      en: "Keys only — password guessing stops working.",
+    },
+  },
+  {
+    ask: {
+      uz: "fail2ban nima qiladi?",
+      en: "What does fail2ban do?",
+    },
+    right: {
+      uz: "Ko‘p xato urinishdan keyin IP ni bloklaydi",
+      en: "Blocks an IP after repeated failures",
+    },
+    wrong: [
+      { uz: "Parollarni shifrlaydi", en: "Encrypts passwords" },
+      { uz: "Yangilanish o‘rnatadi", en: "Installs updates" },
+      { uz: "Zaxira oladi", en: "Takes backups" },
+    ],
+    explain: {
+      uz: "U loglarni kuzatib, firewall qoidasi qo‘shadi.",
+      en: "It watches logs and adds firewall rules.",
+    },
+  },
+  {
+    ask: {
+      uz: "Firewall uchun to‘g‘ri boshlang‘ich siyosat?",
+      en: "The right default firewall policy?",
+    },
+    right: {
+      uz: "Kiruvchi hammasi yopiq, keraklilari ochiladi",
+      en: "Deny incoming, open only what’s needed",
+    },
+    wrong: [
+      { uz: "Hammasi ochiq", en: "Allow everything" },
+      { uz: "Faqat chiquvchini yopish", en: "Block only outgoing" },
+      { uz: "Firewall kerak emas", en: "No firewall" },
+    ],
+    explain: {
+      uz: "ufw default deny incoming.",
+      en: "ufw default deny incoming.",
+    },
+  },
+];

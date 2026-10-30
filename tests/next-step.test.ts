@@ -128,6 +128,7 @@ test("everything finished", () => {
         supplychain: 8,
         autotest: 8,
         codereview: 8,
+        hardening: 8,
         scams: 8,
         httpbasics: 9,
         https: 9,

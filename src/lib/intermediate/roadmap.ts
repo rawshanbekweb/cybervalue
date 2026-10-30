@@ -617,6 +617,8 @@ export const DOMAINS: Domain[] = [
     modules: [
       {
         title: { uz: "Linux mustahkamlash", en: "Linux hardening" },
+        href: "/intermediate/hardening",
+        lab: "hardening",
         topics: ["permissions", "SUID", "sudo", "services"],
         goal: goal(
           "Tizimdagi xavfli sozlamalarni topib, tuzatish.",

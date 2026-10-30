@@ -49,6 +49,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/supplychain`  | AppSec module 3, dependencies and supply chain (8 lessons, a checkpoint)        |
 | `/intermediate/autotest`     | AppSec module 4, automated security testing (8 lessons, a checkpoint)           |
 | `/intermediate/codereview`   | AppSec module 5, secure code review (8 lessons, a checkpoint)                   |
+| `/intermediate/hardening`    | System security module 1, Linux hardening (8 lessons, a checkpoint)             |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -869,6 +870,27 @@ findings, one at each of the `LEVELS`. It completes the AppSec domain.
 | 6       | Rates four findings from critical to low            |
 | 7       | Sorts cases into request changes or approve         |
 | 8       | Final questions                                     |
+
+## System security module 1: Linux hardening
+
+`/intermediate/hardening` (lab id `hardening`, checkpoint `hardening-1`,
+award `lab-hardening`, site setting `hardening`) uses
+`src/lib/hardening/tools.ts`: `ENTRIES` are seven lines of an audit `ls -l`,
+three of them `RISKY` (a world-writable `/etc/shadow`, a hand-added SUID
+root program and a world-writable root cron script), and `SERVICES` are six
+listening services on a web server, two each to keep public, bind to
+localhost or switch off. It opens the System security domain.
+
+| Lessons | What the student does                                  |
+| ------- | ------------------------------------------------------ |
+| 1       | Sorts changes into shrinking or growing attack surface |
+| 2       | Questions on permissions, SUID and the sticky bit      |
+| 3       | Ticks the three risky entries in an audit listing      |
+| 4       | Questions on sudo and least privilege                  |
+| 5       | Decides what each listening service should do          |
+| 6       | Sorts SSH settings into hardening or weakening         |
+| 7       | Questions on updates, the firewall and logs            |
+| 8       | Final questions                                        |
 
 ## Who gets in
 
