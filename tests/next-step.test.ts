@@ -125,6 +125,7 @@ test("everything finished", () => {
         footprint: 8,
         stride: 8,
         securecode: 8,
+        supplychain: 8,
         scams: 8,
         httpbasics: 9,
         https: 9,

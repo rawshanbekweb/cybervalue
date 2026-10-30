@@ -44,6 +44,7 @@ export const LAB_PROGRESS = {
   footprint: { key: "cybervalue:footprint:progress:v1", total: 8 },
   stride: { key: "cybervalue:stride:progress:v1", total: 8 },
   securecode: { key: "cybervalue:securecode:progress:v1", total: 8 },
+  supplychain: { key: "cybervalue:supplychain:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -443,6 +444,15 @@ export const LAB_META: {
       en: "Secure coding (Intermediate)",
     },
     href: "/intermediate/securecode",
+    intermediate: true,
+  },
+  {
+    id: "supplychain",
+    title: {
+      uz: "Kutubxonalar va ta’minot zanjiri (Intermediate)",
+      en: "Dependencies and supply chain (Intermediate)",
+    },
+    href: "/intermediate/supplychain",
     intermediate: true,
   },
 ];

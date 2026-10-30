@@ -46,6 +46,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/footprint`    | OSINT module 5, digital footprint (8 lessons, a checkpoint)                     |
 | `/intermediate/stride`       | AppSec module 1, threat modelling (8 lessons, a checkpoint)                     |
 | `/intermediate/securecode`   | AppSec module 2, secure coding (8 lessons, a checkpoint)                        |
+| `/intermediate/supplychain`  | AppSec module 3, dependencies and supply chain (8 lessons, a checkpoint)        |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -807,6 +808,27 @@ lines of a profile handler, each with the one `FIXES` entry that closes it.
 | 6       | Sorts fields into what to log and what never to log |
 | 7       | Questions on least privilege and defence in depth   |
 | 8       | Final questions                                     |
+
+## AppSec module 3: Dependencies and supply chain
+
+`/intermediate/supplychain` (lab id `supplychain`, checkpoint
+`supplychain-1`, award `lab-supplychain`, site setting `supplychain`) uses
+`src/lib/supplychain/tools.ts`: `LOCK` is a small app's lockfile (four direct
+and two transitive packages), `ADVISORIES` give the version each flaw is
+fixed in, and `compare` checks versions by number; `VULNERABLE` are the three
+packages older than their fix. `INSTALLS` are six install commands, three of
+them look-alike names.
+
+| Lessons | What the student does                                   |
+| ------- | ------------------------------------------------------- |
+| 1       | Sorts packages into direct and transitive               |
+| 2       | Questions on semver, the lockfile and `npm ci`          |
+| 3       | Ticks the lockfile packages that advisories affect      |
+| 4       | Tells real packages from look-alikes                    |
+| 5       | Questions on poisoned packages and dependency confusion |
+| 6       | Questions on the SBOM                                   |
+| 7       | Sorts cases into update now, on schedule or remove      |
+| 8       | Final questions                                         |
 
 ## Who gets in
 

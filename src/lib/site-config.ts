@@ -312,6 +312,12 @@ export const SECTIONS = [
     href: "/intermediate/securecode",
   },
   {
+    id: "supplychain",
+    group: "lab",
+    label: "Dependencies and supply chain (Intermediate)",
+    href: "/intermediate/supplychain",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

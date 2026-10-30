@@ -574,6 +574,8 @@ export const DOMAINS: Domain[] = [
           uz: "Kutubxonalar va ta’minot zanjiri",
           en: "Dependencies and supply chain",
         },
+        href: "/intermediate/supplychain",
+        lab: "supplychain",
         topics: ["SCA", "lockfiles", "SBOM", "updates"],
         goal: goal(
           "Loyiha kutubxonalarini zaifliklarga tekshirish.",
