@@ -1611,5 +1611,14 @@
   "Two allowed, three denied by default and one stopped by the Deny on salaries — even though an Allow matched it too.": "Ikkitasiga ruxsat, uchtasi sukut bo‘yicha rad va bittasini salaries’dagi Deny to‘xtatdi — unga Allow ham mos kelgan bo‘lsa-da.",
   "Identity and access": "Kirish va huquqlar",
   "Identity and access · Academy Intermediate": "Kirish va huquqlar · Academy Intermediate",
-  "Tell people from workloads, read a policy, evaluate six requests with default and explicit deny, write least-privilege policies, prefer roles and temporary keys, lock down the root account and review access regularly.": "Odamlarni dastur va xizmatlardan ajrating, siyosatni o‘qing, oltita so‘rovni sukut bo‘yicha rad va aniq Deny bilan baholang, eng kam huquqli siyosat yozing, rol va vaqtinchalik kalitlarni afzal ko‘ring, root hisobni himoyalang va huquqlarni muntazam qayta ko‘ring."
+  "Tell people from workloads, read a policy, evaluate six requests with default and explicit deny, write least-privilege policies, prefer roles and temporary keys, lock down the root account and review access regularly.": "Odamlarni dastur va xizmatlardan ajrating, siyosatni o‘qing, oltita so‘rovni sukut bo‘yicha rad va aniq Deny bilan baholang, eng kam huquqli siyosat yozing, rol va vaqtinchalik kalitlarni afzal ko‘ring, root hisobni himoyalang va huquqlarni muntazam qayta ko‘ring.",
+  "CLOUD · MODULE 3": "CLOUD · 3-MODUL",
+  "Storage and secrets.": "Saqlash va maxfiy kalitlar.",
+  "Private by default, encrypted, rotated and restorable.": "Sukut bo‘yicha yopiq, shifrlangan, yangilanadigan va tiklanadigan.",
+  "Learn how object storage works, find the buckets that leak data, encrypt at rest and in transit, keep secrets out of code and in a secrets manager, rotate keys, and keep versioned backups somewhere else.": "Obyektli saqlash qanday ishlashini o‘rganing, ma’lumot sizdirayotgan bucket’larni toping, ma’lumotni saqlashda va uzatishda shifrlang, maxfiy kalitlarni koddan chiqarib secrets manager’da saqlang, kalitlarni almashtiring va versiyali zaxiralarni boshqa joyda saqlang.",
+  "STORAGE / LAB": "SAQLASH / LABORATORIYA",
+  "{name} is leaking data": "{name} ma’lumot sizdirmoqda",
+  "Three buckets leak data: the backups, the logs and the dev export. The website assets are meant to be public.": "Uchta bucket ma’lumot sizdirmoqda: zaxiralar, loglar va dasturchi eksporti. Sayt fayllari esa ataylab ochiq.",
+  "Storage and secrets · Academy Intermediate": "Saqlash va maxfiy kalitlar · Academy Intermediate",
+  "Find the buckets that leak data, encrypt at rest and in transit, keep secrets in a secrets manager, rotate keys safely and keep versioned backups somewhere else.": "Ma’lumot sizdirayotgan bucket’larni toping, saqlashda va uzatishda shifrlang, maxfiy kalitlarni secrets manager’da saqlang, kalitlarni xavfsiz almashtiring va versiyali zaxiralarni boshqa joyda saqlang."
 }

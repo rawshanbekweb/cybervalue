@@ -54,6 +54,7 @@ export const LAB_PROGRESS = {
   build: { key: "cybervalue:build:progress:v1", total: 8 },
   shared: { key: "cybervalue:shared:progress:v1", total: 8 },
   iam: { key: "cybervalue:iam:progress:v1", total: 8 },
+  storage: { key: "cybervalue:storage:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -543,6 +544,15 @@ export const LAB_META: {
       en: "Identity and access (Intermediate)",
     },
     href: "/intermediate/iam",
+    intermediate: true,
+  },
+  {
+    id: "storage",
+    title: {
+      uz: "Saqlash va maxfiy kalitlar (Intermediate)",
+      en: "Storage and secrets (Intermediate)",
+    },
+    href: "/intermediate/storage",
     intermediate: true,
   },
 ];

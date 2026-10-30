@@ -314,6 +314,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Kirish va huquqlar (Intermediate)",
     earned: (f) => finished(f, "iam") && passed(f, "iam-1"),
   },
+  {
+    id: "lab-storage",
+    title: "Saqlash va maxfiy kalitlar (Intermediate)",
+    earned: (f) => finished(f, "storage") && passed(f, "storage-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

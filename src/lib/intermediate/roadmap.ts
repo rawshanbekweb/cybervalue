@@ -765,6 +765,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Saqlash va maxfiy kalitlar", en: "Storage and secrets" },
+        href: "/intermediate/storage",
+        lab: "storage",
         topics: ["public buckets", "encryption at rest", "secret managers"],
         goal: goal(
           "Ochiq qolgan ma’lumotlarni topib, yopish.",

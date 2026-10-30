@@ -12606,3 +12606,291 @@ export const IAM_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const STORAGE_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Obyektli saqlash (S3, Blob) ma’lumotni qanday saqlaydi?",
+      en: "How does object storage (S3, Blob) keep data?",
+    },
+    right: {
+      uz: "Bucket ichida kalit bo‘yicha obyektlar",
+      en: "Objects by key inside a bucket",
+    },
+    wrong: [
+      { uz: "Jadval qatorlari", en: "Table rows" },
+      { uz: "Faqat RAM’da", en: "Only in RAM" },
+      { uz: "Disk bo‘limlarida", en: "In disk partitions" },
+    ],
+    explain: {
+      uz: "Har bir obyektning nomi (kaliti) va metama’lumoti bor.",
+      en: "Each object has a name (key) and metadata.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi bucket ochiq (public) bo‘lishi mumkin?",
+      en: "Which bucket may be public?",
+    },
+    right: {
+      uz: "Saytning rasm va CSS fayllari",
+      en: "The site’s images and CSS",
+    },
+    wrong: [
+      { uz: "Baza zaxiralari", en: "Database backups" },
+      { uz: "Ilova loglari", en: "Application logs" },
+      { uz: "Xodimlar hujjatlari", en: "Staff documents" },
+    ],
+    explain: {
+      uz: "Faqat hammaga mo‘ljallangan narsa ochiq bo‘ladi.",
+      en: "Only what is meant for everyone is public.",
+    },
+  },
+  {
+    ask: {
+      uz: 'Bucket siyosatidagi Principal "*" nimani bildiradi?',
+      en: 'What does Principal "*" in a bucket policy mean?',
+    },
+    right: { uz: "Har kim, hatto anonim", en: "Anyone, even anonymous" },
+    wrong: [
+      { uz: "Faqat adminlar", en: "Only admins" },
+      { uz: "Hech kim", en: "No one" },
+      { uz: "Faqat shu hisob", en: "Only this account" },
+    ],
+    explain: {
+      uz: "Yulduzcha — butun internet.",
+      en: "The star is the whole internet.",
+    },
+  },
+  {
+    ask: {
+      uz: "“Block Public Access” sozlamasi nima qiladi?",
+      en: "What does the “Block Public Access” setting do?",
+    },
+    right: {
+      uz: "Xato bilan ochib qo‘yishning oldini oladi",
+      en: "Stops buckets being made public by mistake",
+    },
+    wrong: [
+      { uz: "Ma’lumotni shifrlaydi", en: "Encrypts the data" },
+      { uz: "Zaxira oladi", en: "Takes a backup" },
+      { uz: "Narxni kamaytiradi", en: "Lowers the price" },
+    ],
+    explain: {
+      uz: "Hisob darajasida yoqib qo‘yish yaxshi.",
+      en: "Best switched on for the whole account.",
+    },
+  },
+  {
+    ask: {
+      uz: "“At rest” shifrlash nimani himoya qiladi?",
+      en: "What does encryption “at rest” protect?",
+    },
+    right: {
+      uz: "Diskda saqlangan ma’lumotni",
+      en: "Data stored on disk",
+    },
+    wrong: [
+      { uz: "Tarmoqdagi trafikni", en: "Traffic on the network" },
+      { uz: "Parollarni kiritishda", en: "Passwords as they are typed" },
+      { uz: "Hech narsani", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Tarmoqdagisi — “in transit” (TLS).",
+      en: "On the network it is “in transit” (TLS).",
+    },
+  },
+  {
+    ask: {
+      uz: "KMS kalitini ishlatishning afzalligi?",
+      en: "The advantage of a KMS key?",
+    },
+    right: {
+      uz: "Kim shifrni ocha olishini nazorat qilasiz va loglaysiz",
+      en: "You control and log who can decrypt",
+    },
+    wrong: [
+      { uz: "Shifrlash kerak bo‘lmaydi", en: "No encryption is needed" },
+      { uz: "Kalit kodda turadi", en: "The key lives in the code" },
+      { uz: "Tezroq yuklaydi", en: "Faster downloads" },
+    ],
+    explain: {
+      uz: "Kalitdan foydalanish ham IAM orqali.",
+      en: "Using the key also goes through IAM.",
+    },
+  },
+  {
+    ask: {
+      uz: "Maxfiy kalit (API key) qayerda turishi kerak?",
+      en: "Where should an API key live?",
+    },
+    right: {
+      uz: "Secrets manager’da",
+      en: "In a secrets manager",
+    },
+    wrong: [
+      { uz: "Kod ichida", en: "In the code" },
+      { uz: "Git repozitoriyda", en: "In the Git repository" },
+      { uz: "Chat xabarida", en: "In a chat message" },
+    ],
+    explain: {
+      uz: "Ilova uni ishga tushganda oladi.",
+      en: "The app fetches it when it starts.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kalit Git’ga tushib qoldi. Birinchi qadam?",
+      en: "A key was committed to Git. The first step?",
+    },
+    right: {
+      uz: "Kalitni bekor qilib, yangisini berish",
+      en: "Revoke it and issue a new one",
+    },
+    wrong: [
+      { uz: "Faqat commitni o‘chirish", en: "Just delete the commit" },
+      { uz: "Hech kimga aytmaslik", en: "Tell no one" },
+      { uz: "Repozitoriyni yopish", en: "Make the repo private" },
+    ],
+    explain: {
+      uz: "Tarixda va nusxalarda qoladi — u endi oshkor.",
+      en: "It stays in history and clones — it is exposed now.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kalitlarni rotatsiya qilish nima?",
+      en: "What is key rotation?",
+    },
+    right: {
+      uz: "Kalitni muntazam yangisiga almashtirish",
+      en: "Regularly replacing a key with a new one",
+    },
+    wrong: [
+      { uz: "Kalitni nusxalash", en: "Copying the key" },
+      { uz: "Kalitni uzaytirish", en: "Making the key longer" },
+      { uz: "Kalitni chop etish", en: "Printing the key" },
+    ],
+    explain: {
+      uz: "O‘g‘irlangan kalitning foydasi qisqa bo‘ladi.",
+      en: "A stolen key stays useful only briefly.",
+    },
+  },
+  {
+    ask: {
+      uz: "Rotatsiyani xavfsiz qilish uchun?",
+      en: "To rotate safely?",
+    },
+    right: {
+      uz: "Yangi kalitni qo‘shib, keyin eskisini o‘chirish",
+      en: "Add the new key, then remove the old one",
+    },
+    wrong: [
+      { uz: "Avval eskisini o‘chirish", en: "Delete the old one first" },
+      { uz: "Ikkalasini abadiy qoldirish", en: "Keep both forever" },
+      { uz: "Hech qachon almashtirmaslik", en: "Never replace it" },
+    ],
+    explain: {
+      uz: "Shunda ilova to‘xtab qolmaydi.",
+      en: "That way the app never goes down.",
+    },
+  },
+  {
+    ask: {
+      uz: "Versioning nimaga yordam beradi?",
+      en: "What does versioning help with?",
+    },
+    right: {
+      uz: "O‘chirilgan yoki buzilgan faylni qaytarish",
+      en: "Restoring a deleted or overwritten file",
+    },
+    wrong: [
+      { uz: "Faylni shifrlash", en: "Encrypting a file" },
+      { uz: "Faylni ochiq qilish", en: "Making a file public" },
+      { uz: "Faylni kichraytirish", en: "Shrinking a file" },
+    ],
+    explain: {
+      uz: "Har bir o‘zgarish alohida versiya bo‘ladi.",
+      en: "Every change becomes its own version.",
+    },
+  },
+  {
+    ask: {
+      uz: "Zaxiralar qayerda saqlanishi kerak?",
+      en: "Where should backups be kept?",
+    },
+    right: {
+      uz: "Alohida hisob yoki joyda",
+      en: "In a separate account or place",
+    },
+    wrong: [
+      { uz: "Asl ma’lumot yonida", en: "Next to the original" },
+      { uz: "Ochiq bucketda", en: "In a public bucket" },
+      { uz: "Dasturchining noutbukida", en: "On a developer’s laptop" },
+    ],
+    explain: {
+      uz: "Bitta hodisa ikkalasini birdan yo‘q qilmasin.",
+      en: "So one incident can’t wipe out both.",
+    },
+  },
+  {
+    ask: {
+      uz: "Zaxira ishlashini qanday bilasiz?",
+      en: "How do you know a backup works?",
+    },
+    right: {
+      uz: "Muntazam tiklashni sinab ko‘rish",
+      en: "Test a restore regularly",
+    },
+    wrong: [
+      { uz: "Fayl hajmiga qarab", en: "By its file size" },
+      { uz: "Hech qachon tekshirmaslik", en: "Never check" },
+      { uz: "Nomiga qarab", en: "By its name" },
+    ],
+    explain: {
+      uz: "Tiklanmagan zaxira — faqat umid.",
+      en: "An untested backup is only a hope.",
+    },
+  },
+  {
+    ask: {
+      uz: "Sinov uchun mijozlar ma’lumoti kerak. To‘g‘ri yo‘l?",
+      en: "Testing needs customer data. The right way?",
+    },
+    right: {
+      uz: "Soxta yoki maskalangan ma’lumot",
+      en: "Fake or masked data",
+    },
+    wrong: [
+      {
+        uz: "Haqiqiy eksportni ochiq bucketga",
+        en: "A real export in a public bucket",
+      },
+      { uz: "Emailda yuborish", en: "Send it by email" },
+      { uz: "USB’ga yozish", en: "Copy it to a USB stick" },
+    ],
+    explain: {
+      uz: "Haqiqiy shaxsiy ma’lumot sinovga kerak emas.",
+      en: "Testing doesn’t need real personal data.",
+    },
+  },
+  {
+    ask: {
+      uz: "Loglarda nima bo‘lmasligi kerak?",
+      en: "What should logs not contain?",
+    },
+    right: {
+      uz: "Parollar, tokenlar va kartalar",
+      en: "Passwords, tokens and card numbers",
+    },
+    wrong: [
+      { uz: "Vaqt belgisi", en: "A timestamp" },
+      { uz: "So‘rov yo‘li", en: "The request path" },
+      { uz: "Javob kodi", en: "The status code" },
+    ],
+    explain: {
+      uz: "Loglar ko‘p joyga tarqaladi.",
+      en: "Logs travel to many places.",
+    },
+  },
+];
