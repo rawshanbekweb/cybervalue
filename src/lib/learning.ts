@@ -42,6 +42,7 @@ import { LESSONS as STRIDE_LESSONS } from "@/lib/stride/curriculum";
 import { LESSONS as SECURECODE_LESSONS } from "@/lib/securecode/curriculum";
 import { LESSONS as SUPPLYCHAIN_LESSONS } from "@/lib/supplychain/curriculum";
 import { LESSONS as AUTOTEST_LESSONS } from "@/lib/autotest/curriculum";
+import { LESSONS as CODEREVIEW_LESSONS } from "@/lib/codereview/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -858,6 +859,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: AUTOTEST_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "codereview",
+      title: "Secure code review",
+      category: "Intermediate · AppSec",
+      description:
+        "See what people find that tools miss, review with a security checklist, flag four problems in a pull request, write comments an author can act on, rate findings by impact and likelihood and decide when to approve.",
+      href: "/intermediate/codereview",
+      progressKey: LAB_PROGRESS.codereview.key,
+      level: "Intermediate",
+      lessons: CODEREVIEW_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: CODEREVIEW_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

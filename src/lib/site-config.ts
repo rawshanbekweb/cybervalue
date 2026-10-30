@@ -324,6 +324,12 @@ export const SECTIONS = [
     href: "/intermediate/autotest",
   },
   {
+    id: "codereview",
+    group: "lab",
+    label: "Secure code review (Intermediate)",
+    href: "/intermediate/codereview",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

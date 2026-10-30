@@ -737,6 +737,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/autotest#checkpoints",
     pass: 70,
   },
+  {
+    id: "codereview-1",
+    level: "intermediate",
+    lab: { uz: "Xavfsiz kod ko‘rigi", en: "Secure code review" },
+    title: {
+      uz: "Nazorat: Xavfsiz kod ko‘rigi",
+      en: "Checkpoint: Secure code review",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/codereview#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

@@ -46,6 +46,7 @@ export const LAB_PROGRESS = {
   securecode: { key: "cybervalue:securecode:progress:v1", total: 8 },
   supplychain: { key: "cybervalue:supplychain:progress:v1", total: 8 },
   autotest: { key: "cybervalue:autotest:progress:v1", total: 8 },
+  codereview: { key: "cybervalue:codereview:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -463,6 +464,15 @@ export const LAB_META: {
       en: "Automated security testing (Intermediate)",
     },
     href: "/intermediate/autotest",
+    intermediate: true,
+  },
+  {
+    id: "codereview",
+    title: {
+      uz: "Xavfsiz kod ko‘rigi (Intermediate)",
+      en: "Secure code review (Intermediate)",
+    },
+    href: "/intermediate/codereview",
     intermediate: true,
   },
 ];

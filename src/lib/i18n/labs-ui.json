@@ -1506,5 +1506,19 @@
   "Every layer has its job: secrets before the commit, SAST and SCA on the pull request, DAST against staging.": "Har bir qatlamning o‘z vazifasi bor: sirlar — commit’dan oldin, SAST va SCA — pull request’da, DAST — staging’da.",
   "Automated security testing": "Avtomatik xavfsizlik tekshiruvlari",
   "Automated security testing · Academy Intermediate": "Avtomatik xavfsizlik tekshiruvlari · Academy Intermediate",
-  "See why checks belong on every pull request, learn what SAST can and can’t see, triage findings, add dependency and secret scanning, probe a running site with DAST, place each check in the pipeline and decide what blocks a merge.": "Nega tekshiruvlar har bir pull request’da bo‘lishi kerakligini ko‘ring, SAST nimani ko‘ra olishini o‘rganing, topilmalarni saralang, kutubxonalar va sirlarni qidirishni qo‘shing, ishlayotgan saytni DAST bilan sinang, har bir tekshiruvni pipeline’ga joylang va merge’ni nima to‘xtatishini hal qiling."
+  "See why checks belong on every pull request, learn what SAST can and can’t see, triage findings, add dependency and secret scanning, probe a running site with DAST, place each check in the pipeline and decide what blocks a merge.": "Nega tekshiruvlar har bir pull request’da bo‘lishi kerakligini ko‘ring, SAST nimani ko‘ra olishini o‘rganing, topilmalarni saralang, kutubxonalar va sirlarni qidirishni qo‘shing, ishlayotgan saytni DAST bilan sinang, har bir tekshiruvni pipeline’ga joylang va merge’ni nima to‘xtatishini hal qiling.",
+  "APPSEC · MODULE 5": "APPSEC · 5-MODUL",
+  "Secure code review.": "Xavfsiz kod ko‘rigi.",
+  "A second pair of eyes on every change.": "Har bir o‘zgarishga ikkinchi juft ko‘z.",
+  "See what people find that tools miss, review with a short security checklist, flag four problems in a pull request, write comments an author can act on, rate findings by impact and likelihood and decide when to approve.": "Odam vositalar ko‘rmagan nimani topishini ko‘ring, qisqa xavfsizlik ro‘yxati bilan ko‘rib chiqing, pull request’dagi to‘rtta muammoni belgilang, muallif tuzata oladigan izoh yozing, topilmalarni ta’sir va ehtimollik bo‘yicha baholang va qachon tasdiqlashni hal qiling.",
+  "REVIEW / LAB": "KO‘RIK / LAB",
+  "Line {no} has a problem": "{no}-qatorda muammo bor",
+  "Lines ticked: {n}": "Belgilangan qatorlar: {n}",
+  "{n} problems found: a missing owner check, a year-long session, CORS open to every site and an = that makes everyone admin.": "{n} ta muammo topildi: egasi tekshirilmaydi, sessiya bir yil davom etadi, CORS har bir saytga ochiq va = belgisi hammani admin qiladi.",
+  "Choose a level": "Darajani tanlang",
+  "Weigh it again": "Yana tortib ko‘ring",
+  "One of each level: fix the role check today, the owner check next, then the session length; the header can wait for a ticket.": "Har darajadan bittadan: rol tekshiruvi bugun, keyin egasi tekshiruvi, so‘ng sessiya muddati tuzatiladi; sarlavha vazifa sifatida kutishi mumkin.",
+  "Secure code review": "Xavfsiz kod ko‘rigi",
+  "Secure code review · Academy Intermediate": "Xavfsiz kod ko‘rigi · Academy Intermediate",
+  "See what people find that tools miss, review with a security checklist, flag four problems in a pull request, write comments an author can act on, rate findings by impact and likelihood and decide when to approve.": "Odam vositalar ko‘rmagan nimani topishini ko‘ring, xavfsizlik ro‘yxati bilan ko‘rib chiqing, pull request’dagi to‘rtta muammoni belgilang, muallif tuzata oladigan izoh yozing, topilmalarni ta’sir va ehtimollik bo‘yicha baholang va qachon tasdiqlashni hal qiling."
 }
