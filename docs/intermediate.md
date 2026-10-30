@@ -40,6 +40,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/hunting`      | Blue team module 4, threat hunting (8 lessons, a checkpoint)                    |
 | `/intermediate/phishing`     | Blue team module 5, phishing analysis (8 lessons, a checkpoint)                 |
 | `/intermediate/ethics`       | OSINT module 1, ethics and law (8 lessons, a checkpoint)                        |
+| `/intermediate/search`       | OSINT module 2, search technique (8 lessons, a checkpoint)                      |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -680,6 +681,26 @@ it fails. It opens the OSINT domain.
 | 6       | Questions on the researcher's OPSEC               |
 | 7       | Clicks through a recorded finding                 |
 | 8       | Final questions                                   |
+
+## OSINT module 2: Search technique
+
+`/intermediate/search` (lab id `search`, checkpoint `search-1`, award
+`lab-search`, site setting `search`) uses `src/lib/search/tools.ts`: `DOCS`
+are twelve invented pages and `search` is a small engine that understands
+`site:` (with subdomains), `filetype:`/`ext:`, `intitle:`, quoted phrases and
+`-exclusions`; the student narrows a query until only the leaked internal
+price list (`TARGET`) is left.
+
+| Lessons | What the student does                               |
+| ------- | --------------------------------------------------- |
+| 1       | Questions on what search engines index              |
+| 2       | Clicks through a dork                               |
+| 3       | Narrows a search to one exposed file                |
+| 4       | Questions on dating archived pages                  |
+| 5       | Sorts strong sources from ones needing confirmation |
+| 6       | Questions on independent confirmation               |
+| 7       | Questions on local languages and registers          |
+| 8       | Final questions                                     |
 
 ## Who gets in
 

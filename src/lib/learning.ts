@@ -34,6 +34,7 @@ import { LESSONS as TRIAGE_LESSONS } from "@/lib/triage/curriculum";
 import { LESSONS as HUNTING_LESSONS } from "@/lib/hunting/curriculum";
 import { LESSONS as PHISHING_LESSONS } from "@/lib/phishing/curriculum";
 import { LESSONS as ETHICS_LESSONS } from "@/lib/ethics/curriculum";
+import { LESSONS as SEARCH_LESSONS } from "@/lib/search/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -714,6 +715,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: ETHICS_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "search",
+      title: "Search technique",
+      category: "Intermediate · OSINT",
+      description:
+        "Learn what search engines miss, read and write site:, filetype:, intitle:, quoted and minus operators, narrow a search to one leaked file, date archived pages, judge sources, insist on independent confirmation and search in local languages and scripts.",
+      href: "/intermediate/search",
+      progressKey: LAB_PROGRESS.search.key,
+      level: "Intermediate",
+      lessons: SEARCH_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: SEARCH_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

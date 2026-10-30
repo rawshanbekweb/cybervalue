@@ -38,6 +38,7 @@ export const LAB_PROGRESS = {
   hunting: { key: "cybervalue:hunting:progress:v1", total: 8 },
   phishing: { key: "cybervalue:phishing:progress:v1", total: 8 },
   ethics: { key: "cybervalue:ethics:progress:v1", total: 8 },
+  search: { key: "cybervalue:search:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -383,6 +384,15 @@ export const LAB_META: {
       en: "Ethics and law (Intermediate)",
     },
     href: "/intermediate/ethics",
+    intermediate: true,
+  },
+  {
+    id: "search",
+    title: {
+      uz: "Qidiruv texnikasi (Intermediate)",
+      en: "Search technique (Intermediate)",
+    },
+    href: "/intermediate/search",
     intermediate: true,
   },
 ];

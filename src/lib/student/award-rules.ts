@@ -234,6 +234,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Axloq va qonun (Intermediate)",
     earned: (f) => finished(f, "ethics") && passed(f, "ethics-1"),
   },
+  {
+    id: "lab-search",
+    title: "Qidiruv texnikasi (Intermediate)",
+    earned: (f) => finished(f, "search") && passed(f, "search-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

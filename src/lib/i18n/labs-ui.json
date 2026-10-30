@@ -1372,5 +1372,14 @@
   "Check the target, the method and the date again.": "Maqsad, usul va sanani qayta tekshiring.",
   "Three allowed, four refused: one too early, one too personal, one too active and one aimed at the wrong company.": "Uchtasi mumkin, to‘rttasi rad etildi: biri juda erta, biri juda shaxsiy, biri juda faol va biri boshqa kompaniyaga qaratilgan.",
   "Ethics and law · Academy Intermediate": "Axloq va qonun · Academy Intermediate",
-  "Ethics and law": "Axloq va qonun"
+  "Ethics and law": "Axloq va qonun",
+  "OSINT · MODULE 2": "OSINT · 2-MODUL",
+  "Search technique.": "Qidiruv texnikasi.",
+  "Ask the engine precisely, then check what it says.": "Qidiruv tizimidan aniq so‘rang, keyin aytganini tekshiring.",
+  "Learn what search engines miss, read and write site:, filetype:, intitle:, quoted and minus operators, narrow a search to one leaked file, date archived pages, judge sources, insist on independent confirmation and search in local languages and scripts.": "Qidiruv tizimlari nimani ko‘rmasligini bilib oling, site:, filetype:, intitle:, qo‘shtirnoq va minus operatorlarini o‘qing va yozing, qidiruvni bitta sizib chiqqan faylgacha toraytiring, arxiv sahifalari sanasini aniqlang, manbalarni baholang, mustaqil tasdiq talab qiling va mahalliy til va yozuvlarda qidiring.",
+  "DORK / LAB": "DORK / AMALIYOT",
+  "{n} of {total} pages": "{total} ta sahifadan {n} tasi",
+  "One result: the internal price list is public. Record the address and time, don’t share the file, and tell the client now.": "Bitta natija: ichki narxlar ro‘yxati ochiq turibdi. Manzil va vaqtni yozing, faylni tarqatmang va mijozga hozir xabar bering.",
+  "Search technique · Academy Intermediate": "Qidiruv texnikasi · Academy Intermediate",
+  "Search technique": "Qidiruv texnikasi"
 }
