@@ -246,6 +246,12 @@ export const SECTIONS = [
     href: "/intermediate/siem",
   },
   {
+    id: "detection",
+    group: "lab",
+    label: "Detection rules (Intermediate)",
+    href: "/intermediate/detection",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

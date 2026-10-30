@@ -1290,5 +1290,22 @@
   "The account they got into": "U kirib olgan hisob",
   "One address, nine failures on three systems, then dilnoza’s login succeeded. Reset that password and block the address.": "Bitta manzil, uch tizimda to‘qqizta muvaffaqiyatsiz urinish, keyin dilnoza hisobiga kirish muvaffaqiyatli bo‘ldi. Shu parolni almashtiring va manzilni bloklang.",
   "Logs and SIEM · Academy Intermediate": "Loglar va SIEM · Academy Intermediate",
-  "Logs and SIEM": "Loglar va SIEM"
+  "Logs and SIEM": "Loglar va SIEM",
+  "BLUE TEAM · MODULE 2": "BLUE TEAM · 2-MODUL",
+  "Detection rules.": "Aniqlash qoidalari.",
+  "Catch the attack, leave normal work alone.": "Hujumni ushlang, oddiy ishni tinch qo‘ying.",
+  "Sort indicator, behaviour and anomaly rules, read a Sigma rule, build one for encoded PowerShell that catches every attack with no false alarms, set thresholds, tell false positives from misses, climb the pyramid of pain and keep rules tested.": "Indikator, xatti-harakat va anomaliya qoidalarini ajrating, Sigma qoidasini o‘qing, kodlangan PowerShell uchun barcha hujumlarni yolg‘on ogohlantirishsiz ushlaydigan qoida tuzing, chegaralarni belgilang, yolg‘on ogohlantirishni o‘tkazib yuborilgan hujumdan farqlang, og‘riq piramidasini o‘rganing va qoidalarni sinovda saqlang.",
+  "SIGMA / LAB": "SIGMA / AMALIYOT",
+  "The program is powershell.exe": "Dastur — powershell.exe",
+  "The command line contains “-enc”": "Buyruq qatorida “-enc” bor",
+  "The parent is Word or Excel": "Ota jarayon — Word yoki Excel",
+  "Leave out the IT automation account svc_sccm": "IT avtomatlashtirish hisobi svc_sccm’ni chiqarib tashlash",
+  "Alert: attack caught": "Ogohlantirish: hujum ushlandi",
+  "Alert: false alarm": "Ogohlantirish: yolg‘on signal",
+  "Silent: attack missed": "Jim: hujum o‘tkazib yuborildi",
+  "Silent: normal work": "Jim: oddiy ish",
+  "Attacks caught: {tp} of 3 · false alarms: {fp}": "Ushlangan hujumlar: 3 tadan {tp} · yolg‘on signallar: {fp}",
+  "All three attacks caught and IT left alone. Requiring an Office parent would have missed the two later ones.": "Uchala hujum ushlandi, IT ishi tinch qoldi. Ota jarayon Office bo‘lishini talab qilsangiz, keyingi ikkita hujum o‘tib ketardi.",
+  "Detection rules · Academy Intermediate": "Aniqlash qoidalari · Academy Intermediate",
+  "Detection rules": "Aniqlash qoidalari"
 }

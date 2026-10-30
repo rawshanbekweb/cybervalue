@@ -429,6 +429,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Aniqlash qoidalari", en: "Detection rules" },
+        href: "/intermediate/detection",
+        lab: "detection",
         topics: ["Sigma", "thresholds", "false positives"],
         goal: goal(
           "Oddiy aniqlash qoidasini yozish va sozlash.",

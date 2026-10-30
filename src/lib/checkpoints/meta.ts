@@ -536,6 +536,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/siem#checkpoints",
     pass: 70,
   },
+  {
+    id: "detection-1",
+    level: "intermediate",
+    lab: { uz: "Aniqlash qoidalari", en: "Detection rules" },
+    title: {
+      uz: "Nazorat: Aniqlash qoidalari",
+      en: "Checkpoint: Detection rules",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/detection#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>
