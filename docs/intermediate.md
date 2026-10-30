@@ -38,6 +38,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/detection`    | Blue team module 2, detection rules (8 lessons, a checkpoint)                   |
 | `/intermediate/triage`       | Blue team module 3, alert triage (8 lessons, a checkpoint)                      |
 | `/intermediate/hunting`      | Blue team module 4, threat hunting (8 lessons, a checkpoint)                    |
+| `/intermediate/phishing`     | Blue team module 5, phishing analysis (8 lessons, a checkpoint)                 |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -637,6 +638,27 @@ one first: a fake `svchost.exe` in `C:\Users\Public` on one machine.
 | 6       | Questions on IOCs, IOAs, TLP and sharing     |
 | 7       | Questions on closing a hunt                  |
 | 8       | Final questions                              |
+
+## Blue team module 5: Phishing analysis
+
+`/intermediate/phishing` (lab id `phishing`, checkpoint `phishing-1`, award
+`lab-phishing`, site setting `phishing`) uses `src/lib/phishing/tools.ts`:
+`HEADERS` are the headers of a fake bank email (an invented bank on
+`.example` domains, documentation IP ranges) whose first hop is the bottom
+`Received` line and whose `Reply-To` points at a free mailbox; `LINKS` are six
+links whose shown text and real address may differ, and `registered` takes a
+host's last two labels. It completes the Blue team domain.
+
+| Lessons | What the student does                                |
+| ------- | ---------------------------------------------------- |
+| 1       | Sorts signs of phishing from ordinary traits         |
+| 2       | Clicks through the headers that matter               |
+| 3       | Traces an email to its first server and reply domain |
+| 4       | Questions on SPF, DKIM and DMARC                     |
+| 5       | Reveals and judges six links                         |
+| 6       | Sorts attachments by risk                            |
+| 7       | Questions on responding to a confirmed phish         |
+| 8       | Final questions                                      |
 
 ## Who gets in
 

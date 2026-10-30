@@ -264,6 +264,12 @@ export const SECTIONS = [
     href: "/intermediate/hunting",
   },
   {
+    id: "phishing",
+    group: "lab",
+    label: "Phishing analysis (Intermediate)",
+    href: "/intermediate/phishing",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

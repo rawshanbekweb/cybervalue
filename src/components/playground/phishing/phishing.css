@@ -1,0 +1,47 @@
+/* Phishing analysis lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css and
+   access-control.css. */
+.ph-headers {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+.ph-links {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ph-link fieldset {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.ph-link legend {
+  max-width: 100%;
+  padding: 0 4px;
+}
+.ph-shown {
+  color: var(--accent-text);
+  text-decoration: underline;
+  overflow-wrap: anywhere;
+}
+.ph-href {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  font-size: 13px;
+}
+.ph-href code {
+  overflow-wrap: anywhere;
+}
+.ph-domain {
+  color: var(--muted);
+  font-size: 12px;
+}

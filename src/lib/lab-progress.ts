@@ -36,6 +36,7 @@ export const LAB_PROGRESS = {
   detection: { key: "cybervalue:detection:progress:v1", total: 8 },
   triage: { key: "cybervalue:triage:progress:v1", total: 8 },
   hunting: { key: "cybervalue:hunting:progress:v1", total: 8 },
+  phishing: { key: "cybervalue:phishing:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -363,6 +364,15 @@ export const LAB_META: {
       en: "Threat hunting (Intermediate)",
     },
     href: "/intermediate/hunting",
+    intermediate: true,
+  },
+  {
+    id: "phishing",
+    title: {
+      uz: "Fishing tahlili (Intermediate)",
+      en: "Phishing analysis (Intermediate)",
+    },
+    href: "/intermediate/phishing",
     intermediate: true,
   },
 ];
