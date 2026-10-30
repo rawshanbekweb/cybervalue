@@ -43,6 +43,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/search`       | OSINT module 2, search technique (8 lessons, a checkpoint)                      |
 | `/intermediate/infra`        | OSINT module 3, domains and infrastructure (8 lessons, a checkpoint)            |
 | `/intermediate/geo`          | OSINT module 4, images and location (8 lessons, a checkpoint)                   |
+| `/intermediate/footprint`    | OSINT module 5, digital footprint (8 lessons, a checkpoint)                     |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -744,6 +745,26 @@ three of them read and Tashkent chosen.
 | 6       | Questions on metadata as a claim                |
 | 7       | Questions on who not to locate                  |
 | 8       | Final questions                                 |
+
+## OSINT module 5: Digital footprint
+
+`/intermediate/footprint` (lab id `footprint`, checkpoint `footprint-1`,
+award `lab-footprint`, site setting `footprint`) uses
+`src/lib/footprint/tools.ts`: `FINDINGS` are six things an invented student's
+self-audit turns up (geotagged photos, a breached reused password, a public
+phone number, one handle on three sites, an olympiad note, a portfolio), each
+with the right step — hide, secure or keep. It completes the OSINT domain.
+
+| Lessons | What the student does                         |
+| ------- | --------------------------------------------- |
+| 1       | Sorts active from passive traces              |
+| 2       | Questions on username reuse                   |
+| 3       | Decides what to hide, secure or keep          |
+| 4       | Questions on breaches and credential stuffing |
+| 5       | Sorts privacy settings to change              |
+| 6       | Questions on removal requests                 |
+| 7       | Sorts steps into today and this month         |
+| 8       | Final questions                               |
 
 ## Who gets in
 

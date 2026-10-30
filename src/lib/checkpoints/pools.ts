@@ -9195,3 +9195,249 @@ export const GEO_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const FOOTPRINT_POOL: PoolItem[] = [
+  {
+    ask: { uz: "Raqamli iz nima?", en: "What is a digital footprint?" },
+    right: {
+      uz: "Internetda siz haqingizda qolgan hamma narsa",
+      en: "Everything about you left online",
+    },
+    wrong: [
+      { uz: "Faqat parollaringiz", en: "Only your passwords" },
+      { uz: "Kompyuter xotirasi", en: "Your computer’s memory" },
+      { uz: "Brauzer tarixi, xolos", en: "Just your browser history" },
+    ],
+    explain: { uz: "Faol va passiv izlar.", en: "Active and passive traces." },
+  },
+  {
+    ask: { uz: "Qaysi biri passiv iz?", en: "Which is a passive trace?" },
+    right: {
+      uz: "Do‘st sizni belgilagan surat",
+      en: "A photo a friend tagged you in",
+    },
+    wrong: [
+      { uz: "Postingiz", en: "Your post" },
+      { uz: "Izohingiz", en: "Your comment" },
+      { uz: "Profilingiz", en: "Your profile" },
+    ],
+    explain: { uz: "Siz joylamagansiz.", en: "You didn’t post it." },
+  },
+  {
+    ask: {
+      uz: "Hamma joyda bir xil foydalanuvchi nomi nega xavfli?",
+      en: "Why is one username everywhere risky?",
+    },
+    right: {
+      uz: "Barcha akkauntlar bir odamga bog‘lanadi",
+      en: "All accounts link to one person",
+    },
+    wrong: [
+      { uz: "Xavfli emas", en: "It isn’t" },
+      { uz: "Saytlar sekinlashadi", en: "Sites slow down" },
+      { uz: "Parol buziladi", en: "The password breaks" },
+    ],
+    explain: {
+      uz: "Sherlock buni bir zumda topadi.",
+      en: "Sherlock finds it in moments.",
+    },
+  },
+  {
+    ask: {
+      uz: "Bitta nomni ko‘p saytda tekshiradigan vosita?",
+      en: "A tool that checks one handle across many sites?",
+    },
+    right: { uz: "Sherlock", en: "Sherlock" },
+    wrong: [
+      { uz: "nmap", en: "nmap" },
+      { uz: "dig", en: "dig" },
+      { uz: "binwalk", en: "binwalk" },
+    ],
+    explain: { uz: "WhatsMyName ham.", en: "WhatsMyName too." },
+  },
+  {
+    ask: {
+      uz: "Har kungi bir xil geoteg nimani oshkor qiladi?",
+      en: "What does the same geotag every day reveal?",
+    },
+    right: {
+      uz: "Kundalik yo‘l va joyingizni",
+      en: "Your daily route and whereabouts",
+    },
+    wrong: [
+      { uz: "Hech narsani", en: "Nothing" },
+      { uz: "Ob-havoni", en: "The weather" },
+      { uz: "Telefon modelini", en: "Your phone model" },
+    ],
+    explain: {
+      uz: "Profilni yoping, geotegni o‘chiring.",
+      en: "Go private, remove geotags.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ochiq Telegram guruhida raqamingiz ko‘rinadi. Nima qilasiz?",
+      en: "Your number shows in a public Telegram group. What do you do?",
+    },
+    right: {
+      uz: "Maxfiylik sozlamasida “Hech kim” qilaman",
+      en: "Set it to “Nobody” in privacy settings",
+    },
+    wrong: [
+      { uz: "Hech narsa", en: "Nothing" },
+      { uz: "Guruhga ko‘proq yozaman", en: "Post more in the group" },
+      { uz: "Raqamni hammaga yuboraman", en: "Send the number to everyone" },
+    ],
+    explain: {
+      uz: "Raqam firibgarlikka yo‘l ochadi.",
+      en: "A number invites scams.",
+    },
+  },
+  {
+    ask: {
+      uz: "Emailingiz sizib chiqishda. Birinchi qadam?",
+      en: "Your email is in a breach. The first step?",
+    },
+    right: {
+      uz: "O‘sha parolni hamma joyda almashtirish va 2FA",
+      en: "Change that password everywhere and add 2FA",
+    },
+    wrong: [
+      { uz: "Emailni o‘chirish", en: "Delete the email account" },
+      { uz: "Hech narsa", en: "Nothing" },
+      { uz: "Kompyuterni almashtirish", en: "Replace the computer" },
+    ],
+    explain: {
+      uz: "Hujumchi aynan shu parolni sinaydi.",
+      en: "Attackers try exactly that password.",
+    },
+  },
+  {
+    ask: {
+      uz: "Sizib chiqishlarni tekshiradigan sayt?",
+      en: "A site that checks for breaches?",
+    },
+    right: { uz: "haveibeenpwned.com", en: "haveibeenpwned.com" },
+    wrong: [
+      { uz: "crt.sh", en: "crt.sh" },
+      { uz: "web.archive.org", en: "web.archive.org" },
+      { uz: "shodan.io", en: "shodan.io" },
+    ],
+    explain: { uz: "Email bo‘yicha qidiradi.", en: "It searches by email." },
+  },
+  {
+    ask: {
+      uz: "Credential stuffing nima?",
+      en: "What is credential stuffing?",
+    },
+    right: {
+      uz: "Sizib chiqqan parollarni boshqa saytlarda sinash",
+      en: "Trying leaked passwords on other sites",
+    },
+    wrong: [
+      { uz: "Parolni unutish", en: "Forgetting a password" },
+      { uz: "Kuchli parol yaratish", en: "Making a strong password" },
+      { uz: "Cookie tozalash", en: "Clearing cookies" },
+    ],
+    explain: {
+      uz: "Takroriy parol — ochiq eshik.",
+      en: "A reused password is an open door.",
+    },
+  },
+  {
+    ask: {
+      uz: "Har sayt uchun alohida parolni nima eslab qoladi?",
+      en: "What remembers a separate password per site?",
+    },
+    right: { uz: "Parol menejeri", en: "A password manager" },
+    wrong: [
+      { uz: "Qog‘ozdagi ro‘yxat ish stolida", en: "A note on your desk" },
+      { uz: "Brauzer tarixi", en: "Browser history" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: { uz: "Uzun, tasodifiy parollar.", en: "Long random passwords." },
+  },
+  {
+    ask: {
+      uz: "Qaysi sozlama to‘g‘ri?",
+      en: "Which setting is already right?",
+    },
+    right: {
+      uz: "Ikki bosqichli tasdiq yoqilgan",
+      en: "Two-step verification on",
+    },
+    wrong: [
+      { uz: "Kamerada joylashuv saqlanadi", en: "Camera saves location" },
+      { uz: "Raqam “Hamma”ga ko‘rinadi", en: "Number visible to “Everybody”" },
+      { uz: "Do‘stlar ro‘yxati ochiq", en: "Friends list public" },
+    ],
+    explain: {
+      uz: "Qolganlari o‘zgartiriladi.",
+      en: "The others need changing.",
+    },
+  },
+  {
+    ask: {
+      uz: "Eski forumdagi raqamingizni o‘chira olmaysiz. Nima qilasiz?",
+      en: "You can’t remove your number from an old forum. What do you do?",
+    },
+    right: {
+      uz: "Administratorga o‘chirish so‘rovi",
+      en: "Send the administrator a removal request",
+    },
+    wrong: [
+      { uz: "Forumni buzish", en: "Hack the forum" },
+      { uz: "Hech narsa", en: "Nothing" },
+      { uz: "Yangi akkaunt ochish", en: "Open a new account" },
+    ],
+    explain: {
+      uz: "Qonun o‘chirishni so‘rash huquqini beradi.",
+      en: "The law lets you ask.",
+    },
+  },
+  {
+    ask: {
+      uz: "O‘chirilgan post butunlay yo‘qmi?",
+      en: "Is a deleted post gone for good?",
+    },
+    right: {
+      uz: "Shart emas — arxiv yoki skrinshot qolishi mumkin",
+      en: "Not necessarily — archives or screenshots may remain",
+    },
+    wrong: [
+      { uz: "Ha, butunlay", en: "Yes, completely" },
+      { uz: "Faqat bir kunga", en: "Only for a day" },
+      { uz: "Faqat telefonda", en: "Only on phones" },
+    ],
+    explain: { uz: "Joylashdan oldin o‘ylang.", en: "Think before posting." },
+  },
+  {
+    ask: { uz: "Qaysi iz qolsa bo‘ladi?", en: "Which trace can stay?" },
+    right: {
+      uz: "Maktab saytidagi olimpiada yutug‘i",
+      en: "A school-site note about an olympiad win",
+    },
+    wrong: [
+      { uz: "Ochiq telefon raqami", en: "A public phone number" },
+      { uz: "Uy manzili bilan rezyume", en: "A CV with a home address" },
+      { uz: "Har kungi geoteg", en: "A daily geotag" },
+    ],
+    explain: {
+      uz: "Sizni topishga yordam bermaydi.",
+      en: "It doesn’t help anyone find you.",
+    },
+  },
+  {
+    ask: {
+      uz: "O‘zingizni qanchalik tez-tez qidirish kerak?",
+      en: "How often should you search yourself?",
+    },
+    right: { uz: "Har 6 oyda", en: "Every six months" },
+    wrong: [
+      { uz: "Hech qachon", en: "Never" },
+      { uz: "Bir marta", en: "Once" },
+      { uz: "Har 10 yilda", en: "Every ten years" },
+    ],
+    explain: { uz: "Iz doim o‘sadi.", en: "A footprint keeps growing." },
+  },
+];

@@ -60,6 +60,7 @@ import {
   SEARCH_POOL,
   INFRA_POOL,
   GEO_POOL,
+  FOOTPRINT_POOL,
   SECURITY_EXTRA,
   type PoolItem,
 } from "./pools";
@@ -804,6 +805,10 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
       .map((item) => fromPool(r, item)),
   "geo-1": (r) =>
     shuffle(r, GEO_POOL)
+      .slice(0, 10)
+      .map((item) => fromPool(r, item)),
+  "footprint-1": (r) =>
+    shuffle(r, FOOTPRINT_POOL)
       .slice(0, 10)
       .map((item) => fromPool(r, item)),
 };

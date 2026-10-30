@@ -1,0 +1,33 @@
+/* Digital footprint lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css and
+   access-control.css. */
+.fp-findings {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.fp-finding {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.fp-finding legend {
+  max-width: 100%;
+  padding: 0 4px;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.fp-what {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.fp-finding .nl-pass,
+.fp-finding .nl-fail {
+  margin: 0;
+}

@@ -37,6 +37,7 @@ import { LESSONS as ETHICS_LESSONS } from "@/lib/ethics/curriculum";
 import { LESSONS as SEARCH_LESSONS } from "@/lib/search/curriculum";
 import { LESSONS as INFRA_LESSONS } from "@/lib/infra/curriculum";
 import { LESSONS as GEO_LESSONS } from "@/lib/geo/curriculum";
+import { LESSONS as FOOTPRINT_LESSONS } from "@/lib/footprint/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -768,6 +769,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: GEO_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "footprint",
+      title: "Digital footprint",
+      category: "Intermediate · OSINT",
+      description:
+        "Tell active from passive traces, see how one username links every account, audit a student’s six public findings and decide what to hide, secure or keep, deal with breaches, fix privacy settings, ask for removal and plan what to do today and this month.",
+      href: "/intermediate/footprint",
+      progressKey: LAB_PROGRESS.footprint.key,
+      level: "Intermediate",
+      lessons: FOOTPRINT_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: FOOTPRINT_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

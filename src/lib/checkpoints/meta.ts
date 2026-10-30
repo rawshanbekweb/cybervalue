@@ -656,6 +656,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/geo#checkpoints",
     pass: 70,
   },
+  {
+    id: "footprint-1",
+    level: "intermediate",
+    lab: { uz: "Raqamli iz", en: "Digital footprint" },
+    title: {
+      uz: "Nazorat: Raqamli iz",
+      en: "Checkpoint: Digital footprint",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/footprint#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

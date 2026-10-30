@@ -249,6 +249,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Rasm va joylashuv (Intermediate)",
     earned: (f) => finished(f, "geo") && passed(f, "geo-1"),
   },
+  {
+    id: "lab-footprint",
+    title: "Raqamli iz (Intermediate)",
+    earned: (f) => finished(f, "footprint") && passed(f, "footprint-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */
