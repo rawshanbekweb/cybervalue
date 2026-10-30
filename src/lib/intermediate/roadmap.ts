@@ -648,6 +648,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Autentifikatsiya", en: "Authentication" },
+        href: "/intermediate/authn",
+        lab: "authn",
         topics: ["password policy", "MFA", "SSH keys"],
         goal: goal("Kirish siyosatini loyihalash.", "Design a sign-in policy."),
       },

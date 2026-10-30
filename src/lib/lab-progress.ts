@@ -49,6 +49,7 @@ export const LAB_PROGRESS = {
   codereview: { key: "cybervalue:codereview:progress:v1", total: 8 },
   hardening: { key: "cybervalue:hardening:progress:v1", total: 8 },
   windows: { key: "cybervalue:windows:progress:v1", total: 8 },
+  authn: { key: "cybervalue:authn:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -493,6 +494,15 @@ export const LAB_META: {
       en: "Windows basics (Intermediate)",
     },
     href: "/intermediate/windows",
+    intermediate: true,
+  },
+  {
+    id: "authn",
+    title: {
+      uz: "Autentifikatsiya (Intermediate)",
+      en: "Authentication (Intermediate)",
+    },
+    href: "/intermediate/authn",
     intermediate: true,
   },
 ];

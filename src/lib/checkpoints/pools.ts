@@ -11298,3 +11298,273 @@ export const WINDOWS_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const AUTHN_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Autentifikatsiyaning uch omili?",
+      en: "The three authentication factors?",
+    },
+    right: {
+      uz: "Bilish, ega bo‘lish, o‘zingiz",
+      en: "Something you know, have and are",
+    },
+    wrong: [
+      { uz: "Login, parol, email", en: "Login, password, email" },
+      { uz: "Kim, qachon, qayerda", en: "Who, when, where" },
+      { uz: "Faqat parol", en: "Only a password" },
+    ],
+    explain: {
+      uz: "MFA — kamida ikki xil tur.",
+      en: "MFA uses at least two different kinds.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ikki xil parol ikki omilli autentifikatsiyami?",
+      en: "Are two passwords two-factor authentication?",
+    },
+    right: { uz: "Yo‘q, ikkalasi ham “bilish”", en: "No, both are “know”" },
+    wrong: [
+      { uz: "Ha", en: "Yes" },
+      { uz: "Faqat uzun bo‘lsa", en: "Only if they’re long" },
+      { uz: "Faqat telefonda", en: "Only on a phone" },
+    ],
+    explain: {
+      uz: "Omillar har xil turdan bo‘lishi kerak.",
+      en: "Factors must be of different kinds.",
+    },
+  },
+  {
+    ask: {
+      uz: "Zamonaviy parol siyosatida eng muhimi?",
+      en: "What matters most in a modern password policy?",
+    },
+    right: {
+      uz: "Uzunlik va sizib chiqqanlar ro‘yxati",
+      en: "Length and the breached list",
+    },
+    wrong: [
+      { uz: "Har 30 kunda almashtirish", en: "Changing it every 30 days" },
+      { uz: "Faqat belgilar", en: "Symbols alone" },
+      { uz: "Qisqa va oson", en: "Short and easy" },
+    ],
+    explain: {
+      uz: "NIST SP 800-63B tavsiyasi.",
+      en: "As NIST SP 800-63B advises.",
+    },
+  },
+  {
+    ask: {
+      uz: "Parolni qachon majburan almashtirish kerak?",
+      en: "When should a password be forcibly changed?",
+    },
+    right: { uz: "Sizib chiqqanda", en: "When it has leaked" },
+    wrong: [
+      { uz: "Har hafta", en: "Every week" },
+      { uz: "Har 90 kunda", en: "Every 90 days" },
+      { uz: "Hech qachon", en: "Never" },
+    ],
+    explain: {
+      uz: "Tez-tez almashtirish bashorat qilinadigan parollar beradi.",
+      en: "Frequent changes breed predictable passwords.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega parol joylashtirishni (paste) bloklamaslik kerak?",
+      en: "Why not block pasting into password fields?",
+    },
+    right: {
+      uz: "Parol menejerlari ishlashi uchun",
+      en: "So password managers work",
+    },
+    wrong: [
+      { uz: "Sayt tezlashadi", en: "The site gets faster" },
+      { uz: "Parol qisqaradi", en: "Passwords get shorter" },
+      { uz: "Sabab yo‘q", en: "No reason" },
+    ],
+    explain: {
+      uz: "Menejer har bir saytga uzun, noyob parol beradi.",
+      en: "A manager gives every site a long, unique password.",
+    },
+  },
+  {
+    ask: {
+      uz: "Parol qanday saqlanadi?",
+      en: "How should passwords be stored?",
+    },
+    right: {
+      uz: "Sekin, tuzli xesh (Argon2id, bcrypt)",
+      en: "As a slow, salted hash (Argon2id, bcrypt)",
+    },
+    wrong: [
+      { uz: "Ochiq matnda", en: "In plain text" },
+      { uz: "MD5 bilan", en: "With MD5" },
+      { uz: "Base64 bilan", en: "As Base64" },
+    ],
+    explain: {
+      uz: "Sekinlik taxminni qimmat qiladi.",
+      en: "Slowness makes guessing expensive.",
+    },
+  },
+  {
+    ask: { uz: "Tuz (salt) nima qiladi?", en: "What does a salt do?" },
+    right: {
+      uz: "Bir xil parollarga har xil xesh beradi",
+      en: "Gives identical passwords different hashes",
+    },
+    wrong: [
+      { uz: "Parolni shifrlaydi", en: "Encrypts the password" },
+      { uz: "Parolni qisqartiradi", en: "Shortens the password" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Oldindan hisoblangan jadvallar ishlamaydi.",
+      en: "Precomputed tables stop working.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi MFA fishingga chidamli?",
+      en: "Which MFA resists phishing?",
+    },
+    right: {
+      uz: "Xavfsizlik kaliti yoki passkey",
+      en: "A security key or passkey",
+    },
+    wrong: [
+      { uz: "SMS kod", en: "An SMS code" },
+      { uz: "Maxfiy savol", en: "A security question" },
+      { uz: "Email kod", en: "An email code" },
+    ],
+    explain: {
+      uz: "U faqat haqiqiy sayt bilan ishlaydi.",
+      en: "It works only with the real site.",
+    },
+  },
+  {
+    ask: {
+      uz: "SMS kodning asosiy zaifligi?",
+      en: "The main weakness of SMS codes?",
+    },
+    right: { uz: "SIM almashtirish (SIM swap)", en: "SIM swapping" },
+    wrong: [
+      { uz: "Juda uzun", en: "Too long" },
+      { uz: "Internet kerak", en: "Needs internet" },
+      { uz: "Zaifligi yo‘q", en: "No weakness" },
+    ],
+    explain: {
+      uz: "Hujumchi raqamingizni o‘z SIM kartasiga o‘tkazadi.",
+      en: "The attacker moves your number to their SIM.",
+    },
+  },
+  {
+    ask: {
+      uz: "“MFA charchoq” hujumi nima?",
+      en: "What is an “MFA fatigue” attack?",
+    },
+    right: {
+      uz: "Foydalanuvchi zerikib, push so‘rovni tasdiqlab yuboradi",
+      en: "Flooding push prompts until the user approves one",
+    },
+    wrong: [
+      { uz: "Parolni unutish", en: "Forgetting a password" },
+      { uz: "Telefonni yo‘qotish", en: "Losing a phone" },
+      { uz: "Sekin internet", en: "Slow internet" },
+    ],
+    explain: {
+      uz: "Raqam moslash buni to‘xtatadi.",
+      en: "Number matching stops it.",
+    },
+  },
+  {
+    ask: {
+      uz: "Hamkasbingizga serverga kirish kerak. Nima qilasiz?",
+      en: "A colleague needs server access. What do you do?",
+    },
+    right: {
+      uz: "U o‘z kalitini yaratib, ochiq qismini beradi",
+      en: "They make their own key and share its public part",
+    },
+    wrong: [
+      { uz: "Shaxsiy kalitingizni berasiz", en: "Give them your private key" },
+      { uz: "Root parolini aytasiz", en: "Tell them the root password" },
+      { uz: "Bitta umumiy kalit", en: "Share one common key" },
+    ],
+    explain: {
+      uz: "Har kimning o‘z kaliti — ketganda faqat uniki o‘chiriladi.",
+      en: "One key each — only theirs is removed when they leave.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ochiq SSH kalit qayerga qo‘yiladi?",
+      en: "Where does a public SSH key go?",
+    },
+    right: {
+      uz: "Serverdagi ~/.ssh/authorized_keys",
+      en: "~/.ssh/authorized_keys on the server",
+    },
+    wrong: [
+      { uz: "Elektron pochtaga", en: "Into an email" },
+      { uz: "/etc/passwd", en: "/etc/passwd" },
+      { uz: "GitHub README", en: "A GitHub README" },
+    ],
+    explain: {
+      uz: "ssh-copy-id buni o‘zi qiladi.",
+      en: "ssh-copy-id does it for you.",
+    },
+  },
+  {
+    ask: {
+      uz: "Shaxsiy SSH kalitni nima himoya qiladi?",
+      en: "What protects a private SSH key?",
+    },
+    right: { uz: "Parol iborasi (passphrase)", en: "A passphrase" },
+    wrong: [
+      { uz: "Fayl nomi", en: "Its file name" },
+      { uz: "Ochiq kalit", en: "The public key" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Noutbuk o‘g‘irlansa ham, kalit darhol ishlatilmaydi.",
+      en: "A stolen laptop’s key can’t be used straight away.",
+    },
+  },
+  {
+    ask: { uz: "Password spraying nima?", en: "What is password spraying?" },
+    right: {
+      uz: "Bitta parolni ko‘p hisobga sinash",
+      en: "Trying one password against many accounts",
+    },
+    wrong: [
+      { uz: "Ko‘p parolni bitta hisobga", en: "Many passwords on one account" },
+      { uz: "Parolni shifrlash", en: "Encrypting passwords" },
+      { uz: "Parolni almashtirish", en: "Changing passwords" },
+    ],
+    explain: {
+      uz: "U bloklash chegarasidan pastda qoladi.",
+      en: "It stays under lockout limits.",
+    },
+  },
+  {
+    ask: {
+      uz: "“Imkonsiz sayohat” signali nimani bildiradi?",
+      en: "What does an “impossible travel” alert mean?",
+    },
+    right: {
+      uz: "Bir hisob qisqa vaqtda uzoq joylardan kirgan",
+      en: "One account signed in from far-apart places too quickly",
+    },
+    wrong: [
+      { uz: "Foydalanuvchi ta’tilda", en: "The user is on holiday" },
+      { uz: "Internet sekin", en: "Slow internet" },
+      { uz: "Parol uzun", en: "A long password" },
+    ],
+    explain: {
+      uz: "Ehtimol, sessiya yoki parol o‘g‘irlangan.",
+      en: "A session or password was probably stolen.",
+    },
+  },
+];

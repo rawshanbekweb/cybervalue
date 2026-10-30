@@ -130,6 +130,7 @@ test("everything finished", () => {
         codereview: 8,
         hardening: 8,
         windows: 8,
+        authn: 8,
         scams: 8,
         httpbasics: 9,
         https: 9,

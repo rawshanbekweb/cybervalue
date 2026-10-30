@@ -342,6 +342,12 @@ export const SECTIONS = [
     href: "/intermediate/windows",
   },
   {
+    id: "authn",
+    group: "lab",
+    label: "Authentication (Intermediate)",
+    href: "/intermediate/authn",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

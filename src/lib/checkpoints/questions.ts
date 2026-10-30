@@ -68,6 +68,7 @@ import {
   CODEREVIEW_POOL,
   HARDENING_POOL,
   WINDOWS_POOL,
+  AUTHN_POOL,
   SECURITY_EXTRA,
   type PoolItem,
 } from "./pools";
@@ -844,6 +845,10 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
       .map((item) => fromPool(r, item)),
   "windows-1": (r) =>
     shuffle(r, WINDOWS_POOL)
+      .slice(0, 10)
+      .map((item) => fromPool(r, item)),
+  "authn-1": (r) =>
+    shuffle(r, AUTHN_POOL)
       .slice(0, 10)
       .map((item) => fromPool(r, item)),
 };
