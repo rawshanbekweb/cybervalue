@@ -118,6 +118,7 @@ test("everything finished", () => {
         triage: 8,
         hunting: 8,
         phishing: 8,
+        ethics: 8,
         scams: 8,
         httpbasics: 9,
         https: 9,

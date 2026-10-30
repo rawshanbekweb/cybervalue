@@ -39,6 +39,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/triage`       | Blue team module 3, alert triage (8 lessons, a checkpoint)                      |
 | `/intermediate/hunting`      | Blue team module 4, threat hunting (8 lessons, a checkpoint)                    |
 | `/intermediate/phishing`     | Blue team module 5, phishing analysis (8 lessons, a checkpoint)                 |
+| `/intermediate/ethics`       | OSINT module 1, ethics and law (8 lessons, a checkpoint)                        |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -659,6 +660,26 @@ host's last two labels. It completes the Blue team domain.
 | 6       | Sorts attachments by risk                            |
 | 7       | Questions on responding to a confirmed phish         |
 | 8       | Final questions                                      |
+
+## OSINT module 1: Ethics and law
+
+`/intermediate/ethics` (lab id `ethics`, checkpoint `ethics-1`, award
+`lab-ethics`, site setting `ethics`) uses `src/lib/ethics/tools.ts`: `LETTER`
+is a signed authorisation for an OSINT assessment of an invented company
+(scope, exclusions, dates) and `ACTIONS` are seven research steps the student
+allows or refuses, each failing on the target, the method or the date when
+it fails. It opens the OSINT domain.
+
+| Lessons | What the student does                             |
+| ------- | ------------------------------------------------- |
+| 1       | Sorts open sources from stolen or private ones    |
+| 2       | Questions on personal-data and computer-crime law |
+| 3       | Checks seven actions against an authorisation     |
+| 4       | Sorts passive from active reconnaissance          |
+| 5       | Questions on doing no harm                        |
+| 6       | Questions on the researcher's OPSEC               |
+| 7       | Clicks through a recorded finding                 |
+| 8       | Final questions                                   |
 
 ## Who gets in
 

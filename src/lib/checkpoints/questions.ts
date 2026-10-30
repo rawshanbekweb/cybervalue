@@ -56,6 +56,7 @@ import {
   TRIAGE_POOL,
   HUNTING_POOL,
   PHISHING_POOL,
+  ETHICS_POOL,
   SECURITY_EXTRA,
   type PoolItem,
 } from "./pools";
@@ -784,6 +785,10 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
       .map((item) => fromPool(r, item)),
   "phishing-1": (r) =>
     shuffle(r, PHISHING_POOL)
+      .slice(0, 10)
+      .map((item) => fromPool(r, item)),
+  "ethics-1": (r) =>
+    shuffle(r, ETHICS_POOL)
       .slice(0, 10)
       .map((item) => fromPool(r, item)),
 };

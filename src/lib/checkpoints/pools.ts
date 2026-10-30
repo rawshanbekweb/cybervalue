@@ -8202,3 +8202,270 @@ export const PHISHING_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const ETHICS_POOL: PoolItem[] = [
+  {
+    ask: { uz: "OSINT nima?", en: "What is OSINT?" },
+    right: {
+      uz: "Qonuniy ochiq ma’lumotlardan xulosa chiqarish",
+      en: "Drawing conclusions from lawfully available information",
+    },
+    wrong: [
+      { uz: "Parollarni buzish", en: "Cracking passwords" },
+      { uz: "Serverlarni skanerlash", en: "Scanning servers" },
+      { uz: "Zararli dastur yozish", en: "Writing malware" },
+    ],
+    explain: {
+      uz: "Open-source intelligence.",
+      en: "Open-source intelligence.",
+    },
+  },
+  {
+    ask: { uz: "Qaysi biri ochiq manba?", en: "Which is an open source?" },
+    right: {
+      uz: "Yuridik shaxslar davlat reyestri",
+      en: "The government register of companies",
+    },
+    wrong: [
+      { uz: "Sizib chiqqan mijozlar bazasi", en: "A leaked customer database" },
+      {
+        uz: "Taxmin qilingan parol bilan ochilgan pochta",
+        en: "A mailbox opened with a guessed password",
+      },
+      {
+        uz: "Soxta ism bilan kirilgan yopiq guruh",
+        en: "A private group joined under false pretences",
+      },
+    ],
+    explain: {
+      uz: "Hamma qonuniy ko‘ra oladi.",
+      en: "Anyone may lawfully see it.",
+    },
+  },
+  {
+    ask: {
+      uz: "Sizib chiqqan baza internetda ochiq turibdi. U OSINT manbami?",
+      en: "A leaked database sits openly online. Is it an OSINT source?",
+    },
+    right: { uz: "Yo‘q — o‘g‘irlangan ma’lumot", en: "No — it is stolen data" },
+    wrong: [
+      { uz: "Ha, ochiq", en: "Yes, it’s out there" },
+      { uz: "Ha, bepul bo‘lsa", en: "Yes, if free" },
+      { uz: "Ha, ish vaqtida", en: "Yes, during work hours" },
+    ],
+    explain: {
+      uz: "Mavjudlik qonuniylik emas.",
+      en: "Available isn’t lawful.",
+    },
+  },
+  {
+    ask: {
+      uz: "Shaxsiy ma’lumot ochiq profilda bo‘lsa, u himoyalanganmi?",
+      en: "Is personal data on a public profile still protected?",
+    },
+    right: {
+      uz: "Ha, qonun uni baribir himoya qiladi",
+      en: "Yes, the law still protects it",
+    },
+    wrong: [
+      { uz: "Yo‘q, ochiq bo‘lsa — hammaniki", en: "No, public means anyone’s" },
+      { uz: "Faqat Yevropada", en: "Only in Europe" },
+      { uz: "Faqat bolalarniki", en: "Only children’s" },
+    ],
+    explain: {
+      uz: "Maqsad va asos kerak.",
+      en: "A purpose and lawful basis are needed.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ma’lumotlarni minimallashtirish nima?",
+      en: "What is data minimisation?",
+    },
+    right: {
+      uz: "Faqat maqsad uchun kerakli ma’lumotni yig‘ish",
+      en: "Collecting only what the purpose needs",
+    },
+    wrong: [
+      { uz: "Fayllarni siqish", en: "Compressing files" },
+      { uz: "Hammasini yig‘ish", en: "Collecting everything" },
+      { uz: "Ma’lumotni shifrlash", en: "Encrypting data" },
+    ],
+    explain: {
+      uz: "Yig‘ilmagan ma’lumot sizmaydi.",
+      en: "Uncollected data can’t leak.",
+    },
+  },
+  {
+    ask: {
+      uz: "Taxmin qilingan parol bilan akkauntga “faqat qarash uchun” kirish?",
+      en: "Logging in with a guessed password “just to look”?",
+    },
+    right: {
+      uz: "Ruxsatsiz kirish — jinoyat",
+      en: "Unauthorised access — a crime",
+    },
+    wrong: [
+      { uz: "OSINT usuli", en: "An OSINT technique" },
+      { uz: "Ruxsat etilgan", en: "Allowed" },
+      { uz: "Passiv razvedka", en: "Passive reconnaissance" },
+    ],
+    explain: {
+      uz: "Niyat emas, harakat muhim.",
+      en: "The act matters, not the intent.",
+    },
+  },
+  {
+    ask: {
+      uz: "Professional OSINT ishi nima bilan boshlanadi?",
+      en: "What does professional OSINT work start with?",
+    },
+    right: {
+      uz: "Yozma ruxsat: doira, usullar, sanalar",
+      en: "A written authorisation: scope, methods, dates",
+    },
+    wrong: [
+      { uz: "Darhol qidiruv", en: "Searching straight away" },
+      { uz: "Port skanerlash", en: "A port scan" },
+      { uz: "Og‘zaki va’da", en: "A verbal promise" },
+    ],
+    explain: {
+      uz: "Ruxsatsiz ish — ruxsatsiz.",
+      en: "Unauthorised work is unauthorised.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ruxsat 2-noyabrdan. 30-oktabrda passiv qidiruv mumkinmi?",
+      en: "Authorisation starts 2 November. Passive searching on 30 October?",
+    },
+    right: { uz: "Yo‘q — muddatdan tashqari", en: "No — outside the window" },
+    wrong: [
+      { uz: "Ha, passiv bo‘lsa", en: "Yes, if passive" },
+      { uz: "Ha, ertaroq yaxshi", en: "Yes, earlier is better" },
+      { uz: "Ha, dam olish kuni bo‘lsa", en: "Yes, at weekends" },
+    ],
+    explain: {
+      uz: "Sana ham doiraning qismi.",
+      en: "The dates are part of the scope.",
+    },
+  },
+  {
+    ask: {
+      uz: "Mijozning hamkor kompaniyasi xodimlarini o‘rganish mumkinmi?",
+      en: "May you research the client’s partner company’s staff?",
+    },
+    right: {
+      uz: "Yo‘q — hamkor rozilik bermagan",
+      en: "No — the partner never agreed",
+    },
+    wrong: [
+      { uz: "Ha, bog‘liq kompaniya", en: "Yes, it’s related" },
+      { uz: "Ha, agar foydali bo‘lsa", en: "Yes, if useful" },
+      { uz: "Ha, passiv bo‘lsa", en: "Yes, if passive" },
+    ],
+    explain: {
+      uz: "Faqat ruxsat bergan tomon.",
+      en: "Only the party that authorised it.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi biri passiv razvedka?",
+      en: "Which is passive reconnaissance?",
+    },
+    right: {
+      uz: "crt.sh’da sertifikatlarni qidirish",
+      en: "Searching certificates on crt.sh",
+    },
+    wrong: [
+      { uz: "Port skanerlash", en: "Port scanning" },
+      { uz: "Xodimga qo‘ng‘iroq qilish", en: "Phoning staff" },
+      { uz: "Xodimga xat yuborish", en: "Emailing staff" },
+    ],
+    explain: { uz: "Maqsadga tegmaydi.", en: "It never touches the target." },
+  },
+  {
+    ask: {
+      uz: "Port skanerlash qaysi turga kiradi?",
+      en: "Which kind is port scanning?",
+    },
+    right: { uz: "Faol", en: "Active" },
+    wrong: [
+      { uz: "Passiv", en: "Passive" },
+      { uz: "Arxiv", en: "Archival" },
+      { uz: "Hech qaysi", en: "Neither" },
+    ],
+    explain: {
+      uz: "Maqsad serverlariga tegadi.",
+      en: "It touches the target’s servers.",
+    },
+  },
+  {
+    ask: { uz: "Doxxing nima?", en: "What is doxxing?" },
+    right: {
+      uz: "Shaxsiy ma’lumotni roziligisiz ommaga chiqarish",
+      en: "Publishing someone’s personal details without consent",
+    },
+    wrong: [
+      { uz: "Hujjat formatlash", en: "Formatting documents" },
+      { uz: "Domen sotib olish", en: "Buying a domain" },
+      { uz: "Fayl arxivlash", en: "Archiving files" },
+    ],
+    explain: { uz: "U ta’qibga yo‘l ochadi.", en: "It enables stalking." },
+  },
+  {
+    ask: {
+      uz: "Hisobotda xodimning shaxsiy raqami bilan nima qilinadi?",
+      en: "What happens to a worker’s private number in a report?",
+    },
+    right: {
+      uz: "Topilganini yozib, raqamning o‘zini yashirish",
+      en: "Note that it is findable, redact the number",
+    },
+    wrong: [
+      { uz: "To‘liq yozish", en: "Print it in full" },
+      { uz: "Qo‘ng‘iroq qilib tekshirish", en: "Ring it to check" },
+      { uz: "Ijtimoiy tarmoqda e’lon qilish", en: "Post it online" },
+    ],
+    explain: {
+      uz: "Xulosa muhim, tafsilot emas.",
+      en: "The finding matters, not the detail.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega shaxsiy LinkedIn bilan maqsad profillarini ko‘rmaslik kerak?",
+      en: "Why not view target profiles from your own LinkedIn?",
+    },
+    right: {
+      uz: "Ular kim ko‘rganini ko‘radi",
+      en: "They can see who viewed them",
+    },
+    wrong: [
+      { uz: "LinkedIn ishlamaydi", en: "LinkedIn won’t work" },
+      { uz: "Farqi yo‘q", en: "It makes no difference" },
+      { uz: "Bu taqiqlangan sayt", en: "The site is banned" },
+    ],
+    explain: {
+      uz: "Maqsadni ogohlantirmang.",
+      en: "Don’t tip off the target.",
+    },
+  },
+  {
+    ask: {
+      uz: "Topilmani qayd etishda arxiv nusxasi nima uchun?",
+      en: "Why record an archived copy of a finding?",
+    },
+    right: {
+      uz: "Asl sahifa o‘chsa ham dalil qoladi",
+      en: "The evidence survives if the page is deleted",
+    },
+    wrong: [
+      { uz: "Chiroyli ko‘rinishi uchun", en: "For looks" },
+      { uz: "Kerak emas", en: "It isn’t needed" },
+      { uz: "Saytni tezlashtirish uchun", en: "To speed up the site" },
+    ],
+    explain: { uz: "Boshqalar tekshira oladi.", en: "Others can check it." },
+  },
+];
