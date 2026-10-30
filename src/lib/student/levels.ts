@@ -54,8 +54,11 @@ export const visibleAtLevel = (levels: string[], level: string) =>
 export const opensIntermediate = (level: string) =>
   level === "intermediate" || level === "advanced";
 
-/** Where a student may be sent after signing in: their area or Intermediate. */
+/**
+ * Where a student may be sent after signing in: their area, Intermediate or
+ * the Linux and IP exam.
+ */
 export const isStudentNext = (path: unknown): path is string =>
   typeof path === "string" &&
-  /^\/(student|intermediate)(\/|\?|#|$)/.test(path) &&
+  /^\/(student|intermediate|resources\/linux-ip-exam)(\/|\?|#|$)/.test(path) &&
   path.length <= 200;

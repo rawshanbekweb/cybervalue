@@ -20,6 +20,8 @@ export type AuditAction =
   | "file.upload"
   | "file.delete"
   | "assessment.create"
+  | "linux-ip-exam.review"
+  | "linux-ip-exam.retake"
   | "student.create"
   | "student.update"
   | "student.level"

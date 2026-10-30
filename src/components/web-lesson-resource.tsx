@@ -179,7 +179,9 @@ export async function WebLessonResource() {
           </div>
           <p className={styles.hint}>
             <Info size={14} aria-hidden="true" />
-            {t("Vaqt: 2 soat. Natija darhol ko‘rsatiladi.")}
+            {t(
+              "Vaqt: 2 soat. O‘quvchi hisobi bilan; natija o‘qituvchi tasdiqlagach ko‘rinadi.",
+            )}
           </p>
         </div>
       </section>

@@ -8,7 +8,13 @@ import {
   MAX_TOTAL,
   OPENS,
 } from "../src/lib/linux-ip-exam/content";
-import { gradeLinuxIp, keyIds, norm } from "../src/lib/linux-ip-exam/grading";
+import {
+  applyReview,
+  gradeLinuxIp,
+  keyIds,
+  norm,
+} from "../src/lib/linux-ip-exam/grading";
+import { EXPLANATIONS } from "../src/lib/linux-ip-exam/explanations";
 
 const CHOICE_ANSWERS: Record<string, number> = {
   l1: 1,
@@ -176,4 +182,39 @@ test("open answers reject wrong ones", () => {
 test("normalising keeps the meaning of an answer", () => {
   assert.equal(norm("  $  ls   -la ; "), "ls -la");
   assert.equal(norm("grep “a b”"), 'grep "a b"');
+});
+
+test("the result keeps what the student picked or typed", () => {
+  const r = gradeLinuxIp({ l1: "0", o2: " 32 ", l2: "9" });
+  const item = (id: string) => r.items.find((i) => i.id === id)!;
+  assert.equal(item("l1").answer, CHOICES[0].options[0]);
+  assert.equal(item("l1").expected, CHOICES[0].options[1]);
+  assert.equal(item("l2").answer, "");
+  assert.equal(item("o2").answer, "32");
+  assert.equal(item("o3").answer, "");
+});
+
+test("the teacher's points for open questions replace the automatic ones", () => {
+  const graded = gradeLinuxIp(full());
+  const r = applyReview(graded, { o1: 1, o8: 2.5, l1: 0, o2: 99, o3: -1 });
+  // l1 isn't an open question and 99 / -1 are out of range: all ignored.
+  assert.equal(r.total, 100 - 1 - 1.5);
+  assert.equal(r.open.score, 30 - 2.5);
+  assert.equal(r.test.score, 70);
+  const o1 = r.items.find((i) => i.id === "o1")!;
+  assert.equal(o1.score, 1);
+  assert.ok(o1.reviewed);
+  assert.ok(!r.items.find((i) => i.id === "o2")!.reviewed);
+  // A blank paper can earn points from the teacher.
+  assert.equal(applyReview(gradeLinuxIp({}), { o9: 4 }).total, 4);
+});
+
+test("every question has a full explanation in both languages", () => {
+  for (const q of [...CHOICES, ...OPENS]) {
+    const e = EXPLANATIONS[q.id];
+    assert.ok(e, q.id);
+    assert.ok(e.uz.length > 150 && e.en.length > 150, q.id);
+    assert.notEqual(e.uz, e.en, q.id);
+  }
+  assert.equal(Object.keys(EXPLANATIONS).length, CHOICES.length + OPENS.length);
 });

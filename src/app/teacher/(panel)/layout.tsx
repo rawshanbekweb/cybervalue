@@ -37,6 +37,7 @@ export default async function TeacherPanelLayout({
         { href: "/teacher/results", label: t("Results") },
         { href: "/teacher/live", label: t("Live quiz") },
         { href: "/teacher/assessments", label: t("HTML baholash") },
+        { href: "/teacher/linux-ip-exam", label: t("Linux va IP imtihoni") },
         { href: "/teacher/analytics", label: t("Analytics") },
       ],
     },
