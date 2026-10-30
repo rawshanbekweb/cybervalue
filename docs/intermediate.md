@@ -50,6 +50,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/autotest`     | AppSec module 4, automated security testing (8 lessons, a checkpoint)           |
 | `/intermediate/codereview`   | AppSec module 5, secure code review (8 lessons, a checkpoint)                   |
 | `/intermediate/hardening`    | System security module 1, Linux hardening (8 lessons, a checkpoint)             |
+| `/intermediate/windows`      | System security module 2, Windows basics (8 lessons, a checkpoint)              |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -891,6 +892,26 @@ localhost or switch off. It opens the System security domain.
 | 6       | Sorts SSH settings into hardening or weakening         |
 | 7       | Questions on updates, the firewall and logs            |
 | 8       | Final questions                                        |
+
+## System security module 2: Windows basics
+
+`/intermediate/windows` (lab id `windows`, checkpoint `windows-1`, award
+`lab-windows`, site setting `windows`) uses `src/lib/windows/tools.ts`: `ACL`
+is the access list of an invented `D:\Payroll` share, two of whose six
+entries (`Everyone` and `Domain Users`) are `RISKY_ACES`, and `EVENTS` are
+five Security log entries from one night (4625, 4624, 4720, 4732, 1102), each
+with one of the `MEANINGS`.
+
+| Lessons | What the student does                           |
+| ------- | ----------------------------------------------- |
+| 1       | Sorts actions into needing admin or not         |
+| 2       | Questions on NTFS permissions                   |
+| 3       | Ticks the two access entries that are too broad |
+| 4       | Questions on Active Directory                   |
+| 5       | Questions on Group Policy                       |
+| 6       | Gives five Security log events their meaning    |
+| 7       | Questions on Defender, BitLocker and LAPS       |
+| 8       | Final questions                                 |
 
 ## Who gets in
 

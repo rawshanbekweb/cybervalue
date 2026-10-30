@@ -67,6 +67,7 @@ import {
   AUTOTEST_POOL,
   CODEREVIEW_POOL,
   HARDENING_POOL,
+  WINDOWS_POOL,
   SECURITY_EXTRA,
   type PoolItem,
 } from "./pools";
@@ -839,6 +840,10 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
       .map((item) => fromPool(r, item)),
   "hardening-1": (r) =>
     shuffle(r, HARDENING_POOL)
+      .slice(0, 10)
+      .map((item) => fromPool(r, item)),
+  "windows-1": (r) =>
+    shuffle(r, WINDOWS_POOL)
       .slice(0, 10)
       .map((item) => fromPool(r, item)),
 };

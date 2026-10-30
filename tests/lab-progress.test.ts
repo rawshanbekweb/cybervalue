@@ -51,6 +51,7 @@ import { LESSONS as SUPPLYCHAIN } from "../src/lib/supplychain/curriculum";
 import { LESSONS as AUTOTEST } from "../src/lib/autotest/curriculum";
 import { LESSONS as CODEREVIEW } from "../src/lib/codereview/curriculum";
 import { LESSONS as HARDENING } from "../src/lib/hardening/curriculum";
+import { LESSONS as WINDOWS } from "../src/lib/windows/curriculum";
 import {
   isLabId,
   LAB_PROGRESS,
@@ -110,6 +111,7 @@ test("lab progress totals match the lessons", () => {
   assert.equal(LAB_PROGRESS.autotest.total, AUTOTEST.length);
   assert.equal(LAB_PROGRESS.codereview.total, CODEREVIEW.length);
   assert.equal(LAB_PROGRESS.hardening.total, HARDENING.length);
+  assert.equal(LAB_PROGRESS.windows.total, WINDOWS.length);
   assert.equal(isLabId("toString"), false);
   assert.equal(isLabId("network"), true);
 });

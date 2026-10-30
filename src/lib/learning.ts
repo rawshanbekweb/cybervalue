@@ -44,6 +44,7 @@ import { LESSONS as SUPPLYCHAIN_LESSONS } from "@/lib/supplychain/curriculum";
 import { LESSONS as AUTOTEST_LESSONS } from "@/lib/autotest/curriculum";
 import { LESSONS as CODEREVIEW_LESSONS } from "@/lib/codereview/curriculum";
 import { LESSONS as HARDENING_LESSONS } from "@/lib/hardening/curriculum";
+import { LESSONS as WINDOWS_LESSONS } from "@/lib/windows/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -894,6 +895,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: HARDENING_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "windows",
+      title: "Windows basics",
+      category: "Intermediate · System security",
+      description:
+        "Tell standard from admin work, read NTFS permissions, trim a share’s access list, meet Active Directory and Group Policy, name five Security log events from one suspicious night and switch on Windows’ built-in defences.",
+      href: "/intermediate/windows",
+      progressKey: LAB_PROGRESS.windows.key,
+      level: "Intermediate",
+      lessons: WINDOWS_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: WINDOWS_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

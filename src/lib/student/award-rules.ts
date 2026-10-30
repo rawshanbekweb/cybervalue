@@ -284,6 +284,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Linux mustahkamlash (Intermediate)",
     earned: (f) => finished(f, "hardening") && passed(f, "hardening-1"),
   },
+  {
+    id: "lab-windows",
+    title: "Windows asoslari (Intermediate)",
+    earned: (f) => finished(f, "windows") && passed(f, "windows-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

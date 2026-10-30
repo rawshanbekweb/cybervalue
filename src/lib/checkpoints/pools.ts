@@ -11052,3 +11052,249 @@ export const HARDENING_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const WINDOWS_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Windows’dagi eng yuqori huquqli hisob?",
+      en: "The most privileged account on Windows?",
+    },
+    right: { uz: "SYSTEM", en: "SYSTEM" },
+    wrong: [
+      { uz: "Guest", en: "Guest" },
+      { uz: "Oddiy foydalanuvchi", en: "A standard user" },
+      { uz: "Everyone", en: "Everyone" },
+    ],
+    explain: {
+      uz: "SYSTEM — operatsion tizimning o‘zi.",
+      en: "SYSTEM is the operating system itself.",
+    },
+  },
+  {
+    ask: { uz: "UAC nima qiladi?", en: "What does UAC do?" },
+    right: {
+      uz: "Tizimga tegadigan amal uchun alohida tasdiq so‘raydi",
+      en: "Asks for confirmation before anything touches the system",
+    },
+    wrong: [
+      { uz: "Diskni shifrlaydi", en: "Encrypts the disk" },
+      { uz: "Viruslarni o‘chiradi", en: "Deletes viruses" },
+      { uz: "Parolni saqlaydi", en: "Stores passwords" },
+    ],
+    explain: {
+      uz: "Admin ham oddiy huquq bilan boshlaydi.",
+      en: "Even an admin starts with standard rights.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kundalik ish uchun qanday hisob ishlatiladi?",
+      en: "Which account is used for daily work?",
+    },
+    right: { uz: "Oddiy (standard) hisob", en: "A standard account" },
+    wrong: [
+      { uz: "Domain Admin", en: "Domain Admin" },
+      { uz: "Lokal Administrator", en: "Local Administrator" },
+      { uz: "SYSTEM", en: "SYSTEM" },
+    ],
+    explain: {
+      uz: "Admin hisob faqat boshqaruv uchun.",
+      en: "The admin account is for administration only.",
+    },
+  },
+  {
+    ask: { uz: "ACL nima?", en: "What is an ACL?" },
+    right: {
+      uz: "“Kimga — nima” huquq yozuvlari ro‘yxati",
+      en: "A list of “who — what” permission entries",
+    },
+    wrong: [
+      { uz: "Antivirus nomi", en: "An antivirus product" },
+      { uz: "Tarmoq kabeli", en: "A network cable" },
+      { uz: "Parol turi", en: "A kind of password" },
+    ],
+    explain: {
+      uz: "Har bir fayl va papkada bor.",
+      en: "Every file and folder has one.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi NTFS huquqi huquqlarni ham o‘zgartiradi?",
+      en: "Which NTFS right can change permissions?",
+    },
+    right: { uz: "Full control", en: "Full control" },
+    wrong: [
+      { uz: "Read", en: "Read" },
+      { uz: "Modify", en: "Modify" },
+      { uz: "List folder", en: "List folder" },
+    ],
+    explain: {
+      uz: "Faqat administratorlarga beriladi.",
+      en: "It’s for administrators only.",
+    },
+  },
+  {
+    ask: {
+      uz: "Allow va Deny to‘qnashsa?",
+      en: "Allow and Deny clash. Which wins?",
+    },
+    right: { uz: "Deny", en: "Deny" },
+    wrong: [
+      { uz: "Allow", en: "Allow" },
+      { uz: "Oxirgi qo‘shilgani", en: "Whichever was added last" },
+      { uz: "Tasodifiy", en: "Random" },
+    ],
+    explain: {
+      uz: "Aniq taqiq ruxsatdan kuchli.",
+      en: "An explicit deny beats an allow.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ish haqi papkasida “Everyone: Full control”. Xavf?",
+      en: "A payroll folder grants “Everyone: Full control”. The risk?",
+    },
+    right: {
+      uz: "Har kim o‘qiydi, o‘zgartiradi va huquqlarni qayta yozadi",
+      en: "Anyone can read, change and rewrite its permissions",
+    },
+    wrong: [
+      { uz: "Faqat sekinlashadi", en: "It only slows down" },
+      { uz: "Xavf yo‘q", en: "No risk" },
+      { uz: "Faqat adminlar ko‘radi", en: "Only admins see it" },
+    ],
+    explain: {
+      uz: "Huquq faqat kerakli guruhga beriladi.",
+      en: "Grant rights only to the group that needs them.",
+    },
+  },
+  {
+    ask: {
+      uz: "Huquqlar odatda kimga beriladi?",
+      en: "Who are permissions normally granted to?",
+    },
+    right: { uz: "Guruhlarga", en: "Groups" },
+    wrong: [
+      { uz: "Har bir odamga", en: "Each person" },
+      { uz: "Everyone ga", en: "Everyone" },
+      { uz: "Kompyuter nomiga", en: "Computer names" },
+    ],
+    explain: {
+      uz: "Odam ketsa — guruhdan chiqariladi.",
+      en: "When someone leaves, they leave the group.",
+    },
+  },
+  {
+    ask: {
+      uz: "Domen hisoblari qayerda saqlanadi?",
+      en: "Where are domain accounts stored?",
+    },
+    right: { uz: "Domen kontrollerda", en: "On the domain controller" },
+    wrong: [
+      { uz: "Har bir kompyuterda", en: "On each computer" },
+      { uz: "Routerda", en: "On the router" },
+      { uz: "Bulutda, hamisha", en: "Always in the cloud" },
+    ],
+    explain: {
+      uz: "DC — eng muhim himoyalanadigan server.",
+      en: "The DC is the server to protect most.",
+    },
+  },
+  {
+    ask: { uz: "Group Policy nima uchun?", en: "What is Group Policy for?" },
+    right: {
+      uz: "Sozlamani ko‘p kompyuterga markazdan qo‘llash",
+      en: "Applying settings to many computers centrally",
+    },
+    wrong: [
+      { uz: "Fayllarni zaxiralash", en: "Backing up files" },
+      { uz: "Elektron pochta", en: "Email" },
+      { uz: "Virus skanerlash", en: "Virus scanning" },
+    ],
+    explain: {
+      uz: "GPO OU’ga bog‘lanadi.",
+      en: "A GPO is linked to an OU.",
+    },
+  },
+  {
+    ask: {
+      uz: "Event ID 4625 nimani bildiradi?",
+      en: "What does Event ID 4625 mean?",
+    },
+    right: { uz: "Muvaffaqiyatsiz kirish", en: "A failed logon" },
+    wrong: [
+      { uz: "Muvaffaqiyatli kirish", en: "A successful logon" },
+      { uz: "Log tozalandi", en: "The log was cleared" },
+      { uz: "Yangi hisob", en: "A new account" },
+    ],
+    explain: {
+      uz: "4624 — muvaffaqiyatli kirish.",
+      en: "4624 is a successful logon.",
+    },
+  },
+  {
+    ask: {
+      uz: "Event ID 1102 nimani bildiradi?",
+      en: "What does Event ID 1102 mean?",
+    },
+    right: { uz: "Audit logi tozalandi", en: "The audit log was cleared" },
+    wrong: [
+      { uz: "Yangi foydalanuvchi", en: "A new user" },
+      { uz: "Muvaffaqiyatsiz kirish", en: "A failed logon" },
+      { uz: "Qayta yuklash", en: "A reboot" },
+    ],
+    explain: {
+      uz: "Darhol tekshiriladigan signal.",
+      en: "A signal to investigate at once.",
+    },
+  },
+  {
+    ask: {
+      uz: "Event ID 4732 nimani bildiradi?",
+      en: "What does Event ID 4732 mean?",
+    },
+    right: {
+      uz: "Himoyalangan guruhga a’zo qo‘shildi",
+      en: "A member was added to a security group",
+    },
+    wrong: [
+      { uz: "Parol almashdi", en: "A password changed" },
+      { uz: "Fayl o‘chirildi", en: "A file was deleted" },
+      { uz: "Printer qo‘shildi", en: "A printer was added" },
+    ],
+    explain: {
+      uz: "Administrators guruhiga qo‘shilish — muhim signal.",
+      en: "Being added to Administrators is a key signal.",
+    },
+  },
+  {
+    ask: {
+      uz: "Noutbuk o‘g‘irlandi. Qaysi vosita ma’lumotni saqlaydi?",
+      en: "A laptop was stolen. Which tool protects its data?",
+    },
+    right: { uz: "BitLocker", en: "BitLocker" },
+    wrong: [
+      { uz: "Defender", en: "Defender" },
+      { uz: "Event Viewer", en: "Event Viewer" },
+      { uz: "Group Policy", en: "Group Policy" },
+    ],
+    explain: { uz: "U diskni shifrlaydi.", en: "It encrypts the disk." },
+  },
+  {
+    ask: { uz: "LAPS nima qiladi?", en: "What does LAPS do?" },
+    right: {
+      uz: "Har bir kompyuterga alohida, almashadigan lokal admin paroli",
+      en: "Gives each computer its own rotating local admin password",
+    },
+    wrong: [
+      { uz: "Internetni tezlashtiradi", en: "Speeds up the internet" },
+      { uz: "Fayllarni shifrlaydi", en: "Encrypts files" },
+      { uz: "Loglarni o‘chiradi", en: "Deletes logs" },
+    ],
+    explain: {
+      uz: "Bitta parol sizsa ham, tarmoq ochilmaydi.",
+      en: "One leaked password doesn’t open the whole network.",
+    },
+  },
+];
