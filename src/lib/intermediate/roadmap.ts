@@ -658,6 +658,8 @@ export const DOMAINS: Domain[] = [
           uz: "Yangilanish va bazaviy sozlamalar",
           en: "Patching and baselines",
         },
+        href: "/intermediate/baseline",
+        lab: "baseline",
         topics: ["CIS benchmarks", "patch management", "configuration drift"],
         goal: goal(
           "Tizimni bazaviy talablar bilan solishtirish.",

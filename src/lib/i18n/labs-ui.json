@@ -1561,5 +1561,19 @@
   "Only the two long phrases pass. Note that neither needs a capital or a digit: length and the breached list do the work.": "Faqat ikkita uzun ibora o‘tdi. E’tibor bering: ularda katta harf ham, raqam ham yo‘q — ishni uzunlik va sizib chiqqanlar ro‘yxati bajaradi.",
   "Authentication": "Autentifikatsiya",
   "Authentication · Academy Intermediate": "Autentifikatsiya · Academy Intermediate",
-  "Sort the three factors, apply a modern password policy to six passwords, store passwords as slow salted hashes, rank MFA methods by phishing resistance, use SSH keys properly and watch sign-ins for spraying and impossible travel.": "Uch omilni ajrating, zamonaviy parol siyosatini oltita parolga qo‘llang, parollarni sekin, tuzli xesh sifatida saqlang, MFA usullarini fishingga chidamliligi bo‘yicha saralang, SSH kalitlaridan to‘g‘ri foydalaning va kirishlarda spraying hamda imkonsiz sayohatni kuzating."
+  "Sort the three factors, apply a modern password policy to six passwords, store passwords as slow salted hashes, rank MFA methods by phishing resistance, use SSH keys properly and watch sign-ins for spraying and impossible travel.": "Uch omilni ajrating, zamonaviy parol siyosatini oltita parolga qo‘llang, parollarni sekin, tuzli xesh sifatida saqlang, MFA usullarini fishingga chidamliligi bo‘yicha saralang, SSH kalitlaridan to‘g‘ri foydalaning va kirishlarda spraying hamda imkonsiz sayohatni kuzating.",
+  "SYSSEC · MODULE 5": "SYSSEC · 5-MODUL",
+  "Patching and baselines.": "Yangilanish va bazaviy sozlamalar.",
+  "Get secure, then stay secure.": "Xavfsiz bo‘ling — va shunday qoling.",
+  "See why unpatched flaws cause most breaches, put updates in order, automate them and check they took effect, learn what a baseline is, find four drifted settings on a server, keep drift away and measure progress.": "Nega ko‘p buzilishlar yamalmagan zaifliklardan ekanini ko‘ring, yangilanishlarni navbatga qo‘ying, ularni avtomatlashtiring va kuchga kirganini tekshiring, baseline nima ekanini bilib oling, serverdagi to‘rtta siljigan sozlamani toping, siljishning oldini oling va natijani o‘lchang.",
+  "BASELINE / LAB": "BASELINE / LABORATORIYA",
+  "Setting": "Sozlama",
+  "Baseline": "Bazaviy",
+  "Current": "Joriy",
+  "Drifted": "Siljigan",
+  "{setting} has drifted": "{setting} siljigan",
+  "{n} settings drifted: password logins, the firewall, a reboot that never happened and a missing audit service. Fix them, then find out how each slipped through.": "{n} ta sozlama siljigan: parol bilan kirish, firewall, bo‘lmagan qayta yuklash va yo‘q audit xizmati. Ularni tuzating, keyin har biri qanday o‘tib ketganini aniqlang.",
+  "Patching and baselines": "Yangilanish va bazaviy sozlamalar",
+  "Patching and baselines · Academy Intermediate": "Yangilanish va bazaviy sozlamalar · Academy Intermediate",
+  "See why unpatched flaws cause most breaches, put updates in order, automate them and check they took effect, learn what a baseline is, find drifted settings on a server, keep drift away and measure progress.": "Nega ko‘p buzilishlar yamalmagan zaifliklardan ekanini ko‘ring, yangilanishlarni navbatga qo‘ying, ularni avtomatlashtiring va kuchga kirganini tekshiring, baseline nima ekanini bilib oling, serverdagi siljigan sozlamalarni toping, siljishning oldini oling va natijani o‘lchang."
 }

@@ -348,6 +348,12 @@ export const SECTIONS = [
     href: "/intermediate/authn",
   },
   {
+    id: "baseline",
+    group: "lab",
+    label: "Patching and baselines (Intermediate)",
+    href: "/intermediate/baseline",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

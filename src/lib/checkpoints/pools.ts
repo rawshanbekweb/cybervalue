@@ -11568,3 +11568,267 @@ export const AUTHN_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const BASELINE_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Ko‘p buzilishlar qanday zaiflikdan?",
+      en: "Most breaches come from which flaws?",
+    },
+    right: {
+      uz: "Tuzatilgan, lekin o‘rnatilmagan",
+      en: "Ones fixed but never installed",
+    },
+    wrong: [
+      { uz: "Faqat noma’lum yangi zaifliklar", en: "Only unknown new flaws" },
+      { uz: "Faqat apparat xatolari", en: "Only hardware faults" },
+      { uz: "Hech qanday", en: "None" },
+    ],
+    explain: {
+      uz: "Yangilash — eng samarali himoya.",
+      en: "Patching is the most effective defence.",
+    },
+  },
+  {
+    ask: {
+      uz: "Internetga ochiq VPN’da ishlatilayotgan kritik zaiflik. Qachon yamaysiz?",
+      en: "A critical, exploited flaw in the internet-facing VPN. When do you patch?",
+    },
+    right: { uz: "72 soat ichida", en: "Within 72 hours" },
+    wrong: [
+      { uz: "Keyingi chorakda", en: "Next quarter" },
+      { uz: "Keyingi yili", en: "Next year" },
+      { uz: "Hech qachon", en: "Never" },
+    ],
+    explain: {
+      uz: "Ochiq va ishlatilayotgan — birinchi navbat.",
+      en: "Exposed and exploited comes first.",
+    },
+  },
+  {
+    ask: { uz: "CISA KEV nima?", en: "What is CISA KEV?" },
+    right: {
+      uz: "Hujumlarda ishlatilayotgan zaifliklar ro‘yxati",
+      en: "A list of flaws exploited in real attacks",
+    },
+    wrong: [
+      { uz: "Antivirus", en: "An antivirus" },
+      { uz: "Parol menejeri", en: "A password manager" },
+      { uz: "Operatsion tizim", en: "An operating system" },
+    ],
+    explain: {
+      uz: "Undagilar birinchi yopiladi.",
+      en: "Its entries are closed first.",
+    },
+  },
+  {
+    ask: {
+      uz: "Yangilab bo‘lmaydigan eski uskuna bilan nima qilinadi?",
+      en: "What do you do with old equipment that can’t be patched?",
+    },
+    right: {
+      uz: "Ajratish yoki xizmatni o‘chirish, almashtirishni rejalash",
+      en: "Isolate it or switch the service off, and plan a replacement",
+    },
+    wrong: [
+      { uz: "Internetga ochish", en: "Expose it online" },
+      { uz: "E’tiborsiz qoldirish", en: "Ignore it" },
+      { uz: "Parolini olib tashlash", en: "Remove its password" },
+    ],
+    explain: {
+      uz: "Vaqtinchalik chora — mitigation.",
+      en: "That is mitigation.",
+    },
+  },
+  {
+    ask: {
+      uz: "Yangilanish ishlab chiqarishdan oldin qayerda sinaladi?",
+      en: "Where is an update tried before production?",
+    },
+    right: { uz: "Sinov serverida", en: "On a test server" },
+    wrong: [
+      { uz: "Hech qayerda", en: "Nowhere" },
+      { uz: "Mijoz kompyuterida", en: "On a customer’s PC" },
+      { uz: "Faqat ishlab chiqarishda", en: "Only in production" },
+    ],
+    explain: {
+      uz: "Buzilgan yangilanish ham xavf.",
+      en: "A broken update is a risk too.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ubuntu’da xavfsizlik yangilanishlarini nima avtomatik o‘rnatadi?",
+      en: "What installs security updates automatically on Ubuntu?",
+    },
+    right: { uz: "unattended-upgrades", en: "unattended-upgrades" },
+    wrong: [
+      { uz: "ufw", en: "ufw" },
+      { uz: "fail2ban", en: "fail2ban" },
+      { uz: "cron’dagi rm", en: "rm in cron" },
+    ],
+    explain: {
+      uz: "Windows’da — WSUS yoki Intune.",
+      en: "On Windows: WSUS or Intune.",
+    },
+  },
+  {
+    ask: {
+      uz: "Yangi kernel o‘rnatildi, server qayta yuklanmadi. Natija?",
+      en: "A new kernel is installed but no reboot happened. The result?",
+    },
+    right: {
+      uz: "Eski kernel ishlayapti",
+      en: "The old kernel is still running",
+    },
+    wrong: [
+      { uz: "Yangisi ishlayapti", en: "The new one is running" },
+      { uz: "Server o‘chdi", en: "The server is off" },
+      { uz: "Ikkalasi", en: "Both" },
+    ],
+    explain: {
+      uz: "uname -r bilan tekshiring.",
+      en: "Check with uname -r.",
+    },
+  },
+  {
+    ask: { uz: "Baseline nima?", en: "What is a baseline?" },
+    right: {
+      uz: "Tizim qanday sozlanishi kerakligining yozma standarti",
+      en: "A written standard for how a system should be set up",
+    },
+    wrong: [
+      { uz: "Zaxira nusxa", en: "A backup" },
+      { uz: "Server nomi", en: "A server name" },
+      { uz: "Tezlik testi", en: "A speed test" },
+    ],
+    explain: {
+      uz: "Masalan, CIS Benchmarks.",
+      en: "The CIS Benchmarks, for example.",
+    },
+  },
+  {
+    ask: { uz: "CIS Benchmarks nima?", en: "What are the CIS Benchmarks?" },
+    right: {
+      uz: "Tayyor xavfsiz sozlama standartlari",
+      en: "Ready-made secure configuration standards",
+    },
+    wrong: [
+      { uz: "Antivirus", en: "Antivirus software" },
+      { uz: "Dasturlash tili", en: "A programming language" },
+      { uz: "Tarmoq kabeli", en: "A network cable" },
+    ],
+    explain: {
+      uz: "Linux, Windows, bulut va bazalar uchun.",
+      en: "For Linux, Windows, cloud and databases.",
+    },
+  },
+  {
+    ask: {
+      uz: "Configuration drift nima?",
+      en: "What is configuration drift?",
+    },
+    right: {
+      uz: "Tizimning vaqt o‘tib baseline’dan uzoqlashishi",
+      en: "A system moving away from its baseline over time",
+    },
+    wrong: [
+      { uz: "Disk to‘lishi", en: "A disk filling up" },
+      { uz: "Server ko‘chishi", en: "A server moving rooms" },
+      { uz: "Sekin internet", en: "Slow internet" },
+    ],
+    explain: {
+      uz: "Odatda qo‘lda o‘zgarishlardan.",
+      en: "Usually from changes made by hand.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi biri siljishni keltirib chiqaradi?",
+      en: "Which of these causes drift?",
+    },
+    right: {
+      uz: "Serverga kirib, sozlamani qo‘lda o‘zgartirish",
+      en: "Logging in and changing a setting by hand",
+    },
+    wrong: [
+      { uz: "Ansible orqali o‘zgartirish", en: "Changing it through Ansible" },
+      { uz: "Har kecha tekshiruv", en: "A nightly check" },
+      { uz: "Baseline’dan qayta qurish", en: "Rebuilding from the baseline" },
+    ],
+    explain: {
+      uz: "Hujjatsiz o‘zgarish — ko‘rinmas o‘zgarish.",
+      en: "An unrecorded change is an invisible one.",
+    },
+  },
+  {
+    ask: {
+      uz: "Baseline’ni avtomatik tekshiradigan vosita?",
+      en: "A tool that checks a baseline automatically?",
+    },
+    right: { uz: "OpenSCAP yoki Lynis", en: "OpenSCAP or Lynis" },
+    wrong: [
+      { uz: "Paint", en: "Paint" },
+      { uz: "ping", en: "ping" },
+      { uz: "Excel", en: "Excel" },
+    ],
+    explain: {
+      uz: "Bulutda — AWS Config kabi.",
+      en: "In the cloud, things like AWS Config.",
+    },
+  },
+  {
+    ask: {
+      uz: "“O‘zgarmas infratuzilma” nima?",
+      en: "What is “immutable infrastructure”?",
+    },
+    right: {
+      uz: "Serverni tahrirlash o‘rniga qayta qurish",
+      en: "Rebuilding servers rather than editing them",
+    },
+    wrong: [
+      { uz: "Hech qachon yangilamaslik", en: "Never updating" },
+      { uz: "Faqat jismoniy serverlar", en: "Only physical servers" },
+      { uz: "Parolni o‘zgartirmaslik", en: "Never changing passwords" },
+    ],
+    explain: {
+      uz: "Shunda siljishga joy qolmaydi.",
+      en: "Then drift has nowhere to build up.",
+    },
+  },
+  {
+    ask: {
+      uz: "Patch boshqaruvi uchun foydali o‘lchov?",
+      en: "A useful patch management measure?",
+    },
+    right: {
+      uz: "Kritik yangilanishgacha o‘rtacha vaqt",
+      en: "Average time to install a critical patch",
+    },
+    wrong: [
+      { uz: "Server rangi", en: "Server colour" },
+      { uz: "Email soni", en: "Number of emails" },
+      { uz: "Ofis hajmi", en: "Office size" },
+    ],
+    explain: {
+      uz: "Oyna qancha ochiq turganini ko‘rsatadi.",
+      en: "It shows how long the window stays open.",
+    },
+  },
+  {
+    ask: {
+      uz: "Patch va baseline’ning birinchi sharti?",
+      en: "The first condition for patching and baselines?",
+    },
+    right: { uz: "To‘liq inventar", en: "A full inventory" },
+    wrong: [
+      { uz: "Qimmat firewall", en: "An expensive firewall" },
+      { uz: "Yangi monitor", en: "A new monitor" },
+      { uz: "Ko‘proq xodim", en: "More staff" },
+    ],
+    explain: {
+      uz: "Bilmagan serveringizni yangilay olmaysiz.",
+      en: "You can’t patch a server you don’t know about.",
+    },
+  },
+];
