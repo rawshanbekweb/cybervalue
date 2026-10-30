@@ -53,6 +53,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/windows`      | System security module 2, Windows basics (8 lessons, a checkpoint)              |
 | `/intermediate/authn`        | System security module 4, authentication (8 lessons, a checkpoint)              |
 | `/intermediate/baseline`     | System security module 5, patching and baselines (8 lessons, a checkpoint)      |
+| `/intermediate/build`        | Reverse engineering module 1, how programs are built (8 lessons, a checkpoint)  |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -952,6 +953,26 @@ a kernel waiting for a reboot and a missing audit service).
 | 6       | Sorts habits into preventing or causing drift |
 | 7       | Questions on reporting and measuring          |
 | 8       | Final questions                               |
+
+## Reverse engineering module 1: How programs are built
+
+`/intermediate/build` (lab id `build`, checkpoint `build-1`, award
+`lab-build`, site setting `build`) uses `src/lib/build/tools.ts`:
+`ARTIFACTS` are the five files `gcc -save-temps` leaves, one per `STAGES`
+entry, and `PARTS` are five pieces of a small C program, each landing in
+one of the ELF `SECTIONS` (`.text`, `.rodata`, `.data`, `.bss`). It opens
+the Reverse engineering domain.
+
+| Lessons | What the student does                               |
+| ------- | --------------------------------------------------- |
+| 1       | Questions on machine code and why defenders reverse |
+| 2       | Names the stage that made each of five files        |
+| 3       | Sorts files into ELF, PE and Mach-O                 |
+| 4       | Places five parts of a program in their sections    |
+| 5       | Questions on headers and the entry point            |
+| 6       | Questions on static and dynamic linking             |
+| 7       | Questions on symbols and stripping                  |
+| 8       | Final questions                                     |
 
 ## Who gets in
 

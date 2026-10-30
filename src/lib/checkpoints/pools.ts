@@ -11832,3 +11832,261 @@ export const BASELINE_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const BUILD_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Protsessor to‘g‘ridan-to‘g‘ri nimani bajaradi?",
+      en: "What does a processor run directly?",
+    },
+    right: { uz: "Mashina kodini", en: "Machine code" },
+    wrong: [
+      { uz: "C kodini", en: "C code" },
+      { uz: "Python kodini", en: "Python code" },
+      { uz: "HTML’ni", en: "HTML" },
+    ],
+    explain: {
+      uz: "Qolganlari avval unga aylantiriladi.",
+      en: "Everything else is turned into it first.",
+    },
+  },
+  {
+    ask: {
+      uz: "#include ni qaysi bosqich ochadi?",
+      en: "Which stage expands #include?",
+    },
+    right: { uz: "Preprotsessor", en: "The preprocessor" },
+    wrong: [
+      { uz: "Linker", en: "The linker" },
+      { uz: "Assembler", en: "The assembler" },
+      { uz: "Operatsion tizim", en: "The operating system" },
+    ],
+    explain: { uz: "Natija — .i fayl.", en: "The result is a .i file." },
+  },
+  {
+    ask: {
+      uz: "Kompilyator C’ni nimaga aylantiradi?",
+      en: "What does the compiler turn C into?",
+    },
+    right: { uz: "Assembler matniga (.s)", en: "Assembly text (.s)" },
+    wrong: [
+      { uz: "HTML’ga", en: "HTML" },
+      { uz: "Rasmga", en: "An image" },
+      { uz: "Java’ga", en: "Java" },
+    ],
+    explain: {
+      uz: "Keyin assembler uni mashina kodiga aylantiradi.",
+      en: "Then the assembler turns it into machine code.",
+    },
+  },
+  {
+    ask: {
+      uz: ".o faylda nima yetishmaydi?",
+      en: "What is still missing from a .o file?",
+    },
+    right: {
+      uz: "Tashqi funksiyalar manzillari",
+      en: "The addresses of outside functions",
+    },
+    wrong: [
+      { uz: "Mashina kodi", en: "Machine code" },
+      { uz: "Fayl nomi", en: "A file name" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Ularni linker bog‘laydi.",
+      en: "The linker fills them in.",
+    },
+  },
+  {
+    ask: {
+      uz: "Linux’ning bajariladigan fayl formati?",
+      en: "Linux’s executable format?",
+    },
+    right: { uz: "ELF", en: "ELF" },
+    wrong: [
+      { uz: "PE", en: "PE" },
+      { uz: "Mach-O", en: "Mach-O" },
+      { uz: "PDF", en: "PDF" },
+    ],
+    explain: {
+      uz: "Windows — PE, macOS — Mach-O.",
+      en: "Windows uses PE, macOS Mach-O.",
+    },
+  },
+  {
+    ask: {
+      uz: "“MZ” bilan boshlanadigan fayl odatda qanday?",
+      en: "A file starting with “MZ” is usually what?",
+    },
+    right: { uz: "Windows PE fayli", en: "A Windows PE file" },
+    wrong: [
+      { uz: "ELF fayl", en: "An ELF file" },
+      { uz: "Rasm", en: "An image" },
+      { uz: "Matn", en: "Plain text" },
+    ],
+    explain: {
+      uz: "Fayl turi birinchi baytlardan bilinadi.",
+      en: "A file’s type shows in its first bytes.",
+    },
+  },
+  {
+    ask: {
+      uz: "Mashina kodi qaysi bo‘limda?",
+      en: "Which section holds machine code?",
+    },
+    right: { uz: ".text", en: ".text" },
+    wrong: [
+      { uz: ".bss", en: ".bss" },
+      { uz: ".data", en: ".data" },
+      { uz: ".rodata", en: ".rodata" },
+    ],
+    explain: {
+      uz: "U o‘qish va bajarish uchun.",
+      en: "It is read and execute.",
+    },
+  },
+  {
+    ask: {
+      uz: "Satr konstantasi qaysi bo‘limda?",
+      en: "Which section holds a string literal?",
+    },
+    right: { uz: ".rodata", en: ".rodata" },
+    wrong: [
+      { uz: ".bss", en: ".bss" },
+      { uz: ".text", en: ".text" },
+      { uz: ".data", en: ".data" },
+    ],
+    explain: {
+      uz: "Faqat o‘qiladigan ma’lumot.",
+      en: "Read-only data.",
+    },
+  },
+  {
+    ask: {
+      uz: ".bss nimani saqlaydi?",
+      en: "What does .bss hold?",
+    },
+    right: {
+      uz: "Nol bilan boshlanadigan o‘zgaruvchilarni",
+      en: "Variables that start as zero",
+    },
+    wrong: [
+      { uz: "Kodni", en: "Code" },
+      { uz: "Satrlarni", en: "Strings" },
+      { uz: "Rasmlarni", en: "Images" },
+    ],
+    explain: {
+      uz: "Faylda joy egallamaydi.",
+      en: "It takes no room in the file.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kirish nuqtasi (entry point) nima?",
+      en: "What is the entry point?",
+    },
+    right: {
+      uz: "Birinchi bajariladigan buyruq manzili",
+      en: "The address of the first instruction to run",
+    },
+    wrong: [
+      { uz: "Fayl nomi", en: "The file name" },
+      { uz: "Oxirgi funksiya", en: "The last function" },
+      { uz: "Parol", en: "A password" },
+    ],
+    explain: {
+      uz: "Odatda _start, keyin main.",
+      en: "Usually _start, which then calls main.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi buyruq fayl formatini aytadi?",
+      en: "Which command names a file’s format?",
+    },
+    right: { uz: "file", en: "file" },
+    wrong: [
+      { uz: "cd", en: "cd" },
+      { uz: "mkdir", en: "mkdir" },
+      { uz: "ping", en: "ping" },
+    ],
+    explain: {
+      uz: "readelf esa tafsilotni ko‘rsatadi.",
+      en: "readelf then shows the details.",
+    },
+  },
+  {
+    ask: {
+      uz: "Statik bog‘lash nimani anglatadi?",
+      en: "What does static linking mean?",
+    },
+    right: {
+      uz: "Kutubxona kodi fayl ichiga ko‘chiriladi",
+      en: "Library code is copied into the file",
+    },
+    wrong: [
+      {
+        uz: "Kutubxona ishga tushirishda yuklanadi",
+        en: "The library loads at run time",
+      },
+      { uz: "Kutubxona yo‘q", en: "There is no library" },
+      { uz: "Fayl shifrlanadi", en: "The file is encrypted" },
+    ],
+    explain: {
+      uz: "Fayl katta, lekin mustaqil.",
+      en: "The file is big but self-contained.",
+    },
+  },
+  {
+    ask: {
+      uz: "Dinamik kutubxonalar ro‘yxatini qaysi buyruq beradi?",
+      en: "Which command lists dynamic libraries?",
+    },
+    right: { uz: "ldd", en: "ldd" },
+    wrong: [
+      { uz: "ls", en: "ls" },
+      { uz: "pwd", en: "pwd" },
+      { uz: "top", en: "top" },
+    ],
+    explain: {
+      uz: "Import jadvali qaysi funksiyalar chaqirilishini ko‘rsatadi.",
+      en: "The import table shows which functions are called.",
+    },
+  },
+  {
+    ask: { uz: "`strip` nima qiladi?", en: "What does `strip` do?" },
+    right: {
+      uz: "Belgilar va debug ma’lumotini olib tashlaydi",
+      en: "Removes symbols and debug information",
+    },
+    wrong: [
+      { uz: "Kodni o‘chiradi", en: "Deletes the code" },
+      { uz: "Faylni shifrlaydi", en: "Encrypts the file" },
+      { uz: "Dasturni tezlashtiradi", en: "Speeds the program up" },
+    ],
+    explain: {
+      uz: "Funksiya nomlari yo‘qoladi.",
+      en: "Function names disappear.",
+    },
+  },
+  {
+    ask: {
+      uz: "Shubhali faylni qayerda tahlil qilasiz?",
+      en: "Where do you analyse a suspicious file?",
+    },
+    right: {
+      uz: "Ajratilgan virtual mashinada",
+      en: "In an isolated virtual machine",
+    },
+    wrong: [
+      { uz: "Ish kompyuterida", en: "On your work laptop" },
+      { uz: "Kompaniya serverida", en: "On a company server" },
+      { uz: "Telefonda", en: "On your phone" },
+    ],
+    explain: {
+      uz: "Xavfsiz muhit — birinchi qoida.",
+      en: "A safe environment is rule one.",
+    },
+  },
+];

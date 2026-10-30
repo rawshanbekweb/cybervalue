@@ -684,6 +684,8 @@ export const DOMAINS: Domain[] = [
     modules: [
       {
         title: { uz: "Dastur qanday quriladi", en: "How programs are built" },
+        href: "/intermediate/build",
+        lab: "build",
         topics: ["compiler", "ELF/PE", "sections", "linking"],
         goal: goal(
           "Bajariladigan fayl tuzilishini tushuntirish.",

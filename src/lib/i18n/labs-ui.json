@@ -1575,5 +1575,17 @@
   "{n} settings drifted: password logins, the firewall, a reboot that never happened and a missing audit service. Fix them, then find out how each slipped through.": "{n} ta sozlama siljigan: parol bilan kirish, firewall, bo‘lmagan qayta yuklash va yo‘q audit xizmati. Ularni tuzating, keyin har biri qanday o‘tib ketganini aniqlang.",
   "Patching and baselines": "Yangilanish va bazaviy sozlamalar",
   "Patching and baselines · Academy Intermediate": "Yangilanish va bazaviy sozlamalar · Academy Intermediate",
-  "See why unpatched flaws cause most breaches, put updates in order, automate them and check they took effect, learn what a baseline is, find drifted settings on a server, keep drift away and measure progress.": "Nega ko‘p buzilishlar yamalmagan zaifliklardan ekanini ko‘ring, yangilanishlarni navbatga qo‘ying, ularni avtomatlashtiring va kuchga kirganini tekshiring, baseline nima ekanini bilib oling, serverdagi siljigan sozlamalarni toping, siljishning oldini oling va natijani o‘lchang."
+  "See why unpatched flaws cause most breaches, put updates in order, automate them and check they took effect, learn what a baseline is, find drifted settings on a server, keep drift away and measure progress.": "Nega ko‘p buzilishlar yamalmagan zaifliklardan ekanini ko‘ring, yangilanishlarni navbatga qo‘ying, ularni avtomatlashtiring va kuchga kirganini tekshiring, baseline nima ekanini bilib oling, serverdagi siljigan sozlamalarni toping, siljishning oldini oling va natijani o‘lchang.",
+  "REVERSE · MODULE 1": "REVERSE · 1-MODUL",
+  "How programs are built.": "Dastur qanday quriladi.",
+  "From source code to the bytes a processor runs.": "Manba kodidan protsessor bajaradigan baytlargacha.",
+  "Follow source code through the preprocessor, compiler, assembler and linker, tell ELF from PE from Mach-O, place a program’s parts in .text, .rodata, .data and .bss, read the header and entry point, compare static and dynamic linking and see what stripping removes.": "Manba kodini preprotsessor, kompilyator, assembler va linker orqali kuzating, ELF, PE va Mach-O’ni ajrating, dastur qismlarini .text, .rodata, .data va .bss ga joylang, sarlavha va kirish nuqtasini o‘qing, statik va dinamik bog‘lashni solishtiring va strip nimani olib tashlashini ko‘ring.",
+  "BINARY / LAB": "BINAR / LAB",
+  "Choose a stage": "Bosqichni tanlang",
+  "Source, expanded source, assembly, object file, program: one command, four tools.": "Manba, ochilgan manba, assembler, obyekt fayl, dastur: bitta buyruq, to‘rtta vosita.",
+  "Choose a section": "Bo‘limni tanlang",
+  "Code in .text, the message in .rodata, the counter in .data and the empty buffer in .bss — the map every disassembler shows.": "Kod .text da, xabar .rodata da, hisoblagich .data da va bo‘sh bufer .bss da — har bir disassembler ko‘rsatadigan xarita.",
+  "How programs are built": "Dastur qanday quriladi",
+  "How programs are built · Academy Intermediate": "Dastur qanday quriladi · Academy Intermediate",
+  "Follow source code through the preprocessor, compiler, assembler and linker, tell ELF from PE from Mach-O, place a program’s parts in their sections, read the header, compare static and dynamic linking and see what stripping removes.": "Manba kodini preprotsessor, kompilyator, assembler va linker orqali kuzating, ELF, PE va Mach-O’ni ajrating, dastur qismlarini bo‘limlarga joylang, sarlavhani o‘qing, statik va dinamik bog‘lashni solishtiring va strip nimani olib tashlashini ko‘ring."
 }

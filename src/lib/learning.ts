@@ -47,6 +47,7 @@ import { LESSONS as HARDENING_LESSONS } from "@/lib/hardening/curriculum";
 import { LESSONS as WINDOWS_LESSONS } from "@/lib/windows/curriculum";
 import { LESSONS as AUTHN_LESSONS } from "@/lib/authn/curriculum";
 import { LESSONS as BASELINE_LESSONS } from "@/lib/baseline/curriculum";
+import { LESSONS as BUILD_LESSONS } from "@/lib/build/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -948,6 +949,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: BASELINE_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "build",
+      title: "How programs are built",
+      category: "Intermediate · Reverse engineering",
+      description:
+        "Follow source code through the preprocessor, compiler, assembler and linker, tell ELF from PE from Mach-O, place a program’s parts in their sections, read the header, compare static and dynamic linking and see what stripping removes.",
+      href: "/intermediate/build",
+      progressKey: LAB_PROGRESS.build.key,
+      level: "Intermediate",
+      lessons: BUILD_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: BUILD_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

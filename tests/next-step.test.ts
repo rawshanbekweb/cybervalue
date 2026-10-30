@@ -132,6 +132,7 @@ test("everything finished", () => {
         windows: 8,
         authn: 8,
         baseline: 8,
+        build: 8,
         scams: 8,
         httpbasics: 9,
         https: 9,

@@ -815,6 +815,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/baseline#checkpoints",
     pass: 70,
   },
+  {
+    id: "build-1",
+    level: "intermediate",
+    lab: { uz: "Dastur qanday quriladi", en: "How programs are built" },
+    title: {
+      uz: "Nazorat: Dastur qanday quriladi",
+      en: "Checkpoint: How programs are built",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/build#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

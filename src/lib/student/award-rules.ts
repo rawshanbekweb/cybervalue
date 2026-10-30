@@ -299,6 +299,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Yangilanish va bazaviy sozlamalar (Intermediate)",
     earned: (f) => finished(f, "baseline") && passed(f, "baseline-1"),
   },
+  {
+    id: "lab-build",
+    title: "Dastur qanday quriladi (Intermediate)",
+    earned: (f) => finished(f, "build") && passed(f, "build-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */
