@@ -1429,5 +1429,21 @@
   "Ask: does this help a stranger find you, trick you or get into your accounts?": "So‘rang: bu begonaga sizni topish, aldash yoki akkauntingizga kirishga yordam beradimi?",
   "Two hidden, two secured, two kept. A smaller footprint, not an empty one.": "Ikkitasi yashirildi, ikkitasi himoyalandi, ikkitasi qoldi. Iz kichraydi, lekin yo‘qolmaydi.",
   "Digital footprint · Academy Intermediate": "Raqamli iz · Academy Intermediate",
-  "Digital footprint": "Raqamli iz"
+  "Digital footprint": "Raqamli iz",
+  "APPSEC · MODULE 1": "APPSEC · 1-MODUL",
+  "Threat modelling.": "Tahdid modeli.",
+  "Find what can go wrong before it is built.": "Nima noto‘g‘ri ketishini qurishdan oldin toping.",
+  "Learn the four questions, draw a data-flow diagram, find the flows that cross trust boundaries in a school grades app, sort six threats into STRIDE, pick controls and decide what to fix first.": "To‘rt savolni o‘rganing, ma’lumot oqimi diagrammasini chizing, maktab baholari ilovasida ishonch chegarasini kesib o‘tuvchi oqimlarni toping, oltita tahdidni STRIDE bo‘yicha saralang, choralarni tanlang va nimani birinchi tuzatishni hal qiling.",
+  "STRIDE / LAB": "STRIDE / AMALIYOT",
+  "Public internet": "Ochiq internet",
+  "Internal network": "Ichki tarmoq",
+  "Data-flow diagram of the grades app in three trust zones": "Baholar ilovasining uchta ishonch zonasidagi ma’lumot oqimi diagrammasi",
+  "Flows that cross a trust boundary": "Ishonch chegarasini kesib o‘tuvchi oqimlar",
+  "Four flows cross: both browsers into the DMZ, the web app into the internal network, and the API out to the SMS gateway. Those get checked first.": "To‘rtta oqim kesib o‘tadi: ikkala brauzer DMZ’ga, veb-ilova ichki tarmoqqa va API tashqaridagi SMS shlyuziga. Ular birinchi tekshiriladi.",
+  "Choose a letter": "Harfni tanlang",
+  "Not this one": "Bu emas",
+  "S, T, R, I, D, E — one threat for every letter. Next, each gets a control and an owner.": "S, T, R, I, D, E — har bir harfga bitta tahdid. Endi har biriga chora va mas’ul belgilanadi.",
+  "Threat modelling · Academy Intermediate": "Tahdid modeli · Academy Intermediate",
+  "Threat modelling": "Tahdid modeli",
+  "That’s the letter": "Harf to‘g‘ri"
 }

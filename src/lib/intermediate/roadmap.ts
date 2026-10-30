@@ -551,6 +551,8 @@ export const DOMAINS: Domain[] = [
     modules: [
       {
         title: { uz: "Tahdid modeli", en: "Threat modelling" },
+        href: "/intermediate/stride",
+        lab: "stride",
         topics: ["STRIDE", "data flow diagrams", "trust boundaries"],
         goal: goal(
           "Kichik ilova uchun tahdid modelini chizish.",

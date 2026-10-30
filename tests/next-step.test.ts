@@ -123,6 +123,7 @@ test("everything finished", () => {
         infra: 8,
         geo: 8,
         footprint: 8,
+        stride: 8,
         scams: 8,
         httpbasics: 9,
         https: 9,

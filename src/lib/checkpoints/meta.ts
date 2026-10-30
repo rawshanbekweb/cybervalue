@@ -671,6 +671,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/footprint#checkpoints",
     pass: 70,
   },
+  {
+    id: "stride-1",
+    level: "intermediate",
+    lab: { uz: "Tahdid modeli", en: "Threat modelling" },
+    title: {
+      uz: "Nazorat: Tahdid modeli",
+      en: "Checkpoint: Threat modelling",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/stride#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

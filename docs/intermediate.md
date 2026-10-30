@@ -44,6 +44,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/infra`        | OSINT module 3, domains and infrastructure (8 lessons, a checkpoint)            |
 | `/intermediate/geo`          | OSINT module 4, images and location (8 lessons, a checkpoint)                   |
 | `/intermediate/footprint`    | OSINT module 5, digital footprint (8 lessons, a checkpoint)                     |
+| `/intermediate/stride`       | AppSec module 1, threat modelling (8 lessons, a checkpoint)                     |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -765,6 +766,26 @@ with the right step — hide, secure or keep. It completes the OSINT domain.
 | 6       | Questions on removal requests                 |
 | 7       | Sorts steps into today and this month         |
 | 8       | Final questions                               |
+
+## AppSec module 1: Threat modelling
+
+`/intermediate/stride` (lab id `stride`, checkpoint `stride-1`, award
+`lab-stride`, site setting `stride`) uses `src/lib/stride/tools.ts`: `NODES`
+and `FLOWS` are a school grades app drawn as a data-flow diagram in three
+trust zones, and `crosses` marks the four flows whose ends sit in different
+zones; `THREATS` are six threats against the app, one per STRIDE letter. It
+opens the AppSec domain.
+
+| Lessons | What the student does                       |
+| ------- | ------------------------------------------- |
+| 1       | Questions on the four questions             |
+| 2       | Sorts things into DFD elements              |
+| 3       | Ticks the flows that cross a trust boundary |
+| 4       | Questions on what each STRIDE letter breaks |
+| 5       | Gives six threats their STRIDE letter       |
+| 6       | Questions on controls and accepting risk    |
+| 7       | Questions on prioritising                   |
+| 8       | Final questions                             |
 
 ## Who gets in
 
