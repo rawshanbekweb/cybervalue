@@ -45,6 +45,7 @@ export const LAB_PROGRESS = {
   stride: { key: "cybervalue:stride:progress:v1", total: 8 },
   securecode: { key: "cybervalue:securecode:progress:v1", total: 8 },
   supplychain: { key: "cybervalue:supplychain:progress:v1", total: 8 },
+  autotest: { key: "cybervalue:autotest:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -453,6 +454,15 @@ export const LAB_META: {
       en: "Dependencies and supply chain (Intermediate)",
     },
     href: "/intermediate/supplychain",
+    intermediate: true,
+  },
+  {
+    id: "autotest",
+    title: {
+      uz: "Avtomatik xavfsizlik tekshiruvlari (Intermediate)",
+      en: "Automated security testing (Intermediate)",
+    },
+    href: "/intermediate/autotest",
     intermediate: true,
   },
 ];

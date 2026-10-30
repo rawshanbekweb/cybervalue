@@ -719,6 +719,24 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/supplychain#checkpoints",
     pass: 70,
   },
+  {
+    id: "autotest-1",
+    level: "intermediate",
+    lab: {
+      uz: "Avtomatik xavfsizlik tekshiruvlari",
+      en: "Automated security testing",
+    },
+    title: {
+      uz: "Nazorat: Avtomatik xavfsizlik tekshiruvlari",
+      en: "Checkpoint: Automated security testing",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/autotest#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

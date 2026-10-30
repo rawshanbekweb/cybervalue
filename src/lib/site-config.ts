@@ -318,6 +318,12 @@ export const SECTIONS = [
     href: "/intermediate/supplychain",
   },
   {
+    id: "autotest",
+    group: "lab",
+    label: "Automated security testing (Intermediate)",
+    href: "/intermediate/autotest",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

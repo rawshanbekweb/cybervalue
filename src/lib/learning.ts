@@ -41,6 +41,7 @@ import { LESSONS as FOOTPRINT_LESSONS } from "@/lib/footprint/curriculum";
 import { LESSONS as STRIDE_LESSONS } from "@/lib/stride/curriculum";
 import { LESSONS as SECURECODE_LESSONS } from "@/lib/securecode/curriculum";
 import { LESSONS as SUPPLYCHAIN_LESSONS } from "@/lib/supplychain/curriculum";
+import { LESSONS as AUTOTEST_LESSONS } from "@/lib/autotest/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -840,6 +841,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: SUPPLYCHAIN_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "autotest",
+      title: "Automated security testing",
+      category: "Intermediate · AppSec",
+      description:
+        "See why checks belong on every pull request, learn what SAST can and can’t see, triage findings, add dependency and secret scanning, probe a running site with DAST, place each check in the pipeline and decide what blocks a merge.",
+      href: "/intermediate/autotest",
+      progressKey: LAB_PROGRESS.autotest.key,
+      level: "Intermediate",
+      lessons: AUTOTEST_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: AUTOTEST_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

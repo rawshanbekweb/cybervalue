@@ -1491,5 +1491,20 @@
   "Dependencies and supply chain": "Kutubxonalar va ta’minot zanjiri",
   "Dependencies and supply chain · Academy Intermediate": "Kutubxonalar va ta’minot zanjiri · Academy Intermediate",
   "Tell direct from transitive dependencies, read versions and the lockfile, check a lockfile against advisories, catch look-alike package names, see how packages get poisoned, use an SBOM and decide what to update when.": "To‘g‘ridan-to‘g‘ri va bilvosita kutubxonalarni ajrating, versiyalar va lockfile’ni o‘qing, lockfile’ni zaiflik maslahatlari bilan solishtiring, o‘xshash paket nomlarini ushlang, paketlar qanday zaharlanishini ko‘ring, SBOM’dan foydalaning va nimani qachon yangilashni hal qiling.",
-  "DEPENDENCIES / LAB": "KUTUBXONALAR / LAB"
+  "DEPENDENCIES / LAB": "KUTUBXONALAR / LAB",
+  "APPSEC · MODULE 4": "APPSEC · 4-MODUL",
+  "Automated security testing.": "Avtomatik xavfsizlik tekshiruvlari.",
+  "Let machines check every commit.": "Har bir commit’ni mashina tekshirsin.",
+  "See why checks belong on every pull request, learn what SAST can and can’t see, triage six findings into real problems and false alarms, add dependency and secret scanning, probe a running site with DAST, place each check in the pipeline and decide what blocks a merge.": "Nega tekshiruvlar har bir pull request’da bo‘lishi kerakligini ko‘ring, SAST nimani ko‘ra olishi va nimani ko‘rmasligini o‘rganing, oltita topilmani haqiqiy muammo va yolg‘on signalga ajrating, kutubxonalar va sirlarni qidirishni qo‘shing, ishlayotgan saytni DAST bilan sinang, har bir tekshiruvni pipeline’ga joylang va merge’ni nima to‘xtatishini hal qiling.",
+  "DEVSECOPS / LAB": "DEVSECOPS / LABORATORIYA",
+  "{rule} in {file}": "{file} dagi {rule}",
+  "Real problem": "Haqiqiy muammo",
+  "False alarm": "Yolg‘on signal",
+  "Three to fix and three exceptions to write down. The question each time: can a user reach this value?": "Uchtasi tuzatiladi, uchtasiga istisno yoziladi. Har safar savol bitta: foydalanuvchi bu qiymatga yeta oladimi?",
+  "Choose a check": "Tekshiruvni tanlang",
+  "That’s the check": "Aynan shu tekshiruv",
+  "Every layer has its job: secrets before the commit, SAST and SCA on the pull request, DAST against staging.": "Har bir qatlamning o‘z vazifasi bor: sirlar — commit’dan oldin, SAST va SCA — pull request’da, DAST — staging’da.",
+  "Automated security testing": "Avtomatik xavfsizlik tekshiruvlari",
+  "Automated security testing · Academy Intermediate": "Avtomatik xavfsizlik tekshiruvlari · Academy Intermediate",
+  "See why checks belong on every pull request, learn what SAST can and can’t see, triage findings, add dependency and secret scanning, probe a running site with DAST, place each check in the pipeline and decide what blocks a merge.": "Nega tekshiruvlar har bir pull request’da bo‘lishi kerakligini ko‘ring, SAST nimani ko‘ra olishini o‘rganing, topilmalarni saralang, kutubxonalar va sirlarni qidirishni qo‘shing, ishlayotgan saytni DAST bilan sinang, har bir tekshiruvni pipeline’ga joylang va merge’ni nima to‘xtatishini hal qiling."
 }
