@@ -515,6 +515,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Rasm va joylashuv", en: "Images and location" },
+        href: "/intermediate/geo",
+        lab: "geo",
         topics: ["reverse image search", "landmarks", "metadata"],
         goal: goal(
           "Rasm qayerda olinganini belgilardan aniqlash.",

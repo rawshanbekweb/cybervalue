@@ -8937,3 +8937,261 @@ export const INFRA_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const GEO_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Teskari rasm qidiruvi nima?",
+      en: "What is a reverse image search?",
+    },
+    right: {
+      uz: "Rasmning o‘zini yuborib, o‘xshashlarini topish",
+      en: "Sending the image itself to find similar ones",
+    },
+    wrong: [
+      { uz: "Rasmni teskari aylantirish", en: "Flipping the image" },
+      { uz: "Rasmni o‘chirish", en: "Deleting it" },
+      { uz: "Rasmni shifrlash", en: "Encrypting it" },
+    ],
+    explain: {
+      uz: "Google Lens, Bing, Yandex, TinEye.",
+      en: "Google Lens, Bing, Yandex, TinEye.",
+    },
+  },
+  {
+    ask: {
+      uz: "Eng eski nusxani topishga qaysi vosita qulay?",
+      en: "Which tool helps find the oldest copy?",
+    },
+    right: { uz: "TinEye", en: "TinEye" },
+    wrong: [
+      { uz: "nmap", en: "nmap" },
+      { uz: "Wireshark", en: "Wireshark" },
+      { uz: "dig", en: "dig" },
+    ],
+    explain: {
+      uz: "Natijalarni sana bo‘yicha saralaydi.",
+      en: "It sorts matches by date.",
+    },
+  },
+  {
+    ask: {
+      uz: "Butun rasm hech narsa topmadi. Keyin?",
+      en: "The whole image found nothing. Then?",
+    },
+    right: {
+      uz: "O‘ziga xos qismini kesib qidirish",
+      en: "Crop a distinctive detail and search that",
+    },
+    wrong: [
+      { uz: "To‘xtash", en: "Give up" },
+      { uz: "Rasmni o‘chirish", en: "Delete it" },
+      { uz: "Rangini o‘zgartirish", en: "Change its colours" },
+    ],
+    explain: {
+      uz: "Bino yoki yozuv osonroq topiladi.",
+      en: "A building or sign matches more easily.",
+    },
+  },
+  {
+    ask: {
+      uz: "“Bugungi” rasmning eng eski nusxasi 2019-yilda chiqqan. Xulosa?",
+      en: "The oldest copy of a “today” photo is from 2019. Conclusion?",
+    },
+    right: {
+      uz: "Rasm eski, da’vo yolg‘on",
+      en: "The photo is old; the claim is false",
+    },
+    wrong: [
+      { uz: "Rasm bugungi", en: "It is from today" },
+      { uz: "Aniqlab bo‘lmaydi", en: "Impossible to say" },
+      { uz: "Rasm soxta emas, demak bugungi", en: "Not fake, so it’s today’s" },
+    ],
+    explain: {
+      uz: "Bugungi rasm 2019-yilda chiqa olmaydi.",
+      en: "Today’s photo can’t appear in 2019.",
+    },
+  },
+  {
+    ask: {
+      uz: "Eng eski topilgan nusxa doim asl manbami?",
+      en: "Is the oldest copy found always the original?",
+    },
+    right: {
+      uz: "Ehtimoli yuqori, lekin kafolat emas",
+      en: "Most likely, but not guaranteed",
+    },
+    wrong: [
+      { uz: "Ha, doim", en: "Yes, always" },
+      { uz: "Hech qachon", en: "Never" },
+      { uz: "Faqat dushanba kuni", en: "Only on Mondays" },
+    ],
+    explain: {
+      uz: "Eskirog‘i indekslanmagan bo‘lishi mumkin.",
+      en: "An older one may not be indexed.",
+    },
+  },
+  {
+    ask: { uz: "Geolokatsiya nima?", en: "What is geolocation?" },
+    right: {
+      uz: "Rasm qayerda olinganini belgilardan aniqlash",
+      en: "Working out where a photo was taken from its clues",
+    },
+    wrong: [
+      { uz: "GPS qurilmasini o‘rnatish", en: "Installing a GPS unit" },
+      { uz: "Xarita chizish", en: "Drawing a map" },
+      { uz: "IP manzilni bloklash", en: "Blocking an IP" },
+    ],
+    explain: {
+      uz: "Xronolokatsiya — qachonligini.",
+      en: "Chronolocation is the when.",
+    },
+  },
+  {
+    ask: { uz: "Qaysi belgi eng kuchli?", en: "Which clue is strongest?" },
+    right: { uz: "Ko‘cha nomi yozilgan lavha", en: "A street-name plate" },
+    wrong: [
+      { uz: "Bulutlar", en: "Clouds" },
+      { uz: "Daraxtlar", en: "Trees" },
+      { uz: "Osmon rangi", en: "The sky’s colour" },
+    ],
+    explain: {
+      uz: "Yozuv joyni to‘g‘ridan-to‘g‘ri aytadi.",
+      en: "Text names the place.",
+    },
+  },
+  {
+    ask: {
+      uz: "O‘zbekiston raqamidagi 01 nimani bildiradi?",
+      en: "What does 01 on an Uzbek plate mean?",
+    },
+    right: { uz: "Toshkent shahri", en: "The city of Tashkent" },
+    wrong: [
+      { uz: "Mashina yili", en: "The car’s year" },
+      { uz: "Birinchi egasi", en: "The first owner" },
+      { uz: "Rang kodi", en: "A colour code" },
+    ],
+    explain: {
+      uz: "Har hududning o‘z kodi bor.",
+      en: "Each region has its own code.",
+    },
+  },
+  {
+    ask: {
+      uz: "Mashinalar o‘ng tomonda yuradi. Bu nimani chiqarib tashlaydi?",
+      en: "Cars keep right. What does that rule out?",
+    },
+    right: {
+      uz: "Chap tomonli davlatlarni (Buyuk Britaniya, Yaponiya)",
+      en: "Left-driving countries (the UK, Japan)",
+    },
+    wrong: [
+      { uz: "Hech narsani", en: "Nothing" },
+      { uz: "Butun Osiyoni", en: "All of Asia" },
+      { uz: "Faqat Toshkentni", en: "Only Tashkent" },
+    ],
+    explain: {
+      uz: "Kuchsiz, lekin foydali belgi.",
+      en: "A weak but useful clue.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ko‘k gumbaz bir o‘zi shaharni aytadimi?",
+      en: "Does a blue dome alone name the city?",
+    },
+    right: {
+      uz: "Yo‘q — faqat hududni toraytiradi",
+      en: "No — it only narrows the region",
+    },
+    wrong: [
+      { uz: "Ha, Toshkent", en: "Yes, Tashkent" },
+      { uz: "Ha, Istanbul", en: "Yes, Istanbul" },
+      { uz: "Ha, Boku", en: "Yes, Baku" },
+    ],
+    explain: {
+      uz: "Samarqand yoki Buxoro ham bo‘lishi mumkin.",
+      en: "It could be Samarkand or Bukhara.",
+    },
+  },
+  {
+    ask: {
+      uz: "Toshkentda soya g‘arbga tushadi. Vaqt?",
+      en: "In Tashkent, shadows point west. The time?",
+    },
+    right: { uz: "Ertalab", en: "Morning" },
+    wrong: [
+      { uz: "Kechqurun", en: "Evening" },
+      { uz: "Tush", en: "Midday" },
+      { uz: "Yarim tun", en: "Midnight" },
+    ],
+    explain: {
+      uz: "Quyosh sharqda, soya teskari.",
+      en: "Sun in the east, shadow opposite.",
+    },
+  },
+  {
+    ask: {
+      uz: "Rasm vaqtini tekshirishga qaysi manba yordam beradi?",
+      en: "Which source helps check when a photo was taken?",
+    },
+    right: { uz: "Ob-havo arxivi", en: "A weather archive" },
+    wrong: [
+      { uz: "WHOIS", en: "WHOIS" },
+      { uz: "DNS", en: "DNS" },
+      { uz: "Port skaneri", en: "A port scanner" },
+    ],
+    explain: {
+      uz: "Qor yoki yomg‘ir bo‘lganini tasdiqlaydi.",
+      en: "It confirms snow or rain.",
+    },
+  },
+  {
+    ask: {
+      uz: "Telegram’dan olingan rasmda EXIF yo‘q. Bu?",
+      en: "A photo from Telegram has no EXIF. That is?",
+    },
+    right: {
+      uz: "Odatiy — tarmoq o‘chiradi",
+      en: "Normal — the network strips it",
+    },
+    wrong: [
+      { uz: "Soxtalik belgisi", en: "Proof of forgery" },
+      { uz: "Shifrlash belgisi", en: "A sign of encryption" },
+      { uz: "Virus belgisi", en: "A sign of a virus" },
+    ],
+    explain: {
+      uz: "Yo‘qligi hech narsani isbotlamaydi.",
+      en: "Its absence proves nothing.",
+    },
+  },
+  {
+    ask: {
+      uz: "EXIF GPS Samarqand, rasmda Toshkent teleminorasi. Nimaga ishonasiz?",
+      en: "EXIF GPS says Samarkand; the photo shows the Tashkent TV tower. Trust?",
+    },
+    right: { uz: "Ko‘rinadigan belgilarga", en: "The visible clues" },
+    wrong: [
+      { uz: "EXIF’ga", en: "The EXIF" },
+      { uz: "Hech biriga", en: "Neither" },
+      { uz: "Fayl nomiga", en: "The file name" },
+    ],
+    explain: { uz: "EXIF’ni tahrirlash oson.", en: "EXIF is easy to edit." },
+  },
+  {
+    ask: {
+      uz: "Birov ijtimoiy tarmoqdagi odamning uyini topishni so‘radi. Nima qilasiz?",
+      en: "Someone asks you to find where a person on social media lives. What do you do?",
+    },
+    right: { uz: "Rad etaman", en: "Refuse" },
+    wrong: [
+      { uz: "Topib beraman", en: "Find it" },
+      { uz: "Pulga topib beraman", en: "Find it for a fee" },
+      { uz: "Topib, e’lon qilaman", en: "Find it and post it" },
+    ],
+    explain: {
+      uz: "Bu ta’qibga yordam berish.",
+      en: "It would help a stalker.",
+    },
+  },
+];

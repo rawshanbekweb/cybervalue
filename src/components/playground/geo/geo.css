@@ -1,0 +1,70 @@
+/* Images and location lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css and
+   access-control.css. */
+.ge-hits {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.ge-hits legend {
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+.ge-hit {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.ge-hit.on {
+  border-color: var(--accent);
+}
+.ge-hit-body {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.ge-caption {
+  color: var(--muted);
+}
+.ge-scene {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+}
+.ge-scene svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+.ge-spot {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #8052ff;
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+.ge-spot.seen {
+  background: #0f7a55;
+}
+.ge-spot[aria-pressed="true"] {
+  outline: 3px solid #ffd166;
+}

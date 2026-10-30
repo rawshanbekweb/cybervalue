@@ -244,6 +244,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Domen va infratuzilma (Intermediate)",
     earned: (f) => finished(f, "infra") && passed(f, "infra-1"),
   },
+  {
+    id: "lab-geo",
+    title: "Rasm va joylashuv (Intermediate)",
+    earned: (f) => finished(f, "geo") && passed(f, "geo-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

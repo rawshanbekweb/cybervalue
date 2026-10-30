@@ -42,6 +42,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/ethics`       | OSINT module 1, ethics and law (8 lessons, a checkpoint)                        |
 | `/intermediate/search`       | OSINT module 2, search technique (8 lessons, a checkpoint)                      |
 | `/intermediate/infra`        | OSINT module 3, domains and infrastructure (8 lessons, a checkpoint)            |
+| `/intermediate/geo`          | OSINT module 4, images and location (8 lessons, a checkpoint)                   |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -723,6 +724,26 @@ systems (`INTERNAL`).
 | 6       | Questions on third-party ownership               |
 | 7       | Questions on assembling the map                  |
 | 8       | Final questions                                  |
+
+## OSINT module 4: Images and location
+
+`/intermediate/geo` (lab id `geo`, checkpoint `geo-1`, award `lab-geo`, site
+setting `geo`) uses `src/lib/geo/tools.ts`: `HITS` are reverse-search matches
+for a "flood today" photo whose earliest copy (`ORIGIN`, 2019) exposes the
+claim; `CLUES` are four hotspots on a drawn street (an Uzbek Latin sign, a
+01 plate, right-hand traffic, a blue dome) and `sceneRight` wants at least
+three of them read and Tashkent chosen.
+
+| Lessons | What the student does                           |
+| ------- | ----------------------------------------------- |
+| 1       | Questions on reverse image search               |
+| 2       | Finds a recycled photo's original and judges it |
+| 3       | Sorts strong location clues from weak ones      |
+| 4       | Reads a street scene and picks the city         |
+| 5       | Questions on shadows and weather archives       |
+| 6       | Questions on metadata as a claim                |
+| 7       | Questions on who not to locate                  |
+| 8       | Final questions                                 |
 
 ## Who gets in
 

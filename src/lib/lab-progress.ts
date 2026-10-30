@@ -40,6 +40,7 @@ export const LAB_PROGRESS = {
   ethics: { key: "cybervalue:ethics:progress:v1", total: 8 },
   search: { key: "cybervalue:search:progress:v1", total: 8 },
   infra: { key: "cybervalue:infra:progress:v1", total: 8 },
+  geo: { key: "cybervalue:geo:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -403,6 +404,15 @@ export const LAB_META: {
       en: "Domains and infrastructure (Intermediate)",
     },
     href: "/intermediate/infra",
+    intermediate: true,
+  },
+  {
+    id: "geo",
+    title: {
+      uz: "Rasm va joylashuv (Intermediate)",
+      en: "Images and location (Intermediate)",
+    },
+    href: "/intermediate/geo",
     intermediate: true,
   },
 ];

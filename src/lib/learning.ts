@@ -36,6 +36,7 @@ import { LESSONS as PHISHING_LESSONS } from "@/lib/phishing/curriculum";
 import { LESSONS as ETHICS_LESSONS } from "@/lib/ethics/curriculum";
 import { LESSONS as SEARCH_LESSONS } from "@/lib/search/curriculum";
 import { LESSONS as INFRA_LESSONS } from "@/lib/infra/curriculum";
+import { LESSONS as GEO_LESSONS } from "@/lib/geo/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -750,6 +751,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: INFRA_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "geo",
+      title: "Images and location",
+      category: "Intermediate · OSINT",
+      description:
+        "Use reverse image search well, expose a years-old photo passed off as today’s, tell strong location clues from weak ones, read a street scene to the right city, work out the time from shadows and weather, treat metadata as a claim and refuse to locate private people.",
+      href: "/intermediate/geo",
+      progressKey: LAB_PROGRESS.geo.key,
+      level: "Intermediate",
+      lessons: GEO_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: GEO_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },
