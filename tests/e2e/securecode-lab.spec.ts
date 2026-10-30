@@ -94,7 +94,9 @@ test.describe("an Intermediate student", () => {
       "<ScRiPt>alert(1)</ScRiPt>",
       "<img src=x onerror=alert(1)>",
     ])
-      await page.getByLabel(`${input} gets past the denylist`).check();
+      await page
+        .getByLabel(`${input} gets past the denylist`, { exact: true })
+        .check();
     await expect(page.locator(".nl-card .nl-pass")).toContainText("Mixed case");
     await pass(page);
     await audit(page, "filter");
