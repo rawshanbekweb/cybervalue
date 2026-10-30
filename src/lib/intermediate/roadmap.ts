@@ -561,6 +561,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Xavfsiz kod yozish", en: "Secure coding" },
+        href: "/intermediate/securecode",
+        lab: "securecode",
         topics: ["validation", "error handling", "secrets", "logging"],
         goal: goal(
           "Kod parchasidagi xavfsizlik kamchiliklarini topib tuzatish.",

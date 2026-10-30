@@ -9666,3 +9666,297 @@ export const STRIDE_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const SECURECODE_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Qaysi ma’lumotga tekshirmasdan ishonish mumkin emas?",
+      en: "Which data must never be trusted without checking?",
+    },
+    right: {
+      uz: "Brauzerdan kelgan hamma narsa: forma, URL, cookie, sarlavha",
+      en: "Anything from the browser: form, URL, cookie, header",
+    },
+    wrong: [
+      { uz: "Faqat forma maydonlari", en: "Only form fields" },
+      { uz: "Faqat fayl yuklashlar", en: "Only file uploads" },
+      {
+        uz: "Hech biriga, HTTPS bo‘lsa",
+        en: "None of it, if HTTPS is used",
+      },
+    ],
+    explain: {
+      uz: "HTTPS yo‘lni himoyalaydi, mazmunni emas.",
+      en: "HTTPS protects the channel, not the content.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega taqiq ro‘yxati (denylist) zaif?",
+      en: "Why is a denylist weak?",
+    },
+    right: {
+      uz: "Hujumchi ro‘yxatda yo‘q shaklni topadi",
+      en: "An attacker finds a form that isn’t on the list",
+    },
+    wrong: [
+      { uz: "U juda sekin ishlaydi", en: "It runs too slowly" },
+      { uz: "U to‘g‘ri ismlarni rad etadi", en: "It rejects real names" },
+      { uz: "U faqat Linuxda ishlaydi", en: "It only works on Linux" },
+    ],
+    explain: {
+      uz: "<ScRiPt> yoki <img onerror> o‘tib ketadi.",
+      en: "<ScRiPt> or <img onerror> gets through.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ruxsat ro‘yxati (allowlist) nima qiladi?",
+      en: "What does an allowlist do?",
+    },
+    right: {
+      uz: "Faqat kutilgan shaklga mos kirishni qabul qiladi",
+      en: "Accepts only input that matches the expected shape",
+    },
+    wrong: [
+      {
+        uz: "Faqat xavfli so‘zlarni olib tashlaydi",
+        en: "Removes only dangerous words",
+      },
+      { uz: "Hamma narsani qabul qiladi", en: "Accepts everything" },
+      { uz: "Kirishni shifrlaydi", en: "Encrypts the input" },
+    ],
+    explain: {
+      uz: "Nima mumkinligini aytish, nima mumkin emasligini sanashdan ishonchliroq.",
+      en: "Saying what is allowed beats listing what isn’t.",
+    },
+  },
+  {
+    ask: {
+      uz: "SQL injection’ni qanday to‘g‘ri to‘xtatasiz?",
+      en: "What properly stops SQL injection?",
+    },
+    right: { uz: "Parametrli so‘rov", en: "A parameterised query" },
+    wrong: [
+      { uz: "Qo‘shtirnoqlarni olib tashlash", en: "Stripping quotes" },
+      { uz: "So‘rovni katta harflarda yozish", en: "Writing SQL in capitals" },
+      { uz: "Xatoni yashirish", en: "Hiding the error" },
+    ],
+    explain: {
+      uz: "Ma’lumot so‘rov matniga hech qachon qo‘shilmaydi.",
+      en: "Data never becomes part of the query text.",
+    },
+  },
+  {
+    ask: {
+      uz: "Server xatosida foydalanuvchiga nima ko‘rsatiladi?",
+      en: "What does the user see on a server error?",
+    },
+    right: {
+      uz: "Umumiy xabar va murojaat raqami",
+      en: "A generic message and a reference number",
+    },
+    wrong: [
+      { uz: "To‘liq stack trace", en: "The full stack trace" },
+      { uz: "SQL so‘rovi matni", en: "The SQL query text" },
+      { uz: "Server versiyasi va yo‘llari", en: "Server version and paths" },
+    ],
+    explain: {
+      uz: "Tafsilot logga ketadi, hujumchiga emas.",
+      en: "Details go to the log, not to the attacker.",
+    },
+  },
+  {
+    ask: {
+      uz: "Xato bo‘lganda kod qanday yo‘l tutishi kerak?",
+      en: "How should code behave when something fails?",
+    },
+    right: {
+      uz: "Yopiq holda: rad etish (fail closed)",
+      en: "Fail closed: deny",
+    },
+    wrong: [
+      { uz: "Ochiq holda: ruxsat berish", en: "Fail open: allow" },
+      { uz: "Xatoni e’tiborsiz qoldirish", en: "Ignore the error" },
+      { uz: "Qayta-qayta urinish", en: "Retry forever" },
+    ],
+    explain: {
+      uz: "Huquq tekshiruvi xato bersa, ruxsat berilmaydi.",
+      en: "If the permission check fails, access is refused.",
+    },
+  },
+  {
+    ask: {
+      uz: "API kaliti qayerda saqlanadi?",
+      en: "Where does an API key belong?",
+    },
+    right: {
+      uz: "Muhit o‘zgaruvchisi yoki sirlar omborida",
+      en: "In an environment variable or secret store",
+    },
+    wrong: [
+      {
+        uz: "Kod ichida, konstanta sifatida",
+        en: "In the code, as a constant",
+      },
+      { uz: "README faylida", en: "In the README" },
+      { uz: "Frontend JavaScript’da", en: "In frontend JavaScript" },
+    ],
+    explain: {
+      uz: "Kod Git’ga tushadi va tarixda abadiy qoladi.",
+      en: "Code goes into Git and stays in its history forever.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kalit Git’ga tushib qoldi. Birinchi qadam?",
+      en: "A key was committed to Git. First step?",
+    },
+    right: {
+      uz: "Kalitni bekor qilib, yangisini chiqarish",
+      en: "Revoke the key and issue a new one",
+    },
+    wrong: [
+      {
+        uz: "Faylni o‘chirib qayta commit qilish",
+        en: "Delete the file and commit",
+      },
+      { uz: "Repozitoriyani yopiq qilish", en: "Make the repository private" },
+      { uz: "Hech narsa, hech kim ko‘rmagan", en: "Nothing, nobody saw it" },
+    ],
+    explain: {
+      uz: "Tarixdan o‘chirish kechikadi: kalit allaqachon ko‘chirilgan bo‘lishi mumkin.",
+      en: "Scrubbing history is too late: it may already be copied.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi biri logga yozilmaydi?",
+      en: "Which of these must not be logged?",
+    },
+    right: { uz: "Parol", en: "A password" },
+    wrong: [
+      { uz: "Kirish vaqti", en: "The login time" },
+      { uz: "Foydalanuvchi ID si", en: "The user ID" },
+      { uz: "Natija: muvaffaqiyatli yoki yo‘q", en: "Success or failure" },
+    ],
+    explain: {
+      uz: "Loglarni ko‘p odam o‘qiydi; sir u yerda tarqaladi.",
+      en: "Many people read logs; a secret leaks there.",
+    },
+  },
+  {
+    ask: {
+      uz: "`db.users.update(id, req.body)` qanday xavf tug‘diradi?",
+      en: "What is the risk of `db.users.update(id, req.body)`?",
+    },
+    right: {
+      uz: "Foydalanuvchi role kabi maydonni o‘zi o‘zgartiradi (mass assignment)",
+      en: "The user changes fields like role themselves (mass assignment)",
+    },
+    wrong: [
+      { uz: "So‘rov sekinlashadi", en: "The query gets slower" },
+      { uz: "Hech qanday xavf yo‘q", en: "No risk at all" },
+      { uz: "Baza o‘chib ketadi", en: "The database is deleted" },
+    ],
+    explain: {
+      uz: "Sxema faqat ruxsat etilgan maydonlarni o‘tkazadi.",
+      en: "A schema lets only allowed fields through.",
+    },
+  },
+  {
+    ask: {
+      uz: "Tekshiruv qayerda bo‘lishi shart?",
+      en: "Where must validation happen?",
+    },
+    right: { uz: "Serverda", en: "On the server" },
+    wrong: [
+      { uz: "Faqat brauzerda", en: "Only in the browser" },
+      { uz: "Faqat HTML atributlarida", en: "Only in HTML attributes" },
+      { uz: "Hech qayerda", en: "Nowhere" },
+    ],
+    explain: {
+      uz: "Brauzerdagi tekshiruvni chetlab o‘tish oson; u faqat qulaylik.",
+      en: "Browser checks are easy to bypass; they’re a convenience.",
+    },
+  },
+  {
+    ask: {
+      uz: "Eng kam huquq (least privilege) tamoyili?",
+      en: "The principle of least privilege?",
+    },
+    right: {
+      uz: "Har bir qism faqat o‘ziga kerak huquqni oladi",
+      en: "Each part gets only the rights it needs",
+    },
+    wrong: [
+      { uz: "Hamma admin bo‘ladi", en: "Everyone is admin" },
+      { uz: "Huquqlar hech qachon o‘zgarmaydi", en: "Rights never change" },
+      { uz: "Faqat adminlar log yozadi", en: "Only admins write logs" },
+    ],
+    explain: {
+      uz: "Ilovaning baza foydalanuvchisi jadvallarni o‘chira olmasligi kerak.",
+      en: "The app’s database user shouldn’t be able to drop tables.",
+    },
+  },
+  {
+    ask: {
+      uz: "XSS’ga qarshi chiqishda nima qilinadi?",
+      en: "What stops XSS on output?",
+    },
+    right: {
+      uz: "Kontekstga mos ekranlash (escaping)",
+      en: "Escaping for the context",
+    },
+    wrong: [
+      { uz: "Ma’lumotni shifrlash", en: "Encrypting the data" },
+      { uz: "Faqat HTTPS", en: "HTTPS alone" },
+      { uz: "Parolni uzaytirish", en: "Longer passwords" },
+    ],
+    explain: {
+      uz: "< belgisi &lt; bo‘lib, kod emas, matn bo‘lib chiqadi.",
+      en: "< becomes &lt; and shows as text, not code.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ichma-ich himoya (defence in depth) nima?",
+      en: "What is defence in depth?",
+    },
+    right: {
+      uz: "Bir himoya yiqilsa, keyingisi ushlab qoladigan qatlamlar",
+      en: "Layers, so one failing control is caught by the next",
+    },
+    wrong: [
+      { uz: "Bitta kuchli parol", en: "One strong password" },
+      { uz: "Faqat firewall", en: "A firewall alone" },
+      { uz: "Kodni yashirish", en: "Hiding the code" },
+    ],
+    explain: {
+      uz: "Masalan: tekshiruv + parametrli so‘rov + eng kam huquq.",
+      en: "For example: validation + parameterised queries + least privilege.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kirish xatosida qaysi xabar to‘g‘ri?",
+      en: "Which login error message is right?",
+    },
+    right: {
+      uz: "«Email yoki parol noto‘g‘ri»",
+      en: "“Wrong email or password”",
+    },
+    wrong: [
+      { uz: "«Bunday email yo‘q»", en: "“No such email”" },
+      {
+        uz: "«Parol noto‘g‘ri, email to‘g‘ri»",
+        en: "“Password wrong, email right”",
+      },
+      { uz: "«SQL xatosi: users jadvali»", en: "“SQL error: users table”" },
+    ],
+    explain: {
+      uz: "Aniq xabar qaysi emaillar ro‘yxatdan o‘tganini oshkor qiladi.",
+      en: "A precise message reveals which emails are registered.",
+    },
+  },
+];

@@ -43,6 +43,7 @@ export const LAB_PROGRESS = {
   geo: { key: "cybervalue:geo:progress:v1", total: 8 },
   footprint: { key: "cybervalue:footprint:progress:v1", total: 8 },
   stride: { key: "cybervalue:stride:progress:v1", total: 8 },
+  securecode: { key: "cybervalue:securecode:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -433,6 +434,15 @@ export const LAB_META: {
       en: "Threat modelling (Intermediate)",
     },
     href: "/intermediate/stride",
+    intermediate: true,
+  },
+  {
+    id: "securecode",
+    title: {
+      uz: "Xavfsiz kod yozish (Intermediate)",
+      en: "Secure coding (Intermediate)",
+    },
+    href: "/intermediate/securecode",
     intermediate: true,
   },
 ];

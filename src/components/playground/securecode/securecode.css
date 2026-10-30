@@ -1,0 +1,54 @@
+/* Secure coding lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css, browser-risks.css and
+   access-control.css. */
+.sc-rules {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+.sc-table {
+  overflow-x: auto;
+}
+.sc-cases th[scope="row"] code {
+  overflow-wrap: anywhere;
+}
+.sc-cases thead th {
+  font-size: 12px;
+}
+.sc-lines {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sc-line {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+.sc-code {
+  display: block;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.sc-no {
+  color: var(--muted);
+}
+.sc-line .cb-field,
+.sc-line select {
+  min-width: 0;
+  max-width: 100%;
+}
+.sd-ok {
+  color: #2ee6a6;
+  font-size: 13px;
+}
+.sd-bad {
+  color: #ff9b8a;
+  font-size: 13px;
+}

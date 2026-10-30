@@ -39,6 +39,7 @@ import { LESSONS as INFRA_LESSONS } from "@/lib/infra/curriculum";
 import { LESSONS as GEO_LESSONS } from "@/lib/geo/curriculum";
 import { LESSONS as FOOTPRINT_LESSONS } from "@/lib/footprint/curriculum";
 import { LESSONS as STRIDE_LESSONS } from "@/lib/stride/curriculum";
+import { LESSONS as SECURECODE_LESSONS } from "@/lib/securecode/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -804,6 +805,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: STRIDE_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "securecode",
+      title: "Secure coding",
+      category: "Intermediate · AppSec",
+      description:
+        "Decide which input to trust, see an allowlist stop what a denylist lets through, match five mistakes in a login handler to their fixes, handle errors and secrets safely and choose what goes in a log.",
+      href: "/intermediate/securecode",
+      progressKey: LAB_PROGRESS.securecode.key,
+      level: "Intermediate",
+      lessons: SECURECODE_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: SECURECODE_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

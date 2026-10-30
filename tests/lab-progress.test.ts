@@ -46,6 +46,7 @@ import { LESSONS as INFRA } from "../src/lib/infra/curriculum";
 import { LESSONS as GEO } from "../src/lib/geo/curriculum";
 import { LESSONS as FOOTPRINT } from "../src/lib/footprint/curriculum";
 import { LESSONS as STRIDE } from "../src/lib/stride/curriculum";
+import { LESSONS as SECURECODE } from "../src/lib/securecode/curriculum";
 import {
   isLabId,
   LAB_PROGRESS,
@@ -100,6 +101,7 @@ test("lab progress totals match the lessons", () => {
   assert.equal(LAB_PROGRESS.geo.total, GEO.length);
   assert.equal(LAB_PROGRESS.footprint.total, FOOTPRINT.length);
   assert.equal(LAB_PROGRESS.stride.total, STRIDE.length);
+  assert.equal(LAB_PROGRESS.securecode.total, SECURECODE.length);
   assert.equal(isLabId("toString"), false);
   assert.equal(isLabId("network"), true);
 });

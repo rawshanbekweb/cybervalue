@@ -306,6 +306,12 @@ export const SECTIONS = [
     href: "/intermediate/stride",
   },
   {
+    id: "securecode",
+    group: "lab",
+    label: "Secure coding (Intermediate)",
+    href: "/intermediate/securecode",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",
