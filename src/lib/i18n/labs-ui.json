@@ -1520,5 +1520,18 @@
   "One of each level: fix the role check today, the owner check next, then the session length; the header can wait for a ticket.": "Har darajadan bittadan: rol tekshiruvi bugun, keyin egasi tekshiruvi, so‘ng sessiya muddati tuzatiladi; sarlavha vazifa sifatida kutishi mumkin.",
   "Secure code review": "Xavfsiz kod ko‘rigi",
   "Secure code review · Academy Intermediate": "Xavfsiz kod ko‘rigi · Academy Intermediate",
-  "See what people find that tools miss, review with a security checklist, flag four problems in a pull request, write comments an author can act on, rate findings by impact and likelihood and decide when to approve.": "Odam vositalar ko‘rmagan nimani topishini ko‘ring, xavfsizlik ro‘yxati bilan ko‘rib chiqing, pull request’dagi to‘rtta muammoni belgilang, muallif tuzata oladigan izoh yozing, topilmalarni ta’sir va ehtimollik bo‘yicha baholang va qachon tasdiqlashni hal qiling."
+  "See what people find that tools miss, review with a security checklist, flag four problems in a pull request, write comments an author can act on, rate findings by impact and likelihood and decide when to approve.": "Odam vositalar ko‘rmagan nimani topishini ko‘ring, xavfsizlik ro‘yxati bilan ko‘rib chiqing, pull request’dagi to‘rtta muammoni belgilang, muallif tuzata oladigan izoh yozing, topilmalarni ta’sir va ehtimollik bo‘yicha baholang va qachon tasdiqlashni hal qiling.",
+  "SYSSEC · MODULE 1": "SYSSEC · 1-MODUL",
+  "Linux hardening.": "Linux mustahkamlash.",
+  "Close every door you don’t use.": "Ishlatmaydigan har bir eshikni yoping.",
+  "Shrink the attack surface, read permissions and special bits, find three risky entries in an audit listing, keep sudo to least privilege, decide which listening services stay public, harden SSH, and set up updates, a firewall and logs.": "Hujum yuzasini kichraytiring, huquqlar va maxsus bitlarni o‘qing, tekshiruv ro‘yxatidan uchta xavfli yozuvni toping, sudo’ni eng kam huquq bilan cheklang, qaysi xizmatlar ochiq qolishini hal qiling, SSH’ni mustahkamlang hamda yangilanish, firewall va loglarni sozlang.",
+  "HARDENING / LAB": "MUSTAHKAMLASH / LAB",
+  "{path} is risky": "{path} xavfli",
+  "{n} fixes: chmod 640 /etc/shadow, remove the SUID bit from backup, and chmod 755 the cron script. The SUID on passwd and the sticky bit on /tmp stay.": "{n} ta tuzatish: /etc/shadow uchun chmod 640, backup’dan SUID bitini olib tashlash va cron skripti uchun chmod 755. passwd’dagi SUID va /tmp’dagi sticky bit qoladi.",
+  "Choose an action": "Harakatni tanlang",
+  "Think again": "Yana o‘ylab ko‘ring",
+  "Two public, two on localhost, two off: the internet now sees only the site and SSH.": "Ikkitasi ochiq, ikkitasi localhost’da, ikkitasi o‘chiq: endi internet faqat sayt va SSH’ni ko‘radi.",
+  "Linux hardening": "Linux mustahkamlash",
+  "Linux hardening · Academy Intermediate": "Linux mustahkamlash · Academy Intermediate",
+  "Shrink the attack surface, read permissions and special bits, find risky entries in an audit listing, keep sudo to least privilege, decide which services stay public, harden SSH, and set up updates, a firewall and logs.": "Hujum yuzasini kichraytiring, huquqlar va maxsus bitlarni o‘qing, tekshiruv ro‘yxatidan xavfli yozuvlarni toping, sudo’ni eng kam huquq bilan cheklang, qaysi xizmatlar ochiq qolishini hal qiling, SSH’ni mustahkamlang hamda yangilanish, firewall va loglarni sozlang."
 }

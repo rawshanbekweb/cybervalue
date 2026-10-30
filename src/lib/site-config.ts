@@ -330,6 +330,12 @@ export const SECTIONS = [
     href: "/intermediate/codereview",
   },
   {
+    id: "hardening",
+    group: "lab",
+    label: "Linux hardening (Intermediate)",
+    href: "/intermediate/hardening",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

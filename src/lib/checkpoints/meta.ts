@@ -752,6 +752,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/codereview#checkpoints",
     pass: 70,
   },
+  {
+    id: "hardening-1",
+    level: "intermediate",
+    lab: { uz: "Linux mustahkamlash", en: "Linux hardening" },
+    title: {
+      uz: "Nazorat: Linux mustahkamlash",
+      en: "Checkpoint: Linux hardening",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/hardening#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

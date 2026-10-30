@@ -279,6 +279,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Xavfsiz kod ko‘rigi (Intermediate)",
     earned: (f) => finished(f, "codereview") && passed(f, "codereview-1"),
   },
+  {
+    id: "lab-hardening",
+    title: "Linux mustahkamlash (Intermediate)",
+    earned: (f) => finished(f, "hardening") && passed(f, "hardening-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */
