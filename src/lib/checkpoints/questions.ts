@@ -72,6 +72,7 @@ import {
   BASELINE_POOL,
   BUILD_POOL,
   SHARED_POOL,
+  IAM_POOL,
   SECURITY_EXTRA,
   type PoolItem,
 } from "./pools";
@@ -864,6 +865,10 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
       .map((item) => fromPool(r, item)),
   "shared-1": (r) =>
     shuffle(r, SHARED_POOL)
+      .slice(0, 10)
+      .map((item) => fromPool(r, item)),
+  "iam-1": (r) =>
+    shuffle(r, IAM_POOL)
       .slice(0, 10)
       .map((item) => fromPool(r, item)),
 };

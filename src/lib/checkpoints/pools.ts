@@ -12345,3 +12345,264 @@ export const SHARED_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const IAM_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "IAM nimaga javob beradi?",
+      en: "Which questions does IAM answer?",
+    },
+    right: { uz: "Kim va u nima qila oladi", en: "Who, and what they may do" },
+    wrong: [
+      { uz: "Qancha turadi", en: "What it costs" },
+      { uz: "Qayerda joylashgan", en: "Where it is" },
+      { uz: "Qachon ishga tushadi", en: "When it starts" },
+    ],
+    explain: { uz: "Identity va huquqlar.", en: "Identity and permissions." },
+  },
+  {
+    ask: {
+      uz: "Server yoki dastur uchun eng mos identifikator?",
+      en: "The best identity for a server or program?",
+    },
+    right: { uz: "Rol (role)", en: "A role" },
+    wrong: [
+      { uz: "Root hisob", en: "The root account" },
+      { uz: "Odamning hisobi", en: "A person’s account" },
+      { uz: "Umumiy parol", en: "A shared password" },
+    ],
+    explain: {
+      uz: "Rol vaqtinchalik kalitlar beradi.",
+      en: "A role hands out temporary keys.",
+    },
+  },
+  {
+    ask: {
+      uz: "Hech qaysi bayonot mos kelmasa, natija?",
+      en: "If no statement matches, the result is?",
+    },
+    right: { uz: "Rad (implicit deny)", en: "Denied (implicit deny)" },
+    wrong: [
+      { uz: "Ruxsat", en: "Allowed" },
+      { uz: "Xato", en: "An error" },
+      { uz: "So‘rov kutadi", en: "The request waits" },
+    ],
+    explain: {
+      uz: "Sukut bo‘yicha hammasi taqiqlangan.",
+      en: "Everything is denied by default.",
+    },
+  },
+  {
+    ask: {
+      uz: "Allow va aniq Deny ikkalasi mos keldi. Natija?",
+      en: "Both an Allow and an explicit Deny match. The result?",
+    },
+    right: { uz: "Rad etiladi", en: "Denied" },
+    wrong: [
+      { uz: "Ruxsat beriladi", en: "Allowed" },
+      { uz: "Birinchisi ishlaydi", en: "The first one wins" },
+      { uz: "Tasodifiy", en: "Random" },
+    ],
+    explain: { uz: "Deny har doim g‘olib.", en: "Deny always wins." },
+  },
+  {
+    ask: {
+      uz: "Siyosat bayonotining uch asosiy qismi?",
+      en: "The three main parts of a policy statement?",
+    },
+    right: { uz: "Effect, Action, Resource", en: "Effect, Action, Resource" },
+    wrong: [
+      { uz: "Nom, rang, hajm", en: "Name, colour, size" },
+      { uz: "Login, parol, email", en: "Login, password, email" },
+      { uz: "Server, port, IP", en: "Server, port, IP" },
+    ],
+    explain: {
+      uz: "Ixtiyoriy: Condition.",
+      en: "Optionally, a Condition.",
+    },
+  },
+  {
+    ask: {
+      uz: '`"Action": "*", "Resource": "*"` siyosatining xavfi?',
+      en: 'The risk of `"Action": "*", "Resource": "*"`?',
+    },
+    right: {
+      uz: "Kalit sizsa, butun hisob hujumchi qo‘lida",
+      en: "A leaked key hands over the whole account",
+    },
+    wrong: [
+      { uz: "Xavf yo‘q", en: "No risk" },
+      { uz: "Faqat sekinlashadi", en: "It only slows down" },
+      { uz: "Ishlamaydi", en: "It doesn’t work" },
+    ],
+    explain: {
+      uz: "Eng kam huquq tamoyilining teskarisi.",
+      en: "The opposite of least privilege.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ilova faqat bitta bucket’ga yozadi. To‘g‘ri siyosat?",
+      en: "An app only writes to one bucket. The right policy?",
+    },
+    right: {
+      uz: "Allow s3:PutObject faqat o‘sha bucket/* ga",
+      en: "Allow s3:PutObject on that bucket/* only",
+    },
+    wrong: [
+      { uz: "Allow s3:* on *", en: "Allow s3:* on *" },
+      { uz: "Allow * on *", en: "Allow * on *" },
+      { uz: "AdministratorAccess", en: "AdministratorAccess" },
+    ],
+    explain: {
+      uz: "Bitta harakat, bitta resurs.",
+      en: "One action, one resource.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega uzoq muddatli access key xavfli?",
+      en: "Why are long-lived access keys risky?",
+    },
+    right: {
+      uz: "Kodga yoki GitHub’ga tushib, uzoq ishlab qoladi",
+      en: "They leak into code or GitHub and keep working",
+    },
+    wrong: [
+      { uz: "Ular sekin", en: "They’re slow" },
+      { uz: "Ular qimmat", en: "They’re expensive" },
+      { uz: "Xavfli emas", en: "They aren’t" },
+    ],
+    explain: {
+      uz: "Vaqtinchalik kalitlar o‘zi almashadi.",
+      en: "Temporary keys rotate themselves.",
+    },
+  },
+  {
+    ask: {
+      uz: "GitHub Actions bulutga kalitsiz qanday kiradi?",
+      en: "How does GitHub Actions reach the cloud without a stored key?",
+    },
+    right: {
+      uz: "OIDC orqali qisqa muddatli token",
+      en: "A short-lived OIDC token",
+    },
+    wrong: [
+      { uz: "Root paroli bilan", en: "With the root password" },
+      { uz: "README’dagi kalit bilan", en: "With a key in the README" },
+      { uz: "Kira olmaydi", en: "It can’t" },
+    ],
+    explain: {
+      uz: "Saqlanmagan kalit sizmaydi.",
+      en: "An unstored key can’t leak.",
+    },
+  },
+  {
+    ask: {
+      uz: "Root hisob uchun to‘g‘ri amaliyot?",
+      en: "The right practice for the root account?",
+    },
+    right: {
+      uz: "MFA, kalitlar yo‘q, kundalik ishda ishlatilmaydi",
+      en: "MFA, no keys, not used daily",
+    },
+    wrong: [
+      { uz: "CI pipeline uchun ishlatish", en: "Use it for CI" },
+      { uz: "Jamoa bilan bo‘lishish", en: "Share it with the team" },
+      { uz: "MFA’siz qoldirish", en: "Leave it without MFA" },
+    ],
+    explain: {
+      uz: "Root’ni hech qanday siyosat cheklamaydi.",
+      en: "No policy limits root.",
+    },
+  },
+  {
+    ask: {
+      uz: "Rejalashtirilmagan root kirishi — bu?",
+      en: "An unplanned root sign-in is?",
+    },
+    right: { uz: "Tekshiriladigan hodisa", en: "An incident to investigate" },
+    wrong: [
+      { uz: "Odatiy holat", en: "Routine" },
+      { uz: "Xatolik emas", en: "Nothing to see" },
+      { uz: "Yangilanish", en: "An update" },
+    ],
+    explain: {
+      uz: "Eng muhim ogohlantirishlardan biri.",
+      en: "One of the most important alerts.",
+    },
+  },
+  {
+    ask: {
+      uz: "200 kundan beri ishlatilmagan kalit bilan nima qilinadi?",
+      en: "What happens to a key unused for 200 days?",
+    },
+    right: { uz: "O‘chiriladi", en: "It is deleted" },
+    wrong: [
+      { uz: "Qoldiriladi", en: "It stays" },
+      { uz: "Kengaytiriladi", en: "It is widened" },
+      { uz: "Jamoaga beriladi", en: "It goes to the team" },
+    ],
+    explain: {
+      uz: "Ishlatilmagan — faqat xavf.",
+      en: "Unused means pure risk.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ishlatilmagan huquqlarni nima ko‘rsatadi?",
+      en: "What shows unused permissions?",
+    },
+    right: {
+      uz: "“Last accessed” va IAM Access Analyzer",
+      en: "“Last accessed” data and IAM Access Analyzer",
+    },
+    wrong: [
+      { uz: "Xarajatlar hisoboti", en: "The bill" },
+      { uz: "Email", en: "Email" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Shunga qarab toraytiriladi.",
+      en: "Narrow policies with it.",
+    },
+  },
+  {
+    ask: {
+      uz: "Huquqlar kimga beriladi?",
+      en: "Who should rights be granted to?",
+    },
+    right: { uz: "Guruh va rollarga", en: "Groups and roles" },
+    wrong: [
+      { uz: "Har bir odamga alohida", en: "Each person separately" },
+      { uz: "Root’ga", en: "Root" },
+      { uz: "Hammaga", en: "Everyone" },
+    ],
+    explain: {
+      uz: "Odam ketsa, faqat a’zolik o‘zgaradi.",
+      en: "When someone leaves, only membership changes.",
+    },
+  },
+  {
+    ask: {
+      uz: "Siyosatlarni qanday boshlash kerak?",
+      en: "How should policies start?",
+    },
+    right: {
+      uz: "Kichik, kerak bo‘lsa kengaytiriladi",
+      en: "Small, widened when needed",
+    },
+    wrong: [
+      {
+        uz: "Hammasi ochiq, keyin toraytiriladi",
+        en: "All open, narrowed later",
+      },
+      { uz: "Hech qanday siyosatsiz", en: "With no policy" },
+      { uz: "Faqat AdministratorAccess", en: "AdministratorAccess only" },
+    ],
+    explain: {
+      uz: "“Keyin” ko‘pincha kelmaydi.",
+      en: "“Later” rarely comes.",
+    },
+  },
+];

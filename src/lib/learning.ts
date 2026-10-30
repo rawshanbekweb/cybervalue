@@ -49,6 +49,7 @@ import { LESSONS as AUTHN_LESSONS } from "@/lib/authn/curriculum";
 import { LESSONS as BASELINE_LESSONS } from "@/lib/baseline/curriculum";
 import { LESSONS as BUILD_LESSONS } from "@/lib/build/curriculum";
 import { LESSONS as SHARED_LESSONS } from "@/lib/shared/curriculum";
+import { LESSONS as IAM_LESSONS } from "@/lib/iam/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -984,6 +985,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: SHARED_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "iam",
+      title: "Identity and access",
+      category: "Intermediate · Cloud security",
+      description:
+        "Tell people from workloads, read a policy, evaluate six requests with default and explicit deny, write least-privilege policies, prefer roles and temporary keys, lock down the root account and review access regularly.",
+      href: "/intermediate/iam",
+      progressKey: LAB_PROGRESS.iam.key,
+      level: "Intermediate",
+      lessons: IAM_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: IAM_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

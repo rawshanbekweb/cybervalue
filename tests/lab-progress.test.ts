@@ -56,6 +56,7 @@ import { LESSONS as AUTHN } from "../src/lib/authn/curriculum";
 import { LESSONS as BASELINE } from "../src/lib/baseline/curriculum";
 import { LESSONS as BUILD } from "../src/lib/build/curriculum";
 import { LESSONS as SHARED } from "../src/lib/shared/curriculum";
+import { LESSONS as IAM } from "../src/lib/iam/curriculum";
 import {
   isLabId,
   LAB_PROGRESS,
@@ -120,6 +121,7 @@ test("lab progress totals match the lessons", () => {
   assert.equal(LAB_PROGRESS.baseline.total, BASELINE.length);
   assert.equal(LAB_PROGRESS.build.total, BUILD.length);
   assert.equal(LAB_PROGRESS.shared.total, SHARED.length);
+  assert.equal(LAB_PROGRESS.iam.total, IAM.length);
   assert.equal(isLabId("toString"), false);
   assert.equal(isLabId("network"), true);
 });

@@ -1598,5 +1598,18 @@
   "Here the customer looks after {n} of {total} layers — and the data and who reaches it is always one of them.": "Bu yerda mijoz {total} ta qatlamdan {n} tasiga javob beradi — va ma’lumotlar hamda ularga kim kirishi har doim ular orasida.",
   "Shared responsibility": "Mas’uliyat taqsimoti",
   "Shared responsibility · Academy Intermediate": "Mas’uliyat taqsimoti · Academy Intermediate",
-  "Tell IaaS from PaaS from SaaS, find the line between security of and in the cloud, split six layers between provider and customer, see why most cloud breaches are configuration mistakes and set up a new account on day one.": "IaaS, PaaS va SaaS’ni ajrating, bulutning xavfsizligi va buluttagi xavfsizlik orasidagi chiziqni toping, oltita qatlamni provayder va mijoz o‘rtasida taqsimlang, nega ko‘p bulut buzilishlari sozlama xatosi ekanini ko‘ring va yangi hisobni birinchi kunda sozlang."
+  "Tell IaaS from PaaS from SaaS, find the line between security of and in the cloud, split six layers between provider and customer, see why most cloud breaches are configuration mistakes and set up a new account on day one.": "IaaS, PaaS va SaaS’ni ajrating, bulutning xavfsizligi va buluttagi xavfsizlik orasidagi chiziqni toping, oltita qatlamni provayder va mijoz o‘rtasida taqsimlang, nega ko‘p bulut buzilishlari sozlama xatosi ekanini ko‘ring va yangi hisobni birinchi kunda sozlang.",
+  "CLOUD · MODULE 2": "CLOUD · 2-MODUL",
+  "Identity and access.": "Kirish va huquqlar.",
+  "Deny by default, allow only what is needed.": "Sukut bo‘yicha rad, faqat keraklisiga ruxsat.",
+  "Tell people from workloads, read a policy’s effect, action and resource, evaluate six requests with default deny and explicit deny, write least-privilege policies, prefer roles and temporary keys, lock down the root account and review access regularly.": "Odamlarni dastur va xizmatlardan ajrating, siyosatning effect, action va resource qismlarini o‘qing, oltita so‘rovni sukut bo‘yicha rad va aniq Deny bilan baholang, eng kam huquqli siyosat yozing, rol va vaqtinchalik kalitlarni afzal ko‘ring, root hisobni himoyalang va huquqlarni muntazam qayta ko‘ring.",
+  "IAM / LAB": "IAM / LABORATORIYA",
+  "Allowed: an Allow statement matches.": "Ruxsat: Allow bayonoti mos keldi.",
+  "Denied by default: no statement allows it.": "Sukut bo‘yicha rad: hech bir bayonot ruxsat bermaydi.",
+  "Denied: an explicit Deny wins.": "Rad: aniq Deny ustun keldi.",
+  "Denied": "Rad",
+  "Two allowed, three denied by default and one stopped by the Deny on salaries — even though an Allow matched it too.": "Ikkitasiga ruxsat, uchtasi sukut bo‘yicha rad va bittasini salaries’dagi Deny to‘xtatdi — unga Allow ham mos kelgan bo‘lsa-da.",
+  "Identity and access": "Kirish va huquqlar",
+  "Identity and access · Academy Intermediate": "Kirish va huquqlar · Academy Intermediate",
+  "Tell people from workloads, read a policy, evaluate six requests with default and explicit deny, write least-privilege policies, prefer roles and temporary keys, lock down the root account and review access regularly.": "Odamlarni dastur va xizmatlardan ajrating, siyosatni o‘qing, oltita so‘rovni sukut bo‘yicha rad va aniq Deny bilan baholang, eng kam huquqli siyosat yozing, rol va vaqtinchalik kalitlarni afzal ko‘ring, root hisobni himoyalang va huquqlarni muntazam qayta ko‘ring."
 }

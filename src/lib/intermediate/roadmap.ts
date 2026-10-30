@@ -755,6 +755,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "IAM", en: "IAM" },
+        href: "/intermediate/iam",
+        lab: "iam",
         topics: ["roles", "policies", "least privilege"],
         goal: goal(
           "Minimal ruxsatli siyosat yozish.",
