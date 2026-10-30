@@ -282,6 +282,12 @@ export const SECTIONS = [
     href: "/intermediate/search",
   },
   {
+    id: "infra",
+    group: "lab",
+    label: "Domains and infrastructure (Intermediate)",
+    href: "/intermediate/infra",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

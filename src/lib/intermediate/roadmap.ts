@@ -505,6 +505,8 @@ export const DOMAINS: Domain[] = [
           uz: "Domen va infratuzilma",
           en: "Domains and infrastructure",
         },
+        href: "/intermediate/infra",
+        lab: "infra",
         topics: ["WHOIS", "DNS records", "certificate transparency"],
         goal: goal(
           "Tashkilotning ochiq infratuzilmasini xaritaga tushirish.",

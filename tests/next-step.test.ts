@@ -120,6 +120,7 @@ test("everything finished", () => {
         phishing: 8,
         ethics: 8,
         search: 8,
+        infra: 8,
         scams: 8,
         httpbasics: 9,
         https: 9,

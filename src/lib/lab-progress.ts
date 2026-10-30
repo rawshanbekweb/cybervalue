@@ -39,6 +39,7 @@ export const LAB_PROGRESS = {
   phishing: { key: "cybervalue:phishing:progress:v1", total: 8 },
   ethics: { key: "cybervalue:ethics:progress:v1", total: 8 },
   search: { key: "cybervalue:search:progress:v1", total: 8 },
+  infra: { key: "cybervalue:infra:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -393,6 +394,15 @@ export const LAB_META: {
       en: "Search technique (Intermediate)",
     },
     href: "/intermediate/search",
+    intermediate: true,
+  },
+  {
+    id: "infra",
+    title: {
+      uz: "Domen va infratuzilma (Intermediate)",
+      en: "Domains and infrastructure (Intermediate)",
+    },
+    href: "/intermediate/infra",
     intermediate: true,
   },
 ];
