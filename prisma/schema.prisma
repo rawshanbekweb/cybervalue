@@ -367,6 +367,7 @@ model Student {
   // XP carried over from Academy Junior, and the member it came from.
   bonusXp      Int                  @default(0)
   juniorId     String?              @unique
+  linuxIpExam  LinuxIpAttempt?
 
   @@index([group])
 }
@@ -460,6 +461,35 @@ model StudentQuizStart {
 
   @@id([studentId, materialId])
   @@index([materialId])
+}
+
+// One attempt per student at the Linux and IP exam (/resources/linux-ip-exam).
+// The server keeps the clock and the answers; the student sees the result
+// only after a teacher approves it. Deleting the row lets them sit it again.
+model LinuxIpAttempt {
+  id           String    @id @default(cuid())
+  studentId    String    @unique
+  student      Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  startedAt    DateTime  @default(now()) @db.Timestamptz(3)
+  deadline     DateTime  @db.Timestamptz(3)
+  // Saved as the student works, so a closed browser loses nothing.
+  answers      Json      @default("{}")
+  // Times the student left the exam window, as counted by the page.
+  leaves       Int       @default(0)
+  submittedAt  DateTime? @db.Timestamptz(3)
+  // "submitted" or "timeout".
+  finishReason String?
+  // The automatic grading (LipResult) and its total.
+  grading      Json?
+  autoScore    Float?
+  // The teacher's points for open questions: { o1: 2, … }.
+  overrides    Json      @default("{}")
+  finalScore   Float?
+  note         String    @default("") @db.Text
+  approvedAt   DateTime? @db.Timestamptz(3)
+  approvedBy   String?
+
+  @@index([submittedAt])
 }
 
 // A certificate the teacher issued. `code` is public and printed as a QR code

@@ -556,7 +556,12 @@ export type LipItemResult = {
   id: string;
   score: number;
   max: number;
-  expected?: string;
+  expected: string;
+  /** What the student picked or typed; "" when left blank. */
+  answer: string;
+  /** The score of an open question was set by the teacher. */
+  reviewed?: boolean;
+  /** Added when an approved result is shown. */
   explain?: string;
 };
 
@@ -567,3 +572,20 @@ export type LipResult = {
   open: { score: number; max: number };
   items: LipItemResult[];
 };
+
+/** Answers sent after the deadline still count for this long (slow networks). */
+export const LINUX_IP_EXAM_GRACE_MS = 2 * 60000;
+
+/** What the exam page knows about the signed-in student's attempt. */
+export type LipState =
+  | { kind: "signed-out" }
+  | { kind: "new" }
+  | {
+      kind: "running";
+      /** Milliseconds left on the server's clock. */
+      remaining: number;
+      answers: LipAnswers;
+      leaves: number;
+    }
+  | { kind: "pending" }
+  | { kind: "approved"; result: LipResult; leaves: number; note: string };

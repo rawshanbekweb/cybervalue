@@ -14,47 +14,32 @@ import {
   TOPIC_LABELS,
   type LipAnswers,
   type LipResult,
+  type LipState,
   type LipTopic,
 } from "@/lib/linux-ip-exam/content";
 import "./resource-exam.css";
 import "./linux-ip-exam.css";
 
-const STORAGE_KEY = "cybervalue-linux-ip-exam-v1";
 const TOPICS: LipTopic[] = ["linux", "ip"];
 const TOTAL = CHOICES.length + OPENS.length;
-const LIMIT = LINUX_IP_EXAM_MINUTES * 60000;
+const API = `${LINUX_IP_EXAM_PATH}/api`;
+/** Answers are saved on the server this long after the last change. */
+const SAVE_DELAY = 3000;
 
-type Saved = { answers: LipAnswers; startedAt: number; leaves: number };
-type Phase = "intro" | "working" | "result";
+type Phase = "intro" | "working" | "pending" | "result";
 
-function readSaved(): Saved | null {
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw) as Partial<Saved>;
-    if (
-      typeof parsed.startedAt !== "number" ||
-      typeof parsed.answers !== "object" ||
-      parsed.answers === null
-    )
-      return null;
-    return {
-      answers: parsed.answers,
-      startedAt: parsed.startedAt,
-      leaves: typeof parsed.leaves === "number" ? parsed.leaves : 0,
-    };
-  } catch {
-    return null;
-  }
+async function post(body: object, keepalive = false) {
+  const response = await fetch(API, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+    keepalive,
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.error ?? "Xatolik yuz berdi.");
+  return data as LipState;
 }
-function writeSaved(value: Saved | null) {
-  try {
-    if (value) window.localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
-    else window.localStorage.removeItem(STORAGE_KEY);
-  } catch {
-    // Private mode or blocked storage: the exam still works, it just cannot resume.
-  }
-}
+
 const clock = (seconds: number) => {
   const s = Math.max(0, seconds);
   const h = Math.floor(s / 3600);
@@ -194,177 +179,221 @@ function useExamGuard(active: boolean, onLeave: () => void) {
   return { hidden, back, fullscreen };
 }
 
-export function LinuxIpExam() {
+export function LinuxIpExam({ initial }: { initial: LipState }) {
   const t = useTranslator();
-  const [phase, setPhase] = useState<Phase>("intro");
-  const [answers, setAnswers] = useState<LipAnswers>({});
-  const [startedAt, setStartedAt] = useState(0);
-  const [leaves, setLeaves] = useState(0);
+  const [phase, setPhase] = useState<Phase>(
+    initial.kind === "pending"
+      ? "pending"
+      : initial.kind === "approved"
+        ? "result"
+        : "intro",
+  );
+  const resumable = initial.kind === "running";
+  const [answers, setAnswers] = useState<LipAnswers>(
+    initial.kind === "running" ? initial.answers : {},
+  );
+  const [leaves, setLeaves] = useState(
+    initial.kind === "running" ? initial.leaves : 0,
+  );
+  const [deadline, setDeadline] = useState(0);
   const [now, setNow] = useState(0);
-  const [result, setResult] = useState<LipResult | null>(null);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [starting, setStarting] = useState(false);
   const [confirming, setConfirming] = useState(false);
-  const [resumable, setResumable] = useState(false);
   const submitted = useRef(false);
-  const answersRef = useRef<LipAnswers>({});
-  const leavesRef = useRef(0);
-  const startedRef = useRef(0);
+  const answersRef = useRef<LipAnswers>(answers);
+  const leavesRef = useRef(leaves);
+  const saveTimer = useRef(0);
 
-  useEffect(() => {
-    // Storage is only readable in the browser; load it after hydration.
-    const id = window.setTimeout(() => {
-      const saved = readSaved();
-      if (saved && Date.now() - saved.startedAt < LIMIT) {
-        setAnswers(saved.answers);
-        answersRef.current = saved.answers;
-        setStartedAt(saved.startedAt);
-        startedRef.current = saved.startedAt;
-        setLeaves(saved.leaves);
-        leavesRef.current = saved.leaves;
-        setResumable(true);
-      } else if (saved) {
-        writeSaved(null);
-      }
-    }, 0);
-    return () => window.clearTimeout(id);
+  /** Save the answers so far; a lost save is retried by the next one. */
+  const save = useCallback((keepalive = false) => {
+    window.clearTimeout(saveTimer.current);
+    if (submitted.current) return;
+    post(
+      {
+        action: "save",
+        answers: answersRef.current,
+        leaves: leavesRef.current,
+      },
+      keepalive,
+    )
+      .then((state) => {
+        if (state.kind === "pending") {
+          submitted.current = true;
+          setPhase("pending");
+        }
+      })
+      .catch(() => {});
   }, []);
+  const saveSoon = useCallback(() => {
+    window.clearTimeout(saveTimer.current);
+    saveTimer.current = window.setTimeout(() => save(), SAVE_DELAY);
+  }, [save]);
 
   const onLeave = useCallback(() => {
     if (submitted.current) return;
     leavesRef.current += 1;
     setLeaves(leavesRef.current);
-    writeSaved({
-      answers: answersRef.current,
-      startedAt: startedRef.current,
-      leaves: leavesRef.current,
-    });
-  }, []);
+    save(true);
+  }, [save]);
   const guard = useExamGuard(phase === "working", onLeave);
+
+  // Closing the tab keeps the last answers.
+  useEffect(() => {
+    if (phase !== "working") return;
+    const flush = () => save(true);
+    window.addEventListener("pagehide", flush);
+    return () => window.removeEventListener("pagehide", flush);
+  }, [phase, save]);
 
   const answered = useMemo(
     () => Object.values(answers).filter((value) => value.trim()).length,
     [answers],
   );
 
-  const submit = useCallback(
-    async (current: LipAnswers) => {
-      if (submitted.current) return;
-      submitted.current = true;
-      setSubmitting(true);
-      setError("");
-      try {
-        const response = await fetch(`${LINUX_IP_EXAM_PATH}/api`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ answers: current }),
-        });
-        const data = await response.json();
-        if (!response.ok)
-          throw new Error(data.error ?? t("Xatolik yuz berdi."));
-        setResult(data as LipResult);
-        setPhase("result");
-        writeSaved(null);
-        if (document.fullscreenElement)
-          document.exitFullscreen().catch(() => {});
-        window.scrollTo({ top: 0 });
-      } catch (caught) {
-        submitted.current = false;
-        setError(
-          caught instanceof Error
-            ? caught.message
-            : t(
-                "Yuborib bo‘lmadi. Javoblaringiz saqlangan, qayta urinib ko‘ring.",
-              ),
-        );
-      } finally {
-        setSubmitting(false);
-        setConfirming(false);
-      }
-    },
-    [t],
-  );
+  const submit = useCallback(async (current: LipAnswers) => {
+    if (submitted.current) return;
+    submitted.current = true;
+    window.clearTimeout(saveTimer.current);
+    setSubmitting(true);
+    setError("");
+    try {
+      await post({
+        action: "submit",
+        answers: current,
+        leaves: leavesRef.current,
+      });
+      setPhase("pending");
+      if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+      window.scrollTo({ top: 0 });
+    } catch (caught) {
+      submitted.current = false;
+      setError(
+        caught instanceof Error
+          ? caught.message
+          : "Yuborib bo‘lmadi. Javoblaringiz saqlangan, qayta urinib ko‘ring.",
+      );
+    } finally {
+      setSubmitting(false);
+      setConfirming(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (phase !== "working") return;
-    const deadline = startedAt + LIMIT;
     const timer = window.setInterval(() => {
       const current = Date.now();
       setNow(current);
       if (current >= deadline) void submit(answersRef.current);
     }, 1000);
     return () => window.clearInterval(timer);
-  }, [phase, startedAt, submit]);
+  }, [phase, deadline, submit]);
 
   const remaining =
     phase === "working" && now
-      ? Math.ceil((startedAt + LIMIT - now) / 1000)
+      ? Math.ceil((deadline - now) / 1000)
       : LINUX_IP_EXAM_MINUTES * 60;
 
-  function begin(resume: boolean) {
-    const start = resume ? startedAt : Date.now();
-    const initial = resume ? answers : {};
-    const left = resume ? leaves : 0;
-    setAnswers(initial);
-    answersRef.current = initial;
-    setLeaves(left);
-    leavesRef.current = left;
-    setNow(Date.now());
-    setStartedAt(start);
-    startedRef.current = start;
-    setResult(null);
+  async function begin() {
+    setStarting(true);
     setError("");
-    submitted.current = false;
-    writeSaved({ answers: initial, startedAt: start, leaves: left });
-    guard.fullscreen();
-    setPhase("working");
+    try {
+      const state = await post({ action: "start" });
+      if (state.kind === "pending") {
+        submitted.current = true;
+        setPhase("pending");
+        return;
+      }
+      if (state.kind !== "running") throw new Error("Xatolik yuz berdi.");
+      answersRef.current = state.answers;
+      setAnswers(state.answers);
+      leavesRef.current = state.leaves;
+      setLeaves(state.leaves);
+      // The server's clock decides; this browser only counts down.
+      const start = Date.now();
+      setDeadline(start + state.remaining);
+      setNow(start);
+      submitted.current = false;
+      guard.fullscreen();
+      setPhase("working");
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : "Xatolik yuz berdi.");
+    } finally {
+      setStarting(false);
+    }
   }
 
   function setAnswer(id: string, value: string) {
     const next = { ...answersRef.current, [id]: value };
     answersRef.current = next;
     setAnswers(next);
-    writeSaved({ answers: next, startedAt, leaves: leavesRef.current });
+    saveSoon();
     setConfirming(false);
   }
+
+  if (initial.kind === "signed-out")
+    return (
+      <div className="rx-shell">
+        <Intro />
+        <section className="rx-card">
+          <h2>{t("O‘quvchi hisobi bilan kiring")}</h2>
+          <p>
+            {t(
+              "Imtihon o‘quvchi hisobidan topshiriladi: javoblaringiz va natijangiz o‘qituvchingizga saqlanadi. O‘qituvchi bergan kirish kodi bilan kiring.",
+            )}
+          </p>
+          <div className="rx-actions">
+            <a
+              className="button button-primary"
+              href={`/student/continue?to=${encodeURIComponent(LINUX_IP_EXAM_PATH)}`}
+            >
+              {t("Kirish va imtihonni boshlash")}
+            </a>
+            <Link className="button button-secondary" href="/resources">
+              {t("Resurslarga qaytish")}
+            </Link>
+          </div>
+        </section>
+      </div>
+    );
+
+  if (phase === "pending")
+    return (
+      <div className="rx-shell">
+        <section className="rx-card rx-result" aria-live="polite">
+          <span className="rx-eyebrow">{t("JAVOBLAR QABUL QILINDI")}</span>
+          <h1>{t("Natija o‘qituvchi tekshiruvida")}</h1>
+          <p>
+            {t(
+              "Javoblaringiz saqlandi. O‘qituvchi ularni tekshirib tasdiqlagach, ballingiz, to‘g‘ri javoblar va har bir savolning to‘liq tushuntirishi shu sahifada ochiladi.",
+            )}
+          </p>
+          <div className="rx-actions">
+            <Link className="button button-primary" href="/student">
+              {t("Mening sahifam")}
+            </Link>
+            <Link className="button button-secondary" href="/resources">
+              {t("Resurslarga qaytish")}
+            </Link>
+          </div>
+        </section>
+      </div>
+    );
+
+  if (phase === "result" && initial.kind === "approved")
+    return (
+      <ResultView
+        result={initial.result}
+        leaves={initial.leaves}
+        note={initial.note}
+      />
+    );
 
   if (phase === "intro")
     return (
       <div className="rx-shell">
-        <section className="rx-intro">
-          <span className="rx-eyebrow">{t("RESURSLAR / IMTIHON 2")}</span>
-          <h1>
-            {t("Linux va IP manzil imtihoni")}
-            <span>.</span>
-          </h1>
-          <p>
-            {t(
-              "Linux terminal buyruqlari va IP manzillar bo‘yicha umumlashtiruvchi imtihon: 40 ta test va 10 ta ochiq savol. Savollar qiyinligiga qarab 0,9 dan 4 ballgacha baholanadi.",
-            )}
-          </p>
-          <div className="rx-stats">
-            <div>
-              <strong>{fmt(MAX_TOTAL)}</strong>
-              <span>{t("umumiy ball")}</span>
-            </div>
-            <div>
-              <strong>{fmt(MAX_TEST)}</strong>
-              <span>
-                {t("test ({count} savol)", { count: CHOICES.length })}
-              </span>
-            </div>
-            <div>
-              <strong>{fmt(MAX_OPEN)}</strong>
-              <span>
-                {t("ochiq savol ({count} ta)", { count: OPENS.length })}
-              </span>
-            </div>
-            <div>
-              <strong>2</strong>
-              <span>{t("soat")}</span>
-            </div>
-          </div>
-        </section>
+        <Intro />
         <section className="rx-card">
           <h2>{t("Qoidalar")}</h2>
           <ul>
@@ -390,24 +419,27 @@ export function LinuxIpExam() {
             </li>
             <li>
               {t(
-                "Natija darhol ko‘rsatiladi: har bir savol bo‘yicha ball va to‘g‘ri javob bilan.",
+                "Javoblar ish davomida saqlanib boradi. Imtihon bir marta topshiriladi; qayta topshirishga o‘qituvchi ruxsat beradi.",
+              )}
+            </li>
+            <li>
+              {t(
+                "Natija o‘qituvchi tasdiqlagandan keyin ko‘rinadi: har bir savol bo‘yicha ball, to‘g‘ri javob va to‘liq tushuntirish bilan.",
               )}
             </li>
           </ul>
+          {error && (
+            <p role="alert" className="rx-error">
+              {t(error)}
+            </p>
+          )}
           <div className="rx-actions">
-            {resumable && (
-              <button
-                className="button button-primary"
-                onClick={() => begin(true)}
-              >
-                {t("Davom ettirish")}
-              </button>
-            )}
             <button
-              className={`button ${resumable ? "button-secondary" : "button-primary"}`}
-              onClick={() => begin(false)}
+              className="button button-primary"
+              disabled={starting}
+              onClick={() => void begin()}
             >
-              {resumable ? t("Yangidan boshlash") : t("Imtihonni boshlash")}
+              {resumable ? t("Davom ettirish") : t("Imtihonni boshlash")}
             </button>
             <Link className="button button-secondary" href="/resources">
               {t("Resurslarga qaytish")}
@@ -415,15 +447,6 @@ export function LinuxIpExam() {
           </div>
         </section>
       </div>
-    );
-
-  if (phase === "result" && result)
-    return (
-      <ResultView
-        result={result}
-        leaves={leaves}
-        onRetry={() => setPhase("intro")}
-      />
     );
 
   const empty = TOTAL - answered;
@@ -587,14 +610,50 @@ export function LinuxIpExam() {
   );
 }
 
+function Intro() {
+  const t = useTranslator();
+  return (
+    <section className="rx-intro">
+      <span className="rx-eyebrow">{t("RESURSLAR / IMTIHON 2")}</span>
+      <h1>
+        {t("Linux va IP manzil imtihoni")}
+        <span>.</span>
+      </h1>
+      <p>
+        {t(
+          "Linux terminal buyruqlari va IP manzillar bo‘yicha umumlashtiruvchi imtihon: 40 ta test va 10 ta ochiq savol. Savollar qiyinligiga qarab 0,9 dan 4 ballgacha baholanadi.",
+        )}
+      </p>
+      <div className="rx-stats">
+        <div>
+          <strong>{fmt(MAX_TOTAL)}</strong>
+          <span>{t("umumiy ball")}</span>
+        </div>
+        <div>
+          <strong>{fmt(MAX_TEST)}</strong>
+          <span>{t("test ({count} savol)", { count: CHOICES.length })}</span>
+        </div>
+        <div>
+          <strong>{fmt(MAX_OPEN)}</strong>
+          <span>{t("ochiq savol ({count} ta)", { count: OPENS.length })}</span>
+        </div>
+        <div>
+          <strong>2</strong>
+          <span>{t("soat")}</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ResultView({
   result,
   leaves,
-  onRetry,
+  note,
 }: {
   result: LipResult;
   leaves: number;
-  onRetry: () => void;
+  note: string;
 }) {
   const t = useTranslator();
   const byId = new Map(result.items.map((item) => [item.id, item]));
@@ -607,6 +666,47 @@ function ResultView({
         : percent >= 56
           ? t("Qoniqarli")
           : t("Qayta tayyorlaning");
+  const review = (
+    id: string,
+    number: number,
+    prompt: string,
+    shown: (value: string) => React.ReactNode,
+  ) => {
+    const item = byId.get(id);
+    if (!item) return null;
+    const full = item.score >= item.max;
+    return (
+      <article
+        key={id}
+        className={`rx-review ${full ? "rx-ok" : item.score ? "" : "rx-bad"}`}
+      >
+        <h4>
+          <span aria-hidden="true">{full ? "✓" : item.score ? "±" : "✗"}</span>
+          {number}. <Inline text={t(prompt)} />
+          <small>
+            {fmt(item.score)}/{fmt(item.max)}
+          </small>
+        </h4>
+        <p>
+          <b>{t("Sizning javobingiz:")}</b>{" "}
+          {item.answer ? shown(item.answer) : t("Javob berilmagan")}
+        </p>
+        {!full && (
+          <p>
+            <b>{t("To‘g‘ri javob:")}</b> {shown(item.expected)}
+          </p>
+        )}
+        {item.reviewed && (
+          <p className="muted">{t("Ball o‘qituvchi tomonidan qo‘yilgan.")}</p>
+        )}
+        {item.explain && (
+          <p className="rx-explain">
+            <Inline text={item.explain} />
+          </p>
+        )}
+      </article>
+    );
+  };
   return (
     <div className="rx-shell">
       <section className="rx-card rx-result">
@@ -635,10 +735,12 @@ function ResultView({
             <span>{t("oynadan chiqishlar")}</span>
           </div>
         </div>
+        {note && (
+          <p className="rx-explain">
+            <b>{t("O‘qituvchi izohi:")}</b> {note}
+          </p>
+        )}
         <div className="rx-actions">
-          <button className="button button-primary" onClick={onRetry}>
-            {t("Qayta topshirish")}
-          </button>
           <Link className="button button-secondary" href="/resources">
             {t("Resurslarga qaytish")}
           </Link>
@@ -647,61 +749,20 @@ function ResultView({
 
       <h2 className="rx-part">{t("A qism · Test")}</h2>
       <section className="rx-card">
-        {CHOICES.map((choice, index) => {
-          const item = byId.get(choice.id);
-          if (!item) return null;
-          return (
-            <article
-              key={choice.id}
-              className={`rx-review ${item.score ? "rx-ok" : "rx-bad"}`}
-            >
-              <h4>
-                <span aria-hidden="true">{item.score ? "✓" : "✗"}</span>
-                {index + 1}. <Inline text={t(choice.prompt)} />
-                <small>
-                  {fmt(item.score)}/{fmt(item.max)}
-                </small>
-              </h4>
-              {!item.score && item.expected && (
-                <p>
-                  <b>{t("To‘g‘ri javob:")}</b> {t(item.expected)}
-                </p>
-              )}
-              {item.explain && <p className="rx-explain">{t(item.explain)}</p>}
-            </article>
-          );
-        })}
+        {CHOICES.map((choice, index) =>
+          review(choice.id, index + 1, choice.prompt, (value) => (
+            <Inline text={t(value)} />
+          )),
+        )}
       </section>
 
       <h2 className="rx-part">{t("B qism · Ochiq savollar")}</h2>
       <section className="rx-card">
-        {OPENS.map((open, index) => {
-          const item = byId.get(open.id);
-          if (!item) return null;
-          return (
-            <article
-              key={open.id}
-              className={`rx-review ${item.score ? "rx-ok" : "rx-bad"}`}
-            >
-              <h4>
-                <span aria-hidden="true">{item.score ? "✓" : "✗"}</span>
-                {CHOICES.length + index + 1}. <Inline text={t(open.prompt)} />
-                <small>
-                  {fmt(item.score)}/{fmt(item.max)}
-                </small>
-              </h4>
-              {!item.score && item.expected && (
-                <>
-                  <p>
-                    <b>{t("Namuna javob:")}</b>
-                  </p>
-                  <pre className="rx-scene">{item.expected}</pre>
-                </>
-              )}
-              {item.explain && <p className="rx-explain">{t(item.explain)}</p>}
-            </article>
-          );
-        })}
+        {OPENS.map((open, index) =>
+          review(open.id, CHOICES.length + index + 1, open.prompt, (value) => (
+            <code>{value}</code>
+          )),
+        )}
       </section>
     </div>
   );

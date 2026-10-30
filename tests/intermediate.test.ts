@@ -55,14 +55,21 @@ test("Intermediate opens at the Intermediate and Advanced levels", () => {
   assert.ok(!opensIntermediate(""));
 });
 
-test("a student is sent back only to the student area or Intermediate", () => {
-  for (const ok of ["/student", "/intermediate", "/intermediate/http#lesson/2"])
+test("a student is sent back only to the student area, Intermediate or the exam", () => {
+  for (const ok of [
+    "/student",
+    "/intermediate",
+    "/intermediate/http#lesson/2",
+    "/resources/linux-ip-exam",
+  ])
     assert.ok(isStudentNext(ok), ok);
   for (const bad of [
     "/admin",
     "//evil.example",
     "https://x.uz/intermediate",
     "/intermediates",
+    "/resources",
+    "/resources/exam",
     null,
     "/intermediate/" + "x".repeat(300),
   ])

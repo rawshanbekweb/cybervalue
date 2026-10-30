@@ -25,6 +25,8 @@ const ACTIONS: Record<string, string> = {
   "file.upload": "File uploaded",
   "file.delete": "File deleted",
   "assessment.create": "HTML test created",
+  "linux-ip-exam.review": "Linux and IP exam reviewed",
+  "linux-ip-exam.retake": "Linux and IP exam retake allowed",
   "student.create": "Students added",
   "student.update": "Student edited",
   "student.level": "Student level set",
