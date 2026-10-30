@@ -37,6 +37,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/siem`         | Blue team module 1, logs and SIEM (8 lessons, a checkpoint)                     |
 | `/intermediate/detection`    | Blue team module 2, detection rules (8 lessons, a checkpoint)                   |
 | `/intermediate/triage`       | Blue team module 3, alert triage (8 lessons, a checkpoint)                      |
+| `/intermediate/hunting`      | Blue team module 4, threat hunting (8 lessons, a checkpoint)                    |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -616,6 +617,26 @@ and the right call: escalate, close or tune.
 | 6       | Questions on SOC tiers, playbooks and SOAR |
 | 7       | Questions on SOC metrics                   |
 | 8       | Final questions                            |
+
+## Blue team module 4: Threat hunting
+
+`/intermediate/hunting` (lab id `hunting`, checkpoint `hunting-1`, award
+`lab-hunting`, site setting `hunting`) uses `src/lib/hunting/tools.ts`:
+`MATRIX` is a slice of ATT&CK (six tactics, real technique IDs) on which the
+student marks the four techniques of a threat report (`REPORT`); `TASKS` are
+scheduled tasks counted across forty computers, and `stacked` puts the rare
+one first: a fake `svchost.exe` in `C:\Users\Public` on one machine.
+
+| Lessons | What the student does                        |
+| ------- | -------------------------------------------- |
+| 1       | Sorts hunting from alert handling            |
+| 2       | Sorts good hypotheses from vague ones        |
+| 3       | Marks a threat report on the ATT&CK matrix   |
+| 4       | Clicks through a technique's page            |
+| 5       | Stacks scheduled tasks to find the rogue one |
+| 6       | Questions on IOCs, IOAs, TLP and sharing     |
+| 7       | Questions on closing a hunt                  |
+| 8       | Final questions                              |
 
 ## Who gets in
 

@@ -566,6 +566,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/triage#checkpoints",
     pass: 70,
   },
+  {
+    id: "hunting-1",
+    level: "intermediate",
+    lab: { uz: "Tahdid izlash", en: "Threat hunting" },
+    title: {
+      uz: "Nazorat: Tahdid izlash",
+      en: "Checkpoint: Threat hunting",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/hunting#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>
