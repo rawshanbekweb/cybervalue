@@ -686,6 +686,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/stride#checkpoints",
     pass: 70,
   },
+  {
+    id: "securecode-1",
+    level: "intermediate",
+    lab: { uz: "Xavfsiz kod yozish", en: "Secure coding" },
+    title: {
+      uz: "Nazorat: Xavfsiz kod yozish",
+      en: "Checkpoint: Secure coding",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/securecode#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

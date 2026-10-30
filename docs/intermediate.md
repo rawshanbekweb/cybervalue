@@ -45,6 +45,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/geo`          | OSINT module 4, images and location (8 lessons, a checkpoint)                   |
 | `/intermediate/footprint`    | OSINT module 5, digital footprint (8 lessons, a checkpoint)                     |
 | `/intermediate/stride`       | AppSec module 1, threat modelling (8 lessons, a checkpoint)                     |
+| `/intermediate/securecode`   | AppSec module 2, secure coding (8 lessons, a checkpoint)                        |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -786,6 +787,26 @@ opens the AppSec domain.
 | 6       | Questions on controls and accepting risk    |
 | 7       | Questions on prioritising                   |
 | 8       | Final questions                             |
+
+## AppSec module 2: Secure coding
+
+`/intermediate/securecode` (lab id `securecode`, checkpoint `securecode-1`,
+award `lab-securecode`, site setting `securecode`) uses
+`src/lib/securecode/tools.ts`: `denylist` refuses one exact `<script>` string
+and `allowlist` accepts only what a name looks like, run on five `INPUTS`;
+`BYPASSES` are the two attacks that get past the denylist. `LINES` are five
+lines of a profile handler, each with the one `FIXES` entry that closes it.
+
+| Lessons | What the student does                               |
+| ------- | --------------------------------------------------- |
+| 1       | Sorts inputs into trusted and needs checking        |
+| 2       | Ticks the inputs that get past the denylist         |
+| 3       | Matches five handler lines to their fixes           |
+| 4       | Questions on handling errors and failing closed     |
+| 5       | Questions on keeping secrets out of code and Git    |
+| 6       | Sorts fields into what to log and what never to log |
+| 7       | Questions on least privilege and defence in depth   |
+| 8       | Final questions                                     |
 
 ## Who gets in
 
