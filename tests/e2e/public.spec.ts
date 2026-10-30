@@ -84,7 +84,9 @@ test("published entries render their own Open Graph image in both languages", as
   request,
 }) => {
   const html = await (await request.get("/resources")).text();
-  const slug = html.match(/href="(\/resources\/(?!exam)[a-z0-9-]+)"/)?.[1];
+  const slug = html.match(
+    /href="(\/resources\/(?!exam|linux-ip-exam)[a-z0-9-]+)"/,
+  )?.[1];
   test.skip(!slug, "Requires at least one published resource");
   for (const locale of ["uz", "en"]) {
     const og = await request.get(`${slug}/opengraph-image`, {
