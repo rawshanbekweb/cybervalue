@@ -269,6 +269,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Kutubxonalar va ta’minot zanjiri (Intermediate)",
     earned: (f) => finished(f, "supplychain") && passed(f, "supplychain-1"),
   },
+  {
+    id: "lab-autotest",
+    title: "Avtomatik xavfsizlik tekshiruvlari (Intermediate)",
+    earned: (f) => finished(f, "autotest") && passed(f, "autotest-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

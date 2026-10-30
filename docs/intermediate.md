@@ -47,6 +47,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/stride`       | AppSec module 1, threat modelling (8 lessons, a checkpoint)                     |
 | `/intermediate/securecode`   | AppSec module 2, secure coding (8 lessons, a checkpoint)                        |
 | `/intermediate/supplychain`  | AppSec module 3, dependencies and supply chain (8 lessons, a checkpoint)        |
+| `/intermediate/autotest`     | AppSec module 4, automated security testing (8 lessons, a checkpoint)           |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -829,6 +830,25 @@ them look-alike names.
 | 6       | Questions on the SBOM                                   |
 | 7       | Sorts cases into update now, on schedule or remove      |
 | 8       | Final questions                                         |
+
+## AppSec module 4: Automated security testing
+
+`/intermediate/autotest` (lab id `autotest`, checkpoint `autotest-1`, award
+`lab-autotest`, site setting `autotest`) uses `src/lib/autotest/tools.ts`:
+`FINDINGS` are six static-analysis findings, three real and three false
+alarms, and `PROBLEMS` are five problems, each caught by one of the `CHECKS`
+(SAST, SCA, secret scanning, DAST).
+
+| Lessons | What the student does                                |
+| ------- | ---------------------------------------------------- |
+| 1       | Questions on why checks run on every pull request    |
+| 2       | Sorts problems into what SAST can and can’t see      |
+| 3       | Triages six findings into real and false alarms      |
+| 4       | Questions on dependency and secret scanning          |
+| 5       | Questions on DAST                                    |
+| 6       | Matches five problems to the check that catches them |
+| 7       | Sorts findings into block the merge or warn          |
+| 8       | Final questions                                      |
 
 ## Who gets in
 

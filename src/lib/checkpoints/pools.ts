@@ -10254,3 +10254,273 @@ export const SUPPLYCHAIN_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const AUTOTEST_POOL: PoolItem[] = [
+  {
+    ask: { uz: "SAST nima qiladi?", en: "What does SAST do?" },
+    right: {
+      uz: "Kodni ishga tushirmasdan xavfli naqshlarni qidiradi",
+      en: "Looks for dangerous patterns without running the code",
+    },
+    wrong: [
+      { uz: "Ishlayotgan saytga hujum qiladi", en: "Attacks the running site" },
+      { uz: "Kutubxonalarni yangilaydi", en: "Updates libraries" },
+      { uz: "Parollarni almashtiradi", en: "Rotates passwords" },
+    ],
+    explain: {
+      uz: "Semgrep, CodeQL, SonarQube.",
+      en: "Semgrep, CodeQL, SonarQube.",
+    },
+  },
+  {
+    ask: { uz: "DAST nima qiladi?", en: "What does DAST do?" },
+    right: {
+      uz: "Ishlayotgan ilovaga hujumchi kabi so‘rov yuboradi",
+      en: "Sends attacker-style requests to the running app",
+    },
+    wrong: [
+      { uz: "Kodni o‘qiydi", en: "Reads the code" },
+      { uz: "Lockfile’ni tekshiradi", en: "Checks the lockfile" },
+      { uz: "Commit’larni qidiradi", en: "Searches commits" },
+    ],
+    explain: { uz: "OWASP ZAP, Burp Suite.", en: "OWASP ZAP, Burp Suite." },
+  },
+  {
+    ask: {
+      uz: "Taint analysis’da “source” nima?",
+      en: "In taint analysis, what is a “source”?",
+    },
+    right: {
+      uz: "Foydalanuvchi ma’lumoti kiradigan joy",
+      en: "Where user data comes in",
+    },
+    wrong: [
+      { uz: "Kodning manba fayli", en: "A source code file" },
+      { uz: "Ma’lumotlar bazasi", en: "The database" },
+      { uz: "Log fayli", en: "A log file" },
+    ],
+    explain: {
+      uz: "Masalan req.params; “sink” — SQL, HTML, eval.",
+      en: "E.g. req.params; a “sink” is SQL, HTML or eval.",
+    },
+  },
+  {
+    ask: {
+      uz: "Test fixture’dagi “parol” topilmasi bilan nima qilinadi?",
+      en: "What do you do with a “password” finding in a test fixture?",
+    },
+    right: {
+      uz: "Sababi yozilgan istisno qo‘shiladi",
+      en: "Add an exception with its reason",
+    },
+    wrong: [
+      { uz: "Butun vositani o‘chirish", en: "Switch the whole tool off" },
+      { uz: "Testni o‘chirish", en: "Delete the test" },
+      {
+        uz: "E’tiborsiz qoldirib, har safar ko‘rish",
+        en: "Ignore it and see it every time",
+      },
+    ],
+    explain: {
+      uz: "Masalan `// nosemgrep: test fixture`.",
+      en: "E.g. `// nosemgrep: test fixture`.",
+    },
+  },
+  {
+    ask: {
+      uz: "Juda ko‘p yolg‘on signal nimaga olib keladi?",
+      en: "What do too many false alarms lead to?",
+    },
+    right: {
+      uz: "Jamoa ogohlantirishlarni o‘qimay qo‘yadi",
+      en: "The team stops reading the warnings",
+    },
+    wrong: [
+      { uz: "Kod xavfsizroq bo‘ladi", en: "Safer code" },
+      { uz: "Build tezlashadi", en: "Faster builds" },
+      { uz: "Hech narsaga", en: "Nothing" },
+    ],
+    explain: { uz: "Qoidalarni sozlang.", en: "Tune the rules." },
+  },
+  {
+    ask: {
+      uz: "Commit’dagi API kalitini qaysi vosita topadi?",
+      en: "Which tool finds an API key in a commit?",
+    },
+    right: {
+      uz: "Sirlarni qidirish (gitleaks)",
+      en: "Secret scanning (gitleaks)",
+    },
+    wrong: [
+      { uz: "DAST", en: "DAST" },
+      { uz: "SCA", en: "SCA" },
+      { uz: "Prettier", en: "Prettier" },
+    ],
+    explain: {
+      uz: "Eng yaxshisi — pre-commit hook’da.",
+      en: "Best in a pre-commit hook.",
+    },
+  },
+  {
+    ask: {
+      uz: "Eski kutubxonadagi ma’lum zaiflikni qaysi vosita topadi?",
+      en: "Which tool finds a known flaw in an old library?",
+    },
+    right: { uz: "SCA", en: "SCA" },
+    wrong: [
+      { uz: "SAST", en: "SAST" },
+      { uz: "DAST", en: "DAST" },
+      { uz: "Linter", en: "A linter" },
+    ],
+    explain: {
+      uz: "U versiyalarni zaifliklar bazasi bilan solishtiradi.",
+      en: "It matches versions against flaw databases.",
+    },
+  },
+  {
+    ask: {
+      uz: "Yetishmayotgan CSP sarlavhasini qaysi vosita yaxshi topadi?",
+      en: "Which tool best finds a missing CSP header?",
+    },
+    right: { uz: "DAST", en: "DAST" },
+    wrong: [
+      { uz: "SCA", en: "SCA" },
+      { uz: "Sirlarni qidirish", en: "Secret scanning" },
+      { uz: "Unit test", en: "A unit test" },
+    ],
+    explain: {
+      uz: "Sarlavha javobda ko‘rinadi, ko‘pincha kodda emas.",
+      en: "The header shows in the response, often not in code.",
+    },
+  },
+  {
+    ask: {
+      uz: "DAST qayerda ishga tushiriladi?",
+      en: "Where is DAST run?",
+    },
+    right: {
+      uz: "O‘zimizning staging muhitida",
+      en: "Against our own staging environment",
+    },
+    wrong: [
+      { uz: "Birovning saytida", en: "Someone else’s site" },
+      {
+        uz: "Faqat dasturchining noutbukida",
+        en: "Only on a developer laptop",
+      },
+      {
+        uz: "Ishlab chiqarishda, eng ko‘p trafikda",
+        en: "Production at peak traffic",
+      },
+    ],
+    explain: {
+      uz: "U ma’lumot yaratishi va o‘chirishi mumkin.",
+      en: "It may create and delete data.",
+    },
+  },
+  {
+    ask: {
+      uz: "SAST nimani odatda ko‘rmaydi?",
+      en: "What does SAST usually miss?",
+    },
+    right: {
+      uz: "Biznes mantiq xatolarini",
+      en: "Business logic flaws",
+    },
+    wrong: [
+      { uz: "SQL birlashtirishni", en: "SQL concatenation" },
+      { uz: "eval() chaqiruvini", en: "An eval() call" },
+      { uz: "innerHTML’ga yozishni", en: "Writing to innerHTML" },
+    ],
+    explain: {
+      uz: "Masalan, narxni brauzerdan qabul qilish.",
+      en: "Taking the price from the browser, for example.",
+    },
+  },
+  {
+    ask: {
+      uz: "“Shift left” nimani bildiradi?",
+      en: "What does “shift left” mean?",
+    },
+    right: {
+      uz: "Tekshiruvni jarayonning boshiga surish",
+      en: "Moving checks to the start of the process",
+    },
+    wrong: [
+      { uz: "Kodni chap tomonga tekislash", en: "Left-aligning code" },
+      { uz: "Testlarni o‘chirish", en: "Removing tests" },
+      { uz: "Release’ni kechiktirish", en: "Delaying the release" },
+    ],
+    explain: { uz: "Erta — arzon.", en: "Early is cheap." },
+  },
+  {
+    ask: {
+      uz: "Qaysi topilma odatda merge’ni to‘xtatadi?",
+      en: "Which finding usually blocks a merge?",
+    },
+    right: {
+      uz: "Yangi koddagi kritik zaiflik",
+      en: "A critical flaw in new code",
+    },
+    wrong: [
+      { uz: "Eski koddagi past topilma", en: "A low finding in old code" },
+      { uz: "Imlo xatosi", en: "A typo" },
+      { uz: "Hech qaysi", en: "None" },
+    ],
+    explain: {
+      uz: "Past va o‘rta — ogohlantirish va vazifa.",
+      en: "Low and medium become a warning and a ticket.",
+    },
+  },
+  {
+    ask: { uz: "Baseline nima?", en: "What is a baseline?" },
+    right: {
+      uz: "Mavjud topilmalar ro‘yxati: faqat yangilari to‘xtatadi",
+      en: "The existing findings: only new ones block",
+    },
+    wrong: [
+      { uz: "Eng past versiya", en: "The lowest version" },
+      { uz: "Asosiy server", en: "The main server" },
+      { uz: "Tarmoq tezligi", en: "Network speed" },
+    ],
+    explain: {
+      uz: "Eskilari alohida reja bilan tuzatiladi.",
+      en: "Old ones are fixed on a separate plan.",
+    },
+  },
+  {
+    ask: {
+      uz: "Avtomatik vositalar odam ko‘rigini almashtiradimi?",
+      en: "Do automated tools replace human review?",
+    },
+    right: {
+      uz: "Yo‘q, ular uni to‘ldiradi",
+      en: "No, they complement it",
+    },
+    wrong: [
+      { uz: "Ha, butunlay", en: "Yes, completely" },
+      { uz: "Faqat kichik jamoalarda", en: "Only in small teams" },
+      { uz: "Faqat Python’da", en: "Only in Python" },
+    ],
+    explain: {
+      uz: "Dizayn va mantiqni odam ko‘radi.",
+      en: "People see design and logic.",
+    },
+  },
+  {
+    ask: {
+      uz: "Pull request’da odatda qaysi tekshiruvlar ishlaydi?",
+      en: "Which checks usually run on a pull request?",
+    },
+    right: { uz: "SAST va SCA", en: "SAST and SCA" },
+    wrong: [
+      { uz: "Faqat DAST", en: "DAST only" },
+      { uz: "Hech qaysi", en: "None" },
+      { uz: "Faqat qo‘lda pentest", en: "Only a manual pentest" },
+    ],
+    explain: {
+      uz: "Ular tez va o‘zgarishni darhol ko‘radi.",
+      en: "They are fast and see the change at once.",
+    },
+  },
+];

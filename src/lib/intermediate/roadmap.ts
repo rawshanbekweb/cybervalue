@@ -584,6 +584,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Avtomatik tekshiruvlar", en: "Automated testing" },
+        href: "/intermediate/autotest",
+        lab: "autotest",
         topics: ["SAST", "DAST", "CI checks", "DevSecOps"],
         goal: goal(
           "CI ga xavfsizlik tekshiruvini qo‘shish.",
