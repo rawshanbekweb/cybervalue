@@ -54,6 +54,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/authn`        | System security module 4, authentication (8 lessons, a checkpoint)              |
 | `/intermediate/baseline`     | System security module 5, patching and baselines (8 lessons, a checkpoint)      |
 | `/intermediate/build`        | Reverse engineering module 1, how programs are built (8 lessons, a checkpoint)  |
+| `/intermediate/shared`       | Cloud security module 1, shared responsibility (8 lessons, a checkpoint)        |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -973,6 +974,26 @@ the Reverse engineering domain.
 | 6       | Questions on static and dynamic linking             |
 | 7       | Questions on symbols and stripping                  |
 | 8       | Final questions                                     |
+
+## Cloud security module 1: Shared responsibility
+
+`/intermediate/shared` (lab id `shared`, checkpoint `shared-1`, award
+`lab-shared`, site setting `shared`) uses `src/lib/shared/tools.ts`: `LAYERS`
+are six layers of a system, each owned by the provider or the customer
+under each of the three `MODELS`; the customer's share falls from four
+(IaaS) to one (SaaS), and the data layer is always theirs. It opens the
+Cloud security domain.
+
+| Lessons | What the student does                                  |
+| ------- | ------------------------------------------------------ |
+| 1       | Sorts services into IaaS, PaaS and SaaS                |
+| 2       | Questions on security of and in the cloud              |
+| 3       | Splits six layers between provider and customer (IaaS) |
+| 4       | Splits the same layers for SaaS                        |
+| 5       | Questions on whose fault cloud breaches are            |
+| 6       | Questions on provider audits                           |
+| 7       | Sorts day-one tasks from bad practices                 |
+| 8       | Final questions                                        |
 
 ## Who gets in
 

@@ -745,6 +745,8 @@ export const DOMAINS: Domain[] = [
     modules: [
       {
         title: { uz: "Mas’uliyat taqsimoti", en: "Shared responsibility" },
+        href: "/intermediate/shared",
+        lab: "shared",
         topics: ["IaaS", "PaaS", "SaaS"],
         goal: goal(
           "Bulutda nima uchun kim javob berishini tushuntirish.",

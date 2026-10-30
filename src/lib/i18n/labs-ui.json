@@ -1587,5 +1587,16 @@
   "Code in .text, the message in .rodata, the counter in .data and the empty buffer in .bss — the map every disassembler shows.": "Kod .text da, xabar .rodata da, hisoblagich .data da va bo‘sh bufer .bss da — har bir disassembler ko‘rsatadigan xarita.",
   "How programs are built": "Dastur qanday quriladi",
   "How programs are built · Academy Intermediate": "Dastur qanday quriladi · Academy Intermediate",
-  "Follow source code through the preprocessor, compiler, assembler and linker, tell ELF from PE from Mach-O, place a program’s parts in their sections, read the header, compare static and dynamic linking and see what stripping removes.": "Manba kodini preprotsessor, kompilyator, assembler va linker orqali kuzating, ELF, PE va Mach-O’ni ajrating, dastur qismlarini bo‘limlarga joylang, sarlavhani o‘qing, statik va dinamik bog‘lashni solishtiring va strip nimani olib tashlashini ko‘ring."
+  "Follow source code through the preprocessor, compiler, assembler and linker, tell ELF from PE from Mach-O, place a program’s parts in their sections, read the header, compare static and dynamic linking and see what stripping removes.": "Manba kodini preprotsessor, kompilyator, assembler va linker orqali kuzating, ELF, PE va Mach-O’ni ajrating, dastur qismlarini bo‘limlarga joylang, sarlavhani o‘qing, statik va dinamik bog‘lashni solishtiring va strip nimani olib tashlashini ko‘ring.",
+  "CLOUD · MODULE 1": "CLOUD · 1-MODUL",
+  "Shared responsibility.": "Mas’uliyat taqsimoti.",
+  "The provider secures the cloud; you secure what you put in it.": "Provayder bulutni himoyalaydi, siz esa unga qo‘ygan narsangizni.",
+  "Tell IaaS from PaaS from SaaS, find the line between security of and in the cloud, split six layers between provider and customer for IaaS and for SaaS, see why most cloud breaches are configuration mistakes, read provider audits and set up a new account on day one.": "IaaS, PaaS va SaaS’ni ajrating, bulutning xavfsizligi va buluttagi xavfsizlik orasidagi chiziqni toping, IaaS va SaaS uchun oltita qatlamni provayder va mijoz o‘rtasida taqsimlang, nega ko‘p bulut buzilishlari sozlama xatosi ekanini ko‘ring, provayder auditlarini o‘qing va yangi hisobni birinchi kunda sozlang.",
+  "CLOUD / LAB": "BULUT / LAB",
+  "Provider": "Provayder",
+  "Customer": "Mijoz",
+  "Here the customer looks after {n} of {total} layers — and the data and who reaches it is always one of them.": "Bu yerda mijoz {total} ta qatlamdan {n} tasiga javob beradi — va ma’lumotlar hamda ularga kim kirishi har doim ular orasida.",
+  "Shared responsibility": "Mas’uliyat taqsimoti",
+  "Shared responsibility · Academy Intermediate": "Mas’uliyat taqsimoti · Academy Intermediate",
+  "Tell IaaS from PaaS from SaaS, find the line between security of and in the cloud, split six layers between provider and customer, see why most cloud breaches are configuration mistakes and set up a new account on day one.": "IaaS, PaaS va SaaS’ni ajrating, bulutning xavfsizligi va buluttagi xavfsizlik orasidagi chiziqni toping, oltita qatlamni provayder va mijoz o‘rtasida taqsimlang, nega ko‘p bulut buzilishlari sozlama xatosi ekanini ko‘ring va yangi hisobni birinchi kunda sozlang."
 }
