@@ -1,0 +1,59 @@
+/* Linux and IP exam: the anti-copy guard on top of resource-exam.css. */
+.lip-guard {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+.lip-guard input,
+.lip-guard textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
+.lip-leaves {
+  color: #ff9b8a;
+}
+.lip-cover {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: var(--bg, #0b0b0e);
+}
+.lip-cover .rx-card {
+  max-width: 520px;
+}
+.lip-body[aria-hidden="true"] {
+  visibility: hidden;
+}
+.lip-open .rx-field {
+  display: grid;
+  gap: 8px;
+}
+.lip-open .rx-terminal input {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Printing the exam gives a blank page. */
+@media print {
+  .lip-guard {
+    display: none !important;
+  }
+}
+.lip-open .rx-terminal input {
+  border: 0;
+  background: transparent;
+  font-family: var(--font-mono);
+}
+.lip-guard legend code,
+.lip-guard .rx-option code,
+.lip-open code,
+.rx-review h4 code {
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(128, 82, 255, 0.14);
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}

@@ -9,6 +9,10 @@ import {
   Terminal,
 } from "lucide-react";
 import { EXAM_MINUTES, MAX_TOTAL } from "@/lib/resource-exam/content";
+import {
+  LINUX_IP_EXAM_PATH,
+  MAX_TOTAL as LIP_MAX_TOTAL,
+} from "@/lib/linux-ip-exam/content";
 import styles from "./web-lesson-resource.module.css";
 
 export async function WebLessonResource() {
@@ -143,6 +147,39 @@ export async function WebLessonResource() {
             {t("Vaqt: {minutes} daqiqa. Natija darhol ko‘rsatiladi.", {
               minutes: EXAM_MINUTES,
             })}
+          </p>
+        </div>
+      </section>
+      <section className={styles.card} aria-labelledby="linux-ip-exam-title">
+        <div className={styles.preview} aria-hidden="true">
+          <span className={styles.icon}>
+            <ClipboardCheck size={24} strokeWidth={1.5} />
+          </span>
+          <span className={styles.tags}>
+            <span>{t("IMTIHON / 2")}</span>
+            <span>{t("40 TEST + 10 OCHIQ SAVOL")}</span>
+          </span>
+          <strong className={styles.stat}>
+            {t("{points} ball", { points: LIP_MAX_TOTAL })}
+          </strong>
+        </div>
+        <div className={styles.content}>
+          <span className="eyebrow">{t("Imtihon · O‘zbekcha")}</span>
+          <h2 id="linux-ip-exam-title">{t("Linux va IP manzil imtihoni")}</h2>
+          <p>
+            {t(
+              "Linux terminal buyruqlari va IP manzillar bo‘yicha umumlashtiruvchi imtihon: savollar qiyinligiga qarab 0,9 dan 4 ballgacha. Nusxa olish va skrinshot o‘chiriladi.",
+            )}
+          </p>
+          <div className={styles.actions}>
+            <Link className="button button-primary" href={LINUX_IP_EXAM_PATH}>
+              {t("Linux va IP imtihonini boshlash")}
+              <ArrowUpRight size={16} aria-hidden="true" />
+            </Link>
+          </div>
+          <p className={styles.hint}>
+            <Info size={14} aria-hidden="true" />
+            {t("Vaqt: 2 soat. Natija darhol ko‘rsatiladi.")}
           </p>
         </div>
       </section>
