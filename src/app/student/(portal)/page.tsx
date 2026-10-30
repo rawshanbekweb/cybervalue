@@ -82,6 +82,12 @@ const EXAMS = [
     summary:
       "A self-check on the Web basics and Linux slides. You see the result at once; it is not sent to the teacher.",
   },
+  {
+    href: "/resources/linux-ip-exam",
+    title: "Linux and IP exam",
+    summary:
+      "40 tests and 10 open questions on Linux commands and IP addressing, 2 hours. Copying and screenshots are off; the result shows at once and is not sent to the teacher.",
+  },
 ];
 
 // Practice that is not a lesson-by-lesson lab, listed under My path.

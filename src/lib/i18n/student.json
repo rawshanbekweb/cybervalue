@@ -354,5 +354,7 @@
   "Lessons of {lab}": "{lab}: darslar",
   "{done} of {total} lessons": "{total} darsdan {done} tasi",
   "Short tests at the end of each lab. They and your best score are on each lab’s card under My path.": "Har bir lab oxiridagi qisqa testlar. Ular va eng yaxshi natijangiz “Mening yo‘lim” bo‘limidagi lab kartochkasida.",
-  "Certificate: lessons + checkpoint": "Sertifikat: darslar + nazorat"
+  "Certificate: lessons + checkpoint": "Sertifikat: darslar + nazorat",
+  "Linux and IP exam": "Linux va IP manzil imtihoni",
+  "40 tests and 10 open questions on Linux commands and IP addressing, 2 hours. Copying and screenshots are off; the result shows at once and is not sent to the teacher.": "Linux buyruqlari va IP manzillar bo‘yicha 40 ta test va 10 ta ochiq savol, 2 soat. Nusxa olish va skrinshot o‘chirilgan; natija darhol ko‘rinadi va o‘qituvchiga yuborilmaydi."
 }
