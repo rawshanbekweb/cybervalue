@@ -40,6 +40,7 @@ import { LESSONS as GEO_LESSONS } from "@/lib/geo/curriculum";
 import { LESSONS as FOOTPRINT_LESSONS } from "@/lib/footprint/curriculum";
 import { LESSONS as STRIDE_LESSONS } from "@/lib/stride/curriculum";
 import { LESSONS as SECURECODE_LESSONS } from "@/lib/securecode/curriculum";
+import { LESSONS as SUPPLYCHAIN_LESSONS } from "@/lib/supplychain/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -822,6 +823,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: SECURECODE_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "supplychain",
+      title: "Dependencies and supply chain",
+      category: "Intermediate · AppSec",
+      description:
+        "Tell direct from transitive dependencies, read versions and the lockfile, check a lockfile against advisories, catch look-alike package names, see how packages get poisoned, use an SBOM and decide what to update when.",
+      href: "/intermediate/supplychain",
+      progressKey: LAB_PROGRESS.supplychain.key,
+      level: "Intermediate",
+      lessons: SUPPLYCHAIN_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: SUPPLYCHAIN_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

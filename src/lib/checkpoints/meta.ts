@@ -701,6 +701,24 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/securecode#checkpoints",
     pass: 70,
   },
+  {
+    id: "supplychain-1",
+    level: "intermediate",
+    lab: {
+      uz: "Kutubxonalar va ta’minot zanjiri",
+      en: "Dependencies and supply chain",
+    },
+    title: {
+      uz: "Nazorat: Kutubxonalar va ta’minot zanjiri",
+      en: "Checkpoint: Dependencies and supply chain",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/supplychain#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

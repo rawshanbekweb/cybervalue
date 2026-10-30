@@ -264,6 +264,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Xavfsiz kod yozish (Intermediate)",
     earned: (f) => finished(f, "securecode") && passed(f, "securecode-1"),
   },
+  {
+    id: "lab-supplychain",
+    title: "Kutubxonalar va ta’minot zanjiri (Intermediate)",
+    earned: (f) => finished(f, "supplychain") && passed(f, "supplychain-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

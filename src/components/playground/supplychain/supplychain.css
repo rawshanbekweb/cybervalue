@@ -1,0 +1,18 @@
+/* Supply chain lab widgets; shared pieces come from anim-lab.css,
+   crypto-basics.css, untrusted-input.css and securecode.css. */
+.sch-table thead th {
+  font-size: 12px;
+}
+.sch-table th[scope="row"] code,
+.sch-table td {
+  overflow-wrap: anywhere;
+}
+.sch-choice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 14px;
+}

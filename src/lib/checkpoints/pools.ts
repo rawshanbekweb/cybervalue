@@ -9960,3 +9960,297 @@ export const SECURECODE_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const SUPPLYCHAIN_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Bilvosita (transitive) kutubxona nima?",
+      en: "What is a transitive dependency?",
+    },
+    right: {
+      uz: "Siz tanlagan paket o‘zi olib kelgan paket",
+      en: "A package that a package you chose pulls in",
+    },
+    wrong: [
+      {
+        uz: "package.json’da siz yozgan paket",
+        en: "One you listed in package.json",
+      },
+      { uz: "Faqat test uchun paket", en: "A test-only package" },
+      { uz: "O‘chirilgan paket", en: "A removed package" },
+    ],
+    explain: {
+      uz: "Ularning zaifligi ham sizniki.",
+      en: "Their flaws are yours too.",
+    },
+  },
+  {
+    ask: {
+      uz: "Semver’da MAJOR raqami oshsa nimani bildiradi?",
+      en: "In semver, what does a higher MAJOR number mean?",
+    },
+    right: {
+      uz: "Moslikni buzadigan o‘zgarishlar",
+      en: "Changes that break compatibility",
+    },
+    wrong: [
+      { uz: "Faqat xato tuzatishlar", en: "Bug fixes only" },
+      { uz: "Faqat hujjatlar", en: "Documentation only" },
+      { uz: "Xavfsizlik tuzatishi", en: "A security fix" },
+    ],
+    explain: {
+      uz: "PATCH — tuzatish, MINOR — yangi imkoniyat.",
+      en: "PATCH fixes, MINOR adds features.",
+    },
+  },
+  {
+    ask: {
+      uz: "Lockfile nima uchun commit qilinadi?",
+      en: "Why is the lockfile committed?",
+    },
+    right: {
+      uz: "Hamma joyda aynan bir xil versiyalar o‘rnatilishi uchun",
+      en: "So exactly the same versions install everywhere",
+    },
+    wrong: [
+      { uz: "Paketlarni tezroq yozish uchun", en: "To write packages faster" },
+      { uz: "Parollarni saqlash uchun", en: "To store passwords" },
+      { uz: "Kerak emas", en: "It shouldn’t be" },
+    ],
+    explain: {
+      uz: "Unda versiya va xesh yozilgan.",
+      en: "It records versions and hashes.",
+    },
+  },
+  {
+    ask: {
+      uz: "CI’da qaysi buyruq ishlatiladi?",
+      en: "Which command belongs in CI?",
+    },
+    right: { uz: "npm ci", en: "npm ci" },
+    wrong: [
+      { uz: "npm update", en: "npm update" },
+      { uz: "npm install paket@latest", en: "npm install pkg@latest" },
+      { uz: "npm audit fix --force", en: "npm audit fix --force" },
+    ],
+    explain: {
+      uz: "U faqat lockfile’dagini o‘rnatadi.",
+      en: "It installs only what the lockfile says.",
+    },
+  },
+  {
+    ask: {
+      uz: "Advisory: “4.17.21 da tuzatilgan”. Sizda 4.17.15. Holat?",
+      en: "Advisory: “fixed in 4.17.21”. You have 4.17.15. Status?",
+    },
+    right: { uz: "Zaif: yangilash kerak", en: "Affected: update it" },
+    wrong: [
+      { uz: "Xavfsiz", en: "Safe" },
+      { uz: "Faqat MAJOR o‘zgarsa zaif", en: "Affected only on MAJOR" },
+      { uz: "Aniqlab bo‘lmaydi", en: "Impossible to tell" },
+    ],
+    explain: {
+      uz: "15 < 21: tuzatishdan eski.",
+      en: "15 < 21: older than the fix.",
+    },
+  },
+  {
+    ask: {
+      uz: "SCA vositasiga misol?",
+      en: "An example of an SCA tool?",
+    },
+    right: { uz: "npm audit yoki Dependabot", en: "npm audit or Dependabot" },
+    wrong: [
+      { uz: "Wireshark", en: "Wireshark" },
+      { uz: "nmap", en: "nmap" },
+      { uz: "Photoshop", en: "Photoshop" },
+    ],
+    explain: {
+      uz: "Ular paketlarni zaifliklar bazasi bilan solishtiradi.",
+      en: "They match packages against flaw databases.",
+    },
+  },
+  {
+    ask: {
+      uz: "Typosquatting nima?",
+      en: "What is typosquatting?",
+    },
+    right: {
+      uz: "Mashhur paketga o‘xshash nom bilan zararli paket",
+      en: "A malicious package named like a popular one",
+    },
+    wrong: [
+      { uz: "Paketni yangilash", en: "Updating a package" },
+      { uz: "Parolni taxmin qilish", en: "Guessing a password" },
+      { uz: "Serverni to‘xtatish", en: "Taking a server down" },
+    ],
+    explain: {
+      uz: "expresss, crossenv, reqeusts kabi.",
+      en: "Like expresss, crossenv or reqeusts.",
+    },
+  },
+  {
+    ask: {
+      uz: "Zararli paket o‘rnatilishi bilanoq kodni qanday bajaradi?",
+      en: "How does a malicious package run code as soon as it installs?",
+    },
+    right: {
+      uz: "postinstall skripti orqali",
+      en: "Through a postinstall script",
+    },
+    wrong: [
+      { uz: "LICENSE fayli orqali", en: "Through its LICENSE file" },
+      { uz: "Faqat import qilinganda", en: "Only once imported" },
+      { uz: "Bajara olmaydi", en: "It can’t" },
+    ],
+    explain: {
+      uz: "`--ignore-scripts` buni o‘chiradi.",
+      en: "`--ignore-scripts` turns this off.",
+    },
+  },
+  {
+    ask: {
+      uz: "Dependency confusion qanday ishlaydi?",
+      en: "How does dependency confusion work?",
+    },
+    right: {
+      uz: "Ichki paket nomi ochiq registrda kattaroq versiya bilan chiqariladi",
+      en: "An internal package name is published publicly with a higher version",
+    },
+    wrong: [
+      {
+        uz: "Ikki paket bir xil faylni o‘zgartiradi",
+        en: "Two packages change one file",
+      },
+      { uz: "Lockfile o‘chib ketadi", en: "The lockfile gets deleted" },
+      { uz: "Paket nomida xato", en: "A typo in a name" },
+    ],
+    explain: {
+      uz: "Scope (`@kompaniya/…`) va ichki registr himoya qiladi.",
+      en: "A scope (`@company/…`) and an internal registry protect you.",
+    },
+  },
+  {
+    ask: {
+      uz: "SBOM nima?",
+      en: "What is an SBOM?",
+    },
+    right: {
+      uz: "Ilovadagi barcha komponentlar ro‘yxati",
+      en: "A list of every component in an application",
+    },
+    wrong: [
+      { uz: "Zaifliklarni tuzatuvchi vosita", en: "A tool that fixes flaws" },
+      { uz: "Server logi", en: "A server log" },
+      { uz: "Parol menejeri", en: "A password manager" },
+    ],
+    explain: {
+      uz: "Formatlari: CycloneDX, SPDX.",
+      en: "Formats: CycloneDX, SPDX.",
+    },
+  },
+  {
+    ask: {
+      uz: "Log4Shell paytida SBOM nimaga yordam berardi?",
+      en: "How would an SBOM have helped during Log4Shell?",
+    },
+    right: {
+      uz: "Log4j qaysi ilovalarda borligini darhol aytardi",
+      en: "It would show at once which apps contain Log4j",
+    },
+    wrong: [
+      {
+        uz: "Log4j’ni avtomatik o‘chirardi",
+        en: "It would remove Log4j itself",
+      },
+      { uz: "Hujumchini topardi", en: "It would find the attacker" },
+      { uz: "Hech narsaga", en: "Not at all" },
+    ],
+    explain: {
+      uz: "Usiz jamoalar haftalab qidirgan.",
+      en: "Without one, teams searched for weeks.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kritik zaiflik tuzatildi. Qachon yangilaysiz?",
+      en: "A critical flaw has a fix. When do you update?",
+    },
+    right: { uz: "Darhol", en: "Now" },
+    wrong: [
+      { uz: "Keyingi yili", en: "Next year" },
+      { uz: "Hujum bo‘lganda", en: "After an attack" },
+      { uz: "Hech qachon", en: "Never" },
+    ],
+    explain: {
+      uz: "Oddiy yangilanishlar — jadval bo‘yicha.",
+      en: "Ordinary updates go on a schedule.",
+    },
+  },
+  {
+    ask: {
+      uz: "Zaif paket bilvosita. Odatiy yechim?",
+      en: "The affected package is transitive. The usual fix?",
+    },
+    right: {
+      uz: "Uni olib kelgan paketni yangilash",
+      en: "Update the package that pulls it in",
+    },
+    wrong: [
+      {
+        uz: "node_modules’ni qo‘lda tahrirlash",
+        en: "Edit node_modules by hand",
+      },
+      { uz: "E’tiborsiz qoldirish", en: "Ignore it" },
+      { uz: "Lockfile’ni o‘chirish", en: "Delete the lockfile" },
+    ],
+    explain: {
+      uz: "Kerak bo‘lsa `overrides` bilan versiyani majburlang.",
+      en: "If needed, force the version with `overrides`.",
+    },
+  },
+  {
+    ask: {
+      uz: "Yangi kutubxona qo‘shishdan oldin birinchi savol?",
+      en: "The first question before adding a library?",
+    },
+    right: {
+      uz: "Bu bizga rostdan kerakmi?",
+      en: "Do we really need it?",
+    },
+    wrong: [
+      { uz: "Logotipi chiroyli-mi?", en: "Is its logo nice?" },
+      { uz: "Eng yangisi qaysi?", en: "Which is newest?" },
+      { uz: "Nomi qisqami?", en: "Is the name short?" },
+    ],
+    explain: {
+      uz: "Har bir kutubxona — yangi xavf.",
+      en: "Every library is new risk.",
+    },
+  },
+  {
+    ask: {
+      uz: "xz-utils (2024) hodisasi nimani ko‘rsatdi?",
+      en: "What did the xz-utils incident (2024) show?",
+    },
+    right: {
+      uz: "Ishonchli loyiha ham ichkaridan buzilishi mumkin",
+      en: "Even a trusted project can be compromised from inside",
+    },
+    wrong: [
+      {
+        uz: "Faqat typosquatting xavfli",
+        en: "Only typosquatting is dangerous",
+      },
+      {
+        uz: "Lockfile hamma narsadan himoya qiladi",
+        en: "A lockfile stops everything",
+      },
+      { uz: "Ochiq kod xavfsiz emas", en: "Open source is unsafe" },
+    ],
+    explain: {
+      uz: "Yangi muallif yillar davomida ishonch qozonib, orqa eshik qo‘shgan.",
+      en: "A new maintainer built trust for years, then added a backdoor.",
+    },
+  },
+];
