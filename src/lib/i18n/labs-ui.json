@@ -1307,5 +1307,21 @@
   "Attacks caught: {tp} of 3 · false alarms: {fp}": "Ushlangan hujumlar: 3 tadan {tp} · yolg‘on signallar: {fp}",
   "All three attacks caught and IT left alone. Requiring an Office parent would have missed the two later ones.": "Uchala hujum ushlandi, IT ishi tinch qoldi. Ota jarayon Office bo‘lishini talab qilsangiz, keyingi ikkita hujum o‘tib ketardi.",
   "Detection rules · Academy Intermediate": "Aniqlash qoidalari · Academy Intermediate",
-  "Detection rules": "Aniqlash qoidalari"
+  "Detection rules": "Aniqlash qoidalari",
+  "BLUE TEAM · MODULE 3": "BLUE TEAM · 3-MODUL",
+  "Alert triage.": "Ogohlantirishni saralash.",
+  "Real or not, now or later.": "Haqiqiymi yoki yo‘q, hozirmi yoki keyin.",
+  "Put alerts in order of priority, read an alert’s parts, work a queue of five alerts to escalate, close or tune, stay careful under pressure, write a clean escalation, and learn SOC tiers, playbooks and metrics.": "Ogohlantirishlarni ustuvorlik bo‘yicha tartiblang, ogohlantirish qismlarini o‘qing, besh ogohlantirishli navbatni uzatish, yopish yoki sozlash bo‘yicha saralang, bosim ostida ehtiyotkor bo‘ling, aniq uzatish xati yozing va SOC darajalari, playbook va ko‘rsatkichlarni o‘rganing.",
+  "TRIAGE / LAB": "TRIAGE / AMALIYOT",
+  "Malicious: escalate": "Zararli: uzatish",
+  "Benign: close": "Xavfsiz: yopish",
+  "False positive: tune the rule": "Yolg‘on signal: qoidani sozlash",
+  "High": "Yuqori",
+  "Medium": "O‘rta",
+  "Low": "Past",
+  "Not quite — read the context again.": "Unchalik emas — kontekstni qayta o‘qing.",
+  "Right calls: {n} of {total}": "To‘g‘ri qarorlar: {total} tadan {n}",
+  "Queue cleared: two incidents escalated, two harmless alerts closed, one stale rule sent for tuning.": "Navbat tozalandi: ikki hodisa uzatildi, ikki xavfsiz ogohlantirish yopildi, bitta eskirgan qoida sozlashga yuborildi.",
+  "Alert triage · Academy Intermediate": "Ogohlantirishni saralash · Academy Intermediate",
+  "Alert triage": "Ogohlantirishni saralash"
 }

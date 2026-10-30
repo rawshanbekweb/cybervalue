@@ -7410,3 +7410,273 @@ export const DETECTION_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const TRIAGE_POOL: PoolItem[] = [
+  {
+    ask: { uz: "Triage nima?", en: "What is triage?" },
+    right: {
+      uz: "Ogohlantirishlarni tez ko‘rib, haqiqiyligi va navbatini hal qilish",
+      en: "Quickly judging alerts: which are real and which come first",
+    },
+    wrong: [
+      { uz: "Loglarni o‘chirish", en: "Deleting logs" },
+      { uz: "Qoida yozish", en: "Writing rules" },
+      { uz: "Serverni qayta yuklash", en: "Rebooting a server" },
+    ],
+    explain: {
+      uz: "Shoshilinch bo‘limdagi saralash kabi.",
+      en: "Like sorting patients in an emergency room.",
+    },
+  },
+  {
+    ask: { uz: "Ustuvorlikni nima belgilaydi?", en: "What sets priority?" },
+    right: {
+      uz: "Jiddiylik, aktiv qiymati va hujum davom etayotgani",
+      en: "Severity, asset value and whether the attack is ongoing",
+    },
+    wrong: [
+      { uz: "Faqat kelgan vaqti", en: "Only arrival time" },
+      { uz: "Faqat qoida nomi", en: "Only the rule’s name" },
+      { uz: "Tahlilchi kayfiyati", en: "The analyst’s mood" },
+    ],
+    explain: {
+      uz: "Muhim serverdagi “o‘rta” test VM’dagi “yuqori”dan muhimroq bo‘lishi mumkin.",
+      en: "A “medium” on a key server can beat a “high” on a test VM.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi biri hozir ko‘rilishi kerak?",
+      en: "Which needs looking at now?",
+    },
+    right: {
+      uz: "Fayl serverida ommaviy shifrlash",
+      en: "Mass encryption on the file server",
+    },
+    wrong: [
+      { uz: "Veb-saytga port skanerlash", en: "A port scan of the website" },
+      {
+        uz: "Test VM’da bir necha xato kirish",
+        en: "A few failed logins on a test VM",
+      },
+      { uz: "Printer qog‘ozi tugadi", en: "The printer ran out of paper" },
+    ],
+    explain: {
+      uz: "Davom etayotgan to‘lov dasturi hujumi.",
+      en: "A ransomware attack under way.",
+    },
+  },
+  {
+    ask: {
+      uz: "Enrichment nima?",
+      en: "What is enrichment?",
+    },
+    right: {
+      uz: "Ogohlantirishga kontekst qo‘shish: IP obro‘si, aktiv egasi, foydalanuvchi",
+      en: "Adding context to an alert: IP reputation, asset owner, user",
+    },
+    wrong: [
+      { uz: "Logni siqish", en: "Compressing the log" },
+      { uz: "Ogohlantirishni o‘chirish", en: "Deleting the alert" },
+      { uz: "Qoidani shifrlash", en: "Encrypting the rule" },
+    ],
+    explain: {
+      uz: "Kontekst qarorni belgilaydi.",
+      en: "Context decides the call.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ogohlantirishdagi “mitre: T1059.001” nimani bildiradi?",
+      en: "What does “mitre: T1059.001” in an alert mean?",
+    },
+    right: {
+      uz: "ATT&CK texnikasi — PowerShell",
+      en: "The ATT&CK technique — PowerShell",
+    },
+    wrong: [
+      { uz: "Chipta raqami", en: "A ticket number" },
+      { uz: "Port raqami", en: "A port number" },
+      { uz: "Xodim ID’si", en: "An employee ID" },
+    ],
+    explain: {
+      uz: "Texnika keyingi qadamni taxmin qilishga yordam beradi.",
+      en: "The technique helps guess the next step.",
+    },
+  },
+  {
+    ask: {
+      uz: "Impossible travel: Frankfurt manzili kompaniya VPN’i. Qaror?",
+      en: "Impossible travel: the Frankfurt address is the company VPN. The call?",
+    },
+    right: { uz: "Xavfsiz — yopish", en: "Benign — close it" },
+    wrong: [
+      { uz: "IR guruhiga uzatish", en: "Escalate to IR" },
+      { uz: "Hisobni bloklash", en: "Block the account" },
+      {
+        uz: "Ogohlantirishni e’tiborsiz qoldirish",
+        en: "Ignore it unrecorded",
+      },
+    ],
+    explain: {
+      uz: "Kutilgan harakat; VPN manzillarini istisnoga qo‘shish mumkin.",
+      en: "Expected; the VPN addresses can go on the exception list.",
+    },
+  },
+  {
+    ask: {
+      uz: "Word powershell -enc ni ishga tushirdi, keyin yangi domenga ulanish. Qaror?",
+      en: "Word started powershell -enc, then a call to a new domain. The call?",
+    },
+    right: { uz: "Zararli — uzatish", en: "Malicious — escalate" },
+    wrong: [
+      { uz: "Xavfsiz — yopish", en: "Benign — close" },
+      { uz: "Qoidani sozlash", en: "Tune the rule" },
+      { uz: "Ertaga ko‘rish", en: "Look tomorrow" },
+    ],
+    explain: {
+      uz: "Fishing, makros va C2 — haqiqiy hujum.",
+      en: "Phishing, a macro and C2 — a real attack.",
+    },
+  },
+  {
+    ask: {
+      uz: "Antivirus Mimikatz’ni karantinga oldi. Qaror?",
+      en: "Antivirus quarantined Mimikatz. The call?",
+    },
+    right: {
+      uz: "Uzatish — kim va qanday tushirganini aniqlash kerak",
+      en: "Escalate — find out who dropped it and how",
+    },
+    wrong: [
+      { uz: "Yopish — karantin yetarli", en: "Close — quarantine is enough" },
+      { uz: "Antivirusni o‘chirish", en: "Switch off the antivirus" },
+      { uz: "Faylni qayta tiklash", en: "Restore the file" },
+    ],
+    explain: {
+      uz: "Vosita to‘xtatildi, hujumchi emas.",
+      en: "The tool was stopped, not the attacker.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qoida eskirgan Tor ro‘yxati tufayli chiqdi. Qaror?",
+      en: "A rule fired because of a stale Tor list. The call?",
+    },
+    right: {
+      uz: "False positive — qoidani sozlash",
+      en: "False positive — tune the rule",
+    },
+    wrong: [
+      { uz: "Zararli — uzatish", en: "Malicious — escalate" },
+      { uz: "Kompyuterni o‘chirish", en: "Shut the PC down" },
+      { uz: "Hech narsa qilmaslik", en: "Do nothing" },
+    ],
+    explain: {
+      uz: "Indikator eskirgan — ro‘yxatni yangilash kerak.",
+      en: "The indicator is stale — the list needs updating.",
+    },
+  },
+  {
+    ask: {
+      uz: "Benign va false positive farqi?",
+      en: "Benign versus false positive?",
+    },
+    right: {
+      uz: "Benign — qoida to‘g‘ri, harakat xavfsiz; FP — qoida noto‘g‘ri narsani ushladi",
+      en: "Benign: the rule worked, the activity was harmless; FP: the rule caught the wrong thing",
+    },
+    wrong: [
+      { uz: "Farqi yo‘q", en: "No difference" },
+      { uz: "Benign — hujum", en: "Benign means an attack" },
+      { uz: "FP — haqiqiy hujum", en: "FP means a real attack" },
+    ],
+    explain: {
+      uz: "False positive qoidani sozlashni talab qiladi.",
+      en: "A false positive calls for tuning.",
+    },
+  },
+  {
+    ask: {
+      uz: "Hujummi yoki yo‘qligiga ishonchingiz komil emas. Nima qilasiz?",
+      en: "You aren’t sure whether it is an attack. What do you do?",
+    },
+    right: {
+      uz: "Faktlar bilan yuqoriga uzataman",
+      en: "Escalate with the facts",
+    },
+    wrong: [
+      { uz: "Yopaman", en: "Close it" },
+      { uz: "Ertagacha kutaman", en: "Wait until tomorrow" },
+      { uz: "Qoidani o‘chiraman", en: "Switch the rule off" },
+    ],
+    explain: {
+      uz: "O‘tkazib yuborilgan hujum qimmatroq.",
+      en: "A missed attack costs more.",
+    },
+  },
+  {
+    ask: {
+      uz: "Uzatish xatiga nima yozilmaydi?",
+      en: "What never goes into an escalation?",
+    },
+    right: { uz: "Foydalanuvchi paroli", en: "A user’s password" },
+    wrong: [
+      { uz: "UTC vaqt", en: "The UTC time" },
+      { uz: "Kompyuter nomi", en: "The machine name" },
+      { uz: "Qilingan ishlar", en: "What was already done" },
+    ],
+    explain: {
+      uz: "Chiptalarni ko‘p odam o‘qiydi.",
+      en: "Many people read tickets.",
+    },
+  },
+  {
+    ask: { uz: "Playbook nima?", en: "What is a playbook?" },
+    right: {
+      uz: "Ogohlantirish turi uchun yozilgan qadamlar",
+      en: "Written steps for one kind of alert",
+    },
+    wrong: [
+      { uz: "Hujumchi rejasi", en: "The attacker’s plan" },
+      { uz: "SIEM litsenziyasi", en: "A SIEM licence" },
+      { uz: "Log formati", en: "A log format" },
+    ],
+    explain: {
+      uz: "Hamma bir xil, sinalgan tartibda ishlaydi.",
+      en: "Everyone works the same tested way.",
+    },
+  },
+  {
+    ask: {
+      uz: "Playbook qadamlarini avtomatlashtiradigan tizim?",
+      en: "The system that automates playbook steps?",
+    },
+    right: { uz: "SOAR", en: "SOAR" },
+    wrong: [
+      { uz: "DNS", en: "DNS" },
+      { uz: "VPN", en: "VPN" },
+      { uz: "NTP", en: "NTP" },
+    ],
+    explain: {
+      uz: "Security Orchestration, Automation and Response.",
+      en: "Security Orchestration, Automation and Response.",
+    },
+  },
+  {
+    ask: { uz: "MTTD nimani o‘lchaydi?", en: "What does MTTD measure?" },
+    right: {
+      uz: "Hujum boshlanishidan aniqlanishigacha o‘rtacha vaqt",
+      en: "Mean time from an attack starting to detection",
+    },
+    wrong: [
+      { uz: "Tahlilchilar soni", en: "The number of analysts" },
+      { uz: "Disk hajmi", en: "Disk size" },
+      { uz: "Qoidalar soni", en: "The number of rules" },
+    ],
+    explain: {
+      uz: "MTTR — aniqlashdan bartaraf etishgacha.",
+      en: "MTTR runs from detection to resolution.",
+    },
+  },
+];

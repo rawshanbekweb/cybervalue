@@ -36,6 +36,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/steganalysis` | Steganography module 5, steganalysis (8 lessons, a checkpoint)                  |
 | `/intermediate/siem`         | Blue team module 1, logs and SIEM (8 lessons, a checkpoint)                     |
 | `/intermediate/detection`    | Blue team module 2, detection rules (8 lessons, a checkpoint)                   |
+| `/intermediate/triage`       | Blue team module 3, alert triage (8 lessons, a checkpoint)                      |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -595,6 +596,26 @@ powershell + `-enc` with the filter is perfect.
 | 6       | Sorts what is easy or hard for an attacker to change   |
 | 7       | Questions on testing and keeping rules                 |
 | 8       | Final questions                                        |
+
+## Blue team module 3: Alert triage
+
+`/intermediate/triage` (lab id `triage`, checkpoint `triage-1`, award
+`lab-triage`, site setting `triage`) uses `src/lib/triage/tools.ts`: `ALERTS`
+is a queue of five alerts (impossible travel through the VPN, a macro
+spawning encoded PowerShell, a backup job with a stale password, quarantined
+Mimikatz on a server, a stale Tor indicator), each with two lines of context
+and the right call: escalate, close or tune.
+
+| Lessons | What the student does                      |
+| ------- | ------------------------------------------ |
+| 1       | Sorts alerts into now and can wait         |
+| 2       | Clicks through an alert's parts            |
+| 3       | Works a queue of five alerts               |
+| 4       | Questions on closing carefully             |
+| 5       | Sorts what goes into an escalation         |
+| 6       | Questions on SOC tiers, playbooks and SOAR |
+| 7       | Questions on SOC metrics                   |
+| 8       | Final questions                            |
 
 ## Who gets in
 

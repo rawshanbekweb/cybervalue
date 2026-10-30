@@ -37,6 +37,7 @@ import { LESSONS as FORMATS } from "../src/lib/formats/curriculum";
 import { LESSONS as STEGANALYSIS } from "../src/lib/steganalysis/curriculum";
 import { LESSONS as SIEM } from "../src/lib/siem/curriculum";
 import { LESSONS as DETECTION } from "../src/lib/detection/curriculum";
+import { LESSONS as TRIAGE } from "../src/lib/triage/curriculum";
 import {
   isLabId,
   LAB_PROGRESS,
@@ -82,6 +83,7 @@ test("lab progress totals match the lessons", () => {
   assert.equal(LAB_PROGRESS.steganalysis.total, STEGANALYSIS.length);
   assert.equal(LAB_PROGRESS.siem.total, SIEM.length);
   assert.equal(LAB_PROGRESS.detection.total, DETECTION.length);
+  assert.equal(LAB_PROGRESS.triage.total, TRIAGE.length);
   assert.equal(isLabId("toString"), false);
   assert.equal(isLabId("network"), true);
 });

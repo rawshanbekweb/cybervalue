@@ -214,6 +214,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Aniqlash qoidalari (Intermediate)",
     earned: (f) => finished(f, "detection") && passed(f, "detection-1"),
   },
+  {
+    id: "lab-triage",
+    title: "Ogohlantirishni saralash (Intermediate)",
+    earned: (f) => finished(f, "triage") && passed(f, "triage-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

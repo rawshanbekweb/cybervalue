@@ -439,6 +439,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Ogohlantirishni saralash", en: "Alert triage" },
+        href: "/intermediate/triage",
+        lab: "triage",
         topics: ["severity", "context", "escalation"],
         goal: goal(
           "Ogohlantirish haqiqiy xavfmi yoki yo‘qligini asoslab hal qilish.",
