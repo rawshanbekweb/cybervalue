@@ -50,6 +50,7 @@ export const LAB_PROGRESS = {
   hardening: { key: "cybervalue:hardening:progress:v1", total: 8 },
   windows: { key: "cybervalue:windows:progress:v1", total: 8 },
   authn: { key: "cybervalue:authn:progress:v1", total: 8 },
+  baseline: { key: "cybervalue:baseline:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -503,6 +504,15 @@ export const LAB_META: {
       en: "Authentication (Intermediate)",
     },
     href: "/intermediate/authn",
+    intermediate: true,
+  },
+  {
+    id: "baseline",
+    title: {
+      uz: "Yangilanish va bazaviy sozlamalar (Intermediate)",
+      en: "Patching and baselines (Intermediate)",
+    },
+    href: "/intermediate/baseline",
     intermediate: true,
   },
 ];

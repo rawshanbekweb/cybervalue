@@ -46,6 +46,7 @@ import { LESSONS as CODEREVIEW_LESSONS } from "@/lib/codereview/curriculum";
 import { LESSONS as HARDENING_LESSONS } from "@/lib/hardening/curriculum";
 import { LESSONS as WINDOWS_LESSONS } from "@/lib/windows/curriculum";
 import { LESSONS as AUTHN_LESSONS } from "@/lib/authn/curriculum";
+import { LESSONS as BASELINE_LESSONS } from "@/lib/baseline/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -930,6 +931,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: AUTHN_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "baseline",
+      title: "Patching and baselines",
+      category: "Intermediate · System security",
+      description:
+        "See why unpatched flaws cause most breaches, put updates in order, automate them and check they took effect, learn what a baseline is, find drifted settings on a server, keep drift away and measure progress.",
+      href: "/intermediate/baseline",
+      progressKey: LAB_PROGRESS.baseline.key,
+      level: "Intermediate",
+      lessons: BASELINE_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: BASELINE_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

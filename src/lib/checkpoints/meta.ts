@@ -797,6 +797,24 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/authn#checkpoints",
     pass: 70,
   },
+  {
+    id: "baseline-1",
+    level: "intermediate",
+    lab: {
+      uz: "Yangilanish va bazaviy sozlamalar",
+      en: "Patching and baselines",
+    },
+    title: {
+      uz: "Nazorat: Yangilanish va bazaviy sozlamalar",
+      en: "Checkpoint: Patching and baselines",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/baseline#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

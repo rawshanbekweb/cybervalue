@@ -52,6 +52,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/hardening`    | System security module 1, Linux hardening (8 lessons, a checkpoint)             |
 | `/intermediate/windows`      | System security module 2, Windows basics (8 lessons, a checkpoint)              |
 | `/intermediate/authn`        | System security module 4, authentication (8 lessons, a checkpoint)              |
+| `/intermediate/baseline`     | System security module 5, patching and baselines (8 lessons, a checkpoint)      |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -932,6 +933,25 @@ the user `dilnoza`; two pass and each reason to reject appears once or more.
 | 6       | Questions on SSH keys                                |
 | 7       | Questions on watching sign-ins                       |
 | 8       | Final questions                                      |
+
+## System security module 5: Patching and baselines
+
+`/intermediate/baseline` (lab id `baseline`, checkpoint `baseline-1`, award
+`lab-baseline`, site setting `baseline`) uses `src/lib/baseline/tools.ts`:
+`ROWS` set a web server's current settings beside its baseline, and
+`DRIFTED` are the four that no longer match (password logins, the firewall,
+a kernel waiting for a reboot and a missing audit service).
+
+| Lessons | What the student does                         |
+| ------- | --------------------------------------------- |
+| 1       | Questions on why patching matters             |
+| 2       | Sorts updates into within 72 hours or monthly |
+| 3       | Questions on automating updates and reboots   |
+| 4       | Questions on baselines and CIS Benchmarks     |
+| 5       | Ticks the four settings that drifted          |
+| 6       | Sorts habits into preventing or causing drift |
+| 7       | Questions on reporting and measuring          |
+| 8       | Final questions                               |
 
 ## Who gets in
 

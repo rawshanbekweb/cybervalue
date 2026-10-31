@@ -294,6 +294,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Autentifikatsiya (Intermediate)",
     earned: (f) => finished(f, "authn") && passed(f, "authn-1"),
   },
+  {
+    id: "lab-baseline",
+    title: "Yangilanish va bazaviy sozlamalar (Intermediate)",
+    earned: (f) => finished(f, "baseline") && passed(f, "baseline-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */
