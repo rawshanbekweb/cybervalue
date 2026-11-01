@@ -69,11 +69,32 @@ the audit log.
   check, link tokens, safe redirects and the email text.
 - `tests/e2e/challenges.spec.ts`: sign-up, confirmation, a spent link,
   username change, sign-in errors, the taken-email answer, password reset that
-  signs out other devices, the admin blocking a player, and accessibility.
+  signs out other devices, the admin blocking a player, a team built with an
+  invite code and handed to a new captain, and accessibility.
   It needs `DATABASE_URL` and `EMAIL_OUTBOX`.
+
+## Teams (phase 2)
+
+`/challenges/team` (`src/lib/challenges/teams.ts`). A player is in at most one
+team at a time (`CtfPlayer.teamId`); playing alone needs no team. Only players
+with a confirmed email can create or join a team.
+
+- **Create**: the founder becomes the captain (`CtfTeam.captainId`, unique).
+  Names are 2–32 Latin letters, digits, spaces, `.`, `_` or `-`, unique
+  regardless of case and spacing (`nameKey`).
+- **Invite code**: 10 Crockford base32 symbols shown as `XXXXX-XXXXX`; case,
+  spaces and look-alike letters are forgiven. Every member sees it; the
+  captain can replace it, and the old code stops working. Joining is limited
+  to 20 tries per address per 10 minutes.
+- **Size**: at most 10 players (`TEAM_MAX_MEMBERS`). Joining locks the team
+  row (`SELECT … FOR UPDATE`) before counting, so two people joining at once
+  cannot overfill it.
+- **Captain tools**: rename, make another member captain, remove a member.
+- **Leaving** (`releasePlayer`): a leaving captain hands the team to the
+  longest-standing member; the last member leaving deletes the team. The same
+  happens when a player deletes the account or an owner deletes it.
 
 ## Next phases
 
-Teams (create, invite code, join, leave, captain), competitions with
-challenges, files, hashed flags, hints and dynamic scoring, then the live
-scoreboard, freeze, announcements, archive and certificates.
+Competitions with challenges, files, hashed flags, hints and dynamic scoring,
+then the live scoreboard, freeze, announcements, archive and certificates.

@@ -732,8 +732,27 @@ model CtfPlayer {
   lastLoginAt     DateTime?    @db.Timestamptz(3)
   sessions        CtfSession[]
   tokens          CtfToken[]
+  teamId          String?
+  team            CtfTeam?     @relation("TeamMembers", fields: [teamId], references: [id], onDelete: SetNull)
+  captainOf       CtfTeam?     @relation("TeamCaptain")
+  joinedTeamAt    DateTime?    @db.Timestamptz(3)
 
   @@index([createdAt])
+  @@index([teamId])
+}
+
+// A team a player plays in; a player is in at most one team at a time. The
+// invite code is shown to members, so it is stored as is; the captain can
+// replace it.
+model CtfTeam {
+  id         String      @id @default(cuid())
+  name       String
+  nameKey    String      @unique
+  inviteCode String      @unique
+  captainId  String      @unique
+  captain    CtfPlayer   @relation("TeamCaptain", fields: [captainId], references: [id], onDelete: Restrict)
+  members    CtfPlayer[] @relation("TeamMembers")
+  createdAt  DateTime    @default(now()) @db.Timestamptz(3)
 }
 
 model CtfSession {

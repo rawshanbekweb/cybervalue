@@ -11,6 +11,7 @@ import { Prisma } from "@/generated/prisma/client";
 import {
   emailSchema,
   hashToken,
+  teamNameSchema,
   isChallengesNext,
   isLinkToken,
   passwordMessage,
@@ -29,6 +30,17 @@ import {
   sendReset,
   sendVerification,
 } from "@/lib/challenges/tokens";
+import {
+  createTeam,
+  joinTeam,
+  leaveTeam,
+  makeCaptain,
+  releasePlayer,
+  removeMember,
+  renameTeam,
+  renewInviteCode,
+  TeamError,
+} from "@/lib/challenges/teams";
 
 export type FormState =
   | { error?: string; success?: string; values?: Record<string, string> }
@@ -343,7 +355,87 @@ export async function deleteAccountAction(
   });
   if (!verifyPassword(text(formData, "current", 400), row.passwordHash))
     return { error: "The current password is wrong." };
-  await db.ctfPlayer.delete({ where: { id: player.id } });
+  // A captain's team passes to another member first.
+  await db.$transaction(async (tx) => {
+    await releasePlayer(tx, player.id);
+    await tx.ctfPlayer.delete({ where: { id: player.id } });
+  });
   await destroyPlayerSession();
   redirect("/challenges?deleted=1");
+}
+
+// Teams ----------------------------------------------------------------------
+
+const TEAM_NAME_ERROR =
+  "Team name: 2 to 32 Latin letters, digits, spaces, dot, dash or underscore.";
+
+/** Runs a team change for a confirmed player and turns refusals into messages. */
+async function teamChange(
+  run: (playerId: string) => Promise<unknown>,
+  success: string,
+): Promise<FormState> {
+  const player = await requirePlayer("/challenges/team");
+  if (!player.emailVerifiedAt)
+    return { error: "Confirm your email before joining or creating a team." };
+  if (!(await limit(`ctf-team:${player.id}`, 30, 10 * 60_000)))
+    return { error: RATE_ERROR };
+  try {
+    await run(player.id);
+  } catch (error) {
+    if (error instanceof TeamError) return { error: error.message };
+    throw error;
+  }
+  revalidatePath("/challenges", "layout");
+  return { success };
+}
+
+export async function createTeamAction(
+  _state: FormState,
+  formData: FormData,
+): Promise<FormState> {
+  const name = teamNameSchema.safeParse(text(formData, "name", 80));
+  if (!name.success) return { error: TEAM_NAME_ERROR };
+  return teamChange((id) => createTeam(id, name.data), "Team created.");
+}
+
+export async function joinTeamAction(
+  _state: FormState,
+  formData: FormData,
+): Promise<FormState> {
+  // Codes are guessed per player and per address.
+  if (!(await limit(`ctf-join:${await client()}`, 20, 10 * 60_000)))
+    return { error: RATE_ERROR };
+  const code = text(formData, "code", 40);
+  return teamChange((id) => joinTeam(id, code), "You joined the team.");
+}
+
+export async function leaveTeamAction(): Promise<FormState> {
+  return teamChange(leaveTeam, "You left the team.");
+}
+
+export async function removeMemberAction(memberId: string): Promise<FormState> {
+  return teamChange(
+    (id) => removeMember(id, memberId),
+    "The player was removed.",
+  );
+}
+
+export async function makeCaptainAction(memberId: string): Promise<FormState> {
+  return teamChange((id) => makeCaptain(id, memberId), "The captain changed.");
+}
+
+export async function renameTeamAction(
+  _state: FormState,
+  formData: FormData,
+): Promise<FormState> {
+  const name = teamNameSchema.safeParse(text(formData, "name", 80));
+  if (!name.success) return { error: TEAM_NAME_ERROR };
+  return teamChange((id) => renameTeam(id, name.data), "Team name saved.");
+}
+
+export async function renewInviteCodeAction(): Promise<FormState> {
+  return teamChange(
+    renewInviteCode,
+    "A new invite code was made. The old one no longer works.",
+  );
 }

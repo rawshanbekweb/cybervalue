@@ -4,6 +4,7 @@ import { audit } from "@/lib/audit";
 import { requireOwner } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { limit } from "@/lib/rate-limit-db";
+import { releasePlayer } from "@/lib/challenges/teams";
 
 const PATH = "/admin/ctf/players";
 
@@ -36,7 +37,12 @@ export async function confirmPlayerEmailAction(id: string) {
 export async function deletePlayerAction(id: string) {
   const session = await requireOwner(PATH);
   if (!(await limit(`admin-write:${session.user.id}`, 60, 60_000))) return;
-  await getDb()?.ctfPlayer.deleteMany({ where: { id } });
+  const db = getDb();
+  if (!db) return;
+  await db.$transaction(async (tx) => {
+    await releasePlayer(tx, id);
+    await tx.ctfPlayer.deleteMany({ where: { id } });
+  });
   await audit("ctf.player_delete", session.user.id, id);
   revalidatePath(PATH);
 }

@@ -3,6 +3,10 @@ import assert from "node:assert/strict";
 import {
   emailSchema,
   hashToken,
+  newInviteCode,
+  normalizeInviteCode,
+  teamNameKey,
+  teamNameSchema,
   isChallengesNext,
   isLinkToken,
   newLinkToken,
@@ -84,4 +88,28 @@ test("emails are written in the player's language and escape the name", () => {
   assert.ok(uz.html.includes("&#60;b&#62;ali"));
   const en = buildMail("reset", "en", "a@b.uz", "ali", link);
   assert.match(en.subject, /reset your password/);
+});
+
+test("team names are Latin, 2–32 characters, unique regardless of case and spacing", () => {
+  assert.equal(teamNameSchema.parse("  Red   Team  "), "Red Team");
+  for (const bad of [
+    "a",
+    " ",
+    "_team",
+    "Команда",
+    "a".repeat(33),
+    "team<script>",
+  ])
+    assert.equal(teamNameSchema.safeParse(bad).success, false, bad);
+  assert.equal(teamNameKey(" Red   TEAM "), "red team");
+});
+
+test("invite codes are 10 base32 symbols and forgive case, spaces and look-alikes", () => {
+  const code = newInviteCode();
+  assert.match(code, /^[0-9A-HJKMNP-TV-Z]{5}-[0-9A-HJKMNP-TV-Z]{5}$/);
+  assert.equal(normalizeInviteCode(code.toLowerCase().replace("-", " ")), code);
+  assert.equal(normalizeInviteCode("abcde fghjk"), "ABCDE-FGHJK");
+  assert.equal(normalizeInviteCode("OOOOO-IIIII"), "00000-11111");
+  for (const bad of ["", "ABCD", "ABCDE-FGHJKX", "ABCDE-FGHJU"])
+    assert.equal(normalizeInviteCode(bad), null, bad);
 });

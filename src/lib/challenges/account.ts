@@ -96,3 +96,43 @@ export function isChallengesNext(value: unknown): value is string {
     !value.includes("//")
   );
 }
+
+// Teams --------------------------------------------------------------------
+
+export const TEAM_MAX_MEMBERS = 10;
+
+// Shown on scoreboards: Latin letters, digits, spaces and . _ - (no look-alike
+// Unicode), 2–32 characters, starting with a letter or digit.
+export const teamNameSchema = z
+  .string()
+  .trim()
+  .transform((name) => name.replace(/\s+/g, " "))
+  .pipe(
+    z
+      .string()
+      .min(2)
+      .max(32)
+      .regex(/^[A-Za-z0-9][A-Za-z0-9 ._-]*$/),
+  );
+
+/** Team names are unique regardless of case and spacing. */
+export const teamNameKey = (name: string) =>
+  name.trim().replace(/\s+/g, " ").toLowerCase();
+
+// Invite codes: 10 Crockford base32 symbols (50 bits), shown as XXXXX-XXXXX.
+// Joining is rate-limited, so guessing a code is hopeless.
+const CODE_ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+export function newInviteCode() {
+  const raw = [...randomBytes(10)].map((b) => CODE_ALPHABET[b & 31]).join("");
+  return `${raw.slice(0, 5)}-${raw.slice(5)}`;
+}
+export function normalizeInviteCode(input: string) {
+  const raw = input
+    .toUpperCase()
+    .replace(/[\s-]/g, "")
+    .replace(/O/g, "0")
+    .replace(/[IL]/g, "1");
+  if (raw.length !== 10 || ![...raw].every((c) => CODE_ALPHABET.includes(c)))
+    return null;
+  return `${raw.slice(0, 5)}-${raw.slice(5)}`;
+}

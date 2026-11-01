@@ -380,3 +380,39 @@ body.ctf-root {
 .ctf-root .language-switcher button[aria-pressed="true"] {
   color: var(--ctf-text);
 }
+
+/* Teams */
+.ctf-code {
+  font-family: var(--ctf-mono);
+  font-size: 18px;
+  letter-spacing: 0.08em;
+  padding: 8px 14px;
+  border: 1px dashed var(--ctf-signal);
+  border-radius: 10px;
+  color: var(--ctf-signal);
+}
+.ctf-members {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.ctf-members li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--ctf-line);
+}
+.ctf-members li:last-child {
+  border-bottom: 0;
+}
+.ctf-tag {
+  margin-left: 8px;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--ctf-amber);
+  color: var(--ctf-amber);
+}
