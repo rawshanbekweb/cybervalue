@@ -4,6 +4,8 @@ import { getAdminLocale } from "@/lib/i18n/server";
 import { getPlayerSession } from "@/lib/challenges/session";
 import { entrantFor, eventBySlug, scoreboard } from "@/lib/challenges/events";
 import { formatWhen, isCtfOrganiser } from "@/lib/challenges/view";
+import { phaseOf } from "@/lib/challenges/scoring";
+import Link from "next/link";
 import { EventHeader } from "@/components/challenges/event-header";
 import { ScoreChart } from "@/components/challenges/score-chart";
 
@@ -46,6 +48,11 @@ export default async function ScoreboardPage({
   return (
     <>
       <EventHeader event={event} current="scoreboard" />
+      {phaseOf(event) === "ended" && board.rows.length > 0 && (
+        <p className="ctf-muted ctf-small">
+          {t("The competition is over. Open a name to see its certificate.")}
+        </p>
+      )}
       {board.frozenAt && (
         <p className="ctf-banner" role="status">
           {t(
@@ -101,7 +108,15 @@ export default async function ScoreboardPage({
                   >
                     <td>{row.rank}</td>
                     <td>
-                      {row.name}{" "}
+                      {phaseOf(event) === "ended" && row.score > 0 ? (
+                        <Link
+                          href={`/challenges/${event.slug}/certificate/${row.entrantId}`}
+                        >
+                          {row.name}
+                        </Link>
+                      ) : (
+                        row.name
+                      )}{" "}
                       <span className="ctf-muted ctf-small">
                         {row.team
                           ? t("team · {count}", { count: row.members })

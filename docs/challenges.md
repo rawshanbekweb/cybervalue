@@ -72,7 +72,8 @@ the audit log.
   signs out other devices, the admin blocking a player, a team built with an
   invite code and handed to a new captain, a whole competition (admin setup,
   file, paid hint, wrong and right flags, dynamic scores, blocking the
-  leader), team registration and the running-competition lock, and
+  leader, then the winner's certificate after the end), team registration
+  and the running-competition lock, and
   accessibility.
 - `tests/challenges-scoring.test.ts` and `tests/challenges-admin.test.ts`:
   phases, freeze, flags, values, standings, and the admin forms.
@@ -162,7 +163,12 @@ Business rules that need no database (phase, registration window, freeze,
 flag digest, values, standings, admin form checks) live in
 `src/lib/challenges/scoring.ts` and `admin-forms.ts` and are unit-tested.
 
-## Still to come
+## Results and certificates
 
-Certificates for the winners and a public archive page for finished
-competitions.
+Finished competitions stay listed on `/challenges` under "Finished", with
+their board (every hint open, no flag form) and final scoreboard. Each name on
+a finished scoreboard opens its certificate
+(`/challenges/<slug>/certificate/<entrant>`): a winner's certificate for the
+top three with points, otherwise a certificate of participation, with the
+place, points, solved challenges, team members and the address that proves
+it. It prints cleanly or saves as PDF from the browser.

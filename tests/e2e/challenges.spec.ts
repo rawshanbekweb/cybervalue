@@ -475,6 +475,25 @@ test("a competition runs end to end: admin setup, registration, files, hints, fl
   await expect(rows).toHaveCount(1);
   await expect(rows.nth(0)).toContainText(second.username);
 
+  // The admin ends the competition; the winner's certificate opens from the
+  // final scoreboard.
+  await admin.locator("#ctf-ends").fill(tashkent(-1));
+  await admin.getByRole("button", { name: "Save" }).click();
+  await expect(admin.getByText("Saved.")).toBeVisible();
+  await late.reload();
+  await rows.getByRole("link", { name: second.username }).click();
+  await expect(late.getByRole("heading", { level: 1 })).toHaveText(
+    "Winner’s certificate",
+  );
+  await expect(late.getByText("Place 1 of 1")).toBeVisible();
+  // The blocked solve no longer counts, so the challenge is worth 500 again.
+  await expect(
+    late.getByText("450 points · 1 challenges solved"),
+  ).toBeVisible();
+  // Flags are no longer accepted after the end.
+  await late.goto(`/challenges/${slug}/board`);
+  await expect(late.getByPlaceholder("CV{...}")).toHaveCount(0);
+
   await adminContext.close();
   await first.close();
   await second.close();

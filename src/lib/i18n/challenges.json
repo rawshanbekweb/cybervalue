@@ -227,5 +227,15 @@
   "This competition is not available.": "Bu musobaqa mavjud emas.",
   "Too many attempts. Wait a minute and try again.": "Urinishlar juda ko‘p. Bir daqiqa kutib, qayta urinib ko‘ring.",
   "Type the flag.": "Bayroqni kiriting.",
-  "Hint opened.": "Maslahat ochildi."
+  "Hint opened.": "Maslahat ochildi.",
+  "Certificate": "Sertifikat",
+  "Winner’s certificate": "G‘olib sertifikati",
+  "Certificate of participation": "Ishtirok sertifikati",
+  "This confirms that": "Ushbu sertifikat tasdiqlaydiki,",
+  "took part in {event}": "{event} musobaqasida qatnashdi",
+  "Place {rank} of {total}": "{total} ishtirokchi orasida {rank}-o‘rin",
+  "{score} points · {solved} challenges solved": "{score} ball · {solved} ta topshiriq yechilgan",
+  "Check it at": "Tekshirish manzili:",
+  "Print or save as PDF": "Chop etish yoki PDF saqlash",
+  "The competition is over. Open a name to see its certificate.": "Musobaqa tugadi. Sertifikatni ko‘rish uchun nomni bosing."
 }
