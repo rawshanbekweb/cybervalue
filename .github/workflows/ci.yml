@@ -58,6 +58,8 @@ jobs:
       TELEGRAM_BOT_USERNAME: cybervalue_ci_bot
       TELEGRAM_API_URL: http://127.0.0.1:3199
       CRON_SECRET: ci-only-cron-secret-not-used-anywhere
+      # CTF Challenges writes its emails here instead of sending them.
+      EMAIL_OUTBOX: /tmp/cybervalue-outbox.jsonl
       PORT: "3100"
     steps:
       - uses: actions/checkout@v7

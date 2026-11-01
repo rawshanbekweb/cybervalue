@@ -66,7 +66,9 @@ export type AuditAction =
   | "trash.purge"
   | "trash.empty"
   | "junior.promote"
-  | "data.export";
+  | "data.export"
+  | "ctf.player_update"
+  | "ctf.player_delete";
 
 const RETENTION_MS = 180 * 86_400_000;
 

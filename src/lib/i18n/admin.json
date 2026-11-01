@@ -911,5 +911,15 @@
   "Save without approving": "Tasdiqlamasdan saqlash",
   "Delete the attempt and allow a retake": "Urinishni o‘chirish va qayta topshirishga ruxsat berish",
   "Linux va IP imtihoni tekshirildi": "Linux and IP exam reviewed",
-  "Linux va IP imtihonini qayta topshirishga ruxsat berildi": "Linux and IP exam retake allowed"
+  "Linux va IP imtihonini qayta topshirishga ruxsat berildi": "Linux and IP exam retake allowed",
+  "CTF players": "CTF o‘yinchilari",
+  "People who signed up at /challenges: {total} in all, {verified} with a confirmed email.": "/challenges sahifasida ro‘yxatdan o‘tganlar: jami {total} ta, {verified} tasining emaili tasdiqlangan.",
+  "Open CTF Challenges": "CTF Challenges’ni ochish",
+  "Search by email or username": "Email yoki foydalanuvchi nomi bo‘yicha qidirish",
+  "No players yet.": "Hozircha o‘yinchilar yo‘q.",
+  "Block": "Bloklash",
+  "Unblock": "Blokdan chiqarish",
+  "Delete {name} and all their results?": "{name} va uning barcha natijalari o‘chirilsinmi?",
+  "CTF player changed": "CTF o‘yinchisi o‘zgartirildi",
+  "CTF player deleted": "CTF o‘yinchisi o‘chirildi"
 }

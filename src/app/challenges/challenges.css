@@ -1,0 +1,382 @@
+/* CTF Challenges. Same Design.MD base as the student area (black void, white
+   type, violet action) with a signal green for flags and solved states. */
+:root {
+  --ctf-void: #000000;
+  --ctf-panel: #0b0b10;
+  --ctf-line: #26262e;
+  --ctf-text: #ffffff;
+  --ctf-muted: #a3a3ad;
+  --ctf-iris: #8052ff;
+  --ctf-iris-text: #a68bff;
+  --ctf-signal: #2fbf8f;
+  --ctf-amber: #ffb829;
+  --ctf-danger: #ff6b6b;
+  --accent: var(--ctf-iris);
+  --accent-text: var(--ctf-iris-text);
+  --ctf-font:
+    "PPNeueMontreal", "Inter", "Segoe UI Variable Text", "Segoe UI",
+    ui-sans-serif, system-ui, -apple-system, Roboto, sans-serif;
+  --ctf-mono:
+    "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, ui-monospace, monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+body.ctf-root {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      1200px 500px at 85% -10%,
+      rgba(128, 82, 255, 0.18),
+      transparent 60%
+    ),
+    var(--ctf-void);
+  color: var(--ctf-text);
+  font-family: var(--ctf-font);
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+.ctf-root a {
+  color: inherit;
+}
+:where(.ctf-root) :where(button, input, select, textarea) {
+  font: inherit;
+  color: inherit;
+}
+.ctf-root :focus-visible {
+  outline: 2px solid var(--ctf-amber);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+.ctf-skip {
+  position: absolute;
+  left: 16px;
+  top: -60px;
+  padding: 10px 16px;
+  background: var(--ctf-text);
+  color: var(--ctf-void);
+  border-radius: 999px;
+  font-weight: 600;
+  z-index: 10;
+}
+.ctf-skip:focus {
+  top: 12px;
+}
+
+/* Frame */
+.ctf-shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 20px 72px;
+}
+.ctf-nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 0;
+  flex-wrap: wrap;
+}
+.ctf-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+.ctf-logo-mark {
+  font-family: var(--ctf-mono);
+  font-size: 13px;
+  padding: 3px 8px;
+  border: 1px solid var(--ctf-signal);
+  color: var(--ctf-signal);
+  border-radius: 6px;
+}
+.ctf-nav-links {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.ctf-nav-links a,
+.ctf-link-button {
+  padding: 8px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  color: var(--ctf-muted);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.ctf-nav-links a:hover,
+.ctf-nav-links a[aria-current="page"],
+.ctf-link-button:hover {
+  color: var(--ctf-text);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Type */
+.ctf-eyebrow {
+  font-family: var(--ctf-mono);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ctf-signal);
+  margin: 0 0 12px;
+}
+.ctf-title {
+  font-size: clamp(34px, 6vw, 64px);
+  line-height: 1.05;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  margin: 0 0 18px;
+}
+.ctf-h2 {
+  font-size: 24px;
+  font-weight: 400;
+  margin: 0 0 12px;
+}
+.ctf-lead {
+  color: var(--ctf-muted);
+  max-width: 62ch;
+  margin: 0 0 24px;
+}
+.ctf-muted {
+  color: var(--ctf-muted);
+}
+.ctf-small {
+  font-size: 14px;
+}
+
+/* Hero */
+.ctf-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 40px;
+  align-items: center;
+  padding: 48px 0 32px;
+}
+.ctf-terminal {
+  font-family: var(--ctf-mono);
+  font-size: 14px;
+  background: var(--ctf-panel);
+  border: 1px solid var(--ctf-line);
+  border-radius: 14px;
+  padding: 18px 20px;
+  color: var(--ctf-muted);
+  overflow-wrap: anywhere;
+}
+.ctf-terminal b {
+  color: var(--ctf-signal);
+  font-weight: 500;
+}
+.ctf-terminal p {
+  margin: 0 0 6px;
+}
+@media (max-width: 820px) {
+  .ctf-hero {
+    grid-template-columns: 1fr;
+    padding-top: 24px;
+  }
+}
+
+/* Panels and grids */
+.ctf-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+.ctf-panel {
+  background: var(--ctf-panel);
+  border: 1px solid var(--ctf-line);
+  border-radius: 16px;
+  padding: 22px;
+}
+.ctf-panel > :last-child {
+  margin-bottom: 0;
+}
+.ctf-panel h3 {
+  margin: 0 0 8px;
+  font-weight: 500;
+  font-size: 18px;
+}
+.ctf-section {
+  margin-top: 40px;
+}
+.ctf-banner {
+  border: 1px solid var(--ctf-amber);
+  background: rgba(255, 184, 41, 0.08);
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin: 8px 0 24px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.ctf-banner.is-ok {
+  border-color: var(--ctf-signal);
+  background: rgba(47, 191, 143, 0.08);
+}
+
+/* Forms */
+.ctf-auth {
+  max-width: 460px;
+  margin: 32px auto 0;
+}
+.ctf-form {
+  display: grid;
+  gap: 14px;
+}
+.ctf-field {
+  display: grid;
+  gap: 6px;
+}
+.ctf-label {
+  font-size: 14px;
+  color: var(--ctf-muted);
+}
+.ctf-input {
+  width: 100%;
+  padding: 12px 14px;
+  background: #050507;
+  border: 1px solid var(--ctf-line);
+  border-radius: 10px;
+}
+.ctf-input:focus {
+  border-color: var(--ctf-iris);
+  outline: none;
+}
+.ctf-input[aria-invalid="true"] {
+  border-color: var(--ctf-danger);
+}
+.ctf-check {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 15px;
+  color: var(--ctf-muted);
+}
+.ctf-check input {
+  margin-top: 5px;
+  accent-color: var(--ctf-iris);
+}
+.ctf-hidden {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.ctf-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  border: 0;
+  background: var(--ctf-iris);
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+}
+.ctf-button:hover {
+  background: #6b3df0;
+}
+.ctf-button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+.ctf-button.is-ghost {
+  background: transparent;
+  border: 1px solid var(--ctf-line);
+}
+.ctf-button.is-ghost:hover {
+  border-color: var(--ctf-muted);
+}
+.ctf-button.is-danger {
+  background: transparent;
+  border: 1px solid var(--ctf-danger);
+  color: var(--ctf-danger);
+}
+.ctf-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.ctf-error {
+  color: var(--ctf-danger);
+  margin: 0;
+  font-size: 15px;
+}
+.ctf-success {
+  color: var(--ctf-signal);
+  margin: 0;
+  font-size: 15px;
+}
+.ctf-hint {
+  font-size: 13px;
+  color: var(--ctf-muted);
+  margin: 0;
+}
+.ctf-rules ol {
+  padding-left: 22px;
+}
+.ctf-rules li {
+  margin-bottom: 8px;
+}
+.ctf-dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 6px 16px;
+  margin: 0;
+}
+.ctf-dl dt {
+  color: var(--ctf-muted);
+}
+.ctf-dl dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ctf-root * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Language switch (components/language-switcher) */
+.ctf-root .language-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ctf-root .language-switcher {
+  display: flex;
+  gap: 2px;
+}
+.ctf-root .language-switcher button {
+  background: none;
+  border: 0;
+  padding: 6px;
+  color: var(--ctf-muted);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  cursor: pointer;
+}
+.ctf-root .language-switcher button[aria-pressed="true"] {
+  color: var(--ctf-text);
+}
