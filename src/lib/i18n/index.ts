@@ -21,8 +21,11 @@ import junior from "./junior.json";
 import kids from "./kids.json";
 import defend from "./defend.json";
 import labsUi from "./labs-ui.json";
+import challenges from "./challenges.json";
 
+// challenges comes first: its shared words keep the other areas' wording.
 export const allMessages = [
+  challenges,
   common,
   html,
   ctf,

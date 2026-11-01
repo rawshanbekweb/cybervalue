@@ -33,12 +33,15 @@ const AREAS: Record<string, Set<string>> = {
   kids: with_(layer("kids")),
   live: with_(layer("live")),
   lab: with_(layer("lab")),
+  challenges: with_(layer("challenges")),
 };
 
 function area(file: string) {
   if (/components\/admin\/|app\/admin\//.test(file)) return "admin";
   if (file.includes("playground/junior/")) return "junior";
   if (file.includes("components/kids/")) return "kids";
+  if (/components\/challenges\/|app\/challenges\//.test(file))
+    return "challenges";
   if (file.includes("components/live/")) return "live";
   if (/components\/student\/|app\/student\/|portrait-upload/.test(file))
     return "student";
@@ -76,6 +79,7 @@ const ACTIONS: Record<string, string> = {
   "src/app/[lang]/kids/actions.ts": "kids",
   "src/app/[lang]/junior/actions.ts": "junior",
   "src/app/student/actions.ts": "student",
+  "src/app/challenges/actions.ts": "challenges",
 };
 
 test("messages returned by an area's server actions are in its dictionaries", () => {

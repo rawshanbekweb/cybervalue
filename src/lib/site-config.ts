@@ -29,6 +29,12 @@ export const SECTIONS = [
     href: "/student",
   },
   {
+    id: "challenges",
+    group: "main",
+    label: "CTF Challenges",
+    href: "/challenges",
+  },
+  {
     id: "scams",
     group: "main",
     label: "Scam simulator",

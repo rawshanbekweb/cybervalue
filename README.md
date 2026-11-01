@@ -115,6 +115,8 @@ Playwright starts its own server on `PORT` and only reuses a running one when `P
 
 The [00:17 CTF](docs/ctf.md) at `/akademiya/ctf` is a five-challenge Uzbek-language investigation with a signal map, evidence viewer, decoder, local archive, server-verified flags, and a final transmission unlocked by four recovered keys.
 
+[CTF Challenges](docs/challenges.md) at `/challenges` is the public competition area: players sign up with an email and password, confirm the address, and (in later phases) form teams and compete on a live scoreboard.
+
 The [HTML & CSS project studio](docs/studio.md) at `/akademiya/studio` includes three fictional client briefs, separate HTML/CSS editors, isolated live previews, structural feedback, saved drafts, and HTML/review exports.
 
 The [IP addressing lab](docs/network-lab.md) at `/akademiya/network-basics` teaches IP addresses, subnet masks and the default gateway, then how addresses are obtained (DHCP), found (DNS) and shared (NAT), plus subnetting, traceroute, ports, IPv6, and DNS, TLS and HTTP on the wire, in seventeen lessons with clickable bits, frame-by-frame packets, generated practice examples, a bitwise AND view, a small network simulator that explains every ping, and a subnet calculator.

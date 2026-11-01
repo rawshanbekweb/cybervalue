@@ -56,6 +56,8 @@ const ACTIONS: Record<string, string> = {
   "telegram.unlink": "Telegram chat unlinked",
   "telegram.broadcast": "Telegram message sent",
   "data.export": "Data exported",
+  "ctf.player_update": "CTF player changed",
+  "ctf.player_delete": "CTF player deleted",
   "kids.create": "Kids members added",
   "kids.update": "Kids member edited",
   "kids.code_reset": "Kids access code renewed",
