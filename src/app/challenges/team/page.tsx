@@ -1,5 +1,6 @@
+import { getCtfTranslator } from "@/lib/challenges/view";
 import Link from "next/link";
-import { getAdminTranslator } from "@/lib/i18n/server";
+
 import { requirePlayer } from "@/lib/challenges/session";
 import { teamOf } from "@/lib/challenges/teams";
 import { TEAM_MAX_MEMBERS } from "@/lib/challenges/account";
@@ -13,13 +14,13 @@ import {
 } from "@/components/challenges/team-forms";
 
 export async function generateMetadata() {
-  const t = await getAdminTranslator();
+  const t = await getCtfTranslator();
   return { title: t("My team") };
 }
 
 export default async function TeamPage() {
   const player = await requirePlayer("/challenges/team");
-  const t = await getAdminTranslator();
+  const t = await getCtfTranslator();
   const team = await teamOf(player.id);
 
   if (!team)

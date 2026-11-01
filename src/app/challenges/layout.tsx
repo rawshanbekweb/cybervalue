@@ -2,16 +2,16 @@ import type { Metadata, Viewport } from "next";
 import { LocaleProvider } from "@/components/locale-provider";
 import { ChallengesMessages } from "@/components/i18n/challenges-messages";
 import { ChallengesNav } from "@/components/challenges/nav";
-import { createTranslator } from "@/lib/i18n";
 import { getAdminLocale } from "@/lib/i18n/server";
 import { requireSection } from "@/lib/site-config-server";
+import { getCtfTranslator } from "@/lib/challenges/view";
 import "./challenges.css";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const t = createTranslator(await getAdminLocale());
+  const t = await getCtfTranslator();
   return {
     title: {
       absolute: `${t("CTF Challenges")} | Cybervalue`,
@@ -36,7 +36,7 @@ export default async function ChallengesLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   await requireSection("challenges");
   const locale = await getAdminLocale();
-  const t = createTranslator(locale);
+  const t = await getCtfTranslator();
   return (
     <html lang={locale}>
       <body className="ctf-root">

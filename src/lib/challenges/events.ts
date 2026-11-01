@@ -1,0 +1,384 @@
+import "server-only";
+import { cache } from "react";
+import { getDb } from "../db";
+import { Prisma } from "@/generated/prisma/client";
+import {
+  attemptDigest,
+  challengeValue,
+  flagMatches,
+  phaseOf,
+  registrationOpen,
+  scoreboardCutoff,
+  standings,
+} from "./scoring";
+
+export class EventError extends Error {}
+
+type Player = { id: string; emailVerifiedAt: Date | null; username: string };
+
+export const publishedEvents = cache(
+  async () =>
+    (await getDb()?.ctfEvent.findMany({
+      where: { published: true },
+      orderBy: { startsAt: "desc" },
+      select: {
+        id: true,
+        slug: true,
+        title: true,
+        summary: true,
+        startsAt: true,
+        endsAt: true,
+        registrationEndsAt: true,
+        freezeAt: true,
+        maxTeamSize: true,
+        allowSolo: true,
+        _count: { select: { entrants: true } },
+      },
+    })) ?? [],
+);
+
+/** A published competition by its slug (owners may preview unpublished). */
+export const eventBySlug = cache(async (slug: string, preview = false) => {
+  const event = await getDb()?.ctfEvent.findUnique({ where: { slug } });
+  return event && (event.published || preview) ? event : null;
+});
+
+/** The entrant the player plays as: their team's, or their own. */
+export async function entrantFor(eventId: string, playerId: string) {
+  const db = getDb()!;
+  const player = await db.ctfPlayer.findUnique({
+    where: { id: playerId },
+    select: { teamId: true },
+  });
+  return db.ctfEntrant.findFirst({
+    where: {
+      eventId,
+      OR: [
+        { playerId },
+        ...(player?.teamId ? [{ teamId: player.teamId }] : []),
+      ],
+    },
+  });
+}
+
+type EventRow = NonNullable<Awaited<ReturnType<typeof eventBySlug>>>;
+
+export async function register(
+  event: EventRow,
+  player: Player,
+  as: "team" | "solo",
+) {
+  if (!player.emailVerifiedAt)
+    throw new EventError("Confirm your email to register.");
+  if (!registrationOpen(event))
+    throw new EventError("Registration for this competition is closed.");
+  const db = getDb()!;
+  try {
+    await db.$transaction(async (tx) => {
+      const me = await tx.ctfPlayer.findUniqueOrThrow({
+        where: { id: player.id },
+        select: {
+          teamId: true,
+          team: { select: { id: true, name: true, captainId: true } },
+        },
+      });
+      if (as === "solo") {
+        if (!event.allowSolo)
+          throw new EventError("This competition is for teams only.");
+        if (
+          me.teamId &&
+          (await tx.ctfEntrant.count({
+            where: { eventId: event.id, teamId: me.teamId },
+          }))
+        )
+          throw new EventError("Your team is already registered.");
+        await tx.ctfEntrant.create({
+          data: {
+            eventId: event.id,
+            playerId: player.id,
+            name: player.username,
+          },
+        });
+        return;
+      }
+      if (!me.team) throw new EventError("Create or join a team first.");
+      if (me.team.captainId !== player.id)
+        throw new EventError("Only the captain can register the team.");
+      await tx.$queryRaw`SELECT "id" FROM "CtfTeam" WHERE "id" = ${me.team.id} FOR UPDATE`;
+      const members = await tx.ctfPlayer.findMany({
+        where: { teamId: me.team.id },
+        select: { id: true },
+      });
+      if (members.length > event.maxTeamSize)
+        throw new EventError(
+          "Your team is larger than this competition allows.",
+        );
+      const solo = await tx.ctfEntrant.count({
+        where: {
+          eventId: event.id,
+          playerId: { in: members.map((m) => m.id) },
+        },
+      });
+      if (solo)
+        throw new EventError(
+          "A member of your team is already registered on their own.",
+        );
+      await tx.ctfEntrant.create({
+        data: { eventId: event.id, teamId: me.team.id, name: me.team.name },
+      });
+    });
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    )
+      throw new EventError("You are already registered.");
+    throw error;
+  }
+}
+
+/** Withdraws before the start: a solo player, or the captain for the team. */
+export async function withdraw(event: EventRow, playerId: string) {
+  if (phaseOf(event) !== "upcoming")
+    throw new EventError("You can withdraw only before the start.");
+  const db = getDb()!;
+  const entrant = await entrantFor(event.id, playerId);
+  if (!entrant) return;
+  if (entrant.teamId) {
+    const team = await db.ctfTeam.findUnique({
+      where: { id: entrant.teamId },
+      select: { captainId: true },
+    });
+    if (team?.captainId !== playerId)
+      throw new EventError("Only the captain can withdraw the team.");
+  }
+  await db.ctfEntrant.delete({ where: { id: entrant.id } });
+}
+
+export type SubmitResult = "correct" | "wrong" | "already";
+
+export async function submitFlag(
+  event: EventRow,
+  entrantId: string,
+  playerId: string,
+  challengeId: string,
+  attempt: string,
+): Promise<SubmitResult> {
+  if (phaseOf(event) !== "running")
+    throw new EventError("Flags are accepted only while the competition runs.");
+  const db = getDb()!;
+  const challenge = await db.ctfChallenge.findFirst({
+    where: { id: challengeId, eventId: event.id, visible: true },
+    select: { id: true, flagSalt: true, flagHash: true, caseSensitive: true },
+  });
+  if (!challenge) throw new EventError("This challenge is not available.");
+  const solved = await db.ctfSolve.findUnique({
+    where: { entrantId_challengeId: { entrantId, challengeId } },
+    select: { id: true },
+  });
+  if (solved) return "already";
+  const correct = flagMatches(challenge, attempt);
+  await db.ctfSubmission.create({
+    data: {
+      entrantId,
+      challengeId,
+      playerId,
+      correct,
+      valueHash: attemptDigest(challengeId, attempt),
+    },
+  });
+  if (!correct) return "wrong";
+  try {
+    await db.ctfSolve.create({ data: { entrantId, challengeId, playerId } });
+  } catch (error) {
+    // A teammate solved it a moment earlier.
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    )
+      return "already";
+    throw error;
+  }
+  return "correct";
+}
+
+export async function unlockHint(
+  event: EventRow,
+  entrantId: string,
+  hintId: string,
+) {
+  if (phaseOf(event) !== "running")
+    throw new EventError("Hints open only while the competition runs.");
+  const db = getDb()!;
+  const hint = await db.ctfHint.findFirst({
+    where: { id: hintId, challenge: { eventId: event.id, visible: true } },
+    select: { id: true },
+  });
+  if (!hint) throw new EventError("This hint is not available.");
+  await db.ctfHintUnlock.upsert({
+    where: { entrantId_hintId: { entrantId, hintId } },
+    create: { entrantId, hintId },
+    update: {},
+  });
+}
+
+/** The board an entrant sees while playing: challenges with their value. */
+export async function challengeBoard(
+  eventId: string,
+  entrantId: string | null,
+  revealHints = false,
+) {
+  const db = getDb()!;
+  const [challenges, counts, mine, unlocked] = await Promise.all([
+    db.ctfChallenge.findMany({
+      where: { eventId, visible: true },
+      orderBy: [{ category: "asc" }, { position: "asc" }, { createdAt: "asc" }],
+      select: {
+        id: true,
+        title: true,
+        category: true,
+        description: true,
+        initialPoints: true,
+        minimumPoints: true,
+        decay: true,
+        files: { select: { id: true, name: true, size: true } },
+        hints: {
+          orderBy: { position: "asc" },
+          select: { id: true, cost: true, text: true },
+        },
+      },
+    }),
+    db.ctfSolve.groupBy({
+      by: ["challengeId"],
+      where: { challenge: { eventId }, entrant: { banned: false } },
+      _count: { _all: true },
+    }),
+    entrantId
+      ? db.ctfSolve.findMany({
+          where: { entrantId },
+          select: { challengeId: true },
+        })
+      : [],
+    entrantId
+      ? db.ctfHintUnlock.findMany({
+          where: { entrantId },
+          select: { hintId: true },
+        })
+      : [],
+  ]);
+  const solvesOf = new Map(counts.map((c) => [c.challengeId, c._count._all]));
+  const solvedIds = new Set(mine.map((s) => s.challengeId));
+  const open = new Set(unlocked.map((u) => u.hintId));
+  return challenges.map((c) => ({
+    id: c.id,
+    title: c.title,
+    category: c.category,
+    description: c.description,
+    files: c.files,
+    solves: solvesOf.get(c.id) ?? 0,
+    value: challengeValue(c, solvesOf.get(c.id) ?? 0),
+    solved: solvedIds.has(c.id),
+    // A hint's text reaches the browser only once it is unlocked.
+    hints: c.hints.map((h) => ({
+      id: h.id,
+      cost: h.cost,
+      text: revealHints || open.has(h.id) ? h.text : null,
+    })),
+  }));
+}
+
+/**
+ * The scoreboard. During a freeze the public sees the standings at the
+ * freeze time; `full` (owners) always sees everything.
+ */
+export async function scoreboard(event: EventRow, full = false) {
+  const db = getDb()!;
+  const cutoff = full ? null : scoreboardCutoff(event);
+  const [entrants, challenges, solves, unlocks] = await Promise.all([
+    db.ctfEntrant.findMany({
+      where: { eventId: event.id, banned: false },
+      select: {
+        id: true,
+        name: true,
+        teamId: true,
+        team: { select: { _count: { select: { members: true } } } },
+      },
+    }),
+    db.ctfChallenge.findMany({
+      where: { eventId: event.id },
+      select: {
+        id: true,
+        initialPoints: true,
+        minimumPoints: true,
+        decay: true,
+      },
+    }),
+    db.ctfSolve.findMany({
+      where: { challenge: { eventId: event.id }, entrant: { banned: false } },
+      orderBy: { createdAt: "asc" },
+      select: { entrantId: true, challengeId: true, createdAt: true },
+    }),
+    db.ctfHintUnlock.findMany({
+      where: { entrant: { eventId: event.id, banned: false } },
+      select: {
+        entrantId: true,
+        createdAt: true,
+        hint: { select: { cost: true } },
+      },
+    }),
+  ]);
+  const rows = standings(
+    entrants.map((e) => e.id),
+    new Map(challenges.map((c) => [c.id, c])),
+    solves.map((s) => ({
+      entrantId: s.entrantId,
+      challengeId: s.challengeId,
+      at: s.createdAt,
+    })),
+    unlocks.map((u) => ({
+      entrantId: u.entrantId,
+      cost: u.hint.cost,
+      at: u.createdAt,
+    })),
+    cutoff,
+  );
+  const byId = new Map(entrants.map((e) => [e.id, e]));
+  const solveCount = new Map<string, number>();
+  for (const s of solves)
+    if (!cutoff || s.createdAt <= cutoff)
+      solveCount.set(s.challengeId, (solveCount.get(s.challengeId) ?? 0) + 1);
+  const values = new Map(
+    challenges.map((c) => [c.id, challengeValue(c, solveCount.get(c.id) ?? 0)]),
+  );
+  // First solver of each challenge, among the solves the viewer may see.
+  const firstBlood = new Map<string, string>();
+  for (const s of solves)
+    if ((!cutoff || s.createdAt <= cutoff) && !firstBlood.has(s.challengeId))
+      firstBlood.set(s.challengeId, s.entrantId);
+  const bloods = new Map<string, number>();
+  for (const id of firstBlood.values())
+    bloods.set(id, (bloods.get(id) ?? 0) + 1);
+  return {
+    now: new Date(),
+    frozenAt: cutoff,
+    rows: rows.map((r) => {
+      const entrant = byId.get(r.entrantId)!;
+      return {
+        ...r,
+        name: entrant.name,
+        team: Boolean(entrant.teamId),
+        members: entrant.team?._count.members ?? 1,
+        firstBloods: bloods.get(r.entrantId) ?? 0,
+      };
+    }),
+    values,
+    // For the progress chart: score over time of the top entrants.
+    timeline: solves
+      .filter((s) => !cutoff || s.createdAt <= cutoff)
+      .map((s) => ({
+        entrantId: s.entrantId,
+        challengeId: s.challengeId,
+        at: s.createdAt,
+      })),
+  };
+}

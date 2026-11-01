@@ -70,7 +70,12 @@ the audit log.
 - `tests/e2e/challenges.spec.ts`: sign-up, confirmation, a spent link,
   username change, sign-in errors, the taken-email answer, password reset that
   signs out other devices, the admin blocking a player, a team built with an
-  invite code and handed to a new captain, and accessibility.
+  invite code and handed to a new captain, a whole competition (admin setup,
+  file, paid hint, wrong and right flags, dynamic scores, blocking the
+  leader), team registration and the running-competition lock, and
+  accessibility.
+- `tests/challenges-scoring.test.ts` and `tests/challenges-admin.test.ts`:
+  phases, freeze, flags, values, standings, and the admin forms.
   It needs `DATABASE_URL` and `EMAIL_OUTBOX`.
 
 ## Teams (phase 2)
@@ -94,7 +99,70 @@ with a confirmed email can create or join a team.
   longest-standing member; the last member leaving deletes the team. The same
   happens when a player deletes the account or an owner deletes it.
 
-## Next phases
+## Competitions (phase 3)
 
-Competitions with challenges, files, hashed flags, hints and dynamic scoring,
-then the live scoreboard, freeze, announcements, archive and certificates.
+Owners run competitions from **Admin → CTF competitions** (`/admin/ctf/events`).
+
+- **A competition** (`CtfEvent`) has an address (`/challenges/<slug>`; the
+  area's own page names are reserved), a title, a short description, a
+  Markdown description with its rules, a start and an end, an optional
+  registration deadline and scoreboard freeze, a team size (1–10), whether
+  players may take part alone, and a published switch. Times are entered and
+  shown in Tashkent time. Owners can open an unpublished competition to check
+  it before publishing.
+- **Entrants** (`CtfEntrant`): a team registers through its captain, or a
+  player registers alone (when allowed). Registration needs a confirmed email
+  and stays open until the deadline or the end. A team may not be larger than
+  the competition allows, and a member registered alone keeps the team out.
+  Before the start a solo player, or the captain for the team, can withdraw.
+  The entrant keeps the team's name at registration, so results survive a
+  rename or a deleted team.
+- **Teams are locked** while one of their competitions runs: nobody joins,
+  leaves or is removed, so flags cannot travel between teams. Before the start
+  a team may not grow past the competition's size. Deleting an account is
+  always allowed.
+- **Challenges** (`CtfChallenge`): title, category (Crypto, Web, Forensics,
+  OSINT, Stego, Reverse, Pwn, Misc), Markdown task, flag, letter-case rule,
+  scoring, order and visibility.
+  - **Flags** are never stored: only SHA-256 of a random per-challenge salt
+    and the flag (trimmed, NFC-normalised, lower-cased when case does not
+    matter), compared in constant time. A new flag or a changed case rule
+    replaces the salt and digest.
+  - **Dynamic scoring** (`challengeValue`, the CTFd curve): a challenge is
+    worth its starting value at first and falls along a parabola to its
+    minimum after `decay + 1` solves. Every solver gets the current value, so
+    scores move as others solve. Equal minimum and starting values make it
+    static.
+  - **Files** (`CtfFile`, any type, 4 MiB each, 200 MiB for all CTF files)
+    are uploaded on the challenge page through `/admin/ctf/upload` and stored
+    apart from the public file library. `/challenges/files/<id>` serves them
+    as downloads only, to the competition's entrants while it runs, any
+    signed-in player after the end, and owners.
+  - **Hints** (`CtfHint`) may cost points; the text reaches the browser only
+    after the entrant opens it (`CtfHintUnlock`). After the end every hint is
+    open.
+- **Playing** (`/challenges/<slug>/board`): the board lists challenges by
+  category with their value and solve count. Flags are accepted only while
+  the competition runs. Each attempt is recorded (`CtfSubmission`, with only
+  a digest of what was typed) and limited to 10 per challenge per entrant and
+  60 per player per minute. A solve (`CtfSolve`) is unique per entrant and
+  challenge, so teammates cannot score it twice.
+- **Scoreboard** (`/challenges/<slug>/scoreboard`): score = sum of the
+  current values of solved challenges minus opened hints; a tie goes to the
+  entrant who reached the score first. It shows first bloods and a step chart
+  of the top 10 over time. From the freeze time until the end the public sees
+  the standings at the freeze; owners see the live standings.
+- **Organiser tools** on the competition page: the challenge list with
+  current values, entrants with rank, points and attempts, **Block** (the
+  entrant leaves the scoreboard and cannot submit), announcements (shown on
+  the competition page), and a warning when three or more entrants typed the
+  same wrong answer to a challenge. Every change is in the audit log.
+
+Business rules that need no database (phase, registration window, freeze,
+flag digest, values, standings, admin form checks) live in
+`src/lib/challenges/scoring.ts` and `admin-forms.ts` and are unit-tested.
+
+## Still to come
+
+Certificates for the winners and a public archive page for finished
+competitions.

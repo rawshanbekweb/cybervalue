@@ -40,7 +40,7 @@ export async function deletePlayerAction(id: string) {
   const db = getDb();
   if (!db) return;
   await db.$transaction(async (tx) => {
-    await releasePlayer(tx, id);
+    await releasePlayer(tx, id, true);
     await tx.ctfPlayer.deleteMany({ where: { id } });
   });
   await audit("ctf.player_delete", session.user.id, id);

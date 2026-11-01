@@ -343,3 +343,209 @@ test("players build a team with an invite code and hand over the captaincy", asy
   await captain.close();
   await member.close();
 });
+
+/** A datetime-local value in Tashkent time, `minutes` from now. */
+const tashkent = (minutes: number) =>
+  new Date(Date.now() + minutes * 60_000 + 5 * 3_600_000)
+    .toISOString()
+    .slice(0, 16);
+
+test("a competition runs end to end: admin setup, registration, files, hints, flags and the scoreboard", async ({
+  browser,
+}) => {
+  test.skip(
+    !process.env.E2E_ADMIN_EMAIL || !process.env.E2E_ADMIN_PASSWORD,
+    "Needs the seeded admin account",
+  );
+  const slug = `kuz-${unique()}`.slice(0, 40);
+  const adminContext = await browser.newContext({
+    storageState: {
+      cookies: [
+        {
+          name: "cybervalue-locale",
+          value: "en",
+          domain: "localhost",
+          path: "/",
+          expires: -1,
+          httpOnly: true,
+          secure: false,
+          sameSite: "Lax",
+        },
+      ],
+      origins: [],
+    },
+  });
+  const admin = await adminContext.newPage();
+  await admin.goto("/admin/login");
+  await admin.getByLabel("Email").fill(process.env.E2E_ADMIN_EMAIL!);
+  await admin.getByLabel("Password").fill(process.env.E2E_ADMIN_PASSWORD!);
+  await admin.getByRole("button", { name: "Sign in" }).click();
+  await expect(admin).toHaveURL(/\/admin$/);
+
+  // A running competition with one challenge, a file and a paid hint.
+  await admin.goto("/admin/ctf/events");
+  await admin.getByLabel("Title").fill("Kuzgi CTF");
+  await admin.getByLabel(/Address/).fill(slug);
+  await admin.getByLabel("Short description").fill("Sinov musobaqasi");
+  await admin.getByLabel("Starts (Tashkent time)").fill(tashkent(-10));
+  await admin.getByLabel("Ends (Tashkent time)").fill(tashkent(120));
+  await admin.getByLabel("Team size (1–10)").fill("3");
+  await admin.getByLabel(/Published/).check();
+  await admin.getByRole("button", { name: "Create" }).click();
+  await expect(admin.getByText("Competition created.")).toBeVisible();
+
+  await admin.getByText("New challenge").click();
+  await admin.getByLabel("Title").first().fill("Base64 xat");
+  await admin.getByLabel("Category").selectOption("Crypto");
+  await admin
+    .getByLabel("Task (Markdown)")
+    .fill("Xatni oching: `Q1Z7c2Fsb219`");
+  await admin.getByLabel("Flag", { exact: true }).fill("CV{salom}");
+  await admin.getByLabel("Starting value").fill("500");
+  await admin.getByLabel("Minimum value").fill("100");
+  await admin.getByLabel("Solves to reach the minimum").fill("2");
+  await admin.getByRole("button", { name: "Create" }).click();
+  await expect(admin.getByText("Challenge created.")).toBeVisible();
+  await admin.getByLabel("New hint (Markdown)").fill("Base64 ni oching.");
+  await admin.getByLabel("Cost in points").fill("50");
+  await admin.getByRole("button", { name: "Add the hint" }).click();
+  await expect(admin.getByText("Hint added.")).toBeVisible();
+  await admin.getByLabel("Add files (up to 4 MiB each)").setInputFiles({
+    name: "xat.txt",
+    mimeType: "text/plain",
+    buffer: Buffer.from("Q1Z7c2Fsb219"),
+  });
+  await expect(admin.getByRole("link", { name: "xat.txt" })).toBeVisible();
+
+  // Two solo players: one opens the hint, both solve; the first wins.
+  const first = await confirmedPlayer(browser);
+  const second = await confirmedPlayer(browser);
+  for (const p of [first, second]) {
+    await p.page.goto(`/challenges/${slug}`);
+    await p.page.getByRole("button", { name: "Play on my own" }).click();
+    await expect(
+      p.page.getByText("You are registered on your own."),
+    ).toBeVisible();
+  }
+
+  const board = first.page;
+  await board.goto(`/challenges/${slug}/board`);
+  await board.getByText("Base64 xat").click();
+  const download = board.waitForEvent("download");
+  await board.getByRole("link", { name: "xat.txt" }).click();
+  expect((await download).suggestedFilename()).toBe("xat.txt");
+  await board.getByPlaceholder("CV{...}").fill("CV{nope}");
+  await board.getByRole("button", { name: "Submit" }).click();
+  await expect(board.getByText("Not this flag. Try again.")).toBeVisible();
+  await board.getByPlaceholder("CV{...}").fill("  CV{salom} ");
+  await board.getByRole("button", { name: "Submit" }).click();
+  await expect(board.getByText(/Solved/).first()).toBeVisible();
+
+  const late = second.page;
+  late.on("dialog", (dialog) => dialog.accept());
+  await late.goto(`/challenges/${slug}/board`);
+  await late.getByText("Base64 xat").click();
+  await late.getByRole("button", { name: "Open a hint (−50 points)" }).click();
+  await expect(late.getByText("Base64 ni oching.")).toBeVisible();
+  await late.getByPlaceholder("CV{...}").fill("CV{salom}");
+  await late.getByRole("button", { name: "Submit" }).click();
+  await expect(late.getByText(/Solved/).first()).toBeVisible();
+
+  // Two solves, decay 2: the value fell from 500 to 400 for both. The
+  // second player paid 50 for the hint.
+  await late.goto(`/challenges/${slug}/scoreboard`);
+  const rows = late.locator(".ctf-table tbody tr");
+  await expect(rows).toHaveCount(2);
+  await expect(rows.nth(0)).toContainText(first.username);
+  await expect(rows.nth(0).locator("td").nth(2)).toHaveText("400");
+  await expect(rows.nth(1)).toContainText(second.username);
+  await expect(rows.nth(1).locator("td").nth(2)).toHaveText("350");
+  const axe = await new AxeBuilder({ page: late })
+    .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+    .analyze();
+  expect(axe.violations.map((v) => v.id)).toEqual([]);
+
+  // The admin blocks the leader, who drops off the scoreboard.
+  await admin.goto("/admin/ctf/events");
+  await admin.getByRole("link", { name: "Kuzgi CTF" }).first().click();
+  const row = admin.getByRole("row", { name: new RegExp(first.username) });
+  await row.getByRole("button", { name: "Block" }).click();
+  await expect(admin.getByText("Entrant blocked.")).toBeVisible();
+  await late.reload();
+  await expect(rows).toHaveCount(1);
+  await expect(rows.nth(0)).toContainText(second.username);
+
+  await adminContext.close();
+  await first.close();
+  await second.close();
+});
+
+test("a captain registers the team; the team is locked while the competition runs", async ({
+  browser,
+}) => {
+  test.skip(
+    !process.env.E2E_ADMIN_EMAIL || !process.env.E2E_ADMIN_PASSWORD,
+    "Needs the seeded admin account",
+  );
+  const slug = `jamoa-${unique()}`.slice(0, 40);
+  const adminContext = await browser.newContext();
+  const admin = await adminContext.newPage();
+  await admin.goto("/admin/login");
+  await admin.getByLabel("Email").fill(process.env.E2E_ADMIN_EMAIL!);
+  await admin.getByLabel("Password").fill(process.env.E2E_ADMIN_PASSWORD!);
+  await admin.getByRole("button", { name: /Sign in|Tizimga kirish/ }).click();
+  await expect(admin).toHaveURL(/\/admin$/);
+  await admin.goto("/admin/ctf/events");
+  await admin.locator("#ctf-title").fill("Jamoaviy CTF");
+  await admin.locator("#ctf-slug").fill(slug);
+  await admin.locator("#ctf-starts").fill(tashkent(-5));
+  await admin.locator("#ctf-ends").fill(tashkent(60));
+  await admin.locator("#ctf-size").fill("2");
+  await admin.locator('input[name="allowSolo"]').uncheck();
+  await admin.locator('input[name="published"]').check();
+  await admin.locator('form button[type="submit"]').last().click();
+  await expect(admin).toHaveURL(/\/admin\/ctf\/events\/[^/?]+\?ok=/);
+  await adminContext.close();
+
+  const captain = await confirmedPlayer(browser);
+  const member = await confirmedPlayer(browser);
+  const team = `Jamoa ${unique()}`.slice(0, 32);
+  await captain.page.goto("/challenges/team");
+  await captain.page.getByLabel("Team name").fill(team);
+  await captain.page.getByRole("button", { name: "Create the team" }).click();
+  const code = (await captain.page.locator(".ctf-code").textContent())!.trim();
+  await member.page.goto("/challenges/team");
+  await member.page.getByLabel("Invite code").fill(code);
+  await member.page.getByRole("button", { name: "Join the team" }).click();
+  await expect(member.page.getByText("2 of 10 players")).toBeVisible();
+
+  // Teams only: a member cannot register, the captain can.
+  await member.page.goto(`/challenges/${slug}`);
+  await expect(
+    member.page.getByText("Only the captain can register the team."),
+  ).toBeVisible();
+  await expect(
+    member.page.getByRole("button", { name: "Play on my own" }),
+  ).toHaveCount(0);
+  await captain.page.goto(`/challenges/${slug}`);
+  await captain.page.getByRole("button", { name: "Register my team" }).click();
+  await expect(
+    captain.page.getByText(`Your team ${team} is registered.`),
+  ).toBeVisible();
+  await member.page.reload();
+  await expect(
+    member.page.getByRole("link", { name: "Open the challenges" }),
+  ).toBeVisible();
+
+  // While it runs, nobody can leave or be removed.
+  member.page.on("dialog", (dialog) => dialog.accept());
+  await member.page.goto("/challenges/team");
+  await member.page.getByRole("button", { name: "Leave the team" }).click();
+  await expect(
+    member.page.getByText(
+      "cannot change while one of its competitions is running",
+    ),
+  ).toBeVisible();
+  await captain.close();
+  await member.close();
+});

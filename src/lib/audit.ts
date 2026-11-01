@@ -68,7 +68,12 @@ export type AuditAction =
   | "junior.promote"
   | "data.export"
   | "ctf.player_update"
-  | "ctf.player_delete";
+  | "ctf.player_delete"
+  | "ctf.event_update"
+  | "ctf.event_delete"
+  | "ctf.entrant_ban"
+  | "ctf.challenge_update"
+  | "ctf.challenge_delete";
 
 const RETENTION_MS = 180 * 86_400_000;
 

@@ -1,15 +1,27 @@
+import { getCtfTranslator } from "@/lib/challenges/view";
 import Link from "next/link";
-import { getAdminTranslator } from "@/lib/i18n/server";
+
 import { getPlayerSession } from "@/lib/challenges/session";
 import { ResendVerification } from "@/components/challenges/forms";
+import { publishedEvents } from "@/lib/challenges/events";
+import { phaseOf } from "@/lib/challenges/scoring";
+import { formatWhen } from "@/lib/challenges/view";
+import { getAdminLocale } from "@/lib/i18n/server";
 
 export default async function ChallengesHome({
   searchParams,
 }: PageProps<"/challenges">) {
-  const t = await getAdminTranslator();
+  const t = await getCtfTranslator();
   const session = await getPlayerSession();
   const { welcome, deleted } = await searchParams;
   const player = session?.player;
+  const locale = await getAdminLocale();
+  const events = await publishedEvents();
+  const groups = [
+    ["running", t("Running now")],
+    ["upcoming", t("Coming up")],
+    ["ended", t("Finished")],
+  ] as const;
   return (
     <>
       {deleted && (
@@ -68,6 +80,45 @@ export default async function ChallengesHome({
           </p>
         </div>
       </section>
+      {groups.map(([phase, heading]) => {
+        const list = events.filter((e) => phaseOf(e) === phase);
+        if (!list.length) return null;
+        return (
+          <section
+            key={phase}
+            className="ctf-section"
+            aria-labelledby={`ctf-${phase}`}
+          >
+            <h2 id={`ctf-${phase}`} className="ctf-h2">
+              {heading}
+            </h2>
+            <div className="ctf-grid">
+              {list.map((e) => (
+                <Link
+                  key={e.id}
+                  href={`/challenges/${e.slug}`}
+                  className="ctf-panel ctf-event-card"
+                >
+                  <span className={`ctf-phase is-${phase}`}>{heading}</span>
+                  <h3>{e.title}</h3>
+                  {e.summary && <p className="ctf-muted">{e.summary}</p>}
+                  <p className="ctf-muted ctf-small">
+                    {formatWhen(e.startsAt, locale)} ·{" "}
+                    {t("{count} registered", { count: e._count.entrants })}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </section>
+        );
+      })}
+      {events.length === 0 && (
+        <p className="ctf-panel ctf-section ctf-muted">
+          {t(
+            "No competitions yet. Create an account and build your team: the first one is coming.",
+          )}
+        </p>
+      )}
       <section className="ctf-section" aria-labelledby="ctf-how">
         <h2 id="ctf-how" className="ctf-h2">
           {t("How it works")}

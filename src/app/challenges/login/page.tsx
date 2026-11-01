@@ -1,12 +1,13 @@
+import { getCtfTranslator } from "@/lib/challenges/view";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { getAdminTranslator } from "@/lib/i18n/server";
+
 import { getPlayerSession } from "@/lib/challenges/session";
 import { isChallengesNext } from "@/lib/challenges/account";
 import { LoginForm } from "@/components/challenges/forms";
 
 export async function generateMetadata() {
-  const t = await getAdminTranslator();
+  const t = await getCtfTranslator();
   return { title: t("Sign in") };
 }
 
@@ -16,7 +17,7 @@ export default async function LoginPage({
   const asked = (await searchParams).next;
   const next = isChallengesNext(asked) ? asked : undefined;
   if (await getPlayerSession()) redirect(next ?? "/challenges");
-  const t = await getAdminTranslator();
+  const t = await getCtfTranslator();
   return (
     <div className="ctf-auth">
       <p className="ctf-eyebrow">{t("Player")}</p>

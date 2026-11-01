@@ -42,6 +42,7 @@ export default async function AdminCmsLayout({
       title: t("People"),
       items: [
         { href: "/admin/users", label: t("All users") },
+        { href: "/admin/ctf/events", label: t("CTF competitions") },
         { href: "/admin/ctf/players", label: t("CTF players") },
         { href: "/admin/team", label: t("Team") },
         { href: "/admin/telegram", label: "Telegram" },

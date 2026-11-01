@@ -1,7 +1,7 @@
-import { getAdminTranslator } from "@/lib/i18n/server";
+import { getCtfTranslator } from "@/lib/challenges/view";
 
 export async function generateMetadata() {
-  const t = await getAdminTranslator();
+  const t = await getCtfTranslator();
   return { title: t("Rules") };
 }
 
@@ -16,7 +16,7 @@ const RULES = [
 ];
 
 export default async function RulesPage() {
-  const t = await getAdminTranslator();
+  const t = await getCtfTranslator();
   return (
     <article className="ctf-rules" style={{ maxWidth: "70ch" }}>
       <p className="ctf-eyebrow">{t("Fair play")}</p>

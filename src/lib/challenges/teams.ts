@@ -18,6 +18,48 @@ export class TeamError extends Error {}
 const lockTeam = (tx: Tx, teamId: string) =>
   tx.$queryRaw`SELECT "id" FROM "CtfTeam" WHERE "id" = ${teamId} FOR UPDATE`;
 
+/**
+ * Teams in a competition that has not ended stay as they are while it runs,
+ * and before it starts may not grow past its team size. Without this a player
+ * could hop between teams and carry flags across.
+ */
+async function guardChange(
+  tx: Tx,
+  teamId: string,
+  change: { size?: number; joining?: string } = {},
+) {
+  const now = new Date();
+  const entries = await tx.ctfEntrant.findMany({
+    where: { teamId, event: { endsAt: { gt: now } } },
+    select: {
+      event: { select: { id: true, startsAt: true, maxTeamSize: true } },
+    },
+  });
+  if (entries.some((e) => e.event.startsAt <= now))
+    throw new TeamError(
+      "The team cannot change while one of its competitions is running.",
+    );
+  if (
+    change.size !== undefined &&
+    entries.some((e) => change.size! > e.event.maxTeamSize)
+  )
+    throw new TeamError(
+      "The team is full for a competition it registered for.",
+    );
+  if (
+    change.joining &&
+    (await tx.ctfEntrant.count({
+      where: {
+        playerId: change.joining,
+        eventId: { in: entries.map((e) => e.event.id) },
+      },
+    }))
+  )
+    throw new TeamError(
+      "You are registered on your own in a competition this team plays.",
+    );
+}
+
 const nameTaken = (error: unknown) =>
   error instanceof Prisma.PrismaClientKnownRequestError &&
   error.code === "P2002" &&
@@ -85,13 +127,15 @@ export async function joinTeam(playerId: string, rawCode: string) {
  * longest-standing member; the last member leaving deletes the team.
  * Used when a player leaves, is removed or deletes the account.
  */
-export async function releasePlayer(tx: Tx, playerId: string) {
+export async function releasePlayer(tx: Tx, playerId: string, force = false) {
   const player = await tx.ctfPlayer.findUnique({
     where: { id: playerId },
     select: { teamId: true },
   });
   if (!player?.teamId) return;
   await lockTeam(tx, player.teamId);
+  // Deleting an account is always allowed, even mid-competition.
+  if (!force) await guardChange(tx, player.teamId);
   const team = await tx.ctfTeam.findUniqueOrThrow({
     where: { id: player.teamId },
     select: { id: true, captainId: true },
@@ -133,6 +177,7 @@ export async function removeMember(captainId: string, memberId: string) {
     throw new TeamError("Use “Leave the team” to leave it yourself.");
   await getDb()!.$transaction(async (tx) => {
     const team = await captainTeam(tx, captainId);
+    await guardChange(tx, team.id);
     const moved = await tx.ctfPlayer.updateMany({
       where: { id: memberId, teamId: team.id },
       data: { teamId: null, joinedTeamAt: null },
