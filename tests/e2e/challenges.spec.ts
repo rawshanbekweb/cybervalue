@@ -231,3 +231,115 @@ test("the admin finds a player and blocks the account", async ({
   await page.getByRole("button", { name: "Sign in" }).click();
   await expect(page.getByText("This account is blocked")).toBeVisible();
 });
+
+/** A new player with a confirmed email, signed in on its own page. */
+async function confirmedPlayer(browser: import("@playwright/test").Browser) {
+  const context = await browser.newContext({
+    storageState: {
+      cookies: [
+        {
+          name: "cybervalue-locale",
+          value: "en",
+          domain: "localhost",
+          path: "/",
+          expires: -1,
+          httpOnly: true,
+          secure: false,
+          sameSite: "Lax",
+        },
+      ],
+      origins: [],
+    },
+  });
+  const page = await context.newPage();
+  const id = unique();
+  const email = `team-${id}@example.com`;
+  const username = `t_${id}`;
+  await signUp(page, email, username);
+  await expect(page).toHaveURL(/welcome=1/);
+  await page.goto(await mailedLink(email, "/challenges/verify"));
+  await page.getByRole("button", { name: "Confirm my email" }).click();
+  await expect(page.getByText("Email confirmed")).toBeVisible();
+  return { page, username, close: () => context.close() };
+}
+
+test("players build a team with an invite code and hand over the captaincy", async ({
+  browser,
+}) => {
+  const captain = await confirmedPlayer(browser);
+  const member = await confirmedPlayer(browser);
+  const team = `Team ${unique()}`.slice(0, 32);
+
+  await captain.page.goto("/challenges/team");
+  await captain.page.getByLabel("Team name").fill(team);
+  await captain.page.getByRole("button", { name: "Create the team" }).click();
+  await expect(
+    captain.page.getByRole("heading", { level: 1, name: team }),
+  ).toBeVisible();
+  const code = (await captain.page.locator(".ctf-code").textContent())!.trim();
+  const axe = await new AxeBuilder({ page: captain.page })
+    .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+    .analyze();
+  expect(axe.violations.map((v) => v.id)).toEqual([]);
+  expect(code).toMatch(/^[0-9A-Z]{5}-[0-9A-Z]{5}$/);
+
+  // A wrong code is refused; the right one, typed loosely, works.
+  await member.page.goto("/challenges/team");
+  await member.page.getByLabel("Invite code").fill("AAAAA-AAAAA");
+  await member.page.getByRole("button", { name: "Join the team" }).click();
+  await expect(
+    member.page.getByText("This invite code is not valid."),
+  ).toBeVisible();
+  await member.page
+    .getByLabel("Invite code")
+    .fill(code.toLowerCase().replace("-", " "));
+  await member.page.getByRole("button", { name: "Join the team" }).click();
+  await expect(
+    member.page.getByRole("heading", { level: 1, name: team }),
+  ).toBeVisible();
+  await expect(member.page.getByText("2 of 10 players")).toBeVisible();
+  // A member sees the code but cannot manage the team.
+  await expect(
+    member.page.getByRole("button", { name: "New code" }),
+  ).toHaveCount(0);
+  await expect(member.page.getByRole("button", { name: "Remove" })).toHaveCount(
+    0,
+  );
+
+  // The captain hands over the team and leaves; the member is now captain.
+  captain.page.on("dialog", (dialog) => dialog.accept());
+  await captain.page.reload();
+  await captain.page.getByRole("button", { name: "Make captain" }).click();
+  await expect(captain.page.getByText("You are the captain.")).toHaveCount(0);
+  await captain.page.getByRole("button", { name: "Leave the team" }).click();
+  await expect(
+    captain.page.getByRole("heading", { name: "Create a team" }),
+  ).toBeVisible();
+
+  await member.page.reload();
+  await expect(
+    member.page.getByText("1 of 10 players · You are the captain."),
+  ).toBeVisible();
+  // A new code replaces the old one.
+  member.page.on("dialog", (dialog) => dialog.accept());
+  await member.page.getByRole("button", { name: "New code" }).click();
+  await expect(member.page.locator(".ctf-code")).not.toHaveText(code);
+  await captain.page.getByLabel("Invite code").fill(code);
+  await captain.page.getByRole("button", { name: "Join the team" }).click();
+  await expect(
+    captain.page.getByText("This invite code is not valid."),
+  ).toBeVisible();
+
+  // The last member leaving deletes the team, so its name is free again.
+  await member.page.getByRole("button", { name: "Leave the team" }).click();
+  await expect(
+    member.page.getByRole("heading", { name: "Create a team" }),
+  ).toBeVisible();
+  await captain.page.getByLabel("Team name").fill(team.toUpperCase());
+  await captain.page.getByRole("button", { name: "Create the team" }).click();
+  await expect(captain.page.getByRole("heading", { level: 1 })).toHaveText(
+    team.toUpperCase(),
+  );
+  await captain.close();
+  await member.close();
+});

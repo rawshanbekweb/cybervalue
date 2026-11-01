@@ -19,6 +19,7 @@ export async function ChallengesNav() {
         <Link href="/challenges/rules">{t("Rules")}</Link>
         {session ? (
           <>
+            <Link href="/challenges/team">{t("My team")}</Link>
             <Link href="/challenges/account">{session.player.username}</Link>
             <form action={logoutAction}>
               <button type="submit" className="ctf-link-button">
