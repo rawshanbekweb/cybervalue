@@ -1,17 +1,18 @@
+import { getCtfTranslator } from "@/lib/challenges/view";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { getAdminTranslator } from "@/lib/i18n/server";
+
 import { getPlayerSession } from "@/lib/challenges/session";
 import { RegisterForm } from "@/components/challenges/forms";
 
 export async function generateMetadata() {
-  const t = await getAdminTranslator();
+  const t = await getCtfTranslator();
   return { title: t("Sign up") };
 }
 
 export default async function RegisterPage() {
   if (await getPlayerSession()) redirect("/challenges");
-  const t = await getAdminTranslator();
+  const t = await getCtfTranslator();
   return (
     <div className="ctf-auth">
       <p className="ctf-eyebrow">{t("New player")}</p>

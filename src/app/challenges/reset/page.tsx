@@ -1,18 +1,19 @@
+import { getCtfTranslator } from "@/lib/challenges/view";
 import Link from "next/link";
-import { getAdminTranslator } from "@/lib/i18n/server";
+
 import { isLinkToken } from "@/lib/challenges/account";
 import { tokenIsLive } from "@/lib/challenges/tokens";
 import { ResetForm } from "@/components/challenges/forms";
 
 export async function generateMetadata() {
-  const t = await getAdminTranslator();
+  const t = await getCtfTranslator();
   return { title: t("Set a new password"), referrer: "no-referrer" };
 }
 
 export default async function ResetPage({
   searchParams,
 }: PageProps<"/challenges/reset">) {
-  const t = await getAdminTranslator();
+  const t = await getCtfTranslator();
   const { token } = await searchParams;
   const live = isLinkToken(token) && (await tokenIsLive(token, "RESET"));
   return (

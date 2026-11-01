@@ -41,6 +41,15 @@ import {
   renewInviteCode,
   TeamError,
 } from "@/lib/challenges/teams";
+import {
+  entrantFor,
+  eventBySlug,
+  EventError,
+  register,
+  submitFlag,
+  unlockHint,
+  withdraw,
+} from "@/lib/challenges/events";
 
 export type FormState =
   | { error?: string; success?: string; values?: Record<string, string> }
@@ -357,7 +366,7 @@ export async function deleteAccountAction(
     return { error: "The current password is wrong." };
   // A captain's team passes to another member first.
   await db.$transaction(async (tx) => {
-    await releasePlayer(tx, player.id);
+    await releasePlayer(tx, player.id, true);
     await tx.ctfPlayer.delete({ where: { id: player.id } });
   });
   await destroyPlayerSession();
@@ -438,4 +447,117 @@ export async function renewInviteCodeAction(): Promise<FormState> {
     renewInviteCode,
     "A new invite code was made. The old one no longer works.",
   );
+}
+
+// Competitions ---------------------------------------------------------------
+
+async function eventChange(
+  slug: string,
+  run: (
+    event: NonNullable<Awaited<ReturnType<typeof eventBySlug>>>,
+    player: Awaited<ReturnType<typeof requirePlayer>>,
+  ) => Promise<unknown>,
+  success: string,
+): Promise<FormState> {
+  const player = await requirePlayer(`/challenges/${slug}`);
+  if (!(await limit(`ctf-event:${player.id}`, 60, 10 * 60_000)))
+    return { error: RATE_ERROR };
+  const event = await eventBySlug(slug);
+  if (!event) return { error: "This competition is not available." };
+  try {
+    await run(event, player);
+  } catch (error) {
+    if (error instanceof EventError) return { error: error.message };
+    throw error;
+  }
+  revalidatePath(`/challenges/${slug}`, "layout");
+  return { success };
+}
+
+export async function registerTeamAction(slug: string): Promise<FormState> {
+  return eventChange(
+    slug,
+    (event, player) => register(event, player, "team"),
+    "Your team is registered.",
+  );
+}
+
+export async function registerSoloAction(slug: string): Promise<FormState> {
+  return eventChange(
+    slug,
+    (event, player) => register(event, player, "solo"),
+    "You are registered.",
+  );
+}
+
+export async function withdrawAction(slug: string): Promise<FormState> {
+  return eventChange(
+    slug,
+    (event, player) => withdraw(event, player.id),
+    "The registration was withdrawn.",
+  );
+}
+
+export type FlagState =
+  | { result?: "correct" | "wrong" | "already"; error?: string; at: number }
+  | undefined;
+
+export async function submitFlagAction(
+  slug: string,
+  challengeId: string,
+  _state: FlagState,
+  formData: FormData,
+): Promise<FlagState> {
+  const at = Date.now();
+  const player = await requirePlayer(`/challenges/${slug}/board`);
+  const event = await eventBySlug(slug);
+  if (!event) return { error: "This competition is not available.", at };
+  const entrant = await entrantFor(event.id, player.id);
+  if (!entrant) return { error: "Register for the competition first.", at };
+  if (entrant.banned)
+    return { error: "Your entry was blocked by the organisers.", at };
+  // Per challenge per entrant, and per player overall: guessing is pointless.
+  if (
+    !(await limit(`ctf-flag:${entrant.id}:${challengeId}`, 10, 60_000)) ||
+    !(await limit(`ctf-flag-player:${player.id}`, 60, 60_000))
+  )
+    return { error: "Too many attempts. Wait a minute and try again.", at };
+  const attempt = text(formData, "flag", 200);
+  if (!attempt.trim()) return { error: "Type the flag.", at };
+  try {
+    const result = await submitFlag(
+      event,
+      entrant.id,
+      player.id,
+      challengeId,
+      attempt,
+    );
+    if (result !== "wrong") revalidatePath(`/challenges/${slug}`, "layout");
+    return { result, at };
+  } catch (error) {
+    if (error instanceof EventError) return { error: error.message, at };
+    throw error;
+  }
+}
+
+export async function unlockHintAction(
+  slug: string,
+  hintId: string,
+): Promise<FormState> {
+  const player = await requirePlayer(`/challenges/${slug}/board`);
+  const event = await eventBySlug(slug);
+  if (!event) return { error: "This competition is not available." };
+  const entrant = await entrantFor(event.id, player.id);
+  if (!entrant || entrant.banned)
+    return { error: "Register for the competition first." };
+  if (!(await limit(`ctf-hint:${entrant.id}`, 30, 10 * 60_000)))
+    return { error: RATE_ERROR };
+  try {
+    await unlockHint(event, entrant.id, hintId);
+  } catch (error) {
+    if (error instanceof EventError) return { error: error.message };
+    throw error;
+  }
+  revalidatePath(`/challenges/${slug}/board`);
+  return { success: "Hint opened." };
 }

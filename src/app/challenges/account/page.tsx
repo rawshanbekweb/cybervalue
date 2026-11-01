@@ -1,4 +1,5 @@
-import { getAdminTranslator } from "@/lib/i18n/server";
+import { getCtfTranslator } from "@/lib/challenges/view";
+
 import { requirePlayer } from "@/lib/challenges/session";
 import {
   DeleteAccountForm,
@@ -8,13 +9,13 @@ import {
 } from "@/components/challenges/forms";
 
 export async function generateMetadata() {
-  const t = await getAdminTranslator();
+  const t = await getCtfTranslator();
   return { title: t("My account") };
 }
 
 export default async function AccountPage() {
   const player = await requirePlayer("/challenges/account");
-  const t = await getAdminTranslator();
+  const t = await getCtfTranslator();
   const date = new Intl.DateTimeFormat("uz-UZ", {
     dateStyle: "medium",
     timeZone: "Asia/Tashkent",

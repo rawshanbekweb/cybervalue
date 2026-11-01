@@ -720,22 +720,25 @@ model ActivityDay {
 // CTF Challenges: public players who sign up with an email and password.
 // Separate from staff (User) and invited students (Student).
 model CtfPlayer {
-  id              String       @id @default(cuid())
-  email           String       @unique
+  id              String          @id @default(cuid())
+  email           String          @unique
   // As typed, for display; usernameKey (lower case) keeps names unique.
   username        String
-  usernameKey     String       @unique
+  usernameKey     String          @unique
   passwordHash    String
-  emailVerifiedAt DateTime?    @db.Timestamptz(3)
-  active          Boolean      @default(true)
-  createdAt       DateTime     @default(now()) @db.Timestamptz(3)
-  lastLoginAt     DateTime?    @db.Timestamptz(3)
+  emailVerifiedAt DateTime?       @db.Timestamptz(3)
+  active          Boolean         @default(true)
+  createdAt       DateTime        @default(now()) @db.Timestamptz(3)
+  lastLoginAt     DateTime?       @db.Timestamptz(3)
   sessions        CtfSession[]
   tokens          CtfToken[]
   teamId          String?
-  team            CtfTeam?     @relation("TeamMembers", fields: [teamId], references: [id], onDelete: SetNull)
-  captainOf       CtfTeam?     @relation("TeamCaptain")
-  joinedTeamAt    DateTime?    @db.Timestamptz(3)
+  team            CtfTeam?        @relation("TeamMembers", fields: [teamId], references: [id], onDelete: SetNull)
+  captainOf       CtfTeam?        @relation("TeamCaptain")
+  joinedTeamAt    DateTime?       @db.Timestamptz(3)
+  entries         CtfEntrant[]
+  solves          CtfSolve[]
+  submissions     CtfSubmission[]
 
   @@index([createdAt])
   @@index([teamId])
@@ -745,14 +748,167 @@ model CtfPlayer {
 // invite code is shown to members, so it is stored as is; the captain can
 // replace it.
 model CtfTeam {
-  id         String      @id @default(cuid())
+  id         String       @id @default(cuid())
   name       String
-  nameKey    String      @unique
-  inviteCode String      @unique
-  captainId  String      @unique
-  captain    CtfPlayer   @relation("TeamCaptain", fields: [captainId], references: [id], onDelete: Restrict)
-  members    CtfPlayer[] @relation("TeamMembers")
-  createdAt  DateTime    @default(now()) @db.Timestamptz(3)
+  nameKey    String       @unique
+  inviteCode String       @unique
+  captainId  String       @unique
+  captain    CtfPlayer    @relation("TeamCaptain", fields: [captainId], references: [id], onDelete: Restrict)
+  members    CtfPlayer[]  @relation("TeamMembers")
+  entries    CtfEntrant[]
+  createdAt  DateTime     @default(now()) @db.Timestamptz(3)
+}
+
+// A competition. Challenges open at startsAt and flags are accepted until
+// endsAt. A team or a single player registers as one entrant.
+model CtfEvent {
+  id                 String            @id @default(cuid())
+  slug               String            @unique
+  title              String
+  summary            String            @default("")
+  description        String            @default("") @db.Text
+  startsAt           DateTime          @db.Timestamptz(3)
+  endsAt             DateTime          @db.Timestamptz(3)
+  // Registration closes at this time (null: when the competition ends).
+  registrationEndsAt DateTime?         @db.Timestamptz(3)
+  maxTeamSize        Int               @default(4)
+  allowSolo          Boolean           @default(true)
+  published          Boolean           @default(false)
+  // From this time until the end the scoreboard shows the frozen standings.
+  freezeAt           DateTime?         @db.Timestamptz(3)
+  createdAt          DateTime          @default(now()) @db.Timestamptz(3)
+  challenges         CtfChallenge[]
+  entrants           CtfEntrant[]
+  announcements      CtfAnnouncement[]
+
+  @@index([published, startsAt])
+}
+
+// One participant of a competition: a team, or a player on their own.
+model CtfEntrant {
+  id          String          @id @default(cuid())
+  eventId     String
+  event       CtfEvent        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  teamId      String?
+  // A deleted team keeps its results under the saved name.
+  team        CtfTeam?        @relation(fields: [teamId], references: [id], onDelete: SetNull)
+  playerId    String?
+  player      CtfPlayer?      @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  // The name shown on the scoreboard, kept when the team is renamed later.
+  name        String
+  banned      Boolean         @default(false)
+  createdAt   DateTime        @default(now()) @db.Timestamptz(3)
+  solves      CtfSolve[]
+  submissions CtfSubmission[]
+  unlocks     CtfHintUnlock[]
+
+  @@unique([eventId, teamId])
+  @@unique([eventId, playerId])
+}
+
+model CtfChallenge {
+  id            String          @id @default(cuid())
+  eventId       String
+  event         CtfEvent        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  title         String
+  category      String
+  description   String          @default("") @db.Text
+  // SHA-256 of salt + flag; the flag itself is never stored.
+  flagSalt      String
+  flagHash      String
+  caseSensitive Boolean         @default(true)
+  // Dynamic scoring: worth initialPoints at first, falling to minimumPoints
+  // after `decay` solves.
+  initialPoints Int             @default(500)
+  minimumPoints Int             @default(100)
+  decay         Int             @default(20)
+  visible       Boolean         @default(true)
+  position      Int             @default(0)
+  createdAt     DateTime        @default(now()) @db.Timestamptz(3)
+  files         CtfFile[]
+  hints         CtfHint[]
+  solves        CtfSolve[]
+  submissions   CtfSubmission[]
+
+  @@index([eventId, position])
+}
+
+// Challenge attachments, kept apart from the public file library.
+model CtfFile {
+  id          String       @id @default(cuid())
+  challengeId String
+  challenge   CtfChallenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  name        String
+  size        Int
+  data        Bytes
+  createdAt   DateTime     @default(now()) @db.Timestamptz(3)
+
+  @@index([challengeId])
+}
+
+model CtfHint {
+  id          String          @id @default(cuid())
+  challengeId String
+  challenge   CtfChallenge    @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  text        String          @db.Text
+  cost        Int             @default(0)
+  position    Int             @default(0)
+  unlocks     CtfHintUnlock[]
+
+  @@index([challengeId])
+}
+
+model CtfHintUnlock {
+  entrantId String
+  entrant   CtfEntrant @relation(fields: [entrantId], references: [id], onDelete: Cascade)
+  hintId    String
+  hint      CtfHint    @relation(fields: [hintId], references: [id], onDelete: Cascade)
+  createdAt DateTime   @default(now()) @db.Timestamptz(3)
+
+  @@id([entrantId, hintId])
+}
+
+model CtfSolve {
+  id          String       @id @default(cuid())
+  entrantId   String
+  entrant     CtfEntrant   @relation(fields: [entrantId], references: [id], onDelete: Cascade)
+  challengeId String
+  challenge   CtfChallenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  // Who typed the flag; null once that player deleted the account.
+  playerId    String?
+  player      CtfPlayer?   @relation(fields: [playerId], references: [id], onDelete: SetNull)
+  createdAt   DateTime     @default(now()) @db.Timestamptz(3)
+
+  @@unique([entrantId, challengeId])
+  @@index([challengeId, createdAt])
+}
+
+// Every flag attempt, for limits and for spotting shared flags. Only a
+// digest of what was typed is kept.
+model CtfSubmission {
+  id          String       @id @default(cuid())
+  entrantId   String
+  entrant     CtfEntrant   @relation(fields: [entrantId], references: [id], onDelete: Cascade)
+  challengeId String
+  challenge   CtfChallenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  playerId    String?
+  player      CtfPlayer?   @relation(fields: [playerId], references: [id], onDelete: SetNull)
+  correct     Boolean
+  valueHash   String
+  createdAt   DateTime     @default(now()) @db.Timestamptz(3)
+
+  @@index([entrantId, challengeId, createdAt])
+  @@index([challengeId, valueHash])
+}
+
+model CtfAnnouncement {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     CtfEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  body      String   @db.Text
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+  @@index([eventId, createdAt])
 }
 
 model CtfSession {

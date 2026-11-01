@@ -1,9 +1,10 @@
-import { getAdminTranslator } from "@/lib/i18n/server";
+import { getCtfTranslator } from "@/lib/challenges/view";
+
 import { isLinkToken } from "@/lib/challenges/account";
 import { VerifyForm } from "@/components/challenges/forms";
 
 export async function generateMetadata() {
-  const t = await getAdminTranslator();
+  const t = await getCtfTranslator();
   return { title: t("Confirm email"), referrer: "no-referrer" };
 }
 
@@ -12,7 +13,7 @@ export async function generateMetadata() {
 export default async function VerifyPage({
   searchParams,
 }: PageProps<"/challenges/verify">) {
-  const t = await getAdminTranslator();
+  const t = await getCtfTranslator();
   const { token } = await searchParams;
   return (
     <div className="ctf-auth">

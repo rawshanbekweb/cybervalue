@@ -1,11 +1,12 @@
+import { getCtfTranslator } from "@/lib/challenges/view";
 import Link from "next/link";
 import { LanguageSwitcher } from "@/components/language-switcher";
-import { getAdminTranslator } from "@/lib/i18n/server";
+
 import { getPlayerSession } from "@/lib/challenges/session";
 import { logoutAction } from "@/app/challenges/actions";
 
 export async function ChallengesNav() {
-  const t = await getAdminTranslator();
+  const t = await getCtfTranslator();
   const session = await getPlayerSession();
   return (
     <header className="ctf-nav">
