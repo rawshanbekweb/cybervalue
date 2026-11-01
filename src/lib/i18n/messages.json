@@ -434,5 +434,9 @@
   "FOR THE WHOLE FAMILY": "BUTUN OILA UCHUN",
   "Would you spot this scam?": "Bu aldovni taniy olasizmi?",
   "A call from “the bank”, a prize, a friend asking for money: practise on a pretend phone, and check a suspicious message of your own. Free, in Uzbek, no sign-in.": "“Bank”dan qo‘ng‘iroq, yutuq, pul so‘ragan do‘st: telefon simulyatorida mashq qiling va o‘zingizga kelgan shubhali xabarni tekshiring. Bepul, o‘zbek tilida, ro‘yxatdan o‘tmasdan.",
-  "Open the scam simulator": "Firibgarlik simulyatorini ochish"
+  "Open the scam simulator": "Firibgarlik simulyatorini ochish",
+  "CTF CHALLENGES": "CTF MUSOBAQALARI",
+  "Compete in capture the flag.": "Bayroqni qo‘lga kiritish musobaqasida qatnashing.",
+  "Sign up, build a team with friends and solve cryptography, web, forensics and OSINT tasks on a live scoreboard.": "Ro‘yxatdan o‘ting, do‘stlaringiz bilan jamoa tuzing va kriptografiya, veb, forensika va OSINT topshiriqlarini jonli reytingda yeching.",
+  "Open CTF Challenges": "CTF Challenges’ni ochish"
 }

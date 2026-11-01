@@ -4,6 +4,7 @@ import {
   ArrowRight,
   ArrowUpRight,
   BookOpen,
+  Flag,
   ShieldAlert,
   ShieldCheck,
   Terminal,
@@ -128,6 +129,27 @@ export default async function Home() {
             </div>
             <Link className="button button-primary" href="/firibgarlik">
               {t("Open the scam simulator")}
+              <ArrowUpRight size={18} />
+            </Link>
+          </section>
+        )}
+        {open.challenges && (
+          <section
+            className="cv-scam-band cv-ctf-band"
+            aria-labelledby="ctf-band-title"
+          >
+            <Flag size={28} aria-hidden="true" />
+            <div>
+              <span className="eyebrow">{t("CTF CHALLENGES")}</span>
+              <h2 id="ctf-band-title">{t("Compete in capture the flag.")}</h2>
+              <p>
+                {t(
+                  "Sign up, build a team with friends and solve cryptography, web, forensics and OSINT tasks on a live scoreboard.",
+                )}
+              </p>
+            </div>
+            <Link className="button button-primary" href="/challenges">
+              {t("Open CTF Challenges")}
               <ArrowUpRight size={18} />
             </Link>
           </section>

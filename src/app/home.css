@@ -112,6 +112,14 @@
   margin: 0;
   color: var(--muted);
 }
+.cv-ctf-band {
+  border-color: #8052ff66;
+  background:
+    linear-gradient(120deg, #8052ff1f, transparent 60%), var(--surface);
+}
+.cv-ctf-band > svg {
+  color: #a68bff;
+}
 .cv-feature-band {
   display: grid;
   grid-template-columns: 1fr 1fr;
