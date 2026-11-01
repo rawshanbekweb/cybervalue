@@ -38,6 +38,7 @@ export async function SiteShell({
     ...(open.intermediate
       ? [{ href: "/intermediate", label: "Academy Intermediate" }]
       : []),
+    ...(open.challenges ? [{ href: "/challenges", label: "CTF" }] : []),
     { href: "/about", label: "About" },
   ];
   const announcement =
