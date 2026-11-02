@@ -237,5 +237,8 @@
   "{score} points · {solved} challenges solved": "{score} ball · {solved} ta topshiriq yechilgan",
   "Check it at": "Tekshirish manzili:",
   "Print or save as PDF": "Chop etish yoki PDF saqlash",
-  "The competition is over. Open a name to see its certificate.": "Musobaqa tugadi. Sertifikatni ko‘rish uchun nomni bosing."
+  "The competition is over. Open a name to see its certificate.": "Musobaqa tugadi. Sertifikatni ko‘rish uchun nomni bosing.",
+  "Opens after you solve “{title}”.": "“{title}” yechilgandan keyin ochiladi.",
+  "Attempts left: {count}": "Qolgan urinishlar: {count}",
+  "No attempts left for this challenge.": "Bu topshiriq uchun urinishlar tugadi."
 }

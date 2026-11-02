@@ -13,6 +13,7 @@ import {
   Outcome,
 } from "@/components/admin/ctf-forms";
 import {
+  cloneEventAction,
   announceAction,
   createChallengeAction,
   deleteAnnouncementAction,
@@ -47,6 +48,8 @@ export default async function CtfEventPage({
           title: true,
           category: true,
           visible: true,
+          releaseAt: true,
+          requires: { select: { title: true } },
           initialPoints: true,
           minimumPoints: true,
           decay: true,
@@ -119,6 +122,18 @@ export default async function CtfEventPage({
           <Link href="/admin/ctf/events" className="button button-secondary">
             {t("All competitions")}
           </Link>
+          <a
+            href={`/admin/ctf/export?event=${event.id}`}
+            className="button button-secondary"
+            download
+          >
+            {t("Export (JSON)")}
+          </a>
+          <form action={cloneEventAction.bind(null, event.id)}>
+            <button type="submit" className="button button-secondary">
+              {t("Copy as a draft")}
+            </button>
+          </form>
         </div>
       </div>
       <Outcome query={await searchParams} />
@@ -149,6 +164,18 @@ export default async function CtfEventPage({
                       {!c.visible && (
                         <div className="admin-cell-detail">{t("Hidden")}</div>
                       )}
+                      {c.releaseAt && (
+                        <div className="admin-cell-detail">
+                          {t("opens {time}", {
+                            time: formatWhen(c.releaseAt, locale),
+                          })}
+                        </div>
+                      )}
+                      {c.requires && (
+                        <div className="admin-cell-detail">
+                          {t("after {title}", { title: c.requires.title })}
+                        </div>
+                      )}
                     </td>
                     <td>{c.category}</td>
                     <td>{challengeValue(c, c._count.solves)}</td>
@@ -168,7 +195,7 @@ export default async function CtfEventPage({
             action={createChallengeAction.bind(null, event.id)}
             className="admin-form"
           >
-            <ChallengeFields />
+            <ChallengeFields others={challenges} />
             <button type="submit" className="button">
               {t("Create")}
             </button>

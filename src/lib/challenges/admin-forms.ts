@@ -83,10 +83,16 @@ export type ChallengeInput = {
   decay: number;
   visible: boolean;
   position: number;
+  releaseAt: Date | null;
+  requiresId: string | null;
+  maxAttempts: number;
   flag: string | null;
 };
 
-/** A challenge form. The flag is required on creation, optional on edit. */
+/**
+ * A challenge form. The first flag is set on creation; later flags are added
+ * on the challenge page, so on edit the flag fields are absent.
+ */
 export function parseChallengeForm(
   form: FormData,
   requireFlag: boolean,
@@ -114,6 +120,13 @@ export function parseChallengeForm(
   if (flag.length > 200)
     return { error: "The flag is too long (200 at most)." };
   const position = Number(get(form, "position") || 0);
+  const release = get(form, "releaseAt").trim();
+  const releaseAt = release ? parseTashkent(release) : null;
+  if (release && !releaseAt) return { error: "Set a valid release time." };
+  const maxAttempts = Number(get(form, "maxAttempts") || 0);
+  if (!Number.isInteger(maxAttempts) || maxAttempts < 0 || maxAttempts > 1000)
+    return { error: "Attempts: a whole number from 0 (unlimited) to 1000." };
+  const requiresId = get(form, "requiresId").trim();
   return {
     data: {
       title,
@@ -125,6 +138,9 @@ export function parseChallengeForm(
       decay: decay.data,
       visible: form.get("visible") === "on",
       position: Number.isInteger(position) ? position : 0,
+      releaseAt,
+      requiresId: /^[a-z0-9]{10,40}$/.test(requiresId) ? requiresId : null,
+      maxAttempts,
       flag: flag || null,
     },
   };

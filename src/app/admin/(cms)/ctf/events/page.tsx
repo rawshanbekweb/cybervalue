@@ -6,6 +6,7 @@ import { phaseOf } from "@/lib/challenges/scoring";
 import { formatWhen } from "@/lib/challenges/view";
 import { EventFields, Outcome } from "@/components/admin/ctf-forms";
 import { createEventAction } from "../actions";
+import { CtfImport } from "@/components/admin/ctf-import";
 
 export async function generateMetadata() {
   const t = await getAdminTranslator();
@@ -86,6 +87,10 @@ export default async function CtfEventsPage({
           </table>
         </div>
       )}
+      <section className="admin-panel">
+        <h2>{t("Import")}</h2>
+        <CtfImport />
+      </section>
       <section className="admin-panel">
         <h2>{t("New competition")}</h2>
         <form action={createEventAction} className="admin-form">

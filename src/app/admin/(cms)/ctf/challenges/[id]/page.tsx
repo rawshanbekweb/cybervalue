@@ -9,6 +9,9 @@ import { ConfirmButton } from "@/components/admin/confirm-button";
 import { ChallengeFields, Outcome } from "@/components/admin/ctf-forms";
 import { CtfUpload } from "@/components/admin/ctf-upload";
 import {
+  addFlagAction,
+  deleteFlagAction,
+  testFlagAction,
   addHintAction,
   deleteChallengeAction,
   deleteFileAction,
@@ -39,6 +42,10 @@ export default async function CtfChallengePage({
         select: { id: true, name: true, size: true },
       },
       hints: { orderBy: { position: "asc" } },
+      flags: {
+        orderBy: { createdAt: "asc" },
+        select: { id: true, caseSensitive: true, createdAt: true },
+      },
       solves: {
         orderBy: { createdAt: "asc" },
         select: {
@@ -52,6 +59,11 @@ export default async function CtfChallengePage({
     },
   });
   if (!db || !challenge) notFound();
+  const others = await db.ctfChallenge.findMany({
+    where: { eventId: challenge.event.id },
+    orderBy: [{ category: "asc" }, { position: "asc" }],
+    select: { id: true, title: true },
+  });
   return (
     <div className="admin-page">
       <div className="admin-page-header">
@@ -81,9 +93,86 @@ export default async function CtfChallengePage({
           action={updateChallengeAction.bind(null, challenge.id)}
           className="admin-form"
         >
-          <ChallengeFields challenge={challenge} />
+          <ChallengeFields challenge={challenge} others={others} />
           <button type="submit" className="button">
             {t("Save")}
+          </button>
+        </form>
+      </section>
+
+      <section className="admin-panel">
+        <h2>{t("Flags")}</h2>
+        <p className="admin-help">
+          {t(
+            "Any of these answers solves the challenge. Only salted digests are stored, so a flag cannot be shown again; test an answer below instead.",
+          )}
+        </p>
+        <ol>
+          {challenge.flags.map((f) => (
+            <li key={f.id}>
+              {f.caseSensitive ? t("exact letter case") : t("any letter case")}{" "}
+              <span className="muted">· {formatWhen(f.createdAt, locale)}</span>{" "}
+              {challenge.flags.length > 1 && (
+                <form
+                  action={deleteFlagAction.bind(null, challenge.id, f.id)}
+                  className="admin-inline-form"
+                >
+                  <button type="submit" className="button button-secondary">
+                    {t("Delete")}
+                  </button>
+                </form>
+              )}
+            </li>
+          ))}
+        </ol>
+        <form
+          action={addFlagAction.bind(null, challenge.id)}
+          className="admin-form"
+        >
+          <div className="admin-field">
+            <label htmlFor="flag-new">{t("Another accepted flag")}</label>
+            <input
+              id="flag-new"
+              name="flag"
+              className="admin-input"
+              maxLength={200}
+              required
+              autoComplete="off"
+              spellCheck={false}
+              placeholder="CV{...}"
+            />
+          </div>
+          <div className="admin-field admin-field-checkbox">
+            <label>
+              <input type="checkbox" name="caseInsensitive" />{" "}
+              {t("Accept the flag in any letter case")}
+            </label>
+          </div>
+          <button type="submit" className="button">
+            {t("Add the flag")}
+          </button>
+        </form>
+        <form
+          action={testFlagAction.bind(null, challenge.id)}
+          className="admin-form"
+        >
+          <div className="admin-field">
+            <label htmlFor="flag-test">{t("Test an answer")}</label>
+            <input
+              id="flag-test"
+              name="attempt"
+              className="admin-input"
+              maxLength={200}
+              required
+              autoComplete="off"
+              spellCheck={false}
+            />
+            <p className="admin-help">
+              {t("Nothing is recorded; players do not see the test.")}
+            </p>
+          </div>
+          <button type="submit" className="button button-secondary">
+            {t("Check")}
           </button>
         </form>
       </section>

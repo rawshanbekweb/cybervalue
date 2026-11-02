@@ -3,7 +3,9 @@ import { cache } from "react";
 import { getDb } from "../db";
 import { Prisma } from "@/generated/prisma/client";
 import {
+  attemptsLeft,
   attemptDigest,
+  challengeAccess,
   challengeValue,
   flagMatches,
   phaseOf,
@@ -157,6 +159,45 @@ export async function withdraw(event: EventRow, playerId: string) {
 
 export type SubmitResult = "correct" | "wrong" | "already";
 
+/**
+ * Whether an entrant may work on a challenge now: released, its prerequisite
+ * solved. Hidden and locked challenges answer like unknown ones.
+ */
+async function openChallenge(
+  eventId: string,
+  entrantId: string,
+  challengeId: string,
+) {
+  const db = getDb()!;
+  const challenge = await db.ctfChallenge.findFirst({
+    where: { id: challengeId, eventId, visible: true },
+    select: {
+      id: true,
+      releaseAt: true,
+      requiresId: true,
+      maxAttempts: true,
+      flags: { select: { salt: true, hash: true, caseSensitive: true } },
+    },
+  });
+  if (!challenge) return null;
+  const solved = challenge.requiresId
+    ? await db.ctfSolve.findUnique({
+        where: {
+          entrantId_challengeId: {
+            entrantId,
+            challengeId: challenge.requiresId,
+          },
+        },
+        select: { challengeId: true },
+      })
+    : null;
+  const access = challengeAccess(
+    challenge,
+    new Set(solved ? [solved.challengeId] : []),
+  );
+  return access === "open" ? challenge : null;
+}
+
 export async function submitFlag(
   event: EventRow,
   entrantId: string,
@@ -167,17 +208,21 @@ export async function submitFlag(
   if (phaseOf(event) !== "running")
     throw new EventError("Flags are accepted only while the competition runs.");
   const db = getDb()!;
-  const challenge = await db.ctfChallenge.findFirst({
-    where: { id: challengeId, eventId: event.id, visible: true },
-    select: { id: true, flagSalt: true, flagHash: true, caseSensitive: true },
-  });
+  const challenge = await openChallenge(event.id, entrantId, challengeId);
   if (!challenge) throw new EventError("This challenge is not available.");
   const solved = await db.ctfSolve.findUnique({
     where: { entrantId_challengeId: { entrantId, challengeId } },
     select: { id: true },
   });
   if (solved) return "already";
-  const correct = flagMatches(challenge, attempt);
+  if (challenge.maxAttempts > 0) {
+    const wrong = await db.ctfSubmission.count({
+      where: { entrantId, challengeId, correct: false },
+    });
+    if (attemptsLeft(challenge.maxAttempts, wrong) === 0)
+      throw new EventError("No attempts left for this challenge.");
+  }
+  const correct = flagMatches(challenge.flags, attempt);
   await db.ctfSubmission.create({
     data: {
       entrantId,
@@ -212,9 +257,10 @@ export async function unlockHint(
   const db = getDb()!;
   const hint = await db.ctfHint.findFirst({
     where: { id: hintId, challenge: { eventId: event.id, visible: true } },
-    select: { id: true },
+    select: { id: true, challengeId: true },
   });
-  if (!hint) throw new EventError("This hint is not available.");
+  if (!hint || !(await openChallenge(event.id, entrantId, hint.challengeId)))
+    throw new EventError("This hint is not available.");
   await db.ctfHintUnlock.upsert({
     where: { entrantId_hintId: { entrantId, hintId } },
     create: { entrantId, hintId },
@@ -227,9 +273,11 @@ export async function challengeBoard(
   eventId: string,
   entrantId: string | null,
   revealHints = false,
+  // Organisers and, after the end, everyone see every challenge.
+  revealAll = false,
 ) {
   const db = getDb()!;
-  const [challenges, counts, mine, unlocked] = await Promise.all([
+  const [challenges, counts, mine, unlocked, wrongs] = await Promise.all([
     db.ctfChallenge.findMany({
       where: { eventId, visible: true },
       orderBy: [{ category: "asc" }, { position: "asc" }, { createdAt: "asc" }],
@@ -241,6 +289,10 @@ export async function challengeBoard(
         initialPoints: true,
         minimumPoints: true,
         decay: true,
+        releaseAt: true,
+        requiresId: true,
+        requires: { select: { title: true } },
+        maxAttempts: true,
         files: { select: { id: true, name: true, size: true } },
         hints: {
           orderBy: { position: "asc" },
@@ -265,26 +317,50 @@ export async function challengeBoard(
           select: { hintId: true },
         })
       : [],
+    entrantId
+      ? db.ctfSubmission.groupBy({
+          by: ["challengeId"],
+          where: { entrantId, correct: false },
+          _count: { _all: true },
+        })
+      : [],
   ]);
+  const wrongOf = new Map(wrongs.map((w) => [w.challengeId, w._count._all]));
   const solvesOf = new Map(counts.map((c) => [c.challengeId, c._count._all]));
   const solvedIds = new Set(mine.map((s) => s.challengeId));
   const open = new Set(unlocked.map((u) => u.hintId));
-  return challenges.map((c) => ({
-    id: c.id,
-    title: c.title,
-    category: c.category,
-    description: c.description,
-    files: c.files,
-    solves: solvesOf.get(c.id) ?? 0,
-    value: challengeValue(c, solvesOf.get(c.id) ?? 0),
-    solved: solvedIds.has(c.id),
-    // A hint's text reaches the browser only once it is unlocked.
-    hints: c.hints.map((h) => ({
-      id: h.id,
-      cost: h.cost,
-      text: revealHints || open.has(h.id) ? h.text : null,
-    })),
-  }));
+  const now = new Date();
+  return challenges.flatMap((c) => {
+    const access = revealAll ? "open" : challengeAccess(c, solvedIds, now);
+    if (access === "hidden") return [];
+    const base = {
+      id: c.id,
+      title: c.title,
+      category: c.category,
+      solves: solvesOf.get(c.id) ?? 0,
+      value: challengeValue(c, solvesOf.get(c.id) ?? 0),
+      solved: solvedIds.has(c.id),
+      // The challenge that opens this one, while it is still unsolved.
+      lockedBy: access === "locked" ? (c.requires?.title ?? "") : null,
+      attemptsLeft: attemptsLeft(c.maxAttempts, wrongOf.get(c.id) ?? 0),
+    };
+    // A locked challenge shows only its title, value and what opens it.
+    if (access === "locked")
+      return [{ ...base, description: "", files: [], hints: [] }];
+    return [
+      {
+        ...base,
+        description: c.description,
+        files: c.files,
+        // A hint's text reaches the browser only once it is unlocked.
+        hints: c.hints.map((h) => ({
+          id: h.id,
+          cost: h.cost,
+          text: revealHints || open.has(h.id) ? h.text : null,
+        })),
+      },
+    ];
+  });
 }
 
 /**
