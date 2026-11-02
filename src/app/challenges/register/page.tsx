@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 
 import { getPlayerSession } from "@/lib/challenges/session";
 import { RegisterForm } from "@/components/challenges/forms";
+import { formStamp } from "@/lib/challenges/form-guard";
 
 export async function generateMetadata() {
   const t = await getCtfTranslator();
@@ -17,7 +18,11 @@ export default async function RegisterPage() {
     <div className="ctf-auth">
       <p className="ctf-eyebrow">{t("New player")}</p>
       <h1 className="ctf-h2">{t("Create an account")}</h1>
-      <RegisterForm />
+      <RegisterForm
+        stamp={
+          process.env.AUTH_SECRET ? formStamp(process.env.AUTH_SECRET) : ""
+        }
+      />
       <p className="ctf-muted ctf-small">
         {t("Already have an account?")}{" "}
         <Link href="/challenges/login">{t("Sign in")}</Link>

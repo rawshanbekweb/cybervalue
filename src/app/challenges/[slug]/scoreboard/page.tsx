@@ -8,6 +8,7 @@ import { phaseOf } from "@/lib/challenges/scoring";
 import Link from "next/link";
 import { EventHeader } from "@/components/challenges/event-header";
 import { ScoreChart } from "@/components/challenges/score-chart";
+import { AutoRefresh } from "@/components/challenges/auto-refresh";
 
 export async function generateMetadata({
   params,
@@ -48,9 +49,12 @@ export default async function ScoreboardPage({
   return (
     <>
       <EventHeader event={event} current="scoreboard" />
+      {phaseOf(event) === "running" && <AutoRefresh seconds={30} />}
       {phaseOf(event) === "ended" && board.rows.length > 0 && (
         <p className="ctf-muted ctf-small">
-          {t("The competition is over. Open a name to see its certificate.")}
+          {t(
+            "The competition is over. Each entrant's certificate is next to its name.",
+          )}
         </p>
       )}
       {board.frozenAt && (
@@ -108,14 +112,18 @@ export default async function ScoreboardPage({
                   >
                     <td>{row.rank}</td>
                     <td>
-                      {phaseOf(event) === "ended" && row.score > 0 ? (
+                      <Link
+                        href={`/challenges/${event.slug}/entrant/${row.entrantId}`}
+                      >
+                        {row.name}
+                      </Link>{" "}
+                      {phaseOf(event) === "ended" && row.score > 0 && (
                         <Link
                           href={`/challenges/${event.slug}/certificate/${row.entrantId}`}
+                          className="ctf-small"
                         >
-                          {row.name}
+                          {t("certificate")}
                         </Link>
-                      ) : (
-                        row.name
                       )}{" "}
                       <span className="ctf-muted ctf-small">
                         {row.team

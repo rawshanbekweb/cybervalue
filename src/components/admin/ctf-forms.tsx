@@ -176,10 +176,13 @@ export async function EventFields({ event }: { event?: EventValues }) {
 }
 
 type ChallengeValues = {
+  id: string;
   title: string;
   category: string;
   description: string;
-  caseSensitive: boolean;
+  releaseAt: Date | null;
+  requiresId: string | null;
+  maxAttempts: number;
   initialPoints: number;
   minimumPoints: number;
   decay: number;
@@ -189,8 +192,11 @@ type ChallengeValues = {
 
 export async function ChallengeFields({
   challenge,
+  others = [],
 }: {
   challenge?: ChallengeValues;
+  // The competition's other challenges, for "opens after".
+  others?: { id: string; title: string }[];
 }) {
   const t = await getAdminTranslator();
   return (
@@ -234,35 +240,81 @@ export async function ChallengeFields({
           defaultValue={challenge?.description}
         />
       </div>
-      <div className="admin-field">
-        <label htmlFor="ch-flag">
-          {challenge
-            ? t("New flag (leave empty to keep the current one)")
-            : t("Flag")}
-        </label>
-        <input
-          id="ch-flag"
-          name="flag"
-          className="admin-input"
-          maxLength={200}
-          required={!challenge}
-          autoComplete="off"
-          spellCheck={false}
-          placeholder="CV{...}"
-        />
-        <p className="admin-help">
-          {t("Only a salted digest is stored; the flag cannot be shown again.")}
-        </p>
-      </div>
-      <div className="admin-field admin-field-checkbox">
-        <label>
+      {!challenge && (
+        <>
+          <div className="admin-field">
+            <label htmlFor="ch-flag">{t("Flag")}</label>
+            <input
+              id="ch-flag"
+              name="flag"
+              className="admin-input"
+              maxLength={200}
+              required
+              autoComplete="off"
+              spellCheck={false}
+              placeholder="CV{...}"
+            />
+            <p className="admin-help">
+              {t(
+                "Only a salted digest is stored; the flag cannot be shown again. More flags can be added on the challenge page.",
+              )}
+            </p>
+          </div>
+          <div className="admin-field admin-field-checkbox">
+            <label>
+              <input type="checkbox" name="caseInsensitive" />{" "}
+              {t("Accept the flag in any letter case")}
+            </label>
+          </div>
+        </>
+      )}
+      <div className="admin-field-row">
+        <div className="admin-field">
+          <label htmlFor="ch-release">
+            {t("Opens at (Tashkent time, optional)")}
+          </label>
           <input
-            type="checkbox"
-            name="caseInsensitive"
-            defaultChecked={challenge ? !challenge.caseSensitive : false}
-          />{" "}
-          {t("Accept the flag in any letter case")}
-        </label>
+            id="ch-release"
+            name="releaseAt"
+            type="datetime-local"
+            className="admin-input"
+            defaultValue={
+              challenge?.releaseAt ? tashkentInput(challenge.releaseAt) : ""
+            }
+          />
+        </div>
+        <div className="admin-field">
+          <label htmlFor="ch-requires">{t("Opens after solving")}</label>
+          <select
+            id="ch-requires"
+            name="requiresId"
+            className="admin-input"
+            defaultValue={challenge?.requiresId ?? ""}
+          >
+            <option value="">{t("— nothing, open at once —")}</option>
+            {others
+              .filter((o) => o.id !== challenge?.id)
+              .map((o) => (
+                <option key={o.id} value={o.id}>
+                  {o.title}
+                </option>
+              ))}
+          </select>
+        </div>
+        <div className="admin-field">
+          <label htmlFor="ch-attempts">
+            {t("Wrong answers allowed (0: unlimited)")}
+          </label>
+          <input
+            id="ch-attempts"
+            name="maxAttempts"
+            type="number"
+            min={0}
+            max={1000}
+            className="admin-input"
+            defaultValue={challenge?.maxAttempts ?? 0}
+          />
+        </div>
       </div>
       <div className="admin-field-row">
         <div className="admin-field">

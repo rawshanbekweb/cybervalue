@@ -13,6 +13,7 @@ import { isCtfOrganiser } from "@/lib/challenges/view";
 import { Markdown } from "@/components/markdown";
 import { EventHeader } from "@/components/challenges/event-header";
 import { FlagForm, HintButton } from "@/components/challenges/event-forms";
+import { AutoRefresh } from "@/components/challenges/auto-refresh";
 
 export async function generateMetadata({
   params,
@@ -72,6 +73,7 @@ export default async function BoardPage({
     event.id,
     entrant?.id ?? null,
     phase === "ended" || organiser,
+    phase === "ended" || organiser,
   );
   const categories = [...new Set(board.map((c) => c.category))];
   const playing = phase === "running" && entrant && !entrant.banned;
@@ -79,6 +81,8 @@ export default async function BoardPage({
   return (
     <>
       <EventHeader event={event} current="board" />
+      {/* New waves of challenges and teammates' solves appear on their own. */}
+      {playing && <AutoRefresh seconds={60} />}
       {entrant && (
         <p className="ctf-muted">
           {t("{name}: {solved} of {total} solved", {
@@ -110,7 +114,12 @@ export default async function BoardPage({
                   id={`c-${c.id}`}
                 >
                   <summary>
-                    <span className="ctf-card-title">{c.title}</span>
+                    <span className="ctf-card-title">
+                      {c.lockedBy !== null && (
+                        <span aria-hidden="true">🔒 </span>
+                      )}
+                      {c.title}
+                    </span>
                     <span className="ctf-card-meta">
                       <b>{c.value}</b> {t("pts")} ·{" "}
                       {t("{count} solves", { count: c.solves })}
@@ -118,6 +127,13 @@ export default async function BoardPage({
                     </span>
                   </summary>
                   <div className="ctf-card-body">
+                    {c.lockedBy !== null && (
+                      <p className="ctf-muted">
+                        {t("Opens after you solve “{title}”.", {
+                          title: c.lockedBy,
+                        })}
+                      </p>
+                    )}
                     <Markdown>{c.description}</Markdown>
                     {c.files.length > 0 && (
                       <ul className="ctf-files">
@@ -151,9 +167,22 @@ export default async function BoardPage({
                         )}
                       </div>
                     ))}
-                    {playing && !c.solved && (
-                      <FlagForm slug={event.slug} challengeId={c.id} />
-                    )}
+                    {playing &&
+                      !c.solved &&
+                      c.lockedBy === null &&
+                      c.attemptsLeft !== null && (
+                        <p className="ctf-muted ctf-small">
+                          {t("Attempts left: {count}", {
+                            count: c.attemptsLeft,
+                          })}
+                        </p>
+                      )}
+                    {playing &&
+                      !c.solved &&
+                      c.lockedBy === null &&
+                      c.attemptsLeft !== 0 && (
+                        <FlagForm slug={event.slug} challengeId={c.id} />
+                      )}
                   </div>
                 </details>
               ))}

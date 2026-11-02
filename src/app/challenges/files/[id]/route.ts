@@ -1,7 +1,7 @@
 import { getDb } from "@/lib/db";
 import { getPlayerSession } from "@/lib/challenges/session";
 import { entrantFor } from "@/lib/challenges/events";
-import { phaseOf } from "@/lib/challenges/scoring";
+import { challengeAccess, phaseOf } from "@/lib/challenges/scoring";
 import { isCtfOrganiser } from "@/lib/challenges/view";
 
 export const runtime = "nodejs";
@@ -31,7 +31,10 @@ export async function GET(
       data: true,
       challenge: {
         select: {
+          id: true,
           visible: true,
+          releaseAt: true,
+          requiresId: true,
           event: {
             select: {
               id: true,
@@ -55,7 +58,27 @@ export async function GET(
     if (player && phase === "ended") allowed = true;
     else if (player && phase === "running") {
       const entrant = await entrantFor(event.id, player.id);
-      allowed = Boolean(entrant && !entrant.banned);
+      // The same gates as the board: released, its prerequisite solved.
+      const solved =
+        entrant && file.challenge.requiresId
+          ? await db.ctfSolve.findUnique({
+              where: {
+                entrantId_challengeId: {
+                  entrantId: entrant.id,
+                  challengeId: file.challenge.requiresId,
+                },
+              },
+              select: { challengeId: true },
+            })
+          : null;
+      allowed = Boolean(
+        entrant &&
+        !entrant.banned &&
+        challengeAccess(
+          file.challenge,
+          new Set(solved ? [solved.challengeId] : []),
+        ) === "open",
+      );
     }
   }
   if (!allowed) return notFound();

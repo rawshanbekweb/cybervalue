@@ -75,8 +75,13 @@ the audit log.
   leader, then the winner's certificate after the end), team registration
   and the running-competition lock, and
   accessibility.
-- `tests/challenges-scoring.test.ts` and `tests/challenges-admin.test.ts`:
-  phases, freeze, flags, values, standings, and the admin forms.
+- `tests/challenges-scoring.test.ts`, `tests/challenges-admin.test.ts` and
+  `tests/challenges-transfer.test.ts`: phases, freeze, flags (several, case),
+  release and prerequisite gates, attempt limits, values, standings, the admin
+  forms, and the import format (defaults, typed and exported flags, loops).
+- The e2e suite also imports a hand-written file, adds and tests flags,
+  exports (no flag text), plays a locked challenge and an attempt limit, and
+  copies the competition.
   It needs `DATABASE_URL` and `EMAIL_OUTBOX`.
 
 ## Teams (phase 2)
@@ -162,6 +167,102 @@ Owners run competitions from **Admin → CTF competitions** (`/admin/ctf/events`
 Business rules that need no database (phase, registration window, freeze,
 flag digest, values, standings, admin form checks) live in
 `src/lib/challenges/scoring.ts` and `admin-forms.ts` and are unit-tested.
+
+## Authoring tools
+
+- **Several flags** (`CtfFlag`): a challenge accepts any of its flags, each
+  with its own letter-case rule, for example `CV{salom}` and `CV{Salom}`. The
+  first is set when the challenge is created; more are added on the challenge
+  page, and the last one cannot be deleted. Only salted digests are stored.
+- **Test an answer** on the challenge page checks a candidate against the
+  flags without recording anything; the candidate never goes into the address.
+- **Release time** (`releaseAt`): the challenge stays hidden from players, its
+  files and hints included, until then. Use it to open challenges in waves.
+- **Opens after** (`requiresId`): the challenge shows only its title and value
+  until the entrant solves the chosen challenge of the same competition. Loops
+  are refused. Its files, hints and flag form stay closed too.
+- **Attempt limit** (`maxAttempts`): wrong answers allowed per entrant (0:
+  unlimited). The board shows the attempts left; at 0 the flag form goes away.
+- **Copy as a draft**: copies a competition with its challenges, flags, hints,
+  files and prerequisites as an unpublished draft a week later, under a new
+  address (`…-copy`).
+- **Export (JSON)** downloads a competition without its files; flags are
+  carried as salted digests, never as text. **Import** (Admin → CTF
+  competitions) creates an unpublished draft from such a file or a hand-written
+  one, up to 2 MiB; files are then uploaded on each challenge page.
+
+### Writing a challenge set by hand
+
+Times are Tashkent time (`YYYY-MM-DDTHH:mm`) or ISO 8601. Typed flags are
+salted and hashed on import. Everything except `key`, `title`, `category` and
+`flags` has a default.
+
+```json
+{
+  "version": 1,
+  "event": {
+    "slug": "kuzgi-ctf-2026",
+    "title": "Kuzgi CTF 2026",
+    "summary": "Maktab o‘quvchilari uchun",
+    "description": "## Qoidalar\n…",
+    "startsAt": "2026-11-20T10:00",
+    "endsAt": "2026-11-20T18:00",
+    "freezeAt": "2026-11-20T17:00",
+    "maxTeamSize": 4,
+    "allowSolo": true
+  },
+  "challenges": [
+    {
+      "key": "b64",
+      "title": "Base64 xat",
+      "category": "Crypto",
+      "description": "Xatni oching: `Q1Z7c2Fsb219`",
+      "flags": [{ "flag": "CV{salom}", "caseSensitive": false }],
+      "hints": [{ "text": "Base64 ni oching.", "cost": 50 }],
+      "initialPoints": 300,
+      "minimumPoints": 100,
+      "decay": 15
+    },
+    {
+      "key": "final",
+      "title": "Yakuniy xat",
+      "category": "Crypto",
+      "requires": "b64",
+      "maxAttempts": 5,
+      "releaseAt": "2026-11-20T14:00",
+      "flags": [{ "flag": "CV{oxirgi}" }]
+    }
+  ]
+}
+```
+
+Categories: Crypto, Web, Forensics, OSINT, Stego, Reverse, Pwn, Misc.
+
+## Competition day
+
+- **Live attempts**: the competition's admin page lists the latest 30
+  attempts (time, entrant, player, challenge, right or wrong) and the wrong
+  answers per challenge, next to the solves.
+- **Score adjustments** (`CtfAward`): an owner gives an entrant a bonus or a
+  penalty (±10,000) with a reason. It counts like a hint cost with the sign
+  reversed, respects the freeze, is shown with its reason on the entrant's
+  page, and can be removed. Each change is in the audit log.
+- **Entrant page** (`/challenges/<slug>/entrant/<id>`, opened from a name on
+  the scoreboard): place, points, team members, solved challenges with their
+  current value, who typed the flag and when, hint costs and adjustments,
+  as at the freeze for the public.
+- **Auto-refresh**: while a competition runs, the scoreboard re-renders every
+  30 seconds and the board every 60, while the tab is visible, so new waves
+  and teammates' solves appear without reloading.
+- **Exports**: `/challenges/<slug>/ctftime` is the public scoreboard in
+  CTFtime's feed format (`{"standings":[{"pos","team","score"}]}`, freeze
+  respected) for listing a competition on ctftime.org. **Results (CSV)** on
+  the admin page gives the live standings with members and emails, with
+  spreadsheet formulas neutralised.
+- **Sign-up protection**: besides the hidden field and the rate limits, the
+  sign-up form carries a time stamp signed with `AUTH_SECRET`; a post sent
+  within 3 seconds of the form being shown, older than 2 hours, or without a
+  valid stamp is refused. `CTF_FORM_MIN_SECONDS` lowers the wait (CI uses 0).
 
 ## Results and certificates
 

@@ -113,3 +113,21 @@ test("invite codes are 10 base32 symbols and forgive case, spaces and look-alike
   for (const bad of ["", "ABCD", "ABCDE-FGHJKX", "ABCDE-FGHJU"])
     assert.equal(normalizeInviteCode(bad), null, bad);
 });
+
+test("the sign-up stamp refuses instant, forged and stale posts", async () => {
+  const { formStamp, stampOk } =
+    await import("../src/lib/challenges/form-guard");
+  const secret = "s".repeat(32);
+  const t0 = 1_800_000_000_000;
+  const stamp = formStamp(secret, t0);
+  assert.equal(stampOk(secret, stamp, 3, t0 + 1000), false);
+  assert.equal(stampOk(secret, stamp, 3, t0 + 4000), true);
+  assert.equal(stampOk(secret, stamp, 3, t0 + 3 * 60 * 60 * 1000), false);
+  assert.equal(stampOk("x".repeat(32), stamp, 3, t0 + 4000), false);
+  assert.equal(
+    stampOk(secret, `${t0 - 9000}.${stamp.split(".")[1]}`, 3, t0 + 4000),
+    false,
+  );
+  for (const bad of [undefined, "", "abc", "1.2", 5])
+    assert.equal(stampOk(secret, bad, 0, t0), false);
+});

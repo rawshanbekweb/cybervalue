@@ -481,7 +481,7 @@ test("a competition runs end to end: admin setup, registration, files, hints, fl
   await admin.getByRole("button", { name: "Save" }).click();
   await expect(admin.getByText("Saved.")).toBeVisible();
   await late.reload();
-  await rows.getByRole("link", { name: second.username }).click();
+  await rows.first().getByRole("link", { name: "certificate" }).click();
   await expect(late.getByRole("heading", { level: 1 })).toHaveText(
     "Winner’s certificate",
   );
@@ -567,4 +567,272 @@ test("a captain registers the team; the team is locked while the competition run
   ).toBeVisible();
   await captain.close();
   await member.close();
+});
+
+test("authoring tools: several flags, answer test, prerequisites, attempt limits, export, import and copy", async ({
+  browser,
+}) => {
+  test.skip(
+    !process.env.E2E_ADMIN_EMAIL || !process.env.E2E_ADMIN_PASSWORD,
+    "Needs the seeded admin account",
+  );
+  const slug = `muallif-${unique()}`.slice(0, 40);
+  const adminContext = await browser.newContext({
+    storageState: {
+      cookies: [
+        {
+          name: "cybervalue-locale",
+          value: "en",
+          domain: "localhost",
+          path: "/",
+          expires: -1,
+          httpOnly: true,
+          secure: false,
+          sameSite: "Lax",
+        },
+      ],
+      origins: [],
+    },
+  });
+  const admin = await adminContext.newPage();
+  admin.on("dialog", (dialog) => dialog.accept());
+  await admin.goto("/admin/login");
+  await admin.getByLabel("Email").fill(process.env.E2E_ADMIN_EMAIL!);
+  await admin.getByLabel("Password").fill(process.env.E2E_ADMIN_PASSWORD!);
+  await admin.getByRole("button", { name: "Sign in" }).click();
+  await expect(admin).toHaveURL(/\/admin$/);
+
+  // A hand-written file: the second challenge opens after the first and
+  // allows two wrong answers.
+  const file = {
+    version: 1,
+    event: {
+      slug,
+      title: "Muallif CTF",
+      startsAt: tashkent(-10),
+      endsAt: tashkent(120),
+      maxTeamSize: 2,
+    },
+    challenges: [
+      {
+        key: "a",
+        title: "Birinchi",
+        category: "Web",
+        flags: [{ flag: "CV{bir}" }],
+      },
+      {
+        key: "b",
+        title: "Ikkinchi",
+        category: "Web",
+        requires: "a",
+        maxAttempts: 2,
+        flags: [{ flag: "CV{ikki}" }],
+      },
+    ],
+  };
+  await admin.goto("/admin/ctf/events");
+  await admin.getByLabel("Import a competition (JSON)").setInputFiles({
+    name: "ctf.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify(file)),
+  });
+  await expect(
+    admin.getByText("Imported as an unpublished draft."),
+  ).toBeVisible();
+  await expect(admin.getByRole("heading", { level: 1 })).toHaveText(
+    "Muallif CTF",
+  );
+  await expect(admin.getByText("after Birinchi")).toBeVisible();
+
+  // A second accepted flag, then the answer test.
+  await admin.getByRole("link", { name: "Birinchi" }).click();
+  await admin.getByLabel("Another accepted flag").fill("CV{one}");
+  await admin.getByLabel("Accept the flag in any letter case").check();
+  await admin.getByRole("button", { name: "Add the flag" }).click();
+  await expect(admin.getByText("Flag added.")).toBeVisible();
+  await admin.getByLabel("Test an answer").fill("cv{ONE}");
+  await admin.getByRole("button", { name: "Check" }).click();
+  await expect(admin.getByText("This answer is accepted.")).toBeVisible();
+  // Each result changes the address, so every check waits for its own answer.
+  await admin.getByLabel("Test an answer").fill("CV{BIR}");
+  await admin.getByRole("button", { name: "Check" }).click();
+  await expect(admin.getByText("No flag accepts this answer.")).toBeVisible();
+  await admin.getByLabel("Test an answer").fill("CV{bir} ");
+  await admin.getByRole("button", { name: "Check" }).click();
+  await expect(admin.getByText("This answer is accepted.")).toBeVisible();
+
+  // Publish it.
+  await admin.getByRole("link", { name: "Muallif CTF" }).click();
+  await admin.locator('input[name="published"]').check();
+  await admin.getByRole("button", { name: "Save" }).click();
+  await expect(admin.getByText("Saved.")).toBeVisible();
+
+  // The export carries the prerequisite and digests, never a flag's text.
+  const exportResponse = await admin.request.get(
+    (await admin
+      .getByRole("link", { name: "Export (JSON)" })
+      .getAttribute("href"))!,
+  );
+  const exported = await exportResponse.json();
+  expect(exported.challenges).toHaveLength(2);
+  expect(exported.challenges[1].requires).toBe(exported.challenges[0].key);
+  expect(JSON.stringify(exported)).not.toContain("CV{");
+
+  // A player: the second challenge stays locked until the first is solved,
+  // and two wrong answers use up its attempts.
+  const player = await confirmedPlayer(browser);
+  await player.page.goto(`/challenges/${slug}`);
+  await player.page.getByRole("button", { name: "Play on my own" }).click();
+  await player.page.goto(`/challenges/${slug}/board`);
+  await player.page.locator("summary", { hasText: "Ikkinchi" }).click();
+  await expect(
+    player.page.getByText("Opens after you solve “Birinchi”."),
+  ).toBeVisible();
+  await player.page.locator("summary", { hasText: "Birinchi" }).click();
+  await player.page.getByPlaceholder("CV{...}").first().fill("cv{one}");
+  await player.page.getByRole("button", { name: "Submit" }).first().click();
+  await expect(
+    player.page.locator("summary", { hasText: "Birinchi" }),
+  ).toContainText("Solved");
+  await player.page.reload();
+  await player.page.locator("summary", { hasText: "Ikkinchi" }).click();
+  await expect(player.page.getByText("Attempts left: 2")).toBeVisible();
+  for (const wrong of ["CV{x}", "CV{y}"]) {
+    await player.page.getByPlaceholder("CV{...}").fill(wrong);
+    await player.page.getByRole("button", { name: "Submit" }).click();
+    await expect(
+      player.page.getByText("Not this flag. Try again."),
+    ).toBeVisible();
+  }
+  await player.page.reload();
+  await player.page.locator("summary", { hasText: "Ikkinchi" }).click();
+  await expect(player.page.getByText("Attempts left: 0")).toBeVisible();
+  await expect(player.page.getByPlaceholder("CV{...}")).toHaveCount(0);
+
+  // A copy is an unpublished draft with the same challenges.
+  await admin.getByRole("button", { name: "Copy as a draft" }).click();
+  await expect(admin.getByText("Copied as an unpublished draft")).toBeVisible();
+  await expect(admin.getByRole("heading", { level: 1 })).toHaveText(
+    "Muallif CTF (copy)",
+  );
+  await expect(admin.getByText("after Birinchi")).toBeVisible();
+
+  await player.close();
+  await adminContext.close();
+});
+
+test("competition-day tools: score adjustments, entrant page, live feed, CSV and the CTFtime feed", async ({
+  browser,
+}) => {
+  test.skip(
+    !process.env.E2E_ADMIN_EMAIL || !process.env.E2E_ADMIN_PASSWORD,
+    "Needs the seeded admin account",
+  );
+  const slug = `kun-${unique()}`.slice(0, 40);
+  const adminContext = await browser.newContext({
+    storageState: {
+      cookies: [
+        {
+          name: "cybervalue-locale",
+          value: "en",
+          domain: "localhost",
+          path: "/",
+          expires: -1,
+          httpOnly: true,
+          secure: false,
+          sameSite: "Lax",
+        },
+      ],
+      origins: [],
+    },
+  });
+  const admin = await adminContext.newPage();
+  await admin.goto("/admin/login");
+  await admin.getByLabel("Email").fill(process.env.E2E_ADMIN_EMAIL!);
+  await admin.getByLabel("Password").fill(process.env.E2E_ADMIN_PASSWORD!);
+  await admin.getByRole("button", { name: "Sign in" }).click();
+  await expect(admin).toHaveURL(/\/admin$/);
+  await admin.goto("/admin/ctf/events");
+  await admin.getByLabel("Import a competition (JSON)").setInputFiles({
+    name: "ctf.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(
+      JSON.stringify({
+        version: 1,
+        event: {
+          slug,
+          title: "Kun CTF",
+          startsAt: tashkent(-10),
+          endsAt: tashkent(120),
+        },
+        challenges: [
+          {
+            key: "a",
+            title: "Oddiy",
+            category: "Misc",
+            initialPoints: 200,
+            minimumPoints: 200,
+            flags: [{ flag: "CV{oddiy}" }],
+          },
+        ],
+      }),
+    ),
+  });
+  await expect(admin.getByRole("heading", { level: 1 })).toHaveText("Kun CTF");
+  await admin.locator('input[name="published"]').check();
+  await admin.getByRole("button", { name: "Save" }).click();
+  await expect(admin.getByText("Saved.")).toBeVisible();
+
+  const player = await confirmedPlayer(browser);
+  await player.page.goto(`/challenges/${slug}`);
+  await player.page.getByRole("button", { name: "Play on my own" }).click();
+  await player.page.goto(`/challenges/${slug}/board`);
+  await player.page.locator("summary", { hasText: "Oddiy" }).click();
+  await player.page.getByPlaceholder("CV{...}").fill("CV{xato}");
+  await player.page.getByRole("button", { name: "Submit" }).click();
+  await expect(
+    player.page.getByText("Not this flag. Try again."),
+  ).toBeVisible();
+  await player.page.getByPlaceholder("CV{...}").fill("CV{oddiy}");
+  await player.page.getByRole("button", { name: "Submit" }).click();
+  await expect(
+    player.page.locator("summary", { hasText: "Oddiy" }),
+  ).toContainText("Solved");
+
+  // The organiser sees both attempts live and adds a bonus.
+  await admin.reload();
+  const feed = admin.getByRole("table").filter({ hasText: "Result" });
+  await expect(feed.getByRole("row")).toHaveCount(3);
+  await expect(feed).toContainText("Wrong");
+  await expect(feed).toContainText("Correct");
+  await admin.getByLabel("Points (negative for a penalty)").fill("25");
+  await admin.getByLabel("Reason").fill("Eng chiroyli yechim");
+  await admin.getByRole("button", { name: "Adjust the score" }).click();
+  await expect(admin.getByText("Score adjusted.")).toBeVisible();
+
+  // 200 for the challenge + 25 bonus, on the scoreboard, the entrant page,
+  // the CTFtime feed and the organiser's CSV.
+  await player.page.goto(`/challenges/${slug}/scoreboard`);
+  const row = player.page.locator(".ctf-table tbody tr").first();
+  await expect(row.locator("td").nth(2)).toHaveText("225");
+  await row.getByRole("link", { name: player.username }).click();
+  await expect(player.page.getByText("Eng chiroyli yechim")).toBeVisible();
+  await expect(player.page.getByText("Place 1 of 1")).toBeVisible();
+  const feedJson = await (
+    await player.page.request.get(`/challenges/${slug}/ctftime`)
+  ).json();
+  expect(feedJson).toEqual({
+    standings: [{ pos: 1, team: player.username, score: 225 }],
+  });
+  const csv = await (
+    await admin.request.get(
+      (await admin
+        .getByRole("link", { name: "Results (CSV)" })
+        .getAttribute("href"))!,
+    )
+  ).text();
+  expect(csv).toContain(`"1","${player.username}","solo","225","1"`);
+
+  await player.close();
+  await adminContext.close();
 });

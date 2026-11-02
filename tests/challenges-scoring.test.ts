@@ -1,6 +1,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
+  attemptsLeft,
+  challengeAccess,
   challengeValue,
   flagDigest,
   flagMatches,
@@ -10,6 +12,7 @@ import {
   scoreboardCutoff,
   slugPattern,
   standings,
+  storeFlag,
 } from "../src/lib/challenges/scoring";
 
 const at = (minute: number) => new Date(Date.UTC(2026, 10, 1, 10, minute));
@@ -41,27 +44,60 @@ test("the scoreboard freezes from freezeAt until the end", () => {
 });
 
 test("flags are checked by digest, trimmed, and optionally case-insensitive", () => {
-  const salt = newFlagSalt();
-  const strict = {
-    flagSalt: salt,
-    flagHash: flagDigest(salt, "CV{Bayroq_7}", true),
-    caseSensitive: true,
-  };
+  const strict = [storeFlag("CV{Bayroq_7}", true)];
   assert.equal(flagMatches(strict, "CV{Bayroq_7}"), true);
   assert.equal(flagMatches(strict, "  CV{Bayroq_7}\n"), true);
   assert.equal(flagMatches(strict, "cv{bayroq_7}"), false);
   assert.equal(flagMatches(strict, "CV{Bayroq_8}"), false);
-  const loose = {
-    flagSalt: salt,
-    flagHash: flagDigest(salt, "CV{Bayroq_7}", false),
-    caseSensitive: false,
-  };
-  assert.equal(flagMatches(loose, "cv{BAYROQ_7}"), true);
+  assert.equal(
+    flagMatches([storeFlag("CV{Bayroq_7}", false)], "cv{BAYROQ_7}"),
+    true,
+  );
+  // Any of several accepted flags is enough; none of them is stored as text.
+  const several = [storeFlag("CV{one}", true), storeFlag("CV{two}", false)];
+  assert.equal(flagMatches(several, "CV{one}"), true);
+  assert.equal(flagMatches(several, "cv{TWO}"), true);
+  assert.equal(flagMatches(several, "CV{three}"), false);
+  assert.equal(flagMatches([], "CV{one}"), false);
+  assert.ok(several.every((f) => !JSON.stringify(f).includes("one")));
   // The same flag under another salt gives another digest.
   assert.notEqual(
     flagDigest(newFlagSalt(), "CV{x}", true),
     flagDigest(newFlagSalt(), "CV{x}", true),
   );
+});
+
+test("a challenge opens at its release time and after its prerequisite", () => {
+  const solved = new Set(["intro"]);
+  const now = at(30);
+  assert.equal(
+    challengeAccess({ releaseAt: null, requiresId: null }, solved, now),
+    "open",
+  );
+  assert.equal(
+    challengeAccess({ releaseAt: at(60), requiresId: null }, solved, now),
+    "hidden",
+  );
+  assert.equal(
+    challengeAccess({ releaseAt: at(10), requiresId: null }, solved, now),
+    "open",
+  );
+  assert.equal(
+    challengeAccess({ releaseAt: null, requiresId: "intro" }, solved, now),
+    "open",
+  );
+  assert.equal(
+    challengeAccess({ releaseAt: null, requiresId: "boss" }, solved, now),
+    "locked",
+  );
+  // Not yet released wins over locked.
+  assert.equal(
+    challengeAccess({ releaseAt: at(60), requiresId: "boss" }, solved, now),
+    "hidden",
+  );
+  assert.equal(attemptsLeft(0, 50), null);
+  assert.equal(attemptsLeft(3, 1), 2);
+  assert.equal(attemptsLeft(3, 5), 0);
 });
 
 test("a challenge's value falls with solves to its minimum", () => {

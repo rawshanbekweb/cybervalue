@@ -801,6 +801,7 @@ model CtfEntrant {
   solves      CtfSolve[]
   submissions CtfSubmission[]
   unlocks     CtfHintUnlock[]
+  awards      CtfAward[]
 
   @@unique([eventId, teamId])
   @@unique([eventId, playerId])
@@ -813,10 +814,14 @@ model CtfChallenge {
   title         String
   category      String
   description   String          @default("") @db.Text
-  // SHA-256 of salt + flag; the flag itself is never stored.
-  flagSalt      String
-  flagHash      String
-  caseSensitive Boolean         @default(true)
+  // Hidden from players until this time (null: open from the start).
+  releaseAt     DateTime?       @db.Timestamptz(3)
+  // Opens only after the entrant solved this challenge (same competition).
+  requiresId    String?
+  requires      CtfChallenge?   @relation("ChallengeRequires", fields: [requiresId], references: [id], onDelete: SetNull)
+  unlocks       CtfChallenge[]  @relation("ChallengeRequires")
+  // Wrong answers allowed per entrant (0: unlimited).
+  maxAttempts   Int             @default(0)
   // Dynamic scoring: worth initialPoints at first, falling to minimumPoints
   // after `decay` solves.
   initialPoints Int             @default(500)
@@ -825,12 +830,27 @@ model CtfChallenge {
   visible       Boolean         @default(true)
   position      Int             @default(0)
   createdAt     DateTime        @default(now()) @db.Timestamptz(3)
+  flags         CtfFlag[]
   files         CtfFile[]
   hints         CtfHint[]
   solves        CtfSolve[]
   submissions   CtfSubmission[]
 
   @@index([eventId, position])
+}
+
+// The accepted answers of a challenge. Only SHA-256 of a random salt and the
+// normalised flag is stored, never the flag itself.
+model CtfFlag {
+  id            String       @id @default(cuid())
+  challengeId   String
+  challenge     CtfChallenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  salt          String
+  hash          String
+  caseSensitive Boolean      @default(true)
+  createdAt     DateTime     @default(now()) @db.Timestamptz(3)
+
+  @@index([challengeId])
 }
 
 // Challenge attachments, kept apart from the public file library.
@@ -899,6 +919,19 @@ model CtfSubmission {
 
   @@index([entrantId, challengeId, createdAt])
   @@index([challengeId, valueHash])
+}
+
+// A manual score change by an organiser: a bonus (positive) or a penalty
+// (negative), with the reason shown to the entrant.
+model CtfAward {
+  id        String     @id @default(cuid())
+  entrantId String
+  entrant   CtfEntrant @relation(fields: [entrantId], references: [id], onDelete: Cascade)
+  points    Int
+  reason    String
+  createdAt DateTime   @default(now()) @db.Timestamptz(3)
+
+  @@index([entrantId])
 }
 
 model CtfAnnouncement {

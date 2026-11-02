@@ -63,6 +63,7 @@ const ACTIONS: Record<string, string> = {
   "ctf.entrant_ban": "CTF entrant blocked or unblocked",
   "ctf.challenge_update": "CTF challenge changed",
   "ctf.challenge_delete": "CTF challenge deleted",
+  "ctf.award": "CTF score adjusted",
   "kids.create": "Kids members added",
   "kids.update": "Kids member edited",
   "kids.code_reset": "Kids access code renewed",

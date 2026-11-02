@@ -58,17 +58,49 @@ export function flagDigest(salt: string, flag: string, caseSensitive: boolean) {
     .digest("hex");
 }
 
-export function flagMatches(
-  challenge: { flagSalt: string; flagHash: string; caseSensitive: boolean },
-  attempt: string,
-) {
-  const actual = Buffer.from(
-    flagDigest(challenge.flagSalt, attempt, challenge.caseSensitive),
-    "hex",
-  );
-  const expected = Buffer.from(challenge.flagHash, "hex");
-  return actual.length === expected.length && timingSafeEqual(actual, expected);
+export type StoredFlag = { salt: string; hash: string; caseSensitive: boolean };
+
+/** Whether the attempt matches any accepted flag (each compared in constant time). */
+export function flagMatches(flags: StoredFlag[], attempt: string) {
+  let found = false;
+  for (const flag of flags) {
+    const actual = Buffer.from(
+      flagDigest(flag.salt, attempt, flag.caseSensitive),
+      "hex",
+    );
+    const expected = Buffer.from(flag.hash, "hex");
+    if (actual.length === expected.length && timingSafeEqual(actual, expected))
+      found = true;
+  }
+  return found;
 }
+
+/** A new stored flag: a fresh salt and the digest of the flag. */
+export function storeFlag(flag: string, caseSensitive: boolean): StoredFlag {
+  const salt = newFlagSalt();
+  return { salt, hash: flagDigest(salt, flag, caseSensitive), caseSensitive };
+}
+
+export type Gate = { releaseAt: Date | null; requiresId: string | null };
+export type Access = "hidden" | "locked" | "open";
+
+/**
+ * What an entrant may see of a challenge: nothing before its release time;
+ * only its title while the challenge it requires is unsolved; else all.
+ */
+export function challengeAccess(
+  gate: Gate,
+  solved: ReadonlySet<string>,
+  now = new Date(),
+): Access {
+  if (gate.releaseAt && now < gate.releaseAt) return "hidden";
+  if (gate.requiresId && !solved.has(gate.requiresId)) return "locked";
+  return "open";
+}
+
+/** Wrong answers left (null: unlimited). */
+export const attemptsLeft = (maxAttempts: number, wrong: number) =>
+  maxAttempts > 0 ? Math.max(0, maxAttempts - wrong) : null;
 
 /** A digest of what was typed, to spot one wrong answer shared by teams. */
 export const attemptDigest = (challengeId: string, attempt: string) =>
