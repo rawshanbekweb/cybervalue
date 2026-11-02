@@ -801,6 +801,7 @@ model CtfEntrant {
   solves      CtfSolve[]
   submissions CtfSubmission[]
   unlocks     CtfHintUnlock[]
+  awards      CtfAward[]
 
   @@unique([eventId, teamId])
   @@unique([eventId, playerId])
@@ -918,6 +919,19 @@ model CtfSubmission {
 
   @@index([entrantId, challengeId, createdAt])
   @@index([challengeId, valueHash])
+}
+
+// A manual score change by an organiser: a bonus (positive) or a penalty
+// (negative), with the reason shown to the entrant.
+model CtfAward {
+  id        String     @id @default(cuid())
+  entrantId String
+  entrant   CtfEntrant @relation(fields: [entrantId], references: [id], onDelete: Cascade)
+  points    Int
+  reason    String
+  createdAt DateTime   @default(now()) @db.Timestamptz(3)
+
+  @@index([entrantId])
 }
 
 model CtfAnnouncement {

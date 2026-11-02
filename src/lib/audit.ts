@@ -73,7 +73,8 @@ export type AuditAction =
   | "ctf.event_delete"
   | "ctf.entrant_ban"
   | "ctf.challenge_update"
-  | "ctf.challenge_delete";
+  | "ctf.challenge_delete"
+  | "ctf.award";
 
 const RETENTION_MS = 180 * 86_400_000;
 

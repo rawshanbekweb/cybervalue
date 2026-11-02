@@ -79,7 +79,7 @@ function CheckEmail({ title }: { title: string }) {
   );
 }
 
-export function RegisterForm() {
+export function RegisterForm({ stamp }: { stamp: string }) {
   const t = useTranslator();
   const [state, action, pending] = useActionState(registerAction, undefined);
   if (state?.success === "check-email")
@@ -126,6 +126,7 @@ export function RegisterForm() {
         minLength={10}
         maxLength={200}
       />
+      <input type="hidden" name="stamp" value={stamp} />
       <div className="ctf-hidden" aria-hidden="true">
         <label htmlFor="ctf-website">Website</label>
         <input

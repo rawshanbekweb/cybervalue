@@ -240,5 +240,19 @@
   "The competition is over. Open a name to see its certificate.": "Musobaqa tugadi. Sertifikatni ko‘rish uchun nomni bosing.",
   "Opens after you solve “{title}”.": "“{title}” yechilgandan keyin ochiladi.",
   "Attempts left: {count}": "Qolgan urinishlar: {count}",
-  "No attempts left for this challenge.": "Bu topshiriq uchun urinishlar tugadi."
+  "No attempts left for this challenge.": "Bu topshiriq uchun urinishlar tugadi.",
+  "The form expired or was sent too fast. Check it and send it again.": "Forma muddati o‘tgan yoki juda tez yuborildi. Tekshirib, qayta yuboring.",
+  "Entrant": "Ishtirokchi",
+  "{score} points": "{score} ball",
+  "Shown as at the freeze, {time}.": "Muzlatish vaqtidagi holat, {time}.",
+  "Solved challenges": "Yechilgan topshiriqlar",
+  "Nothing solved yet.": "Hali hech narsa yechilmagan.",
+  "Challenge": "Topshiriq",
+  "Category": "Toifa",
+  "Solved by": "Kim yechgan",
+  "Time": "Vaqt",
+  "Other points": "Boshqa ballar",
+  "hints opened": "ochilgan maslahatlar",
+  "certificate": "sertifikat",
+  "The competition is over. Each entrant's certificate is next to its name.": "Musobaqa tugadi. Har bir ishtirokchining sertifikati uning nomi yonida."
 }

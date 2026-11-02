@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { getDb } from "@/lib/db";
 import { hashPassword, verifyPassword } from "@/lib/password";
+import { stampOk } from "@/lib/challenges/form-guard";
 import { clientKey } from "@/lib/rate-limit";
 import { limit, resetLimit } from "@/lib/rate-limit-db";
 import { Prisma } from "@/generated/prisma/client";
@@ -77,6 +78,25 @@ export async function registerAction(
   };
   // A field people never see: bots that fill every input give themselves away.
   if (text(formData, "website")) return { success: "check-email" };
+  // The form carries a signed time; a post seconds after it was shown, or
+  // without it, is a script. Needs AUTH_SECRET; tests lower the wait.
+  const secret = process.env.AUTH_SECRET;
+  if (
+    secret &&
+    !stampOk(
+      secret,
+      formData.get("stamp"),
+      Number(process.env.CTF_FORM_MIN_SECONDS ?? 3),
+    )
+  )
+    return {
+      error:
+        "The form expired or was sent too fast. Check it and send it again.",
+      values: {
+        email: text(formData, "email"),
+        username: text(formData, "username", 60),
+      },
+    };
   // A whole classroom often shares one address, so the per-client budget is
   // generous; the global ceiling stops a flood.
   const ip = await client();

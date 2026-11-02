@@ -370,7 +370,7 @@ export async function challengeBoard(
 export async function scoreboard(event: EventRow, full = false) {
   const db = getDb()!;
   const cutoff = full ? null : scoreboardCutoff(event);
-  const [entrants, challenges, solves, unlocks] = await Promise.all([
+  const [entrants, challenges, solves, unlocks, awards] = await Promise.all([
     db.ctfEntrant.findMany({
       where: { eventId: event.id, banned: false },
       select: {
@@ -402,6 +402,10 @@ export async function scoreboard(event: EventRow, full = false) {
         hint: { select: { cost: true } },
       },
     }),
+    db.ctfAward.findMany({
+      where: { entrant: { eventId: event.id, banned: false } },
+      select: { entrantId: true, points: true, createdAt: true },
+    }),
   ]);
   const rows = standings(
     entrants.map((e) => e.id),
@@ -411,11 +415,19 @@ export async function scoreboard(event: EventRow, full = false) {
       challengeId: s.challengeId,
       at: s.createdAt,
     })),
-    unlocks.map((u) => ({
-      entrantId: u.entrantId,
-      cost: u.hint.cost,
-      at: u.createdAt,
-    })),
+    [
+      ...unlocks.map((u) => ({
+        entrantId: u.entrantId,
+        cost: u.hint.cost,
+        at: u.createdAt,
+      })),
+      // An award is a negative cost: a bonus adds, a penalty subtracts.
+      ...awards.map((a) => ({
+        entrantId: a.entrantId,
+        cost: -a.points,
+        at: a.createdAt,
+      })),
+    ],
     cutoff,
   );
   const byId = new Map(entrants.map((e) => [e.id, e]));
@@ -456,5 +468,63 @@ export async function scoreboard(event: EventRow, full = false) {
         challengeId: s.challengeId,
         at: s.createdAt,
       })),
+  };
+}
+
+/**
+ * One entrant's record: solves with the challenge's current value, opened
+ * hints and the organisers' adjustments, up to the freeze for the public.
+ */
+export async function entrantRecord(
+  event: EventRow,
+  entrantId: string,
+  full = false,
+) {
+  const db = getDb()!;
+  const entrant = await db.ctfEntrant.findFirst({
+    where: { id: entrantId, eventId: event.id, banned: false },
+    select: {
+      id: true,
+      name: true,
+      teamId: true,
+      team: { select: { members: { select: { username: true } } } },
+    },
+  });
+  if (!entrant) return null;
+  const board = await scoreboard(event, full);
+  const cutoff = board.frozenAt;
+  const until = cutoff ? { lte: cutoff } : undefined;
+  const [solves, hints, awards] = await Promise.all([
+    db.ctfSolve.findMany({
+      where: { entrantId, createdAt: until },
+      orderBy: { createdAt: "asc" },
+      select: {
+        createdAt: true,
+        challengeId: true,
+        challenge: { select: { title: true, category: true } },
+        player: { select: { username: true } },
+      },
+    }),
+    db.ctfHintUnlock.findMany({
+      where: { entrantId, createdAt: until },
+      select: { hint: { select: { cost: true } } },
+    }),
+    db.ctfAward.findMany({
+      where: { entrantId, createdAt: until },
+      orderBy: { createdAt: "asc" },
+      select: { points: true, reason: true, createdAt: true },
+    }),
+  ]);
+  return {
+    entrant,
+    row: board.rows.find((r) => r.entrantId === entrantId) ?? null,
+    total: board.rows.length,
+    frozenAt: cutoff,
+    solves: solves.map((s) => ({
+      ...s,
+      value: board.values.get(s.challengeId) ?? 0,
+    })),
+    hintCost: hints.reduce((sum, h) => sum + h.hint.cost, 0),
+    awards,
   };
 }

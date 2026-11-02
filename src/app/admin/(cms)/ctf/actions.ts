@@ -374,3 +374,40 @@ export async function deleteFileAction(challengeId: string, fileId: string) {
   await audit("ctf.challenge_update", session.user.id, challengeId);
   back(path, "ok", "File deleted.");
 }
+
+/** A bonus or penalty for an entrant, with the reason the entrant sees. */
+export async function addAwardAction(eventId: string, form: FormData) {
+  const path = `/admin/ctf/events/${eventId}`;
+  const session = await owner(path);
+  const entrantId = String(form.get("entrantId") ?? "");
+  const points = Number(form.get("points"));
+  const reason = String(form.get("reason") ?? "").trim();
+  if (!Number.isInteger(points) || points === 0 || Math.abs(points) > 10000)
+    back(
+      path,
+      "error",
+      "Points: a whole number from −10,000 to 10,000, not 0.",
+    );
+  if (reason.length < 3 || reason.length > 200)
+    back(path, "error", "Reason: 3 to 200 characters.");
+  const entrant = await getDb()!.ctfEntrant.findFirst({
+    where: { id: entrantId, eventId },
+    select: { id: true },
+  });
+  if (!entrant) back(path, "error", "Choose an entrant.");
+  await getDb()!.ctfAward.create({ data: { entrantId, points, reason } });
+  await audit("ctf.award", session.user.id, entrantId);
+  revalidatePath("/challenges", "layout");
+  back(path, "ok", "Score adjusted.");
+}
+
+export async function deleteAwardAction(eventId: string, awardId: string) {
+  const path = `/admin/ctf/events/${eventId}`;
+  const session = await owner(path);
+  await getDb()!.ctfAward.deleteMany({
+    where: { id: awardId, entrant: { eventId } },
+  });
+  await audit("ctf.award", session.user.id, awardId);
+  revalidatePath("/challenges", "layout");
+  back(path, "ok", "Adjustment removed.");
+}

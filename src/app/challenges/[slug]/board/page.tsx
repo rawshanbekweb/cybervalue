@@ -13,6 +13,7 @@ import { isCtfOrganiser } from "@/lib/challenges/view";
 import { Markdown } from "@/components/markdown";
 import { EventHeader } from "@/components/challenges/event-header";
 import { FlagForm, HintButton } from "@/components/challenges/event-forms";
+import { AutoRefresh } from "@/components/challenges/auto-refresh";
 
 export async function generateMetadata({
   params,
@@ -80,6 +81,8 @@ export default async function BoardPage({
   return (
     <>
       <EventHeader event={event} current="board" />
+      {/* New waves of challenges and teammates' solves appear on their own. */}
+      {playing && <AutoRefresh seconds={60} />}
       {entrant && (
         <p className="ctf-muted">
           {t("{name}: {solved} of {total} solved", {

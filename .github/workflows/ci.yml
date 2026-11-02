@@ -60,6 +60,8 @@ jobs:
       CRON_SECRET: ci-only-cron-secret-not-used-anywhere
       # CTF Challenges writes its emails here instead of sending them.
       EMAIL_OUTBOX: /tmp/cybervalue-outbox.jsonl
+      # Tests fill the sign-up form faster than a person could.
+      CTF_FORM_MIN_SECONDS: "0"
       PORT: "3100"
     steps:
       - uses: actions/checkout@v7

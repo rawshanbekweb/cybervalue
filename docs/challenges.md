@@ -238,6 +238,32 @@ salted and hashed on import. Everything except `key`, `title`, `category` and
 
 Categories: Crypto, Web, Forensics, OSINT, Stego, Reverse, Pwn, Misc.
 
+## Competition day
+
+- **Live attempts**: the competition's admin page lists the latest 30
+  attempts (time, entrant, player, challenge, right or wrong) and the wrong
+  answers per challenge, next to the solves.
+- **Score adjustments** (`CtfAward`): an owner gives an entrant a bonus or a
+  penalty (±10,000) with a reason. It counts like a hint cost with the sign
+  reversed, respects the freeze, is shown with its reason on the entrant's
+  page, and can be removed. Each change is in the audit log.
+- **Entrant page** (`/challenges/<slug>/entrant/<id>`, opened from a name on
+  the scoreboard): place, points, team members, solved challenges with their
+  current value, who typed the flag and when, hint costs and adjustments,
+  as at the freeze for the public.
+- **Auto-refresh**: while a competition runs, the scoreboard re-renders every
+  30 seconds and the board every 60, while the tab is visible, so new waves
+  and teammates' solves appear without reloading.
+- **Exports**: `/challenges/<slug>/ctftime` is the public scoreboard in
+  CTFtime's feed format (`{"standings":[{"pos","team","score"}]}`, freeze
+  respected) for listing a competition on ctftime.org. **Results (CSV)** on
+  the admin page gives the live standings with members and emails, with
+  spreadsheet formulas neutralised.
+- **Sign-up protection**: besides the hidden field and the rate limits, the
+  sign-up form carries a time stamp signed with `AUTH_SECRET`; a post sent
+  within 3 seconds of the form being shown, older than 2 hours, or without a
+  valid stamp is refused. `CTF_FORM_MIN_SECONDS` lowers the wait (CI uses 0).
+
 ## Results and certificates
 
 Finished competitions stay listed on `/challenges` under "Finished", with
