@@ -309,6 +309,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Mas’uliyat taqsimoti (Intermediate)",
     earned: (f) => finished(f, "shared") && passed(f, "shared-1"),
   },
+  {
+    id: "lab-iam",
+    title: "Kirish va huquqlar (Intermediate)",
+    earned: (f) => finished(f, "iam") && passed(f, "iam-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

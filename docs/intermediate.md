@@ -55,6 +55,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/baseline`     | System security module 5, patching and baselines (8 lessons, a checkpoint)      |
 | `/intermediate/build`        | Reverse engineering module 1, how programs are built (8 lessons, a checkpoint)  |
 | `/intermediate/shared`       | Cloud security module 1, shared responsibility (8 lessons, a checkpoint)        |
+| `/intermediate/iam`          | Cloud security module 2, identity and access (8 lessons, a checkpoint)          |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -994,6 +995,26 @@ Cloud security domain.
 | 6       | Questions on provider audits                           |
 | 7       | Sorts day-one tasks from bad practices                 |
 | 8       | Final questions                                        |
+
+## Cloud security module 2: Identity and access
+
+`/intermediate/iam` (lab id `iam`, checkpoint `iam-1`, award `lab-iam`,
+site setting `iam`) uses `src/lib/iam/tools.ts`: `evaluate` is a small
+AWS-style policy evaluator (default deny, `*` wildcards, an explicit Deny
+that always wins), run on six `REQUESTS` from a reporting user against
+`POLICY`; two are allowed, three denied by default and one explicitly
+denied.
+
+| Lessons | What the student does                      |
+| ------- | ------------------------------------------ |
+| 1       | Sorts identities into people and workloads |
+| 2       | Questions on reading a policy              |
+| 3       | Decides whether six requests are allowed   |
+| 4       | Questions on least privilege               |
+| 5       | Sorts key practices into good and risky    |
+| 6       | Questions on the root account              |
+| 7       | Questions on reviewing access              |
+| 8       | Final questions                            |
 
 ## Who gets in
 

@@ -134,6 +134,7 @@ test("everything finished", () => {
         baseline: 8,
         build: 8,
         shared: 8,
+        iam: 8,
         scams: 8,
         httpbasics: 9,
         https: 9,
