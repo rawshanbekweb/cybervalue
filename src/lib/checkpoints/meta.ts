@@ -905,6 +905,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/kubernetes#checkpoints",
     pass: 70,
   },
+  {
+    id: "manipulation-1",
+    level: "intermediate",
+    lab: { uz: "Aldash usullari", en: "Manipulation tactics" },
+    title: {
+      uz: "Nazorat: Aldash usullari",
+      en: "Checkpoint: Manipulation tactics",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/manipulation#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

@@ -53,6 +53,7 @@ import { LESSONS as IAM_LESSONS } from "@/lib/iam/curriculum";
 import { LESSONS as STORAGE_LESSONS } from "@/lib/storage/curriculum";
 import { LESSONS as CONTAINERS_LESSONS } from "@/lib/containers/curriculum";
 import { LESSONS as KUBERNETES_LESSONS } from "@/lib/kubernetes/curriculum";
+import { LESSONS as MANIPULATION_LESSONS } from "@/lib/manipulation/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -1056,6 +1057,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: KUBERNETES_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "manipulation",
+      title: "Manipulation tactics",
+      category: "Intermediate · Social engineering",
+      description:
+        "Recognise urgency, authority and fear, find the warning signs in a phishing email, and stop, check and report.",
+      href: "/intermediate/manipulation",
+      progressKey: LAB_PROGRESS.manipulation.key,
+      level: "Intermediate",
+      lessons: MANIPULATION_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: MANIPULATION_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

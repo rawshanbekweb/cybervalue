@@ -13413,3 +13413,270 @@ export const KUBERNETES_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const MANIPULATION_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Ijtimoiy muhandislik nimani nishonga oladi?",
+      en: "What does social engineering target?",
+    },
+    right: {
+      uz: "Odamlarning ishonchi va odatlarini",
+      en: "People’s trust and habits",
+    },
+    wrong: [
+      { uz: "Faqat serverlarni", en: "Only servers" },
+      { uz: "Faqat kabellarni", en: "Only cables" },
+      { uz: "Faqat parol xeshlarini", en: "Only password hashes" },
+    ],
+    explain: {
+      uz: "U texnik himoyani chetlab o‘tadi.",
+      en: "It goes around technical defences.",
+    },
+  },
+  {
+    ask: {
+      uz: "SMS orqali aldash qanday ataladi?",
+      en: "What is deception by SMS called?",
+    },
+    right: { uz: "Smishing", en: "Smishing" },
+    wrong: [
+      { uz: "Vishing", en: "Vishing" },
+      { uz: "Tailgating", en: "Tailgating" },
+      { uz: "Pharming", en: "Pharming" },
+    ],
+    explain: { uz: "Telefon orqali — vishing.", en: "By phone it’s vishing." },
+  },
+  {
+    ask: {
+      uz: "“2 soat ichida tasdiqlang” qaysi tamoyil?",
+      en: "Which lever is “confirm within 2 hours”?",
+    },
+    right: { uz: "Shoshiltirish", en: "Urgency" },
+    wrong: [
+      { uz: "Minnatdorchilik", en: "Gratitude" },
+      { uz: "Do‘stlik", en: "Friendship" },
+      { uz: "Hech qaysi", en: "None" },
+    ],
+    explain: {
+      uz: "O‘ylashga vaqt qoldirmaydi.",
+      en: "It leaves no time to think.",
+    },
+  },
+  {
+    ask: {
+      uz: "“Direktor shaxsan so‘radi” qaysi tamoyil?",
+      en: "Which lever is “the director asked personally”?",
+    },
+    right: { uz: "Obro‘", en: "Authority" },
+    wrong: [
+      { uz: "Qiziqish", en: "Curiosity" },
+      { uz: "Ochko‘zlik", en: "Greed" },
+      { uz: "Tasodif", en: "Chance" },
+    ],
+    explain: {
+      uz: "Rahbarga yo‘q deyish qiyin.",
+      en: "Saying no to a boss is hard.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kuchli qo‘rquv yoki hayajon sezsangiz?",
+      en: "When you feel strong fear or excitement?",
+    },
+    right: {
+      uz: "To‘xtab tekshirish signali",
+      en: "It’s the signal to stop and check",
+    },
+    wrong: [
+      { uz: "Tezroq harakat qilish kerak", en: "Act faster" },
+      { uz: "Hech narsa", en: "Nothing" },
+      { uz: "Xatni o‘chirish kifoya", en: "Deleting is enough" },
+    ],
+    explain: {
+      uz: "Aldovchilar his-tuyg‘uni qo‘zg‘atadi.",
+      en: "Scammers stir up emotions.",
+    },
+  },
+  {
+    ask: {
+      uz: "acme.uz o‘rniga acme-helpdesk.co — bu?",
+      en: "acme-helpdesk.co instead of acme.uz is?",
+    },
+    right: { uz: "O‘xshatilgan domen", en: "A look-alike domain" },
+    wrong: [
+      { uz: "Rasmiy domen", en: "The official domain" },
+      { uz: "Zaxira domen", en: "A backup domain" },
+      { uz: "Farqi yo‘q", en: "No difference" },
+    ],
+    explain: {
+      uz: "Domen nomini diqqat bilan o‘qing.",
+      en: "Read the domain carefully.",
+    },
+  },
+  {
+    ask: {
+      uz: "Havolaning haqiqiy manzilini qanday ko‘rasiz?",
+      en: "How do you see where a link really goes?",
+    },
+    right: {
+      uz: "Bosmasdan ustiga olib borib",
+      en: "Hover over it without clicking",
+    },
+    wrong: [
+      { uz: "Bosib ko‘rib", en: "Click it and see" },
+      { uz: "Do‘stimga yuborib", en: "Send it to a friend" },
+      { uz: "Hech qanday", en: "You can’t" },
+    ],
+    explain: {
+      uz: "Telefonda uzoq bosib ko‘rish mumkin.",
+      en: "On a phone, long-press it.",
+    },
+  },
+  {
+    ask: {
+      uz: "IT bo‘limi xatda parolingizni so‘rayapti. Bu?",
+      en: "IT asks for your password by email. This is?",
+    },
+    right: { uz: "Aldash belgisi", en: "A warning sign" },
+    wrong: [
+      { uz: "Oddiy tartib", en: "Normal procedure" },
+      { uz: "Majburiy talab", en: "A requirement" },
+      { uz: "Yaxshi amaliyot", en: "Good practice" },
+    ],
+    explain: {
+      uz: "IT hech qachon parol so‘ramaydi.",
+      en: "IT never asks for passwords.",
+    },
+  },
+  {
+    ask: {
+      uz: "“Yordam xizmatiga qo‘ng‘iroq qilmang” — bu?",
+      en: "“Don’t call the help desk” is?",
+    },
+    right: {
+      uz: "Tekshirishni to‘sish — aniq belgi",
+      en: "Blocking checks — a clear sign",
+    },
+    wrong: [
+      { uz: "G‘amxo‘rlik", en: "Being considerate" },
+      { uz: "Oddiy iltimos", en: "A normal request" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Haqiqiy so‘rov tekshirishdan qo‘rqmaydi.",
+      en: "A real request doesn’t fear checks.",
+    },
+  },
+  {
+    ask: {
+      uz: "“Bankdan” qo‘ng‘iroq SMS kodni so‘raydi. To‘g‘ri harakat?",
+      en: "A caller “from the bank” asks for an SMS code. The right move?",
+    },
+    right: {
+      uz: "Tugatib, rasmiy raqamga qo‘ng‘iroq qilish",
+      en: "Hang up and call the official number",
+    },
+    wrong: [
+      { uz: "Kodni aytish", en: "Read out the code" },
+      { uz: "Yarmini aytish", en: "Say half of it" },
+      { uz: "Kutib turish", en: "Stay on the line" },
+    ],
+    explain: {
+      uz: "Bank hech qachon kod so‘ramaydi.",
+      en: "Banks never ask for codes.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ekrandagi qo‘ng‘iroq raqami ishonchlimi?",
+      en: "Is the caller ID on screen trustworthy?",
+    },
+    right: {
+      uz: "Yo‘q, u soxtalashtirilishi mumkin",
+      en: "No, it can be faked",
+    },
+    wrong: [
+      { uz: "Ha, har doim", en: "Yes, always" },
+      { uz: "Faqat mobil bo‘lsa", en: "Only if it’s mobile" },
+      { uz: "Faqat kunduzi", en: "Only in the daytime" },
+    ],
+    explain: {
+      uz: "Caller ID spoofing keng tarqalgan.",
+      en: "Caller ID spoofing is common.",
+    },
+  },
+  {
+    ask: {
+      uz: "Do‘stingiz Telegram’da shoshilinch pul so‘radi. Nima qilasiz?",
+      en: "A friend asks for money urgently on Telegram. What do you do?",
+    },
+    right: {
+      uz: "Unga qo‘ng‘iroq qilib tekshiraman",
+      en: "Call them to check",
+    },
+    wrong: [
+      { uz: "Darhol o‘tkazaman", en: "Send it at once" },
+      { uz: "Kartam raqamini yuboraman", en: "Send my card number" },
+      {
+        uz: "E’tiborsiz qoldiraman va hech kimga aytmayman",
+        en: "Ignore it and tell no one",
+      },
+    ],
+    explain: {
+      uz: "Hisob buzilgan bo‘lishi mumkin.",
+      en: "The account may be hacked.",
+    },
+  },
+  {
+    ask: {
+      uz: "Topilgan USB fleshka bilan nima qilinadi?",
+      en: "What do you do with a USB stick you found?",
+    },
+    right: { uz: "IT bo‘limiga topshiriladi", en: "Hand it to IT" },
+    wrong: [
+      { uz: "Kompyuterga ulanadi", en: "Plug it in" },
+      { uz: "Uyga olinadi", en: "Take it home" },
+      { uz: "Do‘stga beriladi", en: "Give it to a friend" },
+    ],
+    explain: {
+      uz: "Ulanganda zararli dastur ishlashi mumkin.",
+      en: "It can run malware when plugged in.",
+    },
+  },
+  {
+    ask: { uz: "Tailgating nima?", en: "What is tailgating?" },
+    right: {
+      uz: "Begona odamning xodim ortidan kirib olishi",
+      en: "A stranger following staff through a door",
+    },
+    wrong: [
+      { uz: "Avtomobil ta’qibi", en: "Following a car" },
+      { uz: "Email spam", en: "Email spam" },
+      { uz: "Parol taxmini", en: "Guessing passwords" },
+    ],
+    explain: {
+      uz: "Notanishni qabulxonaga yo‘naltiring.",
+      en: "Send strangers to reception.",
+    },
+  },
+  {
+    ask: {
+      uz: "Phishing’ni bosib qo‘ygan hamkasb xabar berdi. To‘g‘ri munosabat?",
+      en: "A colleague clicked phishing and reported it. The right reaction?",
+    },
+    right: {
+      uz: "Minnatdorchilik va birga tuzatish",
+      en: "Thank them and fix it together",
+    },
+    wrong: [
+      { uz: "Jazolash", en: "Punish them" },
+      { uz: "Ustidan kulish", en: "Laugh at them" },
+      { uz: "E’tiborsiz qoldirish", en: "Ignore it" },
+    ],
+    explain: {
+      uz: "Ayblash keyingi xabarlarni to‘xtatadi.",
+      en: "Blame stops the next report.",
+    },
+  },
+];
