@@ -55,6 +55,7 @@ export const LAB_PROGRESS = {
   shared: { key: "cybervalue:shared:progress:v1", total: 8 },
   iam: { key: "cybervalue:iam:progress:v1", total: 8 },
   storage: { key: "cybervalue:storage:progress:v1", total: 8 },
+  containers: { key: "cybervalue:containers:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -553,6 +554,15 @@ export const LAB_META: {
       en: "Storage and secrets (Intermediate)",
     },
     href: "/intermediate/storage",
+    intermediate: true,
+  },
+  {
+    id: "containers",
+    title: {
+      uz: "Konteynerlar (Intermediate)",
+      en: "Containers (Intermediate)",
+    },
+    href: "/intermediate/containers",
     intermediate: true,
   },
 ];

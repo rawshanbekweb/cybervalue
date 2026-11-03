@@ -51,6 +51,7 @@ import { LESSONS as BUILD_LESSONS } from "@/lib/build/curriculum";
 import { LESSONS as SHARED_LESSONS } from "@/lib/shared/curriculum";
 import { LESSONS as IAM_LESSONS } from "@/lib/iam/curriculum";
 import { LESSONS as STORAGE_LESSONS } from "@/lib/storage/curriculum";
+import { LESSONS as CONTAINERS_LESSONS } from "@/lib/containers/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -1020,6 +1021,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: STORAGE_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "containers",
+      title: "Containers",
+      category: "Intermediate · Cloud security",
+      description:
+        "Review a Dockerfile, keep secrets out of image layers, run as non-root, scan images and use only trusted, signed images.",
+      href: "/intermediate/containers",
+      progressKey: LAB_PROGRESS.containers.key,
+      level: "Intermediate",
+      lessons: CONTAINERS_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: CONTAINERS_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

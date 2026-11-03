@@ -57,6 +57,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/shared`       | Cloud security module 1, shared responsibility (8 lessons, a checkpoint)        |
 | `/intermediate/iam`          | Cloud security module 2, identity and access (8 lessons, a checkpoint)          |
 | `/intermediate/storage`      | Cloud security module 3, storage and secrets (8 lessons, a checkpoint)          |
+| `/intermediate/containers`   | Cloud security module 4, containers (8 lessons, a checkpoint)                   |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -1036,6 +1037,26 @@ public. `bucketsRight` checks that exactly the three are flagged.
 | 6       | Questions on rotating keys                  |
 | 7       | Questions on backups and versioning         |
 | 8       | Final questions                             |
+
+## Cloud security module 4: Containers
+
+`/intermediate/containers` (lab id `containers`, checkpoint `containers-1`,
+award `lab-containers`, site setting `containers`) uses
+`src/lib/containers/tools.ts`: an eight-line `DOCKERFILE` in which four lines
+are risky (`FROM node:latest`, `COPY . .`, a secret in `ENV` and
+`USER root`), each with the safer version. `dockerfileRight` checks that
+exactly those four are flagged.
+
+| Lessons | What the student does                      |
+| ------- | ------------------------------------------ |
+| 1       | Questions on containers and images         |
+| 2       | Questions on layers and base images        |
+| 3       | Flags the four risky lines in a Dockerfile |
+| 4       | Questions on non-root and least privilege  |
+| 5       | Sorts container habits into safe and risky |
+| 6       | Questions on scanning images               |
+| 7       | Questions on registries and signing        |
+| 8       | Final questions                            |
 
 ## Who gets in
 

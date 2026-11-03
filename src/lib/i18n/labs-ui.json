@@ -1620,5 +1620,14 @@
   "{name} is leaking data": "{name} ma’lumot sizdirmoqda",
   "Three buckets leak data: the backups, the logs and the dev export. The website assets are meant to be public.": "Uchta bucket ma’lumot sizdirmoqda: zaxiralar, loglar va dasturchi eksporti. Sayt fayllari esa ataylab ochiq.",
   "Storage and secrets · Academy Intermediate": "Saqlash va maxfiy kalitlar · Academy Intermediate",
-  "Find the buckets that leak data, encrypt at rest and in transit, keep secrets in a secrets manager, rotate keys safely and keep versioned backups somewhere else.": "Ma’lumot sizdirayotgan bucket’larni toping, saqlashda va uzatishda shifrlang, maxfiy kalitlarni secrets manager’da saqlang, kalitlarni xavfsiz almashtiring va versiyali zaxiralarni boshqa joyda saqlang."
+  "Find the buckets that leak data, encrypt at rest and in transit, keep secrets in a secrets manager, rotate keys safely and keep versioned backups somewhere else.": "Ma’lumot sizdirayotgan bucket’larni toping, saqlashda va uzatishda shifrlang, maxfiy kalitlarni secrets manager’da saqlang, kalitlarni xavfsiz almashtiring va versiyali zaxiralarni boshqa joyda saqlang.",
+  "CLOUD · MODULE 4": "CLOUD · 4-MODUL",
+  "Containers.": "Konteynerlar.",
+  "Small images, no secrets inside, never root.": "Kichik obrazlar, ichida sir yo‘q, hech qachon root emas.",
+  "Learn what containers and images are, why layers never forget, review a Dockerfile for four risky lines, run as a non-root user with trimmed privileges, scan images for known vulnerabilities and use only trusted, signed images.": "Konteyner va obraz nimaligini, qatlamlar nega hech narsani unutmasligini o‘rganing, Dockerfile’dagi to‘rtta xavfli qatorni toping, ilovani root bo‘lmagan foydalanuvchi va cheklangan huquqlar bilan ishga tushiring, obrazlarni ma’lum zaifliklarga skanerlang va faqat ishonchli, imzolangan obrazlardan foydalaning.",
+  "DOCKER / LAB": "DOCKER / LABORATORIYA",
+  "Line {n} is risky": "{n}-qator xavfli",
+  "Four risky lines: an unpinned base image, copying everything, a secret baked into a layer and running as root.": "To‘rtta xavfli qator: versiyasi qotirilmagan bazaviy obraz, hamma narsani nusxalash, qatlamga yozilgan sir va root nomidan ishlash.",
+  "Containers · Academy Intermediate": "Konteynerlar · Academy Intermediate",
+  "Review a Dockerfile, keep secrets out of image layers, run as a non-root user with trimmed privileges, scan images for known vulnerabilities and use only trusted, signed images.": "Dockerfile’ni ko‘rib chiqing, sirlarni obraz qatlamlaridan tashqarida saqlang, ilovani root bo‘lmagan foydalanuvchi va cheklangan huquqlar bilan ishga tushiring, obrazlarni ma’lum zaifliklarga skanerlang va faqat ishonchli, imzolangan obrazlardan foydalaning."
 }

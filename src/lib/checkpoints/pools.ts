@@ -12894,3 +12894,261 @@ export const STORAGE_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const CONTAINERS_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Konteyner va VM’ning asosiy farqi?",
+      en: "The main difference between a container and a VM?",
+    },
+    right: {
+      uz: "Konteyner xost yadrosini bo‘lishadi",
+      en: "A container shares the host kernel",
+    },
+    wrong: [
+      {
+        uz: "Konteynerda ilova ishlamaydi",
+        en: "Apps can’t run in a container",
+      },
+      { uz: "VM har doim tezroq", en: "A VM is always faster" },
+      { uz: "Farqi yo‘q", en: "There is none" },
+    ],
+    explain: {
+      uz: "Shuning uchun ajratish zaifroq.",
+      en: "That’s why isolation is weaker.",
+    },
+  },
+  {
+    ask: { uz: "Obraz (image) nima?", en: "What is an image?" },
+    right: {
+      uz: "Konteyner uchun tayyor shablon",
+      en: "A ready-made template for containers",
+    },
+    wrong: [
+      { uz: "Ishlayotgan jarayon", en: "A running process" },
+      { uz: "Tarmoq porti", en: "A network port" },
+      { uz: "Log fayl", en: "A log file" },
+    ],
+    explain: {
+      uz: "Konteyner — obrazdan ishga tushgan nusxa.",
+      en: "A container is a running copy of an image.",
+    },
+  },
+  {
+    ask: {
+      uz: "Bir qatlamda qo‘shilib keyingisida o‘chirilgan fayl?",
+      en: "A file added in one layer and deleted in the next?",
+    },
+    right: { uz: "Obrazda baribir qoladi", en: "Is still in the image" },
+    wrong: [
+      { uz: "Butunlay yo‘qoladi", en: "Is gone completely" },
+      { uz: "Shifrlanadi", en: "Gets encrypted" },
+      { uz: "Faqat nomi qoladi", en: "Only its name remains" },
+    ],
+    explain: { uz: "Qatlamlar saqlanadi.", en: "Layers are kept." },
+  },
+  {
+    ask: {
+      uz: "Nega “latest” teg xavfli?",
+      en: "Why is the “latest” tag risky?",
+    },
+    right: {
+      uz: "Har safar boshqa obraz kelishi mumkin",
+      en: "It can be a different image every time",
+    },
+    wrong: [
+      { uz: "U har doim eski", en: "It is always old" },
+      { uz: "U ishlamaydi", en: "It doesn’t work" },
+      { uz: "U pullik", en: "It costs money" },
+    ],
+    explain: {
+      uz: "Aniq versiya yoki digest ishlating.",
+      en: "Use an exact version or digest.",
+    },
+  },
+  {
+    ask: {
+      uz: "Eng aniq bazaviy obraz ko‘rsatkichi?",
+      en: "The most exact way to pin a base image?",
+    },
+    right: { uz: "sha256 digest", en: "An sha256 digest" },
+    wrong: [
+      { uz: "latest", en: "latest" },
+      { uz: "Faqat nom", en: "Just the name" },
+      { uz: "Sana", en: "A date" },
+    ],
+    explain: {
+      uz: "Digest aynan bir xil obrazni beradi.",
+      en: "A digest is always the same image.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kichik bazaviy obrazning foydasi?",
+      en: "The benefit of a small base image?",
+    },
+    right: {
+      uz: "Kamroq paket — kamroq zaiflik",
+      en: "Fewer packages, fewer vulnerabilities",
+    },
+    wrong: [
+      { uz: "Ko‘proq vosita", en: "More tools" },
+      { uz: "Sirlarni saqlaydi", en: "It stores secrets" },
+      { uz: "Root’ni majburlaydi", en: "It forces root" },
+    ],
+    explain: {
+      uz: "Masalan alpine yoki distroless.",
+      en: "For example alpine or distroless.",
+    },
+  },
+  {
+    ask: {
+      uz: ".dockerignore nima uchun kerak?",
+      en: "What is a .dockerignore for?",
+    },
+    right: {
+      uz: ".env va .git obrazga tushmasligi uchun",
+      en: "Keeping .env and .git out of the image",
+    },
+    wrong: [
+      { uz: "Portlarni ochish", en: "Opening ports" },
+      { uz: "Tezlikni oshirish uchun xolos", en: "Only for speed" },
+      { uz: "Foydalanuvchi qo‘shish", en: "Adding a user" },
+    ],
+    explain: {
+      uz: "COPY . . hamma narsani nusxalaydi.",
+      en: "COPY . . copies everything.",
+    },
+  },
+  {
+    ask: {
+      uz: "API kalitni konteynerga qanday berasiz?",
+      en: "How do you give a container an API key?",
+    },
+    right: {
+      uz: "Ishga tushganda sirlar omboridan",
+      en: "From the secret store at run time",
+    },
+    wrong: [
+      { uz: "Dockerfile’dagi ENV bilan", en: "With ENV in the Dockerfile" },
+      { uz: "Obrazdagi faylda", en: "In a file in the image" },
+      { uz: "Teg nomida", en: "In the tag name" },
+    ],
+    explain: { uz: "Obraz sirsiz qoladi.", en: "The image stays secret-free." },
+  },
+  {
+    ask: {
+      uz: "Ilova konteynerda kim nomidan ishlashi kerak?",
+      en: "Which user should the app run as?",
+    },
+    right: {
+      uz: "Root bo‘lmagan oddiy foydalanuvchi",
+      en: "An ordinary non-root user",
+    },
+    wrong: [
+      { uz: "root", en: "root" },
+      { uz: "Administrator", en: "Administrator" },
+      { uz: "Farqi yo‘q", en: "It doesn’t matter" },
+    ],
+    explain: { uz: "Masalan USER node.", en: "For example USER node." },
+  },
+  {
+    ask: {
+      uz: "docker.sock’ni konteynerga ulash nimaga teng?",
+      en: "Mounting docker.sock into a container equals?",
+    },
+    right: { uz: "Xostni to‘liq boshqarish", en: "Full control of the host" },
+    wrong: [
+      { uz: "Faqat log o‘qish", en: "Only reading logs" },
+      { uz: "Hech narsa", en: "Nothing" },
+      { uz: "Tezroq tarmoq", en: "A faster network" },
+    ],
+    explain: { uz: "Bundan qoching.", en: "Avoid it." },
+  },
+  {
+    ask: {
+      uz: "Qaysi bayroq huquqlarni kamaytiradi?",
+      en: "Which flag reduces privileges?",
+    },
+    right: { uz: "--cap-drop ALL", en: "--cap-drop ALL" },
+    wrong: [
+      { uz: "--privileged", en: "--privileged" },
+      { uz: "--net host", en: "--net host" },
+      { uz: "--pid host", en: "--pid host" },
+    ],
+    explain: {
+      uz: "Kerakli capability’ni alohida qaytaring.",
+      en: "Add back only what is needed.",
+    },
+  },
+  {
+    ask: { uz: "--read-only nima qiladi?", en: "What does --read-only do?" },
+    right: {
+      uz: "Konteyner fayl tizimini o‘zgarmas qiladi",
+      en: "Makes the container’s filesystem unchangeable",
+    },
+    wrong: [
+      { uz: "Loglarni o‘chiradi", en: "Deletes logs" },
+      { uz: "Internetni uzadi", en: "Cuts the internet" },
+      { uz: "Obrazni imzolaydi", en: "Signs the image" },
+    ],
+    explain: {
+      uz: "Hujumchi fayl yozolmaydi.",
+      en: "An attacker can’t write files.",
+    },
+  },
+  {
+    ask: {
+      uz: "Obraz skaneri (Trivy) nimani topadi?",
+      en: "What does an image scanner (Trivy) find?",
+    },
+    right: {
+      uz: "Paketlardagi ma’lum CVE’larni",
+      en: "Known CVEs in packages",
+    },
+    wrong: [
+      { uz: "Barcha mantiqiy xatolarni", en: "Every logic bug" },
+      { uz: "Parollarni", en: "Passwords" },
+      { uz: "Tezlik muammolarini", en: "Speed problems" },
+    ],
+    explain: {
+      uz: "U CVE bazasi bilan solishtiradi.",
+      en: "It compares against a CVE database.",
+    },
+  },
+  {
+    ask: {
+      uz: "Bazaviy obraz yangilandi, kod o‘zgarmadi. Nima qilasiz?",
+      en: "The base image was updated but your code wasn’t. What now?",
+    },
+    right: { uz: "Obrazni qayta quraman", en: "Rebuild the image" },
+    wrong: [
+      { uz: "Hech narsa", en: "Nothing" },
+      { uz: "Skanerni o‘chiraman", en: "Turn off the scanner" },
+      { uz: "Teg nomini o‘zgartiraman", en: "Rename the tag" },
+    ],
+    explain: {
+      uz: "Yangi baza tuzatishlarni olib keladi.",
+      en: "A new base brings the fixes.",
+    },
+  },
+  {
+    ask: {
+      uz: "Obraz imzosi (Cosign) nimani isbotlaydi?",
+      en: "What does an image signature (Cosign) prove?",
+    },
+    right: {
+      uz: "Kim qurgani va o‘zgarmaganini",
+      en: "Who built it and that it is unchanged",
+    },
+    wrong: [
+      { uz: "Zaiflik yo‘qligini", en: "That it has no flaws" },
+      { uz: "Hajmini", en: "Its size" },
+      { uz: "Tezligini", en: "Its speed" },
+    ],
+    explain: {
+      uz: "Imzo — kelib chiqish haqida.",
+      en: "A signature is about origin.",
+    },
+  },
+];

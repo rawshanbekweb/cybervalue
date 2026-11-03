@@ -319,6 +319,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Saqlash va maxfiy kalitlar (Intermediate)",
     earned: (f) => finished(f, "storage") && passed(f, "storage-1"),
   },
+  {
+    id: "lab-containers",
+    title: "Konteynerlar (Intermediate)",
+    earned: (f) => finished(f, "containers") && passed(f, "containers-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */
