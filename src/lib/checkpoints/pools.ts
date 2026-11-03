@@ -13944,3 +13944,249 @@ export const PERSONAL_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const AWARENESS_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Xabardorlik dasturining maqsadi?",
+      en: "The goal of an awareness programme?",
+    },
+    right: {
+      uz: "Aldashni tanib, tez xabar berish odati",
+      en: "A habit of spotting tricks and reporting fast",
+    },
+    wrong: [
+      { uz: "Xatolarni jazolash", en: "Punishing mistakes" },
+      { uz: "Yillik test", en: "A yearly test" },
+      { uz: "Slaydlar soni", en: "Number of slides" },
+    ],
+    explain: { uz: "Natija — xatti-harakat.", en: "Success is behaviour." },
+  },
+  {
+    ask: {
+      uz: "Nega texnik filtr yetarli emas?",
+      en: "Why isn’t a filter enough?",
+    },
+    right: {
+      uz: "Ba’zi xatlar baribir o‘tadi",
+      en: "Some messages still get through",
+    },
+    wrong: [
+      { uz: "Filtr hammasini to‘xtatadi", en: "Filters stop everything" },
+      { uz: "Filtr qimmat", en: "Filters are expensive" },
+      { uz: "Filtr sekin", en: "Filters are slow" },
+    ],
+    explain: {
+      uz: "Odamlar — oxirgi himoya chizig‘i.",
+      en: "People are the last line.",
+    },
+  },
+  {
+    ask: {
+      uz: "Buxgalteriya uchun asosiy mavzu?",
+      en: "The key topic for finance?",
+    },
+    right: {
+      uz: "Soxta hisob-faktura va rekvizit o‘zgarishi",
+      en: "Fake invoices and changed bank details",
+    },
+    wrong: [
+      { uz: "Router sozlamalari", en: "Router settings" },
+      { uz: "Kod ko‘rib chiqish", en: "Code review" },
+      { uz: "Dizayn", en: "Design" },
+    ],
+    explain: {
+      uz: "To‘lov aldovlari eng qimmat.",
+      en: "Payment fraud costs most.",
+    },
+  },
+  {
+    ask: {
+      uz: "Bitta mashg‘ulotda nechta asosiy xulosa?",
+      en: "How many main takeaways per session?",
+    },
+    right: { uz: "Bitta", en: "One" },
+    wrong: [
+      { uz: "O‘nta", en: "Ten" },
+      { uz: "Yigirmata", en: "Twenty" },
+      { uz: "Hech qancha", en: "None" },
+    ],
+    explain: {
+      uz: "Bitta aniq odat eslab qolinadi.",
+      en: "One clear habit sticks.",
+    },
+  },
+  {
+    ask: {
+      uz: "Simulyatsiyada bosganlarni chatda nomma-nom aytish?",
+      en: "Naming clickers in the team chat?",
+    },
+    right: { uz: "Teskari natija beradi", en: "It backfires" },
+    wrong: [
+      { uz: "Yaxshi motivatsiya", en: "Good motivation" },
+      { uz: "Majburiy", en: "Required" },
+      { uz: "Farqi yo‘q", en: "No difference" },
+    ],
+    explain: {
+      uz: "Uyaltirish xabar berishni to‘xtatadi.",
+      en: "Shaming stops reporting.",
+    },
+  },
+  {
+    ask: {
+      uz: "Simulyatsiyadan keyin darhol nima ko‘rsatiladi?",
+      en: "What is shown right after a simulation click?",
+    },
+    right: { uz: "Qisqa tushuntirish", en: "A short explanation" },
+    wrong: [
+      { uz: "Jarima", en: "A fine" },
+      { uz: "Xato sahifasi", en: "An error page" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Xato paytida o‘rganish samarali.",
+      en: "Learning in the moment works.",
+    },
+  },
+  {
+    ask: {
+      uz: "Simulyatsiya uchun mos bo‘lmagan mavzu?",
+      en: "A theme that’s wrong for a simulation?",
+    },
+    right: { uz: "Ishdan bo‘shatish ro‘yxati", en: "A redundancy list" },
+    wrong: [
+      { uz: "Hujjatga taklif", en: "A document invite" },
+      { uz: "Posilka xabari", en: "A parcel notice" },
+      { uz: "Yig‘ilish taklifi", en: "A meeting invite" },
+    ],
+    explain: {
+      uz: "Og‘riqli mavzular ishonchni buzadi.",
+      en: "Painful themes destroy trust.",
+    },
+  },
+  {
+    ask: {
+      uz: "Simulyatsiyadan oldin nima kerak?",
+      en: "What is needed before simulations?",
+    },
+    right: {
+      uz: "Rahbariyat va HR bilan kelishilgan qoidalar",
+      en: "Rules agreed with management and HR",
+    },
+    wrong: [
+      { uz: "Hech narsa", en: "Nothing" },
+      { uz: "Xodim parollari", en: "Staff passwords" },
+      { uz: "Yashirin byudjet", en: "A secret budget" },
+    ],
+    explain: {
+      uz: "Ruxsat va chegaralar majburiy.",
+      en: "Approval and limits are a must.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega faqat bosish foizi chalg‘itadi?",
+      en: "Why is click rate alone misleading?",
+    },
+    right: {
+      uz: "U xatning qiyinligiga bog‘liq",
+      en: "It depends on how hard the email was",
+    },
+    wrong: [
+      { uz: "U doim aniq", en: "It’s always exact" },
+      { uz: "U hisoblanmaydi", en: "It can’t be counted" },
+      { uz: "U maxfiy", en: "It’s secret" },
+    ],
+    explain: {
+      uz: "Xabar berish foizini ham kuzating.",
+      en: "Track the report rate too.",
+    },
+  },
+  {
+    ask: { uz: "Eng foydali ko‘rsatkich?", en: "The most useful measure?" },
+    right: { uz: "Xabar berish foizi", en: "The report rate" },
+    wrong: [
+      { uz: "Slayd ko‘rishlar", en: "Slide views" },
+      { uz: "Bosganlar reytingi", en: "A league table of clickers" },
+      { uz: "Mashg‘ulot uzunligi", en: "Session length" },
+    ],
+    explain: {
+      uz: "Xabarlar — haqiqiy himoya.",
+      en: "Reports are the real defence.",
+    },
+  },
+  {
+    ask: {
+      uz: "Birinchi xabargacha vaqt nimani ko‘rsatadi?",
+      en: "What does time to first report show?",
+    },
+    right: {
+      uz: "Jamoa qanchalik tez sezganini",
+      en: "How fast the team noticed",
+    },
+    wrong: [
+      { uz: "Internet tezligini", en: "Internet speed" },
+      { uz: "Ish vaqtini", en: "Working hours" },
+      { uz: "Hech narsani", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Tez xabar — kichik zarar.",
+      en: "A fast report means less damage.",
+    },
+  },
+  {
+    ask: { uz: "Yaxshi mashg‘ulot davomiyligi?", en: "A good session length?" },
+    right: { uz: "10–15 daqiqa", en: "10–15 minutes" },
+    wrong: [
+      { uz: "3 soat", en: "3 hours" },
+      { uz: "Butun kun", en: "A whole day" },
+      { uz: "1 daqiqa", en: "1 minute" },
+    ],
+    explain: { uz: "Qisqa va muntazam.", en: "Short and regular." },
+  },
+  {
+    ask: {
+      uz: "“Xavfsizlik chempioni” kim?",
+      en: "Who is a “Security Champion”?",
+    },
+    right: {
+      uz: "Bo‘limdagi ko‘ngilli yordamchi",
+      en: "A volunteer helper in a department",
+    },
+    wrong: [
+      { uz: "Eng ko‘p bosgan", en: "The top clicker" },
+      { uz: "Tashqi auditor", en: "An outside auditor" },
+      { uz: "Hakker", en: "A hacker" },
+    ],
+    explain: {
+      uz: "Jamoa va xavfsizlik o‘rtasidagi ko‘prik.",
+      en: "A bridge to the security team.",
+    },
+  },
+  {
+    ask: {
+      uz: "Madaniyatni eng ko‘p nima o‘zgartiradi?",
+      en: "What changes culture most?",
+    },
+    right: { uz: "Rahbarlarning o‘rnagi", en: "Leaders’ example" },
+    wrong: [
+      { uz: "Jarimalar", en: "Fines" },
+      { uz: "Uzun hujjatlar", en: "Long documents" },
+      { uz: "Kameralar", en: "Cameras" },
+    ],
+    explain: { uz: "Odamlar rahbarga qaraydi.", en: "People follow leaders." },
+  },
+  {
+    ask: {
+      uz: "Dastur ishlayotganining belgisi?",
+      en: "A sign the programme is working?",
+    },
+    right: { uz: "Xabar berish oshib boradi", en: "Reporting grows" },
+    wrong: [
+      { uz: "Hech kim xabar bermaydi", en: "No one reports" },
+      { uz: "Slaydlar ko‘payadi", en: "More slides" },
+      { uz: "Ko‘proq jarima", en: "More fines" },
+    ],
+    explain: { uz: "Jimlik — xavfsizlik emas.", en: "Silence isn’t safety." },
+  },
+];

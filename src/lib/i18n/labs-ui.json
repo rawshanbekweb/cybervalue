@@ -1656,5 +1656,14 @@
   "Habit {n} needs fixing": "{n}-odatni tuzatish kerak",
   "Four to fix: a reused password, email without MFA, postponed updates and a factory router password.": "To‘rttasini tuzatish kerak: takroriy parol, MFA’siz pochta, kechiktirilgan yangilanishlar va routerdagi zavod paroli.",
   "Personal protection · Academy Intermediate": "Shaxsiy himoya · Academy Intermediate",
-  "Use a password manager and long passphrases, turn on MFA, fix risky habits, keep devices updated, back up with 3-2-1 and make a personal security plan.": "Parol menejeri va uzun parol iboralaridan foydalaning, MFA’ni yoqing, xavfli odatlarni tuzating, qurilmalarni yangilab boring, 3-2-1 qoidasi bilan zaxiralang va shaxsiy xavfsizlik rejasini tuzing."
+  "Use a password manager and long passphrases, turn on MFA, fix risky habits, keep devices updated, back up with 3-2-1 and make a personal security plan.": "Parol menejeri va uzun parol iboralaridan foydalaning, MFA’ni yoqing, xavfli odatlarni tuzating, qurilmalarni yangilab boring, 3-2-1 qoidasi bilan zaxiralang va shaxsiy xavfsizlik rejasini tuzing.",
+  "HUMAN · MODULE 3": "INSON · 3-MODUL",
+  "Awareness programmes.": "Xabardorlik dasturlari.",
+  "Short, regular, blameless — and measured by reports.": "Qisqa, muntazam, ayblovsiz — va xabarlar bilan o‘lchanadi.",
+  "Learn why awareness matters, pick topics by risk, review an awareness plan for four choices that backfire, run fair phishing simulations, measure reporting rather than clicks, keep sessions short and build a blameless culture.": "Xabardorlik nega muhimligini o‘rganing, mavzularni xavfga qarab tanlang, xabardorlik rejasidagi teskari natija beradigan to‘rtta tanlovni toping, adolatli phishing simulyatsiyalarini o‘tkazing, bosishlarni emas, xabar berishni o‘lchang, mashg‘ulotlarni qisqa qiling va ayblovsiz madaniyat quring.",
+  "AWARENESS / LAB": "XABARDORLIK / LABORATORIYA",
+  "Choice {n} backfires": "{n}-tanlov teskari natija beradi",
+  "Four backfire: shaming people, counting only clicks, one long lecture a year and a frightening simulation theme.": "To‘rttasi teskari natija beradi: odamlarni uyaltirish, faqat bosishlarni sanash, yiliga bitta uzun ma’ruza va qo‘rqituvchi simulyatsiya mavzusi.",
+  "Awareness programmes · Academy Intermediate": "Xabardorlik dasturlari · Academy Intermediate",
+  "Pick awareness topics by risk, spot plan choices that backfire, run fair phishing simulations, measure reporting rather than clicks and build a blameless culture.": "Xabardorlik mavzularini xavfga qarab tanlang, teskari natija beradigan tanlovlarni toping, adolatli phishing simulyatsiyalarini o‘tkazing, bosishlarni emas, xabar berishni o‘lchang va ayblovsiz madaniyat quring."
 }

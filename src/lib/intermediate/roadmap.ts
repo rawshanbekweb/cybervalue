@@ -831,6 +831,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Xabardorlik dasturlari", en: "Awareness programmes" },
+        href: "/intermediate/awareness",
+        lab: "awareness",
         topics: ["training", "simulations", "metrics"],
         goal: goal(
           "Kichik jamoa uchun xabardorlik mashg‘ulotini rejalashtirish.",

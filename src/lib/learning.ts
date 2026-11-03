@@ -55,6 +55,7 @@ import { LESSONS as CONTAINERS_LESSONS } from "@/lib/containers/curriculum";
 import { LESSONS as KUBERNETES_LESSONS } from "@/lib/kubernetes/curriculum";
 import { LESSONS as MANIPULATION_LESSONS } from "@/lib/manipulation/curriculum";
 import { LESSONS as PERSONAL_LESSONS } from "@/lib/personal/curriculum";
+import { LESSONS as AWARENESS_LESSONS } from "@/lib/awareness/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -1092,6 +1093,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: PERSONAL_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "awareness",
+      title: "Awareness programmes",
+      category: "Intermediate · Social engineering",
+      description:
+        "Pick topics by risk, run fair phishing simulations, measure reporting rather than clicks and build a blameless culture.",
+      href: "/intermediate/awareness",
+      progressKey: LAB_PROGRESS.awareness.key,
+      level: "Intermediate",
+      lessons: AWARENESS_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: AWARENESS_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },
