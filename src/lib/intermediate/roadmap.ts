@@ -841,6 +841,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Hodisani xabar qilish", en: "Reporting incidents" },
+        href: "/intermediate/reporting",
+        lab: "reporting",
         topics: ["reporting channels", "blameless culture"],
         goal: goal(
           "Hodisa haqida tez va to‘g‘ri xabar berish tartibini yozish.",

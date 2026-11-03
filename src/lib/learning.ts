@@ -56,6 +56,7 @@ import { LESSONS as KUBERNETES_LESSONS } from "@/lib/kubernetes/curriculum";
 import { LESSONS as MANIPULATION_LESSONS } from "@/lib/manipulation/curriculum";
 import { LESSONS as PERSONAL_LESSONS } from "@/lib/personal/curriculum";
 import { LESSONS as AWARENESS_LESSONS } from "@/lib/awareness/curriculum";
+import { LESSONS as REPORTING_LESSONS } from "@/lib/reporting/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -1110,6 +1111,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: AWARENESS_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "reporting",
+      title: "Reporting incidents",
+      category: "Intermediate · Social engineering",
+      description:
+        "Know what counts as an incident, report fast through a known route, keep the evidence and build a blameless culture.",
+      href: "/intermediate/reporting",
+      progressKey: LAB_PROGRESS.reporting.key,
+      level: "Intermediate",
+      lessons: REPORTING_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: REPORTING_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

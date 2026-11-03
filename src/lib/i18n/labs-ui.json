@@ -1169,7 +1169,7 @@
   "Writing the report.": "Hisobot yozish.",
   "An investigation nobody can follow didn’t happen.": "Hech kim tushunmaydigan tergov — bo‘lmagan tergov.",
   "Give every reader the section they need, put a report in order, tell fact from opinion, build a finding with evidence and impact but no guesses or secrets, write recommendations people can act on, and hand the report over safely.": "Har bir o‘quvchiga kerakli bo‘limni bering, hisobotni tartibga soling, faktni fikrdan ajrating, dalil va ta’sirli, lekin taxmin va sirlarsiz topilma yozing, bajarsa bo‘ladigan tavsiyalar bering va hisobotni xavfsiz topshiring.",
-  "REPORT / LAB": "HISOBOT / AMALIYOT",
+  "REPORT / LAB": "XABAR / LABORATORIYA",
   "Sections of the report": "Hisobot bo‘limlari",
   "Move section {n} up": "{n}-bo‘limni yuqoriga surish",
   "Move section {n} down": "{n}-bo‘limni pastga surish",
@@ -1665,5 +1665,13 @@
   "Choice {n} backfires": "{n}-tanlov teskari natija beradi",
   "Four backfire: shaming people, counting only clicks, one long lecture a year and a frightening simulation theme.": "To‘rttasi teskari natija beradi: odamlarni uyaltirish, faqat bosishlarni sanash, yiliga bitta uzun ma’ruza va qo‘rqituvchi simulyatsiya mavzusi.",
   "Awareness programmes · Academy Intermediate": "Xabardorlik dasturlari · Academy Intermediate",
-  "Pick awareness topics by risk, spot plan choices that backfire, run fair phishing simulations, measure reporting rather than clicks and build a blameless culture.": "Xabardorlik mavzularini xavfga qarab tanlang, teskari natija beradigan tanlovlarni toping, adolatli phishing simulyatsiyalarini o‘tkazing, bosishlarni emas, xabar berishni o‘lchang va ayblovsiz madaniyat quring."
+  "Pick awareness topics by risk, spot plan choices that backfire, run fair phishing simulations, measure reporting rather than clicks and build a blameless culture.": "Xabardorlik mavzularini xavfga qarab tanlang, teskari natija beradigan tanlovlarni toping, adolatli phishing simulyatsiyalarini o‘tkazing, bosishlarni emas, xabar berishni o‘lchang va ayblovsiz madaniyat quring.",
+  "HUMAN · MODULE 4": "INSON · 4-MODUL",
+  "Reporting incidents.": "Hodisani xabar qilish.",
+  "Fast, through a known route, factual and blameless.": "Tez, ma’lum yo‘l orqali, faktlar bilan va ayblovsiz.",
+  "Learn what counts as an incident and why the first hour matters, know whom to tell and how, pick what belongs in a first report, keep the evidence, build a blameless culture and write a one-page reporting procedure.": "Nima hodisa hisoblanishini va birinchi soat nega muhimligini o‘rganing, kimga va qanday xabar berishni biling, birinchi xabarga nima kirishini tanlang, dalillarni saqlang, ayblovsiz madaniyat quring va bir sahifalik xabar berish tartibini yozing.",
+  "Item {n} belongs in the report": "{n}-band xabarga kiradi",
+  "Five belong: what, when, which device and account, the email itself and what you already did. Never your password, blame or unrelated data.": "Beshtasi kiradi: nima, qachon, qaysi qurilma va hisob, xatning o‘zi va siz allaqachon nima qilganingiz. Parol, ayblov yoki begona ma’lumot hech qachon kirmaydi.",
+  "Reporting incidents · Academy Intermediate": "Hodisani xabar qilish · Academy Intermediate",
+  "Learn what counts as an incident, whom to tell and how fast, what belongs in a first report, how to keep evidence and how to write a blameless reporting procedure.": "Nima hodisa hisoblanishini, kimga va qanchalik tez xabar berishni, birinchi xabarga nima kirishini, dalillarni qanday saqlashni va ayblovsiz xabar berish tartibini qanday yozishni o‘rganing."
 }

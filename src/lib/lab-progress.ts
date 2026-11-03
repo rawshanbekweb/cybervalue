@@ -60,6 +60,7 @@ export const LAB_PROGRESS = {
   manipulation: { key: "cybervalue:manipulation:progress:v1", total: 8 },
   personal: { key: "cybervalue:personal:progress:v1", total: 8 },
   awareness: { key: "cybervalue:awareness:progress:v1", total: 8 },
+  reporting: { key: "cybervalue:reporting:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -603,6 +604,15 @@ export const LAB_META: {
       en: "Awareness programmes (Intermediate)",
     },
     href: "/intermediate/awareness",
+    intermediate: true,
+  },
+  {
+    id: "reporting",
+    title: {
+      uz: "Hodisani xabar qilish (Intermediate)",
+      en: "Reporting incidents (Intermediate)",
+    },
+    href: "/intermediate/reporting",
     intermediate: true,
   },
 ];

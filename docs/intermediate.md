@@ -62,6 +62,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/manipulation` | Social engineering module 1, manipulation tactics (8 lessons, a checkpoint)     |
 | `/intermediate/personal`     | Social engineering module 2, personal protection (8 lessons, a checkpoint)      |
 | `/intermediate/awareness`    | Social engineering module 3, awareness programmes (8 lessons, a checkpoint)     |
+| `/intermediate/reporting`    | Social engineering module 4, reporting incidents (8 lessons, a checkpoint)      |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -1143,6 +1144,27 @@ clicks, one long lecture a year and a frightening simulation theme);
 | 6       | Questions on running a session            |
 | 7       | Questions on culture                      |
 | 8       | Final questions                           |
+
+## Social engineering module 4: Reporting incidents
+
+`/intermediate/reporting` (lab id `reporting`, checkpoint `reporting-1`,
+award `lab-reporting`, site setting `reporting`) uses
+`src/lib/reporting/tools.ts`: eight `DETAILS` someone might put in a first
+report about a suspicious email. Five belong (what, when, which device and
+account, the email itself and what was already done) and three don't (a
+password, a guess at blame and colleagues' private messages); `reportRight`
+checks that exactly the five are picked. The widget is in lesson 4.
+
+| Lessons | What the student does                       |
+| ------- | ------------------------------------------- |
+| 1       | Questions on what counts as an incident     |
+| 2       | Questions on why speed matters              |
+| 3       | Questions on whom to tell and how           |
+| 4       | Picks what belongs in a first report        |
+| 5       | Sorts what to do and not do after reporting |
+| 6       | Questions on blameless culture              |
+| 7       | Questions on writing the procedure          |
+| 8       | Final questions                             |
 
 ## Who gets in
 
