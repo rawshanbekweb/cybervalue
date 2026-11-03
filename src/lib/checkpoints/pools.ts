@@ -13680,3 +13680,267 @@ export const MANIPULATION_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const PERSONAL_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Eng muhim parol qoidasi?",
+      en: "The most important password rule?",
+    },
+    right: {
+      uz: "Har bir sayt uchun boshqa parol",
+      en: "A different password for every site",
+    },
+    wrong: [
+      { uz: "Har oy bir xil parol", en: "The same password every month" },
+      { uz: "Faqat raqamlar", en: "Digits only" },
+      { uz: "Qisqa va murakkab", en: "Short and complex" },
+    ],
+    explain: {
+      uz: "Bitta sizish hamma hisobni ochmasin.",
+      en: "So one leak can’t open every account.",
+    },
+  },
+  {
+    ask: { uz: "Qaysi parol kuchliroq?", en: "Which password is stronger?" },
+    right: {
+      uz: "To‘rt-besh tasodifiy so‘zdan iborat ibora",
+      en: "A passphrase of four or five random words",
+    },
+    wrong: [
+      { uz: "P@ss1", en: "P@ss1" },
+      { uz: "Tug‘ilgan sana", en: "A birth date" },
+      { uz: "qwerty", en: "qwerty" },
+    ],
+    explain: {
+      uz: "Uzunlik — asosiy kuch.",
+      en: "Length is the main strength.",
+    },
+  },
+  {
+    ask: {
+      uz: "Credential stuffing nima?",
+      en: "What is credential stuffing?",
+    },
+    right: {
+      uz: "Sizgan parollarni boshqa saytlarda sinash",
+      en: "Trying leaked passwords on other sites",
+    },
+    wrong: [
+      { uz: "Parolni shifrlash", en: "Encrypting passwords" },
+      { uz: "Parol menejeri", en: "A password manager" },
+      { uz: "MFA turi", en: "A kind of MFA" },
+    ],
+    explain: {
+      uz: "Takroriy parollar shuning uchun xavfli.",
+      en: "That’s why reuse is dangerous.",
+    },
+  },
+  {
+    ask: {
+      uz: "Parol menejeri bilan nimani eslaysiz?",
+      en: "With a password manager, what do you remember?",
+    },
+    right: { uz: "Bitta asosiy iborani", en: "One master passphrase" },
+    wrong: [
+      { uz: "Barcha parollarni", en: "Every password" },
+      { uz: "Hech narsani", en: "Nothing" },
+      { uz: "Faqat PIN’ni", en: "Only a PIN" },
+    ],
+    explain: {
+      uz: "Qolganini menejer yaratadi.",
+      en: "The manager creates the rest.",
+    },
+  },
+  {
+    ask: {
+      uz: "Menejer parolni o‘xshatilgan saytda to‘ldiradimi?",
+      en: "Does a manager fill passwords on a look-alike site?",
+    },
+    right: {
+      uz: "Yo‘q — bu phishing’dan himoya",
+      en: "No — that protects against phishing",
+    },
+    wrong: [
+      { uz: "Ha, har doim", en: "Yes, always" },
+      { uz: "Faqat kechasi", en: "Only at night" },
+      { uz: "Faqat telefonda", en: "Only on phones" },
+    ],
+    explain: { uz: "U domenni solishtiradi.", en: "It compares the domain." },
+  },
+  {
+    ask: {
+      uz: "MFA’ni birinchi qayerda yoqasiz?",
+      en: "Where do you turn on MFA first?",
+    },
+    right: { uz: "Asosiy pochtada", en: "Your main email" },
+    wrong: [
+      { uz: "O‘yin forumida", en: "A gaming forum" },
+      { uz: "Yangiliklar saytida", en: "A news site" },
+      { uz: "Hech qayerda", en: "Nowhere" },
+    ],
+    explain: {
+      uz: "Pochta orqali boshqa hisoblar tiklanadi.",
+      en: "Other accounts reset through email.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi MFA eng zaif, lekin baribir foydali?",
+      en: "Which MFA is weakest, but still useful?",
+    },
+    right: { uz: "SMS kod", en: "An SMS code" },
+    wrong: [
+      { uz: "Passkey", en: "A passkey" },
+      { uz: "Xavfsizlik kaliti", en: "A security key" },
+      { uz: "Autentifikator ilovasi", en: "An authenticator app" },
+    ],
+    explain: {
+      uz: "SIM almashtirish mumkin, lekin MFA’sizdan yaxshi.",
+      en: "SIM swaps happen, but it beats nothing.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kirmagan paytda MFA so‘rovi keldi?",
+      en: "An MFA prompt arrives when you aren’t signing in?",
+    },
+    right: {
+      uz: "Rad etib, parolni o‘zgartirish",
+      en: "Deny it and change the password",
+    },
+    wrong: [
+      { uz: "Tasdiqlash", en: "Approve it" },
+      { uz: "Kutish", en: "Wait" },
+      { uz: "Telefonni o‘chirish", en: "Turn off the phone" },
+    ],
+    explain: {
+      uz: "Kimdir parolingizni biladi.",
+      en: "Someone knows your password.",
+    },
+  },
+  {
+    ask: {
+      uz: "Tiklash kodlari qayerda saqlanadi?",
+      en: "Where do recovery codes go?",
+    },
+    right: {
+      uz: "Parol menejeri yoki xavfsiz joyda",
+      en: "In the password manager or somewhere safe",
+    },
+    wrong: [
+      { uz: "Ish stolidagi stikerda", en: "On a sticky note on the desk" },
+      { uz: "Ijtimoiy tarmoqda", en: "On social media" },
+      { uz: "Chatda", en: "In a chat" },
+    ],
+    explain: {
+      uz: "Telefon yo‘qolganda kerak bo‘ladi.",
+      en: "You need them when the phone is lost.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega yangilanishni kechiktirmaslik kerak?",
+      en: "Why not put off updates?",
+    },
+    right: {
+      uz: "Ular ma’lum zaifliklarni yopadi",
+      en: "They close known vulnerabilities",
+    },
+    wrong: [
+      { uz: "Batareya uchun", en: "For the battery" },
+      { uz: "Rang uchun", en: "For the colours" },
+      { uz: "Kerak emas", en: "They don’t matter" },
+    ],
+    explain: {
+      uz: "Avtomatik yangilanishni yoqing.",
+      en: "Turn on automatic updates.",
+    },
+  },
+  {
+    ask: {
+      uz: "Routerda admin/admin qolgan. Xavfi?",
+      en: "The router still uses admin/admin. The risk?",
+    },
+    right: {
+      uz: "Zavod paroli hammaga ma’lum",
+      en: "Factory passwords are public",
+    },
+    wrong: [
+      { uz: "Hech qanday", en: "None" },
+      { uz: "Internet tezlashadi", en: "The internet speeds up" },
+      { uz: "Router qiziydi", en: "The router gets hot" },
+    ],
+    explain: {
+      uz: "Birinchi kunning o‘zida almashtiring.",
+      en: "Change it on day one.",
+    },
+  },
+  {
+    ask: { uz: "3-2-1 qoidasi nima?", en: "What is the 3-2-1 rule?" },
+    right: {
+      uz: "3 nusxa, 2 xil joy, 1 tasi uydan tashqarida",
+      en: "3 copies, 2 kinds of storage, 1 away from home",
+    },
+    wrong: [
+      { uz: "3 parol, 2 MFA, 1 email", en: "3 passwords, 2 MFA, 1 email" },
+      { uz: "3 kun, 2 hafta, 1 oy", en: "3 days, 2 weeks, 1 month" },
+      { uz: "3 qurilma, 2 ilova, 1 bulut", en: "3 devices, 2 apps, 1 cloud" },
+    ],
+    explain: {
+      uz: "Bitta hodisa hammasini yo‘q qilmasin.",
+      en: "So one incident can’t wipe it all.",
+    },
+  },
+  {
+    ask: {
+      uz: "Bulut sinxronizatsiyasi zaxirami?",
+      en: "Is cloud sync a backup?",
+    },
+    right: {
+      uz: "Yo‘q, o‘chirish hamma joyga tarqaladi",
+      en: "No, deletions spread everywhere",
+    },
+    wrong: [
+      { uz: "Ha, eng yaxshisi", en: "Yes, the best kind" },
+      { uz: "Faqat pullik bo‘lsa", en: "Only if paid" },
+      { uz: "Faqat rasmlar uchun", en: "Only for photos" },
+    ],
+    explain: {
+      uz: "Zaxira — alohida, versiyali nusxa.",
+      en: "A backup is a separate, versioned copy.",
+    },
+  },
+  {
+    ask: {
+      uz: "Zaxira ishlashini qanday bilasiz?",
+      en: "How do you know a backup works?",
+    },
+    right: { uz: "Biror faylni tiklab ko‘rish", en: "Try restoring a file" },
+    wrong: [
+      { uz: "Hajmiga qarab", en: "By its size" },
+      { uz: "Nomiga qarab", en: "By its name" },
+      { uz: "Hech qanday", en: "You can’t" },
+    ],
+    explain: {
+      uz: "Tiklanmagan zaxira — umid xolos.",
+      en: "An untested backup is only a hope.",
+    },
+  },
+  {
+    ask: {
+      uz: "Shaxsiy rejaning birinchi qadami?",
+      en: "The first step of a personal plan?",
+    },
+    right: { uz: "Pochtada MFA", en: "MFA on email" },
+    wrong: [
+      { uz: "Aqlli lampa paroli", en: "The smart bulb’s password" },
+      { uz: "Eski forum hisobi", en: "An old forum account" },
+      { uz: "Profil rasmi", en: "A profile picture" },
+    ],
+    explain: {
+      uz: "Eng katta foyda — eng muhim hisobda.",
+      en: "The biggest win is the most important account.",
+    },
+  },
+];

@@ -58,6 +58,7 @@ export const LAB_PROGRESS = {
   containers: { key: "cybervalue:containers:progress:v1", total: 8 },
   kubernetes: { key: "cybervalue:kubernetes:progress:v1", total: 8 },
   manipulation: { key: "cybervalue:manipulation:progress:v1", total: 8 },
+  personal: { key: "cybervalue:personal:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -583,6 +584,15 @@ export const LAB_META: {
       en: "Manipulation tactics (Intermediate)",
     },
     href: "/intermediate/manipulation",
+    intermediate: true,
+  },
+  {
+    id: "personal",
+    title: {
+      uz: "Shaxsiy himoya (Intermediate)",
+      en: "Personal protection (Intermediate)",
+    },
+    href: "/intermediate/personal",
     intermediate: true,
   },
 ];

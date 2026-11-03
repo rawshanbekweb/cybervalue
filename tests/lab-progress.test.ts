@@ -61,6 +61,7 @@ import { LESSONS as STORAGE } from "../src/lib/storage/curriculum";
 import { LESSONS as CONTAINERS } from "../src/lib/containers/curriculum";
 import { LESSONS as KUBERNETES } from "../src/lib/kubernetes/curriculum";
 import { LESSONS as MANIPULATION } from "../src/lib/manipulation/curriculum";
+import { LESSONS as PERSONAL } from "../src/lib/personal/curriculum";
 import {
   isLabId,
   LAB_PROGRESS,
@@ -130,6 +131,7 @@ test("lab progress totals match the lessons", () => {
   assert.equal(LAB_PROGRESS.containers.total, CONTAINERS.length);
   assert.equal(LAB_PROGRESS.kubernetes.total, KUBERNETES.length);
   assert.equal(LAB_PROGRESS.manipulation.total, MANIPULATION.length);
+  assert.equal(LAB_PROGRESS.personal.total, PERSONAL.length);
   assert.equal(isLabId("toString"), false);
   assert.equal(isLabId("network"), true);
 });
