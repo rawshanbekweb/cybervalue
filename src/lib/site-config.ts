@@ -360,6 +360,12 @@ export const SECTIONS = [
     href: "/intermediate/baseline",
   },
   {
+    id: "build",
+    group: "lab",
+    label: "How programs are built (Intermediate)",
+    href: "/intermediate/build",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

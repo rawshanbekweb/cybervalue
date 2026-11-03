@@ -70,6 +70,7 @@ import {
   WINDOWS_POOL,
   AUTHN_POOL,
   BASELINE_POOL,
+  BUILD_POOL,
   SECURITY_EXTRA,
   type PoolItem,
 } from "./pools";
@@ -854,6 +855,10 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
       .map((item) => fromPool(r, item)),
   "baseline-1": (r) =>
     shuffle(r, BASELINE_POOL)
+      .slice(0, 10)
+      .map((item) => fromPool(r, item)),
+  "build-1": (r) =>
+    shuffle(r, BUILD_POOL)
       .slice(0, 10)
       .map((item) => fromPool(r, item)),
 };

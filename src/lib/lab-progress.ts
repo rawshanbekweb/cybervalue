@@ -51,6 +51,7 @@ export const LAB_PROGRESS = {
   windows: { key: "cybervalue:windows:progress:v1", total: 8 },
   authn: { key: "cybervalue:authn:progress:v1", total: 8 },
   baseline: { key: "cybervalue:baseline:progress:v1", total: 8 },
+  build: { key: "cybervalue:build:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -513,6 +514,15 @@ export const LAB_META: {
       en: "Patching and baselines (Intermediate)",
     },
     href: "/intermediate/baseline",
+    intermediate: true,
+  },
+  {
+    id: "build",
+    title: {
+      uz: "Dastur qanday quriladi (Intermediate)",
+      en: "How programs are built (Intermediate)",
+    },
+    href: "/intermediate/build",
     intermediate: true,
   },
 ];
