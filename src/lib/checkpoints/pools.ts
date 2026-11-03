@@ -12090,3 +12090,258 @@ export const BUILD_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const SHARED_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "IaaS’da mijozga nima beriladi?",
+      en: "What does IaaS give the customer?",
+    },
+    right: {
+      uz: "Virtual server, disk va tarmoq",
+      en: "Virtual servers, disks and networks",
+    },
+    wrong: [
+      { uz: "Tayyor pochta dasturi", en: "A finished email app" },
+      { uz: "Faqat ma’lumotlar bazasi", en: "Only a database" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "OS’dan yuqorisi — mijozniki.",
+      en: "Everything from the OS up is the customer’s.",
+    },
+  },
+  {
+    ask: {
+      uz: "Google Workspace qaysi model?",
+      en: "Which model is Google Workspace?",
+    },
+    right: { uz: "SaaS", en: "SaaS" },
+    wrong: [
+      { uz: "IaaS", en: "IaaS" },
+      { uz: "PaaS", en: "PaaS" },
+      { uz: "On-premise", en: "On-premises" },
+    ],
+    explain: { uz: "Tayyor dastur.", en: "Finished software." },
+  },
+  {
+    ask: {
+      uz: "Kod yuklanadigan, serverni provayder boshqaradigan xizmat?",
+      en: "A service where you push code and the provider runs the servers?",
+    },
+    right: { uz: "PaaS", en: "PaaS" },
+    wrong: [
+      { uz: "IaaS", en: "IaaS" },
+      { uz: "SaaS", en: "SaaS" },
+      { uz: "Hech qaysi", en: "None" },
+    ],
+    explain: {
+      uz: "Masalan, App Engine, Heroku.",
+      en: "App Engine or Heroku, for example.",
+    },
+  },
+  {
+    ask: {
+      uz: "“Security OF the cloud” kimniki?",
+      en: "Whose job is “security OF the cloud”?",
+    },
+    right: { uz: "Provayderniki", en: "The provider’s" },
+    wrong: [
+      { uz: "Mijozniki", en: "The customer’s" },
+      { uz: "Davlatniki", en: "The government’s" },
+      { uz: "Hech kimniki", en: "Nobody’s" },
+    ],
+    explain: {
+      uz: "Binolar, uskunalar, virtualizatsiya.",
+      en: "Buildings, hardware, virtualisation.",
+    },
+  },
+  {
+    ask: {
+      uz: "Barcha modellarda mijozda qoladigan narsa?",
+      en: "What stays with the customer in every model?",
+    },
+    right: {
+      uz: "Ma’lumotlar va kim kirishi",
+      en: "The data and who can reach it",
+    },
+    wrong: [
+      { uz: "Serverlar", en: "Servers" },
+      { uz: "Bino", en: "The building" },
+      { uz: "Elektr ta’minoti", en: "Power supply" },
+    ],
+    explain: {
+      uz: "SaaS’da ham MFA va ruxsatlar — sizniki.",
+      en: "Even with SaaS, MFA and access are yours.",
+    },
+  },
+  {
+    ask: {
+      uz: "IaaS’da OS yangilanishlari kimniki?",
+      en: "Who patches the OS with IaaS?",
+    },
+    right: { uz: "Mijoz", en: "The customer" },
+    wrong: [
+      { uz: "Provayder", en: "The provider" },
+      { uz: "Hech kim", en: "Nobody" },
+      { uz: "Operatsion tizim o‘zi", en: "The OS itself" },
+    ],
+    explain: {
+      uz: "PaaS va SaaS’da — provayder.",
+      en: "With PaaS and SaaS, the provider.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ochiq qoldirilgan bucket’dan ma’lumot sizdi. Kimning javobgarligi?",
+      en: "Data leaked from a bucket left public. Whose responsibility?",
+    },
+    right: { uz: "Mijozniki", en: "The customer’s" },
+    wrong: [
+      { uz: "Provayderniki", en: "The provider’s" },
+      { uz: "Internetniki", en: "The internet’s" },
+      { uz: "Hech kimniki", en: "Nobody’s" },
+    ],
+    explain: {
+      uz: "Sozlama — “security IN the cloud”.",
+      en: "A setting is “security IN the cloud”.",
+    },
+  },
+  {
+    ask: {
+      uz: "Bulut buzilishlarining eng ko‘p sababi?",
+      en: "The most common cause of cloud breaches?",
+    },
+    right: {
+      uz: "Mijozning sozlama xatolari",
+      en: "Customer misconfiguration",
+    },
+    wrong: [
+      { uz: "Zilzila", en: "Earthquakes" },
+      { uz: "Uskuna nosozligi", en: "Hardware faults" },
+      { uz: "Elektr uzilishi", en: "Power cuts" },
+    ],
+    explain: {
+      uz: "Ochiq bucket, ochiq baza, sizgan kalit.",
+      en: "Open buckets, open databases, leaked keys.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nazoratlar vaqt davomida ishlaganini qaysi hisobot ko‘rsatadi?",
+      en: "Which report shows controls worked over time?",
+    },
+    right: { uz: "SOC 2 Type II", en: "SOC 2 Type II" },
+    wrong: [
+      { uz: "SOC 2 Type I", en: "SOC 2 Type I" },
+      { uz: "Reklama", en: "An advert" },
+      { uz: "Narxlar ro‘yxati", en: "A price list" },
+    ],
+    explain: {
+      uz: "Type I — bir lahzadagi holat.",
+      en: "Type I is a snapshot.",
+    },
+  },
+  {
+    ask: {
+      uz: "Provayder ISO 27001 sertifikatiga ega. Bu sizning sozlamalaringizni himoya qiladimi?",
+      en: "The provider is ISO 27001 certified. Does that protect your settings?",
+    },
+    right: { uz: "Yo‘q", en: "No" },
+    wrong: [
+      { uz: "Ha, to‘liq", en: "Yes, fully" },
+      { uz: "Faqat SaaS’da", en: "Only with SaaS" },
+      { uz: "Faqat dam olish kunlari", en: "Only at weekends" },
+    ],
+    explain: {
+      uz: "Sertifikat provayderning qismini qamraydi.",
+      en: "It covers the provider’s part.",
+    },
+  },
+  {
+    ask: {
+      uz: "Yangi bulut hisobida birinchi ish?",
+      en: "The first job on a new cloud account?",
+    },
+    right: { uz: "Root hisobga MFA qo‘yish", en: "MFA on the root account" },
+    wrong: [
+      { uz: "Root bilan har kuni ishlash", en: "Working as root daily" },
+      { uz: "Bucket’ni ochiq qilish", en: "Making buckets public" },
+      { uz: "Loglarni o‘chirish", en: "Turning logs off" },
+    ],
+    explain: {
+      uz: "Root hisob — eng kuchli kalit.",
+      en: "The root account is the strongest key.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega xarajat ogohlantirishi xavfsizlik uchun foydali?",
+      en: "Why is a billing alert useful for security?",
+    },
+    right: {
+      uz: "O‘g‘irlangan kalit ko‘pincha kripto-mayningga ishlatiladi",
+      en: "Stolen keys are often used for crypto-mining",
+    },
+    wrong: [
+      { uz: "Foydasi yo‘q", en: "It isn’t" },
+      { uz: "Pulni tejaydi, xolos", en: "It only saves money" },
+      { uz: "Internetni tezlashtiradi", en: "It speeds up the internet" },
+    ],
+    explain: {
+      uz: "Kutilmagan hisob — buzilish belgisi.",
+      en: "An unexpected bill is a breach signal.",
+    },
+  },
+  {
+    ask: {
+      uz: "AWS’da audit logini nima yozadi?",
+      en: "What records the audit log on AWS?",
+    },
+    right: { uz: "CloudTrail", en: "CloudTrail" },
+    wrong: [
+      { uz: "EC2", en: "EC2" },
+      { uz: "S3 Glacier", en: "S3 Glacier" },
+      { uz: "Route 53", en: "Route 53" },
+    ],
+    explain: {
+      uz: "Azure’da — Activity Log.",
+      en: "On Azure, the Activity Log.",
+    },
+  },
+  {
+    ask: {
+      uz: "Jamoa uchun bitta umumiy admin hisob — muammo nimada?",
+      en: "One shared admin account for the team — what’s the problem?",
+    },
+    right: {
+      uz: "Kim nima qilgani ko‘rinmaydi va ketganlarni chiqarib bo‘lmaydi",
+      en: "You can’t tell who did what or cut off a leaver",
+    },
+    wrong: [
+      { uz: "Muammo yo‘q", en: "No problem" },
+      { uz: "Qimmatroq", en: "It costs more" },
+      { uz: "Sekinroq", en: "It’s slower" },
+    ],
+    explain: {
+      uz: "Har kimga alohida hisob.",
+      en: "One account per person.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi modelda mijoz eng ko‘p qatlam uchun javobgar?",
+      en: "In which model does the customer own the most layers?",
+    },
+    right: { uz: "IaaS", en: "IaaS" },
+    wrong: [
+      { uz: "SaaS", en: "SaaS" },
+      { uz: "PaaS", en: "PaaS" },
+      { uz: "Hammasida teng", en: "All equal" },
+    ],
+    explain: {
+      uz: "SaaS’da — eng kam.",
+      en: "SaaS has the fewest.",
+    },
+  },
+];

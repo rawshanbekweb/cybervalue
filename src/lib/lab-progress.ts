@@ -52,6 +52,7 @@ export const LAB_PROGRESS = {
   authn: { key: "cybervalue:authn:progress:v1", total: 8 },
   baseline: { key: "cybervalue:baseline:progress:v1", total: 8 },
   build: { key: "cybervalue:build:progress:v1", total: 8 },
+  shared: { key: "cybervalue:shared:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -523,6 +524,15 @@ export const LAB_META: {
       en: "How programs are built (Intermediate)",
     },
     href: "/intermediate/build",
+    intermediate: true,
+  },
+  {
+    id: "shared",
+    title: {
+      uz: "Mas’uliyat taqsimoti (Intermediate)",
+      en: "Shared responsibility (Intermediate)",
+    },
+    href: "/intermediate/shared",
     intermediate: true,
   },
 ];

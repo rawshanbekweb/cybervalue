@@ -304,6 +304,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Dastur qanday quriladi (Intermediate)",
     earned: (f) => finished(f, "build") && passed(f, "build-1"),
   },
+  {
+    id: "lab-shared",
+    title: "Mas’uliyat taqsimoti (Intermediate)",
+    earned: (f) => finished(f, "shared") && passed(f, "shared-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

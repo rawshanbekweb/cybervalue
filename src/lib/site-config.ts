@@ -366,6 +366,12 @@ export const SECTIONS = [
     href: "/intermediate/build",
   },
   {
+    id: "shared",
+    group: "lab",
+    label: "Shared responsibility (Intermediate)",
+    href: "/intermediate/shared",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

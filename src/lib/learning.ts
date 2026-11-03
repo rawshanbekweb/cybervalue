@@ -48,6 +48,7 @@ import { LESSONS as WINDOWS_LESSONS } from "@/lib/windows/curriculum";
 import { LESSONS as AUTHN_LESSONS } from "@/lib/authn/curriculum";
 import { LESSONS as BASELINE_LESSONS } from "@/lib/baseline/curriculum";
 import { LESSONS as BUILD_LESSONS } from "@/lib/build/curriculum";
+import { LESSONS as SHARED_LESSONS } from "@/lib/shared/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -966,6 +967,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: BUILD_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "shared",
+      title: "Shared responsibility",
+      category: "Intermediate · Cloud security",
+      description:
+        "Tell IaaS from PaaS from SaaS, find the line between security of and in the cloud, split six layers between provider and customer, see why most cloud breaches are configuration mistakes and set up a new account on day one.",
+      href: "/intermediate/shared",
+      progressKey: LAB_PROGRESS.shared.key,
+      level: "Intermediate",
+      lessons: SHARED_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: SHARED_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },
