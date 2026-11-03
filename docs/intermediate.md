@@ -56,6 +56,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/build`        | Reverse engineering module 1, how programs are built (8 lessons, a checkpoint)  |
 | `/intermediate/shared`       | Cloud security module 1, shared responsibility (8 lessons, a checkpoint)        |
 | `/intermediate/iam`          | Cloud security module 2, identity and access (8 lessons, a checkpoint)          |
+| `/intermediate/storage`      | Cloud security module 3, storage and secrets (8 lessons, a checkpoint)          |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -1015,6 +1016,26 @@ denied.
 | 6       | Questions on the root account              |
 | 7       | Questions on reviewing access              |
 | 8       | Final questions                            |
+
+## Cloud security module 3: Storage and secrets
+
+`/intermediate/storage` (lab id `storage`, checkpoint `storage-1`, award
+`lab-storage`, site setting `storage`) uses `src/lib/storage/tools.ts`: five
+`BUCKETS` of an invented company, each with what it holds and how it is
+shared. Three leak data (public backups, publicly listable logs and a dev
+export opened to `Principal "*"`); the public website assets are meant to be
+public. `bucketsRight` checks that exactly the three are flagged.
+
+| Lessons | What the student does                       |
+| ------- | ------------------------------------------- |
+| 1       | Questions on object storage                 |
+| 2       | Questions on public access                  |
+| 3       | Flags the three buckets that leak data      |
+| 4       | Questions on encryption at rest and transit |
+| 5       | Sorts where secrets may live                |
+| 6       | Questions on rotating keys                  |
+| 7       | Questions on backups and versioning         |
+| 8       | Final questions                             |
 
 ## Who gets in
 
