@@ -57,6 +57,7 @@ export const LAB_PROGRESS = {
   storage: { key: "cybervalue:storage:progress:v1", total: 8 },
   containers: { key: "cybervalue:containers:progress:v1", total: 8 },
   kubernetes: { key: "cybervalue:kubernetes:progress:v1", total: 8 },
+  manipulation: { key: "cybervalue:manipulation:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -573,6 +574,15 @@ export const LAB_META: {
       en: "Kubernetes basics (Intermediate)",
     },
     href: "/intermediate/kubernetes",
+    intermediate: true,
+  },
+  {
+    id: "manipulation",
+    title: {
+      uz: "Aldash usullari (Intermediate)",
+      en: "Manipulation tactics (Intermediate)",
+    },
+    href: "/intermediate/manipulation",
     intermediate: true,
   },
 ];

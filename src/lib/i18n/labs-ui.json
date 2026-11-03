@@ -1638,5 +1638,14 @@
   "Four risky settings: a privileged pod, the host’s filesystem, cluster-admin for the default account and the host’s network.": "To‘rtta xavfli sozlama: privileged pod, xostning fayl tizimi, default hisobga cluster-admin va xost tarmog‘i.",
   "Kubernetes basics · Academy Intermediate": "Kubernetes asoslari · Academy Intermediate",
   "Apply Pod Security Standards, review a manifest’s settings, keep RBAC to least privilege, limit traffic with network policies, protect Secrets and look after the cluster.": "Pod Security Standards’ni qo‘llang, manifest sozlamalarini tekshiring, RBAC’ni eng kam huquq bilan cheklang, trafikni network policy bilan cheklang, Secret’larni himoyalang va klasterga qarang.",
-  "Risky": "Xavfli"
+  "Risky": "Xavfli",
+  "HUMAN · MODULE 1": "INSON · 1-MODUL",
+  "Manipulation tactics.": "Aldash usullari.",
+  "Stop, check through another channel, report.": "To‘xtang, boshqa kanal orqali tekshiring, xabar bering.",
+  "Learn how social engineering works, recognise urgency, authority and fear, find five warning signs in a phishing email, handle phone pretexts, messenger scams, QR codes and strangers at the door, and report quickly without blame.": "Ijtimoiy muhandislik qanday ishlashini o‘rganing, shoshiltirish, obro‘ va qo‘rquv bosimini taning, phishing xatidagi beshta aldash belgisini toping, telefon bahonalari, messenjer firibgarliklari, QR kodlar va eshik oldidagi notanishlarga to‘g‘ri munosabatda bo‘ling hamda ayblovsiz tez xabar bering.",
+  "PHISHING / LAB": "PHISHING / LABORATORIYA",
+  "Part {n} is a warning sign": "{n}-qism aldash belgisi",
+  "Five warning signs: a look-alike sender, a deadline, a link to another domain asking for a password, pressure from the director and being told not to check.": "Beshta aldash belgisi: o‘xshatilgan yuboruvchi, muddat bosimi, parol so‘raydigan boshqa domendagi havola, direktor nomidan bosim va tekshirishni taqiqlash.",
+  "Manipulation tactics · Academy Intermediate": "Aldash usullari · Academy Intermediate",
+  "Recognise urgency, authority and fear, find the warning signs in a phishing email, handle phone pretexts, messenger scams and strangers at the door, and report quickly without blame.": "Shoshiltirish, obro‘ va qo‘rquv bosimini taning, phishing xatidagi aldash belgilarini toping, telefon bahonalari, messenjer firibgarliklari va eshik oldidagi notanishlarga to‘g‘ri munosabatda bo‘ling hamda ayblovsiz tez xabar bering."
 }

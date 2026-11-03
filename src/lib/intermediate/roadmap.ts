@@ -811,6 +811,8 @@ export const DOMAINS: Domain[] = [
     modules: [
       {
         title: { uz: "Aldash usullari", en: "Manipulation tactics" },
+        href: "/intermediate/manipulation",
+        lab: "manipulation",
         topics: ["phishing", "pretexting", "urgency", "authority"],
         goal: goal(
           "Xabardagi aldash belgilarini topish.",

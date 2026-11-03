@@ -59,6 +59,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/storage`      | Cloud security module 3, storage and secrets (8 lessons, a checkpoint)          |
 | `/intermediate/containers`   | Cloud security module 4, containers (8 lessons, a checkpoint)                   |
 | `/intermediate/kubernetes`   | Cloud security module 5, Kubernetes basics (8 lessons, a checkpoint)            |
+| `/intermediate/manipulation` | Social engineering module 1, manipulation tactics (8 lessons, a checkpoint)     |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -1078,6 +1079,28 @@ cluster-admin for the default ServiceAccount and `hostNetwork: true`);
 | 6       | Questions on Kubernetes Secrets             |
 | 7       | Questions on protecting the cluster         |
 | 8       | Final questions                             |
+
+## Social engineering module 1: Manipulation tactics
+
+`/intermediate/manipulation` (lab id `manipulation`, checkpoint
+`manipulation-1`, award `lab-manipulation`, site setting `manipulation`) uses
+`src/lib/manipulation/tools.ts`: an invented phishing `EMAIL` in eight parts.
+Five are warning signs (a look-alike sender, a deadline, a link to another
+domain asking for a password, pressure from the director and being told not
+to call the help desk); `signsRight` checks that exactly those are flagged.
+The module is defensive: it teaches recognising and reporting, not writing
+lures.
+
+| Lessons | What the student does                          |
+| ------- | ---------------------------------------------- |
+| 1       | Questions on social engineering                |
+| 2       | Questions on urgency, authority and fear       |
+| 3       | Flags the five warning signs in an email       |
+| 4       | Questions on phone calls and pretexts          |
+| 5       | Sorts reactions to SMS, messenger and QR scams |
+| 6       | Questions on tailgating and found USB sticks   |
+| 7       | Questions on stop, check, report               |
+| 8       | Final questions                                |
 
 ## Who gets in
 

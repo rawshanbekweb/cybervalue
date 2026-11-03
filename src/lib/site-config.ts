@@ -396,6 +396,12 @@ export const SECTIONS = [
     href: "/intermediate/kubernetes",
   },
   {
+    id: "manipulation",
+    group: "lab",
+    label: "Manipulation tactics (Intermediate)",
+    href: "/intermediate/manipulation",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",
