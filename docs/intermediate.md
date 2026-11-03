@@ -61,6 +61,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/kubernetes`   | Cloud security module 5, Kubernetes basics (8 lessons, a checkpoint)            |
 | `/intermediate/manipulation` | Social engineering module 1, manipulation tactics (8 lessons, a checkpoint)     |
 | `/intermediate/personal`     | Social engineering module 2, personal protection (8 lessons, a checkpoint)      |
+| `/intermediate/awareness`    | Social engineering module 3, awareness programmes (8 lessons, a checkpoint)     |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -1122,6 +1123,26 @@ is in lesson 4.
 | 6       | Questions on backups                   |
 | 7       | Sorts the steps of a personal plan     |
 | 8       | Final questions                        |
+
+## Social engineering module 3: Awareness programmes
+
+`/intermediate/awareness` (lab id `awareness`, checkpoint `awareness-1`,
+award `lab-awareness`, site setting `awareness`) uses
+`src/lib/awareness/tools.ts`: eight choices in an invented team's awareness
+`PLAN`, four of which backfire (naming people who clicked, measuring only
+clicks, one long lecture a year and a frightening simulation theme);
+`planRight` checks that exactly those are flagged.
+
+| Lessons | What the student does                     |
+| ------- | ----------------------------------------- |
+| 1       | Questions on why awareness matters        |
+| 2       | Questions on choosing topics by risk      |
+| 3       | Flags the four plan choices that backfire |
+| 4       | Questions on fair phishing simulations    |
+| 5       | Sorts useful and misleading measures      |
+| 6       | Questions on running a session            |
+| 7       | Questions on culture                      |
+| 8       | Final questions                           |
 
 ## Who gets in
 

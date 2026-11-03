@@ -59,6 +59,7 @@ export const LAB_PROGRESS = {
   kubernetes: { key: "cybervalue:kubernetes:progress:v1", total: 8 },
   manipulation: { key: "cybervalue:manipulation:progress:v1", total: 8 },
   personal: { key: "cybervalue:personal:progress:v1", total: 8 },
+  awareness: { key: "cybervalue:awareness:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -593,6 +594,15 @@ export const LAB_META: {
       en: "Personal protection (Intermediate)",
     },
     href: "/intermediate/personal",
+    intermediate: true,
+  },
+  {
+    id: "awareness",
+    title: {
+      uz: "Xabardorlik dasturlari (Intermediate)",
+      en: "Awareness programmes (Intermediate)",
+    },
+    href: "/intermediate/awareness",
     intermediate: true,
   },
 ];

@@ -408,6 +408,12 @@ export const SECTIONS = [
     href: "/intermediate/personal",
   },
   {
+    id: "awareness",
+    group: "lab",
+    label: "Awareness programmes (Intermediate)",
+    href: "/intermediate/awareness",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",
