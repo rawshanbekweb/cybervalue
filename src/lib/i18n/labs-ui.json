@@ -1647,5 +1647,14 @@
   "Part {n} is a warning sign": "{n}-qism aldash belgisi",
   "Five warning signs: a look-alike sender, a deadline, a link to another domain asking for a password, pressure from the director and being told not to check.": "Beshta aldash belgisi: o‘xshatilgan yuboruvchi, muddat bosimi, parol so‘raydigan boshqa domendagi havola, direktor nomidan bosim va tekshirishni taqiqlash.",
   "Manipulation tactics · Academy Intermediate": "Aldash usullari · Academy Intermediate",
-  "Recognise urgency, authority and fear, find the warning signs in a phishing email, handle phone pretexts, messenger scams and strangers at the door, and report quickly without blame.": "Shoshiltirish, obro‘ va qo‘rquv bosimini taning, phishing xatidagi aldash belgilarini toping, telefon bahonalari, messenjer firibgarliklari va eshik oldidagi notanishlarga to‘g‘ri munosabatda bo‘ling hamda ayblovsiz tez xabar bering."
+  "Recognise urgency, authority and fear, find the warning signs in a phishing email, handle phone pretexts, messenger scams and strangers at the door, and report quickly without blame.": "Shoshiltirish, obro‘ va qo‘rquv bosimini taning, phishing xatidagi aldash belgilarini toping, telefon bahonalari, messenjer firibgarliklari va eshik oldidagi notanishlarga to‘g‘ri munosabatda bo‘ling hamda ayblovsiz tez xabar bering.",
+  "HUMAN · MODULE 2": "INSON · 2-MODUL",
+  "Personal protection.": "Shaxsiy himoya.",
+  "A different password everywhere, MFA, updates and backups.": "Har joyda boshqa parol, MFA, yangilanishlar va zaxira nusxalar.",
+  "Use long passphrases and a password manager, turn on MFA and keep recovery codes, review eight habits and fix four, keep devices updated, back up with 3-2-1 and make a personal security plan.": "Uzun parol iboralari va parol menejeridan foydalaning, MFA’ni yoqib, tiklash kodlarini saqlang, sakkizta odatni ko‘rib chiqib to‘rttasini tuzating, qurilmalarni yangilab boring, 3-2-1 qoidasi bilan zaxiralang va shaxsiy xavfsizlik rejasini tuzing.",
+  "SAFETY / LAB": "HIMOYA / LABORATORIYA",
+  "Habit {n} needs fixing": "{n}-odatni tuzatish kerak",
+  "Four to fix: a reused password, email without MFA, postponed updates and a factory router password.": "To‘rttasini tuzatish kerak: takroriy parol, MFA’siz pochta, kechiktirilgan yangilanishlar va routerdagi zavod paroli.",
+  "Personal protection · Academy Intermediate": "Shaxsiy himoya · Academy Intermediate",
+  "Use a password manager and long passphrases, turn on MFA, fix risky habits, keep devices updated, back up with 3-2-1 and make a personal security plan.": "Parol menejeri va uzun parol iboralaridan foydalaning, MFA’ni yoqing, xavfli odatlarni tuzating, qurilmalarni yangilab boring, 3-2-1 qoidasi bilan zaxiralang va shaxsiy xavfsizlik rejasini tuzing."
 }

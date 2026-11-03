@@ -54,6 +54,7 @@ import { LESSONS as STORAGE_LESSONS } from "@/lib/storage/curriculum";
 import { LESSONS as CONTAINERS_LESSONS } from "@/lib/containers/curriculum";
 import { LESSONS as KUBERNETES_LESSONS } from "@/lib/kubernetes/curriculum";
 import { LESSONS as MANIPULATION_LESSONS } from "@/lib/manipulation/curriculum";
+import { LESSONS as PERSONAL_LESSONS } from "@/lib/personal/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -1074,6 +1075,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: MANIPULATION_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "personal",
+      title: "Personal protection",
+      category: "Intermediate · Social engineering",
+      description:
+        "Use a password manager, turn on MFA, fix risky habits, keep devices updated and back up with 3-2-1.",
+      href: "/intermediate/personal",
+      progressKey: LAB_PROGRESS.personal.key,
+      level: "Intermediate",
+      lessons: PERSONAL_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: PERSONAL_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

@@ -402,6 +402,12 @@ export const SECTIONS = [
     href: "/intermediate/manipulation",
   },
   {
+    id: "personal",
+    group: "lab",
+    label: "Personal protection (Intermediate)",
+    href: "/intermediate/personal",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

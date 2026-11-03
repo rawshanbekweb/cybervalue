@@ -77,6 +77,7 @@ import {
   CONTAINERS_POOL,
   KUBERNETES_POOL,
   MANIPULATION_POOL,
+  PERSONAL_POOL,
   SECURITY_EXTRA,
   type PoolItem,
 } from "./pools";
@@ -889,6 +890,10 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
       .map((item) => fromPool(r, item)),
   "manipulation-1": (r) =>
     shuffle(r, MANIPULATION_POOL)
+      .slice(0, 10)
+      .map((item) => fromPool(r, item)),
+  "personal-1": (r) =>
+    shuffle(r, PERSONAL_POOL)
       .slice(0, 10)
       .map((item) => fromPool(r, item)),
 };

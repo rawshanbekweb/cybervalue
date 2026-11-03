@@ -139,6 +139,7 @@ test("everything finished", () => {
         containers: 8,
         kubernetes: 8,
         manipulation: 8,
+        personal: 8,
         scams: 8,
         httpbasics: 9,
         https: 9,

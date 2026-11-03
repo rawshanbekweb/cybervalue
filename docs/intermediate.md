@@ -60,6 +60,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/containers`   | Cloud security module 4, containers (8 lessons, a checkpoint)                   |
 | `/intermediate/kubernetes`   | Cloud security module 5, Kubernetes basics (8 lessons, a checkpoint)            |
 | `/intermediate/manipulation` | Social engineering module 1, manipulation tactics (8 lessons, a checkpoint)     |
+| `/intermediate/personal`     | Social engineering module 2, personal protection (8 lessons, a checkpoint)      |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -1101,6 +1102,26 @@ lures.
 | 6       | Questions on tailgating and found USB sticks   |
 | 7       | Questions on stop, check, report               |
 | 8       | Final questions                                |
+
+## Social engineering module 2: Personal protection
+
+`/intermediate/personal` (lab id `personal`, checkpoint `personal-1`, award
+`lab-personal`, site setting `personal`) uses `src/lib/personal/tools.ts`:
+eight `HABITS` of an invented person, four of which need fixing (a reused
+password, email without MFA, postponed updates and a factory router
+password); `habitsRight` checks that exactly those are flagged. The widget
+is in lesson 4.
+
+| Lessons | What the student does                  |
+| ------- | -------------------------------------- |
+| 1       | Questions on passwords                 |
+| 2       | Questions on password managers         |
+| 3       | Questions on MFA and recovery          |
+| 4       | Flags the four habits that need fixing |
+| 5       | Questions on updates                   |
+| 6       | Questions on backups                   |
+| 7       | Sorts the steps of a personal plan     |
+| 8       | Final questions                        |
 
 ## Who gets in
 

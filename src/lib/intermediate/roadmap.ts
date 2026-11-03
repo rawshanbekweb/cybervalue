@@ -821,6 +821,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Shaxsiy himoya", en: "Personal protection" },
+        href: "/intermediate/personal",
+        lab: "personal",
         topics: ["password managers", "MFA", "updates", "backups"],
         goal: goal(
           "Shaxsiy xavfsizlik rejasini tuzish.",
