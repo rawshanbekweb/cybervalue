@@ -74,6 +74,7 @@ import {
   SHARED_POOL,
   IAM_POOL,
   STORAGE_POOL,
+  CONTAINERS_POOL,
   SECURITY_EXTRA,
   type PoolItem,
 } from "./pools";
@@ -874,6 +875,10 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
       .map((item) => fromPool(r, item)),
   "storage-1": (r) =>
     shuffle(r, STORAGE_POOL)
+      .slice(0, 10)
+      .map((item) => fromPool(r, item)),
+  "containers-1": (r) =>
+    shuffle(r, CONTAINERS_POOL)
       .slice(0, 10)
       .map((item) => fromPool(r, item)),
 };

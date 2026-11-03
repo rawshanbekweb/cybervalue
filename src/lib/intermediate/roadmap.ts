@@ -775,6 +775,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Konteynerlar", en: "Containers" },
+        href: "/intermediate/containers",
+        lab: "containers",
         topics: ["Docker", "images", "non-root", "scanning"],
         goal: goal(
           "Xavfsizroq Dockerfile yozish.",

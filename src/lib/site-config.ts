@@ -384,6 +384,12 @@ export const SECTIONS = [
     href: "/intermediate/storage",
   },
   {
+    id: "containers",
+    group: "lab",
+    label: "Containers (Intermediate)",
+    href: "/intermediate/containers",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",
