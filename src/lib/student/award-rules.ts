@@ -324,6 +324,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Konteynerlar (Intermediate)",
     earned: (f) => finished(f, "containers") && passed(f, "containers-1"),
   },
+  {
+    id: "lab-kubernetes",
+    title: "Kubernetes asoslari (Intermediate)",
+    earned: (f) => finished(f, "kubernetes") && passed(f, "kubernetes-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

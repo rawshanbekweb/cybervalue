@@ -137,6 +137,7 @@ test("everything finished", () => {
         iam: 8,
         storage: 8,
         containers: 8,
+        kubernetes: 8,
         scams: 8,
         httpbasics: 9,
         https: 9,

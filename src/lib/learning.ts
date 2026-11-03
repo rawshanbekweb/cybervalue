@@ -52,6 +52,7 @@ import { LESSONS as SHARED_LESSONS } from "@/lib/shared/curriculum";
 import { LESSONS as IAM_LESSONS } from "@/lib/iam/curriculum";
 import { LESSONS as STORAGE_LESSONS } from "@/lib/storage/curriculum";
 import { LESSONS as CONTAINERS_LESSONS } from "@/lib/containers/curriculum";
+import { LESSONS as KUBERNETES_LESSONS } from "@/lib/kubernetes/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -1038,6 +1039,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: CONTAINERS_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "kubernetes",
+      title: "Kubernetes basics",
+      category: "Intermediate · Cloud security",
+      description:
+        "Apply Pod Security Standards, review a manifest, keep RBAC to least privilege, use network policies and protect Secrets.",
+      href: "/intermediate/kubernetes",
+      progressKey: LAB_PROGRESS.kubernetes.key,
+      level: "Intermediate",
+      lessons: KUBERNETES_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: KUBERNETES_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

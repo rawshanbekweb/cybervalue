@@ -13152,3 +13152,264 @@ export const CONTAINERS_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const KUBERNETES_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Kubernetes’dagi eng kichik birlik?",
+      en: "The smallest unit in Kubernetes?",
+    },
+    right: { uz: "Pod", en: "A pod" },
+    wrong: [
+      { uz: "Node", en: "A node" },
+      { uz: "Klaster", en: "A cluster" },
+      { uz: "Namespace", en: "A namespace" },
+    ],
+    explain: {
+      uz: "Pod ichida konteynerlar bo‘ladi.",
+      en: "A pod holds containers.",
+    },
+  },
+  {
+    ask: {
+      uz: "Klaster qayerdan boshqariladi?",
+      en: "How is the cluster managed?",
+    },
+    right: { uz: "API server orqali", en: "Through the API server" },
+    wrong: [
+      { uz: "Har bir node’ga SSH bilan", en: "By SSH into each node" },
+      { uz: "Docker Hub orqali", en: "Through Docker Hub" },
+      { uz: "Email orqali", en: "By email" },
+    ],
+    explain: {
+      uz: "Hamma so‘rovlar API serverdan o‘tadi.",
+      en: "Every request goes through the API server.",
+    },
+  },
+  {
+    ask: {
+      uz: "Klaster holati qayerda saqlanadi?",
+      en: "Where is the cluster’s state kept?",
+    },
+    right: { uz: "etcd’da", en: "In etcd" },
+    wrong: [
+      { uz: "Pod loglarida", en: "In pod logs" },
+      { uz: "Obrazda", en: "In an image" },
+      { uz: "Brauzerda", en: "In the browser" },
+    ],
+    explain: {
+      uz: "etcd ham himoyalanishi kerak.",
+      en: "etcd needs protecting too.",
+    },
+  },
+  {
+    ask: {
+      uz: "Pod Security Standards’ning eng qat’iy darajasi?",
+      en: "The strictest Pod Security Standards level?",
+    },
+    right: { uz: "restricted", en: "restricted" },
+    wrong: [
+      { uz: "baseline", en: "baseline" },
+      { uz: "privileged", en: "privileged" },
+      { uz: "open", en: "open" },
+    ],
+    explain: {
+      uz: "Ilovalar uchun maqsad shu.",
+      en: "That’s the target for apps.",
+    },
+  },
+  {
+    ask: {
+      uz: "privileged: true nimani bildiradi?",
+      en: "What does privileged: true mean?",
+    },
+    right: {
+      uz: "Pod xostga deyarli to‘liq kiradi",
+      en: "The pod gets near-full host access",
+    },
+    wrong: [
+      { uz: "Pod tezroq ishlaydi", en: "The pod runs faster" },
+      { uz: "Pod shifrlanadi", en: "The pod is encrypted" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Ilovalarga hech qachon kerak emas.",
+      en: "Apps never need it.",
+    },
+  },
+  {
+    ask: {
+      uz: "hostPath: / nimasi bilan xavfli?",
+      en: "Why is hostPath: / risky?",
+    },
+    right: {
+      uz: "Xostning butun fayl tizimi podda",
+      en: "The host’s whole filesystem is in the pod",
+    },
+    wrong: [
+      { uz: "Disk kichrayadi", en: "The disk shrinks" },
+      { uz: "Port yopiladi", en: "A port closes" },
+      { uz: "Log o‘chadi", en: "Logs are deleted" },
+    ],
+    explain: {
+      uz: "Hujumchi xost fayllarini o‘qiydi va yozadi.",
+      en: "An attacker reads and writes host files.",
+    },
+  },
+  {
+    ask: {
+      uz: "Resurs cheklovlari (limits) nima uchun?",
+      en: "What are resource limits for?",
+    },
+    right: {
+      uz: "Bitta pod butun node’ni yeb qo‘ymasligi uchun",
+      en: "So one pod can’t starve the whole node",
+    },
+    wrong: [
+      { uz: "Parol uchun", en: "For passwords" },
+      { uz: "Shifrlash uchun", en: "For encryption" },
+      { uz: "Imzo uchun", en: "For signing" },
+    ],
+    explain: {
+      uz: "Xizmat rad etilishidan saqlaydi.",
+      en: "It guards against denial of service.",
+    },
+  },
+  {
+    ask: {
+      uz: "RBAC’da Role’ni kimgadir nima beradi?",
+      en: "In RBAC, what grants a Role to someone?",
+    },
+    right: { uz: "RoleBinding", en: "A RoleBinding" },
+    wrong: [
+      { uz: "Service", en: "A Service" },
+      { uz: "Ingress", en: "An Ingress" },
+      { uz: "ConfigMap", en: "A ConfigMap" },
+    ],
+    explain: {
+      uz: "Butun klaster uchun ClusterRoleBinding.",
+      en: "ClusterRoleBinding for the whole cluster.",
+    },
+  },
+  {
+    ask: {
+      uz: "Default ServiceAccount’ga cluster-admin berish?",
+      en: "Giving the default ServiceAccount cluster-admin?",
+    },
+    right: {
+      uz: "Juda xavfli: har bir pod klasterni boshqaradi",
+      en: "Very risky: every pod controls the cluster",
+    },
+    wrong: [
+      { uz: "Tavsiya etiladi", en: "Recommended" },
+      { uz: "Farqi yo‘q", en: "Makes no difference" },
+      { uz: "Tezlikni oshiradi", en: "Speeds things up" },
+    ],
+    explain: {
+      uz: "Har bir ilova o‘z eng kam huquqli hisobiga ega bo‘lsin.",
+      en: "Give each app its own least-privilege account.",
+    },
+  },
+  {
+    ask: { uz: "Pod API’ni ishlatmasa?", en: "If a pod never uses the API?" },
+    right: {
+      uz: "automountServiceAccountToken: false",
+      en: "automountServiceAccountToken: false",
+    },
+    wrong: [
+      { uz: "cluster-admin beriladi", en: "Give it cluster-admin" },
+      { uz: "hostNetwork: true", en: "hostNetwork: true" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Token yo‘q — o‘g‘irlash ham yo‘q.",
+      en: "No token, nothing to steal.",
+    },
+  },
+  {
+    ask: {
+      uz: "Sukut bo‘yicha podlar o‘rtasidagi trafik?",
+      en: "By default, traffic between pods is?",
+    },
+    right: { uz: "Hammasi hammaga ochiq", en: "Open from all to all" },
+    wrong: [
+      { uz: "Hammasi yopiq", en: "All blocked" },
+      { uz: "Faqat shifrlangan", en: "Only encrypted" },
+      { uz: "Faqat bir node’da", en: "Only on one node" },
+    ],
+    explain: {
+      uz: "Shuning uchun NetworkPolicy kerak.",
+      en: "That’s why you need NetworkPolicies.",
+    },
+  },
+  {
+    ask: {
+      uz: "NetworkPolicy’ni to‘g‘ri boshlash?",
+      en: "The right way to start with NetworkPolicies?",
+    },
+    right: {
+      uz: "Default deny, keyin keraklisini ochish",
+      en: "Default deny, then open what’s needed",
+    },
+    wrong: [
+      { uz: "Hammasini ochish", en: "Open everything" },
+      { uz: "Faqat egress’ni ochish", en: "Open only egress" },
+      { uz: "Policy yozmaslik", en: "Write none" },
+    ],
+    explain: {
+      uz: "Masalan frontend → api → database.",
+      en: "For example frontend → api → database.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kubernetes Secret’dagi base64?",
+      en: "base64 in a Kubernetes Secret is?",
+    },
+    right: {
+      uz: "Faqat kodlash, shifr emas",
+      en: "Only encoding, not encryption",
+    },
+    wrong: [
+      { uz: "Kuchli shifrlash", en: "Strong encryption" },
+      { uz: "Xesh", en: "A hash" },
+      { uz: "Imzo", en: "A signature" },
+    ],
+    explain: {
+      uz: "Etcd shifrlashni yoqing.",
+      en: "Switch on etcd encryption.",
+    },
+  },
+  {
+    ask: {
+      uz: "Boshqariladigan klasterda (GKE) tarmoq siyosatlari kimniki?",
+      en: "On a managed cluster (GKE), whose job are network policies?",
+    },
+    right: { uz: "Sizniki", en: "Yours" },
+    wrong: [
+      { uz: "Faqat provayderniki", en: "Only the provider’s" },
+      { uz: "Hech kimniki", en: "No one’s" },
+      { uz: "Brauzerniki", en: "The browser’s" },
+    ],
+    explain: {
+      uz: "Provayder faqat control plane’ni boshqaradi.",
+      en: "The provider runs only the control plane.",
+    },
+  },
+  {
+    ask: {
+      uz: "API serverdagi harakatlarni nima yozib boradi?",
+      en: "What records actions on the API server?",
+    },
+    right: { uz: "Audit loglar", en: "Audit logs" },
+    wrong: [
+      { uz: "Pod nomlari", en: "Pod names" },
+      { uz: "Obraz teglari", en: "Image tags" },
+      { uz: "DNS", en: "DNS" },
+    ],
+    explain: {
+      uz: "Ularni yoqing va kuzating.",
+      en: "Switch them on and watch them.",
+    },
+  },
+];

@@ -56,6 +56,7 @@ export const LAB_PROGRESS = {
   iam: { key: "cybervalue:iam:progress:v1", total: 8 },
   storage: { key: "cybervalue:storage:progress:v1", total: 8 },
   containers: { key: "cybervalue:containers:progress:v1", total: 8 },
+  kubernetes: { key: "cybervalue:kubernetes:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -563,6 +564,15 @@ export const LAB_META: {
       en: "Containers (Intermediate)",
     },
     href: "/intermediate/containers",
+    intermediate: true,
+  },
+  {
+    id: "kubernetes",
+    title: {
+      uz: "Kubernetes asoslari (Intermediate)",
+      en: "Kubernetes basics (Intermediate)",
+    },
+    href: "/intermediate/kubernetes",
     intermediate: true,
   },
 ];
