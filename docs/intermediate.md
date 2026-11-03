@@ -58,6 +58,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/iam`          | Cloud security module 2, identity and access (8 lessons, a checkpoint)          |
 | `/intermediate/storage`      | Cloud security module 3, storage and secrets (8 lessons, a checkpoint)          |
 | `/intermediate/containers`   | Cloud security module 4, containers (8 lessons, a checkpoint)                   |
+| `/intermediate/kubernetes`   | Cloud security module 5, Kubernetes basics (8 lessons, a checkpoint)            |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -1057,6 +1058,26 @@ exactly those four are flagged.
 | 6       | Questions on scanning images               |
 | 7       | Questions on registries and signing        |
 | 8       | Final questions                            |
+
+## Cloud security module 5: Kubernetes basics
+
+`/intermediate/kubernetes` (lab id `kubernetes`, checkpoint `kubernetes-1`,
+award `lab-kubernetes`, site setting `kubernetes`) uses
+`src/lib/kubernetes/tools.ts`: eight `SETTINGS` from a Deployment and a
+RoleBinding. Four are risky (`privileged: true`, a `hostPath` of `/`,
+cluster-admin for the default ServiceAccount and `hostNetwork: true`);
+`settingsRight` checks that every setting is called correctly.
+
+| Lessons | What the student does                       |
+| ------- | ------------------------------------------- |
+| 1       | Questions on pods, nodes and the API server |
+| 2       | Questions on Pod Security Standards         |
+| 3       | Calls eight manifest settings safe or risky |
+| 4       | Questions on RBAC                           |
+| 5       | Sorts network-policy habits                 |
+| 6       | Questions on Kubernetes Secrets             |
+| 7       | Questions on protecting the cluster         |
+| 8       | Final questions                             |
 
 ## Who gets in
 

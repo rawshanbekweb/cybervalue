@@ -1629,5 +1629,14 @@
   "Line {n} is risky": "{n}-qator xavfli",
   "Four risky lines: an unpinned base image, copying everything, a secret baked into a layer and running as root.": "To‘rtta xavfli qator: versiyasi qotirilmagan bazaviy obraz, hamma narsani nusxalash, qatlamga yozilgan sir va root nomidan ishlash.",
   "Containers · Academy Intermediate": "Konteynerlar · Academy Intermediate",
-  "Review a Dockerfile, keep secrets out of image layers, run as a non-root user with trimmed privileges, scan images for known vulnerabilities and use only trusted, signed images.": "Dockerfile’ni ko‘rib chiqing, sirlarni obraz qatlamlaridan tashqarida saqlang, ilovani root bo‘lmagan foydalanuvchi va cheklangan huquqlar bilan ishga tushiring, obrazlarni ma’lum zaifliklarga skanerlang va faqat ishonchli, imzolangan obrazlardan foydalaning."
+  "Review a Dockerfile, keep secrets out of image layers, run as a non-root user with trimmed privileges, scan images for known vulnerabilities and use only trusted, signed images.": "Dockerfile’ni ko‘rib chiqing, sirlarni obraz qatlamlaridan tashqarida saqlang, ilovani root bo‘lmagan foydalanuvchi va cheklangan huquqlar bilan ishga tushiring, obrazlarni ma’lum zaifliklarga skanerlang va faqat ishonchli, imzolangan obrazlardan foydalaning.",
+  "CLOUD · MODULE 5": "CLOUD · 5-MODUL",
+  "Kubernetes basics.": "Kubernetes asoslari.",
+  "Restricted pods, least-privilege accounts, default deny.": "Cheklangan podlar, eng kam huquqli hisoblar, sukut bo‘yicha taqiq.",
+  "Learn how pods, nodes and the API server fit together, apply Pod Security Standards, review eight settings from a real-looking manifest, keep RBAC to least privilege, limit traffic with network policies, protect Secrets and look after the cluster itself.": "Pod, node va API server qanday bog‘lanishini o‘rganing, Pod Security Standards’ni qo‘llang, haqiqiyga o‘xshash manifestdagi sakkizta sozlamani tekshiring, RBAC’ni eng kam huquq bilan cheklang, trafikni network policy bilan cheklang, Secret’larni himoyalang va klasterning o‘ziga qarang.",
+  "K8S / LAB": "K8S / LABORATORIYA",
+  "Four risky settings: a privileged pod, the host’s filesystem, cluster-admin for the default account and the host’s network.": "To‘rtta xavfli sozlama: privileged pod, xostning fayl tizimi, default hisobga cluster-admin va xost tarmog‘i.",
+  "Kubernetes basics · Academy Intermediate": "Kubernetes asoslari · Academy Intermediate",
+  "Apply Pod Security Standards, review a manifest’s settings, keep RBAC to least privilege, limit traffic with network policies, protect Secrets and look after the cluster.": "Pod Security Standards’ni qo‘llang, manifest sozlamalarini tekshiring, RBAC’ni eng kam huquq bilan cheklang, trafikni network policy bilan cheklang, Secret’larni himoyalang va klasterga qarang.",
+  "Risky": "Xavfli"
 }

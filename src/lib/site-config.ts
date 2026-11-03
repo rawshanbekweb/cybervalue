@@ -390,6 +390,12 @@ export const SECTIONS = [
     href: "/intermediate/containers",
   },
   {
+    id: "kubernetes",
+    group: "lab",
+    label: "Kubernetes basics (Intermediate)",
+    href: "/intermediate/kubernetes",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

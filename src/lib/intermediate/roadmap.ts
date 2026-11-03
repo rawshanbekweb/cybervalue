@@ -785,6 +785,8 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: { uz: "Kubernetes asoslari", en: "Kubernetes basics" },
+        href: "/intermediate/kubernetes",
+        lab: "kubernetes",
         topics: ["pods", "RBAC", "network policies"],
         goal: goal(
           "Klaster sozlamalaridagi xavflarni aniqlash.",

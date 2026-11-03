@@ -890,6 +890,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/containers#checkpoints",
     pass: 70,
   },
+  {
+    id: "kubernetes-1",
+    level: "intermediate",
+    lab: { uz: "Kubernetes asoslari", en: "Kubernetes basics" },
+    title: {
+      uz: "Nazorat: Kubernetes asoslari",
+      en: "Checkpoint: Kubernetes basics",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/kubernetes#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>
