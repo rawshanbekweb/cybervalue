@@ -141,6 +141,7 @@ test("everything finished", () => {
         manipulation: 8,
         personal: 8,
         awareness: 8,
+        reporting: 8,
         scams: 8,
         httpbasics: 9,
         https: 9,

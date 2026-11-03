@@ -14190,3 +14190,255 @@ export const AWARENESS_POOL: PoolItem[] = [
     explain: { uz: "Jimlik — xavfsizlik emas.", en: "Silence isn’t safety." },
   },
 ];
+
+export const REPORTING_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Qaysi biri xavfsizlik hodisasi?",
+      en: "Which is a security incident?",
+    },
+    right: { uz: "Yo‘qolgan ish noutbuki", en: "A lost work laptop" },
+    wrong: [
+      { uz: "Kechikkan yig‘ilish", en: "A late meeting" },
+      { uz: "Qog‘ozi tugagan printer", en: "A printer out of paper" },
+      { uz: "Yangi stol", en: "A new desk" },
+    ],
+    explain: { uz: "Unda ma’lumot bor.", en: "It holds data." },
+  },
+  {
+    ask: {
+      uz: "Hodisaga ishonchingiz komil emas?",
+      en: "Not sure it’s an incident?",
+    },
+    right: { uz: "Baribir xabar berish", en: "Report it anyway" },
+    wrong: [
+      { uz: "Kutish", en: "Wait" },
+      { uz: "Unutish", en: "Forget it" },
+      { uz: "O‘zim tekshirish", en: "Investigate myself" },
+    ],
+    explain: { uz: "Shubha yetarli.", en: "Suspicion is enough." },
+  },
+  {
+    ask: { uz: "Noto‘g‘ri xabar (false alarm) — bu?", en: "A false alarm is?" },
+    right: { uz: "Muammo emas", en: "Not a problem" },
+    wrong: [
+      { uz: "Jazolanadigan xato", en: "A punishable mistake" },
+      { uz: "Vaqtni behuda sarflash", en: "A waste of time" },
+      { uz: "Taqiqlangan", en: "Forbidden" },
+    ],
+    explain: {
+      uz: "Xabar bermaslik — muammo.",
+      en: "Not reporting is the problem.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega birinchi soat muhim?",
+      en: "Why does the first hour matter?",
+    },
+    right: { uz: "Hujumchi tez harakat qiladi", en: "Attackers act fast" },
+    wrong: [
+      { uz: "Hisobot uchun", en: "For the report" },
+      { uz: "Ish vaqti uchun", en: "For office hours" },
+      { uz: "Muhim emas", en: "It doesn’t" },
+    ],
+    explain: {
+      uz: "Tez xabar — kichik zarar.",
+      en: "Fast reporting limits damage.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kechqurun bosganingizni angladingiz. Qachon xabar berasiz?",
+      en: "You realise in the evening that you clicked. When do you report?",
+    },
+    right: {
+      uz: "Hozir, navbatchi kanal orqali",
+      en: "Now, via the out-of-hours route",
+    },
+    wrong: [
+      { uz: "Dushanbada", en: "On Monday" },
+      { uz: "Hech qachon", en: "Never" },
+      { uz: "Keyingi oy", en: "Next month" },
+    ],
+    explain: {
+      uz: "Hujumchilar dam olmaydi.",
+      en: "Attackers don’t take weekends off.",
+    },
+  },
+  {
+    ask: {
+      uz: "Pochta buzilgan bo‘lsa, qanday xabar berasiz?",
+      en: "If your email is compromised, how do you report?",
+    },
+    right: {
+      uz: "Telefon yoki boshqa qurilma orqali",
+      en: "By phone or another device",
+    },
+    wrong: [
+      { uz: "O‘sha pochtadan", en: "From that mailbox" },
+      { uz: "Umumiy chatda", en: "In the team chat" },
+      { uz: "Hech qanday", en: "You don’t" },
+    ],
+    explain: {
+      uz: "Hujumchi pochtani o‘qishi mumkin.",
+      en: "The attacker may read that mailbox.",
+    },
+  },
+  {
+    ask: {
+      uz: "Shubhali xatni kimga yuborasiz?",
+      en: "Whom do you send a suspicious email to?",
+    },
+    right: {
+      uz: "Faqat xavfsizlik jamoasiga",
+      en: "Only to the security team",
+    },
+    wrong: [
+      { uz: "Barcha hamkasblarga", en: "All colleagues" },
+      { uz: "Do‘stlarga", en: "Friends" },
+      { uz: "Yuboruvchiga", en: "The sender" },
+    ],
+    explain: {
+      uz: "Boshqalar uni bosib qo‘yishi mumkin.",
+      en: "Others might click it.",
+    },
+  },
+  {
+    ask: {
+      uz: "Birinchi xabarning eng muhim qismi?",
+      en: "The most important part of a first report?",
+    },
+    right: {
+      uz: "Siz allaqachon nima qilganingiz",
+      en: "What you already did",
+    },
+    wrong: [
+      { uz: "Kim aybdor", en: "Whose fault it was" },
+      { uz: "Parolingiz", en: "Your password" },
+      { uz: "Uzun tarix", en: "A long backstory" },
+    ],
+    explain: {
+      uz: "Jamoa darhol qadam tashlaydi.",
+      en: "The team can act at once.",
+    },
+  },
+  {
+    ask: {
+      uz: "Xabarga parolingizni qo‘shasizmi?",
+      en: "Do you put your password in the report?",
+    },
+    right: { uz: "Hech qachon", en: "Never" },
+    wrong: [
+      { uz: "Ha", en: "Yes" },
+      { uz: "Faqat so‘rashsa", en: "Only if asked" },
+      { uz: "Yarmini", en: "Half of it" },
+    ],
+    explain: {
+      uz: "Parol so‘ragan — aldovchi.",
+      en: "Whoever asks for it is a scammer.",
+    },
+  },
+  {
+    ask: {
+      uz: "Hodisadan keyin shubhali xat bilan nima qilinadi?",
+      en: "After an incident, what about the suspicious email?",
+    },
+    right: {
+      uz: "O‘chirilmaydi — dalil",
+      en: "It isn’t deleted — it’s evidence",
+    },
+    wrong: [
+      { uz: "O‘chiriladi", en: "It’s deleted" },
+      { uz: "Hammaga yuboriladi", en: "It’s sent to everyone" },
+      { uz: "Javob yoziladi", en: "You reply to it" },
+    ],
+    explain: {
+      uz: "Sarlavhalar tahlil uchun kerak.",
+      en: "Headers are needed for analysis.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kompyuter bilan nima qilasiz?",
+      en: "What do you do with the computer?",
+    },
+    right: {
+      uz: "Tarmoqdan uzib, o‘chirmaslik",
+      en: "Disconnect it, don’t switch it off",
+    },
+    wrong: [
+      { uz: "Darhol o‘chirish", en: "Switch it off" },
+      { uz: "Qayta o‘rnatish", en: "Reinstall it" },
+      { uz: "Sotish", en: "Sell it" },
+    ],
+    explain: {
+      uz: "Xotiradagi izlar saqlanadi.",
+      en: "Evidence in memory is kept.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ayblovsiz madaniyatdagi savol?",
+      en: "The question in a blameless culture?",
+    },
+    right: {
+      uz: "Tizimni qanday yaxshilaymiz?",
+      en: "How do we improve the system?",
+    },
+    wrong: [
+      { uz: "Kim aybdor?", en: "Whose fault?" },
+      { uz: "Kimni jazolaymiz?", en: "Whom do we punish?" },
+      { uz: "Kim bosdi?", en: "Who clicked?" },
+    ],
+    explain: { uz: "Jarayon tuzatiladi.", en: "The process gets fixed." },
+  },
+  {
+    ask: { uz: "Jazodan qo‘rqqan odamlar?", en: "People who fear punishment?" },
+    right: { uz: "Xatolarni yashiradi", en: "Hide mistakes" },
+    wrong: [
+      { uz: "Ko‘proq xabar beradi", en: "Report more" },
+      { uz: "Tezroq ishlaydi", en: "Work faster" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Yashirin hodisa kattalashadi.",
+      en: "Hidden incidents grow.",
+    },
+  },
+  {
+    ask: {
+      uz: "Xabar berish tartibida nima bo‘lishi shart?",
+      en: "What must a reporting procedure have?",
+    },
+    right: {
+      uz: "Ish vaqtidan tashqari yo‘l ham",
+      en: "An out-of-hours route too",
+    },
+    wrong: [
+      { uz: "Jarimalar", en: "Fines" },
+      { uz: "Parollar ro‘yxati", en: "A password list" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Hodisalar ish vaqtini tanlamaydi.",
+      en: "Incidents don’t keep office hours.",
+    },
+  },
+  {
+    ask: {
+      uz: "Tartibni qanday sinaysiz?",
+      en: "How do you test the procedure?",
+    },
+    right: { uz: "Tabletop mashqi bilan", en: "With a tabletop exercise" },
+    wrong: [
+      { uz: "Haqiqiy hodisani kutib", en: "Wait for a real incident" },
+      { uz: "Sinamaslik", en: "Don’t test it" },
+      { uz: "Faqat o‘qib", en: "Just read it" },
+    ],
+    explain: {
+      uz: "Mashqda topilgan teshik arzonroq.",
+      en: "Gaps found in practice cost less.",
+    },
+  },
+];

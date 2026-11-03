@@ -14,7 +14,7 @@ import {
   startAccountAttempt,
 } from "@/lib/html-assessment/service";
 import { clientKey } from "@/lib/rate-limit";
-import { limit } from "@/lib/rate-limit-db";
+import { limit, resetLimit } from "@/lib/rate-limit-db";
 import {
   hashSecret,
   isAccessCode,
@@ -66,6 +66,9 @@ export async function studentLoginAction(
     select: { id: true },
   });
   if (!student) return { error: GENERIC_ERROR };
+  // Signing in with a valid code clears the address's budget, so a class
+  // behind one address is limited only by its wrong guesses.
+  await resetLimit(`student-login:${client}`);
   await createStudentSession(student.id);
   const next = formData.get("next");
   redirect(isStudentNext(next) ? next : "/student");
