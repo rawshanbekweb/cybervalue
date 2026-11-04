@@ -438,6 +438,12 @@ export const SECTIONS = [
     href: "/intermediate/permissions",
   },
   {
+    id: "eol",
+    group: "lab",
+    label: "End-of-life software (Intermediate)",
+    href: "/intermediate/eol",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

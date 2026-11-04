@@ -66,6 +66,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/hostlogs`     | System security module 3, host logging and monitoring (8 lessons, a checkpoint)       |
 | `/intermediate/signing`      | Software and trust module 2, signed software and updates (8 lessons, a checkpoint)    |
 | `/intermediate/permissions`  | Software and trust module 3, app permissions and sandboxing (8 lessons, a checkpoint) |
+| `/intermediate/eol`          | Software and trust module 4, end-of-life software (8 lessons, a checkpoint)           |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -1234,6 +1235,27 @@ static analysis.
 | 6       | Questions on least privilege on a computer |
 | 7       | Questions on reviewing permissions         |
 | 8       | Final questions                            |
+
+## Software and trust module 4: End-of-life software
+
+`/intermediate/eol` (lab id `eol`, checkpoint `eol-1`, award `lab-eol`, site
+setting `eol`) uses `src/lib/eol/tools.ts`: an invented company's eight-item
+software `INVENTORY` as of late 2026. Four items no longer get security
+updates (Windows 7, PHP 7.4, a router firmware the vendor abandoned and
+Office 2013); `inventoryRight` checks that exactly those are flagged. This
+module takes the slot first planned for crackme exercises. The support dates
+are real; revisit them when the module is reviewed.
+
+| Lessons | What the student does                       |
+| ------- | ------------------------------------------- |
+| 1       | Questions on what end of life means         |
+| 2       | Questions on keeping an inventory           |
+| 3       | Flags the four out-of-support items         |
+| 4       | Questions on LTS and support dates          |
+| 5       | Sorts what to do when you can't upgrade yet |
+| 6       | Questions on planning upgrades              |
+| 7       | Questions on device firmware                |
+| 8       | Final questions                             |
 
 ## Who gets in
 

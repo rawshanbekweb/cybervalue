@@ -64,6 +64,7 @@ export const LAB_PROGRESS = {
   hostlogs: { key: "cybervalue:hostlogs:progress:v1", total: 8 },
   signing: { key: "cybervalue:signing:progress:v1", total: 8 },
   permissions: { key: "cybervalue:permissions:progress:v1", total: 8 },
+  eol: { key: "cybervalue:eol:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -643,6 +644,15 @@ export const LAB_META: {
       en: "App permissions and sandboxing (Intermediate)",
     },
     href: "/intermediate/permissions",
+    intermediate: true,
+  },
+  {
+    id: "eol",
+    title: {
+      uz: "Muddati o‘tgan dasturlar (Intermediate)",
+      en: "End-of-life software (Intermediate)",
+    },
+    href: "/intermediate/eol",
     intermediate: true,
   },
 ];

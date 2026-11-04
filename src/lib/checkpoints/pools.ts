@@ -15174,3 +15174,252 @@ export const PERMISSIONS_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const EOL_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Dastur EOL bo‘lgach nima o‘zgaradi?",
+      en: "What changes once software is end of life?",
+    },
+    right: {
+      uz: "Yangi zaifliklar tuzatilmaydi",
+      en: "New flaws are never fixed",
+    },
+    wrong: [
+      { uz: "Dastur o‘chadi", en: "It stops running" },
+      { uz: "Tezlashadi", en: "It speeds up" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "U himoyasiz ishlayveradi.",
+      en: "It keeps running, unprotected.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega hujumchilar eski versiyalarni qidiradi?",
+      en: "Why do attackers seek old versions?",
+    },
+    right: {
+      uz: "Zaifliklari ma’lum va yopilmaydi",
+      en: "Their flaws are known and never closed",
+    },
+    wrong: [
+      { uz: "Ular bepul", en: "They’re free" },
+      { uz: "Tezroq", en: "They’re faster" },
+      { uz: "Chiroyli", en: "They look nicer" },
+    ],
+    explain: { uz: "Tayyor vositalar ham bor.", en: "Ready-made tools exist." },
+  },
+  {
+    ask: {
+      uz: "Dasturlar ro‘yxatida nima bo‘ladi?",
+      en: "What goes in a software inventory?",
+    },
+    right: {
+      uz: "Nomi, versiyasi, joyi, egasi, muddati",
+      en: "Name, version, location, owner, support date",
+    },
+    wrong: [
+      { uz: "Faqat nomi", en: "Just the name" },
+      { uz: "Faqat narxi", en: "Just the price" },
+      { uz: "Logotip", en: "A logo" },
+    ],
+    explain: {
+      uz: "Muddatni ko‘rib turasiz.",
+      en: "You see what’s about to expire.",
+    },
+  },
+  {
+    ask: {
+      uz: "Router ro‘yxatga kiradimi?",
+      en: "Does a router go in the inventory?",
+    },
+    right: { uz: "Ha, unda ham dastur bor", en: "Yes, it runs software" },
+    wrong: [
+      { uz: "Yo‘q", en: "No" },
+      { uz: "Faqat yangisi", en: "Only new ones" },
+      { uz: "Faqat ofisda", en: "Only at the office" },
+    ],
+    explain: {
+      uz: "Unutilgan qurilmalar xavfli.",
+      en: "Forgotten devices are risky.",
+    },
+  },
+  {
+    ask: {
+      uz: "Windows 7 qo‘llab-quvvatlashi qachon tugagan?",
+      en: "When did Windows 7 support end?",
+    },
+    right: { uz: "2020-yil yanvar", en: "January 2020" },
+    wrong: [
+      { uz: "2030", en: "2030" },
+      { uz: "Tugamagan", en: "It hasn’t" },
+      { uz: "2026", en: "2026" },
+    ],
+    explain: {
+      uz: "Olti yildan beri tuzatish yo‘q.",
+      en: "No fixes for six years.",
+    },
+  },
+  {
+    ask: {
+      uz: "PHP 7.4 hali qo‘llab-quvvatlanadimi?",
+      en: "Is PHP 7.4 still supported?",
+    },
+    right: { uz: "Yo‘q, 2022-yilda tugagan", en: "No, it ended in 2022" },
+    wrong: [
+      { uz: "Ha, 2030-gacha", en: "Yes, until 2030" },
+      { uz: "Ha, abadiy", en: "Yes, forever" },
+      { uz: "Faqat Windows’da", en: "Only on Windows" },
+    ],
+    explain: {
+      uz: "Ochiq saytda bu ayniqsa xavfli.",
+      en: "On a public site that’s especially risky.",
+    },
+  },
+  {
+    ask: {
+      uz: "Yangi server uchun qaysi Ubuntu?",
+      en: "Which Ubuntu for a new server?",
+    },
+    right: { uz: "Eng so‘nggi LTS", en: "The latest LTS" },
+    wrong: [
+      { uz: "9 oylik versiya", en: "A 9-month release" },
+      { uz: "Eng eski", en: "The oldest" },
+      { uz: "Beta", en: "A beta" },
+    ],
+    explain: { uz: "LTS uzoq yangilanadi.", en: "LTS is updated for years." },
+  },
+  {
+    ask: {
+      uz: "EOL sanaga qachon tayyorlanish kerak?",
+      en: "When should you prepare for an EOL date?",
+    },
+    right: { uz: "Bir necha oy oldin", en: "Months ahead" },
+    wrong: [
+      { uz: "O‘sha kuni", en: "On the day" },
+      { uz: "Hujumdan keyin", en: "After an attack" },
+      { uz: "Hech qachon", en: "Never" },
+    ],
+    explain: {
+      uz: "Yangilash rejani talab qiladi.",
+      en: "Upgrades need planning.",
+    },
+  },
+  {
+    ask: {
+      uz: "Yangilab bo‘lmaydigan eski qurilma bilan nima qilinadi?",
+      en: "What do you do with an old device you can’t upgrade yet?",
+    },
+    right: {
+      uz: "Alohida tarmoqqa ajratib, almashtirish sanasini belgilash",
+      en: "Isolate it and set a replacement date",
+    },
+    wrong: [
+      { uz: "Internetga ochish", en: "Expose it to the internet" },
+      { uz: "Unutish", en: "Forget it" },
+      { uz: "Ro‘yxatdan o‘chirish", en: "Remove it from the inventory" },
+    ],
+    explain: { uz: "Bu vaqtinchalik chora.", en: "That’s a stopgap." },
+  },
+  {
+    ask: {
+      uz: "Qabul qilingan xavf qanday rasmiylashtiriladi?",
+      en: "How is an accepted risk recorded?",
+    },
+    right: {
+      uz: "Yozib, rahbar imzolaydi",
+      en: "Written down and signed off by a manager",
+    },
+    wrong: [
+      { uz: "Og‘zaki", en: "By word of mouth" },
+      { uz: "Hech qanday", en: "Not at all" },
+      { uz: "Chatda", en: "In a chat" },
+    ],
+    explain: {
+      uz: "Javobgarlik aniq bo‘ladi.",
+      en: "Ownership becomes clear.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi EOL tizim birinchi yangilanadi?",
+      en: "Which EOL system goes first?",
+    },
+    right: {
+      uz: "Internetga ochiq va muhim tizim",
+      en: "The internet-facing, critical one",
+    },
+    wrong: [
+      { uz: "Ombordagi o‘chiq kompyuter", en: "A switched-off PC in storage" },
+      { uz: "Eng arzoni", en: "The cheapest" },
+      { uz: "Tasodifiy", en: "A random one" },
+    ],
+    explain: {
+      uz: "Ochiq + muhim = eng xavfli.",
+      en: "Exposed + critical = riskiest.",
+    },
+  },
+  {
+    ask: {
+      uz: "Yangilashdan oldin nima kerak?",
+      en: "What’s needed before an upgrade?",
+    },
+    right: { uz: "Sinov va zaxira", en: "A test and a backup" },
+    wrong: [
+      { uz: "Loglarni o‘chirish", en: "Deleting logs" },
+      { uz: "Hech narsa", en: "Nothing" },
+      { uz: "Parolni o‘chirish", en: "Removing the password" },
+    ],
+    explain: { uz: "Muammo bo‘lsa — qaytish.", en: "If it fails, roll back." },
+  },
+  {
+    ask: {
+      uz: "Router sotib olishdan oldin nimani tekshirasiz?",
+      en: "What do you check before buying a router?",
+    },
+    right: {
+      uz: "Necha yil yangilanish va’da qilinadi",
+      en: "How many years of updates are promised",
+    },
+    wrong: [
+      { uz: "Rangi", en: "Its colour" },
+      { uz: "Antennalar", en: "Its antennas" },
+      { uz: "Qutisi", en: "Its box" },
+    ],
+    explain: {
+      uz: "Yangilanmaydigan router — ochiq eshik.",
+      en: "An unpatched router is an open door.",
+    },
+  },
+  {
+    ask: { uz: "Proshivka nima?", en: "What is firmware?" },
+    right: { uz: "Qurilma ichidagi dastur", en: "Software inside a device" },
+    wrong: [
+      { uz: "Kabel turi", en: "A cable type" },
+      { uz: "Parol", en: "A password" },
+      { uz: "Antivirus", en: "An antivirus" },
+    ],
+    explain: { uz: "U ham yangilanishi kerak.", en: "It needs updates too." },
+  },
+  {
+    ask: {
+      uz: "ESU (kengaytirilgan qo‘llab-quvvatlash) nima?",
+      en: "What is ESU (extended support)?",
+    },
+    right: {
+      uz: "Vaqtinchalik pullik tuzatishlar",
+      en: "Temporary paid fixes",
+    },
+    wrong: [
+      { uz: "Abadiy yechim", en: "A permanent fix" },
+      { uz: "Bepul yangi versiya", en: "A free new version" },
+      { uz: "Antivirus", en: "An antivirus" },
+    ],
+    explain: {
+      uz: "Reja emas — vaqt yutish.",
+      en: "Not a plan — a way to buy time.",
+    },
+  },
+];
