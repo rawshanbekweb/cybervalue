@@ -57,6 +57,7 @@ import { LESSONS as MANIPULATION_LESSONS } from "@/lib/manipulation/curriculum";
 import { LESSONS as PERSONAL_LESSONS } from "@/lib/personal/curriculum";
 import { LESSONS as AWARENESS_LESSONS } from "@/lib/awareness/curriculum";
 import { LESSONS as REPORTING_LESSONS } from "@/lib/reporting/curriculum";
+import { LESSONS as HOSTLOGS_LESSONS } from "@/lib/hostlogs/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -1128,6 +1129,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: REPORTING_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "hostlogs",
+      title: "Host logging and monitoring",
+      category: "Intermediate · System security",
+      description:
+        "Find where host logs live, triage server events, ship logs centrally, alert on what matters and watch important files.",
+      href: "/intermediate/hostlogs",
+      progressKey: LAB_PROGRESS.hostlogs.key,
+      level: "Intermediate",
+      lessons: HOSTLOGS_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: HOSTLOGS_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

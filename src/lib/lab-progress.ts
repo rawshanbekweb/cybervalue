@@ -61,6 +61,7 @@ export const LAB_PROGRESS = {
   personal: { key: "cybervalue:personal:progress:v1", total: 8 },
   awareness: { key: "cybervalue:awareness:progress:v1", total: 8 },
   reporting: { key: "cybervalue:reporting:progress:v1", total: 8 },
+  hostlogs: { key: "cybervalue:hostlogs:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -613,6 +614,15 @@ export const LAB_META: {
       en: "Reporting incidents (Intermediate)",
     },
     href: "/intermediate/reporting",
+    intermediate: true,
+  },
+  {
+    id: "hostlogs",
+    title: {
+      uz: "Host loglari va monitoring (Intermediate)",
+      en: "Host logging and monitoring (Intermediate)",
+    },
+    href: "/intermediate/hostlogs",
     intermediate: true,
   },
 ];

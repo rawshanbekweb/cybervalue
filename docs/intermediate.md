@@ -63,6 +63,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/personal`     | Social engineering module 2, personal protection (8 lessons, a checkpoint)      |
 | `/intermediate/awareness`    | Social engineering module 3, awareness programmes (8 lessons, a checkpoint)     |
 | `/intermediate/reporting`    | Social engineering module 4, reporting incidents (8 lessons, a checkpoint)      |
+| `/intermediate/hostlogs`     | System security module 3, host logging and monitoring (8 lessons, a checkpoint) |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -1165,6 +1166,27 @@ checks that exactly the five are picked. The widget is in lesson 4.
 | 6       | Questions on blameless culture              |
 | 7       | Questions on writing the procedure          |
 | 8       | Final questions                             |
+
+## System security module 3: Host logging and monitoring
+
+`/intermediate/hostlogs` (lab id `hostlogs`, checkpoint `hostlogs-1`, award
+`lab-hostlogs`, site setting `hostlogs`) uses `src/lib/hostlogs/tools.ts`:
+eight `EVENTS` from an invented Linux server's logs. Four need investigating
+(a burst of failed root logins, a new UID 0 user at night, curl writing to
+`/etc/passwd` and a disabled account signing in); `eventsRight` checks that
+exactly those are flagged. This module takes the roadmap slot first planned
+for privilege escalation.
+
+| Lessons | What the student does                  |
+| ------- | -------------------------------------- |
+| 1       | Questions on why host logs matter      |
+| 2       | Questions on where logs live           |
+| 3       | Flags the four events that need a look |
+| 4       | Sorts what to log and what never to    |
+| 5       | Questions on central logs and time     |
+| 6       | Questions on alerts                    |
+| 7       | Questions on file integrity            |
+| 8       | Final questions                        |
 
 ## Who gets in
 

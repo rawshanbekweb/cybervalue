@@ -64,6 +64,7 @@ import { LESSONS as MANIPULATION } from "../src/lib/manipulation/curriculum";
 import { LESSONS as PERSONAL } from "../src/lib/personal/curriculum";
 import { LESSONS as AWARENESS } from "../src/lib/awareness/curriculum";
 import { LESSONS as REPORTING } from "../src/lib/reporting/curriculum";
+import { LESSONS as HOSTLOGS } from "../src/lib/hostlogs/curriculum";
 import {
   isLabId,
   LAB_PROGRESS,
@@ -136,6 +137,7 @@ test("lab progress totals match the lessons", () => {
   assert.equal(LAB_PROGRESS.personal.total, PERSONAL.length);
   assert.equal(LAB_PROGRESS.awareness.total, AWARENESS.length);
   assert.equal(LAB_PROGRESS.reporting.total, REPORTING.length);
+  assert.equal(LAB_PROGRESS.hostlogs.total, HOSTLOGS.length);
   assert.equal(isLabId("toString"), false);
   assert.equal(isLabId("network"), true);
 });

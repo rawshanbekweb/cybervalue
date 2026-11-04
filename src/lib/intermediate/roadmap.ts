@@ -637,13 +637,15 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: {
-          uz: "Ruxsatlarni oshirish xavfi",
-          en: "Privilege escalation risks",
+          uz: "Host loglari va monitoring",
+          en: "Host logging and monitoring",
         },
-        topics: ["misconfigurations", "least privilege", "auditing"],
+        href: "/intermediate/hostlogs",
+        lab: "hostlogs",
+        topics: ["auth.log", "journald", "central logging", "alerts"],
         goal: goal(
-          "Ortiqcha ruxsatlar qanday xavf tug‘dirishini va oldini olishni ko‘rsatish.",
-          "Show how excess privilege creates risk, and how to prevent it.",
+          "Server loglaridan tekshirish kerak bo‘lgan hodisalarni topish.",
+          "Find the events in a server’s logs that need investigating.",
         ),
       },
       {
