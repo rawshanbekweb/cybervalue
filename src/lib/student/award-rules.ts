@@ -359,6 +359,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Imzolangan dasturlar va yangilanishlar (Intermediate)",
     earned: (f) => finished(f, "signing") && passed(f, "signing-1"),
   },
+  {
+    id: "lab-permissions",
+    title: "Ilova ruxsatlari va sandbox (Intermediate)",
+    earned: (f) => finished(f, "permissions") && passed(f, "permissions-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

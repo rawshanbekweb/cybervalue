@@ -14940,3 +14940,237 @@ export const SIGNING_POOL: PoolItem[] = [
     explain: { uz: "Bir nechta qatlam.", en: "Layers." },
   },
 ];
+
+export const PERMISSIONS_POOL: PoolItem[] = [
+  {
+    ask: { uz: "Sandbox nima qiladi?", en: "What does a sandbox do?" },
+    right: {
+      uz: "Ilovani boshqa ilova va tizimdan ajratadi",
+      en: "Keeps an app apart from other apps and the system",
+    },
+    wrong: [
+      { uz: "Ilovani tezlashtiradi", en: "Speeds the app up" },
+      { uz: "Reklamani o‘chiradi", en: "Removes ads" },
+      { uz: "Batareyani tejaydi", en: "Saves battery" },
+    ],
+    explain: {
+      uz: "Qo‘shimcha kirish — faqat ruxsat bilan.",
+      en: "Extra access only through permissions.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kameraga kirish uchun ilova nima qiladi?",
+      en: "How does an app reach the camera?",
+    },
+    right: { uz: "Ruxsat so‘raydi", en: "It asks for a permission" },
+    wrong: [
+      { uz: "O‘zi kiradi", en: "It just uses it" },
+      { uz: "Parol taxmin qiladi", en: "It guesses a password" },
+      { uz: "Qayta ishga tushadi", en: "It restarts" },
+    ],
+    explain: {
+      uz: "Qarorni foydalanuvchi qabul qiladi.",
+      en: "The user decides.",
+    },
+  },
+  {
+    ask: { uz: "Eng xavfli ruxsat?", en: "The most dangerous permission?" },
+    right: { uz: "Accessibility", en: "Accessibility" },
+    wrong: [
+      { uz: "Bildirishnoma", en: "Notifications" },
+      { uz: "Tebranish", en: "Vibration" },
+      { uz: "Fon rasmi", en: "Wallpaper" },
+    ],
+    explain: {
+      uz: "Telefonni siz kabi boshqaradi.",
+      en: "It can use the phone as you.",
+    },
+  },
+  {
+    ask: {
+      uz: "Joylashuv uchun eng yaxshi variant?",
+      en: "The best location option?",
+    },
+    right: { uz: "Faqat ishlatilayotganda", en: "Only while in use" },
+    wrong: [
+      { uz: "Har doim", en: "Always" },
+      { uz: "Fonda", en: "In the background" },
+      { uz: "Farqi yo‘q", en: "No difference" },
+    ],
+    explain: { uz: "Kerak paytda xolos.", en: "Only when needed." },
+  },
+  {
+    ask: {
+      uz: "Fonar ilovasi kontakt va SMS so‘radi. Bu?",
+      en: "A torch app asks for contacts and SMS. That is?",
+    },
+    right: { uz: "Ortiqcha — rad eting", en: "Excessive — deny it" },
+    wrong: [
+      { uz: "Normal", en: "Normal" },
+      { uz: "Kerakli", en: "Needed" },
+      { uz: "Xavfsiz", en: "Safe" },
+    ],
+    explain: { uz: "Chiroqqa ular kerak emas.", en: "A light needs neither." },
+  },
+  {
+    ask: {
+      uz: "Video qo‘ng‘iroq ilovasi kamera so‘radi. Bu?",
+      en: "A video-call app asks for the camera. That is?",
+    },
+    right: { uz: "Kerakli", en: "Needed" },
+    wrong: [
+      { uz: "Ortiqcha", en: "Excessive" },
+      { uz: "Firibgarlik", en: "A scam" },
+      { uz: "Xato", en: "A bug" },
+    ],
+    explain: { uz: "Qo‘ng‘iroqning o‘zi shu.", en: "That’s the job." },
+  },
+  {
+    ask: {
+      uz: "Kengaytma “barcha saytlardagi ma’lumotlarni o‘qish” so‘raydi. Bu?",
+      en: "An extension asks to “read data on all websites”. That means?",
+    },
+    right: {
+      uz: "Bank va pochta sahifalarini ham o‘qiydi",
+      en: "It can read banking and email pages too",
+    },
+    wrong: [
+      { uz: "Faqat rasmlar", en: "Only images" },
+      { uz: "Hech narsa", en: "Nothing" },
+      { uz: "Faqat bitta sayt", en: "Only one site" },
+    ],
+    explain: { uz: "Juda keng huquq.", en: "A very broad grant." },
+  },
+  {
+    ask: {
+      uz: "Kengaytmani qayerdan o‘rnatish kerak?",
+      en: "Where should extensions come from?",
+    },
+    right: {
+      uz: "Rasmiy do‘kon va ishonchli nashriyotchi",
+      en: "The official store and a trusted publisher",
+    },
+    wrong: [
+      { uz: "Forumdagi havola", en: "A forum link" },
+      { uz: "Emaildagi fayl", en: "An email file" },
+      { uz: "Reklama", en: "An ad" },
+    ],
+    explain: {
+      uz: "Ko‘p foydalanuvchi va sharhlarni ham ko‘ring.",
+      en: "Check users and reviews too.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ishlatilmagan kengaytma bilan nima qilasiz?",
+      en: "What do you do with an unused extension?",
+    },
+    right: { uz: "O‘chiraman", en: "Remove it" },
+    wrong: [
+      { uz: "Qoldiraman", en: "Keep it" },
+      { uz: "Yana o‘rnataman", en: "Install another" },
+      { uz: "Huquq beraman", en: "Grant more" },
+    ],
+    explain: { uz: "Har biri — qo‘shimcha xavf.", en: "Each one adds risk." },
+  },
+  {
+    ask: {
+      uz: "Saytdan yuklangan APK o‘rnatish?",
+      en: "Installing an APK from a website?",
+    },
+    right: { uz: "Xavfli", en: "Risky" },
+    wrong: [
+      { uz: "Xavfsiz", en: "Safe" },
+      { uz: "Tavsiya etiladi", en: "Recommended" },
+      { uz: "Majburiy", en: "Required" },
+    ],
+    explain: { uz: "Faqat rasmiy do‘kon.", en: "Official store only." },
+  },
+  {
+    ask: {
+      uz: "Kundalik ish qaysi hisobda?",
+      en: "Daily work belongs in which account?",
+    },
+    right: {
+      uz: "Oddiy (administrator emas)",
+      en: "A standard (non-admin) one",
+    },
+    wrong: [
+      { uz: "Administrator", en: "Administrator" },
+      { uz: "root", en: "root" },
+      { uz: "Mehmon", en: "Guest for everyone" },
+    ],
+    explain: { uz: "Zarar kamroq bo‘ladi.", en: "Damage stays small." },
+  },
+  {
+    ask: {
+      uz: "PDF ko‘ruvchi UAC orqali administrator huquqini so‘radi?",
+      en: "A PDF viewer asks for admin via UAC?",
+    },
+    right: {
+      uz: "Rad etib, sababini tekshirish",
+      en: "Decline and find out why",
+    },
+    wrong: [
+      { uz: "Har doim Ha", en: "Always Yes" },
+      { uz: "UAC’ni o‘chirish", en: "Turn UAC off" },
+      { uz: "Kompyuterni o‘chirish", en: "Shut the PC down" },
+    ],
+    explain: {
+      uz: "PDF uchun administrator kerak emas.",
+      en: "PDFs don’t need admin.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ruxsatlarni qanchalik tez-tez ko‘rib chiqish kerak?",
+      en: "How often should you review permissions?",
+    },
+    right: {
+      uz: "Muntazam, masalan oyda bir marta",
+      en: "Regularly, say once a month",
+    },
+    wrong: [
+      { uz: "Hech qachon", en: "Never" },
+      { uz: "10 yilda bir", en: "Once a decade" },
+      { uz: "Faqat telefon sotilganda", en: "Only when selling the phone" },
+    ],
+    explain: {
+      uz: "Unutilgan ruxsatlar to‘planadi.",
+      en: "Forgotten grants pile up.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kompaniya telefonlarida ruxsatlarni nima boshqaradi?",
+      en: "What manages permissions on company phones?",
+    },
+    right: { uz: "MDM", en: "MDM" },
+    wrong: [
+      { uz: "DNS", en: "DNS" },
+      { uz: "VPN", en: "VPN" },
+      { uz: "NTP", en: "NTP" },
+    ],
+    explain: {
+      uz: "Mobile Device Management.",
+      en: "Mobile Device Management.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ob-havo vidjeti Accessibility so‘radi?",
+      en: "A weather widget asks for Accessibility?",
+    },
+    right: { uz: "Ortiqcha va xavfli", en: "Excessive and dangerous" },
+    wrong: [
+      { uz: "Kerakli", en: "Needed" },
+      { uz: "Normal", en: "Normal" },
+      { uz: "Foydali", en: "Helpful" },
+    ],
+    explain: {
+      uz: "Ob-havoga ekranni boshqarish kerak emas.",
+      en: "Weather needs no screen control.",
+    },
+  },
+];

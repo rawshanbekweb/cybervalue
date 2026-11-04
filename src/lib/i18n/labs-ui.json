@@ -1691,5 +1691,14 @@
   "Don’t install {name}": "{name} ni o‘rnatmang",
   "Four not to install: an unsigned email attachment, a repackaged installer signed by someone else, a file whose hash doesn’t match and a fake browser update.": "To‘rttasini o‘rnatmaslik kerak: emaildagi imzosiz ilova, boshqa kompaniya imzolagan qayta qadoqlangan o‘rnatuvchi, xeshi mos kelmagan fayl va soxta brauzer yangilanishi.",
   "Signed software and updates · Academy Intermediate": "Imzolangan dasturlar va yangilanishlar · Academy Intermediate",
-  "Check a file’s hash, read a code signature and its signer, judge downloads and updates, spot fake updates and see why signing alone can’t stop a compromised supplier.": "Fayl xeshini tekshiring, kod imzosi va imzolovchini o‘qing, yuklama va yangilanishlarni baholang, soxta yangilanishlarni taning va nega imzoning o‘zi buzilgan yetkazib beruvchidan himoya qilolmasligini ko‘ring."
+  "Check a file’s hash, read a code signature and its signer, judge downloads and updates, spot fake updates and see why signing alone can’t stop a compromised supplier.": "Fayl xeshini tekshiring, kod imzosi va imzolovchini o‘qing, yuklama va yangilanishlarni baholang, soxta yangilanishlarni taning va nega imzoning o‘zi buzilgan yetkazib beruvchidan himoya qilolmasligini ko‘ring.",
+  "SOFTWARE · MODULE 3": "DASTURLAR · 3-MODUL",
+  "App permissions and sandboxing.": "Ilova ruxsatlari va sandbox.",
+  "Every app in its own box, with only what its job needs.": "Har bir ilova o‘z qutisida va faqat ishiga kerak bo‘lgan narsa bilan.",
+  "Learn how sandboxes keep apps apart, tell low-risk permissions from near-full control, judge eight permission requests, choose browser extensions carefully, work in a standard account and review permissions regularly.": "Sandbox ilovalarni qanday ajratishini o‘rganing, kam xavfli ruxsatlarni deyarli to‘liq boshqaruvdan farqlang, sakkizta ruxsat so‘rovini baholang, brauzer kengaytmalarini ehtiyotkorlik bilan tanlang, oddiy hisobda ishlang va ruxsatlarni muntazam qayta ko‘ring.",
+  "APPS / LAB": "ILOVALAR / LABORATORIYA",
+  "Request {n} is more than the app needs": "{n}-so‘rov ilovaga keragidan ortiq",
+  "Four ask for too much: a torch wanting contacts and SMS, a calculator tracking location, a weather widget wanting Accessibility and an extension reading every site.": "To‘rttasi ortiqcha so‘raydi: kontakt va SMS so‘ragan fonar, joylashuvni kuzatuvchi kalkulyator, Accessibility so‘ragan ob-havo vidjeti va barcha saytlarni o‘qiydigan kengaytma.",
+  "App permissions and sandboxing · Academy Intermediate": "Ilova ruxsatlari va sandbox · Academy Intermediate",
+  "See how sandboxes keep apps apart, judge permission requests, choose browser extensions carefully, work in a standard account and review permissions regularly.": "Sandbox ilovalarni qanday ajratishini ko‘ring, ruxsat so‘rovlarini baholang, brauzer kengaytmalarini ehtiyotkorlik bilan tanlang, oddiy hisobda ishlang va ruxsatlarni muntazam qayta ko‘ring."
 }

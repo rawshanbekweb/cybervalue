@@ -1001,6 +1001,24 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/signing#checkpoints",
     pass: 70,
   },
+  {
+    id: "permissions-1",
+    level: "intermediate",
+    lab: {
+      uz: "Ilova ruxsatlari va sandbox",
+      en: "App permissions and sandboxing",
+    },
+    title: {
+      uz: "Nazorat: Ilova ruxsatlari va sandbox",
+      en: "Checkpoint: App permissions and sandboxing",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/permissions#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

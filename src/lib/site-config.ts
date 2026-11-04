@@ -432,6 +432,12 @@ export const SECTIONS = [
     href: "/intermediate/signing",
   },
   {
+    id: "permissions",
+    group: "lab",
+    label: "App permissions and sandboxing (Intermediate)",
+    href: "/intermediate/permissions",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

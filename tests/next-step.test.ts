@@ -144,6 +144,7 @@ test("everything finished", () => {
         reporting: 8,
         hostlogs: 8,
         signing: 8,
+        permissions: 8,
         scams: 8,
         httpbasics: 9,
         https: 9,
