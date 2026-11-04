@@ -59,6 +59,7 @@ import { LESSONS as AWARENESS_LESSONS } from "@/lib/awareness/curriculum";
 import { LESSONS as REPORTING_LESSONS } from "@/lib/reporting/curriculum";
 import { LESSONS as HOSTLOGS_LESSONS } from "@/lib/hostlogs/curriculum";
 import { LESSONS as SIGNING_LESSONS } from "@/lib/signing/curriculum";
+import { LESSONS as PERMISSIONS_LESSONS } from "@/lib/permissions/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -1164,6 +1165,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: SIGNING_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "permissions",
+      title: "App permissions and sandboxing",
+      category: "Intermediate · Software and trust",
+      description:
+        "See how sandboxes keep apps apart, judge permission requests, choose extensions carefully and review permissions regularly.",
+      href: "/intermediate/permissions",
+      progressKey: LAB_PROGRESS.permissions.key,
+      level: "Intermediate",
+      lessons: PERMISSIONS_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: PERMISSIONS_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

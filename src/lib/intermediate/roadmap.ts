@@ -708,11 +708,16 @@ export const DOMAINS: Domain[] = [
         ),
       },
       {
-        title: { uz: "Statik tahlil", en: "Static analysis" },
-        topics: ["strings", "disassembler", "Ghidra"],
+        title: {
+          uz: "Ilova ruxsatlari va sandbox",
+          en: "App permissions and sandboxing",
+        },
+        href: "/intermediate/permissions",
+        lab: "permissions",
+        topics: ["sandbox", "permissions", "extensions", "least privilege"],
         goal: goal(
-          "Dasturni ishga tushirmasdan nima qilishini aniqlash.",
-          "Work out what a program does without running it.",
+          "Ilova o‘z ishi uchun qaysi ruxsatga muhtojligini aniqlash.",
+          "Decide which permissions an app really needs.",
         ),
       },
       {
