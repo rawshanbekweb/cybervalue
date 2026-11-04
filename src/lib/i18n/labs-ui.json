@@ -1700,5 +1700,14 @@
   "Request {n} is more than the app needs": "{n}-so‘rov ilovaga keragidan ortiq",
   "Four ask for too much: a torch wanting contacts and SMS, a calculator tracking location, a weather widget wanting Accessibility and an extension reading every site.": "To‘rttasi ortiqcha so‘raydi: kontakt va SMS so‘ragan fonar, joylashuvni kuzatuvchi kalkulyator, Accessibility so‘ragan ob-havo vidjeti va barcha saytlarni o‘qiydigan kengaytma.",
   "App permissions and sandboxing · Academy Intermediate": "Ilova ruxsatlari va sandbox · Academy Intermediate",
-  "See how sandboxes keep apps apart, judge permission requests, choose browser extensions carefully, work in a standard account and review permissions regularly.": "Sandbox ilovalarni qanday ajratishini ko‘ring, ruxsat so‘rovlarini baholang, brauzer kengaytmalarini ehtiyotkorlik bilan tanlang, oddiy hisobda ishlang va ruxsatlarni muntazam qayta ko‘ring."
+  "See how sandboxes keep apps apart, judge permission requests, choose browser extensions carefully, work in a standard account and review permissions regularly.": "Sandbox ilovalarni qanday ajratishini ko‘ring, ruxsat so‘rovlarini baholang, brauzer kengaytmalarini ehtiyotkorlik bilan tanlang, oddiy hisobda ishlang va ruxsatlarni muntazam qayta ko‘ring.",
+  "SOFTWARE · MODULE 4": "DASTURLAR · 4-MODUL",
+  "End-of-life software.": "Muddati o‘tgan dasturlar.",
+  "Know what you run, and when its fixes stop.": "Nimani ishlatayotganingizni va tuzatishlar qachon to‘xtashini biling.",
+  "Learn what end of life means, keep a software inventory, find the four out-of-support items in a company’s list, read LTS and support dates, isolate what you can’t upgrade yet, plan upgrades and keep device firmware current.": "Muddati tugash nimaligini o‘rganing, dasturlar ro‘yxatini yuriting, kompaniya ro‘yxatidan qo‘llab-quvvatlanmaydigan to‘rttasini toping, LTS va qo‘llab-quvvatlash sanalarini o‘qing, hozircha yangilab bo‘lmaydiganini ajrating, yangilashni rejalang va qurilmalar proshivkasini yangilab boring.",
+  "EOL / LAB": "EOL / LABORATORIYA",
+  "{name} is out of support": "{name} qo‘llab-quvvatlanmaydi",
+  "Four are out of support: Windows 7 at reception, PHP 7.4 on the website, the office router’s firmware and Office 2013 in accounting.": "To‘rttasi qo‘llab-quvvatlanmaydi: qabulxonadagi Windows 7, saytdagi PHP 7.4, ofis routeri proshivkasi va buxgalteriyadagi Office 2013.",
+  "End-of-life software · Academy Intermediate": "Muddati o‘tgan dasturlar · Academy Intermediate",
+  "Keep a software inventory, spot what is out of support, read LTS dates, isolate what you can’t upgrade yet and plan upgrades ahead of time.": "Dasturlar ro‘yxatini yuriting, qo‘llab-quvvatlanmaydiganini toping, LTS sanalarini o‘qing, hozircha yangilab bo‘lmaydiganini ajrating va yangilashni oldindan rejalang."
 }

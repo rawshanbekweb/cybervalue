@@ -721,11 +721,16 @@ export const DOMAINS: Domain[] = [
         ),
       },
       {
-        title: { uz: "Crackme mashqlari", en: "Crackme exercises" },
-        topics: ["debugger", "breakpoints", "logic"],
+        title: {
+          uz: "Muddati o‘tgan dasturlar",
+          en: "End-of-life software",
+        },
+        href: "/intermediate/eol",
+        lab: "eol",
+        topics: ["inventory", "LTS", "support dates", "firmware"],
         goal: goal(
-          "O‘quv dasturining tekshiruv mantiqini tushunib, javobni topish.",
-          "Understand a training program's check and find the answer.",
+          "Dasturlar ro‘yxatidan qo‘llab-quvvatlanmaydiganlarini topish.",
+          "Find the out-of-support items in a software inventory.",
         ),
       },
       {
