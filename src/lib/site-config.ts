@@ -420,6 +420,12 @@ export const SECTIONS = [
     href: "/intermediate/reporting",
   },
   {
+    id: "hostlogs",
+    group: "lab",
+    label: "Host logging and monitoring (Intermediate)",
+    href: "/intermediate/hostlogs",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

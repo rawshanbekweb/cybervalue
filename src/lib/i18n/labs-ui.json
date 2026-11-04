@@ -1673,5 +1673,14 @@
   "Item {n} belongs in the report": "{n}-band xabarga kiradi",
   "Five belong: what, when, which device and account, the email itself and what you already did. Never your password, blame or unrelated data.": "Beshtasi kiradi: nima, qachon, qaysi qurilma va hisob, xatning o‘zi va siz allaqachon nima qilganingiz. Parol, ayblov yoki begona ma’lumot hech qachon kirmaydi.",
   "Reporting incidents · Academy Intermediate": "Hodisani xabar qilish · Academy Intermediate",
-  "Learn what counts as an incident, whom to tell and how fast, what belongs in a first report, how to keep evidence and how to write a blameless reporting procedure.": "Nima hodisa hisoblanishini, kimga va qanchalik tez xabar berishni, birinchi xabarga nima kirishini, dalillarni qanday saqlashni va ayblovsiz xabar berish tartibini qanday yozishni o‘rganing."
+  "Learn what counts as an incident, whom to tell and how fast, what belongs in a first report, how to keep evidence and how to write a blameless reporting procedure.": "Nima hodisa hisoblanishini, kimga va qanchalik tez xabar berishni, birinchi xabarga nima kirishini, dalillarni qanday saqlashni va ayblovsiz xabar berish tartibini qanday yozishni o‘rganing.",
+  "SYSTEM · MODULE 3": "TIZIM · 3-MODUL",
+  "Host logging and monitoring.": "Host loglari va monitoring.",
+  "Log what matters, ship it off the host, alert on the rare.": "Muhimini yozing, serverdan tashqariga yuboring, kamyob hodisalarga ogohlantiring.",
+  "Learn where Linux and Windows keep their logs, triage eight events from a server, decide what to log and what never to, ship logs to a central store with one clock, write alerts that matter and watch important files for changes.": "Linux va Windows loglarini qayerda saqlashini o‘rganing, serverdagi sakkizta hodisani saralang, nimani yozish va nimani hech qachon yozmaslikni hal qiling, loglarni bir xil vaqt bilan markaziy joyga yuboring, muhim ogohlantirishlarni yozing va muhim fayllar o‘zgarishini kuzating.",
+  "LOGS / LAB": "LOGLAR / LABORATORIYA",
+  "Event {n} needs investigating": "{n}-hodisani tekshirish kerak",
+  "Four to investigate: a password-guessing burst, a new root account at night, curl writing to /etc/passwd and a disabled account signing in.": "To‘rttasini tekshirish kerak: ketma-ket parol taxminlari, kechasi yangi root hisobi, curl’ning /etc/passwd ga yozishi va o‘chirilgan hisob bilan kirish.",
+  "Host logging and monitoring · Academy Intermediate": "Host loglari va monitoring · Academy Intermediate",
+  "Find where host logs live, triage server events, decide what to log, ship logs to a central store, write useful alerts and watch important files for changes.": "Host loglari qayerdaligini toping, server hodisalarini saralang, nimani yozishni hal qiling, loglarni markaziy joyga yuboring, foydali ogohlantirishlar yozing va muhim fayllar o‘zgarishini kuzating."
 }

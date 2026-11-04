@@ -14442,3 +14442,249 @@ export const REPORTING_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const HOSTLOGS_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Host loglari nimaga javob beradi?",
+      en: "What do host logs answer?",
+    },
+    right: { uz: "Kim, nima va qachon qildi", en: "Who did what, and when" },
+    wrong: [
+      { uz: "Server narxi", en: "What the server costs" },
+      { uz: "Sayt dizayni", en: "How the site looks" },
+      { uz: "Internet tezligi", en: "The internet speed" },
+    ],
+    explain: {
+      uz: "Hodisani qayta tiklashga yordam beradi.",
+      en: "They let you reconstruct an incident.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ubuntu’da SSH kirishlari qayerda?",
+      en: "Where are SSH sign-ins on Ubuntu?",
+    },
+    right: { uz: "/var/log/auth.log", en: "/var/log/auth.log" },
+    wrong: [
+      { uz: "/etc/hosts", en: "/etc/hosts" },
+      { uz: "/tmp/ssh", en: "/tmp/ssh" },
+      { uz: "~/.bashrc", en: "~/.bashrc" },
+    ],
+    explain: {
+      uz: "RHEL’da — /var/log/secure.",
+      en: "On RHEL it is /var/log/secure.",
+    },
+  },
+  {
+    ask: {
+      uz: "journald loglarini qaysi buyruq o‘qiydi?",
+      en: "Which command reads journald logs?",
+    },
+    right: { uz: "journalctl", en: "journalctl" },
+    wrong: [
+      { uz: "lsblk", en: "lsblk" },
+      { uz: "chmod", en: "chmod" },
+      { uz: "ping", en: "ping" },
+    ],
+    explain: {
+      uz: "Masalan: journalctl -u ssh.",
+      en: "For example: journalctl -u ssh.",
+    },
+  },
+  {
+    ask: { uz: "Windows’dagi 4625 hodisasi?", en: "Windows event 4625 is?" },
+    right: { uz: "Muvaffaqiyatsiz kirish", en: "A failed sign-in" },
+    wrong: [
+      { uz: "Muvaffaqiyatli kirish", en: "A successful sign-in" },
+      { uz: "Printer xatosi", en: "A printer error" },
+      { uz: "Yangilanish", en: "An update" },
+    ],
+    explain: {
+      uz: "4624 — muvaffaqiyatli kirish.",
+      en: "4624 is a successful sign-in.",
+    },
+  },
+  {
+    ask: {
+      uz: "Bir manzildan root uchun 58 ta xato kirish?",
+      en: "58 failed root logins from one address?",
+    },
+    right: {
+      uz: "Parol taxmin qilinmoqda — tekshirish kerak",
+      en: "Password guessing — investigate",
+    },
+    wrong: [
+      { uz: "Odatiy hol", en: "Routine" },
+      { uz: "Zaxira ishi", en: "A backup job" },
+      { uz: "Log aylanishi", en: "Log rotation" },
+    ],
+    explain: {
+      uz: "Manzilni bloklash va MFA’ni tekshiring.",
+      en: "Block the address and check MFA.",
+    },
+  },
+  {
+    ask: {
+      uz: "Kechasi UID 0 bilan yangi foydalanuvchi?",
+      en: "A new UID 0 user at night?",
+    },
+    right: {
+      uz: "Jiddiy belgi — darhol tekshirish",
+      en: "A serious sign — investigate at once",
+    },
+    wrong: [
+      { uz: "Har kungi ish", en: "Daily work" },
+      { uz: "Yangilanish", en: "An update" },
+      { uz: "Farqi yo‘q", en: "No matter" },
+    ],
+    explain: { uz: "UID 0 — root huquqlari.", en: "UID 0 means root rights." },
+  },
+  {
+    ask: {
+      uz: "Qaysi narsa logga yozilmaydi?",
+      en: "What never goes into a log?",
+    },
+    right: { uz: "Foydalanuvchi parolli", en: "A user’s password" },
+    wrong: [
+      { uz: "Kirish vaqti", en: "The sign-in time" },
+      { uz: "Foydalanuvchi nomi", en: "The user name" },
+      { uz: "Xizmat nomi", en: "The service name" },
+    ],
+    explain: {
+      uz: "Sirlar logdan tarqaladi.",
+      en: "Secrets leak through logs.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega loglarni markaziy joyga yuborish kerak?",
+      en: "Why ship logs to a central place?",
+    },
+    right: {
+      uz: "Hujumchi mahalliy loglarni o‘chirishi mumkin",
+      en: "An attacker may delete local logs",
+    },
+    wrong: [
+      { uz: "Faqat disk uchun", en: "Only for disk space" },
+      { uz: "Kerak emas", en: "No need" },
+      { uz: "Tezlik uchun", en: "For speed" },
+    ],
+    explain: {
+      uz: "Markaziy nusxa saqlanadi.",
+      en: "The central copy survives.",
+    },
+  },
+  {
+    ask: {
+      uz: "Markaziy log serverida serverlar nimaga ega bo‘lmasligi kerak?",
+      en: "On the central store, servers should not be able to?",
+    },
+    right: { uz: "Loglarni o‘chirish", en: "Delete logs" },
+    wrong: [
+      { uz: "Yozish", en: "Write logs" },
+      { uz: "Vaqt yuborish", en: "Send time" },
+      { uz: "Ulanish", en: "Connect" },
+    ],
+    explain: { uz: "Faqat yozish huquqi.", en: "Write-only access." },
+  },
+  {
+    ask: {
+      uz: "Serverlar vaqti nima bilan moslanadi?",
+      en: "What keeps server clocks in step?",
+    },
+    right: { uz: "NTP yoki chrony", en: "NTP or chrony" },
+    wrong: [
+      { uz: "DNS", en: "DNS" },
+      { uz: "FTP", en: "FTP" },
+      { uz: "cron", en: "cron" },
+    ],
+    explain: {
+      uz: "Bir xil vaqt — to‘g‘ri tartib.",
+      en: "One clock, the right order.",
+    },
+  },
+  {
+    ask: { uz: "Alert fatigue nima?", en: "What is alert fatigue?" },
+    right: {
+      uz: "Ko‘p ogohlantirishdan ularga e’tibor bermaslik",
+      en: "Ignoring alerts because there are too many",
+    },
+    wrong: [
+      { uz: "Server qizishi", en: "A hot server" },
+      { uz: "Parol unutish", en: "A forgotten password" },
+      { uz: "Tarmoq uzilishi", en: "A network outage" },
+    ],
+    explain: {
+      uz: "Shovqinli qoidalarni sozlang.",
+      en: "Tune the noisy rules.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi hodisa ogohlantirishga loyiq?",
+      en: "Which event deserves an alert?",
+    },
+    right: {
+      uz: "O‘chirilgan hisob bilan kirish",
+      en: "A sign-in with a disabled account",
+    },
+    wrong: [
+      { uz: "Log aylanishi", en: "Log rotation" },
+      { uz: "Rejadagi zaxira", en: "A scheduled backup" },
+      { uz: "Kunduzgi yangilanish", en: "A daytime update" },
+    ],
+    explain: {
+      uz: "Hisob to‘liq bloklanmagan.",
+      en: "The account wasn’t fully locked.",
+    },
+  },
+  {
+    ask: { uz: "FIM nima qiladi?", en: "What does FIM do?" },
+    right: {
+      uz: "Muhim fayllar o‘zgarishini kuzatadi",
+      en: "Watches important files for changes",
+    },
+    wrong: [
+      { uz: "Parol yaratadi", en: "Creates passwords" },
+      { uz: "Diskni tozalaydi", en: "Cleans the disk" },
+      { uz: "Tarmoqni tezlashtiradi", en: "Speeds up the network" },
+    ],
+    explain: { uz: "Xeshlarni solishtiradi.", en: "It compares hashes." },
+  },
+  {
+    ask: {
+      uz: "FIM kuzatishi kerak bo‘lgan fayl?",
+      en: "A file FIM should watch?",
+    },
+    right: { uz: "/etc/sudoers", en: "/etc/sudoers" },
+    wrong: [
+      { uz: "/tmp dagi fayllar", en: "Files in /tmp" },
+      { uz: "Brauzer keshi", en: "The browser cache" },
+      { uz: "Yuklamalar papkasi", en: "The downloads folder" },
+    ],
+    explain: {
+      uz: "U administratorlarni belgilaydi.",
+      en: "It decides who is admin.",
+    },
+  },
+  {
+    ask: {
+      uz: "Odatiy holatni bilish (baseline) nima beradi?",
+      en: "What does knowing the baseline give you?",
+    },
+    right: {
+      uz: "G‘alati hodisani tez ko‘rish",
+      en: "Spotting the odd event quickly",
+    },
+    wrong: [
+      { uz: "Ko‘proq log", en: "More logs" },
+      { uz: "Kam disk", en: "Less disk" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Normalni bilsangiz, anomaliya ko‘rinadi.",
+      en: "Know normal, and the anomaly shows.",
+    },
+  },
+];

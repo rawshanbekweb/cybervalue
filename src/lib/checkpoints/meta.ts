@@ -965,6 +965,24 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/reporting#checkpoints",
     pass: 70,
   },
+  {
+    id: "hostlogs-1",
+    level: "intermediate",
+    lab: {
+      uz: "Host loglari va monitoring",
+      en: "Host logging and monitoring",
+    },
+    title: {
+      uz: "Nazorat: Host loglari va monitoring",
+      en: "Checkpoint: Host logging and monitoring",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/hostlogs#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

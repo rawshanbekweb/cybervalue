@@ -349,6 +349,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Hodisani xabar qilish (Intermediate)",
     earned: (f) => finished(f, "reporting") && passed(f, "reporting-1"),
   },
+  {
+    id: "lab-hostlogs",
+    title: "Host loglari va monitoring (Intermediate)",
+    earned: (f) => finished(f, "hostlogs") && passed(f, "hostlogs-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */
