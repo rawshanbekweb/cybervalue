@@ -58,6 +58,7 @@ import { LESSONS as PERSONAL_LESSONS } from "@/lib/personal/curriculum";
 import { LESSONS as AWARENESS_LESSONS } from "@/lib/awareness/curriculum";
 import { LESSONS as REPORTING_LESSONS } from "@/lib/reporting/curriculum";
 import { LESSONS as HOSTLOGS_LESSONS } from "@/lib/hostlogs/curriculum";
+import { LESSONS as SIGNING_LESSONS } from "@/lib/signing/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -965,7 +966,7 @@ export function getLearningTracks() {
     {
       id: "build",
       title: "How programs are built",
-      category: "Intermediate · Reverse engineering",
+      category: "Intermediate · Software and trust",
       description:
         "Follow source code through the preprocessor, compiler, assembler and linker, tell ELF from PE from Mach-O, place a program’s parts in their sections, read the header, compare static and dynamic linking and see what stripping removes.",
       href: "/intermediate/build",
@@ -1146,6 +1147,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: HOSTLOGS_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "signing",
+      title: "Signed software and updates",
+      category: "Intermediate · Software and trust",
+      description:
+        "Check hashes and code signatures, judge downloads and updates, and spot fake updates.",
+      href: "/intermediate/signing",
+      progressKey: LAB_PROGRESS.signing.key,
+      level: "Intermediate",
+      lessons: SIGNING_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: SIGNING_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

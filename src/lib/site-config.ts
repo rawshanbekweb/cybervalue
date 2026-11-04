@@ -426,6 +426,12 @@ export const SECTIONS = [
     href: "/intermediate/hostlogs",
   },
   {
+    id: "signing",
+    group: "lab",
+    label: "Signed software and updates (Intermediate)",
+    href: "/intermediate/signing",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

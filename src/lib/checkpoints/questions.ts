@@ -81,6 +81,7 @@ import {
   AWARENESS_POOL,
   REPORTING_POOL,
   HOSTLOGS_POOL,
+  SIGNING_POOL,
   SECURITY_EXTRA,
   type PoolItem,
 } from "./pools";
@@ -909,6 +910,10 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
       .map((item) => fromPool(r, item)),
   "hostlogs-1": (r) =>
     shuffle(r, HOSTLOGS_POOL)
+      .slice(0, 10)
+      .map((item) => fromPool(r, item)),
+  "signing-1": (r) =>
+    shuffle(r, SIGNING_POOL)
       .slice(0, 10)
       .map((item) => fromPool(r, item)),
 };

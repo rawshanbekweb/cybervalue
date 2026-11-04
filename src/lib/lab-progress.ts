@@ -62,6 +62,7 @@ export const LAB_PROGRESS = {
   awareness: { key: "cybervalue:awareness:progress:v1", total: 8 },
   reporting: { key: "cybervalue:reporting:progress:v1", total: 8 },
   hostlogs: { key: "cybervalue:hostlogs:progress:v1", total: 8 },
+  signing: { key: "cybervalue:signing:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -623,6 +624,15 @@ export const LAB_META: {
       en: "Host logging and monitoring (Intermediate)",
     },
     href: "/intermediate/hostlogs",
+    intermediate: true,
+  },
+  {
+    id: "signing",
+    title: {
+      uz: "Imzolangan dasturlar va yangilanishlar (Intermediate)",
+      en: "Signed software and updates (Intermediate)",
+    },
+    href: "/intermediate/signing",
     intermediate: true,
   },
 ];

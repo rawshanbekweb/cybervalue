@@ -1682,5 +1682,14 @@
   "Event {n} needs investigating": "{n}-hodisani tekshirish kerak",
   "Four to investigate: a password-guessing burst, a new root account at night, curl writing to /etc/passwd and a disabled account signing in.": "To‘rttasini tekshirish kerak: ketma-ket parol taxminlari, kechasi yangi root hisobi, curl’ning /etc/passwd ga yozishi va o‘chirilgan hisob bilan kirish.",
   "Host logging and monitoring · Academy Intermediate": "Host loglari va monitoring · Academy Intermediate",
-  "Find where host logs live, triage server events, decide what to log, ship logs to a central store, write useful alerts and watch important files for changes.": "Host loglari qayerdaligini toping, server hodisalarini saralang, nimani yozishni hal qiling, loglarni markaziy joyga yuboring, foydali ogohlantirishlar yozing va muhim fayllar o‘zgarishini kuzating."
+  "Find where host logs live, triage server events, decide what to log, ship logs to a central store, write useful alerts and watch important files for changes.": "Host loglari qayerdaligini toping, server hodisalarini saralang, nimani yozishni hal qiling, loglarni markaziy joyga yuboring, foydali ogohlantirishlar yozing va muhim fayllar o‘zgarishini kuzating.",
+  "SOFTWARE · MODULE 2": "DASTURLAR · 2-MODUL",
+  "Signed software and updates.": "Imzolangan dasturlar va yangilanishlar.",
+  "An official source, a matching hash, the expected signer.": "Rasmiy manba, mos xesh, kutilgan imzolovchi.",
+  "Learn why origin and integrity matter, check a file’s SHA-256 hash, read a code signature and its signer, judge eight downloads and updates, see how safe updaters work, and why signing alone can’t stop a compromised supplier.": "Kelib chiqish va yaxlitlik nega muhimligini o‘rganing, faylning SHA-256 xeshini tekshiring, kod imzosi va imzolovchini o‘qing, sakkizta yuklama va yangilanishni baholang, xavfsiz yangilagichlar qanday ishlashini va nega imzoning o‘zi buzilgan yetkazib beruvchidan himoya qilolmasligini ko‘ring.",
+  "SIGNING / LAB": "IMZO / LABORATORIYA",
+  "Don’t install {name}": "{name} ni o‘rnatmang",
+  "Four not to install: an unsigned email attachment, a repackaged installer signed by someone else, a file whose hash doesn’t match and a fake browser update.": "To‘rttasini o‘rnatmaslik kerak: emaildagi imzosiz ilova, boshqa kompaniya imzolagan qayta qadoqlangan o‘rnatuvchi, xeshi mos kelmagan fayl va soxta brauzer yangilanishi.",
+  "Signed software and updates · Academy Intermediate": "Imzolangan dasturlar va yangilanishlar · Academy Intermediate",
+  "Check a file’s hash, read a code signature and its signer, judge downloads and updates, spot fake updates and see why signing alone can’t stop a compromised supplier.": "Fayl xeshini tekshiring, kod imzosi va imzolovchini o‘qing, yuklama va yangilanishlarni baholang, soxta yangilanishlarni taning va nega imzoning o‘zi buzilgan yetkazib beruvchidan himoya qilolmasligini ko‘ring."
 }
