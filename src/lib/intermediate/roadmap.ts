@@ -735,13 +735,15 @@ export const DOMAINS: Domain[] = [
       },
       {
         title: {
-          uz: "Zararli dasturlar tamoyillari",
-          en: "Malware principles",
+          uz: "Ilovalarni xavfsiz ochish",
+          en: "Opening attachments safely",
         },
-        topics: ["behaviour", "sandboxes", "YARA", "IOC"],
+        href: "/intermediate/attachments",
+        lab: "attachments",
+        topics: ["file types", "macros", "archives", "Protected View"],
         goal: goal(
-          "Shubhali fayl belgilarini aniqlash qoidasini yozish.",
-          "Write a rule that recognises a suspicious file.",
+          "Qaysi ilovani ochish xavfli ekanini aniqlash.",
+          "Decide which attachments are unsafe to open.",
         ),
       },
     ],

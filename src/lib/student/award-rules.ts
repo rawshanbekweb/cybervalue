@@ -369,6 +369,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Muddati o‘tgan dasturlar (Intermediate)",
     earned: (f) => finished(f, "eol") && passed(f, "eol-1"),
   },
+  {
+    id: "lab-attachments",
+    title: "Ilovalarni xavfsiz ochish (Intermediate)",
+    earned: (f) => finished(f, "attachments") && passed(f, "attachments-1"),
+  },
 ];
 
 /** Rules met by these facts and not issued yet. */

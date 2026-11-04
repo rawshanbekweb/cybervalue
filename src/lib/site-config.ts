@@ -444,6 +444,12 @@ export const SECTIONS = [
     href: "/intermediate/eol",
   },
   {
+    id: "attachments",
+    group: "lab",
+    label: "Opening attachments safely (Intermediate)",
+    href: "/intermediate/attachments",
+  },
+  {
     id: "ctf",
     group: "lab",
     label: "00:17 CTF investigation",

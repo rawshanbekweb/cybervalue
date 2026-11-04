@@ -65,6 +65,7 @@ export const LAB_PROGRESS = {
   signing: { key: "cybervalue:signing:progress:v1", total: 8 },
   permissions: { key: "cybervalue:permissions:progress:v1", total: 8 },
   eol: { key: "cybervalue:eol:progress:v1", total: 8 },
+  attachments: { key: "cybervalue:attachments:progress:v1", total: 8 },
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
@@ -653,6 +654,15 @@ export const LAB_META: {
       en: "End-of-life software (Intermediate)",
     },
     href: "/intermediate/eol",
+    intermediate: true,
+  },
+  {
+    id: "attachments",
+    title: {
+      uz: "Ilovalarni xavfsiz ochish (Intermediate)",
+      en: "Opening attachments safely (Intermediate)",
+    },
+    href: "/intermediate/attachments",
     intermediate: true,
   },
 ];

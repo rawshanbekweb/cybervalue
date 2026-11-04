@@ -67,6 +67,7 @@ students placed at the Intermediate or Advanced level, and to staff.
 | `/intermediate/signing`      | Software and trust module 2, signed software and updates (8 lessons, a checkpoint)    |
 | `/intermediate/permissions`  | Software and trust module 3, app permissions and sandboxing (8 lessons, a checkpoint) |
 | `/intermediate/eol`          | Software and trust module 4, end-of-life software (8 lessons, a checkpoint)           |
+| `/intermediate/attachments`  | Software and trust module 5, opening attachments safely (8 lessons, a checkpoint)     |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -1256,6 +1257,29 @@ are real; revisit them when the module is reviewed.
 | 6       | Questions on planning upgrades              |
 | 7       | Questions on device firmware                |
 | 8       | Final questions                             |
+
+## Software and trust module 5: Opening attachments safely
+
+`/intermediate/attachments` (lab id `attachments`, checkpoint
+`attachments-1`, award `lab-attachments`, site setting `attachments`) uses
+`src/lib/attachments/tools.ts`: eight `ATTACHMENTS` that reached an invented
+company. Four should not be opened (`invoice.pdf.exe`, a macro-enabled
+`.docm` asking for Enable Content, a password-protected ZIP from a stranger
+and a `.lnk` shortcut inside an ISO); `attachmentsRight` checks that exactly
+those are flagged. The widget is in lesson 4. This module takes the slot
+first planned for malware principles, and the lab id avoids clashing with
+`src/lib/files.ts`.
+
+| Lessons | What the student does                   |
+| ------- | --------------------------------------- |
+| 1       | Questions on file types                 |
+| 2       | Questions on deceptive names            |
+| 3       | Questions on macros                     |
+| 4       | Flags the four attachments not to open  |
+| 5       | Questions on archives and disk images   |
+| 6       | Sorts safe and risky ways to open files |
+| 7       | Questions on layers of defence          |
+| 8       | Final questions                         |
 
 ## Who gets in
 

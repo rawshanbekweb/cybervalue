@@ -84,6 +84,7 @@ import {
   SIGNING_POOL,
   PERMISSIONS_POOL,
   EOL_POOL,
+  ATTACHMENTS_POOL,
   SECURITY_EXTRA,
   type PoolItem,
 } from "./pools";
@@ -924,6 +925,10 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
       .map((item) => fromPool(r, item)),
   "eol-1": (r) =>
     shuffle(r, EOL_POOL)
+      .slice(0, 10)
+      .map((item) => fromPool(r, item)),
+  "attachments-1": (r) =>
+    shuffle(r, ATTACHMENTS_POOL)
       .slice(0, 10)
       .map((item) => fromPool(r, item)),
 };

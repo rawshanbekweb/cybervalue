@@ -15423,3 +15423,246 @@ export const EOL_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const ATTACHMENTS_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Qaysi kengaytma ishga tushadigan dastur?",
+      en: "Which extension is a runnable program?",
+    },
+    right: { uz: ".exe", en: ".exe" },
+    wrong: [
+      { uz: ".jpg", en: ".jpg" },
+      { uz: ".txt", en: ".txt" },
+      { uz: ".png", en: ".png" },
+    ],
+    explain: {
+      uz: ".msi, .bat, .ps1, .lnk ham.",
+      en: "So are .msi, .bat, .ps1 and .lnk.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega kengaytmalarni ko‘rsatishni yoqish kerak?",
+      en: "Why turn on file extensions?",
+    },
+    right: {
+      uz: "Fayl aslida nima ekanini ko‘rish uchun",
+      en: "To see what a file really is",
+    },
+    wrong: [
+      { uz: "Tezlik uchun", en: "For speed" },
+      { uz: "Rang uchun", en: "For colour" },
+      { uz: "Kerak emas", en: "No need" },
+    ],
+    explain: {
+      uz: "Yashirin .exe PDF bo‘lib ko‘rinadi.",
+      en: "A hidden .exe can pass for a PDF.",
+    },
+  },
+  {
+    ask: {
+      uz: "“invoice.pdf.exe” aslida nima?",
+      en: "What is “invoice.pdf.exe” really?",
+    },
+    right: { uz: "Dastur", en: "A program" },
+    wrong: [
+      { uz: "PDF", en: "A PDF" },
+      { uz: "Rasm", en: "An image" },
+      { uz: "Matn", en: "Text" },
+    ],
+    explain: {
+      uz: "Oxirgi kengaytma muhim.",
+      en: "The last extension counts.",
+    },
+  },
+  {
+    ask: {
+      uz: "Fayl ikonkasiga ishonish mumkinmi?",
+      en: "Can you trust a file’s icon?",
+    },
+    right: {
+      uz: "Yo‘q, uni istalgan dastur qo‘yadi",
+      en: "No, any program can set it",
+    },
+    wrong: [
+      { uz: "Ha, har doim", en: "Yes, always" },
+      { uz: "Faqat rangli bo‘lsa", en: "If it’s in colour" },
+      { uz: "Faqat katta bo‘lsa", en: "If it’s big" },
+    ],
+    explain: {
+      uz: "Kengaytma va manbani tekshiring.",
+      en: "Check the extension and source.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi format makros saqlay oladi?",
+      en: "Which format can hold a macro?",
+    },
+    right: { uz: ".docm", en: ".docm" },
+    wrong: [
+      { uz: ".docx", en: ".docx" },
+      { uz: ".pdf", en: ".pdf" },
+      { uz: ".txt", en: ".txt" },
+    ],
+    explain: { uz: "“m” — macro-enabled.", en: "“m” means macro-enabled." },
+  },
+  {
+    ask: {
+      uz: "Hujjat “Enable Content bosing” deydi?",
+      en: "A document says “click Enable Content”?",
+    },
+    right: { uz: "Bosmay, IT’ga xabar berish", en: "Don’t click; tell IT" },
+    wrong: [
+      { uz: "Bosish", en: "Click it" },
+      { uz: "Do‘stga yuborish", en: "Forward it" },
+      { uz: "Chop etish", en: "Print it" },
+    ],
+    explain: { uz: "Makros uchun tuzoq.", en: "It’s a macro trap." },
+  },
+  {
+    ask: {
+      uz: "Parolli arxiv nega shubhali?",
+      en: "Why is a password archive suspicious?",
+    },
+    right: {
+      uz: "Skaner ichini tekshira olmaydi",
+      en: "The scanner can’t check inside",
+    },
+    wrong: [
+      { uz: "Kattaroq", en: "It’s bigger" },
+      { uz: "Eskiroq", en: "It’s older" },
+      { uz: "Rangli", en: "It’s coloured" },
+    ],
+    explain: {
+      uz: "Parol xatda — bu yashirish.",
+      en: "A password in the email is hiding, not protection.",
+    },
+  },
+  {
+    ask: {
+      uz: "“Kuryer”dan .iso keldi. Bu?",
+      en: "An .iso from “the courier” is?",
+    },
+    right: { uz: "Jiddiy shubha belgisi", en: "A serious warning sign" },
+    wrong: [
+      { uz: "Oddiy yorliq", en: "An ordinary label" },
+      { uz: "Rasm", en: "A photo" },
+      { uz: "Chek", en: "A receipt" },
+    ],
+    explain: { uz: "Yorliq PDF bo‘ladi.", en: "Labels are PDFs." },
+  },
+  {
+    ask: { uz: ".lnk fayl nima?", en: ".lnk file is?" },
+    right: {
+      uz: "Dastur ishga tushiradigan yorliq",
+      en: "A shortcut that runs a program",
+    },
+    wrong: [
+      { uz: "Hujjat", en: "A document" },
+      { uz: "Rasm", en: "An image" },
+      { uz: "Musiqa", en: "Music" },
+    ],
+    explain: { uz: "Hujjat emas.", en: "It isn’t a document." },
+  },
+  {
+    ask: {
+      uz: "Protected View nima qiladi?",
+      en: "What does Protected View do?",
+    },
+    right: {
+      uz: "Faylni faqat o‘qish uchun ochadi",
+      en: "Opens the file read-only",
+    },
+    wrong: [
+      { uz: "Faylni o‘chiradi", en: "Deletes the file" },
+      { uz: "Makrosni yoqadi", en: "Enables macros" },
+      { uz: "Tezlashtiradi", en: "Speeds it up" },
+    ],
+    explain: { uz: "Makroslar ishlamaydi.", en: "Macros can’t run." },
+  },
+  {
+    ask: {
+      uz: "Shubhali faylni yuklab oldingiz. Keyin?",
+      en: "You downloaded a suspicious file. Then?",
+    },
+    right: { uz: "Ochmay, IT’ga yuborish", en: "Don’t open it; send it to IT" },
+    wrong: [
+      { uz: "Ochish", en: "Open it" },
+      { uz: "Do‘stga yuborish", en: "Send it on" },
+      { uz: "Nomini o‘zgartirish", en: "Rename it" },
+    ],
+    explain: {
+      uz: "Tekshirish — ularning ishi.",
+      en: "Checking is their job.",
+    },
+  },
+  {
+    ask: {
+      uz: "Internetdan kelgan makroslarni qanday to‘xtatish mumkin?",
+      en: "How can macros from the internet be stopped?",
+    },
+    right: {
+      uz: "Guruh siyosati bilan bloklash",
+      en: "Block them with group policy",
+    },
+    wrong: [
+      { uz: "Yorqinlik", en: "Screen brightness" },
+      { uz: "Uzun parol", en: "A longer password" },
+      { uz: "Fon rasmi", en: "A wallpaper" },
+    ],
+    explain: {
+      uz: "Bosilsa ham ishlamaydi.",
+      en: "They won’t run even if clicked.",
+    },
+  },
+  {
+    ask: {
+      uz: "Hamma himoya yiqilsa, nima qutqaradi?",
+      en: "If every defence fails, what saves you?",
+    },
+    right: { uz: "Zaxira nusxalar", en: "Backups" },
+    wrong: [
+      { uz: "Omad", en: "Luck" },
+      { uz: "Antivirusni o‘chirish", en: "Disabling antivirus" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: {
+      uz: "Ayniqsa ransomware’da.",
+      en: "Especially with ransomware.",
+    },
+  },
+  {
+    ask: {
+      uz: "Faylni ochishdan oldingi uch savol?",
+      en: "Three questions before opening a file?",
+    },
+    right: {
+      uz: "Kutganmidim, kimdan, qanday tur",
+      en: "Expected? From whom? What type?",
+    },
+    wrong: [
+      { uz: "Hajmi, rangi, sanasi", en: "Size, colour, date" },
+      { uz: "Narxi, brendi, reytingi", en: "Price, brand, rating" },
+      { uz: "Hech qanday", en: "None" },
+    ],
+    explain: { uz: "Shubha bo‘lsa — to‘xtang.", en: "If in doubt, stop." },
+  },
+  {
+    ask: {
+      uz: "Xato ochib qo‘ydingiz. Birinchi qadam?",
+      en: "Opened one by mistake. The first step?",
+    },
+    right: { uz: "Tarmoqdan uzib, IT’ga xabar", en: "Disconnect and tell IT" },
+    wrong: [
+      { uz: "Hech kimga aytmaslik", en: "Tell no one" },
+      { uz: "Yana ochish", en: "Open it again" },
+      { uz: "Kompyuterni sotish", en: "Sell the computer" },
+    ],
+    explain: {
+      uz: "Tez xabar — kichik zarar.",
+      en: "Quick reports limit damage.",
+    },
+  },
+];
