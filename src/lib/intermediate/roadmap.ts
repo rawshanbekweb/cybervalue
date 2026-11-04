@@ -672,15 +672,15 @@ export const DOMAINS: Domain[] = [
   },
   {
     id: "reverse",
-    short: "Reverse",
+    short: "Software",
     phase: 3,
     title: {
-      uz: "Reverse engineering asoslari",
-      en: "Reverse engineering basics",
+      uz: "Dasturlar va ularga ishonch",
+      en: "Software and trust",
     },
     summary: {
-      uz: "Dastur ichida nima bo‘layotganini tushunish: kompilyatsiya, assembler asoslari va zararli dasturlarni tahlil qilish tamoyillari.",
-      en: "Understanding what happens inside a program: compilation, assembly basics and the principles of malware analysis.",
+      uz: "Dastur qanday quriladi, qanday imzolanadi va yangilanadi, ishlamay qolganda nimani ko‘rsatadi va unga qancha huquq berish kerak.",
+      en: "How a program is built, signed and updated, what it tells you when it breaks, and how much access to give it.",
     },
     needs: ["linux"],
     modules: [
@@ -695,11 +695,16 @@ export const DOMAINS: Domain[] = [
         ),
       },
       {
-        title: { uz: "Assembler asoslari", en: "Assembly basics" },
-        topics: ["registers", "stack", "calls", "x86-64"],
+        title: {
+          uz: "Imzolangan dasturlar va yangilanishlar",
+          en: "Signed software and updates",
+        },
+        href: "/intermediate/signing",
+        lab: "signing",
+        topics: ["hashes", "code signing", "updaters", "fake updates"],
         goal: goal(
-          "Kichik funksiyaning assembler kodini o‘qish.",
-          "Read the assembly of a small function.",
+          "Qaysi yuklamani o‘rnatish xavfsiz ekanini aniqlash.",
+          "Decide which downloads are safe to install.",
         ),
       },
       {

@@ -983,6 +983,24 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/hostlogs#checkpoints",
     pass: 70,
   },
+  {
+    id: "signing-1",
+    level: "intermediate",
+    lab: {
+      uz: "Imzolangan dasturlar va yangilanishlar",
+      en: "Signed software and updates",
+    },
+    title: {
+      uz: "Nazorat: Imzolangan dasturlar va yangilanishlar",
+      en: "Checkpoint: Signed software and updates",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/signing#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

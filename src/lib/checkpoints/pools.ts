@@ -14688,3 +14688,255 @@ export const HOSTLOGS_POOL: PoolItem[] = [
     },
   },
 ];
+
+export const SIGNING_POOL: PoolItem[] = [
+  {
+    ask: {
+      uz: "Dasturni o‘rnatishdan oldin qaysi ikki savol muhim?",
+      en: "Which two questions matter before installing software?",
+    },
+    right: {
+      uz: "Kimdan kelgan va o‘zgartirilmaganmi",
+      en: "Where it came from, and whether it was changed",
+    },
+    wrong: [
+      { uz: "Rangi va hajmi", en: "Its colour and size" },
+      { uz: "Narxi", en: "Its price" },
+      { uz: "Reytingi", en: "Its rating" },
+    ],
+    explain: { uz: "Kelib chiqish va yaxlitlik.", en: "Origin and integrity." },
+  },
+  {
+    ask: { uz: "Xesh nimani isbotlaydi?", en: "What does a hash prove?" },
+    right: { uz: "Fayl o‘zgarmaganini", en: "That the file is unchanged" },
+    wrong: [
+      { uz: "Kim yaratganini", en: "Who made it" },
+      { uz: "Xatosizligini", en: "That it has no bugs" },
+      { uz: "Tezligini", en: "Its speed" },
+    ],
+    explain: {
+      uz: "Kelib chiqishni imzo isbotlaydi.",
+      en: "A signature proves origin.",
+    },
+  },
+  {
+    ask: {
+      uz: "Raqamli imzo nimani isbotlaydi?",
+      en: "What does a digital signature prove?",
+    },
+    right: {
+      uz: "Kim imzolagani va o‘zgarmaganini",
+      en: "Who signed it and that it is unchanged",
+    },
+    wrong: [
+      { uz: "Xavfsizligini", en: "That it is safe" },
+      { uz: "Narxini", en: "Its price" },
+      { uz: "Hajmini", en: "Its size" },
+    ],
+    explain: {
+      uz: "Imzo — sifat kafolati emas.",
+      en: "A signature isn’t a quality guarantee.",
+    },
+  },
+  {
+    ask: {
+      uz: "Linux’da fayl xeshini hisoblash?",
+      en: "Computing a file’s hash on Linux?",
+    },
+    right: { uz: "sha256sum", en: "sha256sum" },
+    wrong: [
+      { uz: "chmod", en: "chmod" },
+      { uz: "ls", en: "ls" },
+      { uz: "ping", en: "ping" },
+    ],
+    explain: {
+      uz: "Windows’da Get-FileHash.",
+      en: "On Windows, Get-FileHash.",
+    },
+  },
+  {
+    ask: {
+      uz: "Xesh e’lon qilinganiga mos kelmasa?",
+      en: "The hash doesn’t match the published one?",
+    },
+    right: { uz: "O‘rnatmaslik", en: "Don’t install it" },
+    wrong: [
+      { uz: "Baribir o‘rnatish", en: "Install anyway" },
+      { uz: "Nomini o‘zgartirish", en: "Rename it" },
+      { uz: "Do‘stga yuborish", en: "Send it to a friend" },
+    ],
+    explain: {
+      uz: "Fayl o‘zgartirilgan yoki buzilgan.",
+      en: "It was altered or corrupted.",
+    },
+  },
+  {
+    ask: {
+      uz: "Qaysi xesh bugun ishonchli?",
+      en: "Which hash is trustworthy today?",
+    },
+    right: { uz: "SHA-256", en: "SHA-256" },
+    wrong: [
+      { uz: "MD5", en: "MD5" },
+      { uz: "SHA-1", en: "SHA-1" },
+      { uz: "CRC32", en: "CRC32" },
+    ],
+    explain: {
+      uz: "MD5 va SHA-1 da to‘qnashuvlar bor.",
+      en: "MD5 and SHA-1 have collisions.",
+    },
+  },
+  {
+    ask: {
+      uz: "Nega xesh yolg‘iz yetarli emas?",
+      en: "Why isn’t a hash alone enough?",
+    },
+    right: {
+      uz: "Buzilgan sayt fayl va xeshni birga almashtirishi mumkin",
+      en: "A hacked site can swap both the file and the hash",
+    },
+    wrong: [
+      { uz: "Xesh juda uzun", en: "Hashes are too long" },
+      { uz: "Xesh pullik", en: "Hashes cost money" },
+      { uz: "Yetarli", en: "It is enough" },
+    ],
+    explain: {
+      uz: "Imzo kalitni talab qiladi.",
+      en: "A signature needs the key.",
+    },
+  },
+  {
+    ask: {
+      uz: "Zoom o‘rnatuvchisini “Fast Soft Ltd” imzolagan. Bu?",
+      en: "A Zoom installer signed by “Fast Soft Ltd” is?",
+    },
+    right: {
+      uz: "Xavfli — imzolovchi Zoom emas",
+      en: "Unsafe — the signer isn’t Zoom",
+    },
+    wrong: [
+      { uz: "Xavfsiz, imzo bor", en: "Safe, it’s signed" },
+      { uz: "Rasmiy", en: "Official" },
+      { uz: "Farqi yo‘q", en: "No difference" },
+    ],
+    explain: { uz: "Imzolovchini tekshiring.", en: "Check the signer." },
+  },
+  {
+    ask: {
+      uz: "apt paketlarni nima bilan tekshiradi?",
+      en: "What does apt check packages against?",
+    },
+    right: { uz: "Repo GPG kaliti", en: "The repo’s GPG key" },
+    wrong: [
+      { uz: "Fayl nomi", en: "The file name" },
+      { uz: "Sana", en: "The date" },
+      { uz: "Hajm", en: "The size" },
+    ],
+    explain: {
+      uz: "Noma’lum repo — noma’lum kalitga ishonish.",
+      en: "An unknown repo means trusting an unknown key.",
+    },
+  },
+  {
+    ask: {
+      uz: "Sayt “brauzeringiz eskirgan, yuklang” desa?",
+      en: "A site says “your browser is out of date, download this”?",
+    },
+    right: { uz: "Bu soxta yangilanish", en: "It’s a fake update" },
+    wrong: [
+      { uz: "Rasmiy yangilanish", en: "An official update" },
+      { uz: "Muhim tuzatish", en: "An important fix" },
+      { uz: "Antivirus", en: "An antivirus" },
+    ],
+    explain: {
+      uz: "Brauzer o‘zini o‘zi yangilaydi.",
+      en: "Browsers update themselves.",
+    },
+  },
+  {
+    ask: {
+      uz: "Eng xavfsiz yangilanish manbai?",
+      en: "The safest update source?",
+    },
+    right: {
+      uz: "Dasturning o‘z yangilagichi yoki rasmiy do‘kon",
+      en: "Its own updater or an official store",
+    },
+    wrong: [
+      { uz: "Forumdagi havola", en: "A forum link" },
+      { uz: "Emaildagi ilova", en: "An email attachment" },
+      { uz: "Reklama", en: "An ad" },
+    ],
+    explain: {
+      uz: "Ular imzoni tekshiradi.",
+      en: "They verify the signature.",
+    },
+  },
+  {
+    ask: { uz: "Downgrade hujumi?", en: "A downgrade attack is?" },
+    right: {
+      uz: "Eski zaif versiyani o‘rnatishga majburlash",
+      en: "Forcing an old, vulnerable version",
+    },
+    wrong: [
+      { uz: "Tezlikni kamaytirish", en: "Slowing it down" },
+      { uz: "Ekranni xiralashtirish", en: "Dimming the screen" },
+      { uz: "Narxni tushirish", en: "Lowering the price" },
+    ],
+    explain: {
+      uz: "Yaxshi yangilagich buni rad etadi.",
+      en: "Good updaters refuse it.",
+    },
+  },
+  {
+    ask: {
+      uz: "“Crack” qilingan dasturni o‘rnatish?",
+      en: "Installing a “cracked” program?",
+    },
+    right: { uz: "Xavfli", en: "Risky" },
+    wrong: [
+      { uz: "Xavfsiz", en: "Safe" },
+      { uz: "Tavsiya etiladi", en: "Recommended" },
+      { uz: "Majburiy", en: "Required" },
+    ],
+    explain: {
+      uz: "Ichida nima borligini bilmaysiz.",
+      en: "You can’t know what’s inside.",
+    },
+  },
+  {
+    ask: {
+      uz: "Ishlab chiqaruvchi buzilsa, imzo nimani kafolatlaydi?",
+      en: "If the maker is compromised, a signature guarantees?",
+    },
+    right: {
+      uz: "Faqat o‘sha ishlab chiqaruvchidan kelganini",
+      en: "Only that it came from that maker",
+    },
+    wrong: [
+      { uz: "Zararli kod yo‘qligini", en: "No harmful code" },
+      { uz: "Xatosizligini", en: "No bugs" },
+      { uz: "Hamma narsani", en: "Everything" },
+    ],
+    explain: {
+      uz: "Masalan SolarWinds hodisasi.",
+      en: "Like the SolarWinds incident.",
+    },
+  },
+  {
+    ask: {
+      uz: "Imzodan tashqari qanday himoya kerak?",
+      en: "Beyond signing, what helps?",
+    },
+    right: {
+      uz: "Eng kam huquq va xatti-harakatni kuzatish",
+      en: "Least privilege and behaviour monitoring",
+    },
+    wrong: [
+      { uz: "Yangilanishni o‘chirish", en: "Turning off updates" },
+      { uz: "Antivirusni o‘chirish", en: "Disabling antivirus" },
+      { uz: "Hech narsa", en: "Nothing" },
+    ],
+    explain: { uz: "Bir nechta qatlam.", en: "Layers." },
+  },
+];

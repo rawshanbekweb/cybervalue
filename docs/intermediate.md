@@ -6,64 +6,65 @@ students placed at the Intermediate or Advanced level, and to staff.
 
 ## Pages
 
-| Path                         | What is there                                                                   |
-| ---------------------------- | ------------------------------------------------------------------------------- |
-| `/intermediate`              | The roadmap (12 domains in three phases, career paths) and an access card       |
-| `/intermediate/http`         | Module 1 of web application security, HTTP in depth (10 lessons, a checkpoint)  |
-| `/intermediate/input`        | Module 2, untrusted input (9 lessons, a checkpoint)                             |
-| `/intermediate/browser`      | Module 3, browser-side risks (8 lessons, a checkpoint)                          |
-| `/intermediate/access`       | Module 4, access control (9 lessons, a checkpoint)                              |
-| `/intermediate/api`          | Module 5, API security (8 lessons, a checkpoint)                                |
-| `/intermediate/classic`      | Cryptography module 1, classical ciphers (8 lessons, a checkpoint)              |
-| `/intermediate/symmetric`    | Cryptography module 2, symmetric encryption (8 lessons, a checkpoint)           |
-| `/intermediate/hashes`       | Cryptography module 3, hashes and passwords (8 lessons, a checkpoint)           |
-| `/intermediate/pubkey`       | Cryptography module 4, public-key cryptography (8 lessons, a checkpoint)        |
-| `/intermediate/tls`          | Cryptography module 5, TLS and certificates (8 lessons, a checkpoint)           |
-| `/intermediate/tcpip`        | Network security module 1, TCP/IP in depth (8 lessons, a checkpoint)            |
-| `/intermediate/traffic`      | Network security module 2, traffic analysis (8 lessons, a checkpoint)           |
-| `/intermediate/firewall`     | Network security module 3, firewalls and segmentation (8 lessons, a checkpoint) |
-| `/intermediate/connections`  | Network security module 4, secure connections (8 lessons, a checkpoint)         |
-| `/intermediate/ids`          | Network security module 5, intrusion detection (8 lessons, a checkpoint)        |
-| `/intermediate/evidence`     | Digital forensics module 1, handling evidence (8 lessons, a checkpoint)         |
-| `/intermediate/filesystem`   | Digital forensics module 2, file systems (8 lessons, a checkpoint)              |
-| `/intermediate/logs`         | Digital forensics module 3, logs and artefacts (8 lessons, a checkpoint)        |
-| `/intermediate/response`     | Digital forensics module 4, incident response (8 lessons, a checkpoint)         |
-| `/intermediate/report`       | Digital forensics module 5, writing the report (8 lessons, a checkpoint)        |
-| `/intermediate/stego`        | Steganography module 1, the idea (8 lessons, a checkpoint)                      |
-| `/intermediate/lsb`          | Steganography module 2, inside images (8 lessons, a checkpoint)                 |
-| `/intermediate/metadata`     | Steganography module 3, metadata (8 lessons, a checkpoint)                      |
-| `/intermediate/formats`      | Steganography module 4, audio and file formats (8 lessons, a checkpoint)        |
-| `/intermediate/steganalysis` | Steganography module 5, steganalysis (8 lessons, a checkpoint)                  |
-| `/intermediate/siem`         | Blue team module 1, logs and SIEM (8 lessons, a checkpoint)                     |
-| `/intermediate/detection`    | Blue team module 2, detection rules (8 lessons, a checkpoint)                   |
-| `/intermediate/triage`       | Blue team module 3, alert triage (8 lessons, a checkpoint)                      |
-| `/intermediate/hunting`      | Blue team module 4, threat hunting (8 lessons, a checkpoint)                    |
-| `/intermediate/phishing`     | Blue team module 5, phishing analysis (8 lessons, a checkpoint)                 |
-| `/intermediate/ethics`       | OSINT module 1, ethics and law (8 lessons, a checkpoint)                        |
-| `/intermediate/search`       | OSINT module 2, search technique (8 lessons, a checkpoint)                      |
-| `/intermediate/infra`        | OSINT module 3, domains and infrastructure (8 lessons, a checkpoint)            |
-| `/intermediate/geo`          | OSINT module 4, images and location (8 lessons, a checkpoint)                   |
-| `/intermediate/footprint`    | OSINT module 5, digital footprint (8 lessons, a checkpoint)                     |
-| `/intermediate/stride`       | AppSec module 1, threat modelling (8 lessons, a checkpoint)                     |
-| `/intermediate/securecode`   | AppSec module 2, secure coding (8 lessons, a checkpoint)                        |
-| `/intermediate/supplychain`  | AppSec module 3, dependencies and supply chain (8 lessons, a checkpoint)        |
-| `/intermediate/autotest`     | AppSec module 4, automated security testing (8 lessons, a checkpoint)           |
-| `/intermediate/codereview`   | AppSec module 5, secure code review (8 lessons, a checkpoint)                   |
-| `/intermediate/hardening`    | System security module 1, Linux hardening (8 lessons, a checkpoint)             |
-| `/intermediate/windows`      | System security module 2, Windows basics (8 lessons, a checkpoint)              |
-| `/intermediate/authn`        | System security module 4, authentication (8 lessons, a checkpoint)              |
-| `/intermediate/baseline`     | System security module 5, patching and baselines (8 lessons, a checkpoint)      |
-| `/intermediate/build`        | Reverse engineering module 1, how programs are built (8 lessons, a checkpoint)  |
-| `/intermediate/shared`       | Cloud security module 1, shared responsibility (8 lessons, a checkpoint)        |
-| `/intermediate/iam`          | Cloud security module 2, identity and access (8 lessons, a checkpoint)          |
-| `/intermediate/storage`      | Cloud security module 3, storage and secrets (8 lessons, a checkpoint)          |
-| `/intermediate/containers`   | Cloud security module 4, containers (8 lessons, a checkpoint)                   |
-| `/intermediate/kubernetes`   | Cloud security module 5, Kubernetes basics (8 lessons, a checkpoint)            |
-| `/intermediate/manipulation` | Social engineering module 1, manipulation tactics (8 lessons, a checkpoint)     |
-| `/intermediate/personal`     | Social engineering module 2, personal protection (8 lessons, a checkpoint)      |
-| `/intermediate/awareness`    | Social engineering module 3, awareness programmes (8 lessons, a checkpoint)     |
-| `/intermediate/reporting`    | Social engineering module 4, reporting incidents (8 lessons, a checkpoint)      |
-| `/intermediate/hostlogs`     | System security module 3, host logging and monitoring (8 lessons, a checkpoint) |
+| Path                         | What is there                                                                      |
+| ---------------------------- | ---------------------------------------------------------------------------------- |
+| `/intermediate`              | The roadmap (12 domains in three phases, career paths) and an access card          |
+| `/intermediate/http`         | Module 1 of web application security, HTTP in depth (10 lessons, a checkpoint)     |
+| `/intermediate/input`        | Module 2, untrusted input (9 lessons, a checkpoint)                                |
+| `/intermediate/browser`      | Module 3, browser-side risks (8 lessons, a checkpoint)                             |
+| `/intermediate/access`       | Module 4, access control (9 lessons, a checkpoint)                                 |
+| `/intermediate/api`          | Module 5, API security (8 lessons, a checkpoint)                                   |
+| `/intermediate/classic`      | Cryptography module 1, classical ciphers (8 lessons, a checkpoint)                 |
+| `/intermediate/symmetric`    | Cryptography module 2, symmetric encryption (8 lessons, a checkpoint)              |
+| `/intermediate/hashes`       | Cryptography module 3, hashes and passwords (8 lessons, a checkpoint)              |
+| `/intermediate/pubkey`       | Cryptography module 4, public-key cryptography (8 lessons, a checkpoint)           |
+| `/intermediate/tls`          | Cryptography module 5, TLS and certificates (8 lessons, a checkpoint)              |
+| `/intermediate/tcpip`        | Network security module 1, TCP/IP in depth (8 lessons, a checkpoint)               |
+| `/intermediate/traffic`      | Network security module 2, traffic analysis (8 lessons, a checkpoint)              |
+| `/intermediate/firewall`     | Network security module 3, firewalls and segmentation (8 lessons, a checkpoint)    |
+| `/intermediate/connections`  | Network security module 4, secure connections (8 lessons, a checkpoint)            |
+| `/intermediate/ids`          | Network security module 5, intrusion detection (8 lessons, a checkpoint)           |
+| `/intermediate/evidence`     | Digital forensics module 1, handling evidence (8 lessons, a checkpoint)            |
+| `/intermediate/filesystem`   | Digital forensics module 2, file systems (8 lessons, a checkpoint)                 |
+| `/intermediate/logs`         | Digital forensics module 3, logs and artefacts (8 lessons, a checkpoint)           |
+| `/intermediate/response`     | Digital forensics module 4, incident response (8 lessons, a checkpoint)            |
+| `/intermediate/report`       | Digital forensics module 5, writing the report (8 lessons, a checkpoint)           |
+| `/intermediate/stego`        | Steganography module 1, the idea (8 lessons, a checkpoint)                         |
+| `/intermediate/lsb`          | Steganography module 2, inside images (8 lessons, a checkpoint)                    |
+| `/intermediate/metadata`     | Steganography module 3, metadata (8 lessons, a checkpoint)                         |
+| `/intermediate/formats`      | Steganography module 4, audio and file formats (8 lessons, a checkpoint)           |
+| `/intermediate/steganalysis` | Steganography module 5, steganalysis (8 lessons, a checkpoint)                     |
+| `/intermediate/siem`         | Blue team module 1, logs and SIEM (8 lessons, a checkpoint)                        |
+| `/intermediate/detection`    | Blue team module 2, detection rules (8 lessons, a checkpoint)                      |
+| `/intermediate/triage`       | Blue team module 3, alert triage (8 lessons, a checkpoint)                         |
+| `/intermediate/hunting`      | Blue team module 4, threat hunting (8 lessons, a checkpoint)                       |
+| `/intermediate/phishing`     | Blue team module 5, phishing analysis (8 lessons, a checkpoint)                    |
+| `/intermediate/ethics`       | OSINT module 1, ethics and law (8 lessons, a checkpoint)                           |
+| `/intermediate/search`       | OSINT module 2, search technique (8 lessons, a checkpoint)                         |
+| `/intermediate/infra`        | OSINT module 3, domains and infrastructure (8 lessons, a checkpoint)               |
+| `/intermediate/geo`          | OSINT module 4, images and location (8 lessons, a checkpoint)                      |
+| `/intermediate/footprint`    | OSINT module 5, digital footprint (8 lessons, a checkpoint)                        |
+| `/intermediate/stride`       | AppSec module 1, threat modelling (8 lessons, a checkpoint)                        |
+| `/intermediate/securecode`   | AppSec module 2, secure coding (8 lessons, a checkpoint)                           |
+| `/intermediate/supplychain`  | AppSec module 3, dependencies and supply chain (8 lessons, a checkpoint)           |
+| `/intermediate/autotest`     | AppSec module 4, automated security testing (8 lessons, a checkpoint)              |
+| `/intermediate/codereview`   | AppSec module 5, secure code review (8 lessons, a checkpoint)                      |
+| `/intermediate/hardening`    | System security module 1, Linux hardening (8 lessons, a checkpoint)                |
+| `/intermediate/windows`      | System security module 2, Windows basics (8 lessons, a checkpoint)                 |
+| `/intermediate/authn`        | System security module 4, authentication (8 lessons, a checkpoint)                 |
+| `/intermediate/baseline`     | System security module 5, patching and baselines (8 lessons, a checkpoint)         |
+| `/intermediate/build`        | Reverse engineering module 1, how programs are built (8 lessons, a checkpoint)     |
+| `/intermediate/shared`       | Cloud security module 1, shared responsibility (8 lessons, a checkpoint)           |
+| `/intermediate/iam`          | Cloud security module 2, identity and access (8 lessons, a checkpoint)             |
+| `/intermediate/storage`      | Cloud security module 3, storage and secrets (8 lessons, a checkpoint)             |
+| `/intermediate/containers`   | Cloud security module 4, containers (8 lessons, a checkpoint)                      |
+| `/intermediate/kubernetes`   | Cloud security module 5, Kubernetes basics (8 lessons, a checkpoint)               |
+| `/intermediate/manipulation` | Social engineering module 1, manipulation tactics (8 lessons, a checkpoint)        |
+| `/intermediate/personal`     | Social engineering module 2, personal protection (8 lessons, a checkpoint)         |
+| `/intermediate/awareness`    | Social engineering module 3, awareness programmes (8 lessons, a checkpoint)        |
+| `/intermediate/reporting`    | Social engineering module 4, reporting incidents (8 lessons, a checkpoint)         |
+| `/intermediate/hostlogs`     | System security module 3, host logging and monitoring (8 lessons, a checkpoint)    |
+| `/intermediate/signing`      | Software and trust module 2, signed software and updates (8 lessons, a checkpoint) |
 
 The old addresses `/akademiya/intermediate` and `/akademiya/http` redirect
 permanently (`next.config.ts`). The section can be switched off in **Admin →
@@ -1187,6 +1188,29 @@ for privilege escalation.
 | 6       | Questions on alerts                    |
 | 7       | Questions on file integrity            |
 | 8       | Final questions                        |
+
+## Software and trust module 2: Signed software and updates
+
+`/intermediate/signing` (lab id `signing`, checkpoint `signing-1`, award
+`lab-signing`, site setting `signing`) uses `src/lib/signing/tools.ts`: eight
+`DOWNLOADS` with a source and a signature or hash check. Four should not be
+installed (an unsigned email attachment, an installer signed by another
+company, a file whose hash doesn't match and a fake browser update);
+`downloadsRight` checks that exactly those are flagged. The widget is in
+lesson 4. The roadmap section formerly titled "Reverse engineering basics" is
+now "Software and trust"; this module takes the slot first planned for
+assembly basics.
+
+| Lessons | What the student does                   |
+| ------- | --------------------------------------- |
+| 1       | Questions on origin and integrity       |
+| 2       | Questions on checking a hash            |
+| 3       | Questions on code signing               |
+| 4       | Flags the four downloads not to install |
+| 5       | Questions on how updates work           |
+| 6       | Sorts install and update habits         |
+| 7       | Questions on supply-chain compromise    |
+| 8       | Final questions                         |
 
 ## Who gets in
 
