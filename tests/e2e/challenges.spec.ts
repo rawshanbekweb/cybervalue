@@ -683,6 +683,11 @@ test("authoring tools: several flags, answer test, prerequisites, attempt limits
   const player = await confirmedPlayer(browser);
   await player.page.goto(`/challenges/${slug}`);
   await player.page.getByRole("button", { name: "Play on my own" }).click();
+  // Wait for the registration to land before leaving the page, or the
+  // navigation can cancel the request and the board shows no challenges.
+  await expect(
+    player.page.getByText("You are registered on your own."),
+  ).toBeVisible();
   await player.page.goto(`/challenges/${slug}/board`);
   await player.page.locator("summary", { hasText: "Ikkinchi" }).click();
   await expect(
@@ -786,6 +791,11 @@ test("competition-day tools: score adjustments, entrant page, live feed, CSV and
   const player = await confirmedPlayer(browser);
   await player.page.goto(`/challenges/${slug}`);
   await player.page.getByRole("button", { name: "Play on my own" }).click();
+  // Wait for the registration to land before leaving the page, or the
+  // navigation can cancel the request and the board shows no challenges.
+  await expect(
+    player.page.getByText("You are registered on your own."),
+  ).toBeVisible();
   await player.page.goto(`/challenges/${slug}/board`);
   await player.page.locator("summary", { hasText: "Oddiy" }).click();
   await player.page.getByPlaceholder("CV{...}").fill("CV{xato}");
