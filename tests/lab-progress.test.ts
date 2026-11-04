@@ -68,6 +68,7 @@ import { LESSONS as HOSTLOGS } from "../src/lib/hostlogs/curriculum";
 import { LESSONS as SIGNING } from "../src/lib/signing/curriculum";
 import { LESSONS as PERMISSIONS } from "../src/lib/permissions/curriculum";
 import { LESSONS as EOL } from "../src/lib/eol/curriculum";
+import { LESSONS as ATTACHMENTS } from "../src/lib/attachments/curriculum";
 import {
   isLabId,
   LAB_PROGRESS,
@@ -144,6 +145,7 @@ test("lab progress totals match the lessons", () => {
   assert.equal(LAB_PROGRESS.signing.total, SIGNING.length);
   assert.equal(LAB_PROGRESS.permissions.total, PERMISSIONS.length);
   assert.equal(LAB_PROGRESS.eol.total, EOL.length);
+  assert.equal(LAB_PROGRESS.attachments.total, ATTACHMENTS.length);
   assert.equal(isLabId("toString"), false);
   assert.equal(isLabId("network"), true);
 });

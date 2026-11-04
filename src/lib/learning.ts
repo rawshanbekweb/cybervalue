@@ -61,6 +61,7 @@ import { LESSONS as HOSTLOGS_LESSONS } from "@/lib/hostlogs/curriculum";
 import { LESSONS as SIGNING_LESSONS } from "@/lib/signing/curriculum";
 import { LESSONS as PERMISSIONS_LESSONS } from "@/lib/permissions/curriculum";
 import { LESSONS as EOL_LESSONS } from "@/lib/eol/curriculum";
+import { LESSONS as ATTACHMENTS_LESSONS } from "@/lib/attachments/curriculum";
 import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
@@ -1200,6 +1201,23 @@ export function getLearningTracks() {
         title: title.en,
       })),
       modules: EOL_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "attachments",
+      title: "Opening attachments safely",
+      category: "Intermediate · Software and trust",
+      description:
+        "Tell data files from runnable ones, refuse macros, spot password archives and disk images, and open files read-only.",
+      href: "/intermediate/attachments",
+      progressKey: LAB_PROGRESS.attachments.key,
+      level: "Intermediate",
+      lessons: ATTACHMENTS_LESSONS.map(({ id, title }) => ({
+        id,
+        title: title.en,
+      })),
+      modules: ATTACHMENTS_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

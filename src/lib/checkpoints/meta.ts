@@ -1034,6 +1034,21 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     href: "/intermediate/eol#checkpoints",
     pass: 70,
   },
+  {
+    id: "attachments-1",
+    level: "intermediate",
+    lab: { uz: "Ilovalarni xavfsiz ochish", en: "Opening attachments safely" },
+    title: {
+      uz: "Nazorat: Ilovalarni xavfsiz ochish",
+      en: "Checkpoint: Opening attachments safely",
+    },
+    covers: {
+      uz: "1–8-darslar · 10 savol",
+      en: "Lessons 1–8 · 10 questions",
+    },
+    href: "/intermediate/attachments#checkpoints",
+    pass: 70,
+  },
 ];
 
 export const checkpointMeta = (id: string) =>

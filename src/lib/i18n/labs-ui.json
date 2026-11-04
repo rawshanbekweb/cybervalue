@@ -1709,5 +1709,14 @@
   "{name} is out of support": "{name} qo‘llab-quvvatlanmaydi",
   "Four are out of support: Windows 7 at reception, PHP 7.4 on the website, the office router’s firmware and Office 2013 in accounting.": "To‘rttasi qo‘llab-quvvatlanmaydi: qabulxonadagi Windows 7, saytdagi PHP 7.4, ofis routeri proshivkasi va buxgalteriyadagi Office 2013.",
   "End-of-life software · Academy Intermediate": "Muddati o‘tgan dasturlar · Academy Intermediate",
-  "Keep a software inventory, spot what is out of support, read LTS dates, isolate what you can’t upgrade yet and plan upgrades ahead of time.": "Dasturlar ro‘yxatini yuriting, qo‘llab-quvvatlanmaydiganini toping, LTS sanalarini o‘qing, hozircha yangilab bo‘lmaydiganini ajrating va yangilashni oldindan rejalang."
+  "Keep a software inventory, spot what is out of support, read LTS dates, isolate what you can’t upgrade yet and plan upgrades ahead of time.": "Dasturlar ro‘yxatini yuriting, qo‘llab-quvvatlanmaydiganini toping, LTS sanalarini o‘qing, hozircha yangilab bo‘lmaydiganini ajrating va yangilashni oldindan rejalang.",
+  "SOFTWARE · MODULE 5": "DASTURLAR · 5-MODUL",
+  "Opening attachments safely.": "Ilovalarni xavfsiz ochish.",
+  "Expected? From whom? What kind of file?": "Kutilganmi? Kimdan? Qanday fayl?",
+  "Tell data files from runnable ones, see through double extensions and fake icons, refuse macros that ask to be enabled, judge eight attachments, spot password archives and disk images, open files read-only and rely on layers of defence.": "Ma’lumot fayllarini ishga tushadiganlardan farqlang, ikki kengaytma va soxta ikonkalarni taning, yoqishni so‘raydigan makroslarni rad eting, sakkizta ilovani baholang, parolli arxiv va disk obrazlarini aniqlang, fayllarni faqat o‘qish rejimida oching va himoya qatlamlariga tayaning.",
+  "FILES / LAB": "FAYLLAR / LABORATORIYA",
+  "Don’t open {name}": "{name} ni ochmang",
+  "Four not to open: a program hiding behind .pdf.exe, a macro document asking to be enabled, a password archive from a stranger and a shortcut inside a disk image.": "To‘rttasini ochmaslik kerak: .pdf.exe ortiga yashiringan dastur, yoqishni so‘raydigan makrosli hujjat, notanishdan kelgan parolli arxiv va disk obrazi ichidagi yorliq.",
+  "Opening attachments safely · Academy Intermediate": "Ilovalarni xavfsiz ochish · Academy Intermediate",
+  "Tell data files from runnable ones, see through double extensions, refuse macros, spot password archives and disk images, and open files read-only.": "Ma’lumot fayllarini ishga tushadiganlardan farqlang, ikki kengaytmani taning, makroslarni rad eting, parolli arxiv va disk obrazlarini aniqlang va fayllarni faqat o‘qish rejimida oching."
 }
