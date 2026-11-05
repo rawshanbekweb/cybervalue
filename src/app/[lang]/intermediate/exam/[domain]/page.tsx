@@ -42,6 +42,7 @@ export default async function DomainExamPage({ params }: Props) {
   if (!access.open) return <IntermediateLocked access={access} path={path} />;
 
   let state: ExamState = { kind: "staff" };
+  let certificate: string | null = null;
   const db = getDb();
   const session = await getStudentSession();
   if (access.who === "student" && db && session) {
@@ -54,6 +55,18 @@ export default async function DomainExamPage({ params }: Props) {
       domain,
       attempt && (await finalizeIfOver(db, domain, attempt)),
     );
+    if (state.kind === "approved" && state.result.passed)
+      certificate =
+        (
+          await db.studentCertificate.findFirst({
+            where: {
+              studentId: session.studentId,
+              rule: `exam-${domain.id}`,
+              revokedAt: null,
+            },
+            select: { code: true },
+          })
+        )?.code ?? null;
   }
   return (
     <DomainExam
@@ -63,6 +76,7 @@ export default async function DomainExamPage({ params }: Props) {
         modules: domain.modules.length,
       }}
       initial={state}
+      certificate={certificate}
     />
   );
 }

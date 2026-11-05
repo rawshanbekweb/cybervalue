@@ -2,6 +2,7 @@ import { createHash, randomBytes, randomUUID } from "node:crypto";
 import { test, expect, type Browser, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { Client } from "pg";
+import { execFileSync } from "node:child_process";
 
 const english = {
   cookies: [
@@ -141,8 +142,25 @@ test.describe("a student's final exam waits for the teacher", () => {
     await page.getByRole("button", { name: "Continue the exam" }).click();
     await expect(questions.nth(0).getByRole("radio").nth(1)).toBeChecked();
 
+    // The right answers, rebuilt from the attempt's seed as the server does.
+    const {
+      rows: [{ seed }],
+    } = await sql((c) =>
+      c.query(`SELECT seed FROM "DomainExamAttempt" WHERE "studentId" = $1`, [
+        studentId,
+      ]),
+    );
+    const answers: number[] = JSON.parse(
+      execFileSync(
+        "npx",
+        ["tsx", "tests/e2e/exam-answers.ts", "crypto", String(seed)],
+        {
+          encoding: "utf8",
+        },
+      ),
+    );
     for (let i = 0; i < 20; i++)
-      await questions.nth(i).getByRole("radio").first().check();
+      await questions.nth(i).getByRole("radio").nth(answers[i]).check();
     await expect(page.getByText("20 of 20 answered")).toBeVisible();
 
     const audit = await new AxeBuilder({ page })
@@ -168,16 +186,14 @@ test.describe("a student's final exam waits for the teacher", () => {
         [studentId],
       ),
     );
-    expect(rows).toHaveLength(1);
-    expect(rows[0].total).toBe(20);
-    expect(rows[0].finishReason).toBe("submitted");
+    expect(rows).toEqual([{ score: 20, total: 20, finishReason: "submitted" }]);
 
     // The teacher sees the attempt, adds a note and approves.
     const staff = await teacher(browser);
     const row = staff.getByRole("row").filter({ hasText: name });
     await expect(row).toContainText("Baholanishi kutilmoqda");
     await row.getByRole("link", { name }).click();
-    await expect(staff.getByText(`Jami: ${rows[0].score}/20`)).toBeVisible();
+    await expect(staff.getByText("Jami: 20/20")).toBeVisible();
     await staff.getByLabel("O‘quvchiga izoh").fill("Review the TLS module.");
     await staff
       .getByRole("button", { name: "Tasdiqlash va o‘quvchiga ko‘rsatish" })
@@ -190,15 +206,31 @@ test.describe("a student's final exam waits for the teacher", () => {
     // question and a link back to its module.
     await page.reload();
     await expect(page.getByText("RESULT APPROVED")).toBeVisible();
-    await expect(page.locator(".rx-score")).toContainText(
-      `${rows[0].score} of 20`,
-    );
+    await expect(page.locator(".rx-score")).toContainText("20 of 20");
+    await expect(page.locator(".rx-score")).toContainText("Passed");
     await expect(page.getByText("Review the TLS module.")).toBeVisible();
     await expect(page.locator(".rx-review")).toHaveCount(20);
     await expect(page.locator(".rx-review .rx-explain")).toHaveCount(20);
     await expect(
       page.getByRole("link", { name: /Revisit: Classical ciphers/ }).first(),
     ).toHaveAttribute("href", "/intermediate/classic");
+
+    // The approved pass earned the domain's certificate.
+    await page.getByRole("link", { name: "Open your certificate" }).click();
+    await expect(page).toHaveURL(/\/student\/certificate\/[0-9A-Z]{12}$/);
+    await expect(
+      page.getByText("Kriptografiya (Academy Intermediate)"),
+    ).toBeVisible();
+    const { rows: certificates } = await sql((c) =>
+      c.query(
+        `SELECT rule, level FROM "StudentCertificate" WHERE "studentId" = $1`,
+        [studentId],
+      ),
+    );
+    expect(certificates).toEqual([
+      { rule: "exam-crypto", level: "intermediate" },
+    ]);
+    await page.goto("/intermediate/exam/crypto");
 
     // A retake deletes the attempt and opens the exam again.
     await staff

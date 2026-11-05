@@ -10,7 +10,7 @@ import { newAwards, type AwardFacts } from "./award-rules";
  * (studentId, rule) index stops a second copy.
  */
 export async function awardCertificates(db: PrismaClient, studentId: string) {
-  const [student, labs, checkpoints, issued] = await Promise.all([
+  const [student, labs, checkpoints, exams, issued] = await Promise.all([
     db.student.findUnique({
       where: { id: studentId },
       select: { name: true, active: true },
@@ -23,13 +23,18 @@ export async function awardCertificates(db: PrismaClient, studentId: string) {
       where: { studentId },
       select: { checkpoint: true, score: true, total: true },
     }),
+    // Only results a teacher approved count.
+    db.domainExamAttempt.findMany({
+      where: { studentId, approvedAt: { not: null } },
+      select: { domain: true, score: true, total: true },
+    }),
     db.studentCertificate.findMany({
       where: { studentId, rule: { not: null } },
       select: { rule: true },
     }),
   ]);
   if (!student?.active) return [];
-  const facts: AwardFacts = { labs: {}, checkpoints: {} };
+  const facts: AwardFacts = { labs: {}, checkpoints: {}, exams: {} };
   for (const l of labs)
     if (isLabId(l.lab)) facts.labs[l.lab as LabId] = new Set(l.lessons).size;
   for (const c of checkpoints) {
@@ -39,6 +44,9 @@ export async function awardCertificates(db: PrismaClient, studentId: string) {
       percent,
     );
   }
+  for (const e of exams)
+    if (e.total)
+      facts.exams![e.domain] = Math.round((e.score! / e.total) * 100);
   const awards = newAwards(
     facts,
     issued.map((c) => c.rule!),
@@ -52,6 +60,7 @@ export async function awardCertificates(db: PrismaClient, studentId: string) {
           studentId,
           name: student.name,
           title: award.title,
+          level: award.level ?? "",
           rule: award.id,
         },
       })

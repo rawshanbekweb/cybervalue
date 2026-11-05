@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { newAwards } from "../src/lib/student/award-rules";
+import { AWARD_RULES, newAwards } from "../src/lib/student/award-rules";
+import { DOMAINS } from "../src/lib/intermediate/roadmap";
 import { standing } from "../src/lib/student/xp";
 
 test("automatic certificates need every lesson and a passed checkpoint", () => {
@@ -66,4 +67,21 @@ test("Junior XP carries over as a bonus", () => {
   assert.equal(moved.xp, 420);
   assert.notEqual(moved.rank.title.en, standing(empty).rank.title.en);
   assert.equal(standing({ ...empty, bonus: -50 }).xp, 0);
+});
+
+test("an approved, passed final exam earns its domain's certificate", () => {
+  const ids = (exams: Record<string, number>) =>
+    newAwards({ labs: {}, checkpoints: {}, exams }, []).map((a) => a.id);
+  assert.deepEqual(ids({ crypto: 65 }), []);
+  assert.deepEqual(ids({ crypto: 70 }), ["exam-crypto"]);
+  const rule = AWARD_RULES.find((r) => r.id === "exam-crypto")!;
+  assert.equal(rule.level, "intermediate");
+  assert.equal(rule.title, "Kriptografiya (Academy Intermediate)");
+
+  // Every domain passed adds the whole-level certificate.
+  const all = Object.fromEntries(DOMAINS.map((d) => [d.id, 80]));
+  const earned = ids(all);
+  assert.equal(earned.length, DOMAINS.length + 1);
+  assert.ok(earned.includes("intermediate-all"));
+  assert.ok(!ids({ ...all, human: 50 }).includes("intermediate-all"));
 });

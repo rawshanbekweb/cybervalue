@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { audit } from "@/lib/audit";
 import { canSeeGroup, requireStaff } from "@/lib/auth";
 import { getDb } from "@/lib/db";
+import { certificatesEarned } from "@/lib/telegram/events";
 
 const PATH = "/teacher/domain-exams";
 
@@ -40,6 +41,10 @@ export async function reviewDomainExamAction(id: string, form: FormData) {
     },
   });
   await audit("domain-exam.review", session.user.id, id);
+  // An approved pass earns the domain's certificate (and, with every domain
+  // passed, the Intermediate one).
+  if (decision === "approve")
+    await certificatesEarned(db, attempt.studentId).catch(() => []);
   revalidatePath(PATH);
   redirect(back);
 }

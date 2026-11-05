@@ -2,18 +2,24 @@
 // rule id is stored with the certificate, so each one is issued only once.
 import { BEGINNER_CHECKPOINTS, CHECKPOINT_META } from "../checkpoints/meta";
 import { LAB_PROGRESS, type LabId } from "../lab-progress";
+import { DOMAINS } from "../intermediate/roadmap";
+import { DOMAIN_EXAM_PASS } from "../domain-exam/content";
 
 export type AwardFacts = {
   // Lessons finished per lab.
   labs: Partial<Record<LabId, number>>;
   // Best checkpoint percent per checkpoint id.
   checkpoints: Record<string, number>;
+  // Percent of each Intermediate final exam a teacher approved, by domain id.
+  exams?: Record<string, number>;
 };
 
 export type AwardRule = {
   id: string;
   title: string;
   earned: (facts: AwardFacts) => boolean;
+  // Printed on the certificate, e.g. "intermediate".
+  level?: string;
 };
 
 const passed = (facts: AwardFacts, id: string) => {
@@ -22,6 +28,25 @@ const passed = (facts: AwardFacts, id: string) => {
 };
 const finished = (facts: AwardFacts, lab: LabId) =>
   (facts.labs[lab] ?? 0) >= LAB_PROGRESS[lab].total;
+const examPassed = (facts: AwardFacts, domain: string) =>
+  (facts.exams?.[domain] ?? -1) >= DOMAIN_EXAM_PASS;
+
+// One certificate per Intermediate domain, for its approved final exam, and
+// one for the whole level once every domain's exam is passed.
+const EXAM_AWARDS: AwardRule[] = [
+  ...DOMAINS.map((d) => ({
+    id: `exam-${d.id}`,
+    title: `${d.title.uz} (Academy Intermediate)`,
+    level: "intermediate",
+    earned: (f: AwardFacts) => examPassed(f, d.id),
+  })),
+  {
+    id: "intermediate-all",
+    title: "Academy Intermediate: barcha yo‘nalishlar",
+    level: "intermediate",
+    earned: (f) => DOMAINS.every((d) => examPassed(f, d.id)),
+  },
+];
 
 // Titles are in Uzbek, like the certificates the teacher issues.
 export const AWARD_RULES: readonly AwardRule[] = [
@@ -374,6 +399,7 @@ export const AWARD_RULES: readonly AwardRule[] = [
     title: "Ilovalarni xavfsiz ochish (Intermediate)",
     earned: (f) => finished(f, "attachments") && passed(f, "attachments-1"),
   },
+  ...EXAM_AWARDS,
 ];
 
 /** Rules met by these facts and not issued yet. */
