@@ -44,6 +44,7 @@ test("every public page has distinct metadata, one h1, canonical, and no broken 
     await expect(page.locator("h1")).toHaveCount(1);
     await expect(page.locator('link[rel="canonical"]')).toHaveCount(1);
     await expect(page.locator('meta[property="og:title"]')).toHaveCount(1);
+    await expect(page.locator('link[rel="icon"]')).toHaveCount(1);
     for (const href of await page
       .locator('a[href^="/"]')
       .evaluateAll((nodes) => nodes.map((node) => node.getAttribute("href")!)))
