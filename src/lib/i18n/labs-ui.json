@@ -1772,5 +1772,10 @@
   "The request is not valid.": "So‘rov formati noto‘g‘ri.",
   "The answers are not valid.": "Javoblar formati noto‘g‘ri.",
   "The exam has not started.": "Imtihon boshlanmagan.",
-  "Open your certificate": "Sertifikatingizni ochish"
+  "Open your certificate": "Sertifikatingizni ochish",
+  "EXAM": "IMTIHON",
+  "Exam": "Imtihon",
+  "One exam across these topics. It checks what you kept from the lessons, and your teacher sees exactly where to help next.": "Shu mavzular bo‘yicha bitta imtihon. U darslardan nimani o‘zlashtirganingizni tekshiradi, o‘qituvchingiz esa qayerda yordam kerakligini aniq ko‘radi.",
+  "{count} questions on {modules} topics, {minutes} minutes. The time starts when you press “Start the exam”, and your answers are sent automatically when it runs out.": "{modules} ta mavzu bo‘yicha {count} ta savol, {minutes} daqiqa. Vaqt “Imtihonni boshlash” tugmasini bosganingizda boshlanadi va tugaganda javoblaringiz avtomatik yuboriladi.",
+  "{count} questions, {minutes} minutes. The result appears after the teacher approves it.": "{count} ta savol, {minutes} daqiqa. Natija o‘qituvchi tasdiqlagandan keyin chiqadi."
 }

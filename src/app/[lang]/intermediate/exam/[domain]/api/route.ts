@@ -3,7 +3,7 @@ import { limit } from "@/lib/rate-limit-db";
 import { getDb } from "@/lib/db";
 import { getStudentSession } from "@/lib/student/session";
 import { opensIntermediate } from "@/lib/student/levels";
-import { examDomain } from "@/lib/domain-exam/build";
+import { examSubject, isTopicExam } from "@/lib/domain-exam/build";
 import {
   examDeadline,
   finalize,
@@ -45,14 +45,15 @@ export async function POST(
 ) {
   if (request.headers.get("origin") !== new URL(request.url).origin)
     return json({ error: "The request's origin was refused." }, 403);
-  const domain = examDomain((await params).domain);
+  const domain = examSubject((await params).domain);
   if (!domain) return json({ error: "There is no such exam." }, 404);
   const db = getDb();
   if (!db) return json({ error: "The database is not connected." }, 503);
   const session = await getStudentSession();
   if (!session)
     return json({ error: "Sign in with your student account first." }, 401);
-  if (!opensIntermediate(session.student.level))
+  // Topic exams are open to every student; domain exams to Intermediate.
+  if (!isTopicExam(domain) && !opensIntermediate(session.student.level))
     return json({ error: "This exam is part of Academy Intermediate." }, 403);
   const studentId = session.studentId;
   if (
@@ -86,7 +87,7 @@ export async function POST(
             domain: domain.id,
             seed: newSeed(),
             startedAt: now,
-            deadline: examDeadline(now),
+            deadline: examDeadline(domain, now),
           },
         })
         // Two tabs starting at once: the other one created it.
