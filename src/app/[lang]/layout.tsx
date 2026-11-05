@@ -33,7 +33,12 @@ export async function generateMetadata(): Promise<Metadata> {
     description: t(site.description),
     robots: { index: await siteIndexable(), follow: true },
     manifest: "/manifest.webmanifest",
-    icons: { apple: "/icons/apple-touch-icon.png" },
+    // Setting `icons` here replaces the file-based app/icon.svg, so it is
+    // listed too; without it browsers fall back to a missing /favicon.ico.
+    icons: {
+      icon: { url: "/icon.svg", type: "image/svg+xml" },
+      apple: "/icons/apple-touch-icon.png",
+    },
     appleWebApp: {
       capable: true,
       title: "Cybervalue",
