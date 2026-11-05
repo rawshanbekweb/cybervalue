@@ -101,6 +101,12 @@ test("a player signs up, confirms the email and manages the account", async ({
   await expect(page.getByText("Username saved.")).toBeVisible();
 
   await page.getByRole("button", { name: "Sign out" }).click();
+  // Navigating before the sign-out action lands would keep the session.
+  await expect(
+    page
+      .getByRole("navigation", { name: "CTF Challenges" })
+      .getByRole("link", { name: "Sign in" }),
+  ).toBeVisible();
   await page.goto("/challenges/login");
   await page.getByLabel("Email").fill(email);
   await page.getByLabel("Password").fill("wrong-password-123");
