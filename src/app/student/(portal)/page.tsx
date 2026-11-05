@@ -88,6 +88,12 @@ const EXAMS = [
     summary:
       "40 tests and 10 open questions on Linux commands and IP addressing, 2 hours. Copying and screenshots are off; the result shows at once and is not sent to the teacher.",
   },
+  {
+    href: "/intermediate/exam/ssh-crypto-tls",
+    title: "SSH, cryptography and TLS exam",
+    summary:
+      "40 questions on the SSH port, cryptography basics, symmetric encryption, HTTPS/TLS and HTTP, 45 minutes. The result appears after your teacher approves it.",
+  },
 ];
 
 // Practice that is not a lesson-by-lesson lab, listed under My path.

@@ -5,7 +5,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useT } from "../network-lab/use-t";
 import { useExamGuard } from "@/components/resource-exam/exam-guard";
 import {
-  DOMAIN_EXAM_MINUTES,
   DOMAIN_EXAM_PASS,
   domainExamPath,
   type ExamAnswers,
@@ -21,7 +20,14 @@ import "@/components/resource-exam/linux-ip-exam.css";
 const SAVE_DELAY = 2000;
 
 type Phase = "intro" | "working" | "pending" | "result";
-type DomainInfo = { id: string; title: Text; modules: number };
+type DomainInfo = {
+  id: string;
+  title: Text;
+  modules: number;
+  minutes: number;
+  /** A topic exam: its own question bank, open to every student. */
+  topic?: boolean;
+};
 
 const clock = (seconds: number) => {
   const s = Math.max(0, seconds);
@@ -175,7 +181,7 @@ export function DomainExam({
   const remaining =
     phase === "working" && now
       ? Math.ceil((deadline - now) / 1000)
-      : DOMAIN_EXAM_MINUTES * 60;
+      : domain.minutes * 60;
 
   async function begin() {
     setBusy(true);
@@ -219,7 +225,11 @@ export function DomainExam({
   }
 
   const title = text(domain.title);
-  const back = (
+  const back = domain.topic ? (
+    <Link className="button button-secondary" href="/student">
+      {t("My page")}
+    </Link>
+  ) : (
     <Link
       className="button button-secondary"
       href={`/intermediate#${domain.id}`}
@@ -231,7 +241,7 @@ export function DomainExam({
   if (initial.kind === "staff")
     return (
       <div className="rx-shell">
-        <Intro title={title} />
+        <Intro title={title} topic={domain.topic} />
         <section className="rx-card">
           <h2>{t("Exams are taken from a student account")}</h2>
           <p>
@@ -288,18 +298,20 @@ export function DomainExam({
   if (phase === "intro")
     return (
       <div className="rx-shell">
-        <Intro title={title} />
+        <Intro title={title} topic={domain.topic} />
         <section className="rx-card">
           <h2>{t("Rules")}</h2>
           <ul>
             <li>
               {t(
-                "{count} questions from all {modules} modules of the domain, {minutes} minutes. The time starts when you press “Start the exam”, and your answers are sent automatically when it runs out.",
+                domain.topic
+                  ? "{count} questions on {modules} topics, {minutes} minutes. The time starts when you press “Start the exam”, and your answers are sent automatically when it runs out."
+                  : "{count} questions from all {modules} modules of the domain, {minutes} minutes. The time starts when you press “Start the exam”, and your answers are sent automatically when it runs out.",
                 {
                   count:
                     initial.kind === "new" ? initial.count : questions.length,
                   modules: domain.modules,
-                  minutes: DOMAIN_EXAM_MINUTES,
+                  minutes: domain.minutes,
                 },
               )}
             </li>
@@ -344,7 +356,9 @@ export function DomainExam({
     <div className="rx-shell lip-guard">
       <header className="rx-toolbar">
         <div>
-          <span className="rx-eyebrow">{t("FINAL EXAM")}</span>
+          <span className="rx-eyebrow">
+            {domain.topic ? t("EXAM") : t("FINAL EXAM")}
+          </span>
           <div className="rx-progress">
             {t("{done} of {count} answered", {
               done: answered,
@@ -450,18 +464,22 @@ export function DomainExam({
   );
 }
 
-function Intro({ title }: { title: string }) {
+function Intro({ title, topic }: { title: string; topic?: boolean }) {
   const { t } = useT();
   return (
     <section className="rx-intro">
       <span className="rx-eyebrow">
-        {t("ACADEMY INTERMEDIATE · FINAL EXAM")}
+        {topic ? t("EXAM") : t("ACADEMY INTERMEDIATE · FINAL EXAM")}
       </span>
       <h1>{title}</h1>
       <p>
-        {t(
-          "One exam across every module of the domain. It checks what you kept from the labs, and your teacher sees exactly where to help next.",
-        )}
+        {topic
+          ? t(
+              "One exam across these topics. It checks what you kept from the lessons, and your teacher sees exactly where to help next.",
+            )
+          : t(
+              "One exam across every module of the domain. It checks what you kept from the labs, and your teacher sees exactly where to help next.",
+            )}
       </p>
     </section>
   );

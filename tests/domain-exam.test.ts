@@ -4,11 +4,14 @@ import {
   EXAM_DOMAINS,
   buildExam,
   examDomain,
+  examSubject,
   gradeExam,
+  isTopicExam,
   publicQuestions,
 } from "../src/lib/domain-exam/build";
 import { DOMAIN_EXAM_PASS, PER_MODULE } from "../src/lib/domain-exam/content";
 import { DOMAINS } from "../src/lib/intermediate/roadmap";
+import { SSH_CRYPTO_EXAM } from "../src/lib/domain-exam/topic-exams";
 
 test("every roadmap domain has a final exam", () => {
   assert.equal(EXAM_DOMAINS.length, DOMAINS.length);
@@ -62,4 +65,40 @@ test("grading counts right answers and ignores invalid ones", () => {
     questions.slice(0, needed).map((q) => [q.id, q.answer]),
   );
   assert.ok(gradeExam(domain, 5, some).passed);
+});
+
+test("the SSH, cryptography and TLS exam has 40 questions, 8 per topic", () => {
+  const exam = examSubject("ssh-crypto-tls");
+  assert.ok(exam && isTopicExam(exam));
+  assert.equal(SSH_CRYPTO_EXAM.questions.length, 40);
+  for (let topic = 0; topic < SSH_CRYPTO_EXAM.modules.length; topic++)
+    assert.equal(
+      SSH_CRYPTO_EXAM.questions.filter((q) => q.topic === topic).length,
+      8,
+    );
+  for (const q of SSH_CRYPTO_EXAM.questions) {
+    assert.ok(q.answer >= 0 && q.answer < q.options.length, q.ask.en);
+    assert.ok(q.ask.uz && q.explain.uz && q.explain.en, q.ask.en);
+    assert.equal(new Set(q.options.map((o) => o.en)).size, q.options.length);
+  }
+});
+
+test("a topic exam shuffles per seed but keeps every right answer", () => {
+  const exam = examSubject("ssh-crypto-tls")!;
+  const a = buildExam(exam, 11);
+  const b = buildExam(exam, 12);
+  assert.equal(a.length, 40);
+  assert.deepEqual(buildExam(exam, 11), a);
+  assert.notDeepEqual(
+    a.map((q) => q.id),
+    b.map((q) => q.id),
+  );
+  for (const q of a) {
+    const bank = SSH_CRYPTO_EXAM.questions[Number(q.id.split(".")[1])];
+    assert.deepEqual(q.options[q.answer], bank.options[bank.answer]);
+  }
+  const right = Object.fromEntries(a.map((q) => [q.id, q.answer]));
+  assert.equal(gradeExam(exam, 11, right).percent, 100);
+  assert.equal(gradeExam(exam, 11, {}).score, 0);
+  assert.ok(!("answer" in publicQuestions(a)[0]));
 });

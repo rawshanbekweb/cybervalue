@@ -2,7 +2,10 @@
 // from client components: the questions it builds carry their answers.
 import { checkpointById, questionsFor } from "../checkpoints/questions";
 import { DOMAINS, type Domain } from "../intermediate/roadmap";
+import { random, shuffle } from "../network/practice";
+import { TOPIC_EXAMS, topicExam, type TopicExam } from "./topic-exams";
 import {
+  DOMAIN_EXAM_MINUTES,
   DOMAIN_EXAM_PASS,
   PER_MODULE,
   type ExamAnswers,
@@ -22,11 +25,54 @@ export function examDomain(id: string): Domain | null {
 
 export const EXAM_DOMAINS = DOMAINS.filter((d) => examDomain(d.id));
 
+/** A roadmap domain's final exam, or a topic exam with its own questions. */
+export type ExamSubject = Domain | TopicExam;
+
+export const isTopicExam = (s: ExamSubject): s is TopicExam => "questions" in s;
+
+export const examSubject = (id: string): ExamSubject | null =>
+  topicExam(id) ?? examDomain(id);
+
+/** Every exam the teacher page lists: domain exams, then topic exams. */
+export const EXAM_SUBJECTS: ExamSubject[] = [...EXAM_DOMAINS, ...TOPIC_EXAMS];
+
+export const examMinutes = (s: ExamSubject) =>
+  isTopicExam(s) ? s.minutes : DOMAIN_EXAM_MINUTES;
+
+/**
+ * A topic exam for one seed: every question, in a shuffled order with
+ * shuffled options. Ids stay those of the bank so answers survive.
+ */
+function buildTopicExam(exam: TopicExam, seed: number) {
+  const r = random(seed);
+  return shuffle(
+    r,
+    exam.questions.map((q, i) => ({ q, i })),
+  ).map(({ q, i }) => {
+    const order = shuffle(
+      r,
+      q.options.map((_, n) => n),
+    );
+    const topic = exam.modules[q.topic];
+    return {
+      ask: q.ask,
+      ...(q.code ? { code: q.code } : {}),
+      options: order.map((n) => q.options[n]),
+      answer: order.indexOf(q.answer),
+      explain: q.explain,
+      id: `${exam.id}.${i}`,
+      module: topic.title,
+      href: topic.href,
+    };
+  });
+}
+
 /**
  * The exam for one seed: PER_MODULE questions from each module, in module
  * order. The same seed always gives the same questions and option order.
  */
-export function buildExam(domain: Domain, seed: number) {
+export function buildExam(domain: ExamSubject, seed: number) {
+  if (isTopicExam(domain)) return buildTopicExam(domain, seed);
   return domain.modules.flatMap((m, index) => {
     const checkpoint = checkpointById(`${m.lab}-1`)!;
     return questionsFor(checkpoint, seed + index * 7919)
@@ -53,7 +99,7 @@ export const publicQuestions = (
   }));
 
 export function gradeExam(
-  domain: Domain,
+  domain: ExamSubject,
   seed: number,
   answers: ExamAnswers,
 ): ExamResult {

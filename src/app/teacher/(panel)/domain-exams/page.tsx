@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
 import { groupWhere, requireStaff } from "@/lib/auth";
 import { getDb } from "@/lib/db";
-import { EXAM_DOMAINS, gradeExam } from "@/lib/domain-exam/build";
+import { EXAM_SUBJECTS, gradeExam } from "@/lib/domain-exam/build";
 import { answersOf, finalizeIfOver } from "@/lib/domain-exam/attempts";
 import { DOMAIN_EXAM_PASS } from "@/lib/domain-exam/content";
 import { retakeDomainExamAction, reviewDomainExamAction } from "./actions";
@@ -25,7 +25,7 @@ export default async function DomainExamResultsPage({
   if (!db) return <p>{t("The database is not connected.")}</p>;
   const params = await searchParams;
   const domain =
-    EXAM_DOMAINS.find((d) => d.id === params.domain) ?? EXAM_DOMAINS[0];
+    EXAM_SUBJECTS.find((d) => d.id === params.domain) ?? EXAM_SUBJECTS[0];
 
   const counts = await db.domainExamAttempt.groupBy({
     by: ["domain"],
@@ -79,7 +79,7 @@ export default async function DomainExamResultsPage({
       </p>
       <nav aria-label={t("Domains")}>
         <ul className="exam-domains">
-          {EXAM_DOMAINS.map((d) => (
+          {EXAM_SUBJECTS.map((d) => (
             <li key={d.id}>
               <Link
                 href={`?domain=${d.id}`}

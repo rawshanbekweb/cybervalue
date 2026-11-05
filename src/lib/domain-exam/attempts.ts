@@ -4,17 +4,21 @@ import type {
   DomainExamAttempt,
   PrismaClient,
 } from "@/generated/prisma/client";
-import type { Domain } from "../intermediate/roadmap";
-import { buildExam, gradeExam, publicQuestions } from "./build";
+import {
+  buildExam,
+  examMinutes,
+  gradeExam,
+  publicQuestions,
+  type ExamSubject,
+} from "./build";
 import {
   DOMAIN_EXAM_GRACE_MS,
-  DOMAIN_EXAM_MINUTES,
   type ExamAnswers,
   type ExamState,
 } from "./content";
 
-export const examDeadline = (from: Date) =>
-  new Date(from.getTime() + DOMAIN_EXAM_MINUTES * 60_000);
+export const examDeadline = (subject: ExamSubject, from: Date) =>
+  new Date(from.getTime() + examMinutes(subject) * 60_000);
 
 export const newSeed = () => randomInt(1, 2_000_000_000);
 
@@ -31,7 +35,7 @@ export const answersOf = (attempt: DomainExamAttempt) =>
  */
 export async function finalize(
   db: PrismaClient,
-  domain: Domain,
+  domain: ExamSubject,
   attempt: DomainExamAttempt,
   reason: "submitted" | "timeout",
   answers = answersOf(attempt),
@@ -55,7 +59,7 @@ export async function finalize(
 /** Close an attempt whose time ran out with the answers saved so far. */
 export async function finalizeIfOver(
   db: PrismaClient,
-  domain: Domain,
+  domain: ExamSubject,
   attempt: DomainExamAttempt,
 ) {
   return !attempt.submittedAt && isOver(attempt)
@@ -64,7 +68,7 @@ export async function finalizeIfOver(
 }
 
 export function runningState(
-  domain: Domain,
+  domain: ExamSubject,
   attempt: DomainExamAttempt,
   now = new Date(),
 ): ExamState {
@@ -79,7 +83,7 @@ export function runningState(
 
 /** What the student may see: the result only once a teacher approved it. */
 export function stateOf(
-  domain: Domain,
+  domain: ExamSubject,
   attempt: DomainExamAttempt | null,
   now = new Date(),
 ): ExamState {
