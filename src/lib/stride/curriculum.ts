@@ -312,7 +312,7 @@ export const LESSONS: Lesson<Widget>[] = [
             "“A bot sends 10,000 requests a second” — the control?",
           ),
           options: [
-            t("Rate limiting", "Rate limiting"),
+            t("Tezlikni cheklash (rate limiting)", "Rate limiting"),
             t("Uzunroq parol", "Longer passwords"),
             t("Audit log", "An audit log"),
           ],
@@ -487,7 +487,7 @@ export const LESSONS: Lesson<Widget>[] = [
               "Javobda faqat kerakli maydonlarni qaytarish",
               "Return only the fields that are needed",
             ),
-            t("Rate limiting", "Rate limiting"),
+            t("Tezlikni cheklash (rate limiting)", "Rate limiting"),
             t("Audit log", "An audit log"),
           ],
           answer: 0,

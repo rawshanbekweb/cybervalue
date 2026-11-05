@@ -445,8 +445,8 @@ export const LESSONS: Lesson<Widget>[] = [
             "The decision on a pull request with a critical finding?",
           ),
           options: [
-            t("Request changes", "Request changes"),
-            t("Approve", "Approve"),
+            t("O‘zgartirish so‘rash", "Request changes"),
+            t("Tasdiqlash", "Approve"),
             t("Izohsiz merge", "Merge without comment"),
           ],
           answer: 0,
