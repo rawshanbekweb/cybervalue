@@ -27,6 +27,8 @@ const ACTIONS: Record<string, string> = {
   "assessment.create": "HTML test created",
   "linux-ip-exam.review": "Linux and IP exam reviewed",
   "linux-ip-exam.retake": "Linux and IP exam retake allowed",
+  "domain-exam.review": "Intermediate final exam reviewed",
+  "domain-exam.retake": "Intermediate final exam retake allowed",
   "student.create": "Students added",
   "student.update": "Student edited",
   "student.level": "Student level set",

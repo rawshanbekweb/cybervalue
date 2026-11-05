@@ -1070,5 +1070,21 @@
   "Reason: 3 to 200 characters.": "Sabab: 3 dan 200 gacha belgi.",
   "Choose an entrant.": "Ishtirokchini tanlang.",
   "Results (CSV)": "Natijalar (CSV)",
-  "CTF score adjusted": "CTF bali o‘zgartirildi"
+  "CTF score adjusted": "CTF bali o‘zgartirildi",
+  "Approve and show the student": "Tasdiqlash va o‘quvchiga ko‘rsatish",
+  "Domains": "Yo‘nalishlar",
+  "Each domain has one final exam built from its modules’ checkpoint questions. Students see their result only after you approve it. You can add a note or allow a retake.": "Har bir yo‘nalishda modullar nazorat savollaridan tuzilgan bitta yakuniy imtihon bor. O‘quvchi natijasini siz tasdiqlaganingizdan keyin ko‘radi. Izoh qo‘shishingiz yoki qayta topshirishga ruxsat berishingiz mumkin.",
+  "Group": "Guruh",
+  "Intermediate final exams": "Intermediate yakuniy imtihonlari",
+  "No answer": "Javob berilmagan",
+  "Nobody has started this exam yet.": "Bu imtihonni hali hech kim boshlamagan.",
+  "Not passed ({pass}% needed)": "O‘tilmadi ({pass}% kerak)",
+  "Note for the student": "O‘quvchiga izoh",
+  "Passed ({pass}% needed)": "O‘tdi ({pass}% kerak)",
+  "Status": "Holat",
+  "Student": "O‘quvchi",
+  "The student is still working. The result appears once it is submitted.": "O‘quvchi hali ishlamoqda. Natija topshirilgach chiqadi.",
+  "Time ran out · waiting for review": "Vaqt tugagan · tekshirish kutilmoqda",
+  "Waiting for review": "Tekshirish kutilmoqda",
+  "{count} waiting": "{count} ta kutmoqda"
 }
