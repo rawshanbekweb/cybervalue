@@ -35,9 +35,12 @@ const clock = (seconds: number) => {
 export function DomainExam({
   domain,
   initial,
+  certificate = null,
 }: {
   domain: DomainInfo;
   initial: ExamState;
+  // The code of the certificate an approved pass earned.
+  certificate?: string | null;
 }) {
   const { t, text } = useT();
   const api = `${domainExamPath(domain.id)}/api`;
@@ -278,6 +281,7 @@ export function DomainExam({
         leaves={initial.leaves}
         note={initial.note}
         back={back}
+        certificate={certificate}
       />
     );
 
@@ -469,12 +473,14 @@ function Result({
   leaves,
   note,
   back,
+  certificate,
 }: {
   title: string;
   result: ExamResult;
   leaves: number;
   note: string;
   back: React.ReactNode;
+  certificate: string | null;
 }) {
   const { t, text } = useT();
   return (
@@ -500,7 +506,17 @@ function Result({
             <b>{t("From your teacher:")}</b> {note}
           </p>
         )}
-        <div className="rx-actions">{back}</div>
+        <div className="rx-actions">
+          {certificate && (
+            <Link
+              className="button button-primary"
+              href={`/student/certificate/${certificate}`}
+            >
+              {t("Open your certificate")}
+            </Link>
+          )}
+          {back}
+        </div>
       </section>
       <section className="rx-card" aria-label={t("Every question")}>
         {result.items.map((item, index) => (

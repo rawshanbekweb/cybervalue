@@ -1305,6 +1305,16 @@ exam only when every module has a lab and a checkpoint (`examDomain`).
   and a link back to the module; the teacher can add a note, hide the result
   again or delete the attempt to allow a retake (audited as
   `domain-exam.review` and `domain-exam.retake`).
+- Approving a passed exam issues a certificate automatically
+  (`src/lib/student/award-rules.ts`): `exam-<domain>`, titled with the
+  domain's Uzbek name and "(Academy Intermediate)", at the Intermediate
+  level. A student with all twelve domains passed also gets
+  `intermediate-all`, "Academy Intermediate: barcha yo‘nalishlar". The
+  result page links to the certificate, which prints from
+  `/student/certificate/<code>` and is checked at `/sertifikat/<code>`.
+  Only approved attempts count; hiding a result or allowing a retake later
+  does not take a certificate back, which the teacher revokes from the
+  student's page if needed.
 
 ## Who gets in
 
