@@ -368,6 +368,7 @@ model Student {
   bonusXp      Int                  @default(0)
   juniorId     String?              @unique
   linuxIpExam  LinuxIpAttempt?
+  domainExams  DomainExamAttempt[]
 
   @@index([group])
 }
@@ -490,6 +491,34 @@ model LinuxIpAttempt {
   approvedBy   String?
 
   @@index([submittedAt])
+}
+
+// A final exam for one Academy Intermediate domain (/intermediate/exam/<domain>).
+// The questions are rebuilt from `seed`, so only the picked options are kept.
+model DomainExamAttempt {
+  id           String    @id @default(cuid())
+  studentId    String
+  student      Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  // A domain id from src/lib/intermediate/roadmap.ts.
+  domain       String
+  seed         Int
+  startedAt    DateTime  @default(now()) @db.Timestamptz(3)
+  deadline     DateTime  @db.Timestamptz(3)
+  // { "<question id>": <option index> }, saved as the student works.
+  answers      Json      @default("{}")
+  // Times the student left the exam window, as counted by the page.
+  leaves       Int       @default(0)
+  submittedAt  DateTime? @db.Timestamptz(3)
+  // "submitted" or "timeout".
+  finishReason String?
+  score        Int?
+  total        Int?
+  note         String    @default("") @db.Text
+  approvedAt   DateTime? @db.Timestamptz(3)
+  approvedBy   String?
+
+  @@unique([studentId, domain])
+  @@index([domain, submittedAt])
 }
 
 // A certificate the teacher issued. `code` is public and printed as a QR code

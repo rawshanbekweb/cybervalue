@@ -22,6 +22,8 @@ export type AuditAction =
   | "assessment.create"
   | "linux-ip-exam.review"
   | "linux-ip-exam.retake"
+  | "domain-exam.review"
+  | "domain-exam.retake"
   | "student.create"
   | "student.update"
   | "student.level"

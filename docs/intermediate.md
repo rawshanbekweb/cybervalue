@@ -1281,6 +1281,31 @@ first planned for malware principles, and the lab id avoids clashing with
 | 7       | Questions on layers of defence          |
 | 8       | Final questions                         |
 
+## Final exams
+
+Every domain has a final exam at `/intermediate/exam/<domain id>`, linked
+from its card on the roadmap. `src/lib/domain-exam/build.ts` builds it from
+the domain's modules: `PER_MODULE` (4) questions from each module's
+checkpoint pool, so 20 questions for a five-module domain. A domain gets an
+exam only when every module has a lab and a checkpoint (`examDomain`).
+
+- The exam is taken from a student account at the Intermediate level; staff
+  see a pointer to the results instead. `DomainExamAttempt` keeps one
+  attempt per student and domain, with a random `seed` from which the server
+  rebuilds the exact questions and option order. The browser gets the
+  questions without answers or explanations (`publicQuestions`).
+- The clock, the 1-minute grace period and saving work as in the Linux and
+  IP exam: `/intermediate/exam/<domain>/api` takes `start`, `save` and
+  `submit`, and a late attempt is graded with what was saved in time. The
+  same guard (`src/components/resource-exam/exam-guard.ts`) blocks copying
+  and counts every time the student leaves the window.
+- The result waits for a teacher at `/teacher/domain-exams`, grouped by
+  domain. Approving shows the student their score (70% passes), every
+  question with the right answer, its explanation from the checkpoint pool
+  and a link back to the module; the teacher can add a note, hide the result
+  again or delete the attempt to allow a retake (audited as
+  `domain-exam.review` and `domain-exam.retake`).
+
 ## Who gets in
 
 `intermediateAccess()` (`src/lib/intermediate/access.ts`) decides:

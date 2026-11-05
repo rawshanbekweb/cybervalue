@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { EXAM_DOMAINS } from "@/lib/domain-exam/build";
+import { domainExamPath } from "@/lib/domain-exam/content";
 import { ArrowLeft, Compass, Layers, Route } from "lucide-react";
 import { getLocale, getTranslator } from "@/lib/i18n/server";
 import { metadata } from "@/lib/seo";
@@ -13,6 +15,8 @@ import { intermediateAccess } from "@/lib/intermediate/access";
 import { IntermediateAccessCard } from "@/components/intermediate-access";
 import "@/components/learning.css";
 import "@/components/intermediate.css";
+
+const EXAM_IDS = new Set(EXAM_DOMAINS.map((d) => d.id));
 
 export const generateMetadata = () =>
   metadata(
@@ -163,6 +167,13 @@ export default async function IntermediatePage() {
                     ))}
                   </ol>
                 </details>
+                {EXAM_IDS.has(domain.id) && (
+                  <p className="im-exam">
+                    <Link href={domainExamPath(domain.id)}>
+                      {t("Final exam")} →
+                    </Link>
+                  </p>
+                )}
               </article>
             ))}
           </div>
