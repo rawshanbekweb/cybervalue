@@ -9,6 +9,7 @@ import { getSiteConfig } from "@/lib/site-config-server";
 import { pick } from "@/lib/site-config";
 import { getSocials } from "@/lib/content";
 import { createTranslator, type Locale } from "@/lib/i18n";
+import { DomGuard } from "@/components/dom-guard";
 
 // Design.MD names Inter as the PPNeueMontreal substitute; latin-ext covers
 // Uzbek letters and cyrillic covers the Russian-script fallbacks. Without a
@@ -50,6 +51,7 @@ export async function SiteShell({
       data-scroll-behavior="smooth"
     >
       <body>
+        <DomGuard />
         <LocaleProvider locale={locale}>
           <a href="#main" className="skip-link">
             {t("Skip to content")}
