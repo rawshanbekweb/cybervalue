@@ -1035,14 +1035,12 @@
   "after {title}": "{title} dan keyin",
   "Importing…": "Import qilinmoqda…",
   "Opens at (Tashkent time, optional)": "Ochilish vaqti (Toshkent vaqti, ixtiyoriy)",
-  "The file is too large (2 MiB at most).": "Fayl juda katta (ko‘pi bilan 2 MiB).",
   "A challenge needs at least one flag. Add another first.": "Topshiriqda kamida bitta bayroq bo‘lishi kerak. Avval boshqasini qo‘shing.",
   "Only a salted digest is stored; the flag cannot be shown again. More flags can be added on the challenge page.": "Faqat tuzlangan hash saqlanadi; bayroqni qayta ko‘rsatib bo‘lmaydi. Qo‘shimcha bayroqlarni topshiriq sahifasida qo‘shish mumkin.",
   "No flag accepts this answer.": "Bu javobni hech qaysi bayroq qabul qilmaydi.",
   "This answer is accepted.": "Bu javob qabul qilinadi.",
   "Only an owner can import competitions.": "Musobaqani faqat egasi import qila oladi.",
   "This is not a JSON file.": "Bu JSON fayl emas.",
-  "A file exported here, or written by hand: see docs/challenges.md for the format.": "Shu yerdan eksport qilingan yoki qo‘lda yozilgan fayl: formati docs/challenges.md da.",
   "opens {time}": "{time} da ochiladi",
   "Export (JSON)": "Eksport (JSON)",
   "Any of these answers solves the challenge. Only salted digests are stored, so a flag cannot be shown again; test an answer below instead.": "Bu javoblarning istalgani topshiriqni yechadi. Faqat tuzlangan hashlar saqlanadi, shuning uchun bayroqni qayta ko‘rsatib bo‘lmaydi; o‘rniga pastda javobni sinab ko‘ring.",
@@ -1087,5 +1085,7 @@
   "Time ran out · waiting for review": "Vaqt tugagan · tekshirish kutilmoqda",
   "Waiting for review": "Tekshirish kutilmoqda",
   "{count} waiting": "{count} ta kutmoqda",
-  "Confirm every unconfirmed email ({count})": "Tasdiqlanmagan barcha emaillarni tasdiqlash ({count})"
+  "Confirm every unconfirmed email ({count})": "Tasdiqlanmagan barcha emaillarni tasdiqlash ({count})",
+  "The file is too large (4 MiB at most).": "Fayl juda katta (ko‘pi bilan 4 MiB).",
+  "A file exported here, or written by hand, up to 4 MiB; a hand-written file may carry the challenge files inline. See docs/challenges.md for the format.": "Shu yerdan eksport qilingan yoki qo‘lda yozilgan fayl, ko‘pi bilan 4 MiB; qo‘lda yozilgan fayl topshiriq fayllarini ham o‘z ichiga olishi mumkin. Formati docs/challenges.md da."
 }

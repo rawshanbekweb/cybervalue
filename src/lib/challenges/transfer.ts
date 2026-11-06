@@ -1,6 +1,8 @@
 // Moving a competition in and out as JSON: an owner exports one to keep or
 // to reuse elsewhere, or writes a challenge set by hand and imports it.
-// Files are not carried (they are uploaded on each challenge page).
+// An export leaves files out (they are uploaded on each challenge page); a
+// hand-written file may carry them inline as Base64, so one import sets up a
+// whole competition.
 import { z } from "zod";
 import {
   CATEGORIES,
@@ -10,6 +12,14 @@ import {
 } from "./scoring";
 
 export const TRANSFER_VERSION = 1;
+
+/** The largest file a challenge may carry, as on the upload page. */
+export const MAX_FILE_BYTES = 4 * 1024 * 1024;
+
+/** Bytes a Base64 string decodes to. */
+export const base64Size = (value: string) =>
+  (value.length / 4) * 3 -
+  (value.endsWith("==") ? 2 : value.endsWith("=") ? 1 : 0);
 
 // A time as ISO 8601 (an export) or "YYYY-MM-DDTHH:mm" in Tashkent time (by hand).
 const time = z
@@ -54,6 +64,23 @@ const challenge = z.object({
   visible: z.boolean().default(true),
   position: z.number().int().min(-10000).max(10000).default(0),
   flags: z.array(flag).min(1).max(20),
+  files: z
+    .array(
+      z.object({
+        name: z
+          .string()
+          .trim()
+          .min(1)
+          .max(200)
+          .transform((name) => name.replace(/[/\\\0]/g, "_")),
+        base64: z
+          .string()
+          .regex(/^[A-Za-z0-9+/]*={0,2}$/, "Not Base64")
+          .refine((value) => value.length % 4 === 0, "Not Base64"),
+      }),
+    )
+    .max(20)
+    .default([]),
   hints: z
     .array(
       z.object({
@@ -98,6 +125,12 @@ export function transferProblem(data: Transfer): string | null {
     keys.add(c.key);
     if (c.minimumPoints > c.initialPoints)
       return `${c.title}: the minimum is above the starting value.`;
+    for (const f of c.files) {
+      const size = base64Size(f.base64);
+      if (size === 0) return `${c.title}: the file "${f.name}" is empty.`;
+      if (size > MAX_FILE_BYTES)
+        return `${c.title}: the file "${f.name}" is over 4 MiB.`;
+    }
   }
   const requires = new Map(challenges.map((c) => [c.key, c.requires]));
   for (const c of challenges) {

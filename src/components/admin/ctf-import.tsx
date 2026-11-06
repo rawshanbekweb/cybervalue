@@ -40,7 +40,7 @@ export function CtfImport() {
       />
       <p className="admin-help">
         {t(
-          "A file exported here, or written by hand: see docs/challenges.md for the format.",
+          "A file exported here, or written by hand, up to 4 MiB; a hand-written file may carry the challenge files inline. See docs/challenges.md for the format.",
         )}
       </p>
       {busy && <p className="admin-help">{t("Importing…")}</p>}

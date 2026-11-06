@@ -4,6 +4,7 @@ import { limit } from "@/lib/rate-limit-db";
 import { audit } from "@/lib/audit";
 import { RESERVED_SLUGS, slugPattern } from "@/lib/challenges/scoring";
 import {
+  base64Size,
   importFlag,
   transferProblem,
   transferSchema,
@@ -12,7 +13,12 @@ import {
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const MAX_BYTES = 2 * 1024 * 1024;
+// A file with its challenge files inline; Vercel refuses bodies over 4.5 MB.
+const MAX_BYTES = 4 * 1024 * 1024;
+// All CTF attachments together may take this much (as on the upload route).
+const MAX_CTF_BYTES = 200 * 1024 * 1024;
+
+class StorageFull extends Error {}
 
 /** Creates an unpublished competition from an exported or hand-written file. */
 export async function POST(request: Request) {
@@ -28,10 +34,10 @@ export async function POST(request: Request) {
   const db = getDb();
   if (!db) return json({ error: "Storage is unavailable." }, 503);
   if (Number(request.headers.get("content-length")) > MAX_BYTES)
-    return json({ error: "The file is too large (2 MiB at most)." }, 400);
+    return json({ error: "The file is too large (4 MiB at most)." }, 400);
   const text = await request.text();
   if (text.length > MAX_BYTES)
-    return json({ error: "The file is too large (2 MiB at most)." }, 400);
+    return json({ error: "The file is too large (4 MiB at most)." }, 400);
   let raw: unknown;
   try {
     raw = JSON.parse(text);
@@ -61,35 +67,68 @@ export async function POST(request: Request) {
   for (let n = 2; await db.ctfEvent.findUnique({ where: { slug } }); n++)
     slug = `${base.slice(0, 50)}-${n}`;
 
-  const created = await db.$transaction(async (tx) => {
-    const row = await tx.ctfEvent.create({
-      data: { ...event, slug, published: false },
-    });
-    const ids = new Map<string, string>();
-    for (const c of challenges) {
-      const { key, requires: _requires, flags, hints, ...fields } = c;
-      void _requires;
-      const made = await tx.ctfChallenge.create({
-        data: {
-          ...fields,
-          eventId: row.id,
-          flags: { create: flags.map(importFlag) },
-          hints: {
-            create: hints.map((h, position) => ({ ...h, position })),
-          },
-        },
-        select: { id: true },
+  const fileBytes = challenges.reduce(
+    (sum, c) => sum + c.files.reduce((n, f) => n + base64Size(f.base64), 0),
+    0,
+  );
+  const created = await db
+    .$transaction(async (tx) => {
+      if (fileBytes > 0) {
+        // The same lock as the upload route, so the two can't overfill storage.
+        await tx.$executeRaw`SELECT pg_advisory_xact_lock(4280117)`;
+        const usage = await tx.ctfFile.aggregate({ _sum: { size: true } });
+        if ((usage._sum.size ?? 0) + fileBytes > MAX_CTF_BYTES)
+          throw new StorageFull();
+      }
+      const row = await tx.ctfEvent.create({
+        data: { ...event, slug, published: false },
       });
-      ids.set(key, made.id);
-    }
-    for (const c of challenges)
-      if (c.requires)
-        await tx.ctfChallenge.update({
-          where: { id: ids.get(c.key)! },
-          data: { requiresId: ids.get(c.requires)! },
+      const ids = new Map<string, string>();
+      for (const c of challenges) {
+        const { key, requires: _requires, flags, hints, files, ...fields } = c;
+        void _requires;
+        const made = await tx.ctfChallenge.create({
+          data: {
+            ...fields,
+            eventId: row.id,
+            flags: { create: flags.map(importFlag) },
+            hints: {
+              create: hints.map((h, position) => ({ ...h, position })),
+            },
+            files: {
+              create: files.map((f) => {
+                const data = Buffer.from(f.base64, "base64");
+                return {
+                  name: f.name,
+                  size: data.length,
+                  data: new Uint8Array(data),
+                };
+              }),
+            },
+          },
+          select: { id: true },
         });
-    return row;
-  });
+        ids.set(key, made.id);
+      }
+      for (const c of challenges)
+        if (c.requires)
+          await tx.ctfChallenge.update({
+            where: { id: ids.get(c.key)! },
+            data: { requiresId: ids.get(c.requires)! },
+          });
+      return row;
+    })
+    .catch((error) => {
+      if (error instanceof StorageFull) return null;
+      throw error;
+    });
+  if (!created)
+    return json(
+      {
+        error: "CTF file storage is full (200 MiB). Delete unused files first.",
+      },
+      400,
+    );
   await audit("ctf.event_update", session.user.id, created.id);
   return json({ id: created.id, slug }, 201);
 }
