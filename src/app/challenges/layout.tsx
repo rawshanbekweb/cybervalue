@@ -6,6 +6,7 @@ import { getAdminLocale } from "@/lib/i18n/server";
 import { requireSection } from "@/lib/site-config-server";
 import { getCtfTranslator } from "@/lib/challenges/view";
 import "./challenges.css";
+import { DomGuard } from "@/components/dom-guard";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -40,6 +41,7 @@ export default async function ChallengesLayout({
   return (
     <html lang={locale}>
       <body className="ctf-root">
+        <DomGuard />
         <LocaleProvider locale={locale}>
           <ChallengesMessages>
             <a href="#ctf-main" className="ctf-skip">

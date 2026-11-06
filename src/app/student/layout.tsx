@@ -4,6 +4,7 @@ import { createTranslator } from "@/lib/i18n";
 import { getAdminLocale } from "@/lib/i18n/server";
 import "./student.css";
 import { StudentMessages } from "@/components/i18n/student-messages";
+import { DomGuard } from "@/components/dom-guard";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -36,6 +37,7 @@ export default async function StudentLayout({
   return (
     <html lang={locale}>
       <body className="student-root">
+        <DomGuard />
         <LocaleProvider locale={locale}>
           <a href="#student-main" className="student-skip">
             {t("Skip to content")}

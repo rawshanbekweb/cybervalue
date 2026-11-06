@@ -173,3 +173,36 @@ test("the header never overflows the viewport between mobile menu and wide deskt
     ).toBe(true);
   }
 });
+
+test("every root layout guards against nodes moved by browser translation", async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  for (const path of ["/", "/challenges/register", "/student/login"]) {
+    await page.goto(path);
+    // The guard turns a call on a node that moved into a no-op.
+    expect(
+      await page.evaluate(() => {
+        const parent = document.createElement("div");
+        const stray = document.createElement("span");
+        const moved = document.createElement("b");
+        try {
+          parent.removeChild(stray);
+          parent.insertBefore(document.createElement("i"), moved);
+          // Ordinary calls still work.
+          const kid = parent.appendChild(document.createElement("u"));
+          parent.insertBefore(document.createElement("s"), kid);
+          parent.removeChild(kid);
+          return kid.parentNode === null && parent.childNodes.length === 1
+            ? "ok"
+            : "ordinary calls broke";
+        } catch (error) {
+          return String(error);
+        }
+      }),
+      path,
+    ).toBe("ok");
+  }
+  expect(errors).toEqual([]);
+});
