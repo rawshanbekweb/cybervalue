@@ -60,8 +60,10 @@ sign-up still works, but players cannot confirm their email.
 
 **Admin → CTF players** (`/admin/ctf/players`, owners only) lists players
 with search by email or username. An owner can confirm an email by hand, block
-or unblock an account (blocking signs it out), or delete it. Each change is in
-the audit log.
+or unblock an account (blocking signs it out), or delete it. **Confirm every
+unconfirmed email** does it for all active players at once, for a class that
+signs up together before email sending is set up. Each change is in the audit
+log.
 
 ## Tests
 
@@ -252,7 +254,7 @@ Categories: Crypto, Web, Forensics, OSINT, Stego, Reverse, Pwn, Misc.
   current value, who typed the flag and when, hint costs and adjustments,
   as at the freeze for the public.
 - **Auto-refresh**: while a competition runs, the scoreboard re-renders every
-  30 seconds and the board every 60, while the tab is visible, so new waves
+  10 seconds and the board every 20, while the tab is visible, so new waves
   and teammates' solves appear without reloading.
 - **Exports**: `/challenges/<slug>/ctftime` is the public scoreboard in
   CTFtime's feed format (`{"standings":[{"pos","team","score"}]}`, freeze

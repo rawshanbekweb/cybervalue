@@ -1086,5 +1086,6 @@
   "The student is still working. The result appears once it is submitted.": "O‘quvchi hali ishlamoqda. Natija topshirilgach chiqadi.",
   "Time ran out · waiting for review": "Vaqt tugagan · tekshirish kutilmoqda",
   "Waiting for review": "Tekshirish kutilmoqda",
-  "{count} waiting": "{count} ta kutmoqda"
+  "{count} waiting": "{count} ta kutmoqda",
+  "Confirm every unconfirmed email ({count})": "Tasdiqlanmagan barcha emaillarni tasdiqlash ({count})"
 }

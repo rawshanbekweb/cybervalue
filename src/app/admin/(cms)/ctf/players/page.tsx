@@ -5,6 +5,7 @@ import { getDb } from "@/lib/db";
 import { formatDate } from "@/components/ui";
 import { ConfirmButton } from "@/components/admin/confirm-button";
 import {
+  confirmAllPlayerEmailsAction,
   confirmPlayerEmailAction,
   deletePlayerAction,
   setPlayerActiveAction,
@@ -35,7 +36,7 @@ export default async function CtfPlayersPage({
         ],
       }
     : {};
-  const [players, total, verified] = db
+  const [players, total, verified, unconfirmed] = db
     ? await Promise.all([
         db.ctfPlayer.findMany({
           where,
@@ -54,8 +55,10 @@ export default async function CtfPlayersPage({
         }),
         db.ctfPlayer.count({ where }),
         db.ctfPlayer.count({ where: { emailVerifiedAt: { not: null } } }),
+        // What "Confirm every unconfirmed email" would change: active players.
+        db.ctfPlayer.count({ where: { emailVerifiedAt: null, active: true } }),
       ])
-    : [[], 0, 0];
+    : [[], 0, 0, 0];
   const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
   const link = (p: number) =>
     `/admin/ctf/players?${new URLSearchParams({ ...(q && { q }), page: String(p) })}`;
@@ -71,9 +74,20 @@ export default async function CtfPlayersPage({
             )}
           </p>
         </div>
-        <Link href="/challenges" className="button button-secondary">
-          {t("Open CTF Challenges")}
-        </Link>
+        <div className="admin-row-actions">
+          {unconfirmed > 0 && (
+            <form action={confirmAllPlayerEmailsAction}>
+              <button type="submit" className="button button-secondary">
+                {t("Confirm every unconfirmed email ({count})", {
+                  count: unconfirmed,
+                })}
+              </button>
+            </form>
+          )}
+          <Link href="/challenges" className="button button-secondary">
+            {t("Open CTF Challenges")}
+          </Link>
+        </div>
       </div>
       <form method="get" className="admin-filters">
         <div className="admin-field admin-search-field">

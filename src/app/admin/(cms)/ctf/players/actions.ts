@@ -34,6 +34,25 @@ export async function confirmPlayerEmailAction(id: string) {
   revalidatePath(PATH);
 }
 
+/**
+ * Confirms every unconfirmed address at once, for a class that signs up
+ * together while email sending is not set up yet.
+ */
+export async function confirmAllPlayerEmailsAction() {
+  const session = await requireOwner(PATH);
+  if (!(await limit(`admin-write:${session.user.id}`, 60, 60_000))) return;
+  const result = await getDb()?.ctfPlayer.updateMany({
+    where: { emailVerifiedAt: null, active: true },
+    data: { emailVerifiedAt: new Date() },
+  });
+  await audit(
+    "ctf.player_update",
+    session.user.id,
+    `confirm-all:${result?.count ?? 0}`,
+  );
+  revalidatePath(PATH);
+}
+
 export async function deletePlayerAction(id: string) {
   const session = await requireOwner(PATH);
   if (!(await limit(`admin-write:${session.user.id}`, 60, 60_000))) return;
