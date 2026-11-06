@@ -1,6 +1,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
+  MAX_FILE_BYTES,
+  base64Size,
   importFlag,
   transferProblem,
   transferSchema,
@@ -90,4 +92,51 @@ test("bad files are refused with a reason", () => {
     problem(file([challenge("a"), challenge("b", { requires: "a" })])),
     null,
   );
+});
+
+test("a hand-written file may carry challenge files inline as Base64", () => {
+  const data = transferSchema.parse(
+    file([
+      challenge("a", {
+        files: [
+          {
+            name: "xat.txt",
+            base64: Buffer.from("Q1Z7c2Fsb219").toString("base64"),
+          },
+          { name: "../../etc/x", base64: "YQ==" },
+        ],
+      }),
+      challenge("b"),
+    ]),
+  );
+  assert.equal(transferProblem(data), null);
+  const [xat, odd] = data.challenges[0].files;
+  assert.equal(base64Size(xat.base64), 12);
+  assert.equal(Buffer.from(xat.base64, "base64").toString(), "Q1Z7c2Fsb219");
+  assert.equal(odd.name, ".._.._etc_x");
+  assert.equal(base64Size(odd.base64), 1);
+  assert.deepEqual(data.challenges[1].files, []);
+
+  assert.throws(() =>
+    transferSchema.parse(
+      file([challenge("a", { files: [{ name: "x", base64: "not base64!" }] })]),
+    ),
+  );
+  const empty = transferSchema.parse(
+    file([challenge("a", { files: [{ name: "x", base64: "" }] })]),
+  );
+  assert.match(transferProblem(empty)!, /empty/);
+  const big = transferSchema.parse(
+    file([
+      challenge("a", {
+        files: [
+          {
+            name: "x",
+            base64: "A".repeat(Math.ceil(MAX_FILE_BYTES / 3) * 4 + 4),
+          },
+        ],
+      }),
+    ]),
+  );
+  assert.match(transferProblem(big)!, /over 4 MiB/);
 });

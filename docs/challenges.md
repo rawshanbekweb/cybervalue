@@ -191,7 +191,8 @@ flag digest, values, standings, admin form checks) live in
 - **Export (JSON)** downloads a competition without its files; flags are
   carried as salted digests, never as text. **Import** (Admin → CTF
   competitions) creates an unpublished draft from such a file or a hand-written
-  one, up to 2 MiB; files are then uploaded on each challenge page.
+  one, up to 4 MiB. Files are then uploaded on each challenge page, or carried
+  inline in a hand-written file (below).
 
 ### Writing a challenge set by hand
 
@@ -236,6 +237,14 @@ salted and hashed on import. Everything except `key`, `title`, `category` and
     }
   ]
 }
+```
+
+A challenge may carry its files inline as Base64, so a single import sets up
+everything (each file at most 4 MiB, the whole import at most 4 MiB, and all
+CTF files together at most 200 MiB):
+
+```json
+"files": [{ "name": "xat.txt", "base64": "UTFaN2MyRnNiMjE5" }]
 ```
 
 Categories: Crypto, Web, Forensics, OSINT, Stego, Reverse, Pwn, Misc.

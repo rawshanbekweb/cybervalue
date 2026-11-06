@@ -632,6 +632,13 @@ test("authoring tools: several flags, answer test, prerequisites, attempt limits
         title: "Birinchi",
         category: "Web",
         flags: [{ flag: "CV{bir}" }],
+        // Files may travel inside the import.
+        files: [
+          {
+            name: "eslatma.txt",
+            base64: Buffer.from("CV{bir}").toString("base64"),
+          },
+        ],
       },
       {
         key: "b",
@@ -659,6 +666,7 @@ test("authoring tools: several flags, answer test, prerequisites, attempt limits
 
   // A second accepted flag, then the answer test.
   await admin.getByRole("link", { name: "Birinchi" }).click();
+  await expect(admin.getByRole("link", { name: "eslatma.txt" })).toBeVisible();
   await admin.getByLabel("Another accepted flag").fill("CV{one}");
   await admin.getByLabel("Accept the flag in any letter case").check();
   await admin.getByRole("button", { name: "Add the flag" }).click();
