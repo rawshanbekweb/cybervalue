@@ -82,7 +82,7 @@ export default async function BoardPage({
     <>
       <EventHeader event={event} current="board" />
       {/* New waves of challenges and teammates' solves appear on their own. */}
-      {playing && <AutoRefresh seconds={60} />}
+      {playing && <AutoRefresh seconds={20} />}
       {entrant && (
         <p className="ctf-muted">
           {t("{name}: {solved} of {total} solved", {

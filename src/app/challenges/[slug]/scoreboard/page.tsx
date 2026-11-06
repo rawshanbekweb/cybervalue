@@ -49,7 +49,7 @@ export default async function ScoreboardPage({
   return (
     <>
       <EventHeader event={event} current="scoreboard" />
-      {phaseOf(event) === "running" && <AutoRefresh seconds={30} />}
+      {phaseOf(event) === "running" && <AutoRefresh seconds={10} />}
       {phaseOf(event) === "ended" && board.rows.length > 0 && (
         <p className="ctf-muted ctf-small">
           {t(

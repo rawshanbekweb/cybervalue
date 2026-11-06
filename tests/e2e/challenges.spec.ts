@@ -224,6 +224,13 @@ test("the admin finds a player and blocks the account", async ({
   await admin.goto(`/admin/ctf/players?q=${encodeURIComponent(email)}`);
   const row = admin.getByRole("row", { name: new RegExp(`b_${id}`) });
   await expect(row).toBeVisible();
+  // An unconfirmed player brings up the confirm-everyone button. It isn't
+  // pressed here: other tests running alongside need unconfirmed players.
+  await expect(
+    admin.getByRole("button", {
+      name: /Confirm every unconfirmed email|Tasdiqlanmagan barcha emaillarni tasdiqlash/,
+    }),
+  ).toBeVisible();
   await row.getByRole("button", { name: /Block|Bloklash/ }).click();
   await expect(
     row.getByRole("button", { name: /Unblock|Blokdan/ }),
