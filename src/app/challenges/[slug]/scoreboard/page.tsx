@@ -9,6 +9,12 @@ import Link from "next/link";
 import { EventHeader } from "@/components/challenges/event-header";
 import { ScoreChart } from "@/components/challenges/score-chart";
 import { AutoRefresh } from "@/components/challenges/auto-refresh";
+import {
+  CategoryStrip,
+  Podium,
+  categoryColor,
+} from "@/components/challenges/strengths";
+import { categoryLeaders } from "@/lib/challenges/strengths";
 
 export async function generateMetadata({
   params,
@@ -19,11 +25,16 @@ export async function generateMetadata({
 }
 
 const TOP = 10;
+const VIEWS = ["all", "solo", "team"] as const;
+type View = (typeof VIEWS)[number];
 
 export default async function ScoreboardPage({
   params,
+  searchParams,
 }: PageProps<"/challenges/[slug]/scoreboard">) {
   const { slug } = await params;
+  const asked = (await searchParams).view;
+  const view: View = VIEWS.includes(asked as View) ? (asked as View) : "all";
   const organiser = await isCtfOrganiser();
   const event = await eventBySlug(slug, organiser);
   if (!event) notFound();
@@ -33,8 +44,19 @@ export default async function ScoreboardPage({
   const player = (await getPlayerSession())?.player;
   const mine = player ? await entrantFor(event.id, player.id) : null;
 
+  // Solo players and teams can be ranked apart; places are within the view.
+  const counts = {
+    all: board.rows.length,
+    solo: board.rows.filter((r) => !r.team).length,
+    team: board.rows.filter((r) => r.team).length,
+  };
+  const rows = board.rows
+    .filter((r) => view === "all" || (view === "team") === r.team)
+    .map((r, i) => ({ ...r, place: view === "all" ? r.rank : i + 1 }));
+  const leaders = categoryLeaders(rows);
+
   // Cumulative score of the leaders after each of their solves.
-  const top = board.rows.slice(0, TOP);
+  const top = rows.slice(0, TOP);
   const series = top.map((row) => {
     let score = 0;
     const points = board.timeline
@@ -70,7 +92,30 @@ export default async function ScoreboardPage({
           {t("You see the live standings as an organiser.")}
         </p>
       )}
-      {board.rows.some((r) => r.score > 0) && (
+      {counts.solo > 0 && counts.team > 0 && (
+        <nav className="ctf-views" aria-label={t("Scoreboard view")}>
+          {VIEWS.map((v) => (
+            <Link
+              key={v}
+              href={
+                v === "all"
+                  ? `/challenges/${event.slug}/scoreboard`
+                  : `/challenges/${event.slug}/scoreboard?view=${v}`
+              }
+              aria-current={v === view ? "page" : undefined}
+            >
+              {v === "all"
+                ? t("Everyone")
+                : v === "solo"
+                  ? t("Solo")
+                  : t("Teams")}{" "}
+              <span className="ctf-views-count">{counts[v]}</span>
+            </Link>
+          ))}
+        </nav>
+      )}
+      <Podium rows={rows} slug={event.slug} t={t} />
+      {rows.some((r) => r.score > 0) && (
         <section className="ctf-section" aria-labelledby="ctf-chart">
           <h2 id="ctf-chart" className="ctf-h2">
             {t("Top {count} over time", { count: Math.min(TOP, top.length) })}
@@ -89,7 +134,7 @@ export default async function ScoreboardPage({
         <h2 id="ctf-table" className="ctf-h2">
           {t("Standings")}
         </h2>
-        {board.rows.length === 0 ? (
+        {rows.length === 0 ? (
           <p className="ctf-muted">{t("Nobody is registered yet.")}</p>
         ) : (
           <div className="ctf-table-wrap">
@@ -101,16 +146,29 @@ export default async function ScoreboardPage({
                   <th scope="col">{t("Points")}</th>
                   <th scope="col">{t("Solved")}</th>
                   <th scope="col">{t("First bloods")}</th>
+                  <th scope="col">{t("Categories")}</th>
                   <th scope="col">{t("Last solve")}</th>
                 </tr>
               </thead>
               <tbody>
-                {board.rows.map((row) => (
+                {rows.map((row, i) => (
                   <tr
                     key={row.entrantId}
                     className={row.entrantId === mine?.id ? "is-me" : undefined}
+                    style={{ animationDelay: `${Math.min(i, 20) * 40}ms` }}
                   >
-                    <td>{row.rank}</td>
+                    <td>
+                      {row.place}
+                      {view !== "all" && (
+                        <span
+                          className="ctf-muted ctf-small"
+                          title={t("Overall place")}
+                        >
+                          {" "}
+                          ({row.rank})
+                        </span>
+                      )}
+                    </td>
                     <td>
                       <Link
                         href={`/challenges/${event.slug}/entrant/${row.entrantId}`}
@@ -137,6 +195,9 @@ export default async function ScoreboardPage({
                     <td>{row.solved}</td>
                     <td>{row.firstBloods || "—"}</td>
                     <td>
+                      <CategoryStrip stats={row.byCategory} t={t} />
+                    </td>
+                    <td>
                       {row.lastSolveAt
                         ? formatWhen(row.lastSolveAt, locale)
                         : "—"}
@@ -148,6 +209,48 @@ export default async function ScoreboardPage({
           </div>
         )}
       </section>
+      {leaders.size > 0 && (
+        <section className="ctf-section" aria-labelledby="ctf-leaders">
+          <h2 id="ctf-leaders" className="ctf-h2">
+            {t("Category champions")}
+          </h2>
+          <ul className="ctf-champions">
+            {board.categories
+              .filter((c) => leaders.has(c))
+              .map((c, i) => {
+                const { row, stat } = leaders.get(c)!;
+                return (
+                  <li
+                    key={c}
+                    style={{
+                      borderColor: categoryColor(c),
+                      animationDelay: `${i * 70}ms`,
+                    }}
+                  >
+                    <span
+                      className="ctf-champions-cat"
+                      style={{ color: categoryColor(c) }}
+                    >
+                      {c}
+                    </span>
+                    <Link
+                      href={`/challenges/${event.slug}/entrant/${row.entrantId}`}
+                    >
+                      {row.name}
+                    </Link>
+                    <span className="ctf-muted ctf-small">
+                      {t("{points} pts · {solved}/{total} solved", {
+                        points: stat.points,
+                        solved: stat.solved,
+                        total: stat.total,
+                      })}
+                    </span>
+                  </li>
+                );
+              })}
+          </ul>
+        </section>
+      )}
     </>
   );
 }

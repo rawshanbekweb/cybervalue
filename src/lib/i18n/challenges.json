@@ -254,5 +254,22 @@
   "Other points": "Boshqa ballar",
   "hints opened": "ochilgan maslahatlar",
   "certificate": "sertifikat",
-  "The competition is over. Each entrant's certificate is next to its name.": "Musobaqa tugadi. Har bir ishtirokchining sertifikati uning nomi yonida."
+  "The competition is over. Each entrant's certificate is next to its name.": "Musobaqa tugadi. Har bir ishtirokchining sertifikati uning nomi yonida.",
+  "Points by category: {list}": "Yo‘nalishlar bo‘yicha ball: {list}",
+  "{points} of {possible} pts · {solved}/{total}": "{possible} balldan {points} · {solved}/{total}",
+  "Top three": "Eng yaxshi uchtalik",
+  "team": "jamoa",
+  "{count} solved": "{count} ta yechilgan",
+  "Scoreboard view": "Reyting ko‘rinishi",
+  "Everyone": "Hammasi",
+  "Solo": "Yakka",
+  "Teams": "Jamoalar",
+  "Overall place": "Umumiy o‘rin",
+  "Categories": "Yo‘nalishlar",
+  "Category champions": "Yo‘nalish chempionlari",
+  "{points} pts · {solved}/{total} solved": "{points} ball · {solved}/{total} yechilgan",
+  "Strengths by category": "Yo‘nalishlar bo‘yicha kuchli tomonlar",
+  "Strongest category:": "Eng kuchli yo‘nalish:",
+  "{share}% of its points": "— shu yo‘nalish ballarining {share}% olingan",
+  "The chart fills in as challenges are solved.": "Topshiriqlar yechilgan sari diagramma to‘ladi."
 }

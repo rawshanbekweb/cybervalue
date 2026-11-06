@@ -8,6 +8,12 @@ import {
   isCtfOrganiser,
 } from "@/lib/challenges/view";
 import { EventHeader } from "@/components/challenges/event-header";
+import {
+  StrengthBars,
+  StrengthRadar,
+  categoryColor,
+} from "@/components/challenges/strengths";
+import { strongest } from "@/lib/challenges/strengths";
 
 export async function generateMetadata() {
   const t = await getCtfTranslator();
@@ -26,6 +32,8 @@ export default async function EntrantPage({
   const t = await getCtfTranslator();
   const locale = await getAdminLocale();
   const { entrant, row } = record;
+  const stats = row?.byCategory ?? [];
+  const best = strongest(stats);
   return (
     <>
       <EventHeader event={event} current="scoreboard" />
@@ -54,6 +62,39 @@ export default async function EntrantPage({
           </p>
         )}
       </section>
+      {stats.length > 0 && (
+        <section className="ctf-section" aria-labelledby="ctf-strengths">
+          <h2 id="ctf-strengths" className="ctf-h2">
+            {t("Strengths by category")}
+          </h2>
+          {best ? (
+            <p className="ctf-best">
+              {t("Strongest category:")}{" "}
+              <b style={{ color: categoryColor(best.category) }}>
+                {best.category}
+              </b>{" "}
+              <span className="ctf-muted">
+                {t("{share}% of its points", {
+                  share: Math.round(best.share * 100),
+                })}
+              </span>
+            </p>
+          ) : (
+            <p className="ctf-muted">
+              {t("The chart fills in as challenges are solved.")}
+            </p>
+          )}
+          <div className="ctf-strengths">
+            <StrengthRadar
+              stats={stats}
+              label={stats
+                .map((s) => `${s.category} ${Math.round(s.share * 100)}%`)
+                .join(", ")}
+            />
+            <StrengthBars stats={stats} t={t} />
+          </div>
+        </section>
+      )}
       <section className="ctf-section" aria-labelledby="ctf-solves">
         <h2 id="ctf-solves" className="ctf-h2">
           {t("Solved challenges")}

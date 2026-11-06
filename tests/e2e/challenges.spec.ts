@@ -473,10 +473,45 @@ test("a competition runs end to end: admin setup, registration, files, hints, fl
   await expect(rows.nth(0).locator("td").nth(2)).toHaveText("400");
   await expect(rows.nth(1)).toContainText(second.username);
   await expect(rows.nth(1).locator("td").nth(2)).toHaveText("350");
+  // The podium, the category column and the category champion.
+  const podium = late.locator(".ctf-podium-place");
+  await expect(podium).toHaveCount(2);
+  await expect(late.locator(".ctf-podium-place.is-1")).toContainText(
+    first.username,
+  );
+  await expect(rows.nth(0).getByRole("img")).toHaveAttribute(
+    "aria-label",
+    "Points by category: Crypto 400",
+  );
+  await expect(
+    late.locator(".ctf-champions li").filter({ hasText: "Crypto" }),
+  ).toContainText(first.username);
+  // Only solo players: no solo/team switch, and the team view is empty.
+  await expect(
+    late.getByRole("navigation", { name: "Scoreboard view" }),
+  ).toHaveCount(0);
   const axe = await new AxeBuilder({ page: late })
     .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
     .analyze();
   expect(axe.violations.map((v) => v.id)).toEqual([]);
+
+  await late.goto(`/challenges/${slug}/scoreboard?view=team`);
+  await expect(late.getByText("Nobody is registered yet.")).toBeVisible();
+
+  // The entrant page shows where the points came from.
+  await late.goto(`/challenges/${slug}/scoreboard`);
+  await rows.nth(0).getByRole("link", { name: first.username }).click();
+  await expect(
+    late.getByRole("heading", { name: "Strengths by category" }),
+  ).toBeVisible();
+  await expect(late.locator(".ctf-best")).toContainText("Crypto");
+  await expect(late.locator(".ctf-bars li")).toHaveCount(1);
+  await expect(late.locator(".ctf-bars li")).toContainText("100%");
+  const entrantAxe = await new AxeBuilder({ page: late })
+    .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+    .analyze();
+  expect(entrantAxe.violations.map((v) => v.id)).toEqual([]);
+  await late.goto(`/challenges/${slug}/scoreboard`);
 
   // The admin blocks the leader, who drops off the scoreboard.
   await admin.goto("/admin/ctf/events");
