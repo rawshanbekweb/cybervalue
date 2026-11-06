@@ -160,6 +160,15 @@ Owners run competitions from **Admin → CTF competitions** (`/admin/ctf/events`
   entrant who reached the score first. It shows first bloods and a step chart
   of the top 10 over time. From the freeze time until the end the public sees
   the standings at the freeze; owners see the live standings.
+- **Scoreboard views and charts**: when a competition has both solo players
+  and teams, tabs show everyone, solo players or teams, with places counted
+  within the view (the overall place in brackets). The top three stand on an
+  animated podium, each row has a bar of its points by category, and
+  "Category champions" names the entrant with the most points in each
+  category. The entrant page adds a radar (three or more categories) and a
+  bar per category: the share of the category's current points won, with the
+  strongest category named (`src/lib/challenges/strengths.ts`). Animations
+  play once per page load and are off under reduced motion.
 - **Organiser tools** on the competition page: the challenge list with
   current values, entrants with rank, points and attempts, **Block** (the
   entrant leaves the scoreboard and cannot submit), announcements (shown on

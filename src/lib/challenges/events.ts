@@ -13,6 +13,7 @@ import {
   scoreboardCutoff,
   standings,
 } from "./scoring";
+import { categoriesOf, categoryStats } from "./strengths";
 
 export class EventError extends Error {}
 
@@ -384,6 +385,7 @@ export async function scoreboard(event: EventRow, full = false) {
       where: { eventId: event.id },
       select: {
         id: true,
+        category: true,
         initialPoints: true,
         minimumPoints: true,
         decay: true,
@@ -446,6 +448,14 @@ export async function scoreboard(event: EventRow, full = false) {
   const bloods = new Map<string, number>();
   for (const id of firstBlood.values())
     bloods.set(id, (bloods.get(id) ?? 0) + 1);
+  // What each entrant solved, for the category strengths.
+  const solvedBy = new Map<string, string[]>();
+  for (const s of solves)
+    if (!cutoff || s.createdAt <= cutoff)
+      solvedBy.set(s.entrantId, [
+        ...(solvedBy.get(s.entrantId) ?? []),
+        s.challengeId,
+      ]);
   return {
     now: new Date(),
     frozenAt: cutoff,
@@ -457,8 +467,14 @@ export async function scoreboard(event: EventRow, full = false) {
         team: Boolean(entrant.teamId),
         members: entrant.team?._count.members ?? 1,
         firstBloods: bloods.get(r.entrantId) ?? 0,
+        byCategory: categoryStats(
+          challenges,
+          values,
+          solvedBy.get(r.entrantId) ?? [],
+        ),
       };
     }),
+    categories: categoriesOf(challenges),
     values,
     // For the progress chart: score over time of the top entrants.
     timeline: solves
