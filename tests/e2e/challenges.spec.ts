@@ -450,9 +450,16 @@ test("a competition runs end to end: admin setup, registration, files, hints, fl
   await board.getByPlaceholder("CV{...}").fill("CV{nope}");
   await board.getByRole("button", { name: "Submit" }).click();
   await expect(board.getByText("Not this flag. Try again.")).toBeVisible();
+  // The other player's open board pops up the solve, marked as the first.
+  await second.page.goto(`/challenges/${slug}/board`);
   await board.getByPlaceholder("CV{...}").fill("  CV{salom} ");
   await board.getByRole("button", { name: "Submit" }).click();
   await expect(board.getByText(/Solved/).first()).toBeVisible();
+  const toast = second.page.locator(".ctf-toast");
+  await expect(toast).toContainText(first.username, { timeout: 20_000 });
+  await expect(toast).toContainText("solved “Base64 xat” first!");
+  // It goes away by itself after five seconds.
+  await expect(toast).toHaveCount(0, { timeout: 10_000 });
 
   const late = second.page;
   late.on("dialog", (dialog) => dialog.accept());

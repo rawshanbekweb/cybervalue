@@ -15,6 +15,7 @@ import { Markdown } from "@/components/markdown";
 import { EventHeader } from "@/components/challenges/event-header";
 import { FlagForm, HintButton } from "@/components/challenges/event-forms";
 import { AutoRefresh } from "@/components/challenges/auto-refresh";
+import { SolveToasts } from "@/components/challenges/solve-toasts";
 
 export async function generateMetadata({
   params,
@@ -84,6 +85,7 @@ export default async function BoardPage({
       <EventHeader event={event} current="board" />
       {/* New waves of challenges and teammates' solves appear on their own. */}
       {playing && <AutoRefresh seconds={20} />}
+      {playing && <SolveToasts slug={event.slug} />}
       {entrant && (
         <p className="ctf-muted">
           {t("{name}: {solved} of {total} solved", {
