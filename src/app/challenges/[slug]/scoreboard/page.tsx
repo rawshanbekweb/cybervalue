@@ -9,6 +9,7 @@ import Link from "next/link";
 import { EventHeader } from "@/components/challenges/event-header";
 import { ScoreChart } from "@/components/challenges/score-chart";
 import { AutoRefresh } from "@/components/challenges/auto-refresh";
+import { SolveToasts } from "@/components/challenges/solve-toasts";
 import {
   CategoryStrip,
   Podium,
@@ -72,6 +73,7 @@ export default async function ScoreboardPage({
     <>
       <EventHeader event={event} current="scoreboard" />
       {phaseOf(event) === "running" && <AutoRefresh seconds={10} />}
+      {phaseOf(event) === "running" && <SolveToasts slug={event.slug} />}
       {phaseOf(event) === "ended" && board.rows.length > 0 && (
         <p className="ctf-muted ctf-small">
           {t(

@@ -271,5 +271,7 @@
   "Strengths by category": "Yo‘nalishlar bo‘yicha kuchli tomonlar",
   "Strongest category:": "Eng kuchli yo‘nalish:",
   "{share}% of its points": "— shu yo‘nalish ballarining {share}% olingan",
-  "The chart fills in as challenges are solved.": "Topshiriqlar yechilgan sari diagramma to‘ladi."
+  "The chart fills in as challenges are solved.": "Topshiriqlar yechilgan sari diagramma to‘ladi.",
+  "solved “{title}” first!": "“{title}” ni birinchi bo‘lib yechdi!",
+  "solved “{title}”": "“{title}” ni yechdi"
 }
