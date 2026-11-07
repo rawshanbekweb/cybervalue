@@ -531,37 +531,164 @@ body.ctf-root {
 /* Challenge board */
 .ctf-board {
   display: grid;
-  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-flow: dense;
+  gap: 14px;
 }
 .ctf-card {
-  background: var(--ctf-panel);
+  position: relative;
+  background:
+    radial-gradient(
+      120% 90% at 50% 0%,
+      rgba(128, 82, 255, 0.16),
+      transparent 60%
+    ),
+    var(--ctf-panel);
   border: 1px solid var(--ctf-line);
-  border-radius: 14px;
+  border-radius: 16px;
+  overflow: hidden;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    transform 0.2s;
 }
+.ctf-card:not([open]):hover {
+  border-color: var(--ctf-iris);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(128, 82, 255, 0.22);
+}
+/* A found flag: a green frame around the card. */
 .ctf-card.is-solved {
-  border-color: var(--ctf-signal);
+  border: 2px solid var(--ctf-signal);
+  box-shadow:
+    0 0 0 1px rgba(47, 191, 143, 0.25),
+    0 0 22px rgba(47, 191, 143, 0.28);
+}
+/* An open card takes the whole row, so the task has room. */
+.ctf-card[open] {
+  grid-column: 1 / -1;
+  transform: none;
 }
 .ctf-card summary {
+  position: relative;
   display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 6px;
+  min-height: 184px;
   padding: 16px 18px;
   cursor: pointer;
   list-style: none;
 }
+.ctf-card[open] summary {
+  min-height: 0;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+}
 .ctf-card summary::-webkit-details-marker {
   display: none;
 }
+/* The Cybervalue emblem behind a closed card. */
+.ctf-card-emblem {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;
+  padding-top: 18px;
+  color: var(--ctf-iris);
+  opacity: 0.22;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.ctf-card-emblem svg {
+  width: 56px;
+  height: 56px;
+}
+.ctf-card-emblem span {
+  font-family: var(--ctf-font);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--ctf-text);
+}
+.ctf-card-emblem b {
+  color: var(--ctf-iris-text);
+}
+.ctf-card:not([open]):hover .ctf-card-emblem {
+  opacity: 0.4;
+}
+.ctf-card.is-solved .ctf-card-emblem {
+  color: var(--ctf-signal);
+}
+.ctf-card[open] .ctf-card-emblem {
+  display: none;
+}
+.ctf-card-check {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--ctf-signal);
+  color: #04130d;
+  font-weight: 800;
+}
+.ctf-card[open] .ctf-card-check {
+  display: none;
+}
 .ctf-card-title {
-  font-weight: 500;
+  position: relative;
+  font-weight: 600;
+  font-size: 17px;
 }
 .ctf-card-meta {
+  position: relative;
   color: var(--ctf-muted);
-  font-size: 15px;
+  font-size: 14px;
 }
 .ctf-card.is-solved .ctf-card-meta {
   color: var(--ctf-signal);
+}
+@media (max-width: 1000px) {
+  .ctf-board {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 760px) {
+  .ctf-board {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ctf-card summary {
+    min-height: 150px;
+    padding: 14px;
+  }
+  .ctf-card-emblem {
+    padding-top: 14px;
+  }
+  .ctf-card-emblem svg {
+    width: 40px;
+    height: 40px;
+  }
+  .ctf-card-emblem span {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ctf-card,
+  .ctf-card-emblem {
+    transition: none;
+  }
+  .ctf-card:not([open]):hover {
+    transform: none;
+  }
 }
 .ctf-card-body {
   padding: 0 18px 18px;

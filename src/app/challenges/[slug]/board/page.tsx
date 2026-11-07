@@ -10,6 +10,7 @@ import {
 } from "@/lib/challenges/events";
 import { phaseOf } from "@/lib/challenges/scoring";
 import { isCtfOrganiser } from "@/lib/challenges/view";
+import { Fingerprint } from "lucide-react";
 import { Markdown } from "@/components/markdown";
 import { EventHeader } from "@/components/challenges/event-header";
 import { FlagForm, HintButton } from "@/components/challenges/event-forms";
@@ -114,6 +115,17 @@ export default async function BoardPage({
                   id={`c-${c.id}`}
                 >
                   <summary>
+                    <span className="ctf-card-emblem" aria-hidden="true">
+                      <Fingerprint strokeWidth={1.25} />
+                      <span>
+                        cyber<b>value</b>.
+                      </span>
+                    </span>
+                    {c.solved && (
+                      <span className="ctf-card-check" aria-hidden="true">
+                        ✓
+                      </span>
+                    )}
                     <span className="ctf-card-title">
                       {c.lockedBy !== null && (
                         <span aria-hidden="true">🔒 </span>
