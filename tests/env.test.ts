@@ -30,7 +30,7 @@ function loadEnvironment(
 }
 
 test("invalid site URLs produce configuration guidance instead of URL exceptions", () => {
-  for (const value of ["datalife.uz", "https://", ""]) {
+  for (const value of ["example.com", "https://", ""]) {
     for (const indexable of ["false", "true"]) {
       const result = loadEnvironment(value, indexable);
       assert.equal(result.status, 1);
@@ -46,7 +46,7 @@ test("invalid site URLs produce configuration guidance instead of URL exceptions
 
 test("site validation accepts HTTPS production and HTTP local preview origins", () => {
   for (const [value, indexable] of [
-    ["https://datalife.uz", "true"],
+    ["https://example.com", "true"],
     ["http://localhost:3000", "false"],
   ]) {
     const result = loadEnvironment(value, indexable);
@@ -68,7 +68,7 @@ test("malformed social URLs identify the variable and give HTTPS guidance", () =
     "TELEGRAM_URL",
     "INSTAGRAM_URL",
   ]) {
-    const result = loadEnvironment("https://datalife.uz", "true", {
+    const result = loadEnvironment("https://example.com", "true", {
       [name]: "t.me/valuecyber",
     });
     assert.equal(result.status, 1);
@@ -84,7 +84,7 @@ test("malformed social URLs identify the variable and give HTTPS guidance", () =
 });
 
 test("valid Telegram URL permits environment initialization", () => {
-  const result = loadEnvironment("https://datalife.uz", "true", {
+  const result = loadEnvironment("https://example.com", "true", {
     TELEGRAM_URL: "https://t.me/valuecyber",
   });
   assert.equal(result.status, 0, result.stderr);
