@@ -34,6 +34,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       "/akademiya/https/video",
       "/akademiya/bash",
       "/akademiya/bash/video",
+      "/akademiya/git",
+      "/akademiya/git/video",
       "/akademiya/ssh",
       "/akademiya/crypto",
       "/akademiya/crypto/video",

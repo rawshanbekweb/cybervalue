@@ -1492,3 +1492,89 @@ body:has(.vl-render) footer {
   width: 100%;
   height: 100%;
 }
+
+/* Git lesson: commit graph, the three areas and real screenshots */
+.vl-gitgraph {
+  width: 100%;
+  height: auto;
+  max-height: 34cqw;
+}
+.vl-areas {
+  position: relative;
+}
+.vl-areas-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3cqw;
+}
+.vl-area {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6cqw;
+  min-height: 18cqw;
+  padding: 1.6cqw;
+  border: 0.25cqw solid #26262e;
+  border-radius: 1.4cqw;
+  background: #0b0b10;
+}
+.vl-area strong {
+  font-size: 2.2cqw;
+}
+.vl-area span {
+  font:
+    1.4cqw ui-monospace,
+    monospace;
+  color: #a3a3ad;
+}
+.vl-area-file {
+  position: absolute;
+  transform: translateX(-50%);
+  padding: 0.6cqw 1.2cqw;
+  border: 0.25cqw solid;
+  border-radius: 0.8cqw;
+  background: #15151d;
+  font:
+    1.7cqw ui-monospace,
+    monospace;
+  white-space: nowrap;
+}
+.vl-areas-commit {
+  margin-top: 3cqw;
+  text-align: center;
+  font-size: 2cqw;
+  color: #ffd166;
+}
+.vl-flash {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  pointer-events: none;
+}
+.vl-photo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4cqw;
+}
+.vl-photo-frame {
+  width: 66cqw;
+  max-height: 33cqw;
+  overflow: hidden;
+  border: 0.2cqw solid #26262e;
+  border-radius: 1.2cqw;
+  box-shadow: 0 2cqw 5cqw rgba(0, 0, 0, 0.5);
+}
+.vl-photo-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform-origin: 50% 30%;
+}
+.vl-photo-caption {
+  max-width: 66cqw;
+  margin: 0;
+  text-align: center;
+  font-size: 1.6cqw;
+  color: #c9c9d3;
+}

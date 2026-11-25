@@ -90,6 +90,7 @@ import {
 } from "./pools";
 import {
   BASH_POOL,
+  GIT_POOL,
   CRYPTO_POOL,
   HTTP_BASICS_POOL,
   HTTPS_POOL,
@@ -693,6 +694,7 @@ const BUILDERS: Record<string, (r: Random) => Question[]> = {
   "httpbasics-1": (r) => tenFrom(r, HTTP_BASICS_POOL),
   "https-1": (r) => tenFrom(r, HTTPS_POOL),
   "bash-1": (r) => tenFrom(r, BASH_POOL),
+  "git-1": (r) => tenFrom(r, GIT_POOL),
   "ssh-1": (r) => tenFrom(r, SSH_POOL),
   "crypto-1": (r) => tenFrom(r, CRYPTO_POOL),
   "http-1": (r) =>

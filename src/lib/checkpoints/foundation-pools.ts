@@ -1490,3 +1490,232 @@ export const CRYPTO_POOL: PoolItem[] = [
     },
   },
 ];
+
+const g = (uz: string, en: string) => ({ uz, en });
+
+export const GIT_POOL: PoolItem[] = [
+  {
+    ask: g("Git nima?", "What is Git?"),
+    right: g(
+      "Fayllar tarixini saqlaydigan versiyalarni boshqarish tizimi",
+      "A version control system that keeps the history of files",
+    ),
+    wrong: [
+      g("Kod saqlanadigan veb-sayt", "A website where code is stored"),
+      g("Dasturlash tili", "A programming language"),
+      g("Antivirus", "An antivirus"),
+    ],
+    explain: g(
+      "Git kompyuteringizda ishlaydi. GitHub esa Git repozitoriylarini saqlaydigan veb-xizmat.",
+      "Git runs on your computer. GitHub is a web service that hosts Git repositories.",
+    ),
+  },
+  {
+    ask: g(
+      "Qaysi buyruq papkani Git repozitoriyga aylantiradi?",
+      "Which command turns a folder into a Git repository?",
+    ),
+    right: g("git init", "git init"),
+    wrong: [
+      g("git start", "git start"),
+      g("git commit", "git commit"),
+      g("git new", "git new"),
+    ],
+    explain: g(
+      "git init yashirin .git papkasini yaratadi — tarix o‘sha yerda saqlanadi.",
+      "git init creates the hidden .git folder, where the history is kept.",
+    ),
+  },
+  {
+    ask: g("git add nima qiladi?", "What does git add do?"),
+    right: g(
+      "O‘zgarishni staging’ga (keyingi commitga) qo‘shadi",
+      "Puts a change in the staging area (the next commit)",
+    ),
+    wrong: [
+      g("Faylni GitHub’ga yuboradi", "Sends the file to GitHub"),
+      g("Yangi fayl yaratadi", "Creates a new file"),
+      g("Commitni o‘chiradi", "Deletes a commit"),
+    ],
+    explain: g(
+      "Fayl yo‘li: ishchi papka → git add → staging → git commit → repozitoriy.",
+      "A file’s path: working folder → git add → staging → git commit → repository.",
+    ),
+  },
+  {
+    ask: g("Qaysi commit xabari eng yaxshi?", "Which commit message is best?"),
+    right: g(
+      "“Kirish formasida parol tekshiruvi tuzatildi”",
+      "“Fix the password check on the login form”",
+    ),
+    wrong: [
+      g("“o‘zgarish”", "“changes”"),
+      g("“asdf”", "“asdf”"),
+      g("“tayyor!!!”", "“done!!!”"),
+    ],
+    explain: g(
+      "Yaxshi xabar nima qilinganini qisqa va aniq aytadi — bir yildan keyin ham tushunarli bo‘ladi.",
+      "A good message says briefly and clearly what was done — still clear a year later.",
+    ),
+  },
+  {
+    ask: g(
+      "git status’da “Untracked files” nimani bildiradi?",
+      "What does “Untracked files” mean in git status?",
+    ),
+    right: g(
+      "Git hali kuzatmayotgan yangi fayllar",
+      "New files Git is not tracking yet",
+    ),
+    wrong: [
+      g("O‘chirilgan fayllar", "Deleted files"),
+      g("GitHub’dagi fayllar", "Files on GitHub"),
+      g("Xatolik bor fayllar", "Files with errors"),
+    ],
+    explain: g(
+      "Untracked fayl hech qaysi commitda yo‘q. git add bilan kuzatuvga olinadi.",
+      "An untracked file is in no commit. git add starts tracking it.",
+    ),
+  },
+  {
+    ask: g(
+      ".gitignore fayli nima uchun kerak?",
+      "What is the .gitignore file for?",
+    ),
+    code: ".env\n*.log\nnode_modules/",
+    right: g(
+      "Git e’tiborsiz qoldiradigan fayllarni (masalan, sirlarni) ko‘rsatish",
+      "Listing files Git should ignore (secrets, for example)",
+    ),
+    wrong: [
+      g("Fayllarni o‘chirish", "Deleting files"),
+      g("Fayllarni shifrlash", "Encrypting files"),
+      g("Fayllarni GitHub’da yashirish", "Hiding files on GitHub"),
+    ],
+    explain: g(
+      ".gitignore’dagi fayllarni git add . ko‘rmaydi, shuning uchun ular commitga tushmaydi.",
+      "git add . does not see files in .gitignore, so they never reach a commit.",
+    ),
+  },
+  {
+    ask: g(
+      "Parol bor .env fayli commit qilinib, keyin o‘chirildi. Parol xavfsizmi?",
+      "A .env file with a password was committed, then deleted. Is the password safe?",
+    ),
+    right: g(
+      "Yo‘q — u tarixda qoladi, parolni almashtirish kerak",
+      "No — it stays in history; the password must be changed",
+    ),
+    wrong: [
+      g("Ha, fayl o‘chirildi", "Yes, the file was deleted"),
+      g(
+        "Ha, agar repozitoriy kichik bo‘lsa",
+        "Yes, if the repository is small",
+      ),
+      g("Ha, 24 soatdan keyin", "Yes, after 24 hours"),
+    ],
+    explain: g(
+      "git show yoki git log -p eski commitdagi faylni chiqarib beradi. Sizgan sir avval bekor qilinadi.",
+      "git show or git log -p prints the file from the old commit. A leaked secret is revoked first.",
+    ),
+  },
+  {
+    ask: g("Tarmoq (branch) nima?", "What is a branch?"),
+    right: g(
+      "Commitga ko‘rsatuvchi nom: alohida ish yo‘nalishi",
+      "A name pointing at a commit: a separate line of work",
+    ),
+    wrong: [
+      g(
+        "Loyihaning to‘liq nusxasi bo‘lgan papka",
+        "A folder with a full copy of the project",
+      ),
+      g("GitHub’dagi akkaunt", "An account on GitHub"),
+      g("Xato haqida xabar", "A bug report"),
+    ],
+    explain: g(
+      "Shuning uchun tarmoq ochish bir zumda bo‘ladi: Git faqat ko‘rsatkich yaratadi.",
+      "That is why creating a branch is instant: Git only makes a pointer.",
+    ),
+  },
+  {
+    ask: g(
+      "Yangi “login” tarmog‘ini yaratib, unga o‘tish buyrug‘i?",
+      "Which command creates a “login” branch and moves onto it?",
+    ),
+    right: g("git switch -c login", "git switch -c login"),
+    wrong: [
+      g("git branch login --go", "git branch login --go"),
+      g("git merge login", "git merge login"),
+      g("git push login", "git push login"),
+    ],
+    explain: g(
+      "git switch -c (yoki eski git checkout -b) tarmoqni yaratadi va HEAD’ni unga o‘tkazadi.",
+      "git switch -c (or the older git checkout -b) creates the branch and moves HEAD to it.",
+    ),
+  },
+  {
+    ask: g(
+      "Merge paytida faylda <<<<<<< va >>>>>>> paydo bo‘ldi. Bu nima?",
+      "During a merge <<<<<<< and >>>>>>> appeared in a file. What is it?",
+    ),
+    code: "<<<<<<< HEAD\nNarx: 120\n=======\nNarx: 80\n>>>>>>> chegirma",
+    right: g(
+      "Konflikt: to‘g‘ri variantni tanlab, belgilarni o‘chirish kerak",
+      "A conflict: choose the right version and delete the markers",
+    ),
+    wrong: [
+      g(
+        "Fayl buzildi, uni o‘chirish kerak",
+        "The file is broken and must be deleted",
+      ),
+      g("Git xatosi, qayta o‘rnatish kerak", "A Git bug; reinstall Git"),
+      g("Fayl shifrlandi", "The file was encrypted"),
+    ],
+    explain: g(
+      "Belgilarni olib tashlab, git add va git commit qilinadi. git merge --abort esa hammasini qaytaradi.",
+      "Remove the markers, then git add and git commit. git merge --abort undoes it all.",
+    ),
+  },
+  {
+    ask: g(
+      "git push “rejected (fetch first)” deb rad etildi. Nima qilish kerak?",
+      "git push was rejected with “fetch first”. What do you do?",
+    ),
+    right: g(
+      "git pull qilib, keyin yana push qilish",
+      "git pull, then push again",
+    ),
+    wrong: [
+      g(
+        "git push --force bilan boshqalar ishini o‘chirish",
+        "Wipe the others’ work with git push --force",
+      ),
+      g(
+        "Repozitoriyni o‘chirib, qayta yaratish",
+        "Delete and recreate the repository",
+      ),
+      g("Hech narsa — keyinroq o‘zi o‘tadi", "Nothing — it will pass later"),
+    ],
+    explain: g(
+      "GitHub’da sizda yo‘q commit bor. Avval uni olib (pull), keyin yuborasiz.",
+      "GitHub has a commit you do not. Take it first (pull), then send yours.",
+    ),
+  },
+  {
+    ask: g("Pull Request nima?", "What is a pull request?"),
+    right: g(
+      "Tarmog‘ingizni asosiy tarmoqqa qo‘shish so‘rovi, ko‘rib chiqish bilan",
+      "A request to merge your branch into the main one, with a review",
+    ),
+    wrong: [
+      g("GitHub’dan fayl yuklab olish", "Downloading a file from GitHub"),
+      g("Parolni tiklash so‘rovi", "A password reset request"),
+      g("Repozitoriyni o‘chirish", "Deleting a repository"),
+    ],
+    explain: g(
+      "PR’da o‘zgarishlar ko‘rinadi, testlar ishlaydi va boshqa odam kodni tekshiradi — xavfsizlik uchun ham muhim.",
+      "A PR shows the changes, runs tests and lets someone else check the code — important for security too.",
+    ),
+  },
+];

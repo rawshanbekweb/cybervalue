@@ -1,0 +1,250 @@
+/* Git & GitHub lab: terminal colours, the three areas, the commit graph
+   and the GitHub panel. Shares the terminal look of bash-basics.css. */
+.gb-screen .gb-add {
+  color: #5af0b0;
+}
+.gb-screen .gb-del {
+  color: #ff7b7b;
+}
+.gb-screen .gb-staged {
+  color: #5af0b0;
+}
+.gb-screen .gb-marker {
+  color: #ffd166;
+  font-weight: 700;
+}
+.gb-screen .gb-hash {
+  color: #ffb829;
+}
+.gb-screen .gb-warn {
+  color: #ffb829;
+}
+.gb-prompt {
+  white-space: nowrap;
+  max-width: 46%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gb-tips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+.gb-tip {
+  padding: 5px 10px;
+  border: 1px dashed rgba(166, 139, 255, 0.5);
+  border-radius: 999px;
+  background: transparent;
+  color: #c9b8ff;
+  font-family: ui-monospace, "DejaVu Sans Mono", monospace;
+  font-size: 12.5px;
+  cursor: pointer;
+}
+.gb-tip:hover,
+.gb-tip:focus-visible {
+  background: rgba(128, 82, 255, 0.16);
+}
+
+.gb-area-title {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #a3a3ad;
+}
+
+/* The three areas */
+.gb-areas {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 12px;
+  border: 1px solid #26262e;
+  border-radius: 12px;
+  background: #0b0b10;
+}
+.gb-areas.gb-norepo {
+  display: block;
+}
+.gb-arrow {
+  align-self: center;
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  color: #9a9aa6;
+  white-space: nowrap;
+}
+.gb-files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.gb-file {
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: #1b1b24;
+  font-family: ui-monospace, monospace;
+  font-size: 12.5px;
+  color: #d8d8e0;
+  animation: gb-pop 300ms ease-out both;
+}
+.gb-file.is-new {
+  color: #ff9a9a;
+  outline: 1px dashed #ff6b6b;
+}
+.gb-file.is-changed {
+  color: #ffd166;
+  outline: 1px dashed #ffb829;
+}
+.gb-file.is-staged {
+  color: #5af0b0;
+  outline: 1px solid #2fbf8f;
+}
+.gb-file.is-secret::after {
+  content: " 🔑";
+}
+.gb-commit-chip {
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(128, 82, 255, 0.18);
+  font-size: 12.5px;
+  animation: gb-pop 300ms ease-out both;
+}
+.gb-commit-chip b {
+  font-family: ui-monospace, monospace;
+  color: #ffb829;
+}
+
+/* Commit graph */
+.gb-graph {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid #26262e;
+  border-radius: 12px;
+  background: #0b0b10;
+}
+.gb-graph-scroll {
+  overflow-x: auto;
+}
+.gb-graph svg {
+  display: block;
+}
+.gb-lane-name {
+  font:
+    600 11px ui-monospace,
+    monospace;
+}
+.gb-edge {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  animation: gb-draw 600ms ease-out both;
+}
+.gb-node {
+  animation: gb-pop 350ms cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+}
+.gb-node circle {
+  stroke: #0b0b10;
+  stroke-width: 2;
+}
+.gb-head {
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.55));
+}
+.gb-hash-text {
+  font:
+    10.5px ui-monospace,
+    monospace;
+  fill: #8a8a96;
+}
+.gb-tag {
+  font:
+    700 10.5px ui-monospace,
+    monospace;
+  fill: #e8e8ee;
+}
+.gb-tag.is-head {
+  fill: #ffffff;
+}
+.gb-tag.is-remote {
+  fill: #4cc9f0;
+}
+
+/* GitHub panel */
+.gb-github {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  background: #0d1117;
+}
+.gb-github .gb-area-title {
+  width: 100%;
+  margin: 0;
+}
+.gb-url {
+  font-size: 12.5px;
+  color: #79c0ff;
+  overflow-wrap: anywhere;
+}
+.gb-gh-stats {
+  font-size: 13px;
+  color: #c9d1d9;
+}
+.gb-sync {
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+.gb-sync.is-ok {
+  background: rgba(47, 191, 143, 0.18);
+  color: #5af0b0;
+}
+.gb-sync.is-off {
+  background: rgba(255, 184, 41, 0.16);
+  color: #ffd166;
+}
+
+@keyframes gb-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+.gb-node {
+  transform-box: fill-box;
+}
+@keyframes gb-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+
+@media (max-width: 720px) {
+  .gb-areas {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .gb-arrow {
+    justify-self: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gb-file,
+  .gb-commit-chip,
+  .gb-node,
+  .gb-edge {
+    animation: none;
+  }
+}

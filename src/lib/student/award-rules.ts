@@ -89,6 +89,11 @@ export const AWARD_RULES: readonly AwardRule[] = [
     earned: (f) => finished(f, "bash") && passed(f, "bash-1"),
   },
   {
+    id: "lab-git",
+    title: "Git va GitHub",
+    earned: (f) => finished(f, "git") && passed(f, "git-1"),
+  },
+  {
     id: "lab-ssh",
     title: "SSH: masofadan ulanish",
     earned: (f) => finished(f, "ssh") && passed(f, "ssh-1"),
