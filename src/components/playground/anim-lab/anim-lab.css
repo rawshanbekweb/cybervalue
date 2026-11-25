@@ -321,3 +321,42 @@
   align-items: center;
   margin-top: 6px;
 }
+
+/* Real screenshots and photos in a lesson */
+.al-figure {
+  margin: 14px 0 0;
+  border: 1px solid var(--line, #26262e);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0d0f14;
+}
+.al-figure a {
+  display: block;
+  line-height: 0;
+}
+.al-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.25s;
+}
+.al-figure a:hover img {
+  transform: scale(1.015);
+}
+.al-figure figcaption {
+  padding: 10px 14px 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted, #a3a3ad);
+}
+.al-figure-credit {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  opacity: 0.8;
+}
+@media (prefers-reduced-motion: reduce) {
+  .al-figure img {
+    transition: none;
+  }
+}

@@ -66,6 +66,7 @@ import { LESSONS as SCAM_LESSONS } from "@/lib/scams/curriculum";
 import { LESSONS as HTTP_BASICS_LESSONS } from "@/lib/http-basics/curriculum";
 import { LESSONS as HTTPS_LESSONS } from "@/lib/https-basics/curriculum";
 import { LESSONS as BASH_LESSONS } from "@/lib/bash-basics/curriculum";
+import { LESSONS as GIT_LESSONS } from "@/lib/git-basics/curriculum";
 import { LESSONS as CRYPTO_LESSONS } from "@/lib/crypto-basics/curriculum";
 import { LESSONS as SSH_LESSONS } from "@/lib/ssh-basics/curriculum";
 import {
@@ -193,6 +194,20 @@ export function getLearningTracks() {
       level: "Beginner",
       lessons: BASH_LESSONS.map(({ id, title }) => ({ id, title: title.en })),
       modules: BASH_LESSONS.map(({ group }) => group.en).filter(
+        (group, i, all) => all.indexOf(group) === i,
+      ),
+    },
+    {
+      id: "git",
+      title: "Git and GitHub",
+      category: "Linux & terminal",
+      description:
+        "Version control from the first commit to a pull request: the three areas, history, branches, merge conflicts, pushing to GitHub, teamwork and keeping secrets out of history, in a Git that runs in the browser.",
+      href: "/akademiya/git",
+      progressKey: LAB_PROGRESS.git.key,
+      level: "Beginner",
+      lessons: GIT_LESSONS.map(({ id, title }) => ({ id, title: title.en })),
+      modules: GIT_LESSONS.map(({ group }) => group.en).filter(
         (group, i, all) => all.indexOf(group) === i,
       ),
     },

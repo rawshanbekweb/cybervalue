@@ -66,7 +66,22 @@ export type Visual =
   | { kind: "postcard" }
   | { kind: "quiz"; question: string; options: string[]; answer: number }
   | { kind: "host"; title: string; subtitle: string; mood: Mood }
-  | { kind: "3d"; shot: Shot3D; stage?: number };
+  | { kind: "3d"; shot: Shot3D; stage?: number }
+  | {
+      kind: "gitgraph";
+      heading: string;
+      /** Lane names, top to bottom. */
+      lanes: string[];
+      /** Commits in the order they appear; a branch label sits on `tags`. */
+      commits: {
+        id: string;
+        lane: number;
+        parents: string[];
+        tags?: string[];
+      }[];
+    }
+  | { kind: "areas"; files: string[]; message: string }
+  | { kind: "photo"; src: string; caption: string };
 
 export type Mood = "happy" | "talk" | "shock" | "think" | "wink" | "sad";
 export type Sfx = "whoosh" | "pop" | "alarm" | "type" | "ding" | "magic";

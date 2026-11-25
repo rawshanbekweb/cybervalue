@@ -249,6 +249,27 @@ function Workspace<W>({
               ))}
             </div>
           </details>
+          {lesson.figures?.map((figure) => (
+            <figure key={figure.src} className="al-figure">
+              <a href={figure.src} target="_blank" rel="noopener">
+                {/* eslint-disable-next-line @next/next/no-img-element -- static lesson pictures */}
+                <img
+                  src={figure.src}
+                  alt={text(figure.alt)}
+                  width={figure.width}
+                  height={figure.height}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </a>
+              <figcaption>
+                {text(figure.caption)}
+                {figure.credit && (
+                  <span className="al-figure-credit"> {figure.credit}</span>
+                )}
+              </figcaption>
+            </figure>
+          ))}
           <div className="nl-task">
             <span className="eyebrow">{t("TASK")}</span>
             <p>{text(lesson.task)}</p>

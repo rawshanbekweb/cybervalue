@@ -84,6 +84,12 @@ export const SECTIONS = [
     href: "/akademiya/bash",
   },
   {
+    id: "git",
+    group: "lab",
+    label: "Git and GitHub (animated)",
+    href: "/akademiya/git",
+  },
+  {
     id: "crypto",
     group: "lab",
     label: "Cryptography basics (animated)",

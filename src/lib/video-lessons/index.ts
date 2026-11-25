@@ -1,6 +1,7 @@
 import audio from "./audio.json";
 import { BASH_VIDEO } from "./bash";
 import { CRYPTO_VIDEO } from "./crypto";
+import { GIT_VIDEO } from "./git";
 import { HTTP_VIDEO } from "./http";
 import { HTTPS_VIDEO } from "./https";
 import { timeline, type LessonAudio, type VideoLesson } from "./types";
@@ -12,6 +13,7 @@ export const VIDEO_LESSONS: Record<string, VideoLesson> = {
   https: HTTPS_VIDEO,
   crypto: CRYPTO_VIDEO,
   bash: BASH_VIDEO,
+  git: GIT_VIDEO,
 };
 
 export const videoLesson = (id: string) => VIDEO_LESSONS[id] ?? null;

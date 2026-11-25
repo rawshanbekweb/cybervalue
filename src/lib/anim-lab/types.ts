@@ -43,6 +43,17 @@ export type CommonWidget =
   | { type: "sort"; buckets: Bucket[]; items: SortItem[] }
   | { type: "quiz"; questions: Question[] };
 
+/** A picture in a lesson: a real screenshot or photo, with its source. */
+export type Figure = {
+  src: string;
+  alt: Text;
+  caption: Text;
+  /** Where it comes from and its licence, when not our own. */
+  credit?: string;
+  width: number;
+  height: number;
+};
+
 export type Lesson<W> = {
   id: number;
   group: Text;
@@ -51,6 +62,8 @@ export type Lesson<W> = {
   intro: Text;
   analogy: Text;
   theory: Text[];
+  /** Real screenshots or photos shown under the theory. */
+  figures?: Figure[];
   task: Text;
   hint: Text;
   widget: W;

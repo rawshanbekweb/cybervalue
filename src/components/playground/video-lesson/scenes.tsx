@@ -134,7 +134,225 @@ export function SceneView({ visual, p }: { visual: Visual; p: number }) {
       return <ChainScene p={p} />;
     case "warning":
       return <WarningScene p={p} />;
+    case "gitgraph":
+      return <GitGraphScene {...visual} p={p} />;
+    case "areas":
+      return <AreasScene {...visual} p={p} />;
+    case "photo":
+      return <PhotoScene {...visual} p={p} />;
   }
+}
+
+const GIT_LANES = ["#8052ff", "#2fbf8f", "#ffb829", "#4cc9f0"];
+
+/** A commit graph growing commit by commit, with branch labels. */
+function GitGraphScene({
+  heading,
+  lanes,
+  commits,
+  p,
+}: {
+  heading: string;
+  lanes: string[];
+  commits: { id: string; lane: number; parents: string[]; tags?: string[] }[];
+  p: number;
+}) {
+  const W = 1000;
+  const H = 110 + lanes.length * 120;
+  const step = Math.min(150, 820 / Math.max(1, commits.length));
+  const pos = new Map(
+    commits.map((c, i) => [c.id, { x: 120 + i * step, y: 100 + c.lane * 120 }]),
+  );
+  const span = seg(p, 0.06, 0.82);
+  const each = 1 / commits.length;
+  return (
+    <div className="vl-panel">
+      <h3 className="vl-heading" style={rise(seg(p, 0, 0.08))}>
+        {heading}
+      </h3>
+      <svg className="vl-gitgraph" viewBox={`0 0 ${W} ${H}`}>
+        {lanes.map((lane, i) => (
+          <text
+            key={lane}
+            x={20}
+            y={106 + i * 120}
+            fill={GIT_LANES[i % GIT_LANES.length]}
+            fontSize="26"
+            fontWeight="700"
+            fontFamily="ui-monospace, monospace"
+            opacity={ease(seg(p, 0, 0.1))}
+          >
+            {lane}
+          </text>
+        ))}
+        {commits.flatMap((c, i) =>
+          c.parents.map((parent) => {
+            const a = pos.get(parent)!;
+            const b = pos.get(c.id)!;
+            const x = seg(span, i * each - each * 0.3, i * each + each * 0.2);
+            const mid = (a.x + b.x) / 2;
+            const length = Math.hypot(b.x - a.x, b.y - a.y) * 1.2;
+            return (
+              <path
+                key={`${parent}-${c.id}`}
+                d={`M${a.x},${a.y} C${mid},${a.y} ${mid},${b.y} ${b.x},${b.y}`}
+                fill="none"
+                stroke={
+                  GIT_LANES[
+                    (c.lane === 0 && a.y !== b.y
+                      ? commits.find((k) => k.id === parent)!.lane
+                      : c.lane) % GIT_LANES.length
+                  ]
+                }
+                strokeWidth="8"
+                strokeLinecap="round"
+                strokeDasharray={length}
+                strokeDashoffset={length * (1 - ease(x))}
+              />
+            );
+          }),
+        )}
+        {commits.map((c, i) => {
+          const x = seg(span, i * each, i * each + each * 0.6);
+          if (x <= 0) return null;
+          const { x: cx, y: cy } = pos.get(c.id)!;
+          const last = i === commits.length - 1 || span < (i + 1) * each;
+          return (
+            <g key={c.id} transform={`translate(${cx},${cy})`}>
+              <circle
+                r={26 * (0.4 + 0.6 * ease(x))}
+                fill={GIT_LANES[c.lane % GIT_LANES.length]}
+                stroke="#0b0b10"
+                strokeWidth="5"
+              />
+              {c.parents.length > 1 && <circle r={10} fill="#0b0b10" />}
+              <text
+                y={60}
+                textAnchor="middle"
+                fontSize="20"
+                fill="#a3a3ad"
+                fontFamily="ui-monospace, monospace"
+                opacity={ease(x)}
+              >
+                {c.id}
+              </text>
+              {(c.tags ?? []).map((tag, k) => (
+                <text
+                  key={tag}
+                  y={-42 - k * 28}
+                  textAnchor="middle"
+                  fontSize="22"
+                  fontWeight="800"
+                  fill={
+                    tag.startsWith("HEAD")
+                      ? "#ffffff"
+                      : tag.startsWith("origin")
+                        ? "#4cc9f0"
+                        : "#e8e8ee"
+                  }
+                  fontFamily="ui-monospace, monospace"
+                  opacity={last ? ease(x) : 0.35}
+                >
+                  {tag}
+                </text>
+              ))}
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
+
+/** Files travel working folder → staging → repository. */
+function AreasScene({
+  files,
+  message,
+  p,
+}: {
+  files: string[];
+  message: string;
+  p: number;
+}) {
+  const toStage = ease(seg(p, 0.25, 0.45));
+  const toRepo = ease(seg(p, 0.6, 0.8));
+  const flash = seg(p, 0.6, 0.68);
+  const boxes = [
+    { title: "Ishchi papka", sub: "working directory" },
+    { title: "Staging", sub: "index · git add" },
+    { title: "Repozitoriy", sub: "commit · .git" },
+  ];
+  return (
+    <div className="vl-panel vl-areas">
+      <div className="vl-areas-row">
+        {boxes.map((b, i) => (
+          <div
+            key={b.title}
+            className="vl-area"
+            style={rise(seg(p, i * 0.05, 0.1 + i * 0.05))}
+          >
+            <strong>{b.title}</strong>
+            <span>{b.sub}</span>
+          </div>
+        ))}
+        {files.map((f, i) => {
+          const at = toStage + toRepo; // column 0 → 1 → 2
+          return (
+            <span
+              key={f}
+              className="vl-area-file"
+              style={{
+                left: `${16.67 + at * 33.33}%`,
+                top: `${9 + i * 4.6}cqw`,
+                opacity: ease(seg(p, 0.05 + i * 0.04, 0.15 + i * 0.04)),
+                borderColor:
+                  at >= 2 ? "#8052ff" : at >= 1 ? "#2fbf8f" : "#ff6b6b",
+              }}
+            >
+              {f}
+            </span>
+          );
+        })}
+      </div>
+      <div
+        className="vl-areas-commit"
+        style={{ opacity: ease(seg(p, 0.78, 0.9)) }}
+      >
+        <code>git commit -m &quot;{message}&quot;</code>
+      </div>
+      <div
+        className="vl-flash"
+        style={{ opacity: flash > 0 && flash < 1 ? (1 - flash) * 0.35 : 0 }}
+      />
+    </div>
+  );
+}
+
+/** A real screenshot, slowly zooming in (Ken Burns). */
+function PhotoScene({
+  src,
+  caption,
+  p,
+}: {
+  src: string;
+  caption: string;
+  p: number;
+}) {
+  return (
+    <div className="vl-panel vl-photo">
+      <div className="vl-photo-frame" style={rise(seg(p, 0, 0.12))}>
+        {/* eslint-disable-next-line @next/next/no-img-element -- static lesson picture */}
+        <img
+          src={src}
+          alt={caption}
+          style={{ transform: `scale(${1 + 0.08 * p})` }}
+        />
+      </div>
+      <p className="vl-photo-caption" style={rise(seg(p, 0.1, 0.25))}>
+        {caption}
+      </p>
+    </div>
+  );
 }
 
 function TitleScene({

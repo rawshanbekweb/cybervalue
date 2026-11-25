@@ -69,6 +69,7 @@ export const LAB_PROGRESS = {
   httpbasics: { key: "cybervalue:http-basics:progress:v1", total: 9 },
   https: { key: "cybervalue:https:progress:v1", total: 9 },
   bash: { key: "cybervalue:bash:progress:v1", total: 9 },
+  git: { key: "cybervalue:git:progress:v1", total: 12 },
   ssh: { key: "cybervalue:ssh:progress:v1", total: 8 },
   crypto: { key: "cybervalue:crypto:progress:v1", total: 11 },
   scams: { key: "cybervalue:scams:progress:v1", total: 8 },
@@ -118,6 +119,11 @@ export const LAB_META: {
     id: "bash",
     title: { uz: "Bash asoslari", en: "Bash basics" },
     href: "/akademiya/bash",
+  },
+  {
+    id: "git",
+    title: { uz: "Git va GitHub", en: "Git and GitHub" },
+    href: "/akademiya/git",
   },
   {
     id: "ssh",

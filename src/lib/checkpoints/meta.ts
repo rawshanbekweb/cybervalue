@@ -119,6 +119,20 @@ export const CHECKPOINT_META: readonly CheckpointMeta[] = [
     pass: 70,
   },
   {
+    id: "git-1",
+    lab: { uz: "Git va GitHub", en: "Git and GitHub" },
+    title: {
+      uz: "Nazorat: commit, tarmoq va GitHub",
+      en: "Checkpoint: commits, branches and GitHub",
+    },
+    covers: {
+      uz: "Barcha darslardan 10 savol",
+      en: "10 questions from every lesson",
+    },
+    href: "/akademiya/git#checkpoints",
+    pass: 70,
+  },
+  {
     id: "ssh-1",
     lab: { uz: "SSH", en: "SSH" },
     title: {
