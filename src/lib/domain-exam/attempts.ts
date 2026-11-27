@@ -2,6 +2,7 @@ import "server-only";
 import { randomInt } from "node:crypto";
 import type {
   DomainExamAttempt,
+  Prisma,
   PrismaClient,
 } from "@/generated/prisma/client";
 import {
@@ -65,6 +66,30 @@ export async function finalizeIfOver(
   return !attempt.submittedAt && isOver(attempt)
     ? finalize(db, domain, attempt, "timeout")
     : attempt;
+}
+
+/**
+ * Close every unsubmitted attempt of the students matched by `student`
+ * whose time ran out, so teachers see it among the results to review.
+ */
+export async function finalizeStale(
+  db: PrismaClient,
+  student: Prisma.StudentWhereInput,
+  subjects: ExamSubject[],
+  now = new Date(),
+) {
+  const stale = await db.domainExamAttempt.findMany({
+    where: {
+      student,
+      submittedAt: null,
+      deadline: { lt: new Date(now.getTime() - DOMAIN_EXAM_GRACE_MS) },
+    },
+    take: 500,
+  });
+  for (const a of stale) {
+    const subject = subjects.find((d) => d.id === a.domain);
+    if (subject) await finalize(db, subject, a, "timeout");
+  }
 }
 
 export function runningState(

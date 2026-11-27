@@ -148,4 +148,74 @@ test.describe("the SSH, cryptography and TLS exam", () => {
     await expect(page.locator(".rx-score")).toContainText("Passed");
     await expect(page.locator(".rx-review .rx-explain")).toHaveCount(40);
   });
+
+  test("the HTML, CSS and JavaScript exam is approved from the results table", async ({
+    browser,
+  }) => {
+    test.setTimeout(120000);
+    const page = await (
+      await browser.newContext({ storageState: english })
+    ).newPage();
+    await page.addInitScript(() => {
+      Element.prototype.requestFullscreen = () => Promise.resolve();
+      document.hasFocus = () => true;
+    });
+    await page.goto("/student/login");
+    await page.getByLabel("Access code").fill(code);
+    await page.getByRole("button", { name: "Enter" }).click();
+    await expect(page).toHaveURL(/\/student$/);
+    const web = "/intermediate/exam/web-html-css-js";
+    await expect(
+      page.getByRole("link", { name: /HTML, CSS and JavaScript exam/ }),
+    ).toHaveAttribute("href", web);
+    await page.goto(web);
+    await page.getByRole("button", { name: "Start the exam" }).click();
+    const questions = page.locator("fieldset.rx-question");
+    await expect(questions).toHaveCount(40);
+    const {
+      rows: [{ seed }],
+    } = await sql((c) =>
+      c.query(
+        `SELECT seed FROM "DomainExamAttempt" WHERE "studentId" = $1 AND domain = $2`,
+        [studentId, "web-html-css-js"],
+      ),
+    );
+    const answers: number[] = JSON.parse(
+      execFileSync(
+        "npx",
+        ["tsx", "tests/e2e/exam-answers.ts", "web-html-css-js", String(seed)],
+        { encoding: "utf8" },
+      ),
+    );
+    for (let i = 0; i < 40; i++)
+      await questions.nth(i).getByRole("radio").nth(answers[i]).check();
+    await page.getByRole("button", { name: "Submit", exact: true }).click();
+    await page.getByRole("button", { name: "Yes, submit" }).click();
+    await expect(
+      page.getByRole("heading", { name: "Your result is with your teacher" }),
+    ).toBeVisible();
+
+    const staff = await (await browser.newContext()).newPage();
+    await staff.goto("/admin/login");
+    await staff.getByLabel("Email").fill(process.env.E2E_ADMIN_EMAIL!);
+    await staff
+      .getByLabel("Parol", { exact: true })
+      .fill(process.env.E2E_ADMIN_PASSWORD!);
+    await staff.getByRole("button", { name: "Tizimga kirish" }).click();
+    await expect(staff).toHaveURL(/\/admin$/);
+    await staff.goto("/teacher/domain-exams?domain=web-html-css-js");
+    await expect(staff.locator(".exam-waiting")).toContainText(
+      "tekshirishni kutmoqda",
+    );
+    const row = staff.getByRole("row").filter({ hasText: name });
+    await expect(row).toContainText("40/40");
+    await row.getByRole("button", { name: "Tasdiqlash" }).click();
+    await expect(
+      staff.getByRole("row").filter({ hasText: name }),
+    ).toContainText("Tasdiqlangan");
+
+    await page.reload();
+    await expect(page.locator(".rx-score")).toContainText("40 of 40");
+    await expect(page.locator(".rx-review .rx-explain")).toHaveCount(40);
+  });
 });
