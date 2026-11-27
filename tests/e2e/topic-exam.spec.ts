@@ -203,6 +203,11 @@ test.describe("the SSH, cryptography and TLS exam", () => {
       .fill(process.env.E2E_ADMIN_PASSWORD!);
     await staff.getByRole("button", { name: "Tizimga kirish" }).click();
     await expect(staff).toHaveURL(/\/admin$/);
+    // The sidebar names the page plainly and counts what waits.
+    await staff.goto("/teacher");
+    await expect(
+      staff.getByRole("link", { name: /Imtihon natijalari/ }),
+    ).toHaveAttribute("href", "/teacher/domain-exams");
     await staff.goto("/teacher/domain-exams?domain=web-html-css-js");
     await expect(staff.locator(".exam-waiting")).toContainText(
       "tekshirishni kutmoqda",

@@ -10,7 +10,7 @@ const DAY = 86_400_000;
 
 /** Counts behind the sidebar badges; cheap enough for every admin page. */
 export async function adminBadges(db: PrismaClient, scope: Scope = ALL) {
-  const [reviews, errors] = await Promise.all([
+  const [reviews, errors, exams] = await Promise.all([
     db.studentSubmission.count({
       where: {
         reviewedAt: null,
@@ -19,8 +19,16 @@ export async function adminBadges(db: PrismaClient, scope: Scope = ALL) {
       },
     }),
     scope.owner ? db.errorEvent.count({ where: { resolvedAt: null } }) : 0,
+    // Submitted exams (topic and domain) the teacher has not approved yet.
+    db.domainExamAttempt.count({
+      where: {
+        submittedAt: { not: null },
+        approvedAt: null,
+        ...(scope.owner ? {} : { student: inGroups(scope) }),
+      },
+    }),
   ]);
-  return { reviews, errors };
+  return { reviews, errors, exams };
 }
 
 /** What the dashboard shows: today's work first, then the numbers. */
