@@ -2,7 +2,13 @@ import Link from "next/link";
 import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
 import { groupWhere, requireStaff } from "@/lib/auth";
 import { getDb } from "@/lib/db";
-import { EXAM_SUBJECTS, gradeExam } from "@/lib/domain-exam/build";
+import { EXAM_SUBJECTS, gradeExam, isTopicExam } from "@/lib/domain-exam/build";
+
+// Topic exams (HTML/CSS/JS, SSH) first: they are the ones a class sits.
+const SUBJECTS = [
+  ...EXAM_SUBJECTS.filter(isTopicExam).reverse(),
+  ...EXAM_SUBJECTS.filter((s) => !isTopicExam(s)),
+];
 import {
   answersOf,
   finalizeIfOver,
@@ -50,9 +56,9 @@ export default async function DomainExamResultsPage({
   // Without a pick, open the first exam with results to review, so a
   // finished exam is never hidden behind another tab.
   const domain =
-    EXAM_SUBJECTS.find((d) => d.id === params.domain) ??
-    EXAM_SUBJECTS.find((d) => waiting.get(d.id)) ??
-    EXAM_SUBJECTS[0];
+    SUBJECTS.find((d) => d.id === params.domain) ??
+    SUBJECTS.find((d) => waiting.get(d.id)) ??
+    SUBJECTS[0];
   const waitingHere = waiting.get(domain.id) ?? 0;
 
   const raw = await db.domainExamAttempt.findMany({
@@ -88,15 +94,15 @@ export default async function DomainExamResultsPage({
 
   return (
     <div className="exam-admin">
-      <h1>{t("Intermediate final exams")}</h1>
+      <h1>{t("Exam results")}</h1>
       <p className="muted">
         {t(
-          "Each domain has one final exam built from its modules’ checkpoint questions. Students see their result only after you approve it. You can add a note or allow a retake.",
+          "Results of the exams students take from their account: the HTML, CSS and JavaScript exam, the SSH and TLS exam and the Intermediate final exams. Students see their result only after you approve it. You can add a note or allow a retake.",
         )}
       </p>
       <nav aria-label={t("Domains")}>
         <ul className="exam-domains">
-          {EXAM_SUBJECTS.map((d) => (
+          {SUBJECTS.map((d) => (
             <li key={d.id}>
               <Link
                 href={`?domain=${d.id}`}

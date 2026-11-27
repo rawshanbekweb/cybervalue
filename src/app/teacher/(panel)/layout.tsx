@@ -15,8 +15,12 @@ export default async function TeacherPanelLayout({
   const scope = scopeOf(session);
   const db = getDb();
   const badges = db
-    ? await adminBadges(db, scope).catch(() => ({ reviews: 0, errors: 0 }))
-    : { reviews: 0, errors: 0 };
+    ? await adminBadges(db, scope).catch(() => ({
+        reviews: 0,
+        errors: 0,
+        exams: 0,
+      }))
+    : { reviews: 0, errors: 0, exams: 0 };
   const groups: AdminNavGroup[] = [
     {
       items: [
@@ -38,7 +42,11 @@ export default async function TeacherPanelLayout({
         { href: "/teacher/live", label: t("Live quiz") },
         { href: "/teacher/assessments", label: t("HTML baholash") },
         { href: "/teacher/linux-ip-exam", label: t("Linux va IP imtihoni") },
-        { href: "/teacher/domain-exams", label: t("Intermediate final exams") },
+        {
+          href: "/teacher/domain-exams",
+          label: t("Exam results"),
+          badge: badges.exams,
+        },
         { href: "/teacher/analytics", label: t("Analytics") },
       ],
     },
