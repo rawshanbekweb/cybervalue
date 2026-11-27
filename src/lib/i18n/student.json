@@ -358,5 +358,7 @@
   "Linux and IP exam": "Linux va IP manzil imtihoni",
   "40 tests and 10 open questions on Linux commands and IP addressing, 2 hours. Copying and screenshots are off; the result shows at once and is not sent to the teacher.": "Linux buyruqlari va IP manzillar bo‘yicha 40 ta test va 10 ta ochiq savol, 2 soat. Nusxa olish va skrinshot o‘chirilgan; natija darhol ko‘rinadi va o‘qituvchiga yuborilmaydi.",
   "SSH, cryptography and TLS exam": "SSH, kriptografiya va TLS imtihoni",
-  "40 questions on the SSH port, cryptography basics, symmetric encryption, HTTPS/TLS and HTTP, 45 minutes. The result appears after your teacher approves it.": "SSH porti, kriptografiya asoslari, simmetrik shifrlash, HTTPS/TLS va HTTP bo‘yicha 40 ta savol, 45 daqiqa. Natija o‘qituvchingiz tasdiqlagandan keyin chiqadi."
+  "40 questions on the SSH port, cryptography basics, symmetric encryption, HTTPS/TLS and HTTP, 45 minutes. The result appears after your teacher approves it.": "SSH porti, kriptografiya asoslari, simmetrik shifrlash, HTTPS/TLS va HTTP bo‘yicha 40 ta savol, 45 daqiqa. Natija o‘qituvchingiz tasdiqlagandan keyin chiqadi.",
+  "HTML, CSS and JavaScript exam": "HTML, CSS va JavaScript imtihoni",
+  "40 questions on HTML, CSS and JavaScript up to if / else: read the code and say what the page or console shows, 40 minutes. The result appears after your teacher approves it.": "HTML, CSS va JavaScript (if / else gacha) bo‘yicha 40 ta savol: kodni o‘qib, sahifa yoki konsolda nima chiqishini toping, 40 daqiqa. Natija o‘qituvchingiz tasdiqlagandan keyin chiqadi."
 }
