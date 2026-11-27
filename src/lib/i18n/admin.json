@@ -1087,5 +1087,10 @@
   "{count} waiting": "{count} ta kutmoqda",
   "Confirm every unconfirmed email ({count})": "Tasdiqlanmagan barcha emaillarni tasdiqlash ({count})",
   "The file is too large (4 MiB at most).": "Fayl juda katta (ko‘pi bilan 4 MiB).",
-  "A file exported here, or written by hand, up to 4 MiB; a hand-written file may carry the challenge files inline. See docs/challenges.md for the format.": "Shu yerdan eksport qilingan yoki qo‘lda yozilgan fayl, ko‘pi bilan 4 MiB; qo‘lda yozilgan fayl topshiriq fayllarini ham o‘z ichiga olishi mumkin. Formati docs/challenges.md da."
+  "A file exported here, or written by hand, up to 4 MiB; a hand-written file may carry the challenge files inline. See docs/challenges.md for the format.": "Shu yerdan eksport qilingan yoki qo‘lda yozilgan fayl, ko‘pi bilan 4 MiB; qo‘lda yozilgan fayl topshiriq fayllarini ham o‘z ichiga olishi mumkin. Formati docs/challenges.md da.",
+  "{count} results are waiting for review. Approve one with its button in the table, open a name to see every answer first, or approve them all at once.": "{count} ta natija tekshirishni kutmoqda. Jadvaldagi tugma bilan bittasini tasdiqlang, javoblarni oldin ko‘rish uchun ismni oching yoki hammasini birdaniga tasdiqlang.",
+  "Approve all {count} and show the students": "{count} tasini tasdiqlash va o‘quvchilarga ko‘rsatish",
+  "Result review": "Tekshirish",
+  "Answers": "Javoblar",
+  "Approve": "Tasdiqlash"
 }

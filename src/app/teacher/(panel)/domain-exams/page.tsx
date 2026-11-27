@@ -3,9 +3,18 @@ import { getAdminLocale, getAdminTranslator } from "@/lib/i18n/server";
 import { groupWhere, requireStaff } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { EXAM_SUBJECTS, gradeExam } from "@/lib/domain-exam/build";
-import { answersOf, finalizeIfOver } from "@/lib/domain-exam/attempts";
+import {
+  answersOf,
+  finalizeIfOver,
+  finalizeStale,
+} from "@/lib/domain-exam/attempts";
 import { DOMAIN_EXAM_PASS } from "@/lib/domain-exam/content";
-import { retakeDomainExamAction, reviewDomainExamAction } from "./actions";
+import {
+  approveDomainExamAction,
+  approveWaitingDomainExamsAction,
+  retakeDomainExamAction,
+  reviewDomainExamAction,
+} from "./actions";
 import "@/components/playground/html-assessment/assessment.css";
 
 const when = (d: Date | null) =>
@@ -24,8 +33,9 @@ export default async function DomainExamResultsPage({
   const db = getDb();
   if (!db) return <p>{t("The database is not connected.")}</p>;
   const params = await searchParams;
-  const domain =
-    EXAM_SUBJECTS.find((d) => d.id === params.domain) ?? EXAM_SUBJECTS[0];
+
+  // Close every attempt whose time ran out first, so it counts as waiting.
+  await finalizeStale(db, groupWhere(scope), EXAM_SUBJECTS);
 
   const counts = await db.domainExamAttempt.groupBy({
     by: ["domain"],
@@ -37,6 +47,13 @@ export default async function DomainExamResultsPage({
     _count: true,
   });
   const waiting = new Map(counts.map((c) => [c.domain, c._count]));
+  // Without a pick, open the first exam with results to review, so a
+  // finished exam is never hidden behind another tab.
+  const domain =
+    EXAM_SUBJECTS.find((d) => d.id === params.domain) ??
+    EXAM_SUBJECTS.find((d) => waiting.get(d.id)) ??
+    EXAM_SUBJECTS[0];
+  const waitingHere = waiting.get(domain.id) ?? 0;
 
   const raw = await db.domainExamAttempt.findMany({
     where: { domain: domain.id, student: groupWhere(scope) },
@@ -95,6 +112,24 @@ export default async function DomainExamResultsPage({
         </ul>
       </nav>
       <h2>{domain.title[locale]}</h2>
+      {waitingHere > 0 && (
+        <form
+          className="exam-waiting"
+          action={approveWaitingDomainExamsAction.bind(null, domain.id)}
+        >
+          <p>
+            {t(
+              "{count} results are waiting for review. Approve one with its button in the table, open a name to see every answer first, or approve them all at once.",
+              { count: waitingHere },
+            )}
+          </p>
+          <button className="button button-primary">
+            {t("Approve all {count} and show the students", {
+              count: waitingHere,
+            })}
+          </button>
+        </form>
+      )}
       <div className="exam-table-wrap">
         <table className="exam-table">
           <caption>{t("Attempts")}</caption>
@@ -106,12 +141,13 @@ export default async function DomainExamResultsPage({
               <th>{t("Score")}</th>
               <th>{t("Left the window")}</th>
               <th>{t("Submitted")}</th>
+              <th>{t("Result review")}</th>
             </tr>
           </thead>
           <tbody>
             {attempts.length === 0 && (
               <tr>
-                <td colSpan={6}>{t("Nobody has started this exam yet.")}</td>
+                <td colSpan={7}>{t("Nobody has started this exam yet.")}</td>
               </tr>
             )}
             {attempts.map((a) => (
@@ -128,6 +164,23 @@ export default async function DomainExamResultsPage({
                 </td>
                 <td>{a.leaves}</td>
                 <td>{when(a.submittedAt)}</td>
+                <td className="exam-row-actions">
+                  {a.submittedAt && (
+                    <Link
+                      className="button button-secondary"
+                      href={`?domain=${domain.id}&attempt=${a.id}#dx-review-title`}
+                    >
+                      {t("Answers")}
+                    </Link>
+                  )}
+                  {a.submittedAt && !a.approvedAt && (
+                    <form action={approveDomainExamAction.bind(null, a.id)}>
+                      <button className="button button-primary">
+                        {t("Approve")}
+                      </button>
+                    </form>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
