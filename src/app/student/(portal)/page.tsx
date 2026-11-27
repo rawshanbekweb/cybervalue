@@ -94,6 +94,12 @@ const EXAMS = [
     summary:
       "40 questions on the SSH port, cryptography basics, symmetric encryption, HTTPS/TLS and HTTP, 45 minutes. The result appears after your teacher approves it.",
   },
+  {
+    href: "/intermediate/exam/web-html-css-js",
+    title: "HTML, CSS and JavaScript exam",
+    summary:
+      "40 questions on HTML, CSS and JavaScript up to if / else: read the code and say what the page or console shows, 40 minutes. The result appears after your teacher approves it.",
+  },
 ];
 
 // Practice that is not a lesson-by-lesson lab, listed under My path.

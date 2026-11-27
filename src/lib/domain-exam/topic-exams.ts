@@ -1,47 +1,10 @@
 // Topic exams: a fixed question bank on a set of related topics, taken and
 // approved like a domain exam (same attempts table, same teacher page). The
 // questions carry their answers, so only server code may import this file.
-import type { Text } from "../anim-lab/types";
+import { q, type TopicExam } from "./topic-kit";
+import { WEB_EXAM } from "./web-exam";
 
-type Pair = [uz: string, en: string];
-
-export type TopicQuestion = {
-  topic: number;
-  ask: Text;
-  code?: string;
-  options: Text[];
-  answer: number;
-  explain: Text;
-};
-
-export type TopicExam = {
-  id: string;
-  title: Text;
-  minutes: number;
-  /** The topics, shown as "modules" with a lesson to revisit. */
-  modules: { title: Text; href: string }[];
-  questions: TopicQuestion[];
-};
-
-const tx = ([uz, en]: Pair): Text => ({ uz, en });
-const opt = (o: string | Pair): Text =>
-  typeof o === "string" ? { uz: o, en: o } : tx(o);
-
-const q = (
-  topic: number,
-  ask: Pair,
-  options: (string | Pair)[],
-  answer: number,
-  explain: Pair,
-  code?: string,
-): TopicQuestion => ({
-  topic,
-  ask: tx(ask),
-  ...(code ? { code } : {}),
-  options: options.map(opt),
-  answer,
-  explain: tx(explain),
-});
+export type { TopicExam, TopicQuestion } from "./topic-kit";
 
 const SSH = 0;
 const BASICS = 1;
@@ -897,7 +860,7 @@ export const SSH_CRYPTO_EXAM: TopicExam = {
   ],
 };
 
-export const TOPIC_EXAMS: TopicExam[] = [SSH_CRYPTO_EXAM];
+export const TOPIC_EXAMS: TopicExam[] = [SSH_CRYPTO_EXAM, WEB_EXAM];
 
 export const topicExam = (id: string) =>
   TOPIC_EXAMS.find((e) => e.id === id) ?? null;
