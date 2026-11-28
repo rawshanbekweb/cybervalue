@@ -360,5 +360,7 @@
   "SSH, cryptography and TLS exam": "SSH, kriptografiya va TLS imtihoni",
   "40 questions on the SSH port, cryptography basics, symmetric encryption, HTTPS/TLS and HTTP, 45 minutes. The result appears after your teacher approves it.": "SSH porti, kriptografiya asoslari, simmetrik shifrlash, HTTPS/TLS va HTTP bo‘yicha 40 ta savol, 45 daqiqa. Natija o‘qituvchingiz tasdiqlagandan keyin chiqadi.",
   "HTML, CSS and JavaScript exam": "HTML, CSS va JavaScript imtihoni",
-  "40 questions on HTML, CSS and JavaScript up to if / else: read the code and say what the page or console shows, 40 minutes. The result appears after your teacher approves it.": "HTML, CSS va JavaScript (if / else gacha) bo‘yicha 40 ta savol: kodni o‘qib, sahifa yoki konsolda nima chiqishini toping, 40 daqiqa. Natija o‘qituvchingiz tasdiqlagandan keyin chiqadi."
+  "40 questions on HTML, CSS and JavaScript up to if / else: read the code and say what the page or console shows, 40 minutes. The result appears after your teacher approves it.": "HTML, CSS va JavaScript (if / else gacha) bo‘yicha 40 ta savol: kodni o‘qib, sahifa yoki konsolda nima chiqishini toping, 40 daqiqa. Natija o‘qituvchingiz tasdiqlagandan keyin chiqadi.",
+  "HTML exam: from the page to forms": "HTML imtihoni: sahifadan formagacha",
+  "30 questions on HTML from the page skeleton to forms; many show a page and ask which code made it. 35 minutes. The result appears after your teacher approves it.": "HTML bo‘yicha sahifa tuzilmasidan formalargacha 30 ta savol: ko‘pida tayyor sahifa ko‘rsatiladi va uni qaysi kod yasaganini topasiz. 35 daqiqa. Natija o‘qituvchingiz tasdiqlagandan keyin chiqadi."
 }

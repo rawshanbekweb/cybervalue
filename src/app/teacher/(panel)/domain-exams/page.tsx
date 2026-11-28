@@ -97,7 +97,7 @@ export default async function DomainExamResultsPage({
       <h1>{t("Exam results")}</h1>
       <p className="muted">
         {t(
-          "Results of the exams students take from their account: the HTML, CSS and JavaScript exam, the SSH and TLS exam and the Intermediate final exams. Students see their result only after you approve it. You can add a note or allow a retake.",
+          "Results of the exams students take from their account: the HTML exams, the HTML, CSS and JavaScript exam, the SSH and TLS exam and the Intermediate final exams. Students see their result only after you approve it. You can add a note or allow a retake.",
         )}
       </p>
       <nav aria-label={t("Domains")}>

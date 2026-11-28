@@ -7,6 +7,8 @@ export type TopicQuestion = {
   topic: number;
   ask: Text;
   code?: string;
+  /** Trusted HTML from the bank, shown rendered in a mock browser window. */
+  preview?: string;
   options: Text[];
   answer: number;
   explain: Text;
@@ -39,4 +41,10 @@ export const q = (
   options: options.map(opt),
   answer,
   explain: tx(explain),
+});
+
+/** The same question with a rendered page shown above its options. */
+export const see = (question: TopicQuestion, html: string): TopicQuestion => ({
+  ...question,
+  preview: html,
 });

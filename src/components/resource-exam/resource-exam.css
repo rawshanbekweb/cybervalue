@@ -375,3 +375,62 @@
     flex: 1 1 100px;
   }
 }
+
+/* A rendered page in a mock browser window (HTML exam questions). */
+.rx-browser {
+  margin: 10px 0 14px;
+  border: 1px solid #3a3a46;
+  border-radius: 10px;
+  overflow: hidden;
+  max-width: 560px;
+}
+.rx-browser-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+  background: #2a2a34;
+}
+.rx-browser-bar span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ff5f57;
+}
+.rx-browser-bar span:nth-child(2) {
+  background: #febc2e;
+}
+.rx-browser-bar span:nth-child(3) {
+  background: #28c840;
+}
+.rx-browser-bar b {
+  margin-left: 8px;
+  font:
+    500 12px ui-monospace,
+    monospace;
+  color: #c9c9d4;
+}
+/* The page inside uses the browser's own default look, not the site's. */
+.rx-page {
+  padding: 12px 16px;
+  background: #fff;
+  color: #000;
+  font:
+    16px/1.4 "Times New Roman",
+    serif;
+  overflow-x: auto;
+}
+.rx-page * {
+  all: revert;
+}
+.rx-page table,
+.rx-page th,
+.rx-page td {
+  border: 1px solid #777;
+  border-collapse: collapse;
+  padding: 4px 10px;
+}
+/* Code options keep their line breaks. */
+.rx-option span {
+  white-space: pre-wrap;
+}

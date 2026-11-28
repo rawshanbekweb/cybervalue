@@ -223,4 +223,30 @@ test.describe("the SSH, cryptography and TLS exam", () => {
     await expect(page.locator(".rx-score")).toContainText("40 of 40");
     await expect(page.locator(".rx-review .rx-explain")).toHaveCount(40);
   });
+
+  test("the HTML exam shows rendered pages in a browser frame", async ({
+    browser,
+  }) => {
+    const page = await (
+      await browser.newContext({ storageState: english })
+    ).newPage();
+    await page.addInitScript(() => {
+      Element.prototype.requestFullscreen = () => Promise.resolve();
+      document.hasFocus = () => true;
+    });
+    await page.goto("/student/login");
+    await page.getByLabel("Access code").fill(code);
+    await page.getByRole("button", { name: "Enter" }).click();
+    await expect(page).toHaveURL(/\/student$/);
+    await expect(
+      page.getByRole("link", { name: /HTML exam: from the page to forms/ }),
+    ).toHaveAttribute("href", "/intermediate/exam/html-forms");
+    await page.goto("/intermediate/exam/html-forms");
+    await page.getByRole("button", { name: "Start the exam" }).click();
+    await expect(page.locator("fieldset.rx-question")).toHaveCount(30);
+    await expect(page.locator(".rx-browser")).toHaveCount(12);
+    // The rendered pages can't be clicked or tabbed into.
+    await expect(page.locator(".rx-page").first()).toHaveAttribute("inert", "");
+    await expect(page.locator(".rx-page a")).toHaveCount(1);
+  });
 });
