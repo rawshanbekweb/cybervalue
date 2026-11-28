@@ -57,6 +57,7 @@ function buildTopicExam(exam: TopicExam, seed: number) {
     return {
       ask: q.ask,
       ...(q.code ? { code: q.code } : {}),
+      ...(q.preview ? { preview: q.preview } : {}),
       options: order.map((n) => q.options[n]),
       answer: order.indexOf(q.answer),
       explain: q.explain,
@@ -86,16 +87,21 @@ export function buildExam(domain: ExamSubject, seed: number) {
   });
 }
 
+/** A topic question's rendered page, when it has one. */
+const previewOf = (q: object): { preview?: string } =>
+  "preview" in q && typeof q.preview === "string" ? { preview: q.preview } : {};
+
 /** What the browser gets while the exam runs: no answers, no explanations. */
 export const publicQuestions = (
   questions: ReturnType<typeof buildExam>,
 ): ExamQuestion[] =>
-  questions.map(({ id, module, ask, code, options }) => ({
-    id,
-    module,
-    ask,
-    ...(code ? { code } : {}),
-    options,
+  questions.map((q) => ({
+    id: q.id,
+    module: q.module,
+    ask: q.ask,
+    ...(q.code ? { code: q.code } : {}),
+    ...previewOf(q),
+    options: q.options,
   }));
 
 export function gradeExam(
@@ -112,6 +118,7 @@ export function gradeExam(
       module: q.module,
       ask: q.ask,
       ...(q.code ? { code: q.code } : {}),
+      ...previewOf(q),
       options: q.options,
       picked,
       answer: q.answer,

@@ -95,6 +95,12 @@ const EXAMS = [
       "40 questions on the SSH port, cryptography basics, symmetric encryption, HTTPS/TLS and HTTP, 45 minutes. The result appears after your teacher approves it.",
   },
   {
+    href: "/intermediate/exam/html-forms",
+    title: "HTML exam: from the page to forms",
+    summary:
+      "30 questions on HTML from the page skeleton to forms; many show a page and ask which code made it. 35 minutes. The result appears after your teacher approves it.",
+  },
+  {
     href: "/intermediate/exam/web-html-css-js",
     title: "HTML, CSS and JavaScript exam",
     summary:

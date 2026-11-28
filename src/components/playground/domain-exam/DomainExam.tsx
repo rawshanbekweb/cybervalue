@@ -445,6 +445,7 @@ export function DomainExam({
                 <small>{text(q.module)}</small>
               </legend>
               {q.code && <pre className="rx-scene">{q.code}</pre>}
+              {q.preview && <BrowserPreview html={q.preview} />}
               {q.options.map((option, optionIndex) => (
                 <label key={optionIndex} className="rx-option">
                   <input
@@ -461,6 +462,30 @@ export function DomainExam({
         </section>
       </div>
     </div>
+  );
+}
+
+/**
+ * A page from the question bank, rendered as a browser would show it. The
+ * HTML is fixed server-side content, never anything a person typed, and the
+ * frame is inert, so nothing in it can be clicked or focused.
+ */
+function BrowserPreview({ html }: { html: string }) {
+  const { t } = useT();
+  return (
+    <figure className="rx-browser" aria-label={t("How the page looks")}>
+      <div className="rx-browser-bar" aria-hidden="true">
+        <span />
+        <span />
+        <span />
+        <b>sahifa.html</b>
+      </div>
+      <div
+        className="rx-page"
+        inert
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+    </figure>
   );
 }
 
@@ -548,6 +573,7 @@ function Result({
               <small>{text(item.module)}</small>
             </h4>
             {item.code && <pre className="rx-scene">{item.code}</pre>}
+            {item.preview && <BrowserPreview html={item.preview} />}
             <p>
               <b>{t("Your answer:")}</b>{" "}
               {item.picked === null

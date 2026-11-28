@@ -2,6 +2,7 @@
 // approved like a domain exam (same attempts table, same teacher page). The
 // questions carry their answers, so only server code may import this file.
 import { q, type TopicExam } from "./topic-kit";
+import { HTML_EXAM } from "./html-exam";
 import { WEB_EXAM } from "./web-exam";
 
 export type { TopicExam, TopicQuestion } from "./topic-kit";
@@ -860,7 +861,7 @@ export const SSH_CRYPTO_EXAM: TopicExam = {
   ],
 };
 
-export const TOPIC_EXAMS: TopicExam[] = [SSH_CRYPTO_EXAM, WEB_EXAM];
+export const TOPIC_EXAMS: TopicExam[] = [SSH_CRYPTO_EXAM, WEB_EXAM, HTML_EXAM];
 
 export const topicExam = (id: string) =>
   TOPIC_EXAMS.find((e) => e.id === id) ?? null;

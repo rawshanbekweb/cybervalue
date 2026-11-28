@@ -1805,5 +1805,6 @@
   "In sync with GitHub": "GitHub bilan bir xil",
   "{count} to push ↑": "{count} ta yuborish kerak ↑",
   "{count} to pull ↓": "{count} ta olish kerak ↓",
-  "Not connected yet (git remote add / git clone)": "Hali ulanmagan (git remote add / git clone)"
+  "Not connected yet (git remote add / git clone)": "Hali ulanmagan (git remote add / git clone)",
+  "How the page looks": "Sahifa ko‘rinishi"
 }

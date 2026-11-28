@@ -20,6 +20,7 @@ export type ExamQuestion = {
   module: Text;
   ask: Text;
   code?: string;
+  preview?: string;
   options: Text[];
 };
 
